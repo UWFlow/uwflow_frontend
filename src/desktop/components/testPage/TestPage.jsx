@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
-import TabContainer from '../common/tabContainer/TabContainer';
+import TabContainer from '../common/TabContainer';
 
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';

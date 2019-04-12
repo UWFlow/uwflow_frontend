@@ -3,8 +3,19 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+/* Child Components */
+import Navbar from '../common/Navbar';
+
+/* Styled Components */
+import { PageWrapper } from './styles/ProfilePage';
+
 const ProfilePage = () => {
-  return <Link to="/">Profile Page</Link>;
+  return (
+    <PageWrapper>
+      <Navbar />
+      <Link to="/">Profile Page</Link>;
+    </PageWrapper>
+  );
 };
 
 export default withRouter(ProfilePage);

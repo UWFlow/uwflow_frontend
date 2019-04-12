@@ -21,10 +21,12 @@ const TabContainer = ({
       <TabsWrapper>
         {tabList.map((tab, index) => (
           <Tab
-            key={index}
+            key={tab.title}
             width={tabWidth}
             selected={index === selectedTab}
-            onClick={() => setSelectedTab(index)}
+            onClick={() =>
+              tab.onClick ? tab.onClick(index) : setSelectedTab(index)
+            }
           >
             {tab.title}
           </Tab>

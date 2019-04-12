@@ -1,1 +1,5 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+
+export const PageWrapper = styled.div`
+  padding: 20px 40px;
+`;
