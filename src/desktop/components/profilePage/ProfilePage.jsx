@@ -5,15 +5,35 @@ import { Link } from 'react-router-dom';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
+import CompleteProfileBox from './CompleteProfileBox';
+import RateCoursesBox from './RateCoursesBox';
+import Shortlist from './Shortlist';
+import UserCourses from './UserCourses';
+import UserNameBox from './UserNameBox';
 
 /* Styled Components */
-import { PageWrapper } from './styles/ProfilePage';
+import {
+  PageWrapper,
+  ColumnWrapper,
+  Column1,
+  Column2,
+} from './styles/ProfilePage';
 
 const ProfilePage = () => {
   return (
     <PageWrapper>
       <Navbar />
-      <Link to="/">Profile Page</Link>;
+      <ColumnWrapper>
+        <Column1>
+          <UserNameBox />
+          <UserCourses />
+        </Column1>
+        <Column2>
+          <CompleteProfileBox />
+          <Shortlist />
+          <RateCoursesBox />
+        </Column2>
+      </ColumnWrapper>
     </PageWrapper>
   );
 };

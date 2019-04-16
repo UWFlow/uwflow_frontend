@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({});
 
-const ExploreCoursesPage = () => {
+const CourseList = () => {
   return <div />;
 };
 
-export default connect(mapStateToProps)(ExploreCoursesPage);
+export default connect(mapStateToProps)(CourseList);
