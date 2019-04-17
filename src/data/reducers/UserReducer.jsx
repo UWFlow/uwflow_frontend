@@ -4,9 +4,13 @@ import { getCourseInfo } from './CourseReducer';
 
 /**  User State Important Types **\
 state: {
-  coursesTaken: Array<course_id>
-  coursesReviewed: Array<course_id>
-  profsReviewed: Array<prof_id>
+  coursesTaken: Array<{
+    courseID: string
+    termTaken: string
+    prof?: string
+  }>
+  coursesReviewed: Array<courseID>
+  profsReviewed: Array<profID>
 }
 \*********************************/
 
@@ -42,8 +46,8 @@ export const getUserCoursesTaken = state => getUserState(state).coursesTaken;
 export const getUserCoursesTakenInfo = state => {
   const userCoursesTaken = getUserCoursesTaken(state);
   return userCoursesTaken
-    ? userCoursesTaken.reduce((list, courseID) => {
-        list.append({ ...getCourseInfo(state, courseID), id: courseID });
+    ? userCoursesTaken.reduce((list, info) => {
+        list.append({ ...getCourseInfo(state, info.courseID), ...info });
         return list;
       }, [])
     : null;

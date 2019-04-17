@@ -12,6 +12,14 @@ state: {
       postreqs: Array<courseID>
       antireqs: Array<courseID>
       termOfferings: Array<string>
+      ratings: {
+        likes: int
+        dislikes: int
+        useful: int
+        notUseful: int
+        easy: int
+        notEasy: int
+      }
       requiredTextbooks: Array<string>
     }
   }
@@ -19,6 +27,9 @@ state: {
     courseID: {
       userID: {
         review: string
+        useful: boolean
+        easy: boolean
+        liked: boolean
         upvotes: int
         profID?: string
       }
@@ -50,19 +61,6 @@ export const getCourseInfo = (state, courseID) =>
 
 export const getCourseReviews = (state, courseID) =>
   getCourseState(state).courseReviewsMap[courseID];
-
-export const getProfCourseReviews = (state, courseID, profID) => {
-  const courseReviews = getCourseReviews(state, courseID);
-  if (!courseReviews) {
-    return null;
-  }
-  return Object.keys(courseReviews).reduce((arr, currentUserID) => {
-    if (courseReviews[currentUserID].profID === profID) {
-      arr.append({ userID: currentUserID, ...courseReviews[currentUserID] });
-    }
-    return arr;
-  }, []);
-};
 
 export const getRequiredTextbooks = (state, courseID) => {
   const courseInfo = getCourseInfo(state, courseID);

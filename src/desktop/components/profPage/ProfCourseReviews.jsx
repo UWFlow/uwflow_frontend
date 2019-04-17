@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 /* Selectors */
 import {
-  getProfCoursesTaughtReviews,
+  getProfReviews,
   getProfCoursesTaughtInfo,
 } from '../../../../data/reducers/ProfReducer';
 
 const mapStateToProps = (state, { profID }) => ({
-  courseReviews: getProfCoursesTaughtReviews(state, profID),
+  courseReviews: getProfReviews(state, profID),
   courseInfo: getProfCoursesTaughtInfo(state, profID),
 });
 

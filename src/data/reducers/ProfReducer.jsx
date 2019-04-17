@@ -1,6 +1,6 @@
 /* Selectors */
 import { getDataState } from './DataReducer';
-import { getCourseInfo, getProfCourseReviews } from './CourseReducer';
+import { getCourseInfo } from './CourseReducer';
 
 /**  Professor State Important Types **\
 state: {
@@ -14,9 +14,21 @@ state: {
         likes: int
         dislikes: int
         clear: int
-        notClear: int
+        unclear: int
         engaging: int
-        notEngaging: int
+        unengaging: int
+      }
+    }
+  }
+  profReviewsMap: {
+    profID: {
+      courseID: {
+        userID: {
+          review: string
+          clear: boolean
+          engaging: boolean
+          upvotes: int
+        }
       }
     }
   }
@@ -42,6 +54,8 @@ export const getProfState = state => getDataState(state).professor;
 export const getAllProfs = state => getProfState(state).allProfs;
 export const getProfInfo = (state, profID) =>
   getProfState(state).profInfoMap[profID];
+export const getProfReviews = (state, profID) =>
+  getProfState(state).profReviewsMap[profID];
 
 export const getProfCoursesTaught = (state, profID) => {
   const profInfo = getProfInfo(state, profID);
@@ -55,17 +69,6 @@ export const getProfCoursesTaughtInfo = (state, profID) => {
   }
   return coursesTaught.reduce((map, currentCourseID) => {
     map[currentCourseID] = getCourseInfo(state, currentCourseID);
-    return map;
-  }, {});
-};
-
-export const getProfCoursesTaughtReviews = (state, profID) => {
-  const coursesTaught = getProfCoursesTaught(state, profID);
-  if (!coursesTaught) {
-    return null;
-  }
-  return coursesTaught.reduce((map, currentCourseID) => {
-    map[currentCourseID] = getProfCourseReviews(state, currentCourseID, profID);
     return map;
   }, {});
 };
