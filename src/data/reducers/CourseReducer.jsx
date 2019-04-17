@@ -5,8 +5,12 @@ import { getDataState } from './DataReducer';
 state: {
   courseInfoMap: {
     courseID: {
+      ** Will exist if courseID exists **
       courseName: string
       courseCode: string
+
+      isFullCourse: boolean
+      ** Will exist if isFullCourse is true **
       description: string
       prereqs: Array<courseID>
       postreqs: Array<courseID>

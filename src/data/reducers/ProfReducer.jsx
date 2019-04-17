@@ -7,9 +7,13 @@ state: {
   allProfs: Array<profID>
   profInfoMap: {
     profID: {
+      ** Will exist if profID exists **
       profName: string
-      profPicture: string
       coursesTaught: Array<courseID>
+
+      isFullProf: boolean
+      ** Will exist if isFullProf is true **
+      profPicture: string
       ratings: {
         likes: int
         dislikes: int
