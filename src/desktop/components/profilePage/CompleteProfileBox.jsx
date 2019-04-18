@@ -20,4 +20,4 @@ const CompleteProfileBox = ({
   return <>Complete Profile Box</>;
 };
 
-export default CompleteProfileBox;
+export default connect(mapStateToProps)(CompleteProfileBox);

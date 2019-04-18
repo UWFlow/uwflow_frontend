@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
+/* Child Components */
+import Navbar from '../common/Navbar';
+
 const mapStateToProps = state => ({});
 
 const CoursePage = () => {
-  return <div />;
+  return <Navbar />;
 };
 
 export default connect(mapStateToProps)(CoursePage);
