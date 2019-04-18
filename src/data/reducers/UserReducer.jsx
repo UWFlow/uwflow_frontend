@@ -11,6 +11,7 @@ state: {
   }>
   coursesReviewed: Array<courseID>
   profsReviewed: Array<profID>
+  shortlist: Array<courseID>
 }
 \*********************************/
 

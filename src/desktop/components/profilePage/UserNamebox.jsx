@@ -8,15 +8,17 @@ import { UserNameBoxWrapper } from './styles/ProfilePage';
 import {
   getUserName,
   getUserID,
-  getUserProgram,
   getUserPicture,
+  getUserProgram,
+  getUserProgramID,
 } from '../../../data/reducers/UserReducer';
 
 const mapStateToProps = state => ({
   userName: getUserName(state),
   userID: getUserID(state),
-  userProgram: getUserProgram(state),
   userPicture: getUserPicture(state),
+  userProgram: getUserProgram(state),
+  userProgramID: getUserProgramID(state),
 });
 
 const UserNameBox = () => {

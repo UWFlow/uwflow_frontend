@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import {
   getProfReviews,
   getProfCoursesTaughtInfo,
-} from '../../../../data/reducers/ProfReducer';
+} from '../../../data/reducers/ProfReducer';
 
 const mapStateToProps = (state, { profID }) => ({
-  courseReviews: getProfReviews(state, profID),
-  courseInfo: getProfCoursesTaughtInfo(state, profID),
+  profReviews: getProfReviews(state, profID),
+  coursesTaughtInfo: getProfCoursesTaughtInfo(state, profID),
 });
 
 const ProfCourseReviews = () => {};
