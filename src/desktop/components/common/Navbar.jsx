@@ -19,19 +19,17 @@ import Textbox from './Textbox';
 
 export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
 
-const Navbar = ({ history }) => {
+const Navbar = () => {
   return (
     <>
       <NavbarSpacer />
       <NavbarWrapper>
-        <LogoWrapper onClick={() => history.push(LANDING_PAGE_ROUTE)}>
-          UW Flow
-        </LogoWrapper>
+        <LogoWrapper to={LANDING_PAGE_ROUTE}>UW Flow</LogoWrapper>
         <Textbox
           ID={NAVBAR_TEXTBOX_ID}
           initialPlaceholder="Explore or search for courses, subjects or professors"
         />
-        <ProfileButtonWrapper onClick={() => history.push(PROFILE_PAGE_ROUTE)}>
+        <ProfileButtonWrapper to={PROFILE_PAGE_ROUTE}>
           My Profile
         </ProfileButtonWrapper>
       </NavbarWrapper>

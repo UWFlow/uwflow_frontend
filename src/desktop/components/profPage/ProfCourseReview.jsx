@@ -7,11 +7,11 @@ import {
   getProfCoursesTaughtInfo,
 } from '../../../data/reducers/ProfReducer';
 
-const mapStateToProps = (state, { profID }) => ({
+const mapStateToProps = (state, { profID, courseID }) => ({
   profReviews: getProfReviews(state, profID),
   coursesTaughtInfo: getProfCoursesTaughtInfo(state, profID),
 });
 
-const ProfCourseReviews = () => {};
+const ProfCourseReview = () => {};
 
-export default connect(mapStateToProps)(ProfCourseReviews);
+export default connect(mapStateToProps)(ProfCourseReview);

@@ -17,16 +17,24 @@ export const NavbarWrapper = styled.div`
   align-items: center;
 `;
 
-export const LogoWrapper = styled.div`
+export const LogoWrapper = styled(Link)`
   display: flex;
   align-items: center;
   padding: 16px;
   cursor: pointer;
+  color: black;
+  text-decoration: none;
+  outline: 0;
+  border: none;
 `;
 
-export const ProfileButtonWrapper = styled.div`
+export const ProfileButtonWrapper = styled(Link)`
   display: flex;
   align-items: center;
   padding: 16px;
   cursor: pointer;
+  color: black;
+  text-decoration: none;
+  outline: 0;
+  border: none;
 `;
