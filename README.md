@@ -10,7 +10,7 @@ Currently sorta implemented routes are:
 
 /prof/anything
 
-/course
+/course/anything
 
 /api-test
 
