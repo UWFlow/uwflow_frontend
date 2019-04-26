@@ -13,7 +13,7 @@ import UserNameBox from './UserNameBox';
 
 /* Styled Components */
 import {
-  PageWrapper,
+  ProfilePageWrapper,
   ColumnWrapper,
   Column1,
   Column2,
@@ -21,7 +21,7 @@ import {
 
 const ProfilePage = () => {
   return (
-    <PageWrapper>
+    <ProfilePageWrapper>
       <Navbar />
       <ColumnWrapper>
         <Column1>
@@ -34,7 +34,7 @@ const ProfilePage = () => {
           <RateCoursesBox />
         </Column2>
       </ColumnWrapper>
-    </PageWrapper>
+    </ProfilePageWrapper>
   );
 };
 

@@ -9,6 +9,7 @@ import { UserCoursesWrapper, UserCoursesHeader } from './styles/ProfilePage';
 
 const mapStateToProps = state => ({
   courses: getUserCoursesTakenInfo(state),
+  /* GET COURSE REVIEWS TOO */
 });
 
 const UserCourses = ({ courses }) => {

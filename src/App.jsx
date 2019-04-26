@@ -24,51 +24,55 @@ import {
   LoadableTestPage,
 } from './LoadableComponents';
 import NoMatchRedirect from './desktop/components/common/NoMatchRedirect';
+import ModalRoot from './desktop/components/common/modal/ModalRoot';
 
 const App = () => {
   return (
-    <Switch>
-      <Route
-        exact
-        path={LANDING_PAGE_ROUTE}
-        component={() => <LoadableLandingPage />}
-      />
-      <Route
-        exact
-        path={PROFILE_PAGE_ROUTE}
-        component={() => <LoadableProfilePage />}
-      />
-      <Route
-        exact
-        path={COURSE_PAGE_ROUTE}
-        component={() => <LoadableCoursePage />}
-      />
-      <Route
-        exact
-        path={PROF_PAGE_ROUTE}
-        component={() => <LoadableProfPage />}
-      />
-      {TREE_PAGE_ROUTES.map((route, index) => (
+    <>
+      <Switch>
         <Route
-          key={index}
           exact
-          path={route}
-          component={() => <LoadableTreePage />}
+          path={LANDING_PAGE_ROUTE}
+          component={() => <LoadableLandingPage />}
         />
-      ))}
-      <Route
-        exact
-        path={ABOUT_PAGE_ROUTE}
-        component={() => <LoadableAboutPage />}
-      />
-      <Route
-        exact
-        path={TEST_PAGE_ROUTE}
-        component={() => <LoadableTestPage />}
-      />
-      {/* Catch all other routes and redirect */}
-      <Route path="*" component={NoMatchRedirect} />
-    </Switch>
+        <Route
+          exact
+          path={PROFILE_PAGE_ROUTE}
+          component={() => <LoadableProfilePage />}
+        />
+        <Route
+          exact
+          path={COURSE_PAGE_ROUTE}
+          component={() => <LoadableCoursePage />}
+        />
+        <Route
+          exact
+          path={PROF_PAGE_ROUTE}
+          component={() => <LoadableProfPage />}
+        />
+        {TREE_PAGE_ROUTES.map((route, index) => (
+          <Route
+            key={index}
+            exact
+            path={route}
+            component={() => <LoadableTreePage />}
+          />
+        ))}
+        <Route
+          exact
+          path={ABOUT_PAGE_ROUTE}
+          component={() => <LoadableAboutPage />}
+        />
+        <Route
+          exact
+          path={TEST_PAGE_ROUTE}
+          component={() => <LoadableTestPage />}
+        />
+        {/* Catch all other routes and redirect */}
+        <Route path="*" component={NoMatchRedirect} />
+      </Switch>
+      <ModalRoot />
+    </>
   );
 };
 

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
+import TestModal from '../common/modal/TestModal';
 
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';
@@ -31,6 +32,8 @@ const TestPage = ({ getTextboxText }) => {
     }
   };
 
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const tabList = [
     { title: 'abc', render: () => <div>ABC</div> },
     { title: 'def', render: () => <div>def</div> },
@@ -51,6 +54,11 @@ const TestPage = ({ getTextboxText }) => {
         containerWidth={'80%'}
         tabList={tabList}
         initialSelectedTab={0}
+      />
+      <div onClick={() => setModalOpen(true)}>Open Modal</div>
+      <TestModal
+        onCloseModal={() => setModalOpen(false)}
+        isModalOpen={isModalOpen}
       />
     </>
   );

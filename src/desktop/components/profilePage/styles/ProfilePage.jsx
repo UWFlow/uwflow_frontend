@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { WideColumn, ThinColumn } from '../../../../constants/Mixins';
 
-export const PageWrapper = styled.div`
+export const ProfilePageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 40px;
+  width: 100%;
 `;
 
 export const ColumnWrapper = styled.div`
