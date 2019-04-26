@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { animated } from 'react-spring/renderprops';
+import { Spring, interpolate, config } from 'react-spring/renderprops';
 
 /* Styled Components */
 import { ModalBackdrop, ModalWrapper } from './styles/Modal';
@@ -15,16 +15,34 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
     setTrulyOpen(isModalOpen);
   };
 
+  const backdropStart = 'rgba(255, 255, 255, 0)';
+  const backdropEnd = 'rgba(25, 42, 50, 0.7)';
+
   return isModalOpen || isTrulyOpen ? (
     <ModalPortal>
-      <ModalBackdrop onClick={onCloseModal}>
-        <PopInAnOutAnimation
-          isOpen={isModalOpen}
-          onAnimationFinish={onAnimationFinish}
-        >
-          <ModalWrapper>{children}</ModalWrapper>
-        </PopInAnOutAnimation>
-      </ModalBackdrop>
+      <Spring
+        native
+        config={config.default}
+        from={{ back: isModalOpen ? backdropStart : backdropEnd }}
+        to={{ back: isModalOpen ? backdropEnd : backdropStart }}
+        onRest={onAnimationFinish}
+      >
+        {({ back }) => (
+          <ModalBackdrop
+            onClick={onCloseModal}
+            style={{
+              background: back,
+            }}
+          >
+            <PopInAnOutAnimation
+              isOpen={isModalOpen}
+              onAnimationFinish={onAnimationFinish}
+            >
+              <ModalWrapper>{children}</ModalWrapper>
+            </PopInAnOutAnimation>
+          </ModalBackdrop>
+        )}
+      </Spring>
     </ModalPortal>
   ) : null;
 };

@@ -60,6 +60,10 @@ export const getProfInfo = (state, profID) =>
   getProfState(state).profInfoMap[profID];
 export const getProfReviews = (state, profID) =>
   getProfState(state).profReviewsMap[profID];
+export const getProfCourseReview = (state, profID, courseID) => {
+  const reviews = getProfReviews(state, profID);
+  return reviews[courseID];
+};
 
 export const getProfCoursesTaught = (state, profID) => {
   const profInfo = getProfInfo(state, profID);

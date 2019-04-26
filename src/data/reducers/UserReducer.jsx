@@ -21,6 +21,7 @@ export default (
     name: null,
     program: null,
     programID: null,
+    term: null,
     picture: null,
     coursesTaken: null,
     coursesReviewed: null,

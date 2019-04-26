@@ -16,7 +16,7 @@ import call from '../../../utils/Api';
 /* Constants */
 import KEYCODE from '../../../constants/KeycodeConstants';
 
-/* Styled COmponents */
+/* Styled Components */
 import { Path } from './styles/TestPage';
 
 const mapStateToProps = state => ({

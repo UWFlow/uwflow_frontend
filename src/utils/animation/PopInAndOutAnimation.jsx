@@ -11,7 +11,7 @@ const PopInAndOutAnimation = ({ isOpen, children, onAnimationFinish }) => {
     <Spring
       native
       config={config.stiff}
-      from={{ size: 0 }}
+      from={{ size: isOpen ? 0 : 1 }}
       to={{
         size: isOpen ? 1 : 0,
       }}

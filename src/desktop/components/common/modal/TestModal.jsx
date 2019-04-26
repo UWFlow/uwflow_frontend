@@ -14,7 +14,7 @@ const TestModal = ({ onCloseModal, isModalOpen }) => {
   return (
     <ModalHOC onCloseModal={onCloseModal} isModalOpen={isModalOpen}>
       <TabContainer
-        containerWidth={'80%'}
+        containerWidth={'400px'}
         tabList={tabList}
         initialSelectedTab={0}
       />

@@ -2,14 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 /* Selectors */
-import {
-  getProfReviews,
-  getProfCoursesTaughtInfo,
-} from '../../../data/reducers/ProfReducer';
+import { getProfCourseReview } from '../../../data/reducers/ProfReducer';
+import { getCourseInfo } from '../../../data/reducers/CourseReducer';
 
 const mapStateToProps = (state, { profID, courseID }) => ({
-  profReviews: getProfReviews(state, profID),
-  coursesTaughtInfo: getProfCoursesTaughtInfo(state, profID),
+  profCourseReview: getProfCourseReview(state, profID),
+  courseInfo: getCourseInfo(state, courseID),
 });
 
 const ProfCourseReview = () => {};
