@@ -8,3 +8,4 @@ Currently sorta implemented routes are:
 /prof/anything
 /course
 /api-test
+ 
