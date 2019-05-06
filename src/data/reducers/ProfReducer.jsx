@@ -9,10 +9,10 @@ state: {
     profID: {
       ** Will exist if profID exists **
       profName: string
-      coursesTaught: Array<courseID>
 
       isFullProf: boolean
       ** Will exist if isFullProf is true **
+      coursesTaught: Array<courseID>
       profPicture: string
       ratings: {
         likes: int

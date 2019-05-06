@@ -7,6 +7,7 @@ state: {
   coursesTaken: Array<{
     courseID: string
     termTaken: string
+    dateTaken: some date format
     prof?: string
   }>
   coursesReviewed: Array<courseID>

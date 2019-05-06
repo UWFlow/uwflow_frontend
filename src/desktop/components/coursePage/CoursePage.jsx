@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
@@ -17,11 +18,13 @@ import {
 
 const mapStateToProps = state => ({});
 
-const CoursePage = () => {
+const CoursePage = ({ match }) => {
+  const courseID = match.params.courseID;
+
   return (
     <CoursePageWrapper>
       <Navbar />
-      <CourseInfoBox />
+      <CourseInfoBox courseID={courseID} />
       <ColumnWrapper>
         <Column1>
           <CourseSchedule />
@@ -34,4 +37,4 @@ const CoursePage = () => {
   );
 };
 
-export default connect(mapStateToProps)(CoursePage);
+export default withRouter(connect(mapStateToProps)(CoursePage));

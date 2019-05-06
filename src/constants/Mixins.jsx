@@ -17,3 +17,5 @@ export const ThinColumn = `
   flex-direction: column;
   width: 30%;
 `;
+
+/* Font Sizes */
