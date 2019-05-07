@@ -2,14 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 /* Selectors */
-import { getProfCourseReview } from '../../../data/reducers/ProfReducer';
+import { getProfCourseReviews } from '../../../data/reducers/ProfReducer';
 import { getCourseInfo } from '../../../data/reducers/CourseReducer';
 
+/* Styled Components */
+import {
+  ProfCourseReviewWrapper,
+  CourseInfoWrapper,
+  CourseInfo,
+  CourseRatingsWrapper,
+  CourseLikes,
+  CourseRatings,
+} from './styles/ProfCourseReview';
+
 const mapStateToProps = (state, { profID, courseID }) => ({
-  profCourseReview: getProfCourseReview(state, profID),
+  profCourseReviews: getProfCourseReviews(state, profID, courseID),
   courseInfo: getCourseInfo(state, courseID),
 });
 
-const ProfCourseReview = () => {};
+const ProfCourseReview = ({ courseInfo, profCourseReview }) => {};
 
 export default connect(mapStateToProps)(ProfCourseReview);

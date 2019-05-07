@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+/* Mixins */
+import { WideColumn, ThinColumn } from '../../../../constants/Mixins';
 
-export const ProfInfoBoxWrapper = styled.div`
-  width: ${PAGE_CONTENT_WIDTH}px;
-  margin: auto;
+export const ProfPageWrapper = styled.div`
+  width: 100%;
+  min-height: 100%;
   display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.light1};
 `;

@@ -18,4 +18,21 @@ export const ThinColumn = `
   width: 30%;
 `;
 
-/* Font Sizes */
+/* Fonts */
+export const Heading1 = `
+  font-size: 32px;
+  font-weight: 700;
+`;
+
+export const Heading2 = `
+  font-size: 24px;
+`;
+
+export const Heading3 = `
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+export const Body1 = `
+  font-size: 14px;
+`;

@@ -32,6 +32,9 @@ state: {
           clear: boolean
           engaging: boolean
           upvotes: int
+          term_course_taken: string
+          date_course_taken: string
+          program_of_reviewer: string
         }
       }
     }
@@ -41,8 +44,23 @@ state: {
 
 export default (
   state = {
-    allProfs: [],
-    profInfoMap: {},
+    allProfs: ['TP123'],
+    profInfoMap: {
+      TP123: {
+        profName: 'Test Prof',
+        isFullProf: true,
+        coursesTaught: ['TC123'],
+        profPicture: 'abc',
+        ratings: {
+          likes: 10,
+          dislikes: 3,
+          clear: 15,
+          unclear: 4,
+          engaging: 8,
+          unengaging: 14,
+        },
+      },
+    },
   },
   action,
 ) => {
@@ -58,11 +76,15 @@ export const getProfState = state => getDataState(state).professor;
 export const getAllProfs = state => getProfState(state).allProfs;
 export const getProfInfo = (state, profID) =>
   getProfState(state).profInfoMap[profID];
+export const getProfRatings = (state, profID) => {
+  const info = getProfInfo(state, profID);
+  return info ? info.ratings : null;
+};
 export const getProfReviews = (state, profID) =>
   getProfState(state).profReviewsMap[profID];
-export const getProfCourseReview = (state, profID, courseID) => {
+export const getProfCourseReviews = (state, profID, courseID) => {
   const reviews = getProfReviews(state, profID);
-  return reviews[courseID];
+  return reviews ? reviews[courseID] : null;
 };
 
 export const getProfCoursesTaught = (state, profID) => {

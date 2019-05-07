@@ -52,6 +52,9 @@ state: {
         easy: boolean
         liked: boolean
         upvotes: int
+        term_course_taken: string
+        date_course_taken: string
+        program_of_reviewer: string
       }
     }
   }
@@ -64,7 +67,7 @@ export default (
     courseInfoMap: {
       TC123: {
         courseName: 'Test Course',
-        courseCode: 'TC123',
+        courseCode: 'TC 123',
         hasGeneralInfo: true,
         description:
           'A description lenghthened to be pretty long to stand in for an actual description asliej asef lfaes feasl faesf laes fef elflsefefe la fef eflaf f af ef a fefleasf ele faes f feaf efaf asef fea es f eafse fef a esf ae ',
