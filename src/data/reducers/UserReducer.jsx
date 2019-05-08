@@ -18,13 +18,13 @@ state: {
 
 export default (
   state = {
-    id: null,
-    name: null,
-    program: null,
-    programID: null,
-    term: null,
-    picture: null,
-    coursesTaken: null,
+    id: 'abc',
+    name: 'Max Dai',
+    program: 'Software Engineering',
+    programID: 'abc',
+    term: '2B',
+    picture: 'abc',
+    coursesTaken: ['TC123'],
     coursesReviewed: null,
     profsReviewed: null,
     shortlist: null,
@@ -44,13 +44,14 @@ export const getUserID = state => getUserState(state).id;
 export const getUserName = state => getUserState(state).name;
 export const getUserProgram = state => getUserState(state).program;
 export const getUserProgramID = state => getUserState(state).programID;
+export const getUserTerm = state => getUserState(state).term;
 export const getUserPicture = state => getUserState(state).picture;
 export const getUserCoursesTaken = state => getUserState(state).coursesTaken;
 export const getUserCoursesTakenInfo = state => {
   const userCoursesTaken = getUserCoursesTaken(state);
   return userCoursesTaken
     ? userCoursesTaken.reduce((list, info) => {
-        list.append({ ...getCourseInfo(state, info.courseID), ...info });
+        list.push({ ...getCourseInfo(state, info.courseID), ...info });
         return list;
       }, [])
     : null;

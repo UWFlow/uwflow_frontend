@@ -27,8 +27,7 @@ state: {
       }
       requiredTextbooks: Array<string>
 
-      hasSlotInfo: boolean
-			** Will exist if hasSlotInfo is true **
+			** Check for existence individually **
 			course_slots: {
 				term:  (eg. Winter 2019) {
           section: {
@@ -42,19 +41,19 @@ state: {
           }
         }
       }
-    }
-  }
-  courseReviewsMap:{
-    courseID: {
-      userID: {
-        review: string
-        useful: boolean
-        easy: boolean
-        liked: boolean
-        upvotes: int
-        term_course_taken: string
-        date_course_taken: string
-        program_of_reviewer: string
+
+      ** Check for existence individually
+      reviews: {
+        userID: {
+          review: string
+          useful: boolean
+          easy: boolean
+          liked: boolean
+          upvotes: int
+          term_course_taken: string
+          date_course_taken: string
+          program_of_reviewer: string
+        }
       }
     }
   }
@@ -85,10 +84,9 @@ export default (
           notEasy: 10,
         },
         requiredTextbooks: ['A Big Textbook', 'Another Big Textboox'],
-        hasSlotInfo: true,
+        reviews: {},
       },
     },
-    courseReviewsMap: {},
   },
   action,
 ) => {
@@ -106,12 +104,16 @@ export const getCourseInfo = (state, courseID) =>
   getCourseState(state).courseInfoMap[courseID];
 export const getIsFullCourse = (state, courseID) => {
   const course = getCourseInfo(state, courseID);
-  return course && course.hasGeneralInfo && course.hasSlotInfo;
+  return course && course.hasGeneralInfo; //&& course.course_slots;
 };
-export const getCourseRatings = (state, courseID) =>
-  getCourseInfo(state, courseID).ratings;
-export const getCourseReviews = (state, courseID) =>
-  getCourseState(state).courseReviewsMap[courseID];
+export const getCourseRatings = (state, courseID) => {
+  const course = getCourseInfo(state, courseID);
+  return course ? course.ratings : null;
+};
+export const getCourseReviews = (state, courseID) => {
+  const course = getCourseInfo(state, courseID);
+  return course ? course.reviews : null;
+};
 
 export const getRequiredTextbooks = (state, courseID) => {
   const courseInfo = getCourseInfo(state, courseID);

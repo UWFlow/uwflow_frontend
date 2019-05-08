@@ -22,19 +22,19 @@ state: {
         engaging: int
         unengaging: int
       }
-    }
-  }
-  profReviewsMap: {
-    profID: {
-      courseID: {
-        userID: {
-          review: string
-          clear: boolean
-          engaging: boolean
-          upvotes: int
-          term_course_taken: string
-          date_course_taken: string
-          program_of_reviewer: string
+
+      ** Check for existence individually **
+      reviews: {
+        courseID: {
+          userID: {
+            review: string
+            clear: boolean
+            engaging: boolean
+            upvotes: int
+            term_course_taken: string
+            date_course_taken: string
+            program_of_reviewer: string
+          }
         }
       }
     }
@@ -59,6 +59,7 @@ export default (
           engaging: 8,
           unengaging: 14,
         },
+        reviews: {},
       },
     },
   },
@@ -80,8 +81,10 @@ export const getProfRatings = (state, profID) => {
   const info = getProfInfo(state, profID);
   return info ? info.ratings : null;
 };
-export const getProfReviews = (state, profID) =>
-  getProfState(state).profReviewsMap[profID];
+export const getProfReviews = (state, profID) => {
+  const prof = getProfInfo(state, profID);
+  return prof ? prof.reviews : null;
+};
 export const getProfCourseReviews = (state, profID, courseID) => {
   const reviews = getProfReviews(state, profID);
   return reviews ? reviews[courseID] : null;

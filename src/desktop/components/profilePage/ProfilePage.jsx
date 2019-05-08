@@ -9,7 +9,7 @@ import CompleteProfileBox from './CompleteProfileBox';
 import RateCoursesBox from './RateCoursesBox';
 import Shortlist from './Shortlist';
 import UserCourses from './UserCourses';
-import UserNameBox from './UserNameBox';
+import UserInfoBox from './UserInfoBox';
 
 /* Styled Components */
 import {
@@ -25,7 +25,7 @@ const ProfilePage = () => {
       <Navbar />
       <ColumnWrapper>
         <Column1>
-          <UserNameBox />
+          <UserInfoBox />
           <UserCourses />
         </Column1>
         <Column2>
