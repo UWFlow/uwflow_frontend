@@ -36,7 +36,7 @@ const RatingBox = ({ numReviews, percentages }) => {
       </LikesColumn>
       <ProgressBarColumn>
         {percentages.map((metric, ind) =>
-          ind == 0 ? null : (
+          ind === 0 ? null : (
             <ProgressWrapper key={metric.displayName}>
               <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
               <ProgressBarWrapper>

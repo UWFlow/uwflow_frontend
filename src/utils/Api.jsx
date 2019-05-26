@@ -1,28 +1,16 @@
-import qs from 'qs';
-import { forEach } from 'lodash';
+import { BACKEND_ENDPOINT, AUTH_DICT } from '../constants/Api';
 
-export const post = (endpoint, data) => {
-  return fetch(endpoint, {
+export const queryBackend = query => {
+  return fetch(BACKEND_ENDPOINT, {
     method: 'POST',
-    body: qs.stringify(data, { arrayFormat: 'brackets' }),
-  });
-};
-
-export const get = endpoint => {
-  return fetch(endpoint, {
-    method: 'GET',
-  });
-};
-
-const call = (endpoint, data = {}) => {
-  // Delete null values from api parameters
-  forEach(data, (value, key) => {
-    if (value === null) {
-      delete data[key];
-    }
-  });
-
-  return get(endpoint, data)
+    body: JSON.stringify({
+      query,
+    }),
+    headers: {
+      'Content-type': 'application/json',
+      ...AUTH_DICT,
+    },
+  })
     .then(resp => {
       return resp.json();
     })
@@ -33,8 +21,6 @@ const call = (endpoint, data = {}) => {
       return Promise.reject(error);
     });
 };
-
-export default call;
 
 export const externalCall = (endpoint, data) =>
   fetch({

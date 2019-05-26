@@ -38,7 +38,7 @@ const ProfInfoBox = ({ info, ratings }) => {
             {info.coursesTaught.length > 0
               ? info.coursesTaught.reduce(
                   (str, course, ind) =>
-                    ind == 0 ? course : `${str}, ${course}`,
+                    ind === 0 ? course : `${str}, ${course}`,
                   '',
                 )
               : 'nothing apparently'}

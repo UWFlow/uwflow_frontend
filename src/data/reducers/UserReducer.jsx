@@ -19,12 +19,15 @@ state: {
 export default (
   state = {
     id: 'abc',
-    name: 'Max Dai',
+    firstName: 'Max',
+    lastName: 'Dai',
     program: 'Software Engineering',
     programID: 'abc',
     term: '2B',
     picture: 'abc',
-    coursesTaken: ['TC123'],
+    coursesTaken: [
+      { courseID: 'TC123', termTaken: '2B', dateTaken: 'Spring 2019' },
+    ],
     coursesReviewed: null,
     profsReviewed: null,
     shortlist: null,
@@ -41,7 +44,8 @@ export default (
 // Selectors
 export const getUserState = state => getDataState(state).user;
 export const getUserID = state => getUserState(state).id;
-export const getUserName = state => getUserState(state).name;
+export const getUserFirstName = state => getUserState(state).firstName;
+export const getUserLastName = state => getUserState(state).lastName;
 export const getUserProgram = state => getUserState(state).program;
 export const getUserProgramID = state => getUserState(state).programID;
 export const getUserTerm = state => getUserState(state).term;

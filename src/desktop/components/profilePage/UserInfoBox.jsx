@@ -12,7 +12,8 @@ import {
 
 /* Selectors */
 import {
-  getUserName,
+  getUserFirstName,
+  getUserLastName,
   getUserID,
   getUserPicture,
   getUserProgram,
@@ -21,7 +22,8 @@ import {
 } from '../../../data/reducers/UserReducer';
 
 const mapStateToProps = state => ({
-  name: getUserName(state),
+  firstName: getUserFirstName(state),
+  lastName: getUserLastName(state),
   id: getUserID(state),
   picture: getUserPicture(state),
   program: getUserProgram(state),
@@ -29,14 +31,24 @@ const mapStateToProps = state => ({
   term: getUserTerm(state),
 });
 
-const UserInfoBox = ({ name, id, picture, program, programID, term }) => {
+const UserInfoBox = ({
+  firstName,
+  lastName,
+  id,
+  picture,
+  program,
+  programID,
+  term,
+}) => {
   return (
     <UserInfoBoxWrapper>
       <UserPicture />
       <UserInfo>
-        <UserName>{name}</UserName>
+        <UserName>
+          {firstName} {lastName}
+        </UserName>
         <UserProgram>
-          {term} {program} student
+          {term} {program}
         </UserProgram>
       </UserInfo>
     </UserInfoBoxWrapper>

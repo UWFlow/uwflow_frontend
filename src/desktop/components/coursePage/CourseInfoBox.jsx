@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {
   getCourseInfo,
   getCourseRatings,
-  getIsFullCourse,
+  getCourseHasGeneralInfo,
 } from '../../../data/reducers/CourseReducer';
 
 /* Styled Components */
@@ -24,7 +24,7 @@ import RatingBox from '../common/RatingBox';
 const mapStateToProps = (state, { courseID }) => ({
   courseInfo: getCourseInfo(state, courseID),
   ratings: getCourseRatings(state, courseID),
-  isFullCourse: getIsFullCourse(state, courseID),
+  isFullCourse: getCourseHasGeneralInfo(state, courseID),
   isFetchingCourse: false, // todo: fetch api
 });
 

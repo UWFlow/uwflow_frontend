@@ -10,8 +10,8 @@ import TestModal from '../common/modal/TestModal';
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';
 
-/* Utils */
-import call from '../../../utils/Api';
+/* Services */
+import { testService } from '../../../data/services/ExperimentalService';
 
 /* Constants */
 import KEYCODE from '../../../constants/KeycodeConstants';
@@ -27,9 +27,7 @@ export const TESTPAGE_API_TEXTBOX = 'TESTPAGE_API_TEXTBOX';
 
 const TestPage = ({ getTextboxText }) => {
   const handleKeyDown = event => {
-    if (event.keyCode === KEYCODE.ENTER) {
-      call(getTextboxText(TESTPAGE_API_TEXTBOX), {});
-    }
+    testService();
   };
 
   const [isModalOpen, setModalOpen] = useState(false);

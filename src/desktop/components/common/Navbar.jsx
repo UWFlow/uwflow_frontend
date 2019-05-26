@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 /* Routes */
 import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../../Routes';
+
+/* Selectors */
+import {
+  getIsShallowInfoFetched,
+  getIsFetchingAllShallowInfo,
+} from '../../../data/reducers/CourseReducer';
+
+/* Actions */
+import { loadAllCourseShallowInfo } from '../../../data/actions/CourseActions';
 
 /* Styled Components */
 import {
@@ -17,9 +26,31 @@ import {
 /* Child Components */
 import Textbox from './Textbox';
 
+const mapStateToProps = state => ({
+  isFetchingAllShallowInfo: getIsFetchingAllShallowInfo(state),
+  isShallowInfoFetched: getIsShallowInfoFetched(state),
+});
+
+const loadAllShallowInfoHelper = dispatch => () =>
+  dispatch(loadAllCourseShallowInfo());
+
+const mapDispatchToProps = dispatch => ({
+  loadAllShallowInfo: loadAllShallowInfoHelper(dispatch),
+});
+
 export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
 
-const Navbar = () => {
+const Navbar = ({
+  isShallowInfoFetched,
+  isFetchingAllShallowInfo,
+  loadAllShallowInfo,
+}) => {
+  useEffect(() => {
+    if (!isShallowInfoFetched && !isFetchingAllShallowInfo) {
+      loadAllShallowInfo();
+    }
+  }, [isFetchingAllShallowInfo, isShallowInfoFetched, loadAllShallowInfo]);
+
   return (
     <>
       <NavbarSpacer />
@@ -37,4 +68,9 @@ const Navbar = () => {
   );
 };
 
-export default withRouter(Navbar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Navbar),
+);
