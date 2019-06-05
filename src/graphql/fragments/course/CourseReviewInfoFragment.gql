@@ -1,0 +1,11 @@
+fragment CourseReviewInfo on CourseReview {
+  id
+  easy
+  liked
+  useful
+  user {
+    id
+    program
+  }
+  text
+}

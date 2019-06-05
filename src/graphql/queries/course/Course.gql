@@ -1,0 +1,14 @@
+#import "../fragments/course/CourseInfoFragment.gql"
+#import "../fragments/course/ShallowCourseInfoFragment.gql"
+
+query GET_COURSE($courseID: Int) {
+  course(where: {id: {_eq: $courseID}}) {
+    ...CourseInfoFragment
+  }
+}
+
+query GET_ALL_COURSES_SHALLOW {
+  course {
+    ...ShallowCourseInfoFragment
+  }
+}

@@ -1,0 +1,5 @@
+fragment ShallowCourseInfo on Course {
+  id
+  code
+  name
+}
