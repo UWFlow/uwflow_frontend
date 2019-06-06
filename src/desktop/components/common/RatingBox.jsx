@@ -32,7 +32,9 @@ const RatingBox = ({ percentages }) => {
     <RatingBoxWrapper>
       <LikesColumn>
         <LargePercentage>{likedPercent}%</LargePercentage>
-        <GreyText>{numLikedRatings} ratings</GreyText>
+        <GreyText>
+          {numLikedRatings} rating {numLikedRatings !== 1 ? 's' : ''}
+        </GreyText>
       </LikesColumn>
       <ProgressBarColumn>
         {percentages.map((metric, ind) =>

@@ -29,17 +29,17 @@ const CourseInfoBox = ({
             {
               displayName: 'Likes',
               for: course.course_review_stats.liked,
-              against: course.course_review_stats.disliked,
+              against: course.course_review_stats.not_liked,
             },
             {
               displayName: 'Useful',
               for: course.course_review_stats.useful,
-              against: course.course_review_stats.notUseful,
+              against: course.course_review_stats.not_useful,
             },
             {
               displayName: 'Easy',
               for: course.course_review_stats.easy,
-              against: course.course_review_stats.notEasy,
+              against: course.course_review_stats.not_easy,
             },
           ]}
         />
