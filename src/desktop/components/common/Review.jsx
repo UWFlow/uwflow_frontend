@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 /* Styled Components */
 import {
@@ -7,8 +6,6 @@ import {
   ReviewTextWrapper,
   ReviewMetricsWrapper,
 } from './styles/Review';
-
-const mapStateToProps = state => ({});
 
 /*
 metrics: Array<{
@@ -25,4 +22,4 @@ const Review = ({ upvotes, review, reviewer, metrics }) => {
   );
 };
 
-export default connect(mapStateToProps)(Review);
+export default Review;

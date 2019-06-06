@@ -1,11 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-/* Selectors */
-import {
-  getProfInfo,
-  getProfRatings,
-} from '../../../data/reducers/ProfReducer';
 
 /* Styled Components */
 import {
@@ -20,11 +13,6 @@ import {
 
 /* Child Components */
 import RatingBox from '../common/RatingBox';
-
-const mapStateToProps = (state, { profID }) => ({
-  info: getProfInfo(state, profID),
-  ratings: getProfRatings(state, profID),
-});
 
 const ProfInfoBox = ({ info, ratings }) => {
   return info ? (
@@ -71,4 +59,4 @@ const ProfInfoBox = ({ info, ratings }) => {
   ) : null;
 };
 
-export default connect(mapStateToProps)(ProfInfoBox);
+export default ProfInfoBox;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 /* Styled Components */
 import {
@@ -9,27 +8,6 @@ import {
   UserName,
   UserProgram,
 } from './styles/UserInfoBox';
-
-/* Selectors */
-import {
-  getUserFirstName,
-  getUserLastName,
-  getUserID,
-  getUserPicture,
-  getUserProgram,
-  getUserProgramID,
-  getUserTerm,
-} from '../../../data/reducers/UserReducer';
-
-const mapStateToProps = state => ({
-  firstName: getUserFirstName(state),
-  lastName: getUserLastName(state),
-  id: getUserID(state),
-  picture: getUserPicture(state),
-  program: getUserProgram(state),
-  programID: getUserProgramID(state),
-  term: getUserTerm(state),
-});
 
 const UserInfoBox = ({
   firstName,
@@ -55,4 +33,4 @@ const UserInfoBox = ({
   );
 };
 
-export default connect(mapStateToProps)(UserInfoBox);
+export default UserInfoBox;

@@ -1,12 +1,4 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-
-/* Selectors */
-import {
-  getCourseInfo,
-  getCourseRatings,
-  getCourseHasGeneralInfo,
-} from '../../../data/reducers/CourseReducer';
+import React from 'react';
 
 /* Styled Components */
 import {
@@ -21,26 +13,10 @@ import {
 /* Child Components */
 import RatingBox from '../common/RatingBox';
 
-const mapStateToProps = (state, { courseID }) => ({
-  courseInfo: getCourseInfo(state, courseID),
-  ratings: getCourseRatings(state, courseID),
-  isFullCourse: getCourseHasGeneralInfo(state, courseID),
-  isFetchingCourse: false, // todo: fetch api
-});
-
 const CourseInfoBox = ({
   courseInfo,
   ratings,
-  isFullCourse,
-  isFetchingCourse,
-}) => {
-  useEffect(() => {
-    if (!isFullCourse && !isFetchingCourse) {
-      //fetch course
-    }
-  }, [isFullCourse, isFetchingCourse]);
-
-  return isFullCourse ? (
+}) => (
     <CourseInfoBoxWrapper>
       <InfoSection>
         <CourseCode>{courseInfo.courseCode}</CourseCode>
@@ -70,7 +46,6 @@ const CourseInfoBox = ({
         />
       </RatingsSection>
     </CourseInfoBoxWrapper>
-  ) : null;
-};
+);
 
-export default connect(mapStateToProps)(CourseInfoBox);
+export default CourseInfoBox;

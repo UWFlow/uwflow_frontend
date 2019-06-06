@@ -1,16 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import {
-  getCoursesReviewed,
-  getProfsReviewed,
-  getUserCoursesTakenInfo,
-} from '../../../data/reducers/UserReducer';
-
-const mapStateToProps = state => ({
-  coursesReviewed: getCoursesReviewed(state),
-  profsReviewed: getProfsReviewed(state),
-  coursesTakenInfo: getUserCoursesTakenInfo(state),
-});
+import { Query } from 'react-apollo';
 
 const CompleteProfileBox = ({
   coursesReviewed,
@@ -20,4 +9,4 @@ const CompleteProfileBox = ({
   return <>Complete Profile Box</>;
 };
 
-export default connect(mapStateToProps)(CompleteProfileBox);
+export default CompleteProfileBox;

@@ -25,7 +25,7 @@ import ProgressBar from './ProgressBar';
     }
   >
 */
-const RatingBox = ({ numReviews, percentages }) => {
+const RatingBox = ({ percentages }) => {
   const numLikedRatings = percentages[0].for + percentages[0].against;
   const likedPercent = Math.round((percentages[0].for * 100) / numLikedRatings);
   return (

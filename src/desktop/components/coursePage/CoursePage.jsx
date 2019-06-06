@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { Query } from 'react-apollo';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
@@ -15,8 +15,6 @@ import {
   Column1,
   Column2,
 } from './styles/CoursePage';
-
-const mapStateToProps = state => ({});
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
@@ -37,4 +35,4 @@ const CoursePage = ({ match }) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(CoursePage));
+export default withRouter(CoursePage);
