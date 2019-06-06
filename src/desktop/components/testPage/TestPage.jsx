@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Query } from 'react-apollo';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
 import TestModal from '../common/modal/TestModal';
+
+/* Selectors */
+import { getTextboxText } from '../../reducers/TextboxReducer';
+
+/* Utils */
+import call from '../../../utils/Api';
 
 /* Constants */
 import KEYCODE from '../../../constants/KeycodeConstants';
@@ -13,11 +19,17 @@ import KEYCODE from '../../../constants/KeycodeConstants';
 /* Styled Components */
 import { Path } from './styles/TestPage';
 
+const mapStateToProps = state => ({
+  getTextboxText: ID => getTextboxText(state, ID),
+});
+
 export const TESTPAGE_API_TEXTBOX = 'TESTPAGE_API_TEXTBOX';
 
-const TestPage = ({}) => {
+const TestPage = ({ getTextboxText }) => {
   const handleKeyDown = event => {
-    return;
+    if (event.keyCode === KEYCODE.ENTER) {
+      call(getTextboxText(TESTPAGE_API_TEXTBOX), {});
+    }
   };
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -51,5 +63,4 @@ const TestPage = ({}) => {
     </>
   );
 };
-
-export default TestPage;
+export default connect(mapStateToProps)(TestPage);
