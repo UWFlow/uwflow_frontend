@@ -1,4 +1,4 @@
-fragment CourseReviewInfo on CourseReview {
+fragment CourseReviewInfoFragment on course_review {
   id
   easy
   liked

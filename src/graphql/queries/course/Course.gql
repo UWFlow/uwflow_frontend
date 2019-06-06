@@ -1,14 +1,7 @@
-#import "../fragments/course/CourseInfoFragment.gql"
-#import "../fragments/course/ShallowCourseInfoFragment.gql"
+#import "../../fragments/course/CourseInfoFragment.gql"
 
-query GET_COURSE($courseID: Int) {
-  course(where: {id: {_eq: $courseID}}) {
+query GET_COURSE($id: Int) {
+  course(where: {id: {_eq: $id}}) {
     ...CourseInfoFragment
-  }
-}
-
-query GET_ALL_COURSES_SHALLOW {
-  course {
-    ...ShallowCourseInfoFragment
   }
 }

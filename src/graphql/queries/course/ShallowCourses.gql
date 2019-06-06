@@ -1,0 +1,7 @@
+#import "../../fragments/course/ShallowCourseInfoFragment.gql"
+
+query GET_ALL_COURSES_SHALLOW {
+  course {
+    ...ShallowCourseInfoFragment
+  }
+}

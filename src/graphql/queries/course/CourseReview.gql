@@ -1,4 +1,4 @@
-#import "../fragments/course/CourseReviewInfoFragment.gql"
+#import "../../fragments/course/CourseReviewInfoFragment.gql"
 
 query GET_COURSE_REVIEW($courseID: Int) {
   course_review(where: {course_id: {_eq: $courseID}}) {

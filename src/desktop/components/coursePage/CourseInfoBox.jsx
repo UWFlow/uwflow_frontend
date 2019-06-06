@@ -14,33 +14,32 @@ import {
 import RatingBox from '../common/RatingBox';
 
 const CourseInfoBox = ({
-  courseInfo,
-  ratings,
+  course
 }) => (
     <CourseInfoBoxWrapper>
       <InfoSection>
-        <CourseCode>{courseInfo.courseCode}</CourseCode>
-        <CourseName>{courseInfo.courseName}</CourseName>
-        <Description>{courseInfo.description}</Description>
+        <CourseCode>{course.code}</CourseCode>
+        <CourseName>{course.name}</CourseName>
+        <Description>{course.description}</Description>
       </InfoSection>
       <RatingsSection>
         <RatingBox
-          numReviews={courseInfo}
+          numReviews={course}
           percentages={[
             {
               displayName: 'Likes',
-              for: ratings.likes,
-              against: ratings.dislikes,
+              for: course.course_review_stats.liked,
+              against: course.course_review_stats.disliked,
             },
             {
               displayName: 'Useful',
-              for: ratings.useful,
-              against: ratings.notUseful,
+              for: course.course_review_stats.useful,
+              against: course.course_review_stats.notUseful,
             },
             {
               displayName: 'Easy',
-              for: ratings.easy,
-              against: ratings.notEasy,
+              for: course.course_review_stats.easy,
+              against: course.course_review_stats.notEasy,
             },
           ]}
         />

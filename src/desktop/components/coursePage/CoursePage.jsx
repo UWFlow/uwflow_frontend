@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
+import { loader } from 'graphql.macro';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
@@ -16,21 +17,36 @@ import {
   Column2,
 } from './styles/CoursePage';
 
+/* GraphQL Queries */
+const GET_COURSE = loader('../../../graphql/queries/course/Course.gql');
+
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
 
   return (
     <CoursePageWrapper>
-      <Navbar />
-      <CourseInfoBox courseID={courseID} />
-      <ColumnWrapper>
-        <Column1>
-          <CourseSchedule />
-        </Column1>
-        <Column2>
-          <ExtraInfoBox />
-        </Column2>
-      </ColumnWrapper>
+      <Query query={GET_COURSE} variables={{id: courseID}}>
+        {({ loading, error, data }) => {
+          if (loading) { return <div>Loading...</div>; }
+          if (error) { return <div>Error</div>; }
+          
+          const course = data.course[0]
+          return (
+            <>
+              <Navbar />
+              <CourseInfoBox course={course} />
+              <ColumnWrapper>
+                <Column1>
+                  <CourseSchedule />
+                </Column1>
+                <Column2>
+                  <ExtraInfoBox />
+                </Column2>
+              </ColumnWrapper>
+            </>
+          );
+        }}
+      </Query>
     </CoursePageWrapper>
   );
 };

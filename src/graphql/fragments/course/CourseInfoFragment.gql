@@ -1,4 +1,4 @@
-fragment CourseInfo on Course {
+fragment CourseInfoFragment on course {
   id
   code
   name
