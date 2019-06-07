@@ -1,12 +1,4 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-
-/* Selectors */
-import {
-  getCourseInfo,
-  getCourseRatings,
-  getIsFullCourse,
-} from '../../../data/reducers/CourseReducer';
+import React from 'react';
 
 /* Styled Components */
 import {
@@ -21,56 +13,38 @@ import {
 /* Child Components */
 import RatingBox from '../common/RatingBox';
 
-const mapStateToProps = (state, { courseID }) => ({
-  courseInfo: getCourseInfo(state, courseID),
-  ratings: getCourseRatings(state, courseID),
-  isFullCourse: getIsFullCourse(state, courseID),
-  isFetchingCourse: false, // todo: fetch api
-});
-
 const CourseInfoBox = ({
-  courseInfo,
-  ratings,
-  isFullCourse,
-  isFetchingCourse,
-}) => {
-  useEffect(() => {
-    if (!isFullCourse && !isFetchingCourse) {
-      //fetch course
-    }
-  }, [isFullCourse, isFetchingCourse]);
-
-  return isFullCourse ? (
+  course
+}) => (
     <CourseInfoBoxWrapper>
       <InfoSection>
-        <CourseCode>{courseInfo.courseCode}</CourseCode>
-        <CourseName>{courseInfo.courseName}</CourseName>
-        <Description>{courseInfo.description}</Description>
+        <CourseCode>{course.code}</CourseCode>
+        <CourseName>{course.name}</CourseName>
+        <Description>{course.description}</Description>
       </InfoSection>
       <RatingsSection>
         <RatingBox
-          numReviews={courseInfo}
+          numReviews={course}
           percentages={[
             {
               displayName: 'Likes',
-              for: ratings.likes,
-              against: ratings.dislikes,
+              for: course.course_review_stats.liked,
+              against: course.course_review_stats.not_liked,
             },
             {
               displayName: 'Useful',
-              for: ratings.useful,
-              against: ratings.notUseful,
+              for: course.course_review_stats.useful,
+              against: course.course_review_stats.not_useful,
             },
             {
               displayName: 'Easy',
-              for: ratings.easy,
-              against: ratings.notEasy,
+              for: course.course_review_stats.easy,
+              against: course.course_review_stats.not_easy,
             },
           ]}
         />
       </RatingsSection>
     </CourseInfoBoxWrapper>
-  ) : null;
-};
+);
 
-export default connect(mapStateToProps)(CourseInfoBox);
+export default CourseInfoBox;

@@ -1,0 +1,11 @@
+fragment CourseReviewInfoFragment on course_review {
+  id
+  easy
+  liked
+  useful
+  user {
+    id
+    program
+  }
+  text
+}

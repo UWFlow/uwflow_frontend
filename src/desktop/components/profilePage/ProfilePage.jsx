@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Query } from 'react-apollo';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
@@ -9,7 +9,7 @@ import CompleteProfileBox from './CompleteProfileBox';
 import RateCoursesBox from './RateCoursesBox';
 import Shortlist from './Shortlist';
 import UserCourses from './UserCourses';
-import UserNameBox from './UserNameBox';
+import UserInfoBox from './UserInfoBox';
 
 /* Styled Components */
 import {
@@ -25,7 +25,7 @@ const ProfilePage = () => {
       <Navbar />
       <ColumnWrapper>
         <Column1>
-          <UserNameBox />
+          <UserInfoBox />
           <UserCourses />
         </Column1>
         <Column2>

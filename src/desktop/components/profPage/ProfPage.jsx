@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { Query } from 'react-apollo';
 
 /* Styled Components */
 import { ProfPageWrapper } from './styles/ProfPage';
@@ -22,4 +22,4 @@ const ProfPage = ({ match }) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(ProfPage));
+export default withRouter(ProfPage);

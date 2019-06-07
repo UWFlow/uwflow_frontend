@@ -1,0 +1,14 @@
+fragment CourseInfoFragment on course {
+  id
+  code
+  name
+  description
+  course_review_stats {
+    easy
+    liked
+    not_easy
+    not_liked
+    not_useful
+    useful
+  }
+}

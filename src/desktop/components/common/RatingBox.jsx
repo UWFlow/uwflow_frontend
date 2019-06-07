@@ -25,18 +25,20 @@ import ProgressBar from './ProgressBar';
     }
   >
 */
-const RatingBox = ({ numReviews, percentages }) => {
+const RatingBox = ({ percentages }) => {
   const numLikedRatings = percentages[0].for + percentages[0].against;
   const likedPercent = Math.round((percentages[0].for * 100) / numLikedRatings);
   return (
     <RatingBoxWrapper>
       <LikesColumn>
         <LargePercentage>{likedPercent}%</LargePercentage>
-        <GreyText>{numLikedRatings} ratings</GreyText>
+        <GreyText>
+          {numLikedRatings} rating {numLikedRatings !== 1 ? 's' : ''}
+        </GreyText>
       </LikesColumn>
       <ProgressBarColumn>
         {percentages.map((metric, ind) =>
-          ind == 0 ? null : (
+          ind === 0 ? null : (
             <ProgressWrapper key={metric.displayName}>
               <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
               <ProgressBarWrapper>

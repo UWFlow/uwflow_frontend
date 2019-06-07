@@ -1,0 +1,7 @@
+#import "../../fragments/course/CourseInfoFragment.gql"
+
+query GET_COURSE($id: Int) {
+  course(where: {id: {_eq: $id}}) {
+    ...CourseInfoFragment
+  }
+}

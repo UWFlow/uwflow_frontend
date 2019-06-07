@@ -1,7 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const CourseTile = () => {};
+/* Styled Components */
+import { CourseTileWrapper } from './styles/CourseTile';
+
+const CourseTile = ({ info }) => {
+  return <CourseTileWrapper>{info.courseName}</CourseTileWrapper>;
+};
 
 export default CourseTile;
