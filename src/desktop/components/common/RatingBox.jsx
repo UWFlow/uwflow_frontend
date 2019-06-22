@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
@@ -16,24 +17,15 @@ import {
 /* Child Components */
 import ProgressBar from './ProgressBar';
 
-/*
-  percentages: Array< NOTE number of likes must always be first
-    {
-      displayName: string
-      for: int
-      against: int
-    }
-  >
-*/
 const RatingBox = ({ percentages }) => {
   const numLikedRatings = percentages[0].for + percentages[0].against;
-  const likedPercent = Math.round((percentages[0].for * 100) / numLikedRatings);
+  const likedPercent = numLikedRatings === 0 ? 0 : Math.round((percentages[0].for * 100) / numLikedRatings);
   return (
     <RatingBoxWrapper>
       <LikesColumn>
         <LargePercentage>{likedPercent}%</LargePercentage>
         <GreyText>
-          {numLikedRatings} rating {numLikedRatings !== 1 ? 's' : ''}
+          {numLikedRatings} rating{numLikedRatings !== 1 ? 's' : ''}
         </GreyText>
       </LikesColumn>
       <ProgressBarColumn>
@@ -43,12 +35,12 @@ const RatingBox = ({ percentages }) => {
               <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
               <ProgressBarWrapper>
                 <ProgressBar
-                  percentComplete={metric.for / (metric.for + metric.against)}
+                  percentComplete={metric.for + metric.against === 0 ? 0 :
+                    metric.for / (metric.for + metric.against)}
                 />
                 <ProgressNumberLabel>
-                  {Math.round(
-                    (metric.for * 100) / (metric.for + metric.against),
-                  )}
+                  {metric.for + metric.against === 0 ? 0 :
+                    Math.round((metric.for * 100) / (metric.for + metric.against))}
                   %
                 </ProgressNumberLabel>
               </ProgressBarWrapper>
@@ -59,5 +51,13 @@ const RatingBox = ({ percentages }) => {
     </RatingBoxWrapper>
   );
 };
+
+RatingBox.propTypes = {
+  percentages: PropTypes.arrayOf(PropTypes.shape({
+    displayName: PropTypes.string,
+    for: PropTypes.number,
+    against: PropTypes.number
+  }))
+}
 
 export default RatingBox;

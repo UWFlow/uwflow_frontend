@@ -28,7 +28,10 @@ const CoursePage = ({ match }) => {
         {({ loading, error, data }) => {
           if (loading) { return <div>Loading...</div>; }
           if (error) { return <div>Error</div>; }
-          
+          if (data.course.length === 0) {
+            return <div>Course Doesn't Exist</div>
+          }
+
           const course = data.course[0]
           return (
             <>
