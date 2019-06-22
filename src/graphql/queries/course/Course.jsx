@@ -1,6 +1,6 @@
-import { gql } from 'graphql-tag';
+import gql from 'graphql-tag';
 
-import {CourseInfoFragment, ShallowCourseInfoFragment} from "../../fragments/course/CourseFragment.jsx";
+import CourseFragment from "../../fragments/course/CourseFragment.jsx";
 
 export const GET_COURSE = gql`
   query GET_COURSE($id: Int) {
@@ -8,7 +8,7 @@ export const GET_COURSE = gql`
       ...CourseInfoFragment
     }
   }
-  ${CourseInfoFragment}
+  ${CourseFragment.courseInfo}
 `;
 
 export const GET_ALL_COURSES_SHALLOW = gql`
@@ -17,5 +17,5 @@ export const GET_ALL_COURSES_SHALLOW = gql`
       ...ShallowCourseInfoFragment
     }
   }
-  ${ShallowCourseInfoFragment}
+  ${CourseFragment.shallowCourseInfo}
 `;

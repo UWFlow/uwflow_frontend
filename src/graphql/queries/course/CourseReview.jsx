@@ -1,6 +1,6 @@
-import { gql } from 'graphql-tag';
+import gql from 'graphql-tag';
 
-import {CourseReviewInfoFragment} from "../../fragments/course/CourseReviewFragment.jsx";
+import CourseReviewFragment from "../../fragments/course/CourseReviewFragment.jsx";
 
 export const GET_COURSE_REVIEW = gql`
   query GET_COURSE_REVIEW($courseID: Int) {
@@ -8,5 +8,5 @@ export const GET_COURSE_REVIEW = gql`
       ...CourseReviewInfoFragment
     }
   }
-  ${CourseReviewInfoFragment}
+  ${CourseReviewFragment.courseReviewInfo}
 ;`
