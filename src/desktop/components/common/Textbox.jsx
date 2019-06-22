@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import { SearchInput, SearchInputWrapper } from './styles/Textbox';
@@ -70,6 +71,17 @@ const Textbox = ({
     </SearchInputWrapper>
   );
 };
+
+Textbox.propTypes = {
+  text: PropTypes.string,
+  placeholder: PropTypes.string,
+  setText: PropTypes.func,
+  registerSelf: PropTypes.func,
+  unregisterSelf: PropTypes.func,
+  handleKeyDown: PropTypes.func,
+  options: PropTypes.object,
+  persistThroughUnmount: PropTypes.bool
+}
 
 export default connect(
   mapStateToProps,

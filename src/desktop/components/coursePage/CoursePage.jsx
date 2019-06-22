@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
+import PropTypes from 'prop-types';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
@@ -52,5 +53,9 @@ const CoursePage = ({ match }) => {
     </CoursePageWrapper>
   );
 };
+
+CoursePage.propTypes = {
+  match: PropTypes.shape({ params: PropTypes.shape({ courseID: PropTypes.string }) })
+}
 
 export default withRouter(CoursePage);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 /* Routes */
 import { LANDING_PAGE_ROUTE } from '../../../Routes';
@@ -17,5 +18,9 @@ const NoMatchRedirect = ({ location }) => {
     />
   );
 };
+
+NoMatchRedirect.propTypes = {
+  location: PropTypes.shape({ search: PropTypes.string, hash: PropTypes.string })
+}
 
 export default NoMatchRedirect;

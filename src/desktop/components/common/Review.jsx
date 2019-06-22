@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
@@ -7,12 +8,6 @@ import {
   ReviewMetricsWrapper,
 } from './styles/Review';
 
-/*
-metrics: Array<{
-  name: string
-  choice: boolean or null
-}>
-*/
 const Review = ({ upvotes, review, reviewer, metrics }) => {
   return (
     <ReviewWrapper>
@@ -21,5 +16,15 @@ const Review = ({ upvotes, review, reviewer, metrics }) => {
     </ReviewWrapper>
   );
 };
+
+Review.PropTypes = {
+  upvotes: PropTypes.number,
+  review: PropTypes.object,
+  reviewer: PropTypes.object,
+  metrics: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    choice: PropTypes.bool
+  }))
+}
 
 export default Review;
