@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import { loader } from 'graphql.macro';
+import PropTypes from 'prop-types';
 
 /* Child Components */
 import Navbar from '../common/Navbar';
@@ -18,7 +18,7 @@ import {
 } from './styles/CoursePage';
 
 /* GraphQL Queries */
-const GET_COURSE = loader('../../../graphql/queries/course/Course.gql');
+import {GET_COURSE} from '../../../graphql/queries/course/Course.jsx';
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
@@ -29,7 +29,10 @@ const CoursePage = ({ match }) => {
         {({ loading, error, data }) => {
           if (loading) { return <div>Loading...</div>; }
           if (error) { return <div>Error</div>; }
-          
+          if (data.course.length === 0) {
+            return <div>Course Doesn't Exist</div>
+          }
+
           const course = data.course[0]
           return (
             <>
@@ -50,5 +53,9 @@ const CoursePage = ({ match }) => {
     </CoursePageWrapper>
   );
 };
+
+CoursePage.propTypes = {
+  match: PropTypes.shape({ params: PropTypes.shape({ courseID: PropTypes.string }) })
+}
 
 export default withRouter(CoursePage);

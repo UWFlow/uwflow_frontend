@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
@@ -36,5 +37,12 @@ const TabContainer = ({
     </ContainerWrapper>
   );
 };
+
+TabContainer.propTypes = {
+  tabList: PropTypes.arrayOf(PropTypes.object),
+  initialSelectedTab: PropTypes.number,
+  containerWidth: PropTypes.string,
+  tabWidth: PropTypes.string
+}
 
 export default TabContainer;
