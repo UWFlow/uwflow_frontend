@@ -7,9 +7,7 @@ export const ProgressBarWrapper = styled.div`
   margin-right: 8px;
   border: 2px solid ${({ theme }) => theme.light3};
   border-radius: 4px;
-  box-shadow:
-    0px 2px 5px rgba(${({ theme }) => theme.light2}, 0.5),
-    0px 0px 5px rgba(${({ theme }) => theme.dark3}, 0.2);
+  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5), 0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
 
 export const Complete = styled.span`

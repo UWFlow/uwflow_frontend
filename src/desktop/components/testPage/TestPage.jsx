@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 /* Child Components */
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
+import Button from '../common/Button';
 import TestModal from '../common/modal/TestModal';
 
 /* Selectors */
@@ -60,6 +61,9 @@ const TestPage = ({ getTextboxText }) => {
         onCloseModal={() => setModalOpen(false)}
         isModalOpen={isModalOpen}
       />
+      <Button>
+        Test
+      </Button>
     </>
   );
 };
