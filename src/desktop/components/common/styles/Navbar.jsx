@@ -1,17 +1,12 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const NavbarSpacer = styled.div`
-  height: 50px;
-`;
-
 export const NavbarWrapper = styled.div`
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 50px;
-  background-color: gray;
+  height: 80px;
+  background-color: ${({theme}) => theme.light3};
   display: flex;
   justify-content: space-between;
   align-items: center;

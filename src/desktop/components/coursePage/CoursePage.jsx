@@ -4,7 +4,6 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import Navbar from '../common/Navbar';
 import CourseInfoBox from './CourseInfoBox';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
@@ -36,7 +35,6 @@ const CoursePage = ({ match }) => {
           const course = data.course[0]
           return (
             <>
-              <Navbar />
               <CourseInfoBox course={course} />
               <ColumnWrapper>
                 <Column1>

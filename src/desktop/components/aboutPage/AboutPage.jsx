@@ -7,7 +7,7 @@ import Navbar from '../common/Navbar';
 const mapStateToProps = state => ({});
 
 const AboutPage = () => {
-  return <Navbar />;
+  return <></>;
 };
 
 export default connect(mapStateToProps)(AboutPage);

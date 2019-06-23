@@ -24,10 +24,12 @@ import {
 } from './LoadableComponents';
 import NoMatchRedirect from './desktop/components/common/NoMatchRedirect';
 import ModalRoot from './desktop/components/common/modal/ModalRoot';
+import Navbar from './desktop/components/common/Navbar';
 
 const App = () => {
   return (
     <>
+      <Navbar />
       <Switch>
         <Route
           exact

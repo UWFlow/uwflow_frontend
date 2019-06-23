@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 
 /* Child Components */
-import Navbar from '../common/Navbar';
 import CompleteProfileBox from './CompleteProfileBox';
 import RateCoursesBox from './RateCoursesBox';
 import Shortlist from './Shortlist';
@@ -22,7 +21,6 @@ import {
 const ProfilePage = () => {
   return (
     <ProfilePageWrapper>
-      <Navbar />
       <ColumnWrapper>
         <Column1>
           <UserInfoBox />

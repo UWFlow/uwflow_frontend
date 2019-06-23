@@ -8,7 +8,6 @@ import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../../Routes';
 
 /* Styled Components */
 import {
-  NavbarSpacer,
   NavbarWrapper,
   LogoWrapper,
   ProfileButtonWrapper,
@@ -21,7 +20,6 @@ export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
 
 const Navbar = ({}) => (
   <>
-    <NavbarSpacer />
     <NavbarWrapper>
       <LogoWrapper to={LANDING_PAGE_ROUTE}>UW Flow</LogoWrapper>
       <Textbox
