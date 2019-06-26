@@ -56,14 +56,13 @@ const TestPage = ({ getTextboxText }) => {
         tabList={tabList}
         initialSelectedTab={0}
       />
-      <div onClick={() => setModalOpen(true)}>Open Modal</div>
+      <Button handleClick={() => setModalOpen(true)}>
+        Open Modal
+      </Button>
       <TestModal
         onCloseModal={() => setModalOpen(false)}
         isModalOpen={isModalOpen}
       />
-      <Button>
-        Test
-      </Button>
     </>
   );
 };
