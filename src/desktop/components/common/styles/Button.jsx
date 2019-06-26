@@ -23,8 +23,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const ButtonText = styled.div`
-  font-size: 20px;
-  line-height: 22px;
   margin: auto;
-  font-weight: 500;
+  font-size: 20px;
+  font-family: 'D-DIN Exp';
 `;

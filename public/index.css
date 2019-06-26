@@ -1,7 +1,13 @@
+@font-face {
+  font-family: 'D-DIN Exp';
+  src: local('D-DIN Exp'), url(fonts/D-DINExp-Bold.ttf) format('woff');
+}
+
 html {
   /* Load system fonts */
   font-family: -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe
       UI, Helvetica Neue, sans-serif;
+  font-size: 16px;
 
   /* Make type rendering look crisper */
   -webkit-font-smoothing: antialiased;
@@ -26,4 +32,10 @@ optgroup,
 select,
 textarea {
   font-family: inherit;
+}
+
+a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #006ED8;
 }

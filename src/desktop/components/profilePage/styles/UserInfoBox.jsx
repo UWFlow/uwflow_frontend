@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, Body1 } from '../../../../constants/Mixins';
+import { Heading1, Body } from '../../../../constants/Mixins';
 
 export const UserInfoBoxWrapper = styled.div`
   display: flex;
@@ -28,5 +28,5 @@ export const UserName = styled.div`
 `;
 
 export const UserProgram = styled.div`
-  ${Body1}
+  ${Body}
 `;

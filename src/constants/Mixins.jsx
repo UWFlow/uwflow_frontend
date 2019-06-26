@@ -20,20 +20,38 @@ export const ThinColumn = `
 
 /* Fonts */
 export const Heading1 = `
-  font-size: 32px;
-  font-weight: 700;
+  font-family: 'D-DIN Exp';
+  font-size: 48px;
+  font-weight: 600;
 `;
 
 export const Heading2 = `
-  font-size: 24px;
+  font-family: 'D-DIN Exp';
+  font-size: 40px;
+  font-weight: 600;
 `;
 
 export const Heading3 = `
-  font-size: 16px;
-  font-weight: 700;
+  font-family: 'D-DIN Exp';
+  font-size: 32px;
+  font-weight: 600;
 `;
 
-export const Body1 = `
+export const Heading4 = `
+  font-family: 'D-DIN Exp';
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+export const Body = `
+  font-size: 16px;
+`;
+
+export const Small = `
+  font-size: 14px;
+`;
+
+export const Link = `
   font-size: 14px;
 `;
 
