@@ -15,4 +15,7 @@ export default {
   low: '#F45D01',
   medium: '#FDCA40',
   high: '#97CC04',
+
+  white: '#FFFFFF',
+  black: '#000000',
 };

@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'D-DIN Exp';
-  src: local('D-DIN Exp'), url(fonts/D-DINExp-Bold.ttf) format('woff');
+  font-family: 'Inter';
+  src: local('Inter'), url(fonts/D-DINExp-Bold.ttf) format('woff');
 }
 
 html {
@@ -32,6 +32,14 @@ optgroup,
 select,
 textarea {
   font-family: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
 }
 
 a {

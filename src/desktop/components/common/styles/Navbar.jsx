@@ -21,7 +21,7 @@ export const LogoWrapper = styled(Link)`
   text-decoration: none;
   outline: 0;
   border: none;
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
   font-size: 20px;
 `;
 
@@ -34,5 +34,5 @@ export const ProfileButtonWrapper = styled(Link)`
   text-decoration: none;
   outline: 0;
   border: none;
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
 `;

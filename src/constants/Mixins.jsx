@@ -20,25 +20,25 @@ export const ThinColumn = `
 
 /* Fonts */
 export const Heading1 = `
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
   font-size: 48px;
   font-weight: 600;
 `;
 
 export const Heading2 = `
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
   font-size: 40px;
   font-weight: 600;
 `;
 
 export const Heading3 = `
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
   font-size: 32px;
   font-weight: 600;
 `;
 
 export const Heading4 = `
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
   font-size: 20px;
   font-weight: 600;
 `;

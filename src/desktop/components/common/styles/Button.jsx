@@ -25,5 +25,5 @@ export const ButtonWrapper = styled.div`
 export const ButtonText = styled.div`
   margin: auto;
   font-size: 20px;
-  font-family: 'D-DIN Exp';
+  font-family: 'Inter';
 `;
