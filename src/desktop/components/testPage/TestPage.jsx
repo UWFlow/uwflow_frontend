@@ -51,6 +51,7 @@ const TestPage = ({ getTextboxText }) => {
       />
 
       <Link to="/profile">Profile Page</Link>
+      <br /><br />
       <Textbox
         handleKeyDown={handleKeyDown}
         ID={TESTPAGE_API_TEXTBOX}

@@ -25,6 +25,8 @@ const TabContainer = ({
             key={tab.title}
             width={tabWidth}
             selected={index === selectedTab}
+            first={index===0}
+            last={index===tabList.length - 1}
             onClick={() =>
               tab.onClick ? tab.onClick(index) : setSelectedTab(index)
             }

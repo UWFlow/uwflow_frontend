@@ -23,6 +23,12 @@ export const LogoWrapper = styled(Link)`
   border: none;
   font-family: 'Inter';
   font-size: 20px;
+  font-weight: 600;
+`;
+
+export const BlueText = styled.div`
+  color: ${({theme}) => theme.primary};
+  margin-left: 5px;
 `;
 
 export const ProfileButtonWrapper = styled(Link)`

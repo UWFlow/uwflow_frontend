@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Search } from 'react-feather';
 
 /* Routes */
 import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../../Routes';
@@ -10,6 +11,7 @@ import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../../Routes';
 import {
   NavbarWrapper,
   LogoWrapper,
+  BlueText,
   ProfileButtonWrapper,
 } from './styles/Navbar';
 
@@ -21,9 +23,10 @@ export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
 const Navbar = ({}) => (
   <>
     <NavbarWrapper>
-      <LogoWrapper to={LANDING_PAGE_ROUTE}>UW Flow</LogoWrapper>
+      <LogoWrapper to={LANDING_PAGE_ROUTE}>UW <BlueText>Flow</BlueText></LogoWrapper>
       <Textbox
         ID={NAVBAR_TEXTBOX_ID}
+        icon={Search}
         initialPlaceholder="Explore or search for courses, subjects or professors"
       />
       <ProfileButtonWrapper to={PROFILE_PAGE_ROUTE}>
