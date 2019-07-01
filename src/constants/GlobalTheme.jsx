@@ -19,5 +19,4 @@ export default {
   high: '#97CC04',
 
   white: '#FFFFFF',
-  black: '#000000',
 };
