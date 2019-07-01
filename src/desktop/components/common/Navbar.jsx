@@ -30,7 +30,7 @@ const Navbar = ({}) => (
         initialPlaceholder="Explore or search for courses, subjects or professors"
       />
       <ProfileButtonWrapper to={PROFILE_PAGE_ROUTE}>
-        My Profile
+        Log In
       </ProfileButtonWrapper>
     </NavbarWrapper>
   </>

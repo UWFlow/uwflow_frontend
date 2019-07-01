@@ -1,6 +1,12 @@
 @font-face {
-  font-family: 'Inter';
-  src: local('Inter'), url(fonts/D-DINExp-Bold.ttf) format('woff');
+  font-family: 'Anderson Grotesk';
+  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk-Bold.otf) format('woff');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Anderson Grotesk';
+  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('woff');
+  font-weight: 400;
 }
 
 html {

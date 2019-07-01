@@ -28,7 +28,11 @@ import ModalRoot from './desktop/components/common/modal/ModalRoot';
 import Navbar from './desktop/components/common/Navbar';
 
 const PageWrapper = styled.div`
-  padding: 20px 5%;
+  padding: 50px 125px;
+
+  @media only screen and (max-width: 720px) {
+    padding: 50px 5%;
+  }
 `;
 
 const App = () => {

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SearchInputWrapper = styled.div`
-  display: flex;
+  display: block;
 `;
 
 export const SearchInput = styled.input`
@@ -12,9 +12,5 @@ export const SearchInput = styled.input`
   border-radius: 4px;
   background: ${({ theme }) => theme.light2}
   height: 48px;
-  color: ${({ theme }) => theme.dark4}
-
-  &::placeholder {
-    color: grey;
-  }
+  color: ${({ theme }) => theme.dark1};
 `;

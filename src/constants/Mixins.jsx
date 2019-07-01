@@ -20,26 +20,26 @@ export const ThinColumn = `
 
 /* Fonts */
 export const Heading1 = `
-  font-family: 'Inter';
+  font-family: 'Anderson Grotesk';
   font-size: 48px;
   font-weight: 600;
 `;
 
 export const Heading2 = `
-  font-family: 'Inter';
+  font-family: 'Anderson Grotesk';
   font-size: 40px;
   font-weight: 600;
 `;
 
 export const Heading3 = `
-  font-family: 'Inter';
-  font-size: 32px;
+  font-family: 'Anderson Grotesk';
+  font-size: 20px;
   font-weight: 600;
 `;
 
 export const Heading4 = `
-  font-family: 'Inter';
-  font-size: 20px;
+  font-family: 'Anderson Grotesk';
+  font-size: 18px;
   font-weight: 600;
 `;
 
@@ -48,10 +48,12 @@ export const Body = `
 `;
 
 export const Small = `
+  font-weight: 300;
   font-size: 14px;
 `;
 
 export const Link = `
+  font-weight: 500;
   font-size: 14px;
 `;
 

@@ -59,13 +59,11 @@ const TestPage = ({ getTextboxText }) => {
         options={{ width: '500px' }}
       />
       <br />
-
       <TabContainer
         containerWidth={'500px'}
         tabList={tabList}
         initialSelectedTab={0}
       />
-      <br />
       <Button handleClick={() => setModalOpen(true)}>
         Open Modal
       </Button>
