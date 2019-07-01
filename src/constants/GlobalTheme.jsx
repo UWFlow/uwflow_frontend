@@ -2,6 +2,8 @@ export default {
   /* Colours */
   primary: '#006ED8',
   primaryDark: '#084887',
+  courses: '#009688',
+  professors: '#E65100',
 
   dark1: '#31393C',
   dark2: '#696F71',

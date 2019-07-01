@@ -44,7 +44,7 @@ export const Heading4 = `
 `;
 
 export const Body = `
-  font-size: 16px;
+  font-size: 14px;
 `;
 
 export const Small = `

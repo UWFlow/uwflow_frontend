@@ -22,11 +22,12 @@ export const Tab = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
-  height: 48px;
+  height: 64px;
   cursor: pointer;
-  border-radius: ${({ first, last }) => {
-    if (first) { return '3px 0 0 3px' }
-    if (last) { return '0 3px 3px 0' }
+  border-radius: ${({ first, last, selected }) => {
+    if (!selected) { return '0' }
+    if (first) { return '4px 0 0 4px' }
+    if (last) { return '0 4px 4px 0' }
     return '0'
   }};
   background: ${({ selected, theme }) => (selected ? theme.white : theme.light2)};
@@ -38,6 +39,6 @@ export const Tab = styled.div`
 export const ContentContainer = styled.div`
   width: 100%;
   background: white;
-  padding: 16px 24px 24px 24px;
-  border-radius: 0 0 3px 3px;
+  padding: 32px;
+  border-radius: 0 0 4px 4px;
 `;
