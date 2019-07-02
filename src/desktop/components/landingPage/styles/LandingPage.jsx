@@ -25,7 +25,6 @@ export const TitleText = styled.div`
 export const Background = styled.div`
   position: absolute;
   width: 100%;
-  height: 100%;
   background-image: linear-gradient(to bottom right, #27ae60, #e0e0e0);
   ${BackgroundZIndex}
 `;

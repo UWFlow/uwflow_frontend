@@ -1,14 +1,22 @@
 export default {
   /* Colours */
-  light1: '#ECEDED',
-  light2: '#D9DBDB',
-  light3: '#C6C9C9',
-  dark3: '#8E9394',
-  dark2: '#696F71',
-  dark1: '#31393C',
+  primary: '#006ED8',
+  primaryDark: '#084887',
+  courses: '#009688',
+  professors: '#E65100',
 
-  red: '#F45D01',
-  green: '#97CC04',
-  yellow: '#FDCA40',
-  blue: '#006ED8',
+  dark1: '#31393C',
+  dark2: '#696F71',
+  dark3: '#8E9394',
+
+  light1: '#F5F6F7',
+  light2: '#ECEDED',
+  light3: '#D9DBDB',
+  light4: '#C6C9C9',
+
+  low: '#F45D01',
+  medium: '#FDCA40',
+  high: '#97CC04',
+
+  white: '#FFFFFF',
 };

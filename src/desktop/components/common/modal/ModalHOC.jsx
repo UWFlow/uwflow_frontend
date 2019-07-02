@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Spring, interpolate, config } from 'react-spring/renderprops';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Spring, config } from 'react-spring/renderprops';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import { ModalBackdrop, ModalWrapper } from './styles/Modal';
@@ -10,6 +11,21 @@ import PopInAnOutAnimation from '../../../../utils/animation/PopInAndOutAnimatio
 
 const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
   const [isTrulyOpen, setTrulyOpen] = useState(false);
+
+  const handleKeyPress = useCallback(event => {
+    const { keyCode } = event;
+    if (keyCode === 27) { // ESC key
+      onCloseModal();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   const onAnimationFinish = () => {
     setTrulyOpen(isModalOpen);
@@ -45,6 +61,12 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
       </Spring>
     </ModalPortal>
   ) : null;
+};
+
+ModalHOC.propTypes = {
+  children: PropTypes.any.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool.isRequired
 };
 
 export default ModalHOC;

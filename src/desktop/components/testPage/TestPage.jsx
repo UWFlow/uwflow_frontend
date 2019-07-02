@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 /* Child Components */
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
+import Button from '../common/Button';
 import TestModal from '../common/modal/TestModal';
+import ProgressBar from '../common/ProgressBar';
 
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';
@@ -35,31 +37,41 @@ const TestPage = ({ getTextboxText }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const tabList = [
-    { title: 'abc', render: () => <div>ABC</div> },
-    { title: 'def', render: () => <div>def</div> },
-    { title: 'ghi', render: () => <div>ghi</div> },
-    { title: 'jkl', render: () => <div>jkl</div> },
+    { title: 'Hello', render: () => <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div> },
+    { title: 'World', render: () => <div>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div> },
+    { title: 'Geology', render: () => <div> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu Duis aute irure dolor in reprehenderit in voluptate ve.</div> },
+    { title: 'Rocks', render: () => <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</div> },
   ];
 
   return (
     <>
-      <Link to="/">Profile Page</Link>
-      <Textbox
-        handleKeyDown={handleKeyDown}
-        ID={TESTPAGE_API_TEXTBOX}
-        initialPlaceholder="Enter an api endpoint"
-        options={{ width: '600px' }}
-      />
-      <TabContainer
-        containerWidth={'80%'}
-        tabList={tabList}
-        initialSelectedTab={0}
-      />
-      <div onClick={() => setModalOpen(true)}>Open Modal</div>
       <TestModal
         onCloseModal={() => setModalOpen(false)}
         isModalOpen={isModalOpen}
       />
+
+      <Link to="/profile">Profile Page</Link>
+      <br /><br />
+      <Textbox
+        handleKeyDown={handleKeyDown}
+        ID={TESTPAGE_API_TEXTBOX}
+        initialPlaceholder="Enter an api endpoint"
+        options={{ width: '500px' }}
+      />
+      <br />
+      <TabContainer
+        containerWidth={'500px'}
+        tabList={tabList}
+        initialSelectedTab={0}
+      />
+      <Button handleClick={() => setModalOpen(true)}>
+        Open Modal
+      </Button>
+      <ProgressBar percentComplete={0} />
+      <ProgressBar percentComplete={0.25} />
+      <ProgressBar percentComplete={0.5} />
+      <ProgressBar percentComplete={0.75} />
+      <ProgressBar percentComplete={1.0} />
     </>
   );
 };

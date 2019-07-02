@@ -21,9 +21,9 @@ const CourseInfoBox = ({
   const reviewStats = {
     liked: course.course_review_stats ? course.course_review_stats.liked : 0,
     not_liked: course.course_review_stats ? course.course_review_stats.not_liked : 0,
-    useful: course.course_review_stats ? course.course_review_stats.useful : 0,
-    not_useful: course.course_review_stats ? course.course_review_stats.not_useful : 0,
-    easy: course.course_review_stats ? course.course_review_stats.easy : 0,
+    useful: course.course_review_stats ? course.course_review_stats.useful : 7,
+    not_useful: course.course_review_stats ? course.course_review_stats.not_useful : 5,
+    easy: course.course_review_stats ? course.course_review_stats.easy : 1,
     not_easy: course.course_review_stats ? course.course_review_stats.not_easy : 0
   };
 

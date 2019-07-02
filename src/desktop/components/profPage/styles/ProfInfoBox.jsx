@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
 
 /* Mixins */
-import { Heading1, Body1 } from '../../../../constants/Mixins';
+import { Heading1, Body } from '../../../../constants/Mixins';
 
 export const ProfInfoBoxWrapper = styled.div`
   width: ${PAGE_CONTENT_WIDTH}px;
@@ -40,7 +40,7 @@ export const ProfName = styled.div`
 
 export const CoursesTaughtWrapper = styled.div`
   color: ${({ theme }) => theme.dark3};
-  ${Body1}
+  ${Body}
 `;
 
 export const RatingsSection = styled.div`
