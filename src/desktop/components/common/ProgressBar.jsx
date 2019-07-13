@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ProgressBarWrapper, Complete } from './styles/ProgressBar';
 
-const ProgressBar = ({ percentComplete, width = 250, height = 30 }) => {
+const ProgressBar = ({ percentComplete, width = 188, height = 16 }) => {
   const percentWidth = Math.round(percentComplete * 100);
   return (
     <ProgressBarWrapper width={width} height={height}>
@@ -15,7 +15,7 @@ const ProgressBar = ({ percentComplete, width = 250, height = 30 }) => {
 ProgressBar.propTypes = {
   percentComplete: PropTypes.number,
   width: PropTypes.number,
-  height: PropTypes.number
+  height: PropTypes.number,
 };
 
 export default ProgressBar;

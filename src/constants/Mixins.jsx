@@ -10,12 +10,14 @@ export const WideColumn = `
   display: flex;
   flex-direction: column;
   width: 70%;
+  padding-right: 8px;
 `;
 
 export const ThinColumn = `
   display: flex;
   flex-direction: column;
   width: 30%;
+  padding-left: 8px;
 `;
 
 /* Fonts */
@@ -57,3 +59,7 @@ export const Link = `
   font-size: 14px;
 `;
 
+export const BoxShadow = `
+  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+  0px 0px 5px rgba(142, 147, 148, 0.2);
+`;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { ExtraInfoBoxWrapper } from './styles/CoursePage';
 
 const ExtraInfoBox = ({ requiredTextbooks }) => {
-  return <ExtraInfoBoxWrapper>Extra Info Box</ExtraInfoBoxWrapper>;
+  return <ExtraInfoBoxWrapper>Required Textbooks:</ExtraInfoBoxWrapper>;
 };
 
 export default ExtraInfoBox;

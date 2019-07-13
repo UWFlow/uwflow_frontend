@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { PieChart, Pie, Cell } from 'recharts';
+import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
   RatingBoxWrapper,
   LikesColumn,
+  NumbersInCircle,
   LargePercentage,
   GreyText,
   ProgressBarColumn,
@@ -12,21 +15,44 @@ import {
   ProgressTextLabel,
   ProgressBarWrapper,
   ProgressNumberLabel,
+  NumReviewsAndRatingsWrapper,
+  NumReviewsWrapper,
+  NumRatingsWrapper,
 } from './styles/RatingBox';
 
 /* Child Components */
 import ProgressBar from './ProgressBar';
 
-const RatingBox = ({ percentages }) => {
-  const numLikedRatings = percentages[0].for + percentages[0].against;
-  const likedPercent = numLikedRatings === 0 ? 0 : Math.round((percentages[0].for * 100) / numLikedRatings);
+export const RATING_BOX_HEIGHT = 220;
+
+/*
+  NOTE DATA FOR "LIKED" MUST BE PERCENTAGES[0]
+*/
+const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
+  const likedPercent = Math.round(percentages[0].percent * 100);
   return (
-    <RatingBoxWrapper>
+    <RatingBoxWrapper ratingBoxHeight={RATING_BOX_HEIGHT}>
       <LikesColumn>
-        <LargePercentage>{likedPercent}%</LargePercentage>
-        <GreyText>
-          {numLikedRatings} rating{numLikedRatings !== 1 ? 's' : ''}
-        </GreyText>
+        <PieChart
+          width={RATING_BOX_HEIGHT - 32}
+          height={RATING_BOX_HEIGHT - 32}
+        >
+          <Pie
+            dataKey="value"
+            data={[{ value: likedPercent }, { value: 100 - likedPercent }]}
+            cx="50%"
+            cy="50%"
+            outerRadius={RATING_BOX_HEIGHT / 2 - 16}
+            innerRadius={RATING_BOX_HEIGHT / 2 - 32}
+          >
+            <Cell fill={theme.primary} />
+            <Cell fill={theme.light3} />
+          </Pie>
+        </PieChart>
+        <NumbersInCircle ratingBoxHeight={RATING_BOX_HEIGHT}>
+          <LargePercentage>{likedPercent}%</LargePercentage>
+          <GreyText>liked it</GreyText>
+        </NumbersInCircle>
       </LikesColumn>
       <ProgressBarColumn>
         {percentages.map((metric, ind) =>
@@ -34,30 +60,38 @@ const RatingBox = ({ percentages }) => {
             <ProgressWrapper key={metric.displayName}>
               <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
               <ProgressBarWrapper>
-                <ProgressBar
-                  percentComplete={metric.for + metric.against === 0 ? 0 :
-                    metric.for / (metric.for + metric.against)}
-                />
+                <ProgressBar percentComplete={metric.percent} />
                 <ProgressNumberLabel>
-                  {metric.for + metric.against === 0 ? 0 :
-                    Math.round((metric.for * 100) / (metric.for + metric.against))}
-                  %
+                  {Math.round(metric.percent * 100)}%
                 </ProgressNumberLabel>
               </ProgressBarWrapper>
             </ProgressWrapper>
           ),
         )}
+        <NumReviewsAndRatingsWrapper>
+          <NumReviewsWrapper>
+            {numReviews} {numReviews == 1 ? 'review' : 'reviews'}
+          </NumReviewsWrapper>
+          <NumRatingsWrapper>
+            {numRatings}
+            {numRatings == 1 ? ' rating' : ' ratings'}
+          </NumRatingsWrapper>
+        </NumReviewsAndRatingsWrapper>
       </ProgressBarColumn>
     </RatingBoxWrapper>
   );
 };
 
 RatingBox.propTypes = {
-  percentages: PropTypes.arrayOf(PropTypes.shape({
-    displayName: PropTypes.string,
-    for: PropTypes.number,
-    against: PropTypes.number
-  }))
-}
+  percentages: PropTypes.arrayOf(
+    PropTypes.shape({
+      displayName: PropTypes.string,
+      percent: PropTypes.number,
+    }),
+  ),
+  numRatings: PropTypes.number,
+  numReviews: PropTypes.number,
+  theme: PropTypes.object,
+};
 
-export default RatingBox;
+export default withTheme(RatingBox);
