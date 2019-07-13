@@ -7,8 +7,9 @@ import {
   ReviewTextWrapper,
   ReviewMetricsWrapper,
 } from './styles/Review';
+import { interfaceDeclaration } from '@babel/types';
 
-const Review = ({ upvotes, review, reviewer, metrics }) => {
+const Review = ({ upvotes, review, reviewer, prof, metrics }) => {
   return (
     <ReviewWrapper>
       <ReviewTextWrapper>Review Text</ReviewTextWrapper>
@@ -17,14 +18,21 @@ const Review = ({ upvotes, review, reviewer, metrics }) => {
   );
 };
 
-Review.PropTypes = {
+Review.propTypes = {
   upvotes: PropTypes.number,
-  review: PropTypes.object,
-  reviewer: PropTypes.object,
-  metrics: PropTypes.arrayOf(PropTypes.shape({
+  review: PropTypes.string,
+  reviewer: PropTypes.shape({
     name: PropTypes.string,
-    choice: PropTypes.bool
-  }))
-}
+    program: PropTypes.string,
+  }),
+  prof: PropTypes.string,
+  metrics: PropTypes.shape({
+    useful: PropTypes.number, //not all these metrics have to exist, we should only display the ones that do
+    easy: PropTypes.number, //for example course review only has useful, easy liked,
+    liked: PropTypes.bool, //prof review only has liked, clear and engagin
+    clear: PropTypes.number,
+    engaging: PropTypes.number,
+  }),
+};
 
 export default Review;
