@@ -27,7 +27,6 @@ import Button from '../common/Button';
 
 const CoursePageContent = ({ course, courseID }) => {
   const [hideReviewForm, setHideReviewForm] = useState(true);
-
   return (
     <>
       <CourseInfoHeader course={course} />
