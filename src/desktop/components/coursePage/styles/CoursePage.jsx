@@ -9,6 +9,7 @@ import {
   ThinColumn,
   BoxShadow,
   Heading3,
+  Heading4,
 } from '../../../../constants/Mixins';
 
 export const CoursePageWrapper = styled.div`
@@ -39,6 +40,7 @@ export const ExtraInfoBoxWrapper = styled.div`
   border: 2px solid ${({ theme }) => theme.light2};
   ${BoxShadow}
   padding: 16px;
+  ${Heading4}
 `;
 
 export const CourseReviewQuestionBox = styled.div`

@@ -16,64 +16,7 @@ import {
 /* Child Components */
 import RatingBox, { RATING_BOX_HEIGHT } from '../common/RatingBox';
 
-const computeStats = course => {
-  const totals = {
-    liked: course.course_liked_buckets.reduce(
-      (total, curr) => curr.count + total,
-      0,
-    ),
-    easy: course.course_easy_buckets.reduce(
-      (total, curr) => curr.count + total,
-      0,
-    ),
-    useful: course.course_useful_buckets.reduce(
-      (total, curr) => curr.count + total,
-      0,
-    ),
-  };
-  return [
-    totals,
-    {
-      liked:
-        totals.liked == 0
-          ? 0
-          : course.course_liked_buckets.reduce(
-              (total, curr, index) =>
-                total +
-                (curr.count * index) /
-                  (course.course_liked_buckets.length - 1) /
-                  totals.liked,
-              0,
-            ),
-      easy:
-        totals.easy == 0
-          ? 0
-          : course.course_easy_buckets.reduce(
-              (total, curr, index) =>
-                total +
-                (curr.count * index) /
-                  (course.course_easy_buckets.length - 1) /
-                  totals.easy,
-              0,
-            ),
-      useful:
-        totals.useful == 0
-          ? 0
-          : course.course_useful_buckets.reduce(
-              (total, curr, index) =>
-                total +
-                (curr.count * index) /
-                  (course.course_useful_buckets.length - 1) /
-                  totals.useful,
-              0,
-            ),
-    },
-  ];
-};
-
 const CourseInfoHeader = ({ course }) => {
-  const [totals, ratingStats] = computeStats(course);
-
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
@@ -84,20 +27,23 @@ const CourseInfoHeader = ({ course }) => {
       </CourseCodeAndNameSection>
       <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
         <RatingBox
-          numRatings={totals.liked}
+          numRatings={course.course_liked_buckets_aggregate.aggregate.sum.count}
           numReviews={course.course_reviews_aggregate.aggregate.count}
           percentages={[
             {
               displayName: 'Likes',
-              percent: ratingStats.liked,
+              percent:
+                course.course_liked_buckets_aggregate.aggregate.avg.liked / 5,
             },
             {
               displayName: 'Useful',
-              percent: ratingStats.useful,
+              percent:
+                course.course_useful_buckets_aggregate.aggregate.avg.useful / 5,
             },
             {
               displayName: 'Easy',
-              percent: ratingStats.easy,
+              percent:
+                course.course_easy_buckets_aggregate.aggregate.avg.easy / 5,
             },
           ]}
         />
