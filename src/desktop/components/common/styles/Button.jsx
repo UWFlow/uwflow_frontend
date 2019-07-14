@@ -7,17 +7,19 @@ export const ButtonWrapper = styled.div`
   text-align: center;
   border: 2px solid ${({ theme }) => theme.light2};
   border-radius: 8px;
-  color: ${({ theme }) => theme.light1};
+  color: black;
   height: ${({ height }) => height}px;
   width: ${({ width }) => width}px;
-  background: ${({ theme }) => theme.primary};
-  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5), 0px 0px 5px rgba(142, 147, 148, 0.2);
+  background: ${({ theme }) => theme.accent};
+  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+    0px 0px 5px rgba(142, 147, 148, 0.2);
 
   :hover {
-    background: ${({ theme }) => theme.primaryDark};
+    background: ${({ theme }) => theme.accentDark};
   }
 
-  :focus, :active {
+  :focus,
+  :active {
     color: ${({ theme }) => theme.light4};
   }
 `;
