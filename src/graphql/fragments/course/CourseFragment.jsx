@@ -39,6 +39,8 @@ const CourseFragment = {
         }
       }
       textbooks
+      sections
+      prereqs
     }
   `,
   shallowCourseInfo: gql`

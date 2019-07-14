@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
@@ -23,6 +23,46 @@ import {
 
 /* GraphQL Queries */
 import { GET_COURSE } from '../../../graphql/queries/course/Course.jsx';
+import Button from '../common/Button';
+
+const CoursePageContent = ({ course, courseID }) => {
+  const [hideReviewForm, setHideReviewForm] = useState(true);
+
+  return (
+    <>
+      <CourseInfoHeader course={course} />
+      <ColumnWrapper>
+        <Column1>
+          <CourseSchedule />
+          {hideReviewForm && (
+            <CourseReviewQuestionBox>
+              <CourseReviewQuestionText>
+                What do you think of {course.code}?
+              </CourseReviewQuestionText>
+              <Button
+                children="Add your review"
+                width={200}
+                handleClick={() => {
+                  setHideReviewForm(false);
+                }}
+              />
+            </CourseReviewQuestionBox>
+          )}
+          {!hideReviewForm && (
+            <CourseReviewCourseBox
+              courseID={courseID}
+              onCancel={() => setHideReviewForm(true)}
+            />
+          )}
+          <CourseReviews courseID={courseID} />
+        </Column1>
+        <Column2>
+          <ExtraInfoBox />
+        </Column2>
+      </ColumnWrapper>
+    </>
+  );
+};
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
@@ -42,28 +82,7 @@ const CoursePage = ({ match }) => {
           }
 
           const course = data.course[0];
-
-          return (
-            <>
-              <CourseInfoHeader course={course} />
-              <ColumnWrapper>
-                <Column1>
-                  <CourseSchedule />
-                  <CourseReviewQuestionBox>
-                    <CourseReviewQuestionText>
-                      What do you think of {course.code}?
-                    </CourseReviewQuestionText>
-                    <AddReviewButton>Add your review</AddReviewButton>
-                  </CourseReviewQuestionBox>
-                  <CourseReviewCourseBox courseID={courseID} />
-                  <CourseReviews courseID={courseID} />
-                </Column1>
-                <Column2>
-                  <ExtraInfoBox />
-                </Column2>
-              </ColumnWrapper>
-            </>
-          );
+          return <CoursePageContent course={course} courseID={courseID} />;
         }}
       </Query>
     </CoursePageWrapper>
