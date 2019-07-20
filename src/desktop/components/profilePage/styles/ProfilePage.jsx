@@ -7,6 +7,7 @@ export const ProfilePageWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   min-height: 100%;
+  padding-bottom: 200px;
 `;
 
 export const ColumnWrapper = styled.div`

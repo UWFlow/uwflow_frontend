@@ -146,14 +146,14 @@ const CourseReviews = ({ courseID, theme }) => {
       easy: r.easy,
       liked: r.liked != null,
     },
-    prof: r.prof.name,
+    prof: r.prof ? r.prof.name : '',
   }));
 
   const reviewsByProf = data.prof_review.reduce((allProfs, current) => {
     let profObject;
     let foundProfObject = false;
     for (let i of allProfs) {
-      if (current.prof.name === i.prof) {
+      if (current.prof && current.prof.name === i.prof) {
         profObject = i;
         foundProfObject = true;
         break;
@@ -161,9 +161,10 @@ const CourseReviews = ({ courseID, theme }) => {
     }
     if (!foundProfObject) {
       profObject = {
-        prof: current.prof.name,
+        prof: current.prof ? current.prof.name : '',
         likes:
-          current.prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+        current.prof
+          ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5 : 0,
         reviews: [],
       };
       allProfs.push(profObject);
