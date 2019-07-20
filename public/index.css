@@ -15,6 +15,7 @@ html {
       UI, Helvetica Neue, sans-serif;
   font-size: 14px;
   color: #31393C;
+  background: #EEEEEE;
 
   /* Make type rendering look crisper */
   -webkit-font-smoothing: antialiased;
