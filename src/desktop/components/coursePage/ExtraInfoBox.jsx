@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
 /* Styled Components */
 import { ExtraInfoBoxWrapper } from './styles/CoursePage';

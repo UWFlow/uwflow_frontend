@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 /* Styled Components */
-import { PageWrapper, TitleText, Background } from './styles/LandingPage';
+import { Background } from './styles/LandingPage';
 
 /* Child Components */
 import BackgroundAnimation from './BackgroundAnimation';

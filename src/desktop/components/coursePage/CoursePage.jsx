@@ -91,8 +91,8 @@ const CoursePage = ({ match }) => {
 
 CoursePage.propTypes = {
   match: PropTypes.shape({
-    params: PropTypes.shape({ courseID: PropTypes.string }),
-  }),
+    params: PropTypes.shape({ courseID: PropTypes.string }).isRequired,
+  }).isRequired,
 };
 
 export default withRouter(CoursePage);

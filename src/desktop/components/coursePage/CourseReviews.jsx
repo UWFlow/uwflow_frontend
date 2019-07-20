@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { withTheme } from 'styled-components';
@@ -76,8 +76,8 @@ CourseCourseReviews.propTypes = {
         liked: PropTypes.boolean,
       }),
     }),
-  ),
-  theme: PropTypes.object,
+  ).isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
 const CourseProfReviews = reviewsByProf => {
@@ -127,7 +127,7 @@ CourseProfReviews.propTypes = {
         }),
       ),
     }),
-  ),
+  ).isRequired,
 };
 
 const CourseReviews = ({ courseID, theme }) => {
@@ -212,8 +212,8 @@ const CourseReviews = ({ courseID, theme }) => {
 };
 
 CourseReviews.propTypes = {
-  courseID: PropTypes.string,
-  theme: PropTypes.object,
+  courseID: PropTypes.string.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
 export default withTheme(CourseReviews);

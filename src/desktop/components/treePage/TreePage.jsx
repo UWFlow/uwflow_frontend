@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-
-const mapStateToProps = state => ({});
 
 const TreePage = ({ match }) => {
   return <div />;
 };
 
-export default withRouter(connect(mapStateToProps)(TreePage));
+export default withRouter(TreePage);

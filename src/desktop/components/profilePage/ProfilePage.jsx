@@ -1,14 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 
 /* Child Components */
+import ProfileInfoHeader from './ProfileInfoHeader';
 import CompleteProfileBox from './CompleteProfileBox';
 import RateCoursesBox from './RateCoursesBox';
 import Shortlist from './Shortlist';
-import UserCourses from './UserCourses';
-import UserInfoBox from './UserInfoBox';
+import ProfileCourses from './ProfileCourses';
 
 /* Styled Components */
 import {
@@ -21,10 +20,10 @@ import {
 const ProfilePage = () => {
   return (
     <ProfilePageWrapper>
+      <ProfileInfoHeader />
       <ColumnWrapper>
         <Column1>
-          <UserInfoBox />
-          <UserCourses />
+          <ProfileCourses />
         </Column1>
         <Column2>
           <CompleteProfileBox />

@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
 /* Child Components */
 import TabContainer from '../common/TabContainer';
 
 /* Styled Components */
 import { ScheduleTable, CourseScheduleWrapper } from './styles/CourseSchedule';
-
-const mapStateToProps = state => ({});
 
 const CourseScheduleInner = term => {
   return <ScheduleTable>{term}</ScheduleTable>;
@@ -27,4 +24,4 @@ const CourseSchedule = () => {
   );
 };
 
-export default connect(mapStateToProps)(CourseSchedule);
+export default CourseSchedule;
