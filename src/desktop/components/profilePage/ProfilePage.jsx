@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
@@ -42,24 +42,14 @@ const ProfilePageContent = ({ user }) => (
 
 const ProfilePage = () => {
   // TODO load profile of logged in user or redirect to login page
+  const { loading, error, data } = useQuery(GET_USER, {variables: { id: 1 }});
+
   return (
     <ProfilePageWrapper>
-      <Query query={GET_USER} variables={{ id: 1 }}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return <div>Loading...</div>;
-          }
-          if (error) {
-            return <div>Error</div>;
-          }
-          if (data.user.length == 0) {
-            return <div>User doesn't exist</div>
-          }
-
-          let user = data.user[0];
-          return <ProfilePageContent user={{...user, ...dummyData}} />;
-        }}
-      </Query>
+      {loading
+        ? (<p>Loading ...</p>)
+        : (<ProfilePageContent user={{...data.user[0], ...dummyData}} />)
+      }
     </ProfilePageWrapper>
   );
 };

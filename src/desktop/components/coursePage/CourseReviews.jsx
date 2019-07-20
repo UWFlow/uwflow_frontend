@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
@@ -131,82 +131,73 @@ CourseProfReviews.propTypes = {
 };
 
 const CourseReviews = ({ courseID, theme }) => {
+  const { loading, error, data } = useQuery(GET_COURSE_REVIEW, {variables: { id: courseID }});
+  
+  if (loading) {
+    return <CourseReviewWrapper><div>Loading ...</div></CourseReviewWrapper>
+  }
+  
+  const courseReviews = data.course_review.map(r => ({
+    upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
+    review: r.text,
+    reviewer: r.user,
+    metrics: {
+      useful: r.useful,
+      easy: r.easy,
+      liked: r.liked != null,
+    },
+    prof: r.prof.name,
+  }));
+
+  const reviewsByProf = data.prof_review.reduce((allProfs, current) => {
+    let profObject;
+    let foundProfObject = false;
+    for (let i of allProfs) {
+      if (current.prof.name === i.prof) {
+        profObject = i;
+        foundProfObject = true;
+        break;
+      }
+    }
+    if (!foundProfObject) {
+      profObject = {
+        prof: current.prof.name,
+        likes:
+          current.prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+        reviews: [],
+      };
+      allProfs.push(profObject);
+    }
+    profObject.reviews.push({
+      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
+      review: current.text,
+      reviewer: current.user,
+      metrics: {
+        clear: current.clear,
+        engaging: current.engaging,
+      },
+    });
+    return allProfs;
+  }, []);
+
+  const tabList = [
+    {
+      title: `Course reviews (${
+        data.course_review_aggregate.aggregate.count
+      })`,
+      render: () => CourseCourseReviews(courseReviews, theme),
+    },
+    {
+      title: `Professor reviews (${
+        data.prof_review_aggregate.aggregate.count
+      })`,
+      render: () => CourseProfReviews(reviewsByProf),
+    },
+  ];
+
   return (
     <CourseReviewWrapper>
-      <Query query={GET_COURSE_REVIEW} variables={{ id: courseID }}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return <div>Loading...</div>;
-          }
-          if (error) {
-            return <div>Error</div>;
-          }
-
-          if (data.course_review.length === 0) {
-            return <div>Course Doesn't Exist</div>;
-          }
-
-          const courseReviews = data.course_review.map(r => ({
-            upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
-            review: r.text,
-            reviewer: r.user,
-            metrics: {
-              useful: r.useful,
-              easy: r.easy,
-              liked: r.liked != null,
-            },
-            prof: r.prof.name,
-          }));
-
-          const reviewsByProf = data.prof_review.reduce((allProfs, current) => {
-            let profObject;
-            let foundProfObject = false;
-            for (let i of allProfs) {
-              if (current.prof.name === i.prof) {
-                profObject = i;
-                foundProfObject = true;
-                break;
-              }
-            }
-            if (!foundProfObject) {
-              profObject = {
-                prof: current.prof.name,
-                likes:
-                  current.prof.course_reviews_aggregate.aggregate.avg.liked / 5,
-                reviews: [],
-              };
-              allProfs.push(profObject);
-            }
-            profObject.reviews.push({
-              upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
-              review: current.text,
-              reviewer: current.user,
-              metrics: {
-                clear: current.clear,
-                engaging: current.engaging,
-              },
-            });
-            return allProfs;
-          }, []);
-
-          const tabList = [
-            {
-              title: `Course reviews (${
-                data.course_review_aggregate.aggregate.count
-              })`,
-              render: () => CourseCourseReviews(courseReviews, theme),
-            },
-            {
-              title: `Professor reviews (${
-                data.prof_review_aggregate.aggregate.count
-              })`,
-              render: () => CourseProfReviews(reviewsByProf),
-            },
-          ];
-
-          return <TabContainer tabList={tabList} initialSelectedTab={0} />;
-        }}
-      </Query>
+      <TabContainer tabList={tabList} initialSelectedTab={0} />;
     </CourseReviewWrapper>
   );
 };

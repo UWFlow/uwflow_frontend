@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -25,12 +25,17 @@ import {
 /* GraphQL Queries */
 import { GET_COURSE } from '../../../graphql/queries/course/Course';
 
-const CoursePageContent = ({ course, courseID }) => {
+const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
   const [hideReviewForm, setHideReviewForm] = useState(true);
 
   return (
     <>
-      <CourseInfoHeader course={course} />
+      <CourseInfoHeader
+        course={course}
+        liked={liked}
+        easy={easy}
+        useful={useful}
+      />
       <ColumnWrapper>
         <Column1>
           <CourseSchedule />
@@ -66,25 +71,20 @@ const CoursePageContent = ({ course, courseID }) => {
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
+  const { loading, error, data } = useQuery(GET_COURSE, {variables: { id: courseID }});
 
   return (
     <CoursePageWrapper>
-      <Query query={GET_COURSE} variables={{ id: courseID }}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return <div>Loading...</div>;
-          }
-          if (error) {
-            return <div>Error</div>;
-          }
-          if (data.course.length === 0) {
-            return <div>Course Doesn't Exist</div>;
-          }
-
-          const course = data.course[0];
-          return <CoursePageContent course={course} courseID={courseID} />;
-        }}
-      </Query>
+      { loading
+          ? <div>Loading ...</div>
+          : <CoursePageContent
+            course={data.course[0]}
+            easy={data.aggregate_course_easy_buckets_aggregate}
+            liked={data.aggregate_course_liked_buckets_aggregate}
+            useful={data.aggregate_course_useful_buckets_aggregate}
+            courseID={courseID}
+          />
+      }
     </CoursePageWrapper>
   );
 };
