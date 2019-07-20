@@ -9,6 +9,7 @@ import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
+import Button from '../common/Button';
 
 /* Styled Components */
 import {
@@ -22,8 +23,7 @@ import {
 } from './styles/CoursePage';
 
 /* GraphQL Queries */
-import { GET_COURSE } from '../../../graphql/queries/course/Course.jsx';
-import Button from '../common/Button';
+import { GET_COURSE } from '../../../graphql/queries/course/Course';
 
 const CoursePageContent = ({ course, courseID }) => {
   const [hideReviewForm, setHideReviewForm] = useState(true);

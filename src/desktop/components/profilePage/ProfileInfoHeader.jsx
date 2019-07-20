@@ -11,14 +11,17 @@ import {
   UserProgram
 } from './styles/ProfileInfoHeader';
 
-const ProfileInfoHeader = ({ profile }) => {
+const placeholderImage
+  = 'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
+
+const ProfileInfoHeader = ({ user }) => {
   return (
     <ProfileInfoHeaderWrapper>
       <ProfileInfoSection>
-        <UserPicture src={profile.picture_url} />
+        <UserPicture src={user.picture_url || placeholderImage} />
         <UserInfoWrapper>
-          <UserName>{profile.name}</UserName>
-          <UserProgram>{profile.program}</UserProgram>
+          <UserName>{user.name}</UserName>
+          <UserProgram>{user.program}</UserProgram>
         </UserInfoWrapper>
       </ProfileInfoSection>
     </ProfileInfoHeaderWrapper>
@@ -26,7 +29,7 @@ const ProfileInfoHeader = ({ profile }) => {
 };
 
 ProfileInfoHeader.propTypes = {
-  profile: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default ProfileInfoHeader;
