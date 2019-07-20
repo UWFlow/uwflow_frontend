@@ -17,10 +17,16 @@ import {
   Column2,
 } from './styles/ProfilePage';
 
+const profileDummy = {
+  name: 'Derrek Chow',
+  program: 'Software Engineering',
+  picture_url: 'https://uwflow.com/static/img/team/derrek.jpg'
+}
+
 const ProfilePage = () => {
   return (
     <ProfilePageWrapper>
-      <ProfileInfoHeader />
+      <ProfileInfoHeader profile={profileDummy} />
       <ColumnWrapper>
         <Column1>
           <ProfileCourses />

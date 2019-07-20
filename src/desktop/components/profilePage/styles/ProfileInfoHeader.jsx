@@ -1,43 +1,42 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, Heading2 } from '../../../../constants/Mixins';
+import { Heading1 } from '../../../../constants/Mixins';
 
 /* Constants */
 import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
 
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
   display: flex;
-  background-color: white;
+  background-color: ${({ theme }) => theme.primary};
   flex-direction: column;
   position: relative;
 `;
 
 export const ProfileInfoSection = styled.div`
+  padding: 52px 0;
   width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH};
+  max-width: ${PAGE_CONTENT_WIDTH}px;
   height: 320px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background-color: ${({ theme }) => theme.primary};
+  flex-direction: row;
+  margin: auto;
   position: relative;
 `;
 
-export const UserPictureWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  height: 200px;
+export const UserPicture = styled.img`
+  width: 208px;
+  height: 208px;
+  border-radius: 50%;
+  border: 5px solid ${({ theme }) => theme.primaryDark};
+  margin-right: 32px;
+  object-fit: cover;
 `;
 
-export const UserPicture = styled.img`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  height: 200px;
+export const UserInfoWrapper = styled.div`
+  margin: auto 0;
 `;
 
 export const UserName = styled.div`
@@ -48,5 +47,7 @@ export const UserName = styled.div`
 
 export const UserProgram = styled.div`
   color: white;
-  ${Heading2};
+  font-family: Inter;
+  font-weight: 300;
+  font-size: 36px;
 `;

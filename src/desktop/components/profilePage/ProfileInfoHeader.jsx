@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
   ProfileInfoHeaderWrapper,
   ProfileInfoSection,
-  UserPictureWrapper,
+  UserInfoWrapper,
   UserPicture,
   UserName,
   UserProgram
@@ -14,12 +14,12 @@ import {
 const ProfileInfoHeader = ({ profile }) => {
   return (
     <ProfileInfoHeaderWrapper>
-      <UserPictureWrapper>
-        <UserPicture src={profile.picture_url} />
-      </UserPictureWrapper>
       <ProfileInfoSection>
-        <UserName>{profile.name}</UserName>
-        <UserProgram>{profile.program}</UserProgram>
+        <UserPicture src={profile.picture_url} />
+        <UserInfoWrapper>
+          <UserName>{profile.name}</UserName>
+          <UserProgram>{profile.program}</UserProgram>
+        </UserInfoWrapper>
       </ProfileInfoSection>
     </ProfileInfoHeaderWrapper>
   );
