@@ -75,9 +75,9 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
 };
 
 CourseReviewCourseBox.propTypes = {
-  courseID: PropTypes.string,
-  onCancel: PropTypes.func,
-  theme: PropTypes.object,
+  courseID: PropTypes.string.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
 export default withTheme(CourseReviewCourseBox);

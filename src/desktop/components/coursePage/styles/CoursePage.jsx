@@ -17,7 +17,7 @@ export const CoursePageWrapper = styled.div`
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.light1};
+  padding-bottom: 200px;
 `;
 
 export const ColumnWrapper = styled.div`

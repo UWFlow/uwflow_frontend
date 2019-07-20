@@ -16,7 +16,7 @@ import {
 /* Child Components */
 import RatingBox, { RATING_BOX_HEIGHT } from '../common/RatingBox';
 
-const CourseInfoHeader = ({ course }) => {
+const CourseInfoHeader = ({ course, liked, useful, easy }) => {
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
@@ -27,23 +27,23 @@ const CourseInfoHeader = ({ course }) => {
       </CourseCodeAndNameSection>
       <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
         <RatingBox
-          numRatings={course.course_liked_buckets_aggregate.aggregate.sum.count}
+          numRatings={liked.aggregate.sum.count}
           numReviews={course.course_reviews_aggregate.aggregate.count}
           percentages={[
             {
               displayName: 'Likes',
               percent:
-                course.course_liked_buckets_aggregate.aggregate.avg.liked / 5,
+                liked.aggregate.avg.liked / 5,
             },
             {
               displayName: 'Useful',
               percent:
-                course.course_useful_buckets_aggregate.aggregate.avg.useful / 5,
+                useful.aggregate.avg.useful / 5,
             },
             {
               displayName: 'Easy',
               percent:
-                course.course_easy_buckets_aggregate.aggregate.avg.easy / 5,
+                easy.aggregate.avg.easy / 5,
             },
           ]}
         />
@@ -56,7 +56,10 @@ const CourseInfoHeader = ({ course }) => {
 };
 
 CourseInfoHeader.propTypes = {
-  course: PropTypes.object,
+  course: PropTypes.object.isRequired,
+  liked: PropTypes.object.isRequired,
+  useful: PropTypes.object.isRequired,
+  easy: PropTypes.object.isRequired
 };
 
 export default CourseInfoHeader;

@@ -70,11 +70,11 @@ const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
         )}
         <NumReviewsAndRatingsWrapper>
           <NumReviewsWrapper>
-            {numReviews} {numReviews == 1 ? 'review' : 'reviews'}
+            {numReviews} {numReviews === 1 ? 'review' : 'reviews'}
           </NumReviewsWrapper>
           <NumRatingsWrapper>
             {numRatings}
-            {numRatings == 1 ? ' rating' : ' ratings'}
+            {numRatings === 1 ? ' rating' : ' ratings'}
           </NumRatingsWrapper>
         </NumReviewsAndRatingsWrapper>
       </ProgressBarColumn>

@@ -16,13 +16,5 @@ export const Complete = styled.span`
   border-radius: ${({ width }) => width >= 100 ? '4px' : '4px 0 0 4px' };
   width: ${({ width }) => width}%;
   height: 100%;
-  background-color: ${({ theme, width }) => {
-    if (width < 30) {
-      return theme.low;
-    } else if (width < 60) {
-      return theme.medium;
-    } else {
-      return theme.high;
-    }
-  }};
+  background-color: ${({ theme }) => theme.primary};
 `;

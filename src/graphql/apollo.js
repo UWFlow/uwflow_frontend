@@ -26,7 +26,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     graphQLErrors.map(({ message, locations, path }) => {
       console.log(`[GQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
       // TODO network error
-      return;
+      return null;
     });
   }
   if (networkError) {

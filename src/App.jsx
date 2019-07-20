@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import styled from 'styled-components';
 
 /* Routes */
 import {
@@ -26,16 +25,6 @@ import {
 import NoMatchRedirect from './desktop/components/common/NoMatchRedirect';
 import ModalRoot from './desktop/components/common/modal/ModalRoot';
 import Navbar from './desktop/components/common/Navbar';
-
-/*
-const PageWrapper = styled.div`
-  padding: 50px 125px;
-
-  @media only screen and (max-width: 720px) {
-    padding: 50px 5%;
-  }
-`;
-*/
 
 const App = () => {
   return (

@@ -6,13 +6,15 @@ export const ProfilePageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: ${({ theme }) => theme.light1};
+  min-height: 100%;
+  padding-bottom: 200px;
 `;
 
 export const ColumnWrapper = styled.div`
-  display: flex;
-  width: ${PAGE_CONTENT_WIDTH}px;
+  width: 100%;
+  max-width: ${PAGE_CONTENT_WIDTH}px;
   margin: auto;
+  display: flex;
 `;
 
 export const Column1 = styled.div`

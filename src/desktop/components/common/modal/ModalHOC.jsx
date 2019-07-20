@@ -17,7 +17,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
     if (keyCode === 27) { // ESC key
       onCloseModal();
     }
-  }, []);
+  }, [onCloseModal]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);

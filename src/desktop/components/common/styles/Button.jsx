@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Heading4 } from '../../../../constants/Mixins';
 
 export const ButtonWrapper = styled.div`
   cursor: pointer;
@@ -7,7 +8,7 @@ export const ButtonWrapper = styled.div`
   text-align: center;
   border: 2px solid ${({ theme }) => theme.light2};
   border-radius: 8px;
-  color: black;
+  color: ${({ theme }) => theme.dark1};
   height: ${({ height }) => height}px;
   width: ${({ width }) => width}px;
   background: ${({ theme }) => theme.accent};
@@ -20,12 +21,11 @@ export const ButtonWrapper = styled.div`
 
   :focus,
   :active {
-    color: ${({ theme }) => theme.light4};
+    color: ${({ theme }) => theme.dark2};
   }
 `;
 
 export const ButtonText = styled.div`
   margin: auto;
-  font-size: 20px;
-  font-family: 'Inter';
+  ${Heading4}
 `;

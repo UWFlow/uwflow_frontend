@@ -19,7 +19,7 @@ import {externalCall} from '../../../utils/Api';
 import KEYCODE from '../../../constants/KeycodeConstants';
 
 /* Styled Components */
-import { Path } from './styles/TestPage';
+import {} from './styles/TestPage';
 
 const mapStateToProps = state => ({
   getTextboxText: ID => getTextboxText(state, ID),

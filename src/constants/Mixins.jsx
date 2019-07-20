@@ -10,14 +10,13 @@ export const WideColumn = `
   display: flex;
   flex-direction: column;
   width: 70%;
-  padding-right: 8px;
+  margin-right: 32px;
 `;
 
 export const ThinColumn = `
   display: flex;
   flex-direction: column;
   width: 30%;
-  padding-left: 8px;
 `;
 
 /* Fonts */
