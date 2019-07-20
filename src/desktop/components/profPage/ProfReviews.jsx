@@ -8,8 +8,10 @@ import {
   CourseRatingsWrapper,
   CourseLikes,
   CourseRatings,
-} from './styles/ProfCourseReview';
+} from './styles/ProfReviews';
 
-const ProfCourseReview = ({ courseInfo, profCourseReview }) => {};
+const ProfReviews = ({ courseInfo, profCourseReview }) => {
+  return null;
+};
 
-export default ProfCourseReview;
+export default ProfReviews;

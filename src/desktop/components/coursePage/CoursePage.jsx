@@ -18,7 +18,6 @@ import {
   Column2,
   CourseReviewQuestionBox,
   CourseReviewQuestionText,
-  AddReviewButton,
 } from './styles/CoursePage';
 
 /* GraphQL Queries */
