@@ -15,12 +15,8 @@ import {
 import RatingBox, { RATING_BOX_HEIGHT } from '../common/RatingBox';
 
 const ProfInfoHeader = ({ prof }) => {
-  const percentClear =
-    prof.prof_review_stats.clear /
-    (prof.prof_review_stats.clear + prof.prof_review_stats.not_clear);
-  const percentEngaging =
-    prof.prof_review_stats.engaging /
-    (prof.prof_review_stats.engaging + prof.prof_review_stats.not_engaging);
+  const percentClear = prof.reviewsAggregate.aggregate.avg.clear / 5;
+  const percentEngaging = prof.reviewsAggregate.aggregate.avg.engaging / 5;
 
   return (
     <ProfInfoHeaderWrapper>

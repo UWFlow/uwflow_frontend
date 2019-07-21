@@ -7,8 +7,12 @@ export const GET_PROF = gql`
     prof(where: { id: { _eq: $id } }) {
       ...ProfInfoFragment
     }
+    prof_review_aggregate(where: { id: { _eq: $id } }) {
+      ...ProfReviewAggregateFragment
+    }
   }
   ${ProfFragment.profInfo}
+  ${ProfFragment.profReviewAggregate}
 `;
 
 export const GET_ALL_PROFS_SHALLOW = gql`

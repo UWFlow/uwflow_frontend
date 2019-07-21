@@ -10,18 +10,22 @@ const ProfFragment = {
           count(columns: text)
         }
       }
-      prof_review_stats {
-        clear
-        engaging
-        not_clear
-        not_engaging
-      }
       course_reviews_aggregate {
         aggregate {
           avg {
             liked
           }
           count(columns: liked)
+        }
+      }
+    }
+  `,
+  profReviewAggregate: gql`
+    fragment ProfReviewAggregateFragment on prof_review_aggregate {
+      aggregate {
+        avg {
+          clear
+          engaging
         }
       }
     }

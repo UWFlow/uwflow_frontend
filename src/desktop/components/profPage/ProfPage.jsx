@@ -19,8 +19,6 @@ import ProfReviews from './ProfReviews';
 import { GET_PROF } from '../../../graphql/queries/prof/Prof';
 
 const ProfPageContent = ({ prof, profID }) => {
-  const [hideReviewForm, setHideReviewForm] = useState(true);
-
   return (
     <>
       <ProfInfoHeader prof={prof} />
@@ -51,7 +49,10 @@ const ProfPage = ({ match }) => {
             return <div>Course Doesn't Exist</div>;
           }
 
-          const prof = data.prof[0];
+          const prof = {
+            ...data.prof[0],
+            reviewsAggregate: data.prof_review_aggregate,
+          };
           return <ProfPageContent prof={prof} profID={profID} />;
         }}
       </Query>

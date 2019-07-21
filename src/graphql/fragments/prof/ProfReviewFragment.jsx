@@ -2,23 +2,26 @@ import gql from 'graphql-tag';
 
 const ProfReviewFragment = {
   profCoursesReviewInfo: gql`
-    fragment ProfReviewInfoFragment on course_review {
-      course {
-        code
-      }
-      easy
-      id
-      liked
-      prof {
-        name
-      }
+    fragment ProfReviewInfoFragment on prof_review {
       text
-      useful
+      course {
+        id
+        name
+        course_reviews_aggregate {
+          aggregate {
+            avg {
+              liked
+            }
+          }
+        }
+      }
+      engaging
+      clear
       user {
         name
         program
       }
-      course_review_votes_aggregate {
+      prof_review_votes_aggregate {
         aggregate {
           sum {
             vote
