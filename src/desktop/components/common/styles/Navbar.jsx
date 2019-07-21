@@ -23,6 +23,7 @@ export const NavbarWrapper = styled.div`
 `;
 
 export const LogoWrapper = styled(Link)`
+  user-select: none;
   display: flex;
   align-items: center;
   cursor: pointer;

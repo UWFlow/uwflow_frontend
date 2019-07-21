@@ -36,7 +36,7 @@ const CourseCourseReviews = (
           <DropdownList
             color={theme.primary}
             selectedIndex={courseSort}
-            options={['most helpful', 'most recent']}
+            options={['least recent', 'least helpful', 'most helpful', 'most recent']}
             onChange={(value) => setCourseSort(value)}
           />
         </DropdownPanelWrapper>
@@ -87,39 +87,41 @@ CourseCourseReviews.propTypes = {
 const CourseProfReviews = (
   reviewsByProf, theme, profReviewFilter, setProfReviewFilter
 ) => {
-  return reviewsByProf.map((curr, idx) => {
-    return (
-      <div key={idx}>
-        <DropdownPanelWrapper>
-          <DropdownTableText>Filter by professor: </DropdownTableText>
-          <DropdownList
-            color={theme.professors}
-            selectedIndex={profReviewFilter}
-            options={['show all professors']}
-            onChange={(value) => setProfReviewFilter(value)}
-          />
-        </DropdownPanelWrapper>
-        <ProfHeader>
-          <ProfName>{curr.prof}</ProfName>
-          <ProfLikedMetric>
-            <ProfLikedPercent>{Math.round(curr.likes * 100)}</ProfLikedPercent>
-            <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
-          </ProfLikedMetric>
-        </ProfHeader>
-        {curr.reviews.map(review => {
-          return (
-            <Review
-              key={review.reviewer.name}
-              upvotes={review.upvotes}
-              review={review.review}
-              reviewer={review.reviewer}
-              metrics={review.metrics}
-            />
-          );
-        })}
-      </div>
-    );
-  });
+  return (
+    <>
+      <DropdownPanelWrapper>
+        <DropdownTableText>Filter by professor: </DropdownTableText>
+        <DropdownList
+          color={theme.professors}
+          selectedIndex={profReviewFilter}
+          options={['show all professors']}
+          onChange={(value) => setProfReviewFilter(value)}
+        />
+      </DropdownPanelWrapper>
+      {reviewsByProf.map((curr, idx) => (
+        <div key={idx}>
+          <ProfHeader>
+            <ProfName>{curr.prof}</ProfName>
+            <ProfLikedMetric>
+              <ProfLikedPercent>{Math.round(curr.likes * 100)}</ProfLikedPercent>
+              <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
+            </ProfLikedMetric>
+          </ProfHeader>
+          {curr.reviews.map(review => {
+            return (
+              <Review
+                key={review.reviewer.name}
+                upvotes={review.upvotes}
+                review={review.review}
+                reviewer={review.reviewer}
+                metrics={review.metrics}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </>
+  )
 };
 
 CourseProfReviews.propTypes = {
