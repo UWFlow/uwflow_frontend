@@ -17,7 +17,7 @@ export const CourseInfoHeaderWrapper = styled.div`
 
 export const CourseCodeAndNameSection = styled.div`
   width: 100%;
-  height: 350px;
+  min-height: 350px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -25,39 +25,45 @@ export const CourseCodeAndNameSection = styled.div`
   position: relative;
 `;
 
-export const CourseDescriptionSection = styled.div`
+export const CourseCodeAndNameWrapper = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  height: 200px;
+  max-width: ${PAGE_CONTENT_WIDTH}px;
+  margin: auto;
+  margin-bottom: 48px;
 `;
 
-export const CourseCodeAndNameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 32px;
-  bottom: 32px;
+export const CourseDescriptionSection = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: ${PAGE_CONTENT_WIDTH}px;
+  height: 200px;
+  margin: auto;
 `;
 
 export const CourseCode = styled.div`
-  color: white;
+  color: ${({ theme }) => theme.light2};
   ${Heading1};
   margin-bottom: 16px;
+  text-transform: uppercase;
+  max-width: calc(100% - 500px);
 `;
 
 export const CourseName = styled.div`
-  color: white;
+  color: ${({ theme }) => theme.light3};
+  max-width: calc(100% - 500px);
   ${Heading2};
 `;
 
 export const Description = styled.div`
   ${Body}
+  margin-top: 48px;
+  max-width: calc(100% - 500px);
+  line-height: 1.5;
   color: ${({ theme }) => theme.dark1};
 `;
 
 export const RatingsSection = styled.div`
   position: absolute;
-  right: 80px;
+  right: 0;
   bottom: ${({ ratingBoxHeight }) => 200 - ratingBoxHeight / 2}px;
 `;

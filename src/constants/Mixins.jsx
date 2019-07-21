@@ -28,7 +28,7 @@ export const Heading1 = `
 
 export const Heading2 = `
   font-family: 'Anderson Grotesk';
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 600;
 `;
 

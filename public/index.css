@@ -16,6 +16,7 @@ html {
   font-size: 14px;
   color: #31393C;
   background: #EEEEEE;
+  scroll-behavior: smooth;
 
   /* Make type rendering look crisper */
   -webkit-font-smoothing: antialiased;

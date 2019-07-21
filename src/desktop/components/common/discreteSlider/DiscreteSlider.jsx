@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
+import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
+import { withTheme } from 'styled-components';
 
 import {
   DiscreteSliderWrapper,
@@ -26,6 +27,7 @@ const Track = ({ source, target, color, getTrackProps }) => (
 );
  
 const DiscreteSlider = ({
+  theme,
   title,
   numNodes,
   currentNode,
@@ -60,8 +62,13 @@ const DiscreteSlider = ({
             {({ getRailProps }) => (
               <>
                 <SliderRail {...getRailProps()} /> 
-                {percentages.map(percent => (
-                  <SliderTick color={color} percent={percent} {...getRailProps()} />
+                {percentages.map((percent, idx) => (
+                  <SliderTick
+                    key={percent}
+                    color={idx <= currentNode ? color : theme.light3}
+                    percent={percent}
+                    {...getRailProps()}
+                  />
                 ))}
               </>
             )}
@@ -103,6 +110,7 @@ const DiscreteSlider = ({
 };
 
 DiscreteSlider.propTypes = {
+  theme: PropTypes.object.isRequired,
   title: PropTypes.string,
   margin: PropTypes.string,
   numNodes: PropTypes.number.isRequired, // includes 0 so 6 for 0 20 40 60 80 100
@@ -112,4 +120,4 @@ DiscreteSlider.propTypes = {
   onUpdate: PropTypes.func.isRequired,
 };
 
-export default DiscreteSlider;
+export default withTheme(DiscreteSlider);

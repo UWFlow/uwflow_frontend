@@ -42,7 +42,7 @@ const ProfilePageContent = ({ user }) => (
 
 const ProfilePage = () => {
   // TODO load profile of logged in user or redirect to login page
-  const { loading, error, data } = useQuery(GET_USER, {variables: { id: 1 }});
+  const { loading, data } = useQuery(GET_USER, {variables: { id: 1 }});
 
   return (
     <ProfilePageWrapper>

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {
   ProfInfoHeaderWrapper,
   ProfNameSection,
+  ProfNameWrapper,
   ProfDescriptionSection,
   ProfName,
   Description,
@@ -21,30 +22,32 @@ const ProfInfoHeader = ({ prof }) => {
   return (
     <ProfInfoHeaderWrapper>
       <ProfNameSection>
-        <ProfName>{prof.name}</ProfName>
+        <ProfNameWrapper>
+          <ProfName>{prof.name}</ProfName>
+        </ProfNameWrapper>
       </ProfNameSection>
-      <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
-        <RatingBox
-          numRatings={prof.course_reviews_aggregate.aggregate.count}
-          numReviews={prof.prof_reviews_aggregate.aggregate.count}
-          percentages={[
-            {
-              displayName: 'Likes',
-              percent: prof.course_reviews_aggregate.aggregate.avg.liked / 5,
-            },
-            {
-              displayName: 'Clear',
-              percent: percentClear,
-            },
-            {
-              displayName: 'Engaging',
-              percent: percentEngaging,
-            },
-          ]}
-        />
-      </RatingsSection>
       <ProfDescriptionSection>
-        <Description>Teaches some courses</Description>
+        <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
+          <RatingBox
+            numRatings={prof.course_reviews_aggregate.aggregate.count}
+            numReviews={prof.prof_reviews_aggregate.aggregate.count}
+            percentages={[
+              {
+                displayName: 'Likes',
+                percent: prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+              },
+              {
+                displayName: 'Clear',
+                percent: percentClear,
+              },
+              {
+                displayName: 'Engaging',
+                percent: percentEngaging,
+              },
+            ]}
+          />
+        </RatingsSection>
+        <Description>Teaches ECE 105, ECE 106</Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>
   );

@@ -71,6 +71,9 @@ export const NumReviewsAndRatingsWrapper = styled.div`
 
 export const NumReviewsWrapper = styled.div`
   ${Link};
+  color: ${({ theme }) => theme.primary};
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export const NumRatingsWrapper = styled.div`

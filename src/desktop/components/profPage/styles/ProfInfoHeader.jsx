@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
 
 /* Mixins */
-import { Heading1, Heading2, Body } from '../../../../constants/Mixins';
+import { Heading1, Heading3 } from '../../../../constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -17,7 +17,7 @@ export const ProfInfoHeaderWrapper = styled.div`
 
 export const ProfNameSection = styled.div`
   width: 100%;
-  height: 350px;
+  min-height: 350px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -26,29 +26,40 @@ export const ProfNameSection = styled.div`
 `;
 
 export const ProfDescriptionSection = styled.div`
+  position: relative;
   width: 100%;
+  max-width: ${PAGE_CONTENT_WIDTH}px;
+  min-height: 80px;
+  margin: auto;
+  vertical-align: middle;
   display: flex;
-  flex-direction: column;
-  height: 200px;
+`;
+
+export const ProfNameWrapper = styled.div`
+  width: 100%;
+  max-width: ${PAGE_CONTENT_WIDTH}px;
+  margin: auto;
+  margin-bottom: 48px;
 `;
 
 export const ProfName = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 32px;
-  bottom: 32px;
-  color: white;
-  ${Heading2};
+  max-width: calc(100% - 500px);
+  color: ${({ theme }) => theme.white};
+  ${Heading1}
 `;
 
 export const Description = styled.div`
-  ${Body}
-  color: ${({ theme }) => theme.dark1};
+  ${Heading3}
+  position: relative;
+  margin: auto 0;
+  max-width: calc(100% - 500px);
+  line-height: 1.5;
+  vertical-align: middle;
+  color: ${({ theme }) => theme.dark2};
 `;
 
 export const RatingsSection = styled.div`
   position: absolute;
-  right: 80px;
-  bottom: ${({ ratingBoxHeight }) => 200 - ratingBoxHeight / 2}px;
+  right: 0;
+  bottom: 40px;
 `;
