@@ -23,7 +23,7 @@ import {
 /* Child Components */
 import ProgressBar from './ProgressBar';
 
-export const RATING_BOX_HEIGHT = 220;
+export const RATING_BOX_HEIGHT = 244;
 
 /*
   NOTE DATA FOR "LIKED" MUST BE PERCENTAGES[0]

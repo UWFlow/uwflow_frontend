@@ -148,7 +148,7 @@ CourseProfReviews.propTypes = {
 };
 
 const CourseReviews = ({ courseID, theme }) => {
-  const { loading, error, data } = useQuery(GET_COURSE_REVIEW, {variables: { id: courseID }});
+  const { loading, data } = useQuery(GET_COURSE_REVIEW, {variables: { id: courseID }});
   const [courseSort, setCourseSort] = useState(0);
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);

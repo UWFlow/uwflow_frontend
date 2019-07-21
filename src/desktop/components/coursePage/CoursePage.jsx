@@ -70,7 +70,7 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
-  const { loading, error, data } = useQuery(GET_COURSE, {variables: { id: courseID }});
+  const { loading, data } = useQuery(GET_COURSE, {variables: { id: courseID }});
 
   return (
     <CoursePageWrapper>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Query } from 'react-apollo';
 
 /* Styled Components */
 import {
