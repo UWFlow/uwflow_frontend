@@ -13,7 +13,7 @@ import {
 } from './styles/ProfInfoHeader';
 
 /* Child Components */
-import RatingBox, { RATING_BOX_HEIGHT } from '../common/RatingBox';
+import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
 
 const ProfInfoHeader = ({ prof }) => {
   const percentClear = prof.reviewsAggregate.aggregate.avg.clear / 5;
@@ -23,7 +23,7 @@ const ProfInfoHeader = ({ prof }) => {
     <ProfInfoHeaderWrapper>
       <ProfNameSection>
         <ProfNameWrapper>
-          <ProfName>{prof.name}</ProfName>
+          <ProfName ratingBoxWidth={RATING_BOX_WIDTH}>{prof.name}</ProfName>
         </ProfNameWrapper>
       </ProfNameSection>
       <ProfDescriptionSection>
@@ -47,7 +47,7 @@ const ProfInfoHeader = ({ prof }) => {
             ]}
           />
         </RatingsSection>
-        <Description>Teaches ECE 105, ECE 106</Description>
+        <Description ratingBoxWidth={RATING_BOX_WIDTH}>Teaches ECE 105, ECE 106</Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>
   );

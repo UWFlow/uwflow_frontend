@@ -45,19 +45,19 @@ export const CourseCode = styled.div`
   ${Heading1};
   margin-bottom: 16px;
   text-transform: uppercase;
-  max-width: calc(100% - 500px);
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
 `;
 
 export const CourseName = styled.div`
   color: ${({ theme }) => theme.light3};
-  max-width: calc(100% - 500px);
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   ${Heading2};
 `;
 
 export const Description = styled.div`
   ${Body}
   margin-top: 48px;
-  max-width: calc(100% - 500px);
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   line-height: 1.5;
   color: ${({ theme }) => theme.dark1};
 `;

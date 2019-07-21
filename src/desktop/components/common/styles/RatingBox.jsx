@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Heading1, Small, Body, Link } from '../../../../constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`
-  width: 500px;
+  width: ${({ ratingBoxWidth }) => ratingBoxWidth}px;
   height: ${({ ratingBoxHeight }) => ratingBoxHeight}px;
   background-color: white;
   display: flex;
@@ -41,9 +41,13 @@ export const GreyText = styled.div`
 `;
 
 export const ProgressBarColumn = styled.div`
-  margin: 16px 16px 16px 0;
+  margin: 16px 0 16px 16px;
   display: flex;
   flex-direction: column;
+`;
+
+export const ProgressBarColumnWrapper = styled.div`
+  margin: auto;
 `;
 
 export const ProgressWrapper = styled.div`

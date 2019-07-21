@@ -43,7 +43,7 @@ export const ProfNameWrapper = styled.div`
 `;
 
 export const ProfName = styled.div`
-  max-width: calc(100% - 500px);
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   color: ${({ theme }) => theme.white};
   ${Heading1}
 `;
@@ -52,7 +52,7 @@ export const Description = styled.div`
   ${Heading3}
   position: relative;
   margin: auto 0;
-  max-width: calc(100% - 500px);
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   line-height: 1.5;
   vertical-align: middle;
   color: ${({ theme }) => theme.dark2};

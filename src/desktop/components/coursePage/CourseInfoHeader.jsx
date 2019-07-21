@@ -14,15 +14,15 @@ import {
 } from './styles/CourseInfoHeader';
 
 /* Child Components */
-import RatingBox, { RATING_BOX_HEIGHT } from '../common/RatingBox';
+import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
 
 const CourseInfoHeader = ({ course, liked, useful, easy }) => {
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
         <CourseCodeAndNameWrapper>
-          <CourseCode>{course.code}</CourseCode>
-          <CourseName>{course.name}</CourseName>
+          <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>{course.code}</CourseCode>
+          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
         </CourseCodeAndNameWrapper>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
@@ -49,7 +49,9 @@ const CourseInfoHeader = ({ course, liked, useful, easy }) => {
             ]}
           />
         </RatingsSection>
-        <Description>{course.description}</Description>
+        <Description ratingBoxWidth={RATING_BOX_WIDTH}>
+          {course.description}
+        </Description>
       </CourseDescriptionSection>
     </CourseInfoHeaderWrapper>
   );

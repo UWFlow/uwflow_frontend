@@ -5,7 +5,7 @@ export const DropdownWrapper = styled.div`
   color: ${({ color }) => color};
   z-index: ${({ zIndex }) => zIndex};
   width: ${({ width }) => width};
-  margin: auto;
+  margin: ${({ margin }) => margin};
   margin-left: 5px;
   cursor: pointer;
   width: max-content;
