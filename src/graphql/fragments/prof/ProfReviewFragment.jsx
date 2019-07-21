@@ -7,6 +7,7 @@ const ProfReviewFragment = {
       course {
         id
         name
+        code
         course_reviews_aggregate {
           aggregate {
             avg {

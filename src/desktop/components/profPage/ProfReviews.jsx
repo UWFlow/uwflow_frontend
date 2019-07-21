@@ -6,7 +6,10 @@ import { withTheme } from 'styled-components';
 /* Styled Components */
 import {
   ProfCourseReviewWrapper,
+  ReviewsForSingleCourseWrapper,
   CourseHeader,
+  CourseNameAndCode,
+  CourseCode,
   CourseName,
   DropdownPanelWrapper,
   DropdownTableText,
@@ -49,6 +52,7 @@ const ProfReviews = ({ profID, theme }) => {
     if (!foundCourseObject) {
       courseObject = {
         course: current.course ? current.course.name : '',
+        courseCode: current.course ? current.course.code : '',
         courseID: current.course ? current.course.id : -1,
         likes: current.course
           ? current.course.course_reviews_aggregate.aggregate.avg.liked / 5
@@ -73,12 +77,18 @@ const ProfReviews = ({ profID, theme }) => {
     <ProfCourseReviewWrapper>
       {reviewsByCourse.map(curr => {
         return (
-          <>
+          <ReviewsForSingleCourseWrapper key={curr.courseID}>
             <CourseHeader key={curr.course}>
-              <CourseName>{curr.course}</CourseName>
+              <CourseNameAndCode>
+                <CourseCode>
+                  {curr.courseCode.charAt(0).toUpperCase() +
+                    curr.courseCode.slice(1)}
+                </CourseCode>
+                <CourseName>{curr.course}</CourseName>
+              </CourseNameAndCode>
               <CourseLikedMetric>
                 <CourseLikedPercent>
-                  {Math.round(curr.likes * 100)}
+                  {Math.round(curr.likes * 100)}%
                 </CourseLikedPercent>
                 <CourseLikedPercentLabel>
                   liked this course
@@ -104,7 +114,7 @@ const ProfReviews = ({ profID, theme }) => {
                 />
               );
             })}
-          </>
+          </ReviewsForSingleCourseWrapper>
         );
       })}
     </ProfCourseReviewWrapper>

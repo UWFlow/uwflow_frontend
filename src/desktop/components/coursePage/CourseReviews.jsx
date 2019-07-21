@@ -7,8 +7,11 @@ import { withTheme } from 'styled-components';
 import {
   CourseReviewWrapper,
   CourseCourseReviewsWrapper,
+  CourseProfReviewsWrapper,
+  ReviewsForSingleProfWrapper,
   ReviewsOptionsWrapper,
   DropdownPanelWrapper,
+  ProfDropdownPanelWrapper,
   DropdownTableText,
   ProfHeader,
   ProfName,
@@ -26,7 +29,12 @@ import DropdownList from '../common/dropdownList/DropdownList';
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
 
 const CourseCourseReviews = (
-  reviews, theme, courseSort, setCourseSort, courseProfFilter, setCourseProfFilter
+  reviews,
+  theme,
+  courseSort,
+  setCourseSort,
+  courseProfFilter,
+  setCourseProfFilter,
 ) => {
   return (
     <CourseCourseReviewsWrapper>
@@ -36,8 +44,13 @@ const CourseCourseReviews = (
           <DropdownList
             color={theme.primary}
             selectedIndex={courseSort}
-            options={['least recent', 'least helpful', 'most helpful', 'most recent']}
-            onChange={(value) => setCourseSort(value)}
+            options={[
+              'least recent',
+              'least helpful',
+              'most helpful',
+              'most recent',
+            ]}
+            onChange={value => setCourseSort(value)}
           />
         </DropdownPanelWrapper>
         <DropdownPanelWrapper>
@@ -46,7 +59,7 @@ const CourseCourseReviews = (
             color={theme.professors}
             selectedIndex={courseProfFilter}
             options={['show all professors']}
-            onChange={(value) => setCourseProfFilter(value)}
+            onChange={value => setCourseProfFilter(value)}
           />
         </DropdownPanelWrapper>
       </ReviewsOptionsWrapper>
@@ -84,27 +97,20 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = (
-  reviewsByProf, theme, profReviewFilter, setProfReviewFilter
-) => {
+const CourseProfReviews = reviewsByProf => {
   return (
-    <>
-      <DropdownPanelWrapper>
-        <DropdownTableText>Filter by professor: </DropdownTableText>
-        <DropdownList
-          color={theme.professors}
-          selectedIndex={profReviewFilter}
-          options={['show all professors']}
-          onChange={(value) => setProfReviewFilter(value)}
-        />
-      </DropdownPanelWrapper>
+    <CourseProfReviewsWrapper>
       {reviewsByProf.map((curr, idx) => (
-        <div key={idx}>
+        <ReviewsForSingleProfWrapper key={idx}>
           <ProfHeader>
             <ProfName>{curr.prof}</ProfName>
             <ProfLikedMetric>
-              <ProfLikedPercent>{Math.round(curr.likes * 100)}</ProfLikedPercent>
-              <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
+              <ProfLikedPercent>
+                {Math.round(curr.likes * 100)}%
+              </ProfLikedPercent>
+              <ProfLikedPercentLabel>
+                liked this professor
+              </ProfLikedPercentLabel>
             </ProfLikedMetric>
           </ProfHeader>
           {curr.reviews.map(review => {
@@ -118,10 +124,10 @@ const CourseProfReviews = (
               />
             );
           })}
-        </div>
+        </ReviewsForSingleProfWrapper>
       ))}
-    </>
-  )
+    </CourseProfReviewsWrapper>
+  );
 };
 
 CourseProfReviews.propTypes = {
@@ -148,15 +154,22 @@ CourseProfReviews.propTypes = {
 };
 
 const CourseReviews = ({ courseID, theme }) => {
-  const { loading, data } = useQuery(GET_COURSE_REVIEW, {variables: { id: courseID }});
+  const { loading, data } = useQuery(GET_COURSE_REVIEW, {
+    variables: { id: courseID },
+  });
   const [courseSort, setCourseSort] = useState(0);
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);
+  const [showingProfReviews, setShowingProfReviews] = useState(false);
 
   if (loading) {
-    return <CourseReviewWrapper><div>Loading ...</div></CourseReviewWrapper>
+    return (
+      <CourseReviewWrapper>
+        <div>Loading ...</div>
+      </CourseReviewWrapper>
+    );
   }
-  
+
   const courseReviews = data.course_review.map(r => ({
     upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
     review: r.text,
@@ -182,9 +195,9 @@ const CourseReviews = ({ courseID, theme }) => {
     if (!foundProfObject) {
       profObject = {
         prof: current.prof ? current.prof.name : '',
-        likes:
-        current.prof
-          ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5 : 0,
+        likes: current.prof
+          ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5
+          : 0,
         reviews: [],
       };
       allProfs.push(profObject);
@@ -201,30 +214,45 @@ const CourseReviews = ({ courseID, theme }) => {
     return allProfs;
   }, []);
 
+  const ProfFilterDropdown = (
+    <ProfDropdownPanelWrapper>
+      <DropdownTableText>Filter by professor: </DropdownTableText>
+      <DropdownList
+        color={theme.professors}
+        selectedIndex={profReviewFilter}
+        options={['show all professors']}
+        onChange={value => setProfReviewFilter(value)}
+      />
+    </ProfDropdownPanelWrapper>
+  );
+
   const tabList = [
     {
-      title: `Course reviews (${
-        data.course_review_aggregate.aggregate.count
-      })`,
-      render: () => CourseCourseReviews(
-        courseReviews, theme, courseSort,
-        setCourseSort, courseProfFilter, setCourseProfFilter
-      ),
+      title: `Course reviews (${data.course_review_aggregate.aggregate.count})`,
+      render: () =>
+        CourseCourseReviews(
+          courseReviews,
+          theme,
+          courseSort,
+          setCourseSort,
+          courseProfFilter,
+          setCourseProfFilter,
+        ),
+      onClick: () => setShowingProfReviews(false),
     },
     {
       title: `Professor reviews (${
         data.prof_review_aggregate.aggregate.count
       })`,
-      render: () => CourseProfReviews(
-        reviewsByProf, theme,
-        profReviewFilter, setProfReviewFilter
-      ),
+      render: () => ProfFilterDropdown,
+      onClick: () => setShowingProfReviews(true),
     },
   ];
 
   return (
     <CourseReviewWrapper>
       <TabContainer tabList={tabList} initialSelectedTab={0} />;
+      {showingProfReviews && CourseProfReviews(reviewsByProf)}
     </CourseReviewWrapper>
   );
 };
