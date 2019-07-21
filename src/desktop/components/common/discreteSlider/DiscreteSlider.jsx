@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Slider, Rail, Handles, Tracks, Ticks } from 'react-compound-slider'
+import { Slider, Rail, Handles, Tracks } from 'react-compound-slider'
 
 import {
   DiscreteSliderWrapper,
@@ -31,9 +31,15 @@ const DiscreteSlider = ({
   currentNode,
   nodeText,
   color,
-  onChange,
+  onUpdate,
   margin="0 0 40px 0"
 }) => {
+  let percentages = [];
+  for (let i = 0; i < 100; i += 100 / (numNodes - 1)) {
+    percentages.push(i);
+  }
+  percentages.push(100);
+
   return (
     <DiscreteSliderWrapper margin={margin}>
       <DiscreteSliderTitle>{title}</DiscreteSliderTitle>
@@ -41,8 +47,8 @@ const DiscreteSlider = ({
         <Slider
           step={1}
           mode={2}
-          domain={[0, numNodes]}
-          onChange={onChange}
+          domain={[0, numNodes - 1]}
+          onUpdate={onUpdate}
           values={[currentNode]}
           rootStyle={{
             position: 'relative',
@@ -52,7 +58,12 @@ const DiscreteSlider = ({
         >
           <Rail>
             {({ getRailProps }) => (
-              <SliderRail {...getRailProps()} /> 
+              <>
+                <SliderRail {...getRailProps()} /> 
+                {percentages.map(percent => (
+                  <SliderTick color={color} percent={percent} {...getRailProps()} />
+                ))}
+              </>
             )}
           </Rail>
           <Handles>
@@ -84,15 +95,6 @@ const DiscreteSlider = ({
               </div>
             )}
           </Tracks>
-          <Ticks count={numNodes}>
-            {({ ticks }) => (
-              <div className="slider-ticks">
-                {ticks.map(tick => (
-                  <SliderTick color={color} />
-                ))}
-              </div>
-            )}
-          </Ticks>
         </Slider>
       </SliderBarWrapper>
       <SliderNodeText>{nodeText[currentNode]}</SliderNodeText>
@@ -107,7 +109,7 @@ DiscreteSlider.propTypes = {
   currentNode: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   nodeText: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func.isRequired, // when we detect mouse sliding we call onSlide with the index of the node slided to
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default DiscreteSlider;

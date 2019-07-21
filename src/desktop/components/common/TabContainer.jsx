@@ -11,9 +11,9 @@ import {
 
 const TabContainer = ({
   tabList,
-  initialSelectedTab,
   containerWidth,
   tabWidth,
+  initialSelectedTab = 0,
 }) => {
   const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
@@ -22,11 +22,11 @@ const TabContainer = ({
       <TabsWrapper>
         {tabList.map((tab, index) => (
           <Tab
-            key={tab.title}
+            key={index}
             width={tabWidth}
             selected={index === selectedTab}
-            first={index===0}
-            last={index===tabList.length - 1}
+            first={index === 0}
+            last={index === tabList.length - 1}
             onClick={() =>
               tab.onClick ? tab.onClick(index) : setSelectedTab(index)
             }
@@ -41,7 +41,7 @@ const TabContainer = ({
 };
 
 TabContainer.propTypes = {
-  tabList: PropTypes.arrayOf(PropTypes.object),
+  tabList: PropTypes.arrayOf(PropTypes.object).isRequired,
   initialSelectedTab: PropTypes.number,
   containerWidth: PropTypes.string,
   tabWidth: PropTypes.string

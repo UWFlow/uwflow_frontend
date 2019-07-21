@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Body, BoxShadow } from '../../../../../constants/Mixins';
 
-
 export const DiscreteSliderWrapper = styled.div`
   color: ${({ color }) => color};
   display: flex;
@@ -44,7 +43,7 @@ export const SliderHandle = styled.div`
   position: absolute;
   margin-left: -16px;
   margin-top: -20px;
-  z-index: 2;
+  z-index: 3;
   width: 32px;
   height: 32px;
   border: 3px solid ${({theme}) => theme.white};
@@ -67,10 +66,16 @@ export const SliderTrack = styled.div`
 `;
 
 export const SliderTick = styled.div`
+  position: absolute;
+  margin-left: -8px;
+  margin-top: -11px;
+  z-index: 2;
   height: 8px;
   width: 8px;
   background-color: ${({color}) => color};
   border-radius: 50%;
   box-sizing: content-box;
   border: 3px solid ${({theme}) => theme.white};
+  cursor: pointer;
+  left: ${({percent}) => percent}%;
 `;

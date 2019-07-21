@@ -1,19 +1,18 @@
 import styled from 'styled-components';
-import { BoxShadow, Heading3, Body } from '../../../../constants/Mixins';
+import { BoxShadow, Heading4, Body } from '../../../../constants/Mixins';
 
 export const CourseReviewCourseBoxWrapper = styled.div`
   ${BoxShadow}
   background-color: white;
   margin-bottom: 32px;
-  border-radius: 5px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   padding: 24px;
 `;
 
 export const QuestionText = styled.div`
-  ${Heading3}
-  margin-bottom: 40px;
+  ${Heading4}
 `;
 
 export const ReviewTextArea = styled.input`
@@ -34,9 +33,10 @@ export const MetricQuestionText = styled.div`
   ${Body}
 `;
 
-export const RateProfessorWrapper = styled.div`
+export const QuestionWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 40px;
 `;
 
 export const Footer = styled.div`

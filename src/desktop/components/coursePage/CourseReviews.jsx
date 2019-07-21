@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
@@ -25,7 +25,9 @@ import DropdownList from '../common/dropdownList/DropdownList';
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
 
-const CourseCourseReviews = (reviews, theme) => {
+const CourseCourseReviews = (
+  reviews, theme, courseSort, setCourseSort, courseProfFilter, setCourseProfFilter
+) => {
   return (
     <CourseCourseReviewsWrapper>
       <ReviewsOptionsWrapper>
@@ -33,23 +35,25 @@ const CourseCourseReviews = (reviews, theme) => {
           <DropdownTableText>Sort by: </DropdownTableText>
           <DropdownList
             color={theme.primary}
-            selectedIndex={0}
-            list={['most helpful']}
+            selectedIndex={courseSort}
+            options={['most helpful', 'most recent']}
+            onChange={(value) => setCourseSort(value)}
           />
         </DropdownPanelWrapper>
         <DropdownPanelWrapper>
           <DropdownTableText>Filter by professor: </DropdownTableText>
           <DropdownList
             color={theme.professors}
-            selectedIndex={0}
-            list={['show all professors']}
+            selectedIndex={courseProfFilter}
+            options={['show all professors']}
+            onChange={(value) => setCourseProfFilter(value)}
           />
         </DropdownPanelWrapper>
       </ReviewsOptionsWrapper>
-      {reviews.map((review, ind) => {
+      {reviews.map((review, i) => {
         return (
           <Review
-            key={review.reviewer.name}
+            key={i}
             upvotes={review.upvotes}
             review={review.review}
             reviewer={review.reviewer}
@@ -80,11 +84,22 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = reviewsByProf => {
-  return reviewsByProf.map(curr => {
+const CourseProfReviews = (
+  reviewsByProf, theme, profReviewFilter, setProfReviewFilter
+) => {
+  return reviewsByProf.map((curr, idx) => {
     return (
-      <>
-        <ProfHeader key={curr.prof}>
+      <div key={idx}>
+        <DropdownPanelWrapper>
+          <DropdownTableText>Filter by professor: </DropdownTableText>
+          <DropdownList
+            color={theme.professors}
+            selectedIndex={profReviewFilter}
+            options={['show all professors']}
+            onChange={(value) => setProfReviewFilter(value)}
+          />
+        </DropdownPanelWrapper>
+        <ProfHeader>
           <ProfName>{curr.prof}</ProfName>
           <ProfLikedMetric>
             <ProfLikedPercent>{Math.round(curr.likes * 100)}</ProfLikedPercent>
@@ -102,7 +117,7 @@ const CourseProfReviews = reviewsByProf => {
             />
           );
         })}
-      </>
+      </div>
     );
   });
 };
@@ -132,7 +147,10 @@ CourseProfReviews.propTypes = {
 
 const CourseReviews = ({ courseID, theme }) => {
   const { loading, error, data } = useQuery(GET_COURSE_REVIEW, {variables: { id: courseID }});
-  
+  const [courseSort, setCourseSort] = useState(0);
+  const [courseProfFilter, setCourseProfFilter] = useState(0);
+  const [profReviewFilter, setProfReviewFilter] = useState(0);
+
   if (loading) {
     return <CourseReviewWrapper><div>Loading ...</div></CourseReviewWrapper>
   }
@@ -186,13 +204,19 @@ const CourseReviews = ({ courseID, theme }) => {
       title: `Course reviews (${
         data.course_review_aggregate.aggregate.count
       })`,
-      render: () => CourseCourseReviews(courseReviews, theme),
+      render: () => CourseCourseReviews(
+        courseReviews, theme, courseSort,
+        setCourseSort, courseProfFilter, setCourseProfFilter
+      ),
     },
     {
       title: `Professor reviews (${
         data.prof_review_aggregate.aggregate.count
       })`,
-      render: () => CourseProfReviews(reviewsByProf),
+      render: () => CourseProfReviews(
+        reviewsByProf, theme,
+        profReviewFilter, setProfReviewFilter
+      ),
     },
   ];
 

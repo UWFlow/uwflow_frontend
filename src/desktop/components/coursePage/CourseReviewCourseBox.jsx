@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CourseReviewCourseBoxWrapper,
   QuestionText,
   MetricQuestionWrapper,
   MetricQuestionText,
   ReviewTextArea,
-  RateProfessorWrapper,
+  QuestionWrapper,
   Footer,
 } from './styles/CourseReviewCourseBox';
 import PropTypes from 'prop-types';
@@ -38,16 +38,26 @@ const engagingOptions = [
 ];
 
 const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
+  const [useful, setUseful] = useState(0);
+  const [easy, setEasy] = useState(0);
+  const [clear, setClear] = useState(0);
+  const [engaging, setEngaging] = useState(0);
+  const [selectedProf, setSelectedProf] = useState(-1);
+  const [selectedAnonymous, setSelectedAnonymous] = useState(0);
+
   return (
     <CourseReviewCourseBoxWrapper>
-      <QuestionText>What do you think of this course?</QuestionText>
+      <QuestionWrapper>
+        <QuestionText>What do you think of this course?</QuestionText>
+      </QuestionWrapper>
       <MetricQuestionWrapper>
         <DiscreteSlider
           title="Useful?"
           numNodes={6}
-          currentNode={0}
+          currentNode={useful}
           nodeText={usefulOptions}
           color={theme.courses}
+          onUpdate={(value) => setUseful(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -55,9 +65,10 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
         <DiscreteSlider
           title="Easy?"
           numNodes={6}
-          currentNode={0}
+          currentNode={easy}
           nodeText={easyOptions}
           color={theme.courses}
+          onUpdate={(value) => setEasy(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -71,22 +82,25 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
 
       <ReviewTextArea rows={5} placeholder="Add any comments or tips" />
 
-      <RateProfessorWrapper>
+      <QuestionWrapper>
         <QuestionText>Rate your professor: </QuestionText>
         <DropdownList
-          selectedIndex={0}
-          list={['select your professor']}
+          selectedIndex={selectedProf}
+          placeholder='select your professor'
+          options={['andrew kennings']} // TODO fetch professors
           color={theme.professors}
+          onChange={(value) => setSelectedProf(value)}
         />
-      </RateProfessorWrapper>
+      </QuestionWrapper>
 
       <MetricQuestionWrapper>
         <DiscreteSlider
           title="Clear?"
           numNodes={6}
-          currentNode={0}
+          currentNode={clear}
           nodeText={clearOptions}
           color={theme.professors}
+          onUpdate={(value) => setClear(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -94,10 +108,11 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
         <DiscreteSlider
           title="Engaging?"
           numNodes={6}
-          currentNode={0}
+          currentNode={engaging}
           nodeText={engagingOptions}
           color={theme.professors}
           margin="0"
+          onUpdate={(value) => setEngaging(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -108,9 +123,10 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
         <MetricQuestionWrapper>
           <MetricQuestionText>Post: </MetricQuestionText>
           <DropdownList
-            selectedIndex={0}
-            list={['anonymously']}
+            selectedIndex={selectedAnonymous}
+            options={['anonymously', 'as Derrek Chow']} // TODO use user name
             color={theme.primary}
+            onChange={(value) => setSelectedAnonymous(value)}
           />
         </MetricQuestionWrapper>
         <Button children="Post" />
