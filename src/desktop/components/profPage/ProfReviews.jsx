@@ -6,13 +6,10 @@ import { withTheme } from 'styled-components';
 /* Styled Components */
 import {
   ProfCourseReviewWrapper,
-  CourseInfoWrapper,
-  CourseInfo,
-  CourseRatingsWrapper,
-  CourseLikes,
-  CourseRatings,
   CourseHeader,
   CourseName,
+  DropdownPanelWrapper,
+  DropdownTableText,
   CourseLikedMetric,
   CourseLikedPercent,
   CourseLikedPercentLabel,
@@ -24,7 +21,6 @@ import DropdownList from '../common/dropdownList/DropdownList';
 
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
-import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
 
 const ProfReviews = ({ profID, theme }) => {
   const { loading, error, data } = useQuery(GET_PROF_REVIEW, {
@@ -89,6 +85,14 @@ const ProfReviews = ({ profID, theme }) => {
                 </CourseLikedPercentLabel>
               </CourseLikedMetric>
             </CourseHeader>
+            <DropdownPanelWrapper>
+              <DropdownTableText>Sort by: </DropdownTableText>
+              <DropdownList
+                color={theme.primary}
+                selectedIndex={0}
+                options={['most helpful', 'most recent']}
+              />
+            </DropdownPanelWrapper>
             {curr.reviews.map(review => {
               return (
                 <Review
