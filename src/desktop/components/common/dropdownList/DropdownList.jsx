@@ -18,7 +18,8 @@ const DropdownList = ({
   onChange = () => {},
   placeholder = 'select an option',
   zIndex = 4,
-  width = 'fit-content'
+  width = 'fit-content',
+  margin = 'auto'
 }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
@@ -41,7 +42,7 @@ const DropdownList = ({
   }, [handleUserKeyPress]);
 
   return (
-    <DropdownWrapper zIndex={zIndex} ref={ref} width={width}>
+    <DropdownWrapper zIndex={zIndex} ref={ref} width={width} margin={margin}>
       <DropdownControl
         open={open}
         color={color}
@@ -79,7 +80,8 @@ DropdownList.propTypes = {
   onChange: PropTypes.func,
   zIndex: PropTypes.number, // callback function that takes the index of the clicked element in the list
   placeholder: PropTypes.string,
-  width: PropTypes.string
+  width: PropTypes.string,
+  margin: PropTypes.string
 };
 
 export default DropdownList;

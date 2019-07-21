@@ -7,6 +7,7 @@ import {
   ReviewTextArea,
   QuestionWrapper,
   Footer,
+  FooterQuestionWrapper
 } from './styles/CourseReviewCourseBox';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
@@ -120,16 +121,17 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
 
       <Footer>
         <Button children="Cancel" handleClick={onCancel} />
-        <MetricQuestionWrapper>
-          <MetricQuestionText>Post: </MetricQuestionText>
+        <FooterQuestionWrapper>
+          <QuestionText>Post: </QuestionText>
           <DropdownList
             selectedIndex={selectedAnonymous}
             options={['anonymously', 'as Derrek Chow']} // TODO use user name
             color={theme.primary}
             onChange={(value) => setSelectedAnonymous(value)}
+            margin='auto 16px auto auto'
           />
-        </MetricQuestionWrapper>
-        <Button children="Post" />
+          <Button children="Post" />
+        </FooterQuestionWrapper>
       </Footer>
     </CourseReviewCourseBoxWrapper>
   );

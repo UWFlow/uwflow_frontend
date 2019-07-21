@@ -11,6 +11,7 @@ import {
   LargePercentage,
   GreyText,
   ProgressBarColumn,
+  ProgressBarColumnWrapper,
   ProgressWrapper,
   ProgressTextLabel,
   ProgressBarWrapper,
@@ -24,6 +25,7 @@ import {
 import ProgressBar from './ProgressBar';
 
 export const RATING_BOX_HEIGHT = 244;
+export const RATING_BOX_WIDTH = 512;
 
 /*
   NOTE DATA FOR "LIKED" MUST BE PERCENTAGES[0]
@@ -31,7 +33,7 @@ export const RATING_BOX_HEIGHT = 244;
 const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
   return (
-    <RatingBoxWrapper ratingBoxHeight={RATING_BOX_HEIGHT}>
+    <RatingBoxWrapper ratingBoxHeight={RATING_BOX_HEIGHT} ratingBoxWidth={RATING_BOX_WIDTH}>
       <LikesColumn>
         <PieChart
           width={RATING_BOX_HEIGHT - 32}
@@ -55,28 +57,30 @@ const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
         </NumbersInCircle>
       </LikesColumn>
       <ProgressBarColumn>
-        {percentages.map((metric, ind) =>
-          ind === 0 ? null : (
-            <ProgressWrapper key={metric.displayName}>
-              <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
-              <ProgressBarWrapper>
-                <ProgressBar percentComplete={metric.percent} />
-                <ProgressNumberLabel>
-                  {Math.round(metric.percent * 100)}%
-                </ProgressNumberLabel>
-              </ProgressBarWrapper>
-            </ProgressWrapper>
-          ),
-        )}
-        <NumReviewsAndRatingsWrapper>
-          <NumReviewsWrapper>
-            {numReviews} {numReviews === 1 ? 'review' : 'reviews'}
-          </NumReviewsWrapper>
-          <NumRatingsWrapper>
-            {numRatings}
-            {numRatings === 1 ? ' rating' : ' ratings'}
-          </NumRatingsWrapper>
-        </NumReviewsAndRatingsWrapper>
+        <ProgressBarColumnWrapper>
+          {percentages.map((metric, ind) =>
+            ind === 0 ? null : (
+              <ProgressWrapper key={metric.displayName}>
+                <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
+                <ProgressBarWrapper>
+                  <ProgressBar percentComplete={metric.percent} />
+                  <ProgressNumberLabel>
+                    {Math.round(metric.percent * 100)}%
+                  </ProgressNumberLabel>
+                </ProgressBarWrapper>
+              </ProgressWrapper>
+            ),
+          )}
+          <NumReviewsAndRatingsWrapper>
+            <NumReviewsWrapper>
+              {numReviews} {numReviews === 1 ? 'review' : 'reviews'}
+            </NumReviewsWrapper>
+            <NumRatingsWrapper>
+              {numRatings}
+              {numRatings === 1 ? ' rating' : ' ratings'}
+            </NumRatingsWrapper>
+          </NumReviewsAndRatingsWrapper>
+        </ProgressBarColumnWrapper>
       </ProgressBarColumn>
     </RatingBoxWrapper>
   );
