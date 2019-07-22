@@ -1,11 +1,29 @@
 import styled from 'styled-components';
-import { Heading4, Heading2, Body } from '../../../../constants/Mixins';
+import {
+  Heading1,
+  Heading4,
+  Heading2,
+  Body,
+  BoxShadow,
+} from '../../../../constants/Mixins';
 
 export const CourseReviewWrapper = styled.div``;
 
 export const CourseCourseReviewsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const CourseProfReviewsWrapper = styled.div`
+  padding-top: 12px;
+`;
+
+export const ReviewsForSingleProfWrapper = styled.div`
+  background-color: white;
+  padding: 32px;
+  margin-bottom: 32px;
+  border-radius: 5px;
+  ${BoxShadow}
 `;
 
 export const ReviewsOptionsWrapper = styled.div`
@@ -18,6 +36,11 @@ export const DropdownPanelWrapper = styled.div`
   align-items: center;
 `;
 
+export const ProfDropdownPanelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const DropdownTableText = styled.div`
   ${Heading4}
 `;
@@ -25,6 +48,8 @@ export const DropdownTableText = styled.div`
 export const ProfHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 32px;
+  align-items: center;
 `;
 
 export const ProfName = styled.div`
@@ -33,12 +58,15 @@ export const ProfName = styled.div`
 
 export const ProfLikedMetric = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const ProfLikedPercent = styled.div`
-  ${Heading2}
+  ${Heading1}
 `;
 
 export const ProfLikedPercentLabel = styled.div`
   ${Body}
+  width: 65px;
+  margin-left: 12px;
 `;

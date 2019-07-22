@@ -23,9 +23,9 @@ const YesNoRating = ({ boolRating, theme }) => (
 const Squares = ({ rating, total }) => (
   <>
     {Array.apply(null, Array(total)).map((v, ind) => {
-      console.log('HERE');
       return (
         <UnitCircle
+          key={ind}
           filled={ind < rating}
           diameter={16}
           border={!(ind < rating)}

@@ -8,7 +8,7 @@ export const PageWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-content: center;
+  align-items: center;
   ${PageContentZIndex}
   opacity: 0.8;
 `;

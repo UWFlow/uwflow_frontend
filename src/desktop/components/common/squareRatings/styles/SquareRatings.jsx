@@ -21,7 +21,7 @@ export const UnitCircle = styled.div`
       ? emptyColor
       : 'white'};
   ${({ border }) => (border ? 'border: 2px solid gray' : '')};
-  margin: 2px;
+  margin: 1px;
 `;
 
 export const YNText = styled.div`

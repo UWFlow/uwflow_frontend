@@ -38,8 +38,8 @@ export const ReviewUpvotes = styled.div`
 
 export const ReviewTextWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
-  width: 60%;
   word-wrap: break-word;
 `;
 
@@ -49,20 +49,24 @@ export const ReviewText = styled.div`
 
 export const ReviewAuthor = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.dark1}
+  margin-top: 16px;
+  color: ${({ theme }) => theme.dark1};
 `;
 
-export const ReviewMetricsWrapper = styled.div`
+export const ReviewMetricsWrapper = styled.table`
+  min-width: 158px;
+  margin-left: 8px;
+`;
+
+export const SingleMetricWrapper = styled.tr``;
+
+export const SingleMetricSquares = styled.td`
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8px 0 8px 0;
 `;
 
-export const SingleMetricWrapper = styled.div`
-  display: flex;
-  align-content: center;
-`;
-
-export const SingleMetricLabel = styled.div`
+export const SingleMetricLabel = styled.td`
   ${Body}
-  margin-left: 4px;
+  padding: 8px 0 8px 4px;
 `;

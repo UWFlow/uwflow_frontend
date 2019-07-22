@@ -12,6 +12,7 @@ import {
   ReviewText,
   ReviewAuthor,
   SingleMetricWrapper,
+  SingleMetricSquares,
   SingleMetricLabel,
 } from './styles/Review';
 
@@ -23,17 +24,24 @@ const MetricIfExists = (metrics, metric) => {
     if (metrics[metric] === true || metrics[metric] === false) {
       return (
         <SingleMetricWrapper>
-          <SquareRatings boolRating={metrics[metric]} />
+          <SingleMetricSquares>
+            <SquareRatings boolRating={metrics[metric]} />
+          </SingleMetricSquares>
           <SingleMetricLabel>
-            {metric === 'liked' ? 'liked it' : metric}?
+            {metric === 'liked' ? 'Liked it' : metric}?
           </SingleMetricLabel>
         </SingleMetricWrapper>
       );
     } else {
       return (
         <SingleMetricWrapper>
-          <SquareRatings total={5} rating={metrics[metric]} />
-          <SingleMetricLabel> {metric}?</SingleMetricLabel>
+          <SingleMetricSquares>
+            <SquareRatings total={5} rating={metrics[metric]} />
+          </SingleMetricSquares>
+          <SingleMetricLabel>
+            {' '}
+            {metric.charAt(0).toUpperCase() + metric.slice(1)}?
+          </SingleMetricLabel>
         </SingleMetricWrapper>
       );
     }

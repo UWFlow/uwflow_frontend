@@ -27,9 +27,10 @@ const TabContainer = ({
             selected={index === selectedTab}
             first={index === 0}
             last={index === tabList.length - 1}
-            onClick={() =>
-              tab.onClick ? tab.onClick(index) : setSelectedTab(index)
-            }
+            onClick={() => {
+              tab.onClick && tab.onClick(index);
+              setSelectedTab(index);
+            }}
           >
             {tab.title}
           </Tab>
@@ -44,7 +45,7 @@ TabContainer.propTypes = {
   tabList: PropTypes.arrayOf(PropTypes.object).isRequired,
   initialSelectedTab: PropTypes.number,
   containerWidth: PropTypes.string,
-  tabWidth: PropTypes.string
-}
+  tabWidth: PropTypes.string,
+};
 
 export default TabContainer;
