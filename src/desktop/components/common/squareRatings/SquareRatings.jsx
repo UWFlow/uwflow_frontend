@@ -11,10 +11,10 @@ import {
 
 const YesNoRating = ({ boolRating, theme }) => (
   <>
-    <UnitCircle filled={boolRating} diameter={20} emptyColor={theme.light3}>
+    <UnitCircle filled={boolRating} diameter={20} emptyColor={theme.dark3}>
       <YNText>Y</YNText>
     </UnitCircle>
-    <UnitCircle filled={!boolRating} diameter={20} emptyColor={theme.light3}>
+    <UnitCircle filled={!boolRating} diameter={20} emptyColor={theme.dark3}>
       <YNText>N</YNText>
     </UnitCircle>
   </>
