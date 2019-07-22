@@ -11,6 +11,7 @@ export const ProfCourseReviewWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  color: ${({ theme }) => theme.dark2};
 `;
 
 export const ReviewsForSingleCourseWrapper = styled.div`
@@ -31,6 +32,7 @@ export const CourseHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  margin-right: 24px;
 `;
 
 export const CourseNameAndCode = styled.div`
@@ -39,11 +41,13 @@ export const CourseNameAndCode = styled.div`
 `;
 
 export const CourseCode = styled.div`
-  ${Heading1}
+  ${Heading2}
+  margin-bottom: 16px;
 `;
 
 export const CourseName = styled.div`
   ${Heading2}
+  font-size: 24px;
 `;
 
 export const DropdownPanelWrapper = styled.div`
@@ -54,6 +58,7 @@ export const DropdownPanelWrapper = styled.div`
 
 export const DropdownTableText = styled.div`
   ${Heading4}
+  color: ${({ theme }) => theme.dark1};
 `;
 
 export const CourseLikedMetric = styled.div`

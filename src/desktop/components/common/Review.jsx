@@ -6,6 +6,7 @@ import {
   ReviewWrapper,
   ReviewTextWrapper,
   ReviewMetricsWrapper,
+  ReviewMetricsBody,
   ReviewPictureWrapper,
   ReviewPicture,
   ReviewUpvotes,
@@ -62,11 +63,13 @@ const Review = ({ upvotes, review, reviewer, prof, metrics }) => {
         </ReviewAuthor>
       </ReviewTextWrapper>
       <ReviewMetricsWrapper>
-        {MetricIfExists(metrics, 'clear')}
-        {MetricIfExists(metrics, 'engaging')}
-        {MetricIfExists(metrics, 'useful')}
-        {MetricIfExists(metrics, 'easy')}
-        {MetricIfExists(metrics, 'liked')}
+        <ReviewMetricsBody>
+          {MetricIfExists(metrics, 'clear')}
+          {MetricIfExists(metrics, 'engaging')}
+          {MetricIfExists(metrics, 'useful')}
+          {MetricIfExists(metrics, 'easy')}
+          {MetricIfExists(metrics, 'liked')}
+        </ReviewMetricsBody>
       </ReviewMetricsWrapper>
     </ReviewWrapper>
   );

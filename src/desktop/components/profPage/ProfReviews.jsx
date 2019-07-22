@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
@@ -26,7 +26,8 @@ import DropdownList from '../common/dropdownList/DropdownList';
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
 
 const ProfReviews = ({ profID, theme }) => {
-  const { loading, error, data } = useQuery(GET_PROF_REVIEW, {
+  const [selectedSort, setSelectedSort] = useState(0);
+  const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
   });
 
@@ -37,7 +38,6 @@ const ProfReviews = ({ profID, theme }) => {
       </ProfCourseReviewWrapper>
     );
   }
-  console.log(data);
 
   const reviewsByCourse = data.prof_review.reduce((allCourses, current) => {
     let courseObject;
@@ -99,8 +99,9 @@ const ProfReviews = ({ profID, theme }) => {
               <DropdownTableText>Sort by: </DropdownTableText>
               <DropdownList
                 color={theme.primary}
-                selectedIndex={0}
+                selectedIndex={selectedSort}
                 options={['most helpful', 'most recent']}
+                onChange={(value) => setSelectedSort(value)}
               />
             </DropdownPanelWrapper>
             {curr.reviews.map(review => {

@@ -58,6 +58,8 @@ export const ReviewMetricsWrapper = styled.table`
   margin-left: 8px;
 `;
 
+export const ReviewMetricsBody = styled.tbody``;
+
 export const SingleMetricWrapper = styled.tr``;
 
 export const SingleMetricSquares = styled.td`
