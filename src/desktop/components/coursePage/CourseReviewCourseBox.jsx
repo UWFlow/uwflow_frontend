@@ -7,6 +7,7 @@ import {
   ReviewTextArea,
   QuestionWrapper,
   Footer,
+  CancelButtonText,
   FooterQuestionWrapper
 } from './styles/CourseReviewCourseBox';
 import PropTypes from 'prop-types';
@@ -41,8 +42,11 @@ const engagingOptions = [
 const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
   const [useful, setUseful] = useState(0);
   const [easy, setEasy] = useState(0);
+  const [liked, setLiked] = useState(-1);
+
   const [clear, setClear] = useState(0);
   const [engaging, setEngaging] = useState(0);
+
   const [selectedProf, setSelectedProf] = useState(-1);
   const [selectedAnonymous, setSelectedAnonymous] = useState(0);
 
@@ -52,8 +56,8 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
         <QuestionText>What do you think of this course?</QuestionText>
       </QuestionWrapper>
       <MetricQuestionWrapper>
+        <MetricQuestionText>Useful?</MetricQuestionText>
         <DiscreteSlider
-          title="Useful?"
           numNodes={6}
           currentNode={useful}
           nodeText={usefulOptions}
@@ -63,8 +67,8 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
+        <MetricQuestionText>Easy?</MetricQuestionText>
         <DiscreteSlider
-          title="Easy?"
           numNodes={6}
           currentNode={easy}
           nodeText={easyOptions}
@@ -74,14 +78,16 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
-        <MetricQuestionText>Like it? </MetricQuestionText>
-        <RadioButton selected={true} />
-        <MetricQuestionText>Yes</MetricQuestionText>
-        <RadioButton selected={false} />
-        <MetricQuestionText>Yes</MetricQuestionText>
+        <MetricQuestionText width={112 - 16}>Like it?</MetricQuestionText>
+        <RadioButton
+          selected={liked}
+          options={['Yes', 'No']}
+          color={theme.courses}
+          onClick={(value) => setLiked(value)}
+        />
       </MetricQuestionWrapper>
 
-      <ReviewTextArea rows={5} placeholder="Add any comments or tips" />
+      <ReviewTextArea rows={5} placeholder="Add any comments or tips..." />
 
       <QuestionWrapper>
         <QuestionText>Rate your professor: </QuestionText>
@@ -95,8 +101,8 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
       </QuestionWrapper>
 
       <MetricQuestionWrapper>
+        <MetricQuestionText>Clear?</MetricQuestionText>
         <DiscreteSlider
-          title="Clear?"
           numNodes={6}
           currentNode={clear}
           nodeText={clearOptions}
@@ -106,21 +112,19 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
+        <MetricQuestionText>Engaging?</MetricQuestionText>
         <DiscreteSlider
-          title="Engaging?"
           numNodes={6}
           currentNode={engaging}
           nodeText={engagingOptions}
           color={theme.professors}
-          margin="0"
           onUpdate={(value) => setEngaging(value[0])}
         />
       </MetricQuestionWrapper>
 
-      <ReviewTextArea rows={5} placeholder="Add any comments or tips" />
+      <ReviewTextArea rows={5} placeholder="Add any comments or tips..." />
 
       <Footer>
-        <Button children="Cancel" handleClick={onCancel} />
         <FooterQuestionWrapper>
           <QuestionText>Post: </QuestionText>
           <DropdownList
@@ -129,6 +133,13 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
             color={theme.primary}
             onChange={(value) => setSelectedAnonymous(value)}
             margin='auto 16px auto auto'
+          />
+          <Button
+            children={<CancelButtonText>Cancel</CancelButtonText>}
+            color={theme.dark3}
+            hoverColor={theme.dark2}
+            handleClick={onCancel}
+            margin="auto 16px auto auto"
           />
           <Button children="Post" />
         </FooterQuestionWrapper>

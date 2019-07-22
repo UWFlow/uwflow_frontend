@@ -9,13 +9,6 @@ export const DiscreteSliderWrapper = styled.div`
   margin: ${({ margin }) => margin};
 `;
 
-export const DiscreteSliderTitle = styled.div`
-  ${Body}
-  margin-right: 40px;
-  width: 60px;
-  color: ${({theme}) => theme.dark2};
-`;
-
 export const SliderBarWrapper = styled.div`
   width: 300px;
   margin: auto 0;

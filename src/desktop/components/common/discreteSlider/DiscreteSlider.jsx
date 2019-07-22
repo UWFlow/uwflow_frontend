@@ -5,7 +5,6 @@ import { withTheme } from 'styled-components';
 
 import {
   DiscreteSliderWrapper,
-  DiscreteSliderTitle,
   SliderBarWrapper,
   SliderNodeText,
   SliderRail,
@@ -28,7 +27,6 @@ const Track = ({ source, target, color, getTrackProps }) => (
  
 const DiscreteSlider = ({
   theme,
-  title,
   numNodes,
   currentNode,
   nodeText,
@@ -44,7 +42,6 @@ const DiscreteSlider = ({
 
   return (
     <DiscreteSliderWrapper margin={margin}>
-      <DiscreteSliderTitle>{title}</DiscreteSliderTitle>
       <SliderBarWrapper>
         <Slider
           step={1}
@@ -111,7 +108,6 @@ const DiscreteSlider = ({
 
 DiscreteSlider.propTypes = {
   theme: PropTypes.object.isRequired,
-  title: PropTypes.string,
   margin: PropTypes.string,
   numNodes: PropTypes.number.isRequired, // includes 0 so 6 for 0 20 40 60 80 100
   currentNode: PropTypes.number.isRequired,

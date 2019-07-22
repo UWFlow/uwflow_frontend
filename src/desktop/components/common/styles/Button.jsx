@@ -11,12 +11,13 @@ export const ButtonWrapper = styled.div`
   color: ${({ theme }) => theme.dark1};
   height: ${({ height }) => height}px;
   width: ${({ width }) => width}px;
-  background: ${({ theme }) => theme.accent};
+  margin: ${({ margin }) => margin};
+  background: ${({ theme, color = theme.accent }) => color};
   box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
     0px 0px 5px rgba(142, 147, 148, 0.2);
 
   :hover {
-    background: ${({ theme }) => theme.accentDark};
+    background: ${({ theme, hoverColor = theme.accentDark }) => hoverColor};
   }
 
   :focus,

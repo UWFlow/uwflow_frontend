@@ -49,11 +49,7 @@ const DropdownList = ({
         onClick={() => setOpen(!open)}
       >
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
-        {
-          open
-            ? <DropdownArrow>&#9650;</DropdownArrow>
-            : <DropdownArrow>&#9660;</DropdownArrow>
-        }
+        <DropdownArrow>&#9660;</DropdownArrow>
       </DropdownControl>
       <DropdownMenu open={open}>
         {options.map((opt, idx) => (
