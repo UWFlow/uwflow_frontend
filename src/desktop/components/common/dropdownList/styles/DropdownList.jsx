@@ -41,6 +41,9 @@ export const MenuItem = styled.div`
   color: ${({ theme, selected }) => selected ? theme.dark1 : theme.dark2};
   background-color: ${({theme, selected}) => selected ? theme.light2 : theme.white};
   padding: 16px;
+  border-radius:
+    ${({ first }) => first ? '4px 4px' : '0 0'}
+    ${({ last }) => last ? '4px 4px' : '0 0'};
   border: 1px solid ${({ theme }) => theme.light2};
   ${Heading4}
   &:hover {

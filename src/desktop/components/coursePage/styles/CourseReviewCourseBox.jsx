@@ -5,7 +5,7 @@ export const CourseReviewCourseBoxWrapper = styled.div`
   ${BoxShadow}
   background-color: white;
   margin-bottom: 32px;
-  border-radius: 8px;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -24,6 +24,7 @@ export const ReviewTextArea = styled.textarea`
   border: none;
   height: ${({ rows }) => rows * 16}px;
   resize: none;
+  ${BoxShadow}
 `;
 
 export const MetricQuestionWrapper = styled.div`

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/* Child Components */
+import TabContainer from '../common/TabContainer';
+
 /* Styled Components */
 import {
   ProfileCoursesWrapper,
@@ -8,9 +11,28 @@ import {
 } from './styles/ProfileCourses';
 
 const ProfileCourses = ({ courses }) => {
+  const tabList = [
+    {
+      title: 'Spring 2019',
+      render: () => {}
+    },
+    {
+      title: 'Winter 2019',
+      render: () => {}
+    },
+    {
+      title: 'Fall 2018',
+      render: () => {}
+    },
+    {
+      title: 'Spring 2018',
+      render: () => {}
+    }
+  ]
+
   return (
     <ProfileCoursesWrapper>
-      <ProfileCoursesHeader>My Courses</ProfileCoursesHeader>
+      <TabContainer tabList={tabList} />
     </ProfileCoursesWrapper>
   );
 };

@@ -5,6 +5,7 @@ export const ProfileCalendarWrapper = styled.div`
   width: 100%;
   padding: 32px;
   margin-bottom: 32px;
+  background-color: ${({theme}) => theme.white};
   ${BoxShadow}
 `;
 
@@ -17,7 +18,18 @@ export const ProfileCalendarHeading = styled.div`
 
 export const ProfileCalendarText = styled.div`
   font-family: Inter;
-  font-size: 21px;
-  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 32px;
   color: ${({theme}) => theme.dark2}
+`;
+
+export const ProfileCalendarImg = styled.div`
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  width: 100%;
+  height: 500px;
+  background-color: ${({theme}) => theme.dark3};
+  border-radius: 3px;
 `;

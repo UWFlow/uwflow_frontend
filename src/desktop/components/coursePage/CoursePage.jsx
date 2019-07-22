@@ -54,7 +54,7 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
           )}
           {!hideReviewForm && (
             <CourseReviewCourseBox
-              courseID={courseID}
+              courseIDList={[courseID]}
               onCancel={() => setHideReviewForm(true)}
             />
           )}

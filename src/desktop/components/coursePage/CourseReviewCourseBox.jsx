@@ -39,7 +39,11 @@ const engagingOptions = [
   'Somewhat engaging', 'Engaging', 'Very engaging'
 ];
 
-const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
+const CourseReviewCourseBox = ({
+  theme, courseIDList, cancelButton = true, onCancel = () => {} }
+) => {
+  const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
+
   const [useful, setUseful] = useState(0);
   const [easy, setEasy] = useState(0);
   const [liked, setLiked] = useState(-1);
@@ -52,6 +56,19 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
 
   return (
     <CourseReviewCourseBoxWrapper>
+      {courseIDList.length > 1 && (
+        <QuestionWrapper>
+          <QuestionText>Review a course: </QuestionText>
+          <DropdownList
+            selectedIndex={selectedCourseIndex}
+            placeholder='select your professor'
+            options={courseIDList} // TODO set to course names
+            color={theme.courses}
+            onChange={(value) => setSelectedCourseIndex(value)}
+          />
+        </QuestionWrapper>
+      )}
+
       <QuestionWrapper>
         <QuestionText>What do you think of this course?</QuestionText>
       </QuestionWrapper>
@@ -94,7 +111,7 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
         <DropdownList
           selectedIndex={selectedProf}
           placeholder='select your professor'
-          options={['andrew kennings']} // TODO fetch professors
+          options={['Andrew Kennings']} // TODO fetch professors
           color={theme.professors}
           onChange={(value) => setSelectedProf(value)}
         />
@@ -134,13 +151,13 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
             onChange={(value) => setSelectedAnonymous(value)}
             margin='auto 16px auto auto'
           />
-          <Button
+          {cancelButton && <Button
             children={<CancelButtonText>Cancel</CancelButtonText>}
             color={theme.dark3}
             hoverColor={theme.dark2}
             handleClick={onCancel}
             margin="auto 16px auto auto"
-          />
+          />}
           <Button children="Post" />
         </FooterQuestionWrapper>
       </Footer>
@@ -149,9 +166,10 @@ const CourseReviewCourseBox = ({ courseID, onCancel, theme }) => {
 };
 
 CourseReviewCourseBox.propTypes = {
-  courseID: PropTypes.string.isRequired,
-  onCancel: PropTypes.func.isRequired,
+  courseIDList: PropTypes.arrayOf(PropTypes.string).isRequired,
   theme: PropTypes.object.isRequired,
+  cancelButton: PropTypes.bool,
+  onCancel: PropTypes.func
 };
 
 export default withTheme(CourseReviewCourseBox);

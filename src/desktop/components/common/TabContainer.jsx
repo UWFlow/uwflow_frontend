@@ -42,7 +42,13 @@ const TabContainer = ({
 };
 
 TabContainer.propTypes = {
-  tabList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tabList: PropTypes.arrayOf(
+    PropTypes.shape({
+      onClick: PropTypes.func,
+      title: PropTypes.string.isRequired,
+      render: PropTypes.func.isRequired
+    })
+  ).isRequired,
   initialSelectedTab: PropTypes.number,
   containerWidth: PropTypes.string,
   tabWidth: PropTypes.string,

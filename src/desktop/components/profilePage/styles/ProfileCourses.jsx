@@ -4,9 +4,5 @@ export const ProfileCoursesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
-
-export const ProfileCoursesHeader = styled.div`
-  display: flex;
-  margin: auto;
+  margin-bottom: 32px;
 `;

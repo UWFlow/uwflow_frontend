@@ -55,6 +55,8 @@ const DropdownList = ({
         {options.map((opt, idx) => (
           <MenuItem
             key={idx}
+            first={idx === 0}
+            last={idx === options.length - 1}
             selected={idx === selectedIndex}
             onClick={() => {
               onChange(idx);

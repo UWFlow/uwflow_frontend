@@ -7,18 +7,20 @@ const Button = ({
   children,
   color,
   hoverColor,
+  borderColor,
   margin = '0',
   handleClick = () => {},
-  width = 144,
-  height = 64,
+  height = 48,
+  hasShadow = true,
 }) => {
   return (
     <ButtonWrapper
-      width={width}
       height={height}
       onClick={handleClick}
       color={color}
       hoverColor={hoverColor}
+      borderColor={borderColor}
+      hasShadow={hasShadow}
       margin={margin}
     >
       <ButtonText>{children}</ButtonText>
@@ -29,11 +31,12 @@ const Button = ({
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   handleClick: PropTypes.func,
-  width: PropTypes.number,
   height: PropTypes.number,
   color: PropTypes.string,
   hoverColor: PropTypes.string,
-  margin: PropTypes.string
+  borderColor: PropTypes.string,
+  margin: PropTypes.string,
+  hasShadow: PropTypes.bool
 };
 
 export default Button;

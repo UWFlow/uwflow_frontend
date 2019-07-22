@@ -6,15 +6,16 @@ export const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  border: 2px solid ${({ theme }) => theme.light2};
+  border: 2px solid ${({ theme, borderColor = theme.light2 }) => borderColor};
   border-radius: 8px;
+  padding: 16px 48px;
   color: ${({ theme }) => theme.dark1};
-  height: ${({ height }) => height}px;
-  width: ${({ width }) => width}px;
+  min-height: ${({ height }) => height}px;
   margin: ${({ margin }) => margin};
   background: ${({ theme, color = theme.accent }) => color};
-  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
-    0px 0px 5px rgba(142, 147, 148, 0.2);
+  ${({ hasShadow }) => hasShadow 
+    && `box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+      0px 0px 5px rgba(142, 147, 148, 0.2);`}
 
   :hover {
     background: ${({ theme, hoverColor = theme.accentDark }) => hoverColor};

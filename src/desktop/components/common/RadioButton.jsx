@@ -15,9 +15,8 @@ const RadioButton = ({ color, selected, options, onClick = () => {} }) => {
   return (
     <RadioButtonWrapper>
       {options.map((opt, idx) => (
-        <RadioButtonOption>
+        <RadioButtonOption key={idx}>
           <CheckCircle
-            key={idx}
             color={color}
             disabled={false}
             checked={idx === selected}
