@@ -10,6 +10,7 @@ export const WideColumn = `
   display: flex;
   flex-direction: column;
   width: 70%;
+  margin-right: 32px;
 `;
 
 export const ThinColumn = `
@@ -27,7 +28,7 @@ export const Heading1 = `
 
 export const Heading2 = `
   font-family: 'Anderson Grotesk';
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 600;
 `;
 
@@ -57,3 +58,7 @@ export const Link = `
   font-size: 14px;
 `;
 
+export const BoxShadow = `
+  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+  0px 0px 5px rgba(142, 147, 148, 0.2);
+`;

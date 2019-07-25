@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
 /* Child Components */
 import TabContainer from '../common/TabContainer';
 
-const mapStateToProps = state => ({});
+/* Styled Components */
+import { ScheduleTable, CourseScheduleWrapper } from './styles/CourseSchedule';
 
-const CourseSchedule = () => {
-  return <>Course Schedule</>;
+const CourseScheduleInner = term => {
+  return <ScheduleTable>{term}</ScheduleTable>;
 };
 
-export default connect(mapStateToProps)(CourseSchedule);
+const termsOffered = ['Spring 2019', 'Fall 2019', 'Winter 2020'];
+
+const CourseSchedule = () => {
+  const tabList = termsOffered.map(value => {
+    return { title: value, render: () => CourseScheduleInner(value) };
+  });
+
+  return (
+    <CourseScheduleWrapper>
+      <TabContainer initialSelectedTab={0} tabList={tabList} />
+    </CourseScheduleWrapper>
+  );
+};
+
+export default CourseSchedule;

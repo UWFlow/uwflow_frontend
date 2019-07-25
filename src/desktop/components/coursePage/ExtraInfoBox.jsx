@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
 /* Styled Components */
 import { ExtraInfoBoxWrapper } from './styles/CoursePage';
 
 const ExtraInfoBox = ({ requiredTextbooks }) => {
-  return <ExtraInfoBoxWrapper>Extra Info Box</ExtraInfoBoxWrapper>;
+  return <ExtraInfoBoxWrapper>Required Textbooks:</ExtraInfoBoxWrapper>;
 };
 
 export default ExtraInfoBox;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 const ModalPortal = ({ children }) => {
-  const [element, setElement] = useState(document.createElement('div'));
+  const [element] = useState(document.createElement('div'));
 
   useEffect(() => {
     const roots = document.getElementsByClassName('modal-root');
@@ -12,7 +12,7 @@ const ModalPortal = ({ children }) => {
     roots[0].appendChild(element);
 
     return () => roots[0].removeChild(element);
-  }, []);
+  }, [element]);
 
   return createPortal(children, element);
 };

@@ -7,14 +7,16 @@ const CourseFragment = {
       code
       name
       description
-      course_review_stats {
-        easy
-        liked
-        not_easy
-        not_liked
-        not_useful
-        useful
+      course_reviews_aggregate {
+        aggregate {
+          count(columns: text)
+        }
       }
+      antireqs
+      coreqs
+      textbooks
+      sections
+      prereqs
     }
   `,
   shallowCourseInfo: gql`
@@ -23,7 +25,7 @@ const CourseFragment = {
       code
       name
     }
-  `
+  `,
 };
 
 export default CourseFragment;

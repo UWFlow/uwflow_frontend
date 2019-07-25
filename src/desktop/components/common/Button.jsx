@@ -3,9 +3,26 @@ import PropTypes from 'prop-types';
 
 import { ButtonWrapper, ButtonText } from './styles/Button';
 
-const Button = ({ children, handleClick = () => {}, width = 144, height = 64 }) => {
+const Button = ({
+  children,
+  color,
+  hoverColor,
+  borderColor,
+  margin = '0',
+  handleClick = () => {},
+  height = 48,
+  hasShadow = true,
+}) => {
   return (
-    <ButtonWrapper width={width} height={height} onClick={() => handleClick()}>
+    <ButtonWrapper
+      height={height}
+      onClick={handleClick}
+      color={color}
+      hoverColor={hoverColor}
+      borderColor={borderColor}
+      hasShadow={hasShadow}
+      margin={margin}
+    >
       <ButtonText>{children}</ButtonText>
     </ButtonWrapper>
   );
@@ -14,8 +31,12 @@ const Button = ({ children, handleClick = () => {}, width = 144, height = 64 }) 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   handleClick: PropTypes.func,
-  width: PropTypes.number,
-  height: PropTypes.number
+  height: PropTypes.number,
+  color: PropTypes.string,
+  hoverColor: PropTypes.string,
+  borderColor: PropTypes.string,
+  margin: PropTypes.string,
+  hasShadow: PropTypes.bool
 };
 
 export default Button;

@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import { Query } from 'react-apollo';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { Search } from 'react-feather';
 
 /* Routes */
@@ -20,7 +18,7 @@ import Textbox from './Textbox';
 
 export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
 
-const Navbar = ({}) => (
+const Navbar = () => (
   <>
     <NavbarWrapper>
       <LogoWrapper to={LANDING_PAGE_ROUTE}>UW <BlueText>Flow</BlueText></LogoWrapper>

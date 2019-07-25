@@ -6,6 +6,33 @@ export const GET_COURSE = gql`
   query GET_COURSE($id: Int) {
     course(where: {id: {_eq: $id}}) {
       ...CourseInfoFragment
+    },
+    aggregate_course_easy_buckets_aggregate(where: { course_id: {_eq: $id } } ) {
+      aggregate {
+        avg {
+          easy
+        }
+      }
+    },
+    aggregate_course_liked_buckets_aggregate(where: {
+        course_id: {_eq: $id},
+        liked: { _is_null: false }
+    }) {
+      aggregate {
+        avg {
+          liked
+        }
+        sum {
+          count
+        }
+      }
+    },
+    aggregate_course_useful_buckets_aggregate(where: { course_id: {_eq: $id} } ) {
+      aggregate {
+        avg {
+          useful
+        }
+      }
     }
   }
   ${CourseFragment.courseInfo}
