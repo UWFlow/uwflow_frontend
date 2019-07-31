@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import { Body } from '../../../../../constants/Mixins';
+import { Body, BoxShadow } from '../../../../../constants/Mixins';
 
 export const SquareRatingWrapper = styled.div`
   display: flex;
 `;
 
 export const UnitCircle = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,11 +21,16 @@ export const UnitCircle = styled.div`
       : emptyColor
       ? emptyColor
       : 'white'};
-  ${({ border }) => (border ? 'border: 2px solid gray' : '')};
-  margin: 1px;
+  ${({ border, theme }) => (border ? `border: 2px solid ${theme.light4}` : '')};
+  margin: 0 1px;
+  ${({ filled }) => filled ? '' : BoxShadow}
 `;
 
 export const YNText = styled.div`
   ${Body}
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  font-family: 'Anderson Grotesk';
   color: white;
 `;

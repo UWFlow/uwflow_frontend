@@ -44,6 +44,7 @@ export const ReviewTextWrapper = styled.div`
 `;
 
 export const ReviewText = styled.div`
+  word-break: break-word;
   ${Body}
 `;
 
