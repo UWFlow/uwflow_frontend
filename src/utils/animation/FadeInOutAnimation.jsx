@@ -6,7 +6,7 @@ import { config, useSpring } from 'react-spring';
 /* Styled Components */
 import { ContentWrapper } from './styles/Animations';
 
-const FadeInOutAnimation = ({ isOpen, children, endOpacity, onFinish }) => {
+const FadeInOutAnimation = ({ isOpen, children, endOpacity = 1, onFinish }) => {
   const [isTrulyOpen, setTrulyOpen] = useState(isOpen);
 
   const onRest = () => {
