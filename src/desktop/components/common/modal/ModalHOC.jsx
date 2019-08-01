@@ -1,27 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Spring, config } from 'react-spring/renderprops';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
-import { ModalBackdrop, ModalWrapper } from './styles/Modal';
+import {
+  ModalBackdrop,
+  ModalWrapper,
+  ModalContentWrapper,
+} from './styles/Modal';
 
 /* Child Components */
 import ModalPortal from './ModalPortal';
-import PopInAnOutAnimation from '../../../../utils/animation/PopInAndOutAnimation';
+import PopInOutAnimation from '../../../../utils/animation/PopInOutAnimation';
+import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
 
 const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
-  const [isTrulyOpen, setTrulyOpen] = useState(false);
+  const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
 
-  const handleKeyPress = useCallback(event => {
-    const { keyCode } = event;
-    if (keyCode === 27) { // ESC key
-      onCloseModal();
-    }
-  }, [onCloseModal]);
+  const handleKeyPress = useCallback(
+    event => {
+      const { keyCode } = event;
+      if (keyCode === 27) {
+        // ESC key
+        onCloseModal();
+      }
+    },
+    [onCloseModal],
+  );
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyPress);
-
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
@@ -31,42 +38,30 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
     setTrulyOpen(isModalOpen);
   };
 
-  const backdropStart = 'rgba(255, 255, 255, 0)';
-  const backdropEnd = 'rgba(25, 42, 50, 0.7)';
-
-  return isModalOpen || isTrulyOpen ? (
-    <ModalPortal>
-      <Spring
-        native
-        config={config.default}
-        from={{ back: isModalOpen ? backdropStart : backdropEnd }}
-        to={{ back: isModalOpen ? backdropEnd : backdropStart }}
-        onRest={onAnimationFinish}
-      >
-        {({ back }) => (
-          <ModalBackdrop
-            onClick={onCloseModal}
-            style={{
-              background: back,
-            }}
+  return (
+    (isModalOpen || isTrulyOpen) && (
+      <ModalPortal>
+        <ModalContentWrapper>
+          <FadeInOutAnimation
+            isOpen={isModalOpen}
+            endOpacity={0.7}
+            onFinish={onAnimationFinish}
           >
-            <PopInAnOutAnimation
-              isOpen={isModalOpen}
-              onAnimationFinish={onAnimationFinish}
-            >
-              <ModalWrapper>{children}</ModalWrapper>
-            </PopInAnOutAnimation>
-          </ModalBackdrop>
-        )}
-      </Spring>
-    </ModalPortal>
-  ) : null;
+            <ModalBackdrop onClick={onCloseModal} />
+          </FadeInOutAnimation>
+          <PopInOutAnimation isOpen={isModalOpen}>
+            <ModalWrapper>{children}</ModalWrapper>
+          </PopInOutAnimation>
+        </ModalContentWrapper>
+      </ModalPortal>
+    )
+  );
 };
 
 ModalHOC.propTypes = {
   children: PropTypes.any.isRequired,
   onCloseModal: PropTypes.func.isRequired,
-  isModalOpen: PropTypes.bool.isRequired
+  isModalOpen: PropTypes.bool.isRequired,
 };
 
 export default ModalHOC;
