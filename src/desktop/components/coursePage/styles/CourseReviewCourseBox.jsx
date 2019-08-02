@@ -4,11 +4,11 @@ import { BoxShadow, Heading4, Body } from '../../../../constants/Mixins';
 export const CourseReviewCourseBoxWrapper = styled.div`
   ${BoxShadow}
   background-color: white;
-  margin-bottom: 32px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   padding: 24px;
+  margin: 32px 0 32px 0;
 `;
 
 export const QuestionText = styled.div`
@@ -17,7 +17,7 @@ export const QuestionText = styled.div`
 
 export const ReviewTextArea = styled.textarea`
   padding: 8px 16px;
-  background: ${({theme}) => theme.light2};
+  background: ${({ theme }) => theme.light2};
   margin: 0 0 40px 0;
   border-radius: 4px;
   outline: none;

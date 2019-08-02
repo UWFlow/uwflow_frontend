@@ -8,7 +8,7 @@ import {
   QuestionWrapper,
   Footer,
   CancelButtonText,
-  FooterQuestionWrapper
+  FooterQuestionWrapper,
 } from './styles/CourseReviewCourseBox';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
@@ -20,28 +20,47 @@ import DropdownList from '../common/dropdownList/DropdownList';
 import Button from '../common/Button';
 
 const easyOptions = [
-  'Very difficult', 'Difficult', 'Somewhat difficult',
-  'Somewhat easy', 'Easy', 'Very easy'
+  'Very difficult',
+  'Difficult',
+  'Somewhat difficult',
+  'Somewhat easy',
+  'Easy',
+  'Very easy',
 ];
 
 const usefulOptions = [
-  'Very useless', 'Useless', 'Somewhat useless',
-  'Somewhat useful', 'Useful', 'Very useful'
+  'Very useless',
+  'Useless',
+  'Somewhat useless',
+  'Somewhat useful',
+  'Useful',
+  'Very useful',
 ];
 
 const clearOptions = [
-  'Very unclear', 'Unclear', 'Somewhat unclear',
-  'Somewhat clear', 'Clear', 'Very clear'
+  'Very unclear',
+  'Unclear',
+  'Somewhat unclear',
+  'Somewhat clear',
+  'Clear',
+  'Very clear',
 ];
 
 const engagingOptions = [
-  'Very unengaging', 'Unengaging', 'Somewhat unengaging',
-  'Somewhat engaging', 'Engaging', 'Very engaging'
+  'Very unengaging',
+  'Unengaging',
+  'Somewhat unengaging',
+  'Somewhat engaging',
+  'Engaging',
+  'Very engaging',
 ];
 
 const CourseReviewCourseBox = ({
-  theme, courseIDList, cancelButton = true, onCancel = () => {} }
-) => {
+  theme,
+  courseIDList,
+  cancelButton = true,
+  onCancel = () => {},
+}) => {
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
   const [useful, setUseful] = useState(0);
@@ -61,10 +80,10 @@ const CourseReviewCourseBox = ({
           <QuestionText>Review a course: </QuestionText>
           <DropdownList
             selectedIndex={selectedCourseIndex}
-            placeholder='select your professor'
+            placeholder="select your professor"
             options={courseIDList} // TODO set to course names
             color={theme.courses}
-            onChange={(value) => setSelectedCourseIndex(value)}
+            onChange={value => setSelectedCourseIndex(value)}
           />
         </QuestionWrapper>
       )}
@@ -79,7 +98,7 @@ const CourseReviewCourseBox = ({
           currentNode={useful}
           nodeText={usefulOptions}
           color={theme.courses}
-          onUpdate={(value) => setUseful(value[0])}
+          onUpdate={value => setUseful(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -90,7 +109,7 @@ const CourseReviewCourseBox = ({
           currentNode={easy}
           nodeText={easyOptions}
           color={theme.courses}
-          onUpdate={(value) => setEasy(value[0])}
+          onUpdate={value => setEasy(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -100,7 +119,7 @@ const CourseReviewCourseBox = ({
           selected={liked}
           options={['Yes', 'No']}
           color={theme.courses}
-          onClick={(value) => setLiked(value)}
+          onClick={value => setLiked(value)}
         />
       </MetricQuestionWrapper>
 
@@ -110,10 +129,10 @@ const CourseReviewCourseBox = ({
         <QuestionText>Rate your professor: </QuestionText>
         <DropdownList
           selectedIndex={selectedProf}
-          placeholder='select your professor'
+          placeholder="select your professor"
           options={['Andrew Kennings']} // TODO fetch professors
           color={theme.professors}
-          onChange={(value) => setSelectedProf(value)}
+          onChange={value => setSelectedProf(value)}
         />
       </QuestionWrapper>
 
@@ -124,7 +143,7 @@ const CourseReviewCourseBox = ({
           currentNode={clear}
           nodeText={clearOptions}
           color={theme.professors}
-          onUpdate={(value) => setClear(value[0])}
+          onUpdate={value => setClear(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -135,7 +154,7 @@ const CourseReviewCourseBox = ({
           currentNode={engaging}
           nodeText={engagingOptions}
           color={theme.professors}
-          onUpdate={(value) => setEngaging(value[0])}
+          onUpdate={value => setEngaging(value[0])}
         />
       </MetricQuestionWrapper>
 
@@ -148,16 +167,19 @@ const CourseReviewCourseBox = ({
             selectedIndex={selectedAnonymous}
             options={['anonymously', 'as Derrek Chow']} // TODO use user name
             color={theme.primary}
-            onChange={(value) => setSelectedAnonymous(value)}
-            margin='auto 16px auto auto'
-          />
-          {cancelButton && <Button
-            children={<CancelButtonText>Cancel</CancelButtonText>}
-            color={theme.dark3}
-            hoverColor={theme.dark2}
-            handleClick={onCancel}
+            onChange={value => setSelectedAnonymous(value)}
             margin="auto 16px auto auto"
-          />}
+          />
+          {cancelButton && (
+            <Button
+              color={theme.dark3}
+              hoverColor={theme.dark2}
+              handleClick={onCancel}
+              margin="auto 16px auto auto"
+            >
+              <CancelButtonText>Cancel</CancelButtonText>
+            </Button>
+          )}
           <Button children="Post" />
         </FooterQuestionWrapper>
       </Footer>
@@ -169,7 +191,7 @@ CourseReviewCourseBox.propTypes = {
   courseIDList: PropTypes.arrayOf(PropTypes.string).isRequired,
   theme: PropTypes.object.isRequired,
   cancelButton: PropTypes.bool,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
 };
 
 export default withTheme(CourseReviewCourseBox);

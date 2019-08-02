@@ -3,7 +3,6 @@ import {
   ModalBackdropZIndex,
   ModalZIndex,
 } from '../../../../../constants/Mixins';
-import { animated } from 'react-spring/renderprops';
 
 export const ModalBackdrop = styled.div`
   ${ModalBackdropZIndex}
@@ -16,25 +15,21 @@ export const ModalBackdrop = styled.div`
 `;
 
 export const ModalContentWrapper = styled.div`
-  overflow-y: auto;
+  overflow-y: scroll;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-begin;
   position: fixed;
+  bottom: 0;
   top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
 `;
 
-export const ModalWrapper = styled(animated.div).attrs(() => ({
+export const ModalWrapper = styled.div.attrs(() => ({
   // don't click backdrop or modal will be closed
   onClick: event => event.stopPropagation(),
-}))`
-  background-color: #fff;
-  position: relative;
-  margin: auto;
-`;
+}))``;
 
 export const ModalContainer = styled.div`
   position: absolute;

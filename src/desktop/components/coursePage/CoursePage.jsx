@@ -10,6 +10,7 @@ import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
 import Button from '../common/Button';
+import ModalHOC from '../common/modal/ModalHOC';
 
 /* Styled Components */
 import {
@@ -38,26 +39,27 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
       <ColumnWrapper>
         <Column1>
           <CourseSchedule />
-          {hideReviewForm && (
-            <CourseReviewQuestionBox>
-              <CourseReviewQuestionText>
-                What do you think of {course.code}?
-              </CourseReviewQuestionText>
-              <Button
-                children="Add your review"
-                width={200}
-                handleClick={() => {
-                  setHideReviewForm(false);
-                }}
-              />
-            </CourseReviewQuestionBox>
-          )}
-          {!hideReviewForm && (
+          <CourseReviewQuestionBox>
+            <CourseReviewQuestionText>
+              What do you think of {course.code}?
+            </CourseReviewQuestionText>
+            <Button
+              children="Add your review"
+              width={200}
+              handleClick={() => {
+                setHideReviewForm(false);
+              }}
+            />
+          </CourseReviewQuestionBox>
+          <ModalHOC
+            isModalOpen={!hideReviewForm}
+            onCloseModal={() => setHideReviewForm(true)}
+          >
             <CourseReviewCourseBox
               courseIDList={[courseID]}
               onCancel={() => setHideReviewForm(true)}
             />
-          )}
+          </ModalHOC>
           <CourseReviews courseID={courseID} />
         </Column1>
         <Column2>
@@ -70,20 +72,23 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
-  const { loading, data } = useQuery(GET_COURSE, {variables: { id: courseID }});
+  const { loading, data } = useQuery(GET_COURSE, {
+    variables: { id: courseID },
+  });
 
   return (
     <CoursePageWrapper>
-      { loading
-          ? <div>Loading ...</div>
-          : <CoursePageContent
-            course={data.course[0]}
-            easy={data.aggregate_course_easy_buckets_aggregate}
-            liked={data.aggregate_course_liked_buckets_aggregate}
-            useful={data.aggregate_course_useful_buckets_aggregate}
-            courseID={courseID}
-          />
-      }
+      {loading ? (
+        <div>Loading ...</div>
+      ) : (
+        <CoursePageContent
+          course={data.course[0]}
+          easy={data.aggregate_course_easy_buckets_aggregate}
+          liked={data.aggregate_course_liked_buckets_aggregate}
+          useful={data.aggregate_course_useful_buckets_aggregate}
+          courseID={courseID}
+        />
+      )}
     </CoursePageWrapper>
   );
 };

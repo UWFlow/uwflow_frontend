@@ -14,6 +14,7 @@ import PopInOutAnimation from '../../../../utils/animation/PopInOutAnimation';
 import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
 
 const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
+  console.log('RENDER');
   const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
 
   const handleKeyPress = useCallback(
@@ -34,28 +35,34 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
     };
   }, [handleKeyPress]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isModalOpen]);
+
   const onAnimationFinish = () => {
     setTrulyOpen(isModalOpen);
   };
 
-  return (
-    (isModalOpen || isTrulyOpen) && (
-      <ModalPortal>
-        <ModalContentWrapper>
-          <FadeInOutAnimation
-            isOpen={isModalOpen}
-            endOpacity={0.7}
-            onFinish={onAnimationFinish}
-          >
-            <ModalBackdrop onClick={onCloseModal} />
-          </FadeInOutAnimation>
-          <PopInOutAnimation isOpen={isModalOpen}>
-            <ModalWrapper>{children}</ModalWrapper>
-          </PopInOutAnimation>
-        </ModalContentWrapper>
-      </ModalPortal>
-    )
-  );
+  return isModalOpen || isTrulyOpen ? (
+    <ModalPortal>
+      <ModalContentWrapper>
+        <FadeInOutAnimation
+          isOpen={isModalOpen}
+          endOpacity={0.7}
+          onFinish={onAnimationFinish}
+        >
+          <ModalBackdrop onClick={onCloseModal} />
+        </FadeInOutAnimation>
+        <PopInOutAnimation isOpen={isModalOpen}>
+          <ModalWrapper>{children}</ModalWrapper>
+        </PopInOutAnimation>
+      </ModalContentWrapper>
+    </ModalPortal>
+  ) : null;
 };
 
 ModalHOC.propTypes = {
