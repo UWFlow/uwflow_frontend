@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk-Bold.otf) format('woff');
+  src: local('Anderson Grotesk'),
+    url(fonts/AndersonGrotesk-Bold.otf) format('woff');
   font-weight: 600;
 }
 @font-face {
@@ -11,11 +12,11 @@
 
 html {
   /* Load system fonts */
-  font-family: Inter, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe
-      UI, Helvetica Neue, sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, San Francisco, Roboto,
+    Segoe UI, Helvetica Neue, sans-serif;
   font-size: 14px;
-  color: #31393C;
-  background: #F4F5F7;
+  color: #31393c;
+  background: #f4f5f7;
   scroll-behavior: smooth;
 
   /* Make type rendering look crisper */
@@ -54,5 +55,9 @@ textarea {
 a {
   font-size: 14px;
   font-weight: 500;
-  color: #006ED8;
+  color: #006ed8;
+}
+
+body.modal-open {
+  overflow: hidden;
 }

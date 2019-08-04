@@ -6,7 +6,13 @@ import { config, useSpring } from 'react-spring';
 /* Styled Components */
 import { ContentWrapper } from './styles/Animations';
 
-const FadeInOutAnimation = ({ isOpen, children, endOpacity = 1, onFinish }) => {
+const FadeInOutAnimation = ({
+  isOpen,
+  children,
+  endOpacity = 1,
+  onFinish,
+  styles = {},
+}) => {
   const [isTrulyOpen, setTrulyOpen] = useState(isOpen);
 
   const onRest = () => {
@@ -25,6 +31,7 @@ const FadeInOutAnimation = ({ isOpen, children, endOpacity = 1, onFinish }) => {
     <ContentWrapper
       style={{
         opacity: opacity,
+        ...styles,
       }}
     >
       {children}

@@ -29,14 +29,14 @@ const Button = ({
 };
 
 Button.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.object,
   handleClick: PropTypes.func,
   height: PropTypes.number,
   color: PropTypes.string,
   hoverColor: PropTypes.string,
   borderColor: PropTypes.string,
   margin: PropTypes.string,
-  hasShadow: PropTypes.bool
+  hasShadow: PropTypes.bool,
 };
 
 export default Button;

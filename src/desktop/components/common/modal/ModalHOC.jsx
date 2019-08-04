@@ -14,6 +14,7 @@ import PopInOutAnimation from '../../../../utils/animation/PopInOutAnimation';
 import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
 
 const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
+  console.log('RENDER');
   const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
 
   const handleKeyPress = useCallback(
@@ -34,28 +35,43 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
     };
   }, [handleKeyPress]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isModalOpen]);
+
   const onAnimationFinish = () => {
     setTrulyOpen(isModalOpen);
   };
 
-  return (
-    (isModalOpen || isTrulyOpen) && (
-      <ModalPortal>
-        <ModalContentWrapper>
-          <FadeInOutAnimation
-            isOpen={isModalOpen}
-            endOpacity={0.7}
-            onFinish={onAnimationFinish}
-          >
-            <ModalBackdrop onClick={onCloseModal} />
-          </FadeInOutAnimation>
-          <PopInOutAnimation isOpen={isModalOpen}>
-            <ModalWrapper>{children}</ModalWrapper>
-          </PopInOutAnimation>
-        </ModalContentWrapper>
-      </ModalPortal>
-    )
-  );
+  const styles = {
+    width: '100%',
+    height: '100%',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+  };
+
+  return isModalOpen || isTrulyOpen ? (
+    <ModalPortal>
+      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'hide'}>
+        <FadeInOutAnimation
+          isOpen={isModalOpen}
+          endOpacity={0.7}
+          onFinish={onAnimationFinish}
+          styles={styles}
+        >
+          <ModalBackdrop onClick={onCloseModal} />
+        </FadeInOutAnimation>
+        <PopInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
+          <ModalWrapper>{children}</ModalWrapper>
+        </PopInOutAnimation>
+      </ModalContentWrapper>
+    </ModalPortal>
+  ) : null;
 };
 
 ModalHOC.propTypes = {
