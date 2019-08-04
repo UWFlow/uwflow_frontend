@@ -1,12 +1,7 @@
 import styled from 'styled-components';
-import {
-  ModalBackdropZIndex,
-  ModalZIndex,
-  ModalContentZIndex,
-} from '../../../../../constants/Mixins';
+import { ModalZIndex } from '../../../../../constants/Mixins';
 
 export const ModalBackdrop = styled.div`
-  ${ModalBackdropZIndex}
   position: fixed;
   top: 0;
   left: 0;
@@ -29,9 +24,7 @@ export const ModalContentWrapper = styled.div`
 export const ModalWrapper = styled.div.attrs(() => ({
   // don't click backdrop or modal will be closed
   onClick: event => event.stopPropagation(),
-}))`
-  z-index: ${ModalContentZIndex};
-`;
+}))``;
 
 export const ModalContainer = styled.div`
   position: absolute;

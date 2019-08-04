@@ -66,7 +66,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
         >
           <ModalBackdrop onClick={onCloseModal} />
         </FadeInOutAnimation>
-        <PopInOutAnimation isOpen={isModalOpen}>
+        <PopInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
           <ModalWrapper>{children}</ModalWrapper>
         </PopInOutAnimation>
       </ModalContentWrapper>
