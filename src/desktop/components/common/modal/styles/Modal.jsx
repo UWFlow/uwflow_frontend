@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   ModalBackdropZIndex,
   ModalZIndex,
+  ModalContentZIndex,
 } from '../../../../../constants/Mixins';
 
 export const ModalBackdrop = styled.div`
@@ -15,10 +16,9 @@ export const ModalBackdrop = styled.div`
 `;
 
 export const ModalContentWrapper = styled.div`
-  overflow-y: scroll;
+  overflow-y: ${({ overflow }) => overflow};
   display: flex;
   justify-content: center;
-  align-items: flex-begin;
   position: fixed;
   bottom: 0;
   top: 0;
@@ -29,7 +29,9 @@ export const ModalContentWrapper = styled.div`
 export const ModalWrapper = styled.div.attrs(() => ({
   // don't click backdrop or modal will be closed
   onClick: event => event.stopPropagation(),
-}))``;
+}))`
+  z-index: ${ModalContentZIndex};
+`;
 
 export const ModalContainer = styled.div`
   position: absolute;

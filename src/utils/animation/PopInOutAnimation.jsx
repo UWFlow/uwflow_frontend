@@ -6,7 +6,7 @@ import { config, useSpring } from 'react-spring';
 /* Styled Components */
 import { ContentWrapper } from './styles/Animations';
 
-const PopInOutAnimation = ({ isOpen, children, onFinish }) => {
+const PopInOutAnimation = ({ isOpen, children, onFinish, styles = {} }) => {
   const [isTrulyOpen, setTrulyOpen] = useState(isOpen);
 
   const onRest = () => {
@@ -25,6 +25,7 @@ const PopInOutAnimation = ({ isOpen, children, onFinish }) => {
     <ContentWrapper
       style={{
         transform: size.interpolate(size => `scale(${size})`),
+        ...styles,
       }}
     >
       {children}

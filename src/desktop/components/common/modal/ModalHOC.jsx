@@ -47,13 +47,22 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
     setTrulyOpen(isModalOpen);
   };
 
+  const styles = {
+    width: '100%',
+    height: '100%',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+  };
+
   return isModalOpen || isTrulyOpen ? (
     <ModalPortal>
-      <ModalContentWrapper>
+      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'hide'}>
         <FadeInOutAnimation
           isOpen={isModalOpen}
           endOpacity={0.7}
           onFinish={onAnimationFinish}
+          styles={styles}
         >
           <ModalBackdrop onClick={onCloseModal} />
         </FadeInOutAnimation>

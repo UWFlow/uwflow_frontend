@@ -251,7 +251,7 @@ const CourseReviews = ({ courseID, theme }) => {
 
   return (
     <CourseReviewWrapper>
-      <TabContainer tabList={tabList} initialSelectedTab={0} />;
+      <TabContainer tabList={tabList} initialSelectedTab={0} />
       {showingProfReviews && CourseProfReviews(reviewsByProf)}
     </CourseReviewWrapper>
   );
