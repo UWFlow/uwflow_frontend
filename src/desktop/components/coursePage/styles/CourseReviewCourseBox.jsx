@@ -9,6 +9,7 @@ export const CourseReviewCourseBoxWrapper = styled.div`
   flex-direction: column;
   padding: 24px;
   margin: 32px 0 32px 0;
+  width: 635px;
 `;
 
 export const QuestionText = styled.div`
