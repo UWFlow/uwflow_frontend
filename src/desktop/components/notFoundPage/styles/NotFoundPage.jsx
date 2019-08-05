@@ -1,15 +1,12 @@
 import styled from 'styled-components';
 
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
-
-import { Heading2 } from '../../../../constants/Mixins';
+import { Heading2 , PageContent} from '../../../../constants/Mixins';
 
 export const NotFoundPageWrapper = styled.div`
-  width: 100%;
   min-height: 100%;
   padding: 200px 0;
   margin: auto;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
 `;
 
 export const NotFoundText = styled.div`

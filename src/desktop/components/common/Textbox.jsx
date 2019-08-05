@@ -50,7 +50,7 @@ const Textbox = ({
 
   const onKeyDown = event => {
     if (typeof handleKeyDown == 'function') {
-      handleKeyDown(event);
+      handleKeyDown(event, text);
     }
   };
 

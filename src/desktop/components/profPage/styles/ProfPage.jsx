@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { WideColumn, ThinColumn } from '../../../../constants/Mixins';
-
-/* Constants */
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+import { WideColumn, ThinColumn, PageContent } from '../../../../constants/Mixins';
 
 export const ProfPageWrapper = styled.div`
   width: 100%;
@@ -15,7 +12,7 @@ export const ProfPageWrapper = styled.div`
 `;
 
 export const ColumnWrapper = styled.div`
-  width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   margin: auto;
   display: flex;
 `;

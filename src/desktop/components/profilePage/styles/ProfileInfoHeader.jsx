@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1 } from '../../../../constants/Mixins';
-
-/* Constants */
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+import { Heading1, PageContent } from '../../../../constants/Mixins';
 
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -17,8 +14,7 @@ export const ProfileInfoHeaderWrapper = styled.div`
 
 export const ProfileInfoSection = styled.div`
   padding: 52px 0;
-  width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   height: 320px;
   display: flex;
   flex-direction: row;

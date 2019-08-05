@@ -1,6 +1,21 @@
+import { PAGE_CONTENT_WIDTH } from './PageConstants';
+
 export const BackgroundZIndex = 'z-index: -1;';
 
 export const PageContentZIndex = 'z-index: 5;';
+
+export const PageContent = `
+  max-width: ${PAGE_CONTENT_WIDTH}px;
+  width: 100%;
+
+  @media only screen and (max-width: 1080px) {
+    padding: 0 32px;
+  }
+
+  @media only screen and (max-width: 720px) {
+    padding: 0 4%;
+  }
+`;
 
 export const ModalZIndex = 'z-index: 2000;';
 

@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
-/* Constants */
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
-
 /* Mixins */
-import { Heading1, Heading2, Body } from '../../../../constants/Mixins';
+import { Heading1, Heading2, Body, PageContent } from '../../../../constants/Mixins';
 
 export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -26,16 +23,14 @@ export const CourseCodeAndNameSection = styled.div`
 `;
 
 export const CourseCodeAndNameWrapper = styled.div`
-  width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   margin: auto;
   margin-bottom: 48px;
 `;
 
 export const CourseDescriptionSection = styled.div`
   position: relative;
-  width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   height: 200px;
   margin: auto;
 `;

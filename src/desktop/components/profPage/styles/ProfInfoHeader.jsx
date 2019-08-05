@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
-/* Constants */
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
-
 /* Mixins */
-import { Heading1, Heading3 } from '../../../../constants/Mixins';
+import { Heading1, Heading3, PageContent } from '../../../../constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -27,8 +24,7 @@ export const ProfNameSection = styled.div`
 
 export const ProfDescriptionSection = styled.div`
   position: relative;
-  width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   min-height: 80px;
   margin: auto;
   vertical-align: middle;
@@ -36,8 +32,7 @@ export const ProfDescriptionSection = styled.div`
 `;
 
 export const ProfNameWrapper = styled.div`
-  width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   margin: auto;
   margin-bottom: 48px;
 `;
