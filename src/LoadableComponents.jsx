@@ -16,6 +16,14 @@ export const LoadableProfPage = loadable(() =>
   import(/* webpackPrefetch: true */ './desktop/components/profPage/ProfPage'),
 );
 
+export const LoadableExplorePage = loadable(() =>
+  import(/* webpackPrefetch: true */ './desktop/components/explorePage/ExplorePage'),
+);
+
+export const LoadableNotFoundPage = loadable(() =>
+  import(/* webpackPrefetch: true */ './desktop/components/notFoundPage/NotFoundPage'),
+);
+
 export const LoadableTreePage = loadable(() =>
   import(/* webpackPrefetch: true */ './desktop/components/treePage/TreePage'),
 );

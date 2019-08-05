@@ -6,6 +6,7 @@ export const LANDING_PAGE_ROUTE = '/';
 export const PROFILE_PAGE_ROUTE = '/profile';
 export const COURSE_PAGE_ROUTE = '/course/:courseID';
 export const PROF_PAGE_ROUTE = '/prof/:profID';
+export const EXPLORE_PAGE_ROUTE = '/explore';
 export const TREE_PAGE_ROUTE = '/tree';
 export const TREE_PAGE_WITH_COURSE_ROUTE = '/tree/:courseID';
 export const ABOUT_PAGE_ROUTE = '/about';
@@ -17,6 +18,7 @@ export const TREE_PAGE_ROUTES = [TREE_PAGE_ROUTE, TREE_PAGE_WITH_COURSE_ROUTE];
 export const LANDING_PAGE_TESTER = pathToRegexp(LANDING_PAGE_ROUTE);
 export const PROFILE_PAGE_TESTER = pathToRegexp(PROFILE_PAGE_ROUTE);
 export const COURSE_PAGE_TESTER = pathToRegexp(COURSE_PAGE_ROUTE);
+export const EXPLORE_PAGE_TESTER = pathToRegexp(EXPLORE_PAGE_ROUTE);
 export const PROF_PAGE_TESTER = pathToRegexp(PROF_PAGE_ROUTE);
 export const TREE_PAGE_TESTER = pathToRegexp(TREE_PAGE_ROUTE);
 export const TREE_PAGE_WITH_COURSE_TESTER = pathToRegexp(
@@ -43,10 +45,15 @@ export const isOnCoursePageRoute = location =>
 export const isOnProfPageRoute = location =>
   PROF_PAGE_TESTER.test(location.pathname);
 
+export const isOnExplorePageRoute = location =>
+  EXPLORE_PAGE_TESTER.test(location.pathname);
+
 export const isOnTreePageRoute = location =>
   TREE_PAGE_TESTER.test(location.pathname);
+
 export const isOnTreeWithCoursePageRoute = location =>
   TREE_PAGE_WITH_COURSE_TESTER.test(location.pathname);
+
 export const isOnAnyTreePageRoute = location =>
   TREE_PAGE_TESTERS.some(tester => tester.test(location.pathname));
 

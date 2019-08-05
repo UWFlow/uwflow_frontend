@@ -10,12 +10,6 @@ import BackgroundAnimation from './BackgroundAnimation';
 const LandingPage = () => {
   return (
     <>
-      {/*}
-      <PageWrapper>
-        <Link to="/profile">Landing Page</Link>
-        <TitleText>FLOW 2.0</TitleText>
-      </PageWrapper>
-      {*/}
       <BackgroundAnimation />
       <Background />
     </>

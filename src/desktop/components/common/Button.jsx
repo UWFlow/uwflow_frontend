@@ -29,7 +29,7 @@ const Button = ({
 };
 
 Button.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   handleClick: PropTypes.func,
   height: PropTypes.number,
   color: PropTypes.string,
