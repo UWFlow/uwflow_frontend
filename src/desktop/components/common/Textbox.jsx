@@ -38,6 +38,7 @@ const Textbox = ({
   handleKeyDown,
   options = {},
   persistThroughUnmount,
+  maxLength = 524288 // default browser maxLength
 }) => {
   useEffect(() => {
     registerSelf();
@@ -67,6 +68,7 @@ const Textbox = ({
         onChange={onChange}
         onKeyDown={onKeyDown}
         options={options}
+        maxLength={`${maxLength}`}
       />
     </SearchInputWrapper>
   );
@@ -80,7 +82,8 @@ Textbox.propTypes = {
   unregisterSelf: PropTypes.func,
   handleKeyDown: PropTypes.func,
   options: PropTypes.object,
-  persistThroughUnmount: PropTypes.bool
+  persistThroughUnmount: PropTypes.bool,
+  maxLength: PropTypes.number,
 }
 
 export default connect(
