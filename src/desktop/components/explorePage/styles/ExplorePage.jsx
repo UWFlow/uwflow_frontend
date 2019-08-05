@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading2, PageContent } from '../../../../constants/Mixins';
+import { Heading2, PageContent, WideColumn, ThinColumn } from '../../../../constants/Mixins';
 
 export const ExplorePageWrapper = styled.div`
   display: flex;
@@ -21,15 +21,31 @@ export const ExploreHeaderWrapper = styled.div`
 `;
 
 export const ExploreHeaderText = styled.div`
-  padding: 52px 0;
+  padding-top: 48px;
+  padding-bottom: 16px;
+  word-break: break-all;
   ${PageContent}
-  height: 104px;
+  min-height: 104px;
   display: flex;
   flex-direction: row;
   margin: auto;
   position: relative;
-  margin-bottom: 16px;
   ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;
+`;
+
+
+export const ColumnWrapper = styled.div`
+  ${PageContent}
+  margin: auto;
+  display: flex;
+`;
+
+export const Column1 = styled.div`
+  ${WideColumn}
+`;
+
+export const Column2 = styled.div`
+  ${ThinColumn}
 `;

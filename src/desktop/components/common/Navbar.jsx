@@ -40,7 +40,7 @@ const Navbar = ({ history }) => {
             icon={Search}
             initialPlaceholder="Explore or search for courses, subjects or professors"
             handleKeyDown={handleSearch}
-            maxLength={120}
+            maxLength={100}
           />
           <ProfileButtonWrapper to={PROFILE_PAGE_ROUTE}>
             Log In
