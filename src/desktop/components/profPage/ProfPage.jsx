@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -14,6 +14,7 @@ import {
 /* Child Components */
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
+import NotFoundPage from '../notFoundPage/NotFoundPage';
 
 /* Graphql Queries */
 import { GET_PROF } from '../../../graphql/queries/prof/Prof';
@@ -34,28 +35,27 @@ const ProfPageContent = ({ prof, profID }) => {
 
 const ProfPage = ({ match }) => {
   const profID = match.params.profID;
+  const { loading, error, data } = useQuery(GET_PROF, {
+    variables: { id: profID },
+  });
 
   return (
     <ProfPageWrapper>
-      <Query query={GET_PROF} variables={{ id: profID }}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return <div>Loading...</div>;
-          }
-          if (error) {
-            return <div>Error</div>;
-          }
-          if (data.prof.length === 0) {
-            return <div>Course Doesn't Exist</div>;
-          }
-
-          const prof = {
-            ...data.prof[0],
-            reviewsAggregate: data.prof_review_aggregate,
-          };
-          return <ProfPageContent prof={prof} profID={profID} />;
-        }}
-      </Query>
+      {loading
+        ? <div>Loading ...</div>
+        : (error || !data || data.prof.length === 0
+          ? <NotFoundPage text="Sorry, we couldn't find that professor!" />
+          : (
+            <ProfPageContent
+              prof={{
+                ...data.prof[0],
+                reviewsAggregate: data.prof_review_aggregate,
+              }}
+              profID={profID}
+            />
+          )
+        )
+      }
     </ProfPageWrapper>
   );
 };

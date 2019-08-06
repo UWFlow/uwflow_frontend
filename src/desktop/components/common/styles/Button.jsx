@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { Heading4 } from '../../../../constants/Mixins';
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.button`
+  outline: none;
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { WideColumn, ThinColumn } from '../../../../constants/Mixins';
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+import { WideColumn, ThinColumn, PageContent } from '../../../../constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`
   display: flex;
@@ -11,8 +10,7 @@ export const ProfilePageWrapper = styled.div`
 `;
 
 export const ColumnWrapper = styled.div`
-  width: 100%;
-  max-width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   margin: auto;
   display: flex;
 `;

@@ -6,6 +6,7 @@ import {
   LANDING_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
   COURSE_PAGE_ROUTE,
+  EXPLORE_PAGE_ROUTE,
   PROF_PAGE_ROUTE,
   TREE_PAGE_ROUTES,
   ABOUT_PAGE_ROUTE,
@@ -17,12 +18,13 @@ import {
   LoadableLandingPage,
   LoadableProfilePage,
   LoadableCoursePage,
+  LoadableExplorePage,
   LoadableProfPage,
   LoadableTreePage,
   LoadableAboutPage,
   LoadableTestPage,
+  LoadableNotFoundPage
 } from './LoadableComponents';
-import NoMatchRedirect from './desktop/components/common/NoMatchRedirect';
 import ModalRoot from './desktop/components/common/modal/ModalRoot';
 import Navbar from './desktop/components/common/Navbar';
 
@@ -51,6 +53,11 @@ const App = () => {
           path={PROF_PAGE_ROUTE}
           component={() => <LoadableProfPage />}
         />
+        <Route
+          exact
+          path={EXPLORE_PAGE_ROUTE}
+          component={() => <LoadableExplorePage />}
+        />
         {TREE_PAGE_ROUTES.map((route, index) => (
           <Route
             key={index}
@@ -69,8 +76,7 @@ const App = () => {
           path={TEST_PAGE_ROUTE}
           component={() => <LoadableTestPage />}
         />
-        {/* Catch all other routes and redirect */}
-        <Route path="*" component={NoMatchRedirect} />
+        <Route path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
       <ModalRoot />
     </>

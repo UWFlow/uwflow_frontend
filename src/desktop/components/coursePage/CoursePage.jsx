@@ -11,6 +11,7 @@ import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
 import Button from '../common/Button';
 import ModalHOC from '../common/modal/ModalHOC';
+import NotFoundPage from '../notFoundPage/NotFoundPage';
 
 /* Styled Components */
 import {
@@ -72,23 +73,27 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
 
 const CoursePage = ({ match }) => {
   const courseID = match.params.courseID;
-  const { loading, data } = useQuery(GET_COURSE, {
+  const { loading, error, data } = useQuery(GET_COURSE, {
     variables: { id: courseID },
   });
 
   return (
     <CoursePageWrapper>
-      {loading ? (
-        <div>Loading ...</div>
-      ) : (
-        <CoursePageContent
-          course={data.course[0]}
-          easy={data.aggregate_course_easy_buckets_aggregate}
-          liked={data.aggregate_course_liked_buckets_aggregate}
-          useful={data.aggregate_course_useful_buckets_aggregate}
-          courseID={courseID}
-        />
-      )}
+      {loading
+        ? <div>Loading ...</div>
+        : (error || !data || data.course.length === 0
+          ? <NotFoundPage text="Sorry, we couldn't find that course!" />
+          : ( 
+            <CoursePageContent
+              course={data.course[0]}
+              easy={data.aggregate_course_easy_buckets_aggregate}
+              liked={data.aggregate_course_liked_buckets_aggregate}
+              useful={data.aggregate_course_useful_buckets_aggregate}
+              courseID={courseID}
+            />
+          )
+        )
+      }
     </CoursePageWrapper>
   );
 };

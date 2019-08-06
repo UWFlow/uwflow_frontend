@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading4 } from '../../../../constants/Mixins';
+import { Heading4, PageContent } from '../../../../constants/Mixins';
 
 export const NavbarWrapper = styled.div`
   top: 0;
@@ -8,18 +8,23 @@ export const NavbarWrapper = styled.div`
   width: 100%;
   height: 80px;
   background-color: ${({theme}) => theme.white};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 125px;
   border: 1px solid ${({theme}) => theme.light2};
   box-sizing: border-box;
   box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5), 0px 0px 5px rgba(142, 147, 148, 0.2);
   border-radius: 4px;
+  display: flex;
 
   @media only screen and (max-width: 720px) {
     padding: 0 5%;
   }
+`;
+
+export const NavbarContent = styled.div`
+  ${PageContent}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
 `;
 
 export const LogoWrapper = styled(Link)`

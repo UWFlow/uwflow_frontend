@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-
-/* Constants */
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+import { PageContent } from '../../../../constants/Mixins';
 
 /* Mixins */
 import {
@@ -21,7 +19,7 @@ export const CoursePageWrapper = styled.div`
 `;
 
 export const ColumnWrapper = styled.div`
-  width: ${PAGE_CONTENT_WIDTH}px;
+  ${PageContent}
   margin: auto;
   display: flex;
 `;
