@@ -32,10 +32,11 @@ const DiscreteSlider = ({
   nodeText,
   color,
   onUpdate,
-  margin="0 0 40px 0"
+  margin="0 0 40px 0",
+  showTicks=true
 }) => {
   let percentages = [];
-  for (let i = 0; i < 100; i += 100 / (numNodes - 1)) {
+  for (let i = 0; i < 100; i += Math.min(1, 100 / (numNodes - 1))) {
     percentages.push(i);
   }
   percentages.push(100);
@@ -59,7 +60,7 @@ const DiscreteSlider = ({
             {({ getRailProps }) => (
               <>
                 <SliderRail {...getRailProps()} /> 
-                {percentages.map((percent, idx) => (
+                {showTicks && percentages.map((percent, idx) => (
                   <SliderTick
                     key={percent}
                     color={idx <= currentNode ? color : theme.light3}
@@ -114,6 +115,7 @@ DiscreteSlider.propTypes = {
   color: PropTypes.string.isRequired,
   nodeText: PropTypes.arrayOf(PropTypes.string).isRequired,
   onUpdate: PropTypes.func.isRequired,
+  showTicks: PropTypes.bool.isRequired
 };
 
 export default withTheme(DiscreteSlider);
