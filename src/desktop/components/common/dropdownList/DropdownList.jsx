@@ -73,7 +73,7 @@ const DropdownList = ({
 
 DropdownList.propTypes = {
   selectedIndex: PropTypes.number.isRequired,
-  colour: PropTypes.string,
+  color: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func,
   zIndex: PropTypes.number, // callback function that takes the index of the clicked element in the list

@@ -1,26 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
+import RadioButton from '../common/RadioButton';
+import DropdownList from '../common/dropdownList/DropdownList';
 
 /* Styled Components */
 import {
   SearchFilterWrapper,
   SearchFilterHeader,
   SearchFilterText,
-  SearchFilterSection
+  SearchFilterSection,
+  RadioButtonWrapper,
+  CourseFilterDropdown
 } from './styles/SearchFilter';
 
-
-const SearchFilter = ({ ratingFilters, type, theme }) => {
-  const [numRatings, setNumRatings] = useState(0);
+const SearchFilter = ({
+  filterState,
+  setCurrentTerm,
+  setNextTerm,
+  setNumRatings,
+  setCourseTaught,
+  ratingFilters,
+  courseSearch,
+  theme
+}) => {
   const ratingFilterText = ratingFilters.map(rating => `≥ ${rating} ratings`);
 
   return (
     <SearchFilterWrapper>
       <SearchFilterHeader>Filter your results</SearchFilterHeader>
-      {type === 'course' ? (
+      {courseSearch ? (
         <>
           <SearchFilterSection>
             <SearchFilterText>Course code</SearchFilterText>
@@ -29,16 +40,34 @@ const SearchFilter = ({ ratingFilters, type, theme }) => {
             <SearchFilterText>Min # of ratings</SearchFilterText>
             <DiscreteSlider
               numNodes={ratingFilters.length}
-              currentNode={numRatings}
+              currentNode={filterState.numRatings}
               nodeText={ratingFilterText}
               color={theme.primary}
               onUpdate={value => setNumRatings(value[0])}
               showTicks={false}
-              margin="0 0 20px 0"
+              margin="0 0 32px 0"
             />
           </SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>Offered in</SearchFilterText>
+            <RadioButtonWrapper>
+              <RadioButton
+                color={theme.primary}
+                selected={filterState.currentTerm}
+                options={['Current Term']}
+                margin="8px 0 0 0"
+                onClick={() => setCurrentTerm(!filterState.currentTerm)}
+                toggle
+              />
+              <RadioButton
+                color={theme.primary}
+                selected={filterState.nextTerm}
+                options={['Next Term']}
+                margin="8px 0 0 0"
+                onClick={() => setNextTerm(!filterState.nextTerm)}
+                toggle
+              />
+            </RadioButtonWrapper>
           </SearchFilterSection>
         </>
       ) : (
@@ -47,7 +76,7 @@ const SearchFilter = ({ ratingFilters, type, theme }) => {
             <SearchFilterText>Min # of ratings</SearchFilterText>
             <DiscreteSlider
               numNodes={ratingFilters.length}
-              currentNode={numRatings}
+              currentNode={filterState.numRatings}
               nodeText={ratingFilterText}
               color={theme.primary}
               onUpdate={value => setNumRatings(value[0])}
@@ -55,7 +84,19 @@ const SearchFilter = ({ ratingFilters, type, theme }) => {
             />
           </SearchFilterSection>
           <SearchFilterSection>
-            <SearchFilterText>Show professors that teach:</SearchFilterText>
+            <SearchFilterText>
+              Show professors that
+              <br />
+              teach:
+              <CourseFilterDropdown>
+                <DropdownList
+                  selectedIndex={filterState.courseTaught}
+                  options={['any courses', 'ECE 105', 'MATH 239']}
+                  color={theme.courses}
+                  onChange={idx => setCourseTaught(idx)}
+                />
+              </CourseFilterDropdown>
+            </SearchFilterText>
           </SearchFilterSection>
         </>
       )}
@@ -64,8 +105,18 @@ const SearchFilter = ({ ratingFilters, type, theme }) => {
 };
 
 SearchFilter.propTypes = {
+  filterState: PropTypes.shape({
+    numRatings: PropTypes.number.isRequired,
+    currentTerm: PropTypes.bool.isRequired,
+    nextTerm: PropTypes.bool.isRequired,
+    courseTaught: PropTypes.number.isRequired,
+  }).isRequired,
+  setCurrentTerm: PropTypes.func.isRequired,
+  setNextTerm: PropTypes.func.isRequired,
+  setNumRatings: PropTypes.func.isRequired,
+  setCourseTaught: PropTypes.func.isRequired,
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
-  type: PropTypes.oneOf(['course', 'prof']).isRequired,
+  courseSearch: PropTypes.bool.isRequired,
   theme: PropTypes.object.isRequired
 }
 

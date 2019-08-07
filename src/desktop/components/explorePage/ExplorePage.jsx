@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 
@@ -14,7 +14,12 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-const ExplorePageContent = ({ query, type, results }) => {
+const ExplorePageContent = ({ query, courseSearch, results }) => {
+  const [numRatings, setNumRatings] = useState(0);
+  const [currentTerm, setCurrentTerm] = useState(false);
+  const [nextTerm, setNextTerm] = useState(false);
+  const [courseTaught, setCourseTaught] = useState(0);
+
   const computeRatingFilters = (results) => {
     let ratings = results.map(res => Number(res.ratings));
     ratings.sort((a, b) => a - b);
@@ -36,6 +41,13 @@ const ExplorePageContent = ({ query, type, results }) => {
   
   const ratingFilters = useMemo(() => computeRatingFilters(results), [results]);
 
+  const filterState = {
+    numRatings,
+    currentTerm,
+    nextTerm,
+    courseTaught
+  }
+
   return (
     <ExplorePageWrapper>
       <ExploreHeaderWrapper>
@@ -45,12 +57,17 @@ const ExplorePageContent = ({ query, type, results }) => {
       </ExploreHeaderWrapper>
       <ColumnWrapper>
         <Column1>
-          <SearchResults results={results} type={type} />
+          <SearchResults results={results} courseSearch={courseSearch} />
         </Column1>
         <Column2>
           <SearchFilter
+            filterState={filterState}
+            setNumRatings={setNumRatings}
+            setCurrentTerm={setCurrentTerm}
+            setNextTerm={setNextTerm}
+            setCourseTaught={setCourseTaught}
             ratingFilters={ratingFilters}
-            type={type}
+            courseSearch={courseSearch}
           />
         </Column2>
       </ColumnWrapper>
@@ -62,13 +79,13 @@ const ExplorePage = ({ location }) => {
   const { q: query, t } =   queryString.parse(location.search);
   const results = [{ratings: 0}, {ratings: 2}, {ratings: 5}, {ratings: 10}]
   
-  const type = t || 'course';
+  const courseSearch = !t || t === 'course' || t === 'c';
 
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
         query={query}
-        type={type}
+        courseSearch={courseSearch}
         results={results}
       />
     </ExplorePageWrapper>

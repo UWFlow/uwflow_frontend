@@ -11,15 +11,22 @@ import  {
   RadioButtonText
 } from './styles/RadioButton';
 
-const RadioButton = ({ color, selected, options, onClick = () => {} }) => {
+const RadioButton = ({
+  color,
+  selected,
+  options,
+  margin = '0 0 40px 0',
+  toggle = false,
+  onClick = () => {}
+}) => {
   return (
-    <RadioButtonWrapper>
+    <RadioButtonWrapper margin={margin}>
       {options.map((opt, idx) => (
         <RadioButtonOption key={idx}>
           <CheckCircle
             color={color}
             disabled={false}
-            checked={idx === selected}
+            checked={(toggle && selected) || (!toggle && idx === selected)}
             onClick={() => onClick(idx)}
           />
           <RadioButtonText>
@@ -33,8 +40,10 @@ const RadioButton = ({ color, selected, options, onClick = () => {} }) => {
 
 RadioButton.propTypes = {
   color: PropTypes.string,
-  selected: PropTypes.number.isRequired,
+  selected: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  margin: PropTypes.string,
+  toggle: PropTypes.bool,
   onClick: PropTypes.func,
 };
 
