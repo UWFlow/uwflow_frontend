@@ -22,9 +22,10 @@ import {
   HeaderButtonWrapper
 } from './styles/SearchFilter';
 
-const courseNumberOptions = [1, 2, 3, 4, 6, 7, 8].map(
+let courseNumberOptions = [1, 2, 3, 4].map(
   (num) => <span><BoldText>{num}</BoldText>XX</span>
 );
+courseNumberOptions.push(<span><BoldText>6</BoldText>XX+</span>)
 
 const SearchFilter = ({
   filterState,

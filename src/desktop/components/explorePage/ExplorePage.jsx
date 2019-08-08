@@ -15,7 +15,7 @@ import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
 const ExplorePageContent = ({ query, courseSearch, results }) => {
-  const [courseNumbers, setCourseNumbers] = useState(Array(7).fill(true));
+  const [courseNumbers, setCourseNumbers] = useState(Array(5).fill(true));
   const [numRatings, setNumRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
@@ -51,7 +51,7 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
   }
 
   const resetFilters = () => {
-    setCourseNumbers(Array(7).fill(true));
+    setCourseNumbers(Array(5).fill(true));
     setNumRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);

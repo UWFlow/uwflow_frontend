@@ -69,6 +69,7 @@ export const Small = `
 export const Link = `
   font-weight: 500;
   font-size: 14px;
+  text-decoration: underline;
 `;
 
 export const BoxShadow = `

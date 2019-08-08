@@ -13,7 +13,12 @@ const MultiSelectButton = ({
   return (
     <MultiSelectButtonWrapper margin={margin}>
       {options.map((option, idx) => (
-        <ButtonWrapper selected={selected[idx]} onClick={() => onClick(idx)} key={idx}>
+        <ButtonWrapper
+          selected={selected[idx]}
+          onClick={() => onClick(idx)}
+          key={idx}
+          last={idx === options.length - 1}
+        >
           {option}
         </ButtonWrapper>
       ))}
