@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
-import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
 import RadioButton from '../common/RadioButton';
+import MultiSelectButton from '../common/MultiSelectButton';
+import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
 import DropdownList from '../common/dropdownList/DropdownList';
 
 /* Styled Components */
@@ -15,15 +16,24 @@ import {
   RadioButtonWrapper,
   CourseFilterDropdown,
   NumRatingsWrapper,
-  NumRatingsText
+  NumRatingsText,
+  BoldText,
+  ResetButton,
+  HeaderButtonWrapper
 } from './styles/SearchFilter';
+
+const courseNumberOptions = [1, 2, 3, 4, 6, 7, 8].map(
+  (num) => <span><BoldText>{num}</BoldText>XX</span>
+);
 
 const SearchFilter = ({
   filterState,
+  setCourseNumbers,
   setCurrentTerm,
   setNextTerm,
   setNumRatings,
   setCourseTaught,
+  resetFilters,
   ratingFilters,
   courseSearch,
   theme
@@ -47,11 +57,25 @@ const SearchFilter = ({
 
   return (
     <SearchFilterWrapper>
-      <SearchFilterHeader>Filter your results</SearchFilterHeader>
+      <HeaderButtonWrapper>
+        <SearchFilterHeader>Filter your results</SearchFilterHeader>
+        <ResetButton onClick={resetFilters}>Reset</ResetButton>
+      </HeaderButtonWrapper>
       {courseSearch ? (
         <>
           <SearchFilterSection>
             <SearchFilterText>Course code</SearchFilterText>
+            <MultiSelectButton
+              options={courseNumberOptions}
+              selected={filterState.courseNumbers}
+              onClick={(idx) => {
+                setCourseNumbers([
+                  ...filterState.courseNumbers.slice(0, idx),
+                  !filterState.courseNumbers[idx], 
+                  ...filterState.courseNumbers.slice(idx + 1)
+                ])
+              }}
+            />
           </SearchFilterSection>
           <SearchFilterSection>
             {ratingSlider}
@@ -106,15 +130,18 @@ const SearchFilter = ({
 
 SearchFilter.propTypes = {
   filterState: PropTypes.shape({
-    numRatings: PropTypes.number.isRequired,
-    currentTerm: PropTypes.bool.isRequired,
-    nextTerm: PropTypes.bool.isRequired,
-    courseTaught: PropTypes.number.isRequired,
+    courseNumbers: PropTypes.arrayOf(PropTypes.bool),
+    numRatings: PropTypes.number,
+    currentTerm: PropTypes.bool,
+    nextTerm: PropTypes.bool,
+    courseTaught: PropTypes.number,
   }).isRequired,
+  setCourseNumbers: PropTypes.func.isRequired,
   setCurrentTerm: PropTypes.func.isRequired,
   setNextTerm: PropTypes.func.isRequired,
   setNumRatings: PropTypes.func.isRequired,
   setCourseTaught: PropTypes.func.isRequired,
+  resetFilters: PropTypes.func.isRequired,
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
   courseSearch: PropTypes.bool.isRequired,
   theme: PropTypes.object.isRequired

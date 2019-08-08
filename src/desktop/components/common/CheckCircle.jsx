@@ -8,7 +8,7 @@ import {
   CheckIcon
 } from './styles/CheckCircle';
 
-const RadioButton = ({
+const CheckCircle = ({
   color, checked = false, width = 32, disabled = true, onClick = () => {} }
 ) => {
   return (
@@ -21,14 +21,14 @@ const RadioButton = ({
     >
       {
         checked
-          ? <CheckIcon><Check color="white" size={24} /></CheckIcon>
+          ? <CheckIcon><Check color="white" size={24} strokeWidth={3} /></CheckIcon>
           : null
       }
     </CheckCircleWrapper>
   );
 };
 
-RadioButton.propTypes = {
+CheckCircle.propTypes = {
   color: PropTypes.string.isRequired,
   checked: PropTypes.bool,
   width: PropTypes.number,
@@ -36,4 +36,4 @@ RadioButton.propTypes = {
   onClick: PropTypes.func
 };
 
-export default RadioButton;
+export default CheckCircle;

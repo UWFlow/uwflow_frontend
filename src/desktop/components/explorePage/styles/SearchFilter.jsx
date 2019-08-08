@@ -48,3 +48,31 @@ export const NumRatingsWrapper = styled.div`
   justify-content: space-between;
   margin-bottom: 8px;
 `;
+
+export const BoldText = styled.span`
+  font-weight: 600;
+`;
+
+export const ResetButton = styled.button`
+  height: 28px;
+  display: inline-block;
+  padding: 4px 12px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: ${({theme}) => theme.dark3};
+  ${BoxShadow}
+  ${Body}
+  color: ${({theme}) => theme.light1};
+  border-radius: 4px;
+
+  &:hover {
+    background-color: ${({theme}) => theme.dark2};
+  }
+`;
+
+export const HeaderButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;

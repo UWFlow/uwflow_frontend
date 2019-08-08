@@ -15,6 +15,7 @@ import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
 const ExplorePageContent = ({ query, courseSearch, results }) => {
+  const [courseNumbers, setCourseNumbers] = useState(Array(7).fill(true));
   const [numRatings, setNumRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
@@ -42,10 +43,19 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
   const ratingFilters = useMemo(() => computeRatingFilters(results), [results]);
 
   const filterState = {
+    courseNumbers,
     numRatings,
     currentTerm,
     nextTerm,
     courseTaught
+  }
+
+  const resetFilters = () => {
+    setCourseNumbers(Array(7).fill(true));
+    setNumRatings(0);
+    setCurrentTerm(false);
+    setNextTerm(false);
+    setCourseTaught(0);
   }
 
   return (
@@ -62,10 +72,12 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
         <Column2>
           <SearchFilter
             filterState={filterState}
+            setCourseNumbers={setCourseNumbers}
             setNumRatings={setNumRatings}
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
             setCourseTaught={setCourseTaught}
+            resetFilters={resetFilters}
             ratingFilters={ratingFilters}
             courseSearch={courseSearch}
           />
