@@ -15,6 +15,7 @@ export const TableWrapper = styled.table`
 `;
 
 export const TableHeader = styled.thead`
+  border-radius: 4px;
   width: 100%;
 `;
 
@@ -53,7 +54,12 @@ export const TableBody = styled.tbody`
 
 export const Row = styled.tr`
   width: 100%;
+  border-radius: 4px;
   border-bottom: 1px solid ${({theme}) => theme.light3};
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 export const Cell = styled.td`

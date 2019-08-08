@@ -16,10 +16,14 @@ export const ButtonWrapper = styled.div`
   ${Body}
   ${BoxShadow}
   cursor: pointer;
-  margin-right: ${({last}) => last ? 0 : 8}px;
+  margin-right: 8px;
   color: ${({theme, selected}) => selected ? theme.light1 : theme.primary};
   border: 2px solid ${({theme}) => theme.primary};
   background-color: ${({theme, selected}) => selected ? theme.primary : theme.white};
+
+  &:last-child {
+    margin-right: 0;
+  }
 
   &:hover {
     background-color: ${({theme, selected}) => selected ? theme.primaryDark : theme.light1};

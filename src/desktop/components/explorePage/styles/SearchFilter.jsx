@@ -7,6 +7,7 @@ export const SearchFilterWrapper = styled.div`
   width: 100%;
   padding: 40px 32px;
   margin-bottom: 32px;
+  border-radius: 4px;
   background-color: ${({theme}) => theme.white};
   ${BoxShadow}  
 `;
