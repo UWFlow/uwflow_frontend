@@ -13,7 +13,9 @@ import {
   SearchFilterText,
   SearchFilterSection,
   RadioButtonWrapper,
-  CourseFilterDropdown
+  CourseFilterDropdown,
+  NumRatingsWrapper,
+  NumRatingsText
 } from './styles/SearchFilter';
 
 const SearchFilter = ({
@@ -26,7 +28,22 @@ const SearchFilter = ({
   courseSearch,
   theme
 }) => {
-  const ratingFilterText = ratingFilters.map(rating => `≥ ${rating} ratings`);
+
+  const ratingSlider = (
+    <>
+      <NumRatingsWrapper>
+        <SearchFilterText>Min # of ratings</SearchFilterText>
+        <NumRatingsText>&ge; {ratingFilters[filterState.numRatings]} ratings</NumRatingsText>
+      </NumRatingsWrapper>
+      <DiscreteSlider
+        numNodes={ratingFilters.length}
+        currentNode={filterState.numRatings}
+        color={theme.primary}
+        onUpdate={value => setNumRatings(value[0])}
+        showTicks={false}
+      />
+    </>
+  );
 
   return (
     <SearchFilterWrapper>
@@ -37,16 +54,7 @@ const SearchFilter = ({
             <SearchFilterText>Course code</SearchFilterText>
           </SearchFilterSection>
           <SearchFilterSection>
-            <SearchFilterText>Min # of ratings</SearchFilterText>
-            <DiscreteSlider
-              numNodes={ratingFilters.length}
-              currentNode={filterState.numRatings}
-              nodeText={ratingFilterText}
-              color={theme.primary}
-              onUpdate={value => setNumRatings(value[0])}
-              showTicks={false}
-              margin="0 0 32px 0"
-            />
+            {ratingSlider}
           </SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>Offered in</SearchFilterText>
@@ -73,15 +81,7 @@ const SearchFilter = ({
       ) : (
         <>
           <SearchFilterSection>
-            <SearchFilterText>Min # of ratings</SearchFilterText>
-            <DiscreteSlider
-              numNodes={ratingFilters.length}
-              currentNode={filterState.numRatings}
-              nodeText={ratingFilterText}
-              color={theme.primary}
-              onUpdate={value => setNumRatings(value[0])}
-              showTicks={false}
-            />
+            {ratingSlider}
           </SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>

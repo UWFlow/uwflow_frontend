@@ -9,6 +9,7 @@ import {
   Footer,
   CancelButtonText,
   FooterQuestionWrapper,
+  SliderOptionText
 } from './styles/CourseReviewCourseBox';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
@@ -96,10 +97,10 @@ const CourseReviewCourseBox = ({
         <DiscreteSlider
           numNodes={6}
           currentNode={useful}
-          nodeText={usefulOptions}
           color={theme.courses}
           onUpdate={value => setUseful(value[0])}
         />
+        <SliderOptionText>{usefulOptions[useful]}</SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -107,10 +108,10 @@ const CourseReviewCourseBox = ({
         <DiscreteSlider
           numNodes={6}
           currentNode={easy}
-          nodeText={easyOptions}
           color={theme.courses}
           onUpdate={value => setEasy(value[0])}
         />
+        <SliderOptionText>{easyOptions[easy]}</SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -141,10 +142,10 @@ const CourseReviewCourseBox = ({
         <DiscreteSlider
           numNodes={6}
           currentNode={clear}
-          nodeText={clearOptions}
           color={theme.professors}
           onUpdate={value => setClear(value[0])}
         />
+        <SliderOptionText>{clearOptions[clear]}</SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -152,10 +153,10 @@ const CourseReviewCourseBox = ({
         <DiscreteSlider
           numNodes={6}
           currentNode={engaging}
-          nodeText={engagingOptions}
           color={theme.professors}
           onUpdate={value => setEngaging(value[0])}
         />
+        <SliderOptionText>{engagingOptions[engaging]}</SliderOptionText>
       </MetricQuestionWrapper>
 
       <ReviewTextArea rows={5} placeholder="Add any comments or tips..." />

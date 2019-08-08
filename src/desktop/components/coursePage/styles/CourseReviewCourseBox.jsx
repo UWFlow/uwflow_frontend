@@ -16,6 +16,14 @@ export const QuestionText = styled.div`
   ${Heading4}
 `;
 
+export const SliderOptionText = styled.div`
+  ${Body}
+  color: ${({theme}) => theme.dark2};
+  font-weight: 600;
+  margin-left: 40px;
+  margin-bottom: 40px;
+`;
+
 export const ReviewTextArea = styled.textarea`
   padding: 8px 16px;
   background: ${({ theme }) => theme.light2};

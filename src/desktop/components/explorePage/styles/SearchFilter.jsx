@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow, Heading3, Heading4 } from '../../../../constants/Mixins';
+import { BoxShadow, Heading3, Heading4, Body } from '../../../../constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
   display: flex;
@@ -35,4 +35,16 @@ export const RadioButtonWrapper = styled.div`
 
 export const CourseFilterDropdown = styled.span`
   position: absolute;
+`;
+
+export const NumRatingsText = styled.span`
+  ${Body}
+  color: ${({theme}) => theme.dark3};
+`;
+
+export const NumRatingsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
 `;
