@@ -3,77 +3,19 @@ import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
-  SearchResultsWrapper
+  SearchResultsWrapper,
+  CourseCode,
+  ProfName
 } from './styles/SearchResults';
 
 import Table from '../common/Table';
+import { courseColumns, profColumns } from './TableData';
 
-const courseColumns = [
-  {
-    Header: 'Course code',
-    accessor: 'code',
-    align: 'left'
-  },
-  {
-    Header: 'Course Name',
-    accessor: 'name',
-    align: 'left'
-  },
-  {
-    Header: 'Ratings',
-    accessor: 'ratings',
-    align: 'right'
-  },
-  {
-    Header: 'Useful',
-    accessor: 'useful',
-    align: 'right'
-  },
-  {
-    Header: 'Easy',
-    accessor: 'easy',
-    align: 'right'
-  },
-  {
-    Header: 'Liked',
-    accessor: 'liked',
-    align: 'right'
-  }
-];
-
-const profColumns = [
-  {
-    Header: 'Professor name',
-    accessor: 'name',
-    align: 'left'
-  },
-  {
-    Header: 'Ratings',
-    accessor: 'ratings',
-    align: 'left'
-  },
-  {
-    Header: 'Clear',
-    accessor: 'clear',
-    align: 'right'
-  },
-  {
-    Header: 'Engaging',
-    accessor: 'engaging',
-    align: 'right'
-  },
-  {
-    Header: 'Liked',
-    accessor: 'liked',
-    align: 'right'
-  }
-];
-
-const SearchResults = ({ results, courseSearch }) => {
+const SearchResults = ({ filterState, results, courseSearch }) => {
   // TODO fetch actual data
   const data = useMemo(() => courseSearch ? [
       {
-        code: 'ECE 105',
+        code: <CourseCode to="/course/100">ECE 105</CourseCode>,
         name: 'Electricity and Magnetism',
         ratings: 1295,
         useful: '22%',
@@ -81,7 +23,7 @@ const SearchResults = ({ results, courseSearch }) => {
         liked: '15%'
       },
       {
-        code: 'MATH 239',
+        code: <CourseCode to="/course/100">MATH 239</CourseCode>,
         name: 'Introduction to Combinatorics',
         ratings: 1035,
         useful: '89%',
@@ -90,14 +32,14 @@ const SearchResults = ({ results, courseSearch }) => {
       }
     ] : [
       {
-        name: 'Firas Mansour',
+        name: <ProfName to="/prof/1">Firas Mansour</ProfName>,
         ratings: 125,
         clear: '22%',
         engaging: '5%',
         liked: '15%'
       },
       {
-        name: 'Karen Yeats',
+        name: <ProfName to="/prof/1">Karen Yeats</ProfName>,
         ratings: 249,
         clear: '89%',
         engaging: '32%',
@@ -118,6 +60,13 @@ const SearchResults = ({ results, courseSearch }) => {
 };
 
 SearchResults.propTypes = {
+  filterState: PropTypes.shape({
+    courseNumbers: PropTypes.arrayOf(PropTypes.bool),
+    numRatings: PropTypes.number,
+    currentTerm: PropTypes.bool,
+    nextTerm: PropTypes.bool,
+    courseTaught: PropTypes.number,
+  }).isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   courseSearch: PropTypes.bool.isRequired
 }

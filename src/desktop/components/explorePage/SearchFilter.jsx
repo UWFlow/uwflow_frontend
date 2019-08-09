@@ -87,7 +87,7 @@ const SearchFilter = ({
               <RadioButton
                 color={theme.primary}
                 selected={filterState.currentTerm}
-                options={['Current Term']}
+                options={['Current Term (Spring 2019)']}
                 margin="8px 0 0 0"
                 onClick={() => setCurrentTerm(!filterState.currentTerm)}
                 toggle
@@ -95,7 +95,7 @@ const SearchFilter = ({
               <RadioButton
                 color={theme.primary}
                 selected={filterState.nextTerm}
-                options={['Next Term']}
+                options={['Next Term (Fall 2019)']}
                 margin="8px 0 0 0"
                 onClick={() => setNextTerm(!filterState.nextTerm)}
                 toggle

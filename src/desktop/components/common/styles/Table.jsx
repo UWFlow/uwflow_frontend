@@ -24,28 +24,43 @@ export const HeaderRow = styled.tr`
   border-bottom: 1px solid ${({theme}) => theme.light3};
 `;
 
-export const HeaderCell = styled.th`
-  ${({sortable}) => sortable ? Link : ''}
-  cursor: ${({sortable}) => sortable ? 'pointer' : 'none'};
-  color: ${({theme, sortable}) => sortable ? theme.primary : theme.dark2};
+  export const HeaderCell = styled.th`
   text-align: ${({rightAlign}) => rightAlign ? 'right' : 'left'};
-
+  width: ${({maxWidth}) => maxWidth + 16}px;
+  max-width: ${({maxWidth}) => maxWidth + 16}px;
   padding-top: 16px;
   padding-bottom: 16px;
 
-  &:hover {
-    color: ${({theme, sortable}) => sortable ? theme.primaryDark : theme.dark1};
-  }
+  padding-left: ${({rightAlign}) => rightAlign ? '16px' : '0'};
+  padding-right: ${({rightAlign}) => rightAlign ? '0' : '16px'};
 
   &:first-child {
     padding-left:24px;
-    padding-right:0;
+    width: ${({maxWidth}) => maxWidth + 24 + 16}px;
+    max-width: ${({maxWidth}) => maxWidth + 24 + 16}px;
   }
 
   &:last-child {
     padding-left:0;
     padding-right:24px;
+    width: ${({maxWidth}) => maxWidth + 24 + 16}px;
+    max-width: ${({maxWidth}) => maxWidth + 24 + 16}px;
   }
+`;
+
+export const HeaderText = styled.span`
+  ${({sortable}) => sortable ? Link : ''}
+  cursor: ${({sortable}) => sortable ? 'pointer' : 'none'};
+  color: ${({theme, sortable}) => sortable ? theme.primary : theme.dark2};
+
+  &:hover {
+    color: ${({theme, sortable}) => sortable ? theme.primaryDark : theme.dark1};
+  }
+`;
+
+export const SortArrow = styled.span`
+  color: ${({theme}) => theme.primary};
+  text-decoration: none !important;
 `;
 
 export const TableBody = styled.tbody`
@@ -77,3 +92,4 @@ export const Cell = styled.td`
     padding-right:24px;
   }
 `;
+

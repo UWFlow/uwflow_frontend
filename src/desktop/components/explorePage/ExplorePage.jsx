@@ -67,7 +67,11 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
       </ExploreHeaderWrapper>
       <ColumnWrapper>
         <Column1>
-          <SearchResults results={results} courseSearch={courseSearch} />
+          <SearchResults 
+            filterState={filterState}
+            results={results}
+            courseSearch={courseSearch}
+          />
         </Column1>
         <Column2>
           <SearchFilter

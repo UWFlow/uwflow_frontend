@@ -8,7 +8,7 @@ export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
   width: 100%;
 
-  @media only screen and (max-width: 1080px) {
+  @media only screen and (max-width: 1200px) {
     padding: 0 32px;
   }
 

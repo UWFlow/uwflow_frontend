@@ -9,14 +9,19 @@ import {
   HeaderRow,
   Row,
   Cell,
-  HeaderCell
+  HeaderCell,
+  SortArrow,
+  HeaderText
 } from './styles/Table';
 
 const Table = ({ columns, data, rightAlignIndex, sortable = false, filters = {} }) => {
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
-    data,
-  });
+  const { getTableProps, headerGroups, rows, prepareRow } = useTable(
+    {
+      columns,
+      data,
+    },
+    useSortBy,
+  );
 
   return (
     <TableWrapper {...getTableProps()}>
@@ -25,11 +30,16 @@ const Table = ({ columns, data, rightAlignIndex, sortable = false, filters = {} 
           <HeaderRow {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, idx) => (
               <HeaderCell
-                {...column.getHeaderProps()}
-                sortable={sortable}
+                {...column.getHeaderProps(sortable && column.getSortByToggleProps())}
                 rightAlign={idx >= rightAlignIndex}
-              >
-                {column.render('Header')}
+                maxWidth={column.maxWidth}
+              > 
+                <HeaderText sortable={sortable}>
+                  {column.render('Header')}
+                </HeaderText>
+                <SortArrow>
+                  {column.sorted ? (column.sortedDesc ? ' ▲' : ' ▼') : ''}
+                </SortArrow>
               </HeaderCell>
             ))}
           </HeaderRow>
@@ -59,7 +69,8 @@ const Table = ({ columns, data, rightAlignIndex, sortable = false, filters = {} 
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({
     Header: PropTypes.string,
-    accessor: PropTypes.string
+    accessor: PropTypes.string,
+    maxWidth: PropTypes.number
   })).isRequired,
   data: PropTypes.arrayOf(PropTypes.object),
   sortable: PropTypes.bool,
