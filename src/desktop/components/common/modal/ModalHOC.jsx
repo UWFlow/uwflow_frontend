@@ -14,7 +14,6 @@ import PopInOutAnimation from '../../../../utils/animation/PopInOutAnimation';
 import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
 
 const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
-  console.log('RENDER');
   const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
 
   const handleKeyPress = useCallback(

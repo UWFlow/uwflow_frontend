@@ -25,7 +25,7 @@ export const HeaderRow = styled.tr`
 `;
 
   export const HeaderCell = styled.th`
-  text-align: ${({rightAlign}) => rightAlign ? 'right' : 'left'};
+  text-align: ${({align}) => align ? align : 'left'};
   width: ${({maxWidth}) => maxWidth + 16}px;
   max-width: ${({maxWidth}) => maxWidth + 16}px;
   padding-top: 16px;
@@ -80,7 +80,7 @@ export const Row = styled.tr`
 export const Cell = styled.td`
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: ${({rightAlign}) => rightAlign ? 'right' : 'left'};
+  text-align: ${({align}) => align ? align : 'left'};
 
   &:first-child {
     padding-left:24px;

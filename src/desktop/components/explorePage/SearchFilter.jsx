@@ -28,8 +28,9 @@ let courseNumberOptions = [1, 2, 3, 4].map(
 courseNumberOptions.push(<span><BoldText>6</BoldText>XX+</span>)
 
 const SearchFilter = ({
+  terms,
   filterState,
-  setCourseNumbers,
+  setCourseCodes,
   setCurrentTerm,
   setNextTerm,
   setNumRatings,
@@ -68,12 +69,12 @@ const SearchFilter = ({
             <SearchFilterText>Course code</SearchFilterText>
             <MultiSelectButton
               options={courseNumberOptions}
-              selected={filterState.courseNumbers}
+              selected={filterState.courseCodes}
               onClick={(idx) => {
-                setCourseNumbers([
-                  ...filterState.courseNumbers.slice(0, idx),
-                  !filterState.courseNumbers[idx], 
-                  ...filterState.courseNumbers.slice(idx + 1)
+                setCourseCodes([
+                  ...filterState.courseCodes.slice(0, idx),
+                  !filterState.courseCodes[idx], 
+                  ...filterState.courseCodes.slice(idx + 1)
                 ])
               }}
             />
@@ -87,7 +88,7 @@ const SearchFilter = ({
               <RadioButton
                 color={theme.primary}
                 selected={filterState.currentTerm}
-                options={['Current Term (Spring 2019)']}
+                options={[terms[0].text]}
                 margin="8px 0 0 0"
                 onClick={() => setCurrentTerm(!filterState.currentTerm)}
                 toggle
@@ -95,7 +96,7 @@ const SearchFilter = ({
               <RadioButton
                 color={theme.primary}
                 selected={filterState.nextTerm}
-                options={['Next Term (Fall 2019)']}
+                options={[terms[1].text]}
                 margin="8px 0 0 0"
                 onClick={() => setNextTerm(!filterState.nextTerm)}
                 toggle
@@ -130,14 +131,18 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
+  terms: PropTypes.shape({
+    id: PropTypes.string,
+    text: PropTypes.string
+  }).isRequired,
   filterState: PropTypes.shape({
-    courseNumbers: PropTypes.arrayOf(PropTypes.bool),
+    courseCodes: PropTypes.arrayOf(PropTypes.bool),
     numRatings: PropTypes.number,
     currentTerm: PropTypes.bool,
     nextTerm: PropTypes.bool,
     courseTaught: PropTypes.number,
   }).isRequired,
-  setCourseNumbers: PropTypes.func.isRequired,
+  setCourseCodes: PropTypes.func.isRequired,
   setCurrentTerm: PropTypes.func.isRequired,
   setNextTerm: PropTypes.func.isRequired,
   setNumRatings: PropTypes.func.isRequired,

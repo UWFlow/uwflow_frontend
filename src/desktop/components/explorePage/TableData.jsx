@@ -1,9 +1,15 @@
+import React from 'react';
+import { CourseCode, ProfName } from './styles/ExplorePage';
+
 export const courseColumns = [
   {
     Header: 'Course code',
     accessor: 'code',
     align: 'left',
-    maxWidth: 112
+    maxWidth: 112,
+    id: 'courseCodes',
+    filter: 'courseCodes',
+    Cell:  ({value}) => <CourseCode to={`/course/1`}>{value}</CourseCode>,
   },
   {
     Header: 'Course Name',
@@ -14,7 +20,9 @@ export const courseColumns = [
     Header: 'Ratings',
     accessor: 'ratings',
     align: 'right',
-    maxWidth: 112
+    maxWidth: 112,
+    id: 'numRatings',
+    filter: 'numRatings'
   },
   {
     Header: 'Useful',
@@ -40,13 +48,16 @@ export const profColumns = [
   {
     Header: 'Professor name',
     accessor: 'name',
-    align: 'left'
+    align: 'left',
+    Cell:  ({value}) => <ProfName to={`/prof/1`}>{value}</ProfName>,
   },
   {
     Header: 'Ratings',
     accessor: 'ratings',
     align: 'left',
-    maxWidth: 112
+    maxWidth: 112,
+    id: 'numRatings',
+    filter: 'numRatings'
   },
   {
     Header: 'Clear',

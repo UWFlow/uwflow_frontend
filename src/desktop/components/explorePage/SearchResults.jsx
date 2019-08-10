@@ -3,56 +3,46 @@ import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
-  SearchResultsWrapper,
-  CourseCode,
-  ProfName
+  SearchResultsWrapper
 } from './styles/SearchResults';
 
 import Table from '../common/Table';
 import { courseColumns, profColumns } from './TableData';
 
-const SearchResults = ({ filterState, results, courseSearch }) => {
-  // TODO fetch actual data
-  const data = useMemo(() => courseSearch ? [
-      {
-        code: <CourseCode to="/course/100">ECE 105</CourseCode>,
-        name: 'Electricity and Magnetism',
-        ratings: 1295,
-        useful: '22%',
-        easy: '5%',
-        liked: '15%'
-      },
-      {
-        code: <CourseCode to="/course/100">MATH 239</CourseCode>,
-        name: 'Introduction to Combinatorics',
-        ratings: 1035,
-        useful: '89%',
-        easy: '32%',
-        liked: '65%'
+const SearchResults = ({ filterState, results, courseSearch, ratingFilters }) => {
+  const filterTypes = useMemo(() => ({
+    courseCodes: (rows, id, filterValue) => {
+      let regexString = '';
+      for (let i = filterValue.length - 1; i >= 0; i--) {
+        if (filterValue[i]) {
+          regexString += `|${i < filterValue.length - 1 ? i + 1 : '[6-8]'}`;
+        }
       }
-    ] : [
-      {
-        name: <ProfName to="/prof/1">Firas Mansour</ProfName>,
-        ratings: 125,
-        clear: '22%',
-        engaging: '5%',
-        liked: '15%'
-      },
-      {
-        name: <ProfName to="/prof/1">Karen Yeats</ProfName>,
-        ratings: 249,
-        clear: '89%',
-        engaging: '32%',
-        liked: '65%'
-      }
-    ], []);
+      regexString = regexString === ''
+        ? 'a^' : `(${regexString.slice(1)})([0-9]{2})`;
+
+      const regex = new RegExp(regexString);
+      return rows.filter(row => {
+        const rowValue = String(row.values[id]);
+        return regex.test(rowValue);
+      })
+    },
+    numRatings: (rows, id, filterValue) => {
+      return rows.filter(row => {
+        const rowValue = row.values[id];
+        return rowValue >= ratingFilters[filterValue];
+      })
+    }
+  }), [ratingFilters])
 
   return (
     <SearchResultsWrapper>
       <Table
         columns={courseSearch ? courseColumns : profColumns}
-        data={data}
+        data={results}
         rightAlignIndex={courseSearch ? 2 : 1}
+        filters={filterState}
+        filterTypes={filterTypes}
         sortable
       />
     </SearchResultsWrapper>
@@ -61,14 +51,15 @@ const SearchResults = ({ filterState, results, courseSearch }) => {
 
 SearchResults.propTypes = {
   filterState: PropTypes.shape({
-    courseNumbers: PropTypes.arrayOf(PropTypes.bool),
+    courseCodes: PropTypes.arrayOf(PropTypes.bool),
     numRatings: PropTypes.number,
     currentTerm: PropTypes.bool,
     nextTerm: PropTypes.bool,
     courseTaught: PropTypes.number,
   }).isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  courseSearch: PropTypes.bool.isRequired
+  courseSearch: PropTypes.bool.isRequired,
+  ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired
 }
 
 export default SearchResults;

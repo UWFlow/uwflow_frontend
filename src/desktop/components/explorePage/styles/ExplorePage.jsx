@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '../../../../constants/Mixins';
 
 /* Mixins */
 import { Heading2, PageContent, WideColumn, ThinColumn } from '../../../../constants/Mixins';
@@ -48,4 +50,14 @@ export const Column1 = styled.div`
 
 export const Column2 = styled.div`
   ${ThinColumn}
+`;
+
+export const CourseCode = styled(RouterLink)`
+  ${Link}
+  color: ${({theme}) => theme.courses};
+`;
+
+export const ProfName = styled(RouterLink)`
+ ${Link}
+  color: ${({theme}) => theme.professors};
 `;

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, useFilters, useTableState } from 'react-table';
 
 import {
   TableWrapper,
@@ -14,24 +14,34 @@ import {
   HeaderText
 } from './styles/Table';
 
-const Table = ({ columns, data, rightAlignIndex, sortable = false, filters = {} }) => {
+const Table = ({
+  columns,
+  data,
+  sortable = false,
+  filters = {},
+  filterTypes = {}
+}) => {
+  const state = useTableState({}, { filters });
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(
     {
       columns,
       data,
+      state,
+      filterTypes,  
     },
     useSortBy,
+    useFilters
   );
-
+  
   return (
     <TableWrapper {...getTableProps()}>
       <TableHeader>
         {headerGroups.map(headerGroup => (
           <HeaderRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column, idx) => (
+            {headerGroup.headers.map((column) => (
               <HeaderCell
                 {...column.getHeaderProps(sortable && column.getSortByToggleProps())}
-                rightAlign={idx >= rightAlignIndex}
+                align={column.align}
                 maxWidth={column.maxWidth}
               > 
                 <HeaderText sortable={sortable}>
@@ -47,14 +57,11 @@ const Table = ({ columns, data, rightAlignIndex, sortable = false, filters = {} 
       </TableHeader>
       <TableBody>
         {rows.map(
-          (row, i) =>
+          (row) =>
             prepareRow(row) || (
               <Row {...row.getRowProps()}>
-                {row.cells.map((cell, idx) => (
-                  <Cell
-                    {...cell.getCellProps()}
-                    rightAlign={idx >= rightAlignIndex}
-                  >
+                {row.cells.map((cell) => (
+                  <Cell {...cell.getCellProps()} align={cell.column.align}>
                     {cell.render('Cell')}
                   </Cell>
                 ))}
@@ -68,14 +75,18 @@ const Table = ({ columns, data, rightAlignIndex, sortable = false, filters = {} 
 
 Table.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.shape({
-    Header: PropTypes.string,
+    Header: PropTypes.string.isRequired,
     accessor: PropTypes.string,
-    maxWidth: PropTypes.number
+    align: PropTypes.string,
+    maxWidth: PropTypes.number,
+    id: PropTypes.string,
+    filter: PropTypes.string,
+    Cell: PropTypes.func
   })).isRequired,
   data: PropTypes.arrayOf(PropTypes.object),
   sortable: PropTypes.bool,
   filters: PropTypes.object,
-  rightAlignIndex: PropTypes.number.isRequired, // all columns after this index will be right aligned
+  filtersTypes: PropTypes.object,
 };
 
 export default Table;

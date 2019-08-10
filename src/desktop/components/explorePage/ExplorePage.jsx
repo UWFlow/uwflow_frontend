@@ -8,14 +8,14 @@ import {
   ExploreHeaderText,
   ColumnWrapper,
   Column1,
-  Column2
+  Column2,
 } from './styles/ExplorePage';
 
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-const ExplorePageContent = ({ query, courseSearch, results }) => {
-  const [courseNumbers, setCourseNumbers] = useState(Array(5).fill(true));
+const ExplorePageContent = ({ query, terms, courseSearch, results }) => {
+  const [courseCodes, setCourseCodes] = useState(Array(5).fill(true));
   const [numRatings, setNumRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
@@ -43,7 +43,7 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
   const ratingFilters = useMemo(() => computeRatingFilters(results), [results]);
 
   const filterState = {
-    courseNumbers,
+    courseCodes,
     numRatings,
     currentTerm,
     nextTerm,
@@ -51,7 +51,7 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
   }
 
   const resetFilters = () => {
-    setCourseNumbers(Array(5).fill(true));
+    setCourseCodes(Array(5).fill(true));
     setNumRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);
@@ -71,12 +71,14 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
             filterState={filterState}
             results={results}
             courseSearch={courseSearch}
+            ratingFilters={ratingFilters}
           />
         </Column1>
         <Column2>
           <SearchFilter
+            terms={terms}
             filterState={filterState}
-            setCourseNumbers={setCourseNumbers}
+            setCourseCodes={setCourseCodes}
             setNumRatings={setNumRatings}
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
@@ -93,14 +95,63 @@ const ExplorePageContent = ({ query, courseSearch, results }) => {
 
 const ExplorePage = ({ location }) => {
   const { q: query, t } =   queryString.parse(location.search);
-  const results = [{ratings: 0}, {ratings: 2}, {ratings: 5}, {ratings: 10}]
-  
   const courseSearch = !t || t === 'course' || t === 'c';
 
+  const terms = [
+    {
+      id: '1195',
+      text: 'This Term (Spring 2019)'
+    },
+    {
+      id: '1199',
+      text: 'Next Term (Fall 2019)'
+    }
+  ]
+
+  // TODO fetch actual data
+  const results = useMemo(() => courseSearch ? [
+    {
+      code: 'ECE 105',
+      name: 'Electricity and Magnetism',
+      ratings: 1295,
+      useful: '22%',
+      easy: '5%',
+      liked: '15%',
+      offered: ['1199']
+    },
+    {
+      code: 'MATH 239',
+      name: 'Introduction to Combinatorics',
+      ratings: 568,
+      useful: '89%',
+      easy: '32%',
+      liked: '65%',
+      offered: ['1195', '1199']
+    }
+  ] : [
+    {
+      name: 'Firas Mansour',
+      ratings: 125,
+      clear: '22%',
+      engaging: '5%',
+      liked: '15%',
+      courses: ['ECE 105']
+    },
+    {
+      name: 'Karen Yeats',
+      ratings: 249,
+      clear: '89%',
+      engaging: '32%',
+      liked: '65%',
+      courses: ['MATH 239']
+    }
+  ], [courseSearch]);
+  
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
         query={query}
+        terms={terms}
         courseSearch={courseSearch}
         results={results}
       />
