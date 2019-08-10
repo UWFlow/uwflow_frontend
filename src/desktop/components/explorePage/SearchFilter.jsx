@@ -90,7 +90,7 @@ const SearchFilter = ({
                 color={theme.primary}
                 selected={filterState.currentTerm}
                 options={[terms[0].text]}
-                margin="8px 0 0 0"
+                margin="8px 16px 0 0"
                 onClick={() => setCurrentTerm(!filterState.currentTerm)}
                 toggle
               />

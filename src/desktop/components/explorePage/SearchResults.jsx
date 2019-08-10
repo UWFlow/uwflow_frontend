@@ -36,7 +36,6 @@ const SearchResults = ({
   };
 
   const filterProfs = (results = []) => {
-    console.log(profCourses, results[0].courses);
     return results.filter(res =>
       res.ratings >= ratingFilters[filterState.numRatings]
         && (filterState.courseTaught === 0
