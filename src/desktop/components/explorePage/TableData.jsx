@@ -7,8 +7,6 @@ export const courseColumns = [
     accessor: 'code',
     align: 'left',
     maxWidth: 112,
-    id: 'courseCodes',
-    filter: 'courseCodes',
     Cell:  ({value}) => <CourseCode to={`/course/1`}>{value}</CourseCode>,
   },
   {
@@ -21,8 +19,6 @@ export const courseColumns = [
     accessor: 'ratings',
     align: 'right',
     maxWidth: 112,
-    id: 'numRatings',
-    filter: 'numRatings'
   },
   {
     Header: 'Useful',
@@ -56,8 +52,6 @@ export const profColumns = [
     accessor: 'ratings',
     align: 'left',
     maxWidth: 112,
-    id: 'numRatings',
-    filter: 'numRatings'
   },
   {
     Header: 'Clear',

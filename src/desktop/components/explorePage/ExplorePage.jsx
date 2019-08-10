@@ -14,12 +14,24 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-const ExplorePageContent = ({ query, terms, courseSearch, results }) => {
+const ExplorePageContent = ({
+  query,
+  terms,
+  courseSearch,
+  results
+}) => {
   const [courseCodes, setCourseCodes] = useState(Array(5).fill(true));
   const [numRatings, setNumRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
   const [courseTaught, setCourseTaught] = useState(0);
+
+  const profCourses = courseSearch
+    ? []
+    : Array.from(new Set(results.reduce(
+      (acc, result) => acc.concat(result.courses),
+      ['any courses']
+    )));
 
   const computeRatingFilters = (results) => {
     let ratings = results.map(res => Number(res.ratings));
@@ -33,13 +45,13 @@ const ExplorePageContent = ({ query, terms, courseSearch, results }) => {
     } else {
       const ratingsPerFilter = Math.ceil(ratings.length / 10);
       filters = ratings.filter((_, idx) => {
-        return idx % ratingsPerFilter === 0; 
+        return idx % ratingsPerFilter === 0;
       });
     }
 
     return filters;
   }
-  
+
   const ratingFilters = useMemo(() => computeRatingFilters(results), [results]);
 
   const filterState = {
@@ -67,16 +79,18 @@ const ExplorePageContent = ({ query, terms, courseSearch, results }) => {
       </ExploreHeaderWrapper>
       <ColumnWrapper>
         <Column1>
-          <SearchResults 
+          <SearchResults
             filterState={filterState}
             results={results}
             courseSearch={courseSearch}
             ratingFilters={ratingFilters}
+            profCourses={profCourses}
           />
         </Column1>
         <Column2>
           <SearchFilter
             terms={terms}
+            profCourses={profCourses}
             filterState={filterState}
             setCourseCodes={setCourseCodes}
             setNumRatings={setNumRatings}
@@ -146,7 +160,7 @@ const ExplorePage = ({ location }) => {
       courses: ['MATH 239']
     }
   ], [courseSearch]);
-  
+
   return (
     <ExplorePageWrapper>
       <ExplorePageContent

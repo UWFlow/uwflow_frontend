@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -9,40 +9,47 @@ import {
 import Table from '../common/Table';
 import { courseColumns, profColumns } from './TableData';
 
-const SearchResults = ({ filterState, results, courseSearch, ratingFilters }) => {
-  const filterTypes = useMemo(() => ({
-    courseCodes: (rows, id, filterValue) => {
-      let regexString = '';
-      for (let i = filterValue.length - 1; i >= 0; i--) {
-        if (filterValue[i]) {
-          regexString += `|${i < filterValue.length - 1 ? i + 1 : '[6-8]'}`;
-        }
+const SearchResults = ({
+  filterState,
+  results,
+  courseSearch,
+  ratingFilters,
+  profCourses
+}) => {
+  const courseCodeRegex = useCallback(() => {
+    let regexStr = '';
+    for (let i = filterState.courseCodes.length - 1; i >= 0; i--) {
+      if (filterState.courseCodes[i]) {
+        regexStr += `|${i < filterState.courseCodes.length - 1 ? i + 1 : '[6-8]'}`;
       }
-      regexString = regexString === ''
-        ? 'a^' : `(${regexString.slice(1)})([0-9]{2})`;
-
-      const regex = new RegExp(regexString);
-      return rows.filter(row => {
-        const rowValue = String(row.values[id]);
-        return regex.test(rowValue);
-      })
-    },
-    numRatings: (rows, id, filterValue) => {
-      return rows.filter(row => {
-        const rowValue = row.values[id];
-        return rowValue >= ratingFilters[filterValue];
-      })
     }
-  }), [ratingFilters])
+    regexStr = regexStr === '' ? 'a^' : `(${regexStr.slice(1)})([0-9]{2})`;
+    return new RegExp(regexStr);
+  }, [filterState]);
+
+  const filterCourses = (results = []) => {
+    const regex = courseCodeRegex();
+    return results.filter(
+      (res) => regex.test(res.code)
+        && res.ratings >= ratingFilters[filterState.numRatings]
+    );
+  };
+
+  const filterProfs = (results = []) => {
+    console.log(profCourses, results[0].courses);
+    return results.filter(res =>
+      res.ratings >= ratingFilters[filterState.numRatings]
+        && (filterState.courseTaught === 0
+            || res.courses.includes(profCourses[filterState.courseTaught]))
+    )
+  };
 
   return (
     <SearchResultsWrapper>
       <Table
+        data={courseSearch ? filterCourses(results) : filterProfs(results)}
         columns={courseSearch ? courseColumns : profColumns}
-        data={results}
         rightAlignIndex={courseSearch ? 2 : 1}
-        filters={filterState}
-        filterTypes={filterTypes}
         sortable
       />
     </SearchResultsWrapper>
@@ -59,7 +66,8 @@ SearchResults.propTypes = {
   }).isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   courseSearch: PropTypes.bool.isRequired,
-  ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired
+  ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
+  profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default SearchResults;

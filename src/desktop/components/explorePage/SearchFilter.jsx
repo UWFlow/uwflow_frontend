@@ -29,6 +29,7 @@ courseNumberOptions.push(<span><BoldText>6</BoldText>XX+</span>)
 
 const SearchFilter = ({
   terms,
+  profCourses,
   filterState,
   setCourseCodes,
   setCurrentTerm,
@@ -73,7 +74,7 @@ const SearchFilter = ({
               onClick={(idx) => {
                 setCourseCodes([
                   ...filterState.courseCodes.slice(0, idx),
-                  !filterState.courseCodes[idx], 
+                  !filterState.courseCodes[idx],
                   ...filterState.courseCodes.slice(idx + 1)
                 ])
               }}
@@ -117,7 +118,7 @@ const SearchFilter = ({
               <CourseFilterDropdown>
                 <DropdownList
                   selectedIndex={filterState.courseTaught}
-                  options={['any courses', 'ECE 105', 'MATH 239']}
+                  options={profCourses}
                   color={theme.courses}
                   onChange={idx => setCourseTaught(idx)}
                 />
@@ -131,10 +132,11 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
-  terms: PropTypes.shape({
+  terms: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     text: PropTypes.string
-  }).isRequired,
+  })).isRequired,
+  profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
   filterState: PropTypes.shape({
     courseCodes: PropTypes.arrayOf(PropTypes.bool),
     numRatings: PropTypes.number,

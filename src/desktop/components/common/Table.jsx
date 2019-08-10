@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTable, useSortBy, useFilters, useTableState } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 
 import {
   TableWrapper,
@@ -18,21 +18,15 @@ const Table = ({
   columns,
   data,
   sortable = false,
-  filters = {},
-  filterTypes = {}
 }) => {
-  const state = useTableState({}, { filters });
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(
     {
       columns,
       data,
-      state,
-      filterTypes,  
     },
-    useSortBy,
-    useFilters
+    useSortBy
   );
-  
+
   return (
     <TableWrapper {...getTableProps()}>
       <TableHeader>
@@ -43,7 +37,7 @@ const Table = ({
                 {...column.getHeaderProps(sortable && column.getSortByToggleProps())}
                 align={column.align}
                 maxWidth={column.maxWidth}
-              > 
+              >
                 <HeaderText sortable={sortable}>
                   {column.render('Header')}
                 </HeaderText>
@@ -80,13 +74,10 @@ Table.propTypes = {
     align: PropTypes.string,
     maxWidth: PropTypes.number,
     id: PropTypes.string,
-    filter: PropTypes.string,
-    Cell: PropTypes.func
+    Cell: PropTypes.func,
   })).isRequired,
   data: PropTypes.arrayOf(PropTypes.object),
   sortable: PropTypes.bool,
-  filters: PropTypes.object,
-  filtersTypes: PropTypes.object,
 };
 
 export default Table;
