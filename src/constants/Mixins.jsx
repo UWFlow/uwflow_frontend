@@ -77,3 +77,14 @@ export const BoxShadow = `
   box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
   0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
+
+export const Card = (padding='32px', margin='0') => `
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  width: 100%;
+  border-radius: 4px;
+  padding: ${padding};
+  margin: ${margin};
+  background-color: white;
+`;

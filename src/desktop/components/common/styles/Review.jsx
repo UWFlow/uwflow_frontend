@@ -1,39 +1,36 @@
 import styled from 'styled-components';
-import { BoxShadow, Body } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Body } from '../../../../constants/Mixins';
 
 export const ReviewWrapper = styled.div`
-  display: flex;
+  ${Card('24px 32px')}
+  ${BoxShadow}
   margin-bottom: 32px;
   background-color: ${({ theme }) => theme.light1};
-  width: 100%;
-  min-height: 150px;
-  border-radius: 5px;
-  ${BoxShadow}
-  padding: 24px;
   justify-content: space-between;
+  flex-direction: row;
 `;
 
 export const ReviewPictureWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 4px;
   margin-right: 24px;
 `;
 
 export const ReviewPicture = styled.div`
-  width: 70px;
-  height: 100px;
-  background-color: grey;
-  border-radius: 5px 5px 0 0;
+  width: 80px;
+  height: 112px;
+  background-color: ${({ theme }) => theme.light3};
+  border-radius: 4px 4px 0 0;
 `;
 
 export const ReviewUpvotes = styled.div`
-  width: 70px;
+  width: 80px;
   background-color: ${({ theme }) => theme.primary};
   display: flex;
   justify-content: center;
   color: white;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 4px 4px;
 `;
 
 export const ReviewTextWrapper = styled.div`

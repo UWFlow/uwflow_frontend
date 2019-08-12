@@ -3,6 +3,7 @@ import { PageContent } from '../../../../constants/Mixins';
 
 /* Mixins */
 import {
+  Card,
   WideColumn,
   ThinColumn,
   BoxShadow,
@@ -33,25 +34,18 @@ export const Column2 = styled.div`
 `;
 
 export const ExtraInfoBoxWrapper = styled.div`
-  width: 100%;
-  background-color: white;
-  border-radius: 4px;
-  border: 2px solid ${({ theme }) => theme.light2};
+  ${Card('24px')}
   ${BoxShadow}
-  padding: 16px;
   ${Heading4}
 `;
 
 export const CourseReviewQuestionBox = styled.div`
-  display: flex;
-  width: 100%;
+  ${Card('24px')}
   ${BoxShadow}
+  flex-direction: row;
   justify-content: space-between;
-  padding: 24px;
   align-items: center;
-  background: white;
   margin-bottom: 32px;
-  border-radius: 5px;
 `;
 
 export const CourseReviewQuestionText = styled.div`

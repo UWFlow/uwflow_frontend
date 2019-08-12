@@ -1,15 +1,10 @@
 import styled from 'styled-components';
-import { BoxShadow, Heading3, Heading4, Body } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Heading3, Heading4, Body } from '../../../../constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 40px 32px;
+  ${Card('40px 32px')}
+  ${BoxShadow}
   margin-bottom: 32px;
-  border-radius: 4px;
-  background-color: ${({theme}) => theme.white};
-  ${BoxShadow}  
 `;
 
 export const SearchFilterHeader = styled.div`

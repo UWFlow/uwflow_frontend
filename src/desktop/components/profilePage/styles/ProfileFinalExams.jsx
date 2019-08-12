@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { BoxShadow, Heading3, Body, Link } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Heading3, Body, Link } from '../../../../constants/Mixins';
 
 export const ProfileFinalExamsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-bottom: 32px;
-  background-color: ${({ theme }) => theme.white};
-  border-radius: 4px;
-  padding-bottom: 12px;
+  ${Card('0 0 12px 0')}
   ${BoxShadow}
+  margin-bottom: 16px;
 `;
 
 export const ProfileFinalExamsHeader = styled.div`

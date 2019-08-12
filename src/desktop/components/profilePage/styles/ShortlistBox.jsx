@@ -1,13 +1,10 @@
 import styled from 'styled-components';
-import { BoxShadow, Heading3 } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Heading3 } from '../../../../constants/Mixins';
 
 export const ShortlistBoxWrapper = styled.div`
-  width: 100%;
-  padding: 32px;
+  ${Card()}
+  ${BoxShadow}
   margin-bottom: 32px;
-  border-radius: 4px;
-  background-color: ${({theme}) => theme.white};
-  ${BoxShadow}  
 `;
 
 export const ShortlistHeading = styled.div`
