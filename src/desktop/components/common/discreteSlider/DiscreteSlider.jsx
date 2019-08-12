@@ -6,7 +6,6 @@ import { withTheme } from 'styled-components';
 import {
   DiscreteSliderWrapper,
   SliderBarWrapper,
-  SliderNodeText,
   SliderRail,
   SliderHandle,
   SliderTick,
@@ -29,13 +28,15 @@ const DiscreteSlider = ({
   theme,
   numNodes,
   currentNode,
-  nodeText,
   color,
   onUpdate,
-  margin="0 0 40px 0"
+  margin="0 0 40px 0",
+  showTicks=true
 }) => {
+  const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
+
   let percentages = [];
-  for (let i = 0; i < 100; i += 100 / (numNodes - 1)) {
+  for (let i = 0; i < 100; i += percentGap) {
     percentages.push(i);
   }
   percentages.push(100);
@@ -59,7 +60,7 @@ const DiscreteSlider = ({
             {({ getRailProps }) => (
               <>
                 <SliderRail {...getRailProps()} /> 
-                {percentages.map((percent, idx) => (
+                {showTicks && percentages.map((percent, idx) => (
                   <SliderTick
                     key={percent}
                     color={idx <= currentNode ? color : theme.light3}
@@ -101,7 +102,6 @@ const DiscreteSlider = ({
           </Tracks>
         </Slider>
       </SliderBarWrapper>
-      <SliderNodeText>{nodeText[currentNode]}</SliderNodeText>
     </DiscreteSliderWrapper>
   );
 };
@@ -112,8 +112,8 @@ DiscreteSlider.propTypes = {
   numNodes: PropTypes.number.isRequired, // includes 0 so 6 for 0 20 40 60 80 100
   currentNode: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  nodeText: PropTypes.arrayOf(PropTypes.string).isRequired,
   onUpdate: PropTypes.func.isRequired,
+  showTicks: PropTypes.bool.isRequired
 };
 
 export default withTheme(DiscreteSlider);

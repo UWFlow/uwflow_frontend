@@ -27,6 +27,23 @@ const dummyData = {
   picture_url: 'https://uwflow.com/static/img/team/derrek.jpg'
 }
 
+const dummyFinals = [
+  {
+    code: 'ECE 105',
+    sections: ['101', '102'],
+    time: '9:00 AM - 11:30 AM',
+    date: 'Friday, Aug 9th',
+    location: 'PAC 1, 2, 3'
+  },
+  {
+    code: 'MATH 239',
+    sections: ['201', '202'],
+    time: '12:30 PM - 3:00 PM',
+    date: 'Tuesday, Aug 13th',
+    location: 'MC 1006'
+  },
+];
+
 const ProfilePageContent = ({ user }) => (
   <>
     <ProfileInfoHeader user={user} />
@@ -39,7 +56,7 @@ const ProfilePageContent = ({ user }) => (
           cancelButton={false}
         />
         <ProfileFinalExams
-          courses={[]}
+          courses={dummyFinals}
           lastUpdated={{
             time: 18,
             url: 'adm.uwaterloo.ca'
@@ -61,13 +78,17 @@ const ProfilePageContent = ({ user }) => (
 
 const ProfilePage = () => {
   // TODO load profile of logged in user or redirect to login page
-  const { loading, data } = useQuery(GET_USER, {variables: { id: 1 }});
+  const { loading, error, data } = useQuery(GET_USER, {variables: { id: 1 }});
 
   return (
     <ProfilePageWrapper>
       {loading
         ? (<p>Loading ...</p>)
-        : (<ProfilePageContent user={{...data.user[0], ...dummyData}} />)
+        : (error || !data)
+          ? <div>Error</div>
+          : (
+            <ProfilePageContent user={{...data.user[0], ...dummyData}} />
+          )
       }
     </ProfilePageWrapper>
   );

@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import { BoxShadow } from '../../../../constants/Mixins';
+import { Card, BoxShadow } from '../../../../constants/Mixins';
 
 export const SearchResultsWrapper = styled.div`
-  width: 100%;
-  padding: 32px;
+  ${Card}
+  ${BoxShadow}
   margin-bottom: 32px;
-  background-color: ${({theme}) => theme.white};
-  ${BoxShadow}  
 `;

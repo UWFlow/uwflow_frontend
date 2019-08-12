@@ -1,24 +1,16 @@
 import styled from 'styled-components';
-import { Body, BoxShadow } from '../../../../../constants/Mixins';
+import { BoxShadow } from '../../../../../constants/Mixins';
 
 export const DiscreteSliderWrapper = styled.div`
   color: ${({ color }) => color};
   display: flex;
   flex-direction: row;
-  width: 100%;
   margin: ${({ margin }) => margin};
 `;
 
 export const SliderBarWrapper = styled.div`
   width: 300px;
   margin: auto 0;
-  margin-right: 40px;
-`;
-
-export const SliderNodeText = styled.div`
-  ${Body}
-  color: ${({theme}) => theme.dark2};
-  font-weight: 600;
 `;
 
 export const SliderRail = styled.div`

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  Card,
   Heading1,
   Heading4,
   Heading2,
@@ -19,11 +20,9 @@ export const CourseProfReviewsWrapper = styled.div`
 `;
 
 export const ReviewsForSingleProfWrapper = styled.div`
-  background-color: white;
-  padding: 32px;
-  margin-bottom: 32px;
-  border-radius: 5px;
+  ${Card()}
   ${BoxShadow}
+  margin-bottom: 32px;
 `;
 
 export const ReviewsOptionsWrapper = styled.div`

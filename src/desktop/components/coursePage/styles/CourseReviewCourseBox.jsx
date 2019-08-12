@@ -1,19 +1,22 @@
 import styled from 'styled-components';
-import { BoxShadow, Heading4, Body } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Heading4, Body } from '../../../../constants/Mixins';
 
 export const CourseReviewCourseBoxWrapper = styled.div`
+  ${Card('24px', '32px 0')}
   ${BoxShadow}
-  background-color: white;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  margin: 32px 0 32px 0;
-  width: 635px;
+  max-width: 640px;
 `;
 
 export const QuestionText = styled.div`
   ${Heading4}
+`;
+
+export const SliderOptionText = styled.div`
+  ${Body}
+  color: ${({theme}) => theme.dark2};
+  font-weight: 600;
+  margin-left: 40px;
+  margin-bottom: 40px;
 `;
 
 export const ReviewTextArea = styled.textarea`

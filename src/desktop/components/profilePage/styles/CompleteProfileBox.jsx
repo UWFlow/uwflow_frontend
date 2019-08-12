@@ -6,6 +6,7 @@ export const CompleteProfileBoxWrapper = styled.div`
   padding: 32px;
   padding-bottom: 0;
   margin-bottom: 32px;
+  border-radius: 4px;
   background-color: ${({theme}) => theme.white};
   ${BoxShadow}  
 `;

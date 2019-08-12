@@ -55,8 +55,6 @@ const DropdownList = ({
         {options.map((opt, idx) => (
           <MenuItem
             key={idx}
-            first={idx === 0}
-            last={idx === options.length - 1}
             selected={idx === selectedIndex}
             onClick={() => {
               onChange(idx);
@@ -73,7 +71,7 @@ const DropdownList = ({
 
 DropdownList.propTypes = {
   selectedIndex: PropTypes.number.isRequired,
-  colour: PropTypes.string,
+  color: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func,
   zIndex: PropTypes.number, // callback function that takes the index of the clicked element in the list
