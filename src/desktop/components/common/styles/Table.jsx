@@ -8,10 +8,6 @@ export const TableWrapper = styled.table`
   table-layout: auto;
   border-collapse: collapse;
   color: ${({theme}) => theme.dark2}
-  
-  box-shadow:
-    0px 2px 5px rgba(236, 237, 237, 0.5),
-    0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
 
 export const TableHeader = styled.thead`
@@ -35,14 +31,14 @@ export const HeaderRow = styled.tr`
   padding-right: ${({rightAlign}) => rightAlign ? '0' : '16px'};
 
   &:first-child {
-    padding-left:24px;
-    width: ${({maxWidth}) => maxWidth + 24 + 16}px;
+    padding-left: 32px;
+    width: ${({maxWidth}) => maxWidth + 32 + 16}px;
     max-width: ${({maxWidth}) => maxWidth + 24 + 16}px;
   }
 
   &:last-child {
-    padding-left:0;
-    padding-right:24px;
+    padding-left: 0;
+    padding-right: 32px;
     width: ${({maxWidth}) => maxWidth + 24 + 16}px;
     max-width: ${({maxWidth}) => maxWidth + 24 + 16}px;
   }
@@ -51,7 +47,7 @@ export const HeaderRow = styled.tr`
 export const HeaderText = styled.span`
   ${({sortable}) => sortable ? Link : ''}
   cursor: ${({sortable}) => sortable ? 'pointer' : 'none'};
-  color: ${({theme, sortable}) => sortable ? theme.primary : theme.dark2};
+  color: ${({theme, sortable}) => sortable ? theme.primary : theme.dark1};
 
   &:hover {
     color: ${({theme, sortable}) => sortable ? theme.primaryDark : theme.dark1};
@@ -83,13 +79,13 @@ export const Cell = styled.td`
   text-align: ${({align}) => align ? align : 'left'};
 
   &:first-child {
-    padding-left:24px;
-    padding-right:0;
+    padding-left: 32px;
+    padding-right: 0;
   }
 
   &:last-child {
-    padding-left:0;
-    padding-right:24px;
+    padding-left: 0;
+    padding-right: 32px;
   }
 `;
 

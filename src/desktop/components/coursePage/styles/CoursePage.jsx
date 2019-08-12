@@ -35,6 +35,7 @@ export const Column2 = styled.div`
 export const ExtraInfoBoxWrapper = styled.div`
   width: 100%;
   background-color: white;
+  border-radius: 4px;
   border: 2px solid ${({ theme }) => theme.light2};
   ${BoxShadow}
   padding: 16px;

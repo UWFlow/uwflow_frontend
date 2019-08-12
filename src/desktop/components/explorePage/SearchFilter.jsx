@@ -22,7 +22,7 @@ import {
   HeaderButtonWrapper
 } from './styles/SearchFilter';
 
-let courseNumberOptions = [1, 2, 3, 4].map(
+let courseNumberOptions = [1, 2, 3, 4, 5].map(
   (num) => <span><BoldText>{num}</BoldText>XX</span>
 );
 courseNumberOptions.push(<span><BoldText>6</BoldText>XX+</span>)

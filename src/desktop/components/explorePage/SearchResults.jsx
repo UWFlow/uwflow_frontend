@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -27,7 +27,7 @@ const SearchResults = ({
     return new RegExp(regexStr);
   }, [filterState]);
 
-  const filterCourses = (results = []) => {
+  const filterCourses = (results) => {
     const regex = courseCodeRegex();
     return results.filter(
       (res) => regex.test(res.code)
@@ -35,7 +35,7 @@ const SearchResults = ({
     );
   };
 
-  const filterProfs = (results = []) => {
+  const filterProfs = (results) => {
     return results.filter(res =>
       res.ratings >= ratingFilters[filterState.numRatings]
         && (filterState.courseTaught === 0

@@ -5,6 +5,7 @@ export const ProfileCalendarWrapper = styled.div`
   width: 100%;
   padding: 32px;
   margin-bottom: 32px;
+  border-radius: 4px;
   background-color: ${({theme}) => theme.white};
   ${BoxShadow}
 `;

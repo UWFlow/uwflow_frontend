@@ -14,13 +14,15 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
+const NUM_COURSE_CODES = 6;
+
 const ExplorePageContent = ({
   query,
   terms,
   courseSearch,
   results
 }) => {
-  const [courseCodes, setCourseCodes] = useState(Array(5).fill(true));
+  const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODES).fill(true));
   const [numRatings, setNumRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
@@ -63,7 +65,7 @@ const ExplorePageContent = ({
   }
 
   const resetFilters = () => {
-    setCourseCodes(Array(5).fill(true));
+    setCourseCodes(Array(NUM_COURSE_CODES).fill(true));
     setNumRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);

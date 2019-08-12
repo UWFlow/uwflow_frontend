@@ -5,4 +5,5 @@ export const ProfileCoursesWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   margin-bottom: 32px;
+  border-radius: 4px;
 `;

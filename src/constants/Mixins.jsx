@@ -70,6 +70,7 @@ export const Link = `
   font-weight: 500;
   font-size: 14px;
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 export const BoxShadow = `
