@@ -9,7 +9,7 @@ export const ButtonWrapper = styled.button`
   text-align: center;
   border: 2px solid ${({ theme, borderColor = theme.light2 }) => borderColor};
   border-radius: 8px;
-  padding: 16px 48px;
+  padding: ${({ padding }) => padding};
   color: ${({ theme }) => theme.dark1};
   min-height: ${({ height }) => height}px;
   margin: ${({ margin }) => margin};
@@ -22,8 +22,7 @@ export const ButtonWrapper = styled.button`
     background: ${({ theme, hoverColor = theme.accentDark }) => hoverColor};
   }
 
-  :focus,
-  :active {
+  :focus {
     color: ${({ theme }) => theme.dark2};
   }
 `;

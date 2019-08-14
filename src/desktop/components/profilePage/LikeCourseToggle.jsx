@@ -6,38 +6,45 @@ import { withTheme } from 'styled-components';
 /* Styled Components */
 import {
   LikeCourseToggleWrapper,
-  LikeCourseLeftToggle,
-  LikeCourseRightToggle
+  LikeCourseToggleButton
 } from './styles/LikeCourseToggle';
 
 const LikeCourseToggle = ({
-  theme, liked, onClick = () => {}
+  theme, liked = null, onClick = () => {}
 }) => {
   return (
-    <LikeCourseToggleWrapper
-      onClick={onClick}
-    >
-      <LikeCourseLeftToggle>
+    <LikeCourseToggleWrapper>
+      <LikeCourseToggleButton
+        left
+        noneSelected={liked === null}
+        selected={liked === true}
+        onClick={() => onClick(true)}
+      >
         <ThumbsUp
-          color={theme.primary}
-          size={32}
-          strokeWidth={2}
+          color={liked === true ? theme.white : theme.dark3}
+          size={16}
+          strokeWidth={3}
         />
-      </LikeCourseLeftToggle>
-      <LikeCourseRightToggle>
+      </LikeCourseToggleButton>
+      <LikeCourseToggleButton
+        left={false}
+        noneSelected={liked === null}
+        selected={liked === false}
+        onClick={() => onClick(false)}
+      >
         <ThumbsDown
-          color={theme.primary}
-          size={32}
-          strokeWidth={2}
+          color={liked === false ? theme.white : theme.dark3}
+          size={16}
+          strokeWidth={3}
         />
-      </LikeCourseRightToggle>
+      </LikeCourseToggleButton>
     </LikeCourseToggleWrapper>
   );
 };
 
-ShortlistStar.propTypes = {
+LikeCourseToggle.propTypes = {
   theme: PropTypes.object.isRequired,
-  liked: PropTypes.bool.isRequired,
+  liked: PropTypes.bool,
   onClick: PropTypes.func,
 };
 

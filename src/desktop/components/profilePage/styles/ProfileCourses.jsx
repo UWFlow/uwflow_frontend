@@ -54,5 +54,18 @@ export const LikedThisCourseText = styled.div`
   margin-right: 16px;
   width: 100%;
   max-width: 64px;
-  line-height: 140%;
+  line-height: 130%;
+`;
+
+export const AddReviewIcon = styled.div`
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  min-height: 16px;
+`;
+
+export const ProfileCourseReviewButtonText = styled.div`
+  ${Body}
+  font-weight: 500;
+  color: ${({theme}) => theme.dark2};
 `;

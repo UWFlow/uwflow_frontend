@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { PlusSquare } from 'react-feather';
+import { withTheme } from 'styled-components';
 
 /* Child Components */
 import TabContainer from '../common/TabContainer';
+import Button from '../common/Button';
+import LikeCourseToggle from './LikeCourseToggle';
 
 /* Styled Components */
 import {
@@ -12,7 +16,9 @@ import {
   ProfileCourseCode,
   ProfileCourseName,
   ProfileCourseLiked,
-  LikedThisCourseText
+  LikedThisCourseText,
+  AddReviewIcon,
+  ProfileCourseReviewButtonText
 } from './styles/ProfileCourses';
 
 const groupByTerm = (courses) => {
@@ -24,9 +30,8 @@ const groupByTerm = (courses) => {
   }, {});
 };
 
-const ProfileCourses = ({ courses }) => {
+const ProfileCourses = ({ theme, courses }) => {
   const courseGroups = groupByTerm(courses);
-
   const tabList = Object.keys(courseGroups).map(termName => {
     return {
       title: termName,
@@ -39,6 +44,23 @@ const ProfileCourses = ({ courses }) => {
             </ProfileCourseText>
             <ProfileCourseLiked>{course.liked}%</ProfileCourseLiked>
             <LikedThisCourseText>liked this<br />course</LikedThisCourseText>
+            <LikeCourseToggle liked={true} />
+            <Button
+              margin="0 0 0 16px"
+              padding="12px "
+              height={40}
+            >
+              <AddReviewIcon>
+                <PlusSquare
+                  color={theme.dark2}
+                  size={16}
+                  strokeWidth={3}
+                />
+              </AddReviewIcon>
+              <ProfileCourseReviewButtonText>
+                Add review
+              </ProfileCourseReviewButtonText>
+            </Button>
           </ProfileCoursesCourse> 
         ));
       }
@@ -53,6 +75,7 @@ const ProfileCourses = ({ courses }) => {
 };
 
 ProfileCourses.propTypes = {
+  theme: PropTypes.object.isRequired,
   courses: PropTypes.arrayOf(PropTypes.shape({
     term: PropTypes.string,
     termName: PropTypes.string,
@@ -62,4 +85,4 @@ ProfileCourses.propTypes = {
   })).isRequired,
 };
 
-export default ProfileCourses;
+export default withTheme(ProfileCourses);
