@@ -44,6 +44,6 @@ export const Tab = styled.div`
 export const ContentContainer = styled.div`
   width: 100%;
   background: white;
-  padding: 32px;
+  padding: ${({ padding }) => padding};
   border-radius: 0 0 4px 4px;
 `;
