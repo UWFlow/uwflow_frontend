@@ -8,8 +8,8 @@ import {
 } from './styles/ShortlistStar';
 
 const ShortlistStar = ({
-  theme, checked, size = 32, onClick = () => {} }
-) => {
+  theme, checked, size = 32, onClick = () => {}
+}) => {
   return (
     <ShortlistStarWrapper
       onClick={onClick}

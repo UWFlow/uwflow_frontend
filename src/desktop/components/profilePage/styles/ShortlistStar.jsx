@@ -6,8 +6,12 @@ export const ShortlistStarWrapper = styled(Star)`
   min-width: ${({width}) => width}px;
   height: ${({width}) => width}px;
   min-height: ${({width}) => width}px;
-  fill: ${({ checked, theme }) => checked ? theme.accent : theme.none};
+  fill: ${({ checked, theme }) => checked ? theme.accent : 'none'};
   user-select: none;
   cursor: pointer;
   margin: auto 0;
+
+  &:hover {
+    fill: ${({ checked, theme }) => checked ? theme.accentDark : theme.light1};
+  }
 `;

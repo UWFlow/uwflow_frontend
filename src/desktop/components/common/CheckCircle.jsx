@@ -9,8 +9,8 @@ import {
 } from './styles/CheckCircle';
 
 const CheckCircle = ({
-  color, checked = false, width = 32, disabled = true, onClick = () => {} }
-) => {
+  color, checked = false, width = 32, disabled = true, onClick = () => {}
+}) => {
   return (
     <CheckCircleWrapper
       onClick={() => disabled ? null : onClick()}
