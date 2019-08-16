@@ -71,6 +71,7 @@ export const Link = `
   font-size: 14px;
   text-decoration: underline;
   cursor: pointer;
+  width: fit-content;
 `;
 
 export const BoxShadow = `

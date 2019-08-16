@@ -27,7 +27,7 @@ import {
 import { GET_COURSE } from '../../../graphql/queries/course/Course';
 
 const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
-  const [hideReviewForm, setHideReviewForm] = useState(true);
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   return (
     <>
@@ -47,18 +47,16 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
             <Button
               children="Add your review"
               width={200}
-              handleClick={() => {
-                setHideReviewForm(false);
-              }}
+              handleClick={() => setReviewModalOpen(true)}
             />
           </CourseReviewQuestionBox>
           <ModalHOC
-            isModalOpen={!hideReviewForm}
-            onCloseModal={() => setHideReviewForm(true)}
+            isModalOpen={reviewModalOpen}
+            onCloseModal={() => setReviewModalOpen(false)}
           >
             <CourseReviewCourseBox
               courseIDList={[courseID]}
-              onCancel={() => setHideReviewForm(true)}
+              onCancel={() => setReviewModalOpen(false)}
             />
           </ModalHOC>
           <CourseReviews courseID={courseID} />

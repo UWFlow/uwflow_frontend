@@ -51,21 +51,30 @@ export const ProfileCourseLiked = styled.div`
 export const LikedThisCourseText = styled.div`
   ${Body}
   color: ${({theme}) => theme.dark3};
+  margin: auto 0;
   margin-right: 16px;
   width: 100%;
   max-width: 64px;
-  line-height: 130%;
 `;
 
-export const AddReviewIcon = styled.div`
-  width: 16px;
-  min-width: 16px;
-  height: 16px;
-  min-height: 16px;
+export const AddReviewIcon = styled.span`
+  display: flex;
+  margin: auto 0;
+  margin-right: 4px;
 `;
 
-export const ProfileCourseReviewButtonText = styled.div`
+export const ProfileCourseReviewButtonText = styled.span`
   ${Body}
   font-weight: 500;
   color: ${({theme}) => theme.dark2};
+  display: flex;
+  margin-top: 1px;
+  line-height: 14px;
+`;
+
+export const ReviewButtonContents = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  margin: auto;
 `;

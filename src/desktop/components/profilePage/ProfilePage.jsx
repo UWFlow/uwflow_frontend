@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
 
 /* Child Components */
@@ -8,6 +8,7 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
+import ModalHOC from '../common/modal/ModalHOC';
 
 /* Styled Components */
 import {
@@ -93,39 +94,57 @@ const dummyShortlist = [
   }
 ]
 
-const ProfilePageContent = ({ user }) => (
-  <>
-    <ProfileInfoHeader user={user} />
-    <ColumnWrapper>
-      <Column1>
-        <ProfileCalendar />
-        <ProfileCourses courses={dummyCourses}/>
+const ProfilePageContent = ({ user }) => {
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
+  const courseCodes = dummyCourses.map(course => course.code);
+
+  return (
+    <>
+      <ProfileInfoHeader user={user} />
+      <ColumnWrapper>
+        <Column1>
+          <ProfileCalendar />
+          <ProfileCourses
+            courses={dummyCourses} 
+            setReviewCourse={setSelectedCourseIndex}
+            openModal={() => setReviewModalOpen(true)}
+          />
+          <ProfileFinalExams
+            courses={dummyFinals}
+            lastUpdated={{
+              time: 18,
+              url: 'adm.uwaterloo.ca'
+            }}
+          />
+        </Column1>
+        <Column2>
+          <CompleteProfileBox
+            hasScheduleUploaded={true}
+            hasCourseInfo={true}
+            hasCoursesReviewed={false}
+            hasProfsReviewed={false}
+          />
+          <ShortlistBox
+            shortlistCourses={dummyShortlist}
+          />
+        </Column2>
+      </ColumnWrapper>
+      <ModalHOC
+        isModalOpen={reviewModalOpen}
+        onCloseModal={() => setReviewModalOpen(false)}
+      >
         <CourseReviewCourseBox
-          courseIDList={['ECE 105', 'MATH 135', 'SMF 213']} // TODO get real courses
-          cancelButton={false}
+          showCourseDropdown
+          courseIDList={courseCodes}
+          selectedCourseIndex={selectedCourseIndex}
+          setSelectedCourseIndex={setSelectedCourseIndex}
+          onCancel={() => setReviewModalOpen(false)}
         />
-        <ProfileFinalExams
-          courses={dummyFinals}
-          lastUpdated={{
-            time: 18,
-            url: 'adm.uwaterloo.ca'
-          }}
-        />
-      </Column1>
-      <Column2>
-        <CompleteProfileBox
-          hasScheduleUploaded={true}
-          hasCourseInfo={true}
-          hasCoursesReviewed={false}
-          hasProfsReviewed={false}
-        />
-        <ShortlistBox
-          shortlistCourses={dummyShortlist}
-        />
-      </Column2>
-    </ColumnWrapper>
-  </>
-);
+      </ModalHOC>
+    </>
+  );
+}
 
 const ProfilePage = () => {
   // TODO load profile of logged in user or redirect to login page

@@ -6,6 +6,7 @@ export const LikeCourseToggleWrapper = styled.div`
   user-select: none;
   border-radius: 8px;
   display: flex;
+  margin: auto;
 `;
 
 export const LikeCourseToggleButton = styled.button`

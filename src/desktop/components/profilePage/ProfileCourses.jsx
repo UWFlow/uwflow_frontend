@@ -18,7 +18,8 @@ import {
   ProfileCourseLiked,
   LikedThisCourseText,
   AddReviewIcon,
-  ProfileCourseReviewButtonText
+  ProfileCourseReviewButtonText,
+  ReviewButtonContents
 } from './styles/ProfileCourses';
 
 const groupByTerm = (courses) => {
@@ -30,7 +31,7 @@ const groupByTerm = (courses) => {
   }, {});
 };
 
-const ProfileCourses = ({ theme, courses }) => {
+const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
   const courseGroups = groupByTerm(courses);
   const tabList = Object.keys(courseGroups).map(termName => {
     return {
@@ -47,19 +48,25 @@ const ProfileCourses = ({ theme, courses }) => {
             <LikeCourseToggle liked={true} />
             <Button
               margin="0 0 0 16px"
-              padding="12px "
+              padding="8px"
               height={40}
+              handleClick={() => {
+                setReviewCourse(idx);
+                openModal();
+              }}
             >
-              <AddReviewIcon>
-                <PlusSquare
-                  color={theme.dark2}
-                  size={16}
-                  strokeWidth={3}
-                />
-              </AddReviewIcon>
-              <ProfileCourseReviewButtonText>
-                Add review
-              </ProfileCourseReviewButtonText>
+              <ReviewButtonContents>
+                <AddReviewIcon>
+                  <PlusSquare
+                    color={theme.dark2}
+                    size={24}
+                    strokeWidth={2}
+                  />
+                </AddReviewIcon>
+                <ProfileCourseReviewButtonText>
+                  Add review
+                </ProfileCourseReviewButtonText>
+              </ReviewButtonContents>
             </Button>
           </ProfileCoursesCourse> 
         ));
@@ -83,6 +90,8 @@ ProfileCourses.propTypes = {
     name: PropTypes.string,
     liked: PropTypes.number
   })).isRequired,
+  setReviewCourse: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 export default withTheme(ProfileCourses);

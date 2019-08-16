@@ -29,5 +29,6 @@ export const ButtonWrapper = styled.button`
 
 export const ButtonText = styled.div`
   margin: auto;
+  width: max-content; 
   ${Heading4}
 `;
