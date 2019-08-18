@@ -9,6 +9,7 @@ const Button = ({
   hoverColor,
   borderColor,
   margin = '0',
+  padding = '16px 48px',
   handleClick = () => {},
   height = 48,
   hasShadow = true,
@@ -22,6 +23,7 @@ const Button = ({
       borderColor={borderColor}
       hasShadow={hasShadow}
       margin={margin}
+      padding={padding}
     >
       <ButtonText>{children}</ButtonText>
     </ButtonWrapper>
@@ -29,13 +31,14 @@ const Button = ({
 };
 
 Button.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  children: PropTypes.any,
   handleClick: PropTypes.func,
   height: PropTypes.number,
   color: PropTypes.string,
   hoverColor: PropTypes.string,
   borderColor: PropTypes.string,
   margin: PropTypes.string,
+  padding: PropTypes.string,
   hasShadow: PropTypes.bool,
 };
 

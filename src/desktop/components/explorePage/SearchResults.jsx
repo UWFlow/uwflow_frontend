@@ -20,7 +20,7 @@ const SearchResults = ({
     let regexStr = '';
     for (let i = filterState.courseCodes.length - 1; i >= 0; i--) {
       if (filterState.courseCodes[i]) {
-        regexStr += `|${i < filterState.courseCodes.length - 1 ? i + 1 : '[6-8]'}`;
+        regexStr += `|${i < filterState.courseCodes.length - 1 ? i + 1 : '[5-8]'}`;
       }
     }
     regexStr = regexStr === '' ? 'a^' : `(${regexStr.slice(1)})([0-9]{2})`;

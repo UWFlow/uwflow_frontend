@@ -14,7 +14,7 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-const NUM_COURSE_CODES = 6;
+const NUM_COURSE_CODES = 5;
 
 const ExplorePageContent = ({
   query,

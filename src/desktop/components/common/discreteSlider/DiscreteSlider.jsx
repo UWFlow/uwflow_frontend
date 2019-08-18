@@ -113,7 +113,7 @@ DiscreteSlider.propTypes = {
   currentNode: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  showTicks: PropTypes.bool.isRequired
+  showTicks: PropTypes.bool
 };
 
 export default withTheme(DiscreteSlider);

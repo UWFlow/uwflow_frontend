@@ -59,11 +59,12 @@ const engagingOptions = [
 const CourseReviewCourseBox = ({
   theme,
   courseIDList,
+  selectedCourseIndex = 0,
+  setSelectedCourseIndex = () => {},
+  showCourseDropdown = false,
   cancelButton = true,
   onCancel = () => {},
 }) => {
-  const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
-
   const [useful, setUseful] = useState(0);
   const [easy, setEasy] = useState(0);
   const [liked, setLiked] = useState(-1);
@@ -76,12 +77,12 @@ const CourseReviewCourseBox = ({
 
   return (
     <CourseReviewCourseBoxWrapper>
-      {courseIDList.length > 1 && (
+      {(courseIDList.length > 1 || showCourseDropdown) && (
         <QuestionWrapper>
           <QuestionText>Review a course: </QuestionText>
           <DropdownList
             selectedIndex={selectedCourseIndex}
-            placeholder="select your professor"
+            placeholder="select a course"
             options={courseIDList} // TODO set to course names
             color={theme.courses}
             onChange={value => setSelectedCourseIndex(value)}
@@ -191,6 +192,9 @@ const CourseReviewCourseBox = ({
 CourseReviewCourseBox.propTypes = {
   courseIDList: PropTypes.arrayOf(PropTypes.string).isRequired,
   theme: PropTypes.object.isRequired,
+  selectedCourseIndex: PropTypes.number,
+  setSelectedCourseIndex: PropTypes.func,
+  showCourseDropdown: PropTypes.bool,
   cancelButton: PropTypes.bool,
   onCancel: PropTypes.func,
 };

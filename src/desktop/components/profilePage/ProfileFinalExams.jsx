@@ -26,7 +26,7 @@ const examColumns = [
     Cell:  ({value}) => (
     <>
       {value.map((v, idx) =>
-        <span>{v}{idx === value.length - 1 ? '' : ','}</span>
+        <span key={idx}>{v}{idx === value.length - 1 ? '' : ','}</span>
       )}
     </>),
   },
