@@ -39,7 +39,7 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
       />
       <ColumnWrapper>
         <Column1>
-          <CourseSchedule />
+          <CourseSchedule courseID={courseID} />
           <CourseReviewQuestionBox>
             <CourseReviewQuestionText>
               What do you think of {course.code}?
@@ -77,21 +77,19 @@ const CoursePage = ({ match }) => {
 
   return (
     <CoursePageWrapper>
-      {loading
-        ? <div>Loading ...</div>
-        : (error || !data || data.course.length === 0
-          ? <NotFoundPage text="Sorry, we couldn't find that course!" />
-          : ( 
-            <CoursePageContent
-              course={data.course[0]}
-              easy={data.aggregate_course_easy_buckets_aggregate}
-              liked={data.aggregate_course_liked_buckets_aggregate}
-              useful={data.aggregate_course_useful_buckets_aggregate}
-              courseID={courseID}
-            />
-          )
-        )
-      }
+      {loading ? (
+        <div>Loading ...</div>
+      ) : error || !data || data.course.length === 0 ? (
+        <NotFoundPage text="Sorry, we couldn't find that course!" />
+      ) : (
+        <CoursePageContent
+          course={data.course[0]}
+          easy={data.aggregate_course_easy_buckets_aggregate}
+          liked={data.aggregate_course_liked_buckets_aggregate}
+          useful={data.aggregate_course_useful_buckets_aggregate}
+          courseID={courseID}
+        />
+      )}
     </CoursePageWrapper>
   );
 };

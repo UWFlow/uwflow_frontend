@@ -7,12 +7,12 @@ export const courseColumns = [
     accessor: 'code',
     align: 'left',
     maxWidth: 112,
-    Cell:  ({value}) => <CourseCode to={`/course/1`}>{value}</CourseCode>,
+    Cell: ({ value }) => <CourseCode to={`/course/1`}>{value}</CourseCode>,
   },
   {
     Header: 'Course Name',
     accessor: 'name',
-    align: 'left'
+    align: 'left',
   },
   {
     Header: 'Ratings',
@@ -24,20 +24,20 @@ export const courseColumns = [
     Header: 'Useful',
     accessor: 'useful',
     align: 'right',
-    maxWidth: 64
+    maxWidth: 64,
   },
   {
     Header: 'Easy',
     accessor: 'easy',
     align: 'right',
-    maxWidth: 64
+    maxWidth: 64,
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
-    maxWidth: 64
-  }
+    maxWidth: 64,
+  },
 ];
 
 export const profColumns = [
@@ -45,7 +45,7 @@ export const profColumns = [
     Header: 'Professor name',
     accessor: 'name',
     align: 'left',
-    Cell:  ({value}) => <ProfName to={`/prof/1`}>{value}</ProfName>,
+    Cell: ({ value }) => <ProfName to={`/prof/1`}>{value}</ProfName>,
   },
   {
     Header: 'Ratings',
@@ -57,18 +57,18 @@ export const profColumns = [
     Header: 'Clear',
     accessor: 'clear',
     align: 'right',
-    maxWidth: 64
+    maxWidth: 64,
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
-    maxWidth: 64
+    maxWidth: 64,
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
-    maxWidth: 64
-  }
+    maxWidth: 64,
+  },
 ];

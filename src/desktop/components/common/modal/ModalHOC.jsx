@@ -35,12 +35,12 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
   }, [handleKeyPress]);
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (isModalOpen || isTrulyOpen) {
       document.body.classList.add('modal-open');
     } else {
       document.body.classList.remove('modal-open');
     }
-  }, [isModalOpen]);
+  }, [isModalOpen, isTrulyOpen]);
 
   const onAnimationFinish = () => {
     setTrulyOpen(isModalOpen);
@@ -65,9 +65,9 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
         >
           <ModalBackdrop onClick={onCloseModal} />
         </FadeInOutAnimation>
-        <PopInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
+        <FadeInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
           <ModalWrapper>{children}</ModalWrapper>
-        </PopInOutAnimation>
+        </FadeInOutAnimation>
       </ModalContentWrapper>
     </ModalPortal>
   ) : null;
