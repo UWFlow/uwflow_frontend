@@ -23,10 +23,12 @@ const columnNames = [
   'Instructor',
 ];
 
-const secsToTime = secs =>
-  `${Math.floor(secs / 3600) % 12}:${Math.floor((secs % 3600) / 60) % 60} ${
-    secs >= 3600 * 12 ? 'PM' : 'AM'
-  }`;
+const secsToTime = secs => {
+  const t = Math.floor(secs / 3600) % 12;
+  const h = t === 0 ? 12 : t;
+  const m = Math.floor((secs % 3600) / 60) % 60;
+  return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
+};
 
 const CourseSchedule = ({ courseID }) => {
   const { loading, error, data } = useQuery(GET_COURSE_SCHEDULE, {
@@ -59,9 +61,6 @@ const CourseSchedule = ({ courseID }) => {
       instructor: cl.prof_id,
     })),
   }));
-  console.log(sectionsCleanedData);
-  console.log(courseScheduleTableColumns);
-  console.log(sectionsCleanedData.filter(c => c.term === 1195));
 
   const tabList = termsOffered.map(term => {
     return {

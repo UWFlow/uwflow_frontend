@@ -65,7 +65,7 @@ const LocationCell = ({ cell }) => (
 const InstructorCell = ({ cell }) => (
   <NormalCellWrapper>
     {cell.value.map((cl, ind) => {
-      if (!cl.instructor) return <ContentWrapper />;
+      if (!cl.instructor) return <ContentWrapper key={ind} />;
       return (
         <InstructorLink
           to={getProfPageRoute(cl.instructor.toString())}
@@ -83,43 +83,37 @@ export const courseScheduleTableColumns = [
     Header: 'Section',
     Cell: SectionCell,
     accessor: 'section',
-    key: 'Section',
     align: 'top',
+    style: { background: 'red' },
   },
   {
     Header: 'Class',
     Cell: ClassCell,
     accessor: 'c',
-    key: 'Class',
   },
   {
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
-    key: 'Enrolled',
   },
   {
     Header: 'Time',
     Cell: TimeCell,
     accessor: 'classes',
-    key: 'Time',
   },
   {
     Header: 'Date',
     Cell: DateCell,
     accessor: 'classes',
-    key: 'Date',
   },
   {
     Header: 'Location',
     Cell: LocationCell,
     accessor: 'classes',
-    key: 'Location',
   },
   {
     Header: 'Instructor',
     Cell: InstructorCell,
     accessor: 'classes',
-    key: 'Instructor',
   },
 ];
