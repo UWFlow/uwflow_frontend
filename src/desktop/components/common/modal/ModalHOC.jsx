@@ -65,10 +65,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
 
   return isModalOpen || isTrulyOpen ? (
     <ModalPortal>
-      <ModalContentWrapper
-        overflow={isModalOpen ? 'scroll' : 'hide'}
-        className="OUTER"
-      >
+      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'hide'}>
         <FadeInOutAnimation
           isOpen={isModalOpen}
           endOpacity={0.7}
@@ -77,11 +74,16 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
         >
           <ModalBackdrop onClick={onCloseModal} />
         </FadeInOutAnimation>
-        <ModalScrollableWrapper screenHeight={windowHeight} className="THISONE">
-          <PopInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
-            <ModalWrapper>{children}</ModalWrapper>
-          </PopInOutAnimation>
-        </ModalScrollableWrapper>
+        <div>
+          <ModalScrollableWrapper screenHeight={windowHeight}>
+            <FadeInOutAnimation
+              isOpen={isModalOpen}
+              styles={{ 'z-index': '2' }}
+            >
+              <ModalWrapper>{children}</ModalWrapper>
+            </FadeInOutAnimation>
+          </ModalScrollableWrapper>
+        </div>
       </ModalContentWrapper>
     </ModalPortal>
   ) : null;

@@ -23,14 +23,16 @@ export const ModalContentWrapper = styled.div`
 export const ModalScrollableWrapper = styled.div`
   min-height: ${({ screenHeight }) => screenHeight}px;
   overflow: show;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  z-index: 2;
 `;
 
 export const ModalWrapper = styled.div.attrs(() => ({
   // don't click backdrop or modal will be closed
   onClick: event => event.stopPropagation(),
 }))`
-  z-index: 1;
+  z-index: 2;
 `;
 
 export const ModalContainer = styled.div`
