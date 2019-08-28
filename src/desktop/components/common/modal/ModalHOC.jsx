@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 /* Styled Components */
 import {
   ModalBackdrop,
   ModalWrapper,
   ModalContentWrapper,
+  ModalScrollableWrapper,
 } from './styles/Modal';
 
 /* Child Components */
@@ -13,7 +15,14 @@ import ModalPortal from './ModalPortal';
 import PopInOutAnimation from '../../../../utils/animation/PopInOutAnimation';
 import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
 
-const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
+/* Getters */
+import { getHeight } from '../../../../data/reducers/BrowserReducer';
+
+const mapStateToProps = state => ({
+  windowHeight: getHeight(state),
+});
+
+const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
   const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
 
   const handleKeyPress = useCallback(
@@ -56,7 +65,10 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
 
   return isModalOpen || isTrulyOpen ? (
     <ModalPortal>
-      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'hide'}>
+      <ModalContentWrapper
+        overflow={isModalOpen ? 'scroll' : 'hide'}
+        className="OUTER"
+      >
         <FadeInOutAnimation
           isOpen={isModalOpen}
           endOpacity={0.7}
@@ -65,9 +77,11 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen }) => {
         >
           <ModalBackdrop onClick={onCloseModal} />
         </FadeInOutAnimation>
-        <PopInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
-          <ModalWrapper>{children}</ModalWrapper>
-        </PopInOutAnimation>
+        <ModalScrollableWrapper screenHeight={windowHeight} className="THISONE">
+          <PopInOutAnimation isOpen={isModalOpen} styles={{ 'z-index': '1' }}>
+            <ModalWrapper>{children}</ModalWrapper>
+          </PopInOutAnimation>
+        </ModalScrollableWrapper>
       </ModalContentWrapper>
     </ModalPortal>
   ) : null;
@@ -79,4 +93,4 @@ ModalHOC.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
 };
 
-export default ModalHOC;
+export default connect(mapStateToProps)(ModalHOC);

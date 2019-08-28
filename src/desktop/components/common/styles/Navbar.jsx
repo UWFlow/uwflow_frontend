@@ -7,10 +7,11 @@ export const NavbarWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 80px;
-  background-color: ${({theme}) => theme.white};
-  border: 1px solid ${({theme}) => theme.light2};
+  background-color: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.light2};
   box-sizing: border-box;
-  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5), 0px 0px 5px rgba(142, 147, 148, 0.2);
+  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+    0px 0px 5px rgba(142, 147, 148, 0.2);
   border-radius: 4px;
   display: flex;
 
@@ -42,11 +43,11 @@ export const LogoWrapper = styled(Link)`
 `;
 
 export const BlueText = styled.div`
-  color: ${({theme}) => theme.primary};
+  color: ${({ theme }) => theme.primary};
   margin-left: 5px;
 `;
 
-export const ProfileButtonWrapper = styled(Link)`
+export const ProfileButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;

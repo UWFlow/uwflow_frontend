@@ -13,18 +13,28 @@ export const ModalBackdrop = styled.div`
 export const ModalContentWrapper = styled.div`
   overflow-y: ${({ overflow }) => overflow};
   display: flex;
-  justify-content: center;
   position: fixed;
-  bottom: 0;
   top: 0;
   width: 100%;
   height: 100%;
 `;
 
+export const ModalScrollableWrapper = styled.div`
+  min-height: ${({ screenHeight }) => screenHeight}px;
+  overflow: show;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 105vh !important;
+`;
+
 export const ModalWrapper = styled.div.attrs(() => ({
   // don't click backdrop or modal will be closed
   onClick: event => event.stopPropagation(),
-}))``;
+}))`
+  z-index: 1;
+`;
 
 export const ModalContainer = styled.div`
   position: absolute;
