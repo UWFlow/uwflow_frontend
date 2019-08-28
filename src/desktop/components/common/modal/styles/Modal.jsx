@@ -17,16 +17,13 @@ export const ModalContentWrapper = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
+  justify-content: center;
 `;
 
 export const ModalScrollableWrapper = styled.div`
   min-height: ${({ screenHeight }) => screenHeight}px;
   overflow: show;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 105vh !important;
+  display: inline-block;
 `;
 
 export const ModalWrapper = styled.div.attrs(() => ({

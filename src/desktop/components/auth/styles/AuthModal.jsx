@@ -12,6 +12,8 @@ export const Wrapper = styled.div`
   ${BoxShadow}
   display: flex;
   flex-direction: column;
+  margin-top: 32px;
+  margin-bottom: 32px;
   width: 400px;
 `;
 
