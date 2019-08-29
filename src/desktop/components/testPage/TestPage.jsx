@@ -9,6 +9,7 @@ import Button from '../common/Button';
 import TestModal from '../common/modal/TestModal';
 import ProgressBar from '../common/ProgressBar';
 import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
+import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';
@@ -36,6 +37,7 @@ const TestPage = ({ getTextboxText }) => {
   };
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isModal2Open, setModal2Open] = useState(false);
 
   const tabList = [
     {
@@ -83,6 +85,10 @@ const TestPage = ({ getTextboxText }) => {
         onCloseModal={() => setModalOpen(false)}
         isModalOpen={isModalOpen}
       />
+      <TranscriptUploadModal
+        onCloseModal={() => setModal2Open(false)}
+        isModalOpen={isModal2Open}
+      />
 
       <Link to="/profile">Profile Page</Link>
       <br />
@@ -99,7 +105,12 @@ const TestPage = ({ getTextboxText }) => {
         tabList={tabList}
         initialSelectedTab={0}
       />
-      <Button handleClick={() => setModalOpen(true)}>Open Modal</Button>
+      <Button handleClick={() => setModalOpen(true)}>
+        Open Schedule Modal
+      </Button>
+      <Button handleClick={() => setModal2Open(true)}>
+        Open Transcript Modal
+      </Button>
       <ProgressBar percentComplete={0} />
       <ProgressBar percentComplete={0.25} />
       <ProgressBar percentComplete={0.5} />
