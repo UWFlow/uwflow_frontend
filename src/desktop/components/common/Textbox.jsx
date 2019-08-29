@@ -38,7 +38,7 @@ const Textbox = ({
   handleKeyDown,
   options = {},
   persistThroughUnmount,
-  maxLength = 524288 // default browser maxLength
+  maxLength = 524288, // default browser maxLength
 }) => {
   useEffect(() => {
     registerSelf();
@@ -84,7 +84,7 @@ Textbox.propTypes = {
   options: PropTypes.object,
   persistThroughUnmount: PropTypes.bool,
   maxLength: PropTypes.number,
-}
+};
 
 export default connect(
   mapStateToProps,

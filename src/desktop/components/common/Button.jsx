@@ -13,6 +13,7 @@ const Button = ({
   handleClick = () => {},
   height = 48,
   hasShadow = true,
+  width,
 }) => {
   return (
     <ButtonWrapper
@@ -24,6 +25,7 @@ const Button = ({
       hasShadow={hasShadow}
       margin={margin}
       padding={padding}
+      width={width}
     >
       <ButtonText>{children}</ButtonText>
     </ButtonWrapper>
