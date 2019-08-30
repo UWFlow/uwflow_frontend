@@ -11,19 +11,20 @@ export const FIRST_NAME_TEXTBOX_ID = 'FirstName';
 export const LAST_NAME_TEXTBOX_ID = 'LastName';
 export const CONFIRM_PASSWORD_TEXTBOX_ID = 'ConfirmPassword';
 
-const AuthModal = ({ isModalOpen, onCloseModal }) => {
-  const [showLoginModal, setShowLoginModal] = useState(false);
+export const AuthForm = () => {
+  const [showLoginForm, setShowLoginForm] = useState(false);
 
-  return (
-    <ModalHOC isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
-      {showLoginModal && (
-        <LoginContent onSwitchModal={() => setShowLoginModal(false)} />
-      )}
-      {!showLoginModal && (
-        <SignupContent onSwitchModal={() => setShowLoginModal(true)} />
-      )}
-    </ModalHOC>
+  return showLoginForm ? (
+    <LoginContent onSwitchModal={() => setShowLoginForm(false)} />
+  ) : (
+    <SignupContent onSwitchModal={() => setShowLoginForm(true)} />
   );
 };
+
+const AuthModal = ({ isModalOpen, onCloseModal }) => (
+  <ModalHOC isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
+    <AuthForm />
+  </ModalHOC>
+);
 
 export default AuthModal;
