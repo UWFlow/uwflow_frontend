@@ -26,6 +26,7 @@ import {
 } from './AuthModal';
 
 /* Child Components */
+import SocialLoginContent from './SocialLoginContent';
 import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
@@ -36,7 +37,7 @@ const SignupContent = ({ onSwitchModal }) => (
       <NamesSection>
         <TextboxWrapper>
           <Textbox
-            options={{ width: '100%' }}
+            options={{ width: '100%' , name: 'firstname' }}
             ID={FIRST_NAME_TEXTBOX_ID}
             initialPlaceholder="First Name"
           />
@@ -44,7 +45,7 @@ const SignupContent = ({ onSwitchModal }) => (
         <Spacer />
         <TextboxWrapper>
           <Textbox
-            options={{ width: '100%' }}
+            options={{ width: '100%', name: 'lastname' }}
             ID={LAST_NAME_TEXTBOX_ID}
             initialPlaceholder="Last Name"
           />
@@ -52,21 +53,21 @@ const SignupContent = ({ onSwitchModal }) => (
       </NamesSection>
       <TextboxWrapper>
         <Textbox
-          options={{ width: '100%' }}
+          options={{ width: '100%', type: 'email' }}
           ID={EMAIL_TEXTBOX_ID}
           initialPlaceholder="Email address"
         />
       </TextboxWrapper>
       <TextboxWrapper>
         <Textbox
-          options={{ width: '100%' }}
+          options={{ width: '100%', type: 'password' }}
           ID={PASSWORD_TEXTBOX_ID}
           initialPlaceholder="Password"
         />
       </TextboxWrapper>
       <TextboxWrapper>
         <Textbox
-          options={{ width: '100%' }}
+          options={{ width: '100%', type: 'password' }}
           ID={CONFIRM_PASSWORD_TEXTBOX_ID}
           initialPlaceholder="Confirm Password"
         />
@@ -75,7 +76,7 @@ const SignupContent = ({ onSwitchModal }) => (
         Sign Up
       </Button>
       <OrWrapper>OR</OrWrapper>
-      {/* TODO: FB and Google login buttons */}
+      <SocialLoginContent />
       <PrivacyWrapper>
         <GreyText>Read our </GreyText>
         <PrivacyPolicyText>Privacy Policy</PrivacyPolicyText>

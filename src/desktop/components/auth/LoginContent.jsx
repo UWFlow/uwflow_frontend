@@ -20,6 +20,7 @@ import {
 import { EMAIL_TEXTBOX_ID, PASSWORD_TEXTBOX_ID } from './AuthModal';
 
 /* Child Components */
+import SocialLoginContent from './SocialLoginContent';
 import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
@@ -29,14 +30,14 @@ const LoginContent = ({ onSwitchModal }) => (
       <Header>Log in</Header>
       <TextboxWrapper>
         <Textbox
-          options={{ width: '100%' }}
+          options={{ width: '100%', type: 'email' }}
           ID={EMAIL_TEXTBOX_ID}
           initialPlaceholder="Email address"
         />
       </TextboxWrapper>
       <TextboxWrapper>
         <Textbox
-          options={{ width: '100%' }}
+          options={{ width: '100%', type: 'password' }}
           ID={PASSWORD_TEXTBOX_ID}
           initialPlaceholder="Password"
         />
@@ -48,7 +49,7 @@ const LoginContent = ({ onSwitchModal }) => (
         Log in
       </Button>
       <OrWrapper>OR</OrWrapper>
-      {/* TODO: FB and Google login buttons */}
+      <SocialLoginContent />
       <PrivacyWrapper>
         <GreyText>Read our </GreyText>
         <PrivacyPolicyText>Privacy Policy</PrivacyPolicyText>
