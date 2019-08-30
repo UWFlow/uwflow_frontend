@@ -62,23 +62,26 @@ export const OrWrapper = styled.div`
 
 export const PrivacyWrapper = styled.div`
   display: flex;
+  margin-top: 16px;
 `;
 
 export const GreyText = styled.div`
-  color: ${({ theme }) => theme.dark1};
+  color: ${({ theme }) => theme.dark3};
   ${Body};
 `;
 
 export const PrivacyPolicyText = styled.div`
-  colour: black;
   ${Body}
+  color: ${({ theme }) => theme.dark1};
   margin-left: 4px;
 `;
 
 export const SwapModalWrapper = styled.div`
   ${Heading4}
+  color: ${({ theme }) => theme.dark3};
+  font-weight: 300;
   width: 100%;
-  border-top: 2px solid grey;
+  border-top: 1px solid ${({ theme }) => theme.light3};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,4 +93,9 @@ export const SwapModalLink = styled.div`
   text-decoration: underline;
   color: blue;
   cursor: pointer;
+`;
+
+export const Error = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.accent};
 `;

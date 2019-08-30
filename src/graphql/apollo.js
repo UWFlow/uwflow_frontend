@@ -5,7 +5,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 
-import { BACKEND_ENDPOINT, AUTH_DICT } from '../constants/Api';
+import { GRAPHQL_ENDPOINT, AUTH_DICT } from '../constants/Api';
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -35,7 +35,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: BACKEND_ENDPOINT
+  uri: GRAPHQL_ENDPOINT
 });
 
 const link = ApolloLink.from([

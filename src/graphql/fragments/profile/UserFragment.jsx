@@ -4,7 +4,7 @@ const UserFragment = {
   userInfo: gql`
     fragment UserInfoFragment on user {
       id
-      name
+      full_name
       program
     }
   `
