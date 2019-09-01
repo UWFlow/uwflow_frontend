@@ -22,14 +22,15 @@ import {
 import Textbox from './Textbox';
 import AuthModal from '../auth/AuthModal';
 
-export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
+/* Constants */
+import KEYCODE from '../../../constants/KeycodeConstants';
 
 const Navbar = ({ history }) => {
   const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const handleSearch = (event, text) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === KEYCODE.ENTER) {
       history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
     }
   };

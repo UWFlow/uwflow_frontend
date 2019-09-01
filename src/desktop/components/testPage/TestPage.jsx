@@ -14,12 +14,6 @@ import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';
 
-/* Utils */
-import { externalCall } from '../../../utils/Api';
-
-/* Constants */
-import KEYCODE from '../../../constants/KeycodeConstants';
-
 /* Styled Components */
 import {} from './styles/TestPage';
 
@@ -29,11 +23,9 @@ const mapStateToProps = state => ({
 
 export const TESTPAGE_API_TEXTBOX = 'TESTPAGE_API_TEXTBOX';
 
-const TestPage = ({ getTextboxText }) => {
-  const handleKeyDown = event => {
-    if (event.keyCode === KEYCODE.ENTER) {
-      externalCall(getTextboxText(TESTPAGE_API_TEXTBOX), {});
-    }
+const TestPage = () => {
+  const handleKeyDown = () => {
+    return null;
   };
 
   const [isModalOpen, setModalOpen] = useState(false);

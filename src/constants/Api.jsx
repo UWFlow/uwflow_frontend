@@ -9,5 +9,7 @@ export const GRAPHQL_ENDPOINT =
 export const BACKEND_ENDPOINT =
   process.env.NODE_ENV === 'development' ? LOCAL_BACKEND_ENDPOINT : null;
 
+export const EMAIL_AUTH_LOGIN_ENDPOINT = '/auth/email/login';
+export const EMAIL_AUTH_REGISTER_ENDPOINT = '/auth/email/register';
 export const GOOGLE_AUTH_ENDPOINT = '/auth/google/login';
 export const FACEBOOK_AUTH_ENDPOINT = '/auth/facebook/login';
