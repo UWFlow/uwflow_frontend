@@ -95,7 +95,6 @@ const TestPage = ({ getTextboxText }) => {
       <br />
       <Textbox
         handleKeyDown={handleKeyDown}
-        ID={TESTPAGE_API_TEXTBOX}
         initialPlaceholder="Enter an api endpoint"
         options={{ width: '500px' }}
       />

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 /* Styled Components */
 import {
-  Error
+  Error,
+  GoogleButton,
+  FacebookButton
 } from './styles/AuthModal';
 
 import { BACKEND_ENDPOINT, GOOGLE_AUTH_ENDPOINT, FACEBOOK_AUTH_ENDPOINT } from '../../../constants/Api';
@@ -12,7 +14,6 @@ import { BACKEND_ENDPOINT, GOOGLE_AUTH_ENDPOINT, FACEBOOK_AUTH_ENDPOINT } from '
 const SocialLoginContent = ({}) => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [facebookLoading, setFacebookLoading] = useState(false);
 
   const handleGoogleSuccess = async (res) => {
     const {tokenId, profileObj} = res;
@@ -47,13 +48,12 @@ const SocialLoginContent = ({}) => {
     setError(errorMessage);
   };
 
-  const handleFacebookSuccess = async (res) => {
+  const handleFacebookLogin = async (res) => {
     const {tokenId, profileObj} = res;
     const {
       email, familyName, givenName, imageUrl
     } = profileObj;
   
-    setGoogleLoading(true);
     const responseData = await fetch(`${BACKEND_ENDPOINT}${FACEBOOK_AUTH_ENDPOINT}`, {
       method: 'POST',
       headers: {
@@ -71,21 +71,38 @@ const SocialLoginContent = ({}) => {
   
     const response = await responseData.json();
     setError(response.error);
-    setGoogleLoading(false);
   };
   
-  const handleFacebookFailure = (res) => {
-    const errorMessage = res.error === "popup_closed_by_user"
-      ? '' : `Unexpected error logging in with Google: ${res.error}`;
-    setError(errorMessage);
-  };
-
-
   return (
     <>
       {error === '' ? null : <Error>{error}</Error>}
-      <GoogleLogin />
-      <FacebookLogin />
+      <FacebookLogin
+        appId="TODO"
+        isMobile={false}
+        fields="name,email,picture"
+        callback={handleFacebookLogin}
+        render={(renderProps) => (
+          <FacebookButton
+            onClick={renderProps.onClick}
+            loading={renderProps.isProcessing}
+          >
+            Continue with Facebook
+          </FacebookButton>
+        )}
+      />
+      <GoogleLogin
+        clientId="TODO.apps.googleusercontent.com"
+        onSuccess={handleGoogleSuccess}
+        onFailure={handleGoogleFailure}
+        render={(renderProps) => (
+          <GoogleButton
+            onClick={renderProps.onClick}
+            loading={googleLoading}
+          >
+            Continue with Google
+          </GoogleButton>
+        )}
+      />
     </>
   );
 }

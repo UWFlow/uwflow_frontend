@@ -17,4 +17,7 @@ export default {
   light4: '#c6c9c9',
 
   white: '#ffffff',
+
+  google: '#4285F4',
+  facebook: '#3C5A99',
 };
