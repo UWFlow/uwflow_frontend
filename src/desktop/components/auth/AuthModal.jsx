@@ -5,19 +5,39 @@ import LoginContent from './LoginContent';
 import ModalHOC from '../common/modal/ModalHOC';
 import SignupContent from './SignupContent';
 
-export const EMAIL_TEXTBOX_ID = 'EmailAddress';
-export const PASSWORD_TEXTBOX_ID = 'Password';
-export const FIRST_NAME_TEXTBOX_ID = 'FirstName';
-export const LAST_NAME_TEXTBOX_ID = 'LastName';
-export const CONFIRM_PASSWORD_TEXTBOX_ID = 'ConfirmPassword';
-
 export const AuthForm = () => {
   const [showLoginForm, setShowLoginForm] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const formState = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    confirmPassword: confirmPassword
+  }
 
   return showLoginForm ? (
-    <LoginContent onSwitchModal={() => setShowLoginForm(false)} />
+    <LoginContent
+      onSwitchModal={() => setShowLoginForm(false)}
+      formState={formState}
+      setEmail={setEmail}
+      setPassword={setPassword}
+    />
   ) : (
-    <SignupContent onSwitchModal={() => setShowLoginForm(true)} />
+    <SignupContent
+      onSwitchModal={() => setShowLoginForm(true)}
+      formState={formState}
+      setFirstName={setFirstName}
+      setLastName={setLastName}
+      setEmail={setEmail}
+      setPassword={setPassword}
+      setConfirmPassword={setConfirmPassword}
+    />
   );
 };
 

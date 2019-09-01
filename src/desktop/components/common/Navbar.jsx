@@ -25,7 +25,8 @@ import AuthModal from '../auth/AuthModal';
 export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
 
 const Navbar = ({ history }) => {
-  const [AuthModalOpen, setAuthModalOpen] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const handleSearch = (event, text) => {
     if (event.keyCode === 13) {
@@ -41,9 +42,10 @@ const Navbar = ({ history }) => {
             UW <BlueText>Flow</BlueText>
           </LogoWrapper>
           <Textbox
-            ID={NAVBAR_TEXTBOX_ID}
             icon={Search}
-            initialPlaceholder="Explore or search for courses, subjects or professors"
+            text={searchText}
+            setText={setSearchText}
+            placeholder="Explore or search for courses, subjects or professors"
             handleKeyDown={handleSearch}
             maxLength={100}
           />
@@ -53,7 +55,7 @@ const Navbar = ({ history }) => {
         </NavbarContent>
       </NavbarWrapper>
       <AuthModal
-        isModalOpen={AuthModalOpen}
+        isModalOpen={authModalOpen}
         onCloseModal={() => setAuthModalOpen(false)}
       />
     </>

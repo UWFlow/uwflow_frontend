@@ -1,61 +1,22 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
 import { SearchInput, SearchInputWrapper } from './styles/Textbox';
 
-/* Selectors */
-import {
-  getTextboxText,
-  getTextboxPlaceholder,
-} from '../../reducers/TextboxReducer';
-
-/* Actions */
-import {
-  setTextboxText,
-  registerTextbox,
-  unregisterTextbox,
-} from '../../actions/TextboxActions';
-
-const mapStateToProps = (state, { ID }) => ({
-  text: getTextboxText(state, ID),
-  placeholder: getTextboxPlaceholder(state, ID),
-});
-
-const mapDispatchToProps = (dispatch, { ID, initialPlaceholder }) => ({
-  setText: text => dispatch(setTextboxText(ID, text)),
-  registerSelf: () => dispatch(registerTextbox(ID, initialPlaceholder)),
-  unregisterSelf: () => dispatch(unregisterTextbox(ID)),
-});
-
 const Textbox = ({
-  text = '',
-  placeholder,
+  text,
   setText,
-  registerSelf,
-  unregisterSelf,
-  handleKeyDown,
+  placeholder,
+  handleKeyDown = () => {},
   options = {},
-  persistThroughUnmount,
   maxLength = 524288, // default browser maxLength
 }) => {
-  useEffect(() => {
-    registerSelf();
-    if (!persistThroughUnmount) {
-      return () => {
-        unregisterSelf();
-      };
-    }
-  }, []);
-
   const onKeyDown = event => {
-    if (typeof handleKeyDown == 'function') {
-      handleKeyDown(event, text);
-    }
+    handleKeyDown(event, text);
   };
 
-  const onChange = event => {
+  const onChange = (event) => {
     setText(event.currentTarget.value);
   };
 
@@ -75,18 +36,12 @@ const Textbox = ({
 };
 
 Textbox.propTypes = {
-  text: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  setText: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
-  setText: PropTypes.func,
-  registerSelf: PropTypes.func,
-  unregisterSelf: PropTypes.func,
   handleKeyDown: PropTypes.func,
   options: PropTypes.object,
-  persistThroughUnmount: PropTypes.bool,
   maxLength: PropTypes.number,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Textbox);
+export default Textbox;
