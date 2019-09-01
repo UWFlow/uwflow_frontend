@@ -106,7 +106,7 @@ export const SwapModalLink = styled.button`
 
 export const Error = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.accentDark};
+  color: ${({ theme }) => theme.red};
   margin-bottom: 16px;
 `;
 
@@ -131,4 +131,8 @@ export const GoogleButton = styled.button`
   border-radius: 4px;
   color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.google};
+`;
+
+export const Form = styled.form`
+  width: 100%;
 `;
