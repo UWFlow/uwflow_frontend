@@ -24,26 +24,40 @@ import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
 import { validateEmail } from '../../../utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../../../constants/Api';
 
 const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
   const [emailError, setEmailError] = useState(false);
 
   const validateFields = () => {
-    if (!validateEmail(formState.email)) {
-      setEmailError(true);
-      return false;
-    }
-    return true;
+    const emailValid = validateEmail(formState.email);
+    setEmailError(!emailValid);
+    return emailValid;
   }
   
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     if (!validateFields()) {
       return;
     }
 
-    // login
+    const responseData = await fetch(`${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: {
+          email: formState.email,
+          password: formState.password
+        }
+      })
+    });
+  
+    const response = await responseData.json();
+    console.log(response);
   }
 
   return (
