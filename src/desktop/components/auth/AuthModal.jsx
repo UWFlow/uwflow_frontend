@@ -6,7 +6,7 @@ import ModalHOC from '../common/modal/ModalHOC';
 import SignupContent from './SignupContent';
 
 export const AuthForm = () => {
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');

@@ -84,7 +84,7 @@ const SocialLoginContent = ({}) => {
         render={(renderProps) => (
           <FacebookButton
             onClick={renderProps.onClick}
-            loading={renderProps.isProcessing}
+            isLoading={renderProps.isProcessing}
           >
             Continue with Facebook
           </FacebookButton>
@@ -97,7 +97,7 @@ const SocialLoginContent = ({}) => {
         render={(renderProps) => (
           <GoogleButton
             onClick={renderProps.onClick}
-            loading={googleLoading}
+            isLoading={googleLoading}
           >
             Continue with Google
           </GoogleButton>
