@@ -25,14 +25,14 @@ import AuthModal from '../auth/AuthModal';
 /* Constants */
 import KEYCODE from '../../../constants/KeycodeConstants';
 
+import { isLoggedIn } from '../../../utils/Auth';
+
 const Navbar = ({ history }) => {
   const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
-  const loggedIn = localStorage.getItem('token') !== null;
-
   const handleProfileButtonClick = () => {
-    if (loggedIn) {
+    if (isLoggedIn()) {
       history.push(PROFILE_PAGE_ROUTE);
     } else {
       setAuthModalOpen(true);
@@ -61,7 +61,7 @@ const Navbar = ({ history }) => {
             maxLength={100}
           />
           <ProfileButtonWrapper onClick={handleProfileButtonClick}>
-            {loggedIn ? 'Profile' : 'Log In'}
+            {isLoggedIn() ? 'Profile' : 'Log In'}
           </ProfileButtonWrapper>
         </NavbarContent>
       </NavbarWrapper>
