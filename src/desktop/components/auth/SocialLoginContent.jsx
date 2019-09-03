@@ -7,13 +7,34 @@ import {
   Error,
   GoogleButton,
   FacebookButton
-} from './styles/AuthModal';
+} from './styles/AuthForm';
 
 import { BACKEND_ENDPOINT, GOOGLE_AUTH_ENDPOINT, FACEBOOK_AUTH_ENDPOINT } from '../../../constants/Api';
+import { makePOSTRequest } from '../../../utils/Api';
 
 const SocialLoginContent = () => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  const handleFacebookLogin = async (res) => {
+    const {tokenId, profileObj} = res;
+    const {
+      email, familyName, givenName, imageUrl
+    } = profileObj;
+  
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${FACEBOOK_AUTH_ENDPOINT}`,
+      {
+        token: tokenId,
+        email,
+        first_name: givenName,
+        last_name: familyName,
+        picture_url: imageUrl
+      }
+    );
+  
+    setError(response.error);
+  };
 
   const handleGoogleSuccess = async (res) => {
     const {tokenId, profileObj} = res;
@@ -22,55 +43,26 @@ const SocialLoginContent = () => {
     } = profileObj;
   
     setGoogleLoading(true);
-    const responseData = await fetch(`${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id_token: tokenId,
+
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`,
+      {
+        token: tokenId,
         email,
         first_name: givenName,
         last_name: familyName,
         picture_url: imageUrl
-      })
-    });
+      }
+    );
   
-    const response = await responseData.json();
     setError(response.error);
     setGoogleLoading(false);
   };
   
   const handleGoogleFailure = (res) => {
     const errorMessage = res.error === "popup_closed_by_user"
-      ? '' : `Unexpected error logging in with Google: ${res.error}`;
+      ? '' : `Error logging in with Google: ${res.error}`;
     setError(errorMessage);
-  };
-
-  const handleFacebookLogin = async (res) => {
-    const {tokenId, profileObj} = res;
-    const {
-      email, familyName, givenName, imageUrl
-    } = profileObj;
-  
-    const responseData = await fetch(`${BACKEND_ENDPOINT}${FACEBOOK_AUTH_ENDPOINT}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id_token: tokenId,
-        email,
-        first_name: givenName,
-        last_name: familyName,
-        picture_url: imageUrl
-      })
-    });
-  
-    const response = await responseData.json();
-    setError(response.error);
   };
   
   return (

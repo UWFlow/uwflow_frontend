@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import {
   Heading2,
   Heading4,
@@ -72,7 +73,7 @@ export const GreyText = styled.div`
   font-size: 12px;
 `;
 
-export const PrivacyPolicyText = styled.div`
+export const PrivacyPolicyText = styled(Link)`
   ${Body}
   font-size: 12px;
   color: ${({ theme }) => theme.dark1};
@@ -119,6 +120,8 @@ export const FacebookButton = styled.button`
   border-radius: 4px;
   color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.facebook};
+  ${Heading4}
+  font-weight: 400;
 `;
 
 export const GoogleButton = styled.button`
@@ -131,6 +134,8 @@ export const GoogleButton = styled.button`
   border-radius: 4px;
   color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.google};
+  ${Heading4}
+  font-weight: 400;
 `;
 
 export const Form = styled.form`
