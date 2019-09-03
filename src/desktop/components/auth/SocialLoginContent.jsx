@@ -11,7 +11,7 @@ import {
 
 import { BACKEND_ENDPOINT, GOOGLE_AUTH_ENDPOINT, FACEBOOK_AUTH_ENDPOINT } from '../../../constants/Api';
 
-const SocialLoginContent = ({}) => {
+const SocialLoginContent = () => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
 

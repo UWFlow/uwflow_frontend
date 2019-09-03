@@ -15,7 +15,8 @@ import {
   SwapModalWrapper,
   SwapModalLink,
   TextboxWrapper,
-  Form
+  Form,
+  Error
 } from './styles/AuthModal';
 
 /* Child Components */
@@ -24,6 +25,7 @@ import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
 import { validateEmail } from '../../../utils/Email';
+import { makePOSTRequest } from '../../../utils/Api';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from '../../../constants/Api';
 
 const SignupContent = ({
@@ -35,6 +37,7 @@ const SignupContent = ({
   setPassword,
   setConfirmPassword
 }) => {
+  const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
@@ -46,37 +49,34 @@ const SignupContent = ({
     setLastNameError(formState.lastName === '');
     setConfirmPasswordError(formState.password !== formState.confirmPassword);
 
-    return !validateEmail(formState.email)
+    return !(!validateEmail(formState.email)
             || formState.firstName === ''
             || formState.lastName === ''
-            || formState.password !== formState.confirmPassword;
+            || formState.password !== formState.confirmPassword);
   }
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    
+
     if (!validateFields()) {
       return;
     }
 
-    // register
-    const responseData = await fetch(`${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: {
-          full_name: [formState.firstName, formState.lastName].join(' '),
-          email: formState.email,
-          password: formState.password
-        }
-      })
-    });
-  
-    const response = await responseData.json();
-    console.log(response);
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
+      {
+        name: [formState.firstName, formState.lastName].join(' '),
+        email: formState.email,
+        password: formState.password
+      }
+    );
+    
+    if (status >= 400) {
+      setErrorMessage(response.error);
+    } else {
+      localStorage.setItem("token", response);
+      console.log(localStorage.getItem("token"));
+    }
   }
 
   return (
@@ -84,6 +84,7 @@ const SignupContent = ({
       <ContentWrapper>
         <Header>Sign up</Header>
         <Form onSubmit={handleSignUp}>
+          <Error>{errorMessage}</Error>
           <NamesSection>
             <TextboxWrapper>
               <Textbox

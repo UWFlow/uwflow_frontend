@@ -15,7 +15,8 @@ import {
   SwapModalWrapper,
   SwapModalLink,
   TextboxWrapper,
-  Form
+  Form,
+  Error
 } from './styles/AuthModal';
 
 /* Child Components */
@@ -24,9 +25,11 @@ import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
 import { validateEmail } from '../../../utils/Email';
+import { makePOSTRequest } from '../../../utils/Api';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../../../constants/Api';
 
 const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
+  const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
 
   const validateFields = () => {
@@ -41,23 +44,21 @@ const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
     if (!validateFields()) {
       return;
     }
-
-    const responseData = await fetch(`${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: {
-          email: formState.email,
-          password: formState.password
-        }
-      })
-    });
   
-    const response = await responseData.json();
-    console.log(response);
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
+      {
+        email: formState.email,
+        password: formState.password
+      }
+    );
+
+    if (status >= 400) {
+      setErrorMessage(response.error);
+    } else {
+      localStorage.setItem("token", response);
+      console.log(localStorage.getItem("token"));
+    }
   }
 
   return (
@@ -65,6 +66,7 @@ const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
       <ContentWrapper>
         <Header>Log in</Header>
         <Form onSubmit={handleLogin}>
+          <Error>{errorMessage}</Error>
           <TextboxWrapper>
             <Textbox
               options={{ width: '100%', type: 'email' }}
