@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 
 /* Child Components */
@@ -21,6 +22,8 @@ import {
 /* GraphQL Queries */
 import { GET_USER } from '../../../graphql/queries/profile/User';
 import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
+
+import { LANDING_PAGE_ROUTE } from '../../../Routes';
 
 // TODO get real data from login
 const dummyData = {
@@ -146,7 +149,13 @@ const ProfilePageContent = ({ user }) => {
   );
 }
 
-const ProfilePage = () => {
+const ProfilePage = ({ history }) => {
+  const loggedIn = localStorage.getItem('token') !== null;
+
+  if (!loggedIn) {
+    history.push(LANDING_PAGE_ROUTE);
+  }
+
   // TODO load profile of logged in user or redirect to login page
   const { loading, error, data } = useQuery(GET_USER, {variables: { id: 1 }});
 
@@ -164,4 +173,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default withRouter(ProfilePage);

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 /* Child Components */
 import LoginContent from './LoginContent';
 import ModalHOC from '../common/modal/ModalHOC';
 import SignupContent from './SignupContent';
 
-export const AuthForm = () => {
+export const AuthForm = ({ onCloseModal }) => {
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -24,6 +25,7 @@ export const AuthForm = () => {
   return showLoginForm ? (
     <LoginContent
       onSwitchModal={() => setShowLoginForm(false)}
+      onCloseModal={onCloseModal}
       formState={formState}
       setEmail={setEmail}
       setPassword={setPassword}
@@ -31,6 +33,7 @@ export const AuthForm = () => {
   ) : (
     <SignupContent
       onSwitchModal={() => setShowLoginForm(true)}
+      onCloseModal={onCloseModal}
       formState={formState}
       setFirstName={setFirstName}
       setLastName={setLastName}
@@ -43,8 +46,13 @@ export const AuthForm = () => {
 
 const AuthModal = ({ isModalOpen, onCloseModal }) => (
   <ModalHOC isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
-    <AuthForm />
+    <AuthForm onCloseModal={onCloseModal} />
   </ModalHOC>
 );
+
+AuthModal.propTypes = {
+  isModalOpen: PropTypes.bool.isRequired,
+  onCloseModal: PropTypes.func.isRequired
+}
 
 export default AuthModal;
