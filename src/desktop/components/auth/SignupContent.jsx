@@ -25,12 +25,13 @@ import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
 import { validateEmail } from '../../../utils/Email';
-import { makePOSTRequest } from '../../../utils/Api';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from '../../../constants/Api';
+
+const MIN_PASSWORD_LENGTH = 6;
 
 const SignupContent = ({
   onSwitchModal,
-  onCloseModal,
+  handleAuth,
   formState,
   setFirstName,
   setLastName,
@@ -42,42 +43,42 @@ const SignupContent = ({
   const [emailError, setEmailError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
+  const transformName = (name) => {
+    return name[0].toUpperCase() + name.slice(1);
+  }
 
   const validateFields = () => {
     setEmailError(!validateEmail(formState.email));
     setFirstNameError(formState.firstName === '');
     setLastNameError(formState.lastName === '');
+    setPasswordError(formState.password.length < MIN_PASSWORD_LENGTH);
     setConfirmPasswordError(formState.password !== formState.confirmPassword);
 
     return !(!validateEmail(formState.email)
             || formState.firstName === ''
             || formState.lastName === ''
+            || formState.password.length < MIN_PASSWORD_LENGTH
             || formState.password !== formState.confirmPassword);
   }
 
   const handleSignUp = async (event) => {
-    event.preventDefault();
-
-    if (!validateFields()) {
-      return;
-    }
-
-    const [response, status] = await makePOSTRequest(
+    handleAuth(
+      event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
       {
-        name: [formState.firstName, formState.lastName].join(' '),
+        name: [
+          transformName(formState.firstName),
+          transformName(formState.lastName)
+        ].join(' '),
         email: formState.email,
         password: formState.password
-      }
+      },
+      setErrorMessage,
+      validateFields
     );
-    
-    if (status >= 400) {
-      setErrorMessage(response.error);
-    } else {
-      localStorage.setItem("token", response);
-      onCloseModal();
-    }
   }
 
   return (
@@ -129,8 +130,12 @@ const SignupContent = ({
             <Textbox
               options={{ width: '100%', type: 'password' }}
               placeholder="Password"
+              error={passwordError}
               text={formState.password}
-              setText={setPassword}
+              setText={(value) => {
+                setPassword(value);
+                setPasswordError(passwordError && formState.password.length < MIN_PASSWORD_LENGTH);
+              }}
             />
           </TextboxWrapper>
           <TextboxWrapper>
@@ -141,7 +146,7 @@ const SignupContent = ({
               text={formState.confirmPassword}
               setText={(value) => {
                 setConfirmPassword(value);
-                setConfirmPasswordError(value !== formState.password);
+                setConfirmPasswordError(confirmPasswordError && value !== formState.password);
               }}
             />
           </TextboxWrapper>
@@ -166,7 +171,7 @@ const SignupContent = ({
 
 SignupContent.propTypes = {
   onSwitchModal: PropTypes.func.isRequired,
-  onCloseModal: PropTypes.func.isRequired,
+  handleAuth: PropTypes.func.isRequired,
   formState: PropTypes.object.isRequired,
   setFirstName: PropTypes.func.isRequired,
   setLastName: PropTypes.func.isRequired,

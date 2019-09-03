@@ -6,6 +6,8 @@ import LoginContent from './LoginContent';
 import ModalHOC from '../common/modal/ModalHOC';
 import SignupContent from './SignupContent';
 
+import { makePOSTRequest } from '../../../utils/Api';
+
 export const AuthForm = ({ onCloseModal }) => {
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [firstName, setFirstName] = useState('');
@@ -13,6 +15,23 @@ export const AuthForm = ({ onCloseModal }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleAuth = async (event, endpoint, data, setErrorMessage, validateFields) => {
+    event.preventDefault();
+
+    if (!validateFields()) {
+      return;
+    }
+
+    const [response, status] = await makePOSTRequest(endpoint, data);
+
+    if (status >= 400) {
+      setErrorMessage(response.error);
+    } else {
+      localStorage.setItem('token', response);
+      onCloseModal();
+    }
+  }
 
   const formState = {
     firstName: firstName,
@@ -25,7 +44,7 @@ export const AuthForm = ({ onCloseModal }) => {
   return showLoginForm ? (
     <LoginContent
       onSwitchModal={() => setShowLoginForm(false)}
-      onCloseModal={onCloseModal}
+      handleAuth={handleAuth}
       formState={formState}
       setEmail={setEmail}
       setPassword={setPassword}
@@ -33,7 +52,7 @@ export const AuthForm = ({ onCloseModal }) => {
   ) : (
     <SignupContent
       onSwitchModal={() => setShowLoginForm(true)}
-      onCloseModal={onCloseModal}
+      handleAuth={handleAuth}
       formState={formState}
       setFirstName={setFirstName}
       setLastName={setLastName}
