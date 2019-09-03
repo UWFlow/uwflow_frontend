@@ -30,6 +30,7 @@ import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from '../../../constan
 
 const SignupContent = ({
   onSwitchModal,
+  onCloseModal,
   formState,
   setFirstName,
   setLastName,
@@ -75,7 +76,7 @@ const SignupContent = ({
       setErrorMessage(response.error);
     } else {
       localStorage.setItem("token", response);
-      console.log(localStorage.getItem("token"));
+      onCloseModal();
     }
   }
 
@@ -165,6 +166,7 @@ const SignupContent = ({
 
 SignupContent.propTypes = {
   onSwitchModal: PropTypes.func.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
   formState: PropTypes.object.isRequired,
   setFirstName: PropTypes.func.isRequired,
   setLastName: PropTypes.func.isRequired,

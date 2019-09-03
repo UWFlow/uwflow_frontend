@@ -28,7 +28,13 @@ import { validateEmail } from '../../../utils/Email';
 import { makePOSTRequest } from '../../../utils/Api';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../../../constants/Api';
 
-const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
+const LoginContent = ({
+  onSwitchModal,
+  onCloseModal,
+  formState,
+  setEmail,
+  setPassword
+}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
 
@@ -37,14 +43,14 @@ const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
     setEmailError(!emailValid);
     return emailValid;
   }
-  
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     if (!validateFields()) {
       return;
     }
-  
+
     const [response, status] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
       {
@@ -57,7 +63,7 @@ const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
       setErrorMessage(response.error);
     } else {
       localStorage.setItem("token", response);
-      console.log(localStorage.getItem("token"));
+      onCloseModal();
     }
   }
 
@@ -111,6 +117,7 @@ const LoginContent = ({ onSwitchModal, formState, setEmail, setPassword }) => {
 
 LoginContent.propTypes = {
   onSwitchModal: PropTypes.func.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
   formState: PropTypes.object.isRequired,
   setEmail: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,

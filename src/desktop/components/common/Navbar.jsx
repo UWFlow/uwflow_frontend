@@ -29,6 +29,16 @@ const Navbar = ({ history }) => {
   const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
+  const loggedIn = localStorage.getItem('token') !== null;
+
+  const handleProfileButtonClick = () => {
+    if (loggedIn) {
+      history.push(PROFILE_PAGE_ROUTE);
+    } else {
+      setAuthModalOpen(true);
+    }
+  }
+
   const handleSearch = (event, text) => {
     if (event.keyCode === KEYCODE.ENTER) {
       history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
@@ -50,8 +60,8 @@ const Navbar = ({ history }) => {
             handleKeyDown={handleSearch}
             maxLength={100}
           />
-          <ProfileButtonWrapper onClick={() => setAuthModalOpen(true)}>
-            Log In
+          <ProfileButtonWrapper onClick={handleProfileButtonClick}>
+            {loggedIn ? 'Profile' : 'Log In'}
           </ProfileButtonWrapper>
         </NavbarContent>
       </NavbarWrapper>
