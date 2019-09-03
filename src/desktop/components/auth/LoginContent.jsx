@@ -25,12 +25,11 @@ import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
 import { validateEmail } from '../../../utils/Email';
-import { makePOSTRequest } from '../../../utils/Api';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../../../constants/Api';
 
 const LoginContent = ({
   onSwitchModal,
-  onCloseModal,
+  handleAuth,
   formState,
   setEmail,
   setPassword
@@ -45,26 +44,16 @@ const LoginContent = ({
   }
 
   const handleLogin = async (event) => {
-    event.preventDefault();
-
-    if (!validateFields()) {
-      return;
-    }
-
-    const [response, status] = await makePOSTRequest(
+    handleAuth(
+      event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
       {
         email: formState.email,
         password: formState.password
-      }
+      },
+      setErrorMessage,
+      validateFields
     );
-
-    if (status >= 400) {
-      setErrorMessage(response.error);
-    } else {
-      localStorage.setItem("token", response);
-      onCloseModal();
-    }
   }
 
   return (
@@ -117,7 +106,7 @@ const LoginContent = ({
 
 LoginContent.propTypes = {
   onSwitchModal: PropTypes.func.isRequired,
-  onCloseModal: PropTypes.func.isRequired,
+  handleAuth: PropTypes.func.isRequired,
   formState: PropTypes.object.isRequired,
   setEmail: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
