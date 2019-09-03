@@ -23,6 +23,7 @@ import {
 import { GET_USER } from '../../../graphql/queries/profile/User';
 import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
 
+import { isLoggedIn } from '../../../utils/Auth';
 import { LANDING_PAGE_ROUTE } from '../../../Routes';
 
 // TODO get real data from login
@@ -150,9 +151,7 @@ const ProfilePageContent = ({ user }) => {
 }
 
 const ProfilePage = ({ history }) => {
-  const loggedIn = localStorage.getItem('token') !== null;
-
-  if (!loggedIn) {
+  if (!isLoggedIn()) {
     history.push(LANDING_PAGE_ROUTE);
   }
 
