@@ -12,9 +12,12 @@ export const ScheduleTable = styled.div`
 
 export const SectionCellWrapper = styled.div`
   display: flex;
-  height: 100%;
+  position: relative;
+  height: calc(
+    ${({ numRows }) => numRows}em + ${({ numRows }) => numRows * 4}px + 60px
+  );
   width: 100%;
-  align-items: center;
+  align-items: flex-begin;
 `;
 
 export const ColorBar = styled.div`
@@ -22,6 +25,7 @@ export const ColorBar = styled.div`
   width: 6px;
   background-color: ${({ color, theme }) =>
     color === LEC ? theme.dark1 : color === LAB ? theme.dark2 : theme.dark3};
+  margin-right: 26px;
 `;
 
 export const NormalCellWrapper = styled.div`
@@ -30,8 +34,16 @@ export const NormalCellWrapper = styled.div`
   justify-content: flex-begin;
 `;
 
+export const SectionContentWrapper = styled.div`
+  margin: 20px 0 4px 0;
+  height: 1em;
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
 export const ContentWrapper = styled.div`
-  margin: 4px 0 4px 0;
+  margin: 4px 0;
   height: 1em;
   display: flex;
   align-items: center;

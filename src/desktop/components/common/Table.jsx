@@ -11,20 +11,16 @@ import {
   Cell,
   HeaderCell,
   SortArrow,
-  HeaderText
+  HeaderText,
 } from './styles/Table';
 
-const Table = ({
-  columns,
-  data,
-  sortable = false,
-}) => {
+const Table = ({ columns, data, sortable = false }) => {
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(
     {
       columns,
       data,
     },
-    useSortBy
+    useSortBy,
   );
 
   return (
@@ -32,9 +28,11 @@ const Table = ({
       <TableHeader>
         {headerGroups.map(headerGroup => (
           <HeaderRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
+            {headerGroup.headers.map(column => (
               <HeaderCell
-                {...column.getHeaderProps(sortable && column.getSortByToggleProps())}
+                {...column.getHeaderProps(
+                  sortable && column.getSortByToggleProps(),
+                )}
                 align={column.align}
                 maxWidth={column.maxWidth}
               >
@@ -51,16 +49,20 @@ const Table = ({
       </TableHeader>
       <TableBody>
         {rows.map(
-          (row) =>
+          row =>
             prepareRow(row) || (
               <Row {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <Cell {...cell.getCellProps()} align={cell.column.align}>
+                {row.cells.map(cell => (
+                  <Cell
+                    {...cell.getCellProps()}
+                    align={cell.column.align}
+                    style={cell.column.style}
+                  >
                     {cell.render('Cell')}
                   </Cell>
                 ))}
               </Row>
-            )
+            ),
         )}
       </TableBody>
     </TableWrapper>
@@ -68,14 +70,16 @@ const Table = ({
 };
 
 Table.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.shape({
-    Header: PropTypes.string.isRequired,
-    accessor: PropTypes.string,
-    align: PropTypes.string,
-    maxWidth: PropTypes.number,
-    id: PropTypes.string,
-    Cell: PropTypes.func,
-  })).isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      Header: PropTypes.string.isRequired,
+      accessor: PropTypes.string,
+      align: PropTypes.string,
+      maxWidth: PropTypes.number,
+      id: PropTypes.string,
+      Cell: PropTypes.func,
+    }),
+  ).isRequired,
   data: PropTypes.arrayOf(PropTypes.object),
   sortable: PropTypes.bool,
 };

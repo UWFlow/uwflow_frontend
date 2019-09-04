@@ -48,7 +48,7 @@ const CourseSchedule = ({ courseID }) => {
   console.log(sections);
   const sectionsCleanedData = sections.map(s => ({
     term: s.term,
-    section: s.section,
+    section: { section: s.section, numRows: s.classes.length },
     c: s.class_number,
     enrolled: { capacity: s.enrollment_capacity, filled: s.enrollment_total },
     classes: s.classes.map(cl => ({

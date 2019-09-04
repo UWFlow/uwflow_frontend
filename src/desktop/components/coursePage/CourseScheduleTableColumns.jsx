@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   SectionCellWrapper,
+  SectionContentWrapper,
   NormalCellWrapper,
   ContentWrapper,
   InstructorLink,
@@ -13,13 +14,17 @@ export const LAB = 'LAB';
 export const TUT = 'TUT';
 
 const SectionCell = ({ cell }) => (
-  <SectionCellWrapper>
+  <SectionCellWrapper numRows={cell.value.numRows}>
     <ColorBar
       color={
-        cell.value.includes(LEC) ? LEC : cell.value.includes(LAB) ? LAB : TUT
+        cell.value.section.includes(LEC)
+          ? LEC
+          : cell.value.section.includes(LAB)
+          ? LAB
+          : TUT
       }
     />
-    <ContentWrapper>{cell.value}</ContentWrapper>
+    <SectionContentWrapper>{cell.value.section}</SectionContentWrapper>
   </SectionCellWrapper>
 );
 
@@ -83,18 +88,25 @@ export const courseScheduleTableColumns = [
     Header: 'Section',
     Cell: SectionCell,
     accessor: 'section',
-    align: 'top',
-    style: { background: 'red' },
+    style: {
+      padding: 0,
+    },
   },
   {
     Header: 'Class',
     Cell: ClassCell,
     accessor: 'c',
+    style: {
+      'vertical-align': 'top',
+    },
   },
   {
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
+    style: {
+      'vertical-align': 'top',
+    },
   },
   {
     Header: 'Time',
