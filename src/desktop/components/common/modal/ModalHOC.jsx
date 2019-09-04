@@ -76,10 +76,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
         </FadeInOutAnimation>
         <div>
           <ModalScrollableWrapper screenHeight={windowHeight}>
-            <FadeInOutAnimation
-              isOpen={isModalOpen}
-              styles={{ 'z-index': '2' }}
-            >
+            <FadeInOutAnimation isOpen={isModalOpen} styles={{ zIndex: '2' }}>
               <ModalWrapper>{children}</ModalWrapper>
             </FadeInOutAnimation>
           </ModalScrollableWrapper>

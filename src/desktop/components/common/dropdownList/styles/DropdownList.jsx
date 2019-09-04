@@ -3,7 +3,7 @@ import { Heading4, BoxShadow } from '../../../../../constants/Mixins';
 
 export const DropdownWrapper = styled.div`
   color: ${({ color }) => color};
-  z-index: ${({ zIndex }) => zIndex};
+  zindex: ${({ zIndex }) => zIndex};
   width: ${({ width }) => width};
   margin: ${({ margin }) => margin};
   margin-left: 5px;
@@ -16,7 +16,7 @@ export const DropdownWrapper = styled.div`
 export const DropdownControl = styled.div`
   position: relative;
   cursor: pointer;
-  color: ${({ theme, open, color }) => open ? theme.light3 : color};
+  color: ${({ theme, open, color }) => (open ? theme.light3 : color)};
   ${Heading4}
 `;
 
@@ -25,9 +25,9 @@ export const DropdownArrow = styled.span`
   font-size: 90%;
 `;
 
-export const DropdownMenu= styled.div`
+export const DropdownMenu = styled.div`
   display: flex;
-  display: ${({ open }) => open ? 'block' : 'none'};
+  display: ${({ open }) => (open ? 'block' : 'none')};
   position: absolute;
   border-radius: 4px;
   top: calc(100% + 8px);
@@ -38,8 +38,9 @@ export const DropdownMenu= styled.div`
 `;
 
 export const MenuItem = styled.div`
-  color: ${({ theme, selected }) => selected ? theme.dark1 : theme.dark2};
-  background-color: ${({theme, selected}) => selected ? theme.light2 : theme.white};
+  color: ${({ theme, selected }) => (selected ? theme.dark1 : theme.dark2)};
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.light2 : theme.white};
   padding: 16px;
   border-radius: 0;
   border: 1px solid ${({ theme }) => theme.light2};
@@ -52,7 +53,7 @@ export const MenuItem = styled.div`
   &:last-child {
     border-radius: 0 0 4px 4px;
   }
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
   }
