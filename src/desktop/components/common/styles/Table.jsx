@@ -7,7 +7,7 @@ export const TableWrapper = styled.table`
   text-align: left;
   table-layout: auto;
   border-collapse: collapse;
-  color: ${({theme}) => theme.dark2}
+  color: ${({ theme }) => theme.dark2};
 `;
 
 export const TableHeader = styled.thead`
@@ -17,45 +17,46 @@ export const TableHeader = styled.thead`
 
 export const HeaderRow = styled.tr`
   width: 100%;
-  border-bottom: 1px solid ${({theme}) => theme.light3};
+  border-bottom: 1px solid ${({ theme }) => theme.light3};
 `;
 
-  export const HeaderCell = styled.th`
-  text-align: ${({align}) => align ? align : 'left'};
-  width: ${({maxWidth}) => maxWidth + 16}px;
-  max-width: ${({maxWidth}) => maxWidth + 16}px;
+export const HeaderCell = styled.th`
+  text-align: ${({ align }) => (align ? align : 'left')};
+  width: ${({ maxWidth }) => maxWidth + 16}px;
+  max-width: ${({ maxWidth }) => maxWidth + 16}px;
   padding-top: 16px;
   padding-bottom: 16px;
 
-  padding-left: ${({rightAlign}) => rightAlign ? '16px' : '0'};
-  padding-right: ${({rightAlign}) => rightAlign ? '0' : '16px'};
+  padding-left: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
+  padding-right: ${({ rightAlign }) => (rightAlign ? '0' : '16px')};
 
   &:first-child {
     padding-left: 32px;
-    width: ${({maxWidth}) => maxWidth + 32 + 16}px;
-    max-width: ${({maxWidth}) => maxWidth + 24 + 16}px;
+    width: ${({ maxWidth }) => maxWidth + 32 + 16}px;
+    max-width: ${({ maxWidth }) => maxWidth + 24 + 16}px;
   }
 
   &:last-child {
     padding-left: 0;
     padding-right: 32px;
-    width: ${({maxWidth}) => maxWidth + 24 + 16}px;
-    max-width: ${({maxWidth}) => maxWidth + 24 + 16}px;
+    width: ${({ maxWidth }) => maxWidth + 24 + 16}px;
+    max-width: ${({ maxWidth }) => maxWidth + 24 + 16}px;
   }
 `;
 
 export const HeaderText = styled.span`
-  ${({sortable}) => sortable ? Link : ''}
-  cursor: ${({sortable}) => sortable ? 'pointer' : 'none'};
-  color: ${({theme, sortable}) => sortable ? theme.primary : theme.dark1};
+  ${({ sortable }) => (sortable ? Link : '')}
+  cursor: ${({ sortable }) => (sortable ? 'pointer' : 'none')};
+  color: ${({ theme, sortable }) => (sortable ? theme.primary : theme.dark1)};
 
   &:hover {
-    color: ${({theme, sortable}) => sortable ? theme.primaryDark : theme.dark1};
+    color: ${({ theme, sortable }) =>
+      sortable ? theme.primaryDark : theme.dark1};
   }
 `;
 
 export const SortArrow = styled.span`
-  color: ${({theme}) => theme.primary};
+  color: ${({ theme }) => theme.primary};
   text-decoration: none !important;
 `;
 
@@ -66,7 +67,7 @@ export const TableBody = styled.tbody`
 export const Row = styled.tr`
   width: 100%;
   border-radius: 4px;
-  border-bottom: 1px solid ${({theme}) => theme.light3};
+  border-bottom: 1px solid ${({ theme }) => theme.light3};
 
   &:last-child {
     border-bottom: none;
@@ -76,7 +77,7 @@ export const Row = styled.tr`
 export const Cell = styled.td`
   padding-top: 16px;
   padding-bottom: 16px;
-  text-align: ${({align}) => align ? align : 'left'};
+  text-align: ${({ align }) => (align ? align : 'left')};
 
   &:first-child {
     padding-left: 32px;
@@ -88,4 +89,3 @@ export const Cell = styled.td`
     padding-right: 32px;
   }
 `;
-

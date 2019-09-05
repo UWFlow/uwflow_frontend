@@ -18,7 +18,7 @@ const PopInOutAnimation = ({ isOpen, children, onFinish, styles = {} }) => {
     from: { size: isOpen ? 0 : 1 },
     to: { size: isOpen ? 1 : 0 },
     onRest: onRest,
-    config: config.stiff,
+    config: isOpen ? config.stiff : { mass: 1, tension: 300, friction: 30 },
   });
 
   return isTrulyOpen || isOpen ? (

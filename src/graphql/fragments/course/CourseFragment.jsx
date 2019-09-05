@@ -26,6 +26,11 @@ const CourseFragment = {
       name
     }
   `,
+  courseSchedule: gql`
+    fragment CourseSchedule on course {
+      sections
+    }
+  `,
 };
 
 export default CourseFragment;

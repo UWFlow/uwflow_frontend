@@ -61,4 +61,5 @@ a {
 
 body.modal-open {
   overflow: hidden;
+  padding-right: 16px;
 }
