@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGoogle, faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
 
 /* Styled Components */
 import {
   Error,
+  ButtonText,
   GoogleButton,
-  FacebookButton
+  FacebookButton,
+  GoogleIcon,
+  FacebookIcon
 } from './styles/AuthForm';
 
-import { BACKEND_ENDPOINT, GOOGLE_AUTH_ENDPOINT, FACEBOOK_AUTH_ENDPOINT } from '../../../constants/Api';
+import {
+  BACKEND_ENDPOINT,
+  GOOGLE_AUTH_ENDPOINT,
+  FACEBOOK_AUTH_ENDPOINT,
+  GOOGLE_APP_ID,
+  FACEBOOK_APP_ID
+} from '../../../constants/Api';
 import { makePOSTRequest } from '../../../utils/Api';
 
 const SocialLoginContent = () => {
@@ -17,19 +28,17 @@ const SocialLoginContent = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const handleFacebookLogin = async (res) => {
-    const {tokenId, profileObj} = res;
-    const {
-      email, familyName, givenName, imageUrl
-    } = profileObj;
+    if (!res.accessToken) {
+      setError("Error logging in with Facebook");
+      return;
+    }
+
+    const {accessToken} = res;
   
-    const [response, status] = await makePOSTRequest(
+    const [response, _] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${FACEBOOK_AUTH_ENDPOINT}`,
       {
-        token: tokenId,
-        email,
-        first_name: givenName,
-        last_name: familyName,
-        picture_url: imageUrl
+        access_token: accessToken,
       }
     );
   
@@ -37,21 +46,14 @@ const SocialLoginContent = () => {
   };
 
   const handleGoogleSuccess = async (res) => {
-    const {tokenId, profileObj} = res;
-    const {
-      email, familyName, givenName, imageUrl
-    } = profileObj;
+    const {tokenId} = res;
   
     setGoogleLoading(true);
 
-    const [response, status] = await makePOSTRequest(
+    const [response, _] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`,
       {
-        token: tokenId,
-        email,
-        first_name: givenName,
-        last_name: familyName,
-        picture_url: imageUrl
+        id_token: tokenId,
       }
     );
   
@@ -60,16 +62,19 @@ const SocialLoginContent = () => {
   };
   
   const handleGoogleFailure = (res) => {
-    const errorMessage = res.error === "popup_closed_by_user"
+    const errorMessage = res.error === 'popup_closed_by_user'
       ? '' : `Error logging in with Google: ${res.error}`;
-    setError(errorMessage);
+
+    if (!res.error.includes('idpiframe')) {
+      setError(errorMessage);
+    }
   };
   
   return (
     <>
       {error === '' ? null : <Error>{error}</Error>}
       <FacebookLogin
-        appId="TODO"
+        appId={`${FACEBOOK_APP_ID}`}
         isMobile={false}
         fields="name,email,picture"
         callback={handleFacebookLogin}
@@ -78,12 +83,15 @@ const SocialLoginContent = () => {
             onClick={renderProps.onClick}
             isLoading={renderProps.isProcessing}
           >
-            Continue with Facebook
+            <FacebookIcon>
+              <FontAwesomeIcon icon={faFacebookSquare} />
+            </FacebookIcon>
+            <ButtonText>Continue with Facebook</ButtonText>
           </FacebookButton>
         )}
       />
       <GoogleLogin
-        clientId="TODO.apps.googleusercontent.com"
+        clientId={`${GOOGLE_APP_ID}.apps.googleusercontent.com`}
         onSuccess={handleGoogleSuccess}
         onFailure={handleGoogleFailure}
         render={(renderProps) => (
@@ -91,7 +99,10 @@ const SocialLoginContent = () => {
             onClick={renderProps.onClick}
             isLoading={googleLoading}
           >
-            Continue with Google
+            <GoogleIcon>
+              <FontAwesomeIcon icon={faGoogle} />
+            </GoogleIcon>
+            <ButtonText>Continue with Google</ButtonText>
           </GoogleButton>
         )}
       />

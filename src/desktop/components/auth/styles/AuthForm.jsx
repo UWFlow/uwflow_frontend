@@ -109,33 +109,56 @@ export const Error = styled.div`
   ${Body}
   color: ${({ theme }) => theme.red};
   margin-bottom: 16px;
+  width: 100%;
 `;
 
 export const FacebookButton = styled.button`
   width: 100%;
-  padding: 8px;
+  padding: 8px 16px;
   border: none;
   outline: none;
   cursor: pointer;
   border-radius: 4px;
   color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.facebook};
-  ${Heading4}
-  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+`;
+
+export const FacebookIcon = styled.div`
+  font-size: 32px;
+  height: max-content;
 `;
 
 export const GoogleButton = styled.button`
   margin-top: 16px;
   width: 100%;
-  padding: 8px;
+  padding: 8px 16px;
   border: none;
   outline: none;
   cursor: pointer;
   border-radius: 4px;
   color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.google};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+`;
+
+export const GoogleIcon = styled.div`
+  font-size: 32px;
+  height: max-content;
+`;
+
+export const ButtonText = styled.div`
   ${Heading4}
   font-weight: 400;
+  display: flex;
+  flex: 1;
+  justify-content: center;
 `;
 
 export const Form = styled.form`
