@@ -50,6 +50,10 @@ export const MenuItem = styled.div`
   &:last-child {
     border-radius: 0 0 4px 4px;
   }
+  
+  &:only-child {
+    border-radius: 4px;
+  }
 
   &:hover {
     color: ${({ theme }) => theme.primary};

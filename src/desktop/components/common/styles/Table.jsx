@@ -88,4 +88,8 @@ export const Cell = styled.td`
     padding-left: 0;
     padding-right: 32px;
   }
+
+  &:only-child {
+    padding: auto 32px;
+  }
 `;
