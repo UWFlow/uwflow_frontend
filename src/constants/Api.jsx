@@ -14,5 +14,5 @@ export const EMAIL_AUTH_REGISTER_ENDPOINT = '/auth/email/register';
 export const GOOGLE_AUTH_ENDPOINT = '/auth/google/login';
 export const FACEBOOK_AUTH_ENDPOINT = '/auth/facebook/login';
 
-export const GOOGLE_APP_ID = '289196947861602';
+export const GOOGLE_APP_ID = '292230821846-cogmasv1s0rbvhp0dr886vik2c73etb3';
 export const FACEBOOK_APP_ID = '289196947861602';
