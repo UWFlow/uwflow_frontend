@@ -79,6 +79,11 @@ export const BoxShadow = `
   0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
 
+export const TextShadow = `
+  text-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+  0px 0px 5px rgba(142, 147, 148, 0.2);
+`;
+
 export const Card = (padding='32px', margin='0') => `
   display: flex;
   flex-direction: column;

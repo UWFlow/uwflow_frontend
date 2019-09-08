@@ -6,6 +6,7 @@ const UserFragment = {
       id
       full_name
       program
+      picture_url
     }
   `
 };

@@ -10,6 +10,7 @@ import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
 import ModalHOC from '../common/modal/ModalHOC';
+import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
 
 /* Styled Components */
 import {
@@ -21,16 +22,9 @@ import {
 
 /* GraphQL Queries */
 import { GET_USER } from '../../../graphql/queries/profile/User';
-import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
 
 import { isLoggedIn } from '../../../utils/Auth';
 import { LANDING_PAGE_ROUTE } from '../../../Routes';
-
-// TODO get real data from login
-const dummyData = {
-  program: 'Software Engineering',
-  picture_url: 'https://uwflow.com/static/img/team/derrek.jpg'
-}
 
 const dummyCourses = [
   {
@@ -154,9 +148,7 @@ const ProfilePage = ({ history }) => {
   if (!isLoggedIn()) {
     history.push(LANDING_PAGE_ROUTE);
   }
-
-  // TODO load profile of logged in user or redirect to login page
-  const { loading, error, data } = useQuery(GET_USER, {variables: { id: 1 }});
+  const { loading, error, data } = useQuery(GET_USER);
 
   return (
     <ProfilePageWrapper>
@@ -165,7 +157,7 @@ const ProfilePage = ({ history }) => {
         : (error || !data)
           ? <div>Error</div>
           : (
-            <ProfilePageContent user={{...data.user[0], ...dummyData}} />
+            <ProfilePageContent user={{...data.user[0]}} />
           )
       }
     </ProfilePageWrapper>

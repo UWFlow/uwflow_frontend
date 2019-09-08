@@ -16,13 +16,10 @@ export const DropdownWrapper = styled.div`
 export const DropdownControl = styled.div`
   position: relative;
   cursor: pointer;
+  display: flex;
+  align-items: center;
   color: ${({ theme, open, color }) => open ? theme.light3 : color};
   ${Heading4}
-`;
-
-export const DropdownArrow = styled.span`
-  margin-left: 4px;
-  font-size: 90%;
 `;
 
 export const DropdownMenu= styled.div`
@@ -38,7 +35,8 @@ export const DropdownMenu= styled.div`
 `;
 
 export const MenuItem = styled.div`
-  color: ${({ theme, selected }) => selected ? theme.dark1 : theme.dark2};
+  color: ${({ theme, selected, itemColor }) =>
+    itemColor ? itemColor : (selected ? theme.dark1 : theme.dark2)};
   background-color: ${({theme, selected}) => selected ? theme.light2 : theme.white};
   padding: 16px;
   border-radius: 0;

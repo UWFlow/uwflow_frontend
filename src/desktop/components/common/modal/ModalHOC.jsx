@@ -65,7 +65,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
 
   return isModalOpen || isTrulyOpen ? (
     <ModalPortal>
-      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'hide'}>
+      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'scroll'}>
         <FadeInOutAnimation
           isOpen={isModalOpen}
           endOpacity={0.7}
@@ -78,7 +78,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
           <ModalScrollableWrapper screenHeight={windowHeight}>
             <FadeInOutAnimation
               isOpen={isModalOpen}
-              styles={{ 'z-index': '2' }}
+              styles={{ 'zIndex': '2' }}
             >
               <ModalWrapper>{children}</ModalWrapper>
             </FadeInOutAnimation>
