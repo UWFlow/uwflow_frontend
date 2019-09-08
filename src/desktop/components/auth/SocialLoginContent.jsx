@@ -26,6 +26,7 @@ import { makePOSTRequest } from '../../../utils/Api';
 const SocialLoginContent = () => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [facebookLoading, setFacebookLoading] = useState(false);
 
   const handleFacebookLogin = async (res) => {
     if (!res.accessToken) {
@@ -34,15 +35,19 @@ const SocialLoginContent = () => {
     }
 
     const {accessToken} = res;
-  
-    const [response, _] = await makePOSTRequest(
+
+    setFacebookLoading(true);
+
+    const [response, status] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${FACEBOOK_AUTH_ENDPOINT}`,
       {
         access_token: accessToken,
       }
     );
-  
+    
+    // TODO handle response
     setError(response.error);
+    setFacebookLoading(false);
   };
 
   const handleGoogleSuccess = async (res) => {
@@ -50,13 +55,14 @@ const SocialLoginContent = () => {
   
     setGoogleLoading(true);
 
-    const [response, _] = await makePOSTRequest(
+    const [response, status] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`,
       {
         id_token: tokenId,
       }
     );
   
+    // TODO handle response
     setError(response.error);
     setGoogleLoading(false);
   };

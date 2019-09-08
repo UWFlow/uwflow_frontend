@@ -65,7 +65,7 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
 
   return isModalOpen || isTrulyOpen ? (
     <ModalPortal>
-      <ModalContentWrapper overflow={isModalOpen ? 'scroll' : 'hide'}>
+      <ModalContentWrapper overflow={'scroll'}>
         <FadeInOutAnimation
           isOpen={isModalOpen}
           endOpacity={0.7}

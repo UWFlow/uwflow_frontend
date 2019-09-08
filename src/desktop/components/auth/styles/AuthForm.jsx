@@ -125,6 +125,7 @@ export const FacebookButton = styled.button`
   flex-direction: row;
   align-items: center;
   text-align: center;
+  ${BoxShadow}
 `;
 
 export const FacebookIcon = styled.div`
@@ -146,6 +147,7 @@ export const GoogleButton = styled.button`
   flex-direction: row;
   align-items: center;
   text-align: center;
+  ${BoxShadow}
 `;
 
 export const GoogleIcon = styled.div`

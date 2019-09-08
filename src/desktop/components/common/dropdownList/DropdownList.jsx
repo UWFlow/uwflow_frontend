@@ -1,12 +1,12 @@
 import React,{ useRef, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import useOnClickOutside from 'use-onclickoutside'
+import { ChevronDown } from 'react-feather';
 
 /* Styled Components */
 import {
   DropdownWrapper,
   DropdownControl,
-  DropdownArrow,
   DropdownMenu,
   MenuItem
 } from './styles/DropdownList';
@@ -19,7 +19,8 @@ const DropdownList = ({
   placeholder = 'select an option',
   zIndex = 4,
   width = 'fit-content',
-  margin = 'auto'
+  margin = 'auto',
+  itemColor = null
 }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
@@ -35,7 +36,6 @@ const DropdownList = ({
 
   useEffect(() => {
     window.addEventListener('keydown', handleUserKeyPress);
-
     return () => {
       window.removeEventListener('keydown', handleUserKeyPress);
     };
@@ -49,13 +49,14 @@ const DropdownList = ({
         onClick={() => setOpen(!open)}
       >
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
-        <DropdownArrow>&#9660;</DropdownArrow>
+        <ChevronDown/>
       </DropdownControl>
       <DropdownMenu open={open}>
         {options.map((opt, idx) => (
           <MenuItem
             key={idx}
             selected={idx === selectedIndex}
+            itemColor={itemColor}
             onClick={() => {
               onChange(idx);
               setOpen(false);
@@ -77,7 +78,8 @@ DropdownList.propTypes = {
   zIndex: PropTypes.number, // callback function that takes the index of the clicked element in the list
   placeholder: PropTypes.string,
   width: PropTypes.string,
-  margin: PropTypes.string
+  margin: PropTypes.string,
+  itemColor: PropTypes.string
 };
 
 export default DropdownList;
