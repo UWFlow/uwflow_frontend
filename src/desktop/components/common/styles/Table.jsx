@@ -46,7 +46,7 @@ export const HeaderCell = styled.th`
 
 export const HeaderText = styled.span`
   ${({ sortable }) => (sortable ? Link : '')}
-  cursor: ${({ sortable }) => (sortable ? 'pointer' : 'none')};
+  cursor: ${({ sortable }) => (sortable ? 'pointer' : 'inherit')};
   color: ${({ theme, sortable }) => (sortable ? theme.primary : theme.dark1)};
 
   &:hover {

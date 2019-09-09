@@ -59,7 +59,7 @@ const Review = ({ upvotes, review, reviewer, prof, metrics }) => {
       <ReviewTextWrapper>
         <ReviewText>{review}</ReviewText>
         <ReviewAuthor>
-          -{reviewer.name}, a {review.program} student
+          -{reviewer.full_name}, a {review.program} student
         </ReviewAuthor>
       </ReviewTextWrapper>
       <ReviewMetricsWrapper>

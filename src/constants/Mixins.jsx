@@ -1,8 +1,8 @@
 import { PAGE_CONTENT_WIDTH } from './PageConstants';
 
-export const BackgroundZIndex = 'zIndex: -1;';
+export const BackgroundZIndex = 'z-index: -1;';
 
-export const PageContentZIndex = 'zIndex: 5;';
+export const PageContentZIndex = 'z-index: 3;';
 
 export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;

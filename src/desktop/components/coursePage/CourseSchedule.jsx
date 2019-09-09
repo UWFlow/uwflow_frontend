@@ -8,20 +8,10 @@ import Table from '../common/Table';
 import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 /* Styled Components */
-import { ScheduleTable, CourseScheduleWrapper } from './styles/CourseSchedule';
+import { CourseScheduleWrapper } from './styles/CourseSchedule';
 
 /* GraphQL Queries */
 import { GET_COURSE_SCHEDULE } from '../../../graphql/queries/course/Course';
-
-const columnNames = [
-  'Section',
-  'Class',
-  'Enrolled',
-  'Time',
-  'Date',
-  'Location',
-  'Instructor',
-];
 
 const secsToTime = secs => {
   const t = Math.floor(secs / 3600) % 12;
@@ -36,6 +26,7 @@ const CourseSchedule = ({ courseID }) => {
   });
 
   const sections = data.course[0].sections;
+
   if (!sections) {
     return null;
   }
@@ -45,11 +36,11 @@ const CourseSchedule = ({ courseID }) => {
     }
     return allTerms;
   }, []);
-  console.log(sections);
+
   const sectionsCleanedData = sections.map(s => ({
     term: s.term,
     section: { section: s.section, numRows: s.classes.length },
-    c: s.class_number,
+    class_number: s.class_number,
     enrolled: { capacity: s.enrollment_capacity, filled: s.enrollment_total },
     classes: s.classes.map(cl => ({
       time: {

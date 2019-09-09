@@ -13,32 +13,32 @@ export const LEC = 'LEC';
 export const LAB = 'LAB';
 export const TUT = 'TUT';
 
-const SectionCell = ({ cell }) => (
-  <SectionCellWrapper numRows={cell.value.numRows}>
+const SectionCell = ({ value }) => (
+  <SectionCellWrapper numRows={value.numRows}>
     <ColorBar
       color={
-        cell.value.section.includes(LEC)
+        value.section.includes(LEC)
           ? LEC
-          : cell.value.section.includes(LAB)
+          : value.section.includes(LAB)
           ? LAB
           : TUT
       }
     />
-    <SectionContentWrapper>{cell.value.section}</SectionContentWrapper>
+    <SectionContentWrapper>{value.section}</SectionContentWrapper>
   </SectionCellWrapper>
 );
 
-const ClassCell = ({ cell }) => (
-  <NormalCellWrapper>{cell.value}</NormalCellWrapper>
+const ClassCell = ({ value }) => (
+  <NormalCellWrapper>{value}</NormalCellWrapper>
 );
-const EnrolledCell = ({ cell }) => (
+const EnrolledCell = ({ value }) => (
   <NormalCellWrapper>
-    {cell.value.filled}/{cell.value.capacity}
+    {value.filled}/{value.capacity}
   </NormalCellWrapper>
 );
-const TimeCell = ({ cell }) => (
+const TimeCell = ({ value }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
+    {value.map((cl, ind) => {
       return (
         <ContentWrapper key={ind}>
           {cl.time.start} - {cl.time.end}
@@ -47,9 +47,9 @@ const TimeCell = ({ cell }) => (
     })}
   </NormalCellWrapper>
 );
-const DateCell = ({ cell }) => (
+const DateCell = ({ value }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
+    {value.map((cl, ind) => {
       return (
         <ContentWrapper key={ind}>
           {cl.date.reduce((acc, curr, ind) => {
@@ -60,16 +60,16 @@ const DateCell = ({ cell }) => (
     })}
   </NormalCellWrapper>
 );
-const LocationCell = ({ cell }) => (
+const LocationCell = ({ value }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
+    {value.map((cl, ind) => {
       return <ContentWrapper key={ind}>{cl.location}</ContentWrapper>;
     })}
   </NormalCellWrapper>
 );
-const InstructorCell = ({ cell }) => (
+const InstructorCell = ({ value }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
+    {value.map((cl, ind) => {
       if (!cl.instructor) return <ContentWrapper key={ind} />;
       return (
         <InstructorLink
@@ -95,18 +95,12 @@ export const courseScheduleTableColumns = [
   {
     Header: 'Class',
     Cell: ClassCell,
-    accessor: 'c',
-    style: {
-      'vertical-align': 'top',
-    },
+    accessor: 'class_number',
   },
   {
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
-    style: {
-      'vertical-align': 'top',
-    },
   },
   {
     Header: 'Time',

@@ -19,7 +19,7 @@ const ProfReviewFragment = {
       engaging
       clear
       user {
-        name
+        full_name
         program
       }
       prof_review_votes_aggregate {
