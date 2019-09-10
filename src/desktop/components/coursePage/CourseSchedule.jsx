@@ -12,6 +12,7 @@ import { ScheduleTable, CourseScheduleWrapper } from './styles/CourseSchedule';
 
 /* GraphQL Queries */
 import { GET_COURSE_SCHEDULE } from '../../../graphql/queries/course/Course';
+import { termCodeToDate } from '../../../utils/Misc';
 
 const columnNames = [
   'Section',
@@ -64,7 +65,7 @@ const CourseSchedule = ({ courseID }) => {
 
   const tabList = termsOffered.map(term => {
     return {
-      title: term.toString(),
+      title: termCodeToDate(term),
       render: () => (
         <Table
           columns={courseScheduleTableColumns}
