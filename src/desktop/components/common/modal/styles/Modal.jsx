@@ -25,14 +25,14 @@ export const ModalScrollableWrapper = styled.div`
   overflow: show;
   display: inline-flex;
   align-items: center;
-  zindex: 2;
+  z-index: 2;
 `;
 
 export const ModalWrapper = styled.div.attrs(() => ({
   // don't click backdrop or modal will be closed
   onClick: event => event.stopPropagation(),
 }))`
-  zindex: 2;
+  z-index: 2;
 `;
 
 export const ModalContainer = styled.div`

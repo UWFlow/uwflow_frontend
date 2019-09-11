@@ -2,7 +2,7 @@ import { PAGE_CONTENT_WIDTH } from './PageConstants';
 
 export const BackgroundZIndex = 'z-index: -1;';
 
-export const PageContentZIndex = 'z-index: 3;';
+export const PageContentZIndex = 'z-index: -1;';
 
 export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
@@ -17,7 +17,7 @@ export const PageContent = `
   }
 `;
 
-export const ModalZIndex = 'zIndex: 2000;';
+export const ModalZIndex = 'z-index: 2000;';
 
 export const WideColumn = `
   display: flex;

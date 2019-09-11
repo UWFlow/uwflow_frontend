@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
 import Button from '../common/Button';
-import TestModal from '../common/modal/TestModal';
 import ProgressBar from '../common/ProgressBar';
 import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
 import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';

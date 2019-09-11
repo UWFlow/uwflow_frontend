@@ -3,7 +3,7 @@ import { Heading4, BoxShadow } from '../../../../../constants/Mixins';
 
 export const DropdownWrapper = styled.div`
   color: ${({ color }) => color};
-  zindex: ${({ zIndex }) => zIndex};
+  z-index: ${({ zIndex }) => zIndex};
   width: ${({ width }) => width};
   margin: ${({ margin }) => margin};
   margin-left: 5px;
