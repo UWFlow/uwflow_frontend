@@ -23,10 +23,9 @@ import {
 } from '../../../constants/Api';
 import { makePOSTRequest } from '../../../utils/Api';
 
-const SocialLoginContent = () => {
+const SocialLoginContent = ({ setJWT }) => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [facebookLoading, setFacebookLoading] = useState(false);
 
   const handleFacebookLogin = async (res) => {
     if (!res.accessToken) {
@@ -36,8 +35,6 @@ const SocialLoginContent = () => {
 
     const {accessToken} = res;
 
-    setFacebookLoading(true);
-
     const [response, status] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${FACEBOOK_AUTH_ENDPOINT}`,
       {
@@ -45,9 +42,11 @@ const SocialLoginContent = () => {
       }
     );
     
-    // TODO handle response
-    setError(response.error);
-    setFacebookLoading(false);
+    if (status >= 400) {
+      setError(response.error);
+    } else {
+      setJWT(response);
+    }
   };
 
   const handleGoogleSuccess = async (res) => {
@@ -62,8 +61,12 @@ const SocialLoginContent = () => {
       }
     );
   
-    // TODO handle response
-    setError(response.error);
+    if (status >= 400) {
+      setError(response.error);
+    } else {
+      setJWT(response);
+    }
+
     setGoogleLoading(false);
   };
   

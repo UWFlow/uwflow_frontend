@@ -30,6 +30,11 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const setJWT = (response) => {
+    localStorage.setItem('token', response);
+    onAuthComplete();
+  }
+
   const handleAuth = async (event, endpoint, data, setErrorMessage, validateFields) => {
     event.preventDefault();
 
@@ -42,8 +47,7 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
     if (status >= 400) {
       setErrorMessage(response.error);
     } else {
-      localStorage.setItem('token', response);
-      onAuthComplete();
+      setJWT();
     }
   }
 
@@ -79,7 +83,7 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
           />
         )}
         <OrWrapper>OR</OrWrapper>
-        <SocialLoginContent />
+        <SocialLoginContent setJWT={setJWT} />
         <PrivacyWrapper>
           <GreyText>Read our </GreyText>
           <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE}>
