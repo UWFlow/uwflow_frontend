@@ -1,7 +1,5 @@
 import { PAGE_CONTENT_WIDTH } from './PageConstants';
 
-export const BackgroundZIndex = 'z-index: -1;';
-
 export const PageContentZIndex = 'z-index: -1;';
 
 export const PageContent = `
@@ -22,7 +20,6 @@ export const ModalZIndex = 'z-index: 2000;';
 export const WideColumn = `
   display: flex;
   flex-direction: column;
-  width: 70%;
   margin-right: 32px;
 `;
 
@@ -30,6 +27,8 @@ export const ThinColumn = `
   display: flex;
   flex-direction: column;
   width: 30%;
+  min-width: 338px;
+  max-width: 338px;
 `;
 
 /* Fonts */

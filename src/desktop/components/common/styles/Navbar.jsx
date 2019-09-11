@@ -7,11 +7,10 @@ export const NavbarWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 80px;
-  background-color: ${({ theme }) => theme.white};
-  border: 1px solid ${({ theme }) => theme.light2};
+  background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
+  border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
-  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
-    0px 0px 5px rgba(142, 147, 148, 0.2);
+  ${({ landingPage }) => landingPage ? '' : BoxShadow};
   border-radius: 4px;
   display: flex;
 

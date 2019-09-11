@@ -21,4 +21,6 @@ export default {
 
   google: '#4285f4',
   facebook: '#3c5a99',
+
+  transparent: 'rgba(0,0,0,0)',
 };

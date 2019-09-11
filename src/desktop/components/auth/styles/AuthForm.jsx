@@ -16,6 +16,7 @@ export const Wrapper = styled.div`
   margin-bottom: 32px;
   width: 400px;
   border-radius: 4px;
+  height: fit-content;
 `;
 
 export const ContentWrapper = styled.div`

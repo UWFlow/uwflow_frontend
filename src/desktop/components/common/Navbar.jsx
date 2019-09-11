@@ -11,6 +11,7 @@ import {
   PROFILE_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
   isOnProfilePageRoute,
+  isOnLandingPageRoute,
 } from '../../../Routes';
 
 /* Styled Components */
@@ -70,6 +71,18 @@ const Navbar = ({ history, location, theme }) => {
   };
 
   const profilePicture = renderProfilePicture(data);
+
+  if (isOnLandingPageRoute(location)) {
+    return (
+      <NavbarWrapper landingPage={true}>
+        <NavbarContent>
+          <LogoWrapper to={LANDING_PAGE_ROUTE}>
+            UW <BlueText>Flow</BlueText>
+          </LogoWrapper>
+        </NavbarContent>
+      </NavbarWrapper>
+    )
+  }
 
   return (
     <>

@@ -47,7 +47,7 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
     if (status >= 400) {
       setErrorMessage(response.error);
     } else {
-      setJWT();
+      setJWT(response);
     }
   }
 
