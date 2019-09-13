@@ -12,7 +12,6 @@ import {
 
 /* Child Components */
 import ModalPortal from './ModalPortal';
-import PopInOutAnimation from '../../../../utils/animation/PopInOutAnimation';
 import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
 
 /* Getters */

@@ -1,30 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 /* Child Components */
-import LoginContent from './LoginContent';
 import ModalHOC from '../common/modal/ModalHOC';
-import SignupContent from './SignupContent';
-
-export const EMAIL_TEXTBOX_ID = 'EmailAddress';
-export const PASSWORD_TEXTBOX_ID = 'Password';
-export const FIRST_NAME_TEXTBOX_ID = 'FirstName';
-export const LAST_NAME_TEXTBOX_ID = 'LastName';
-export const CONFIRM_PASSWORD_TEXTBOX_ID = 'ConfirmPassword';
-
-export const AuthForm = () => {
-  const [showLoginForm, setShowLoginForm] = useState(false);
-
-  return showLoginForm ? (
-    <LoginContent onSwitchModal={() => setShowLoginForm(false)} />
-  ) : (
-    <SignupContent onSwitchModal={() => setShowLoginForm(true)} />
-  );
-};
+import AuthForm from './AuthForm';
 
 const AuthModal = ({ isModalOpen, onCloseModal }) => (
   <ModalHOC isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
-    <AuthForm />
+    <AuthForm onAuthComplete={onCloseModal} />
   </ModalHOC>
 );
+
+AuthModal.propTypes = {
+  isModalOpen: PropTypes.bool.isRequired,
+  onCloseModal: PropTypes.func.isRequired
+}
 
 export default AuthModal;

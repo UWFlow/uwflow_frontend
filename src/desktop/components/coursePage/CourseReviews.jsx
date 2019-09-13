@@ -116,7 +116,7 @@ const CourseProfReviews = reviewsByProf => {
           {curr.reviews.map(review => {
             return (
               <Review
-                key={review.reviewer.name}
+                key={review.reviewer.full_name}
                 upvotes={review.upvotes}
                 review={review.review}
                 reviewer={review.reviewer}

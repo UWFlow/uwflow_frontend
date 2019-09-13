@@ -15,9 +15,10 @@ export const ProfileInfoHeaderWrapper = styled.div`
 export const ProfileInfoSection = styled.div`
   padding: 52px 0;
   ${PageContent}
-  height: 320px;
+  min-height: 320px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   margin: auto;
   position: relative;
 `;
@@ -32,7 +33,7 @@ export const UserPicture = styled.img`
 `;
 
 export const UserInfoWrapper = styled.div`
-  margin: auto 0;
+  margin: 48px 0;
 `;
 
 export const UserName = styled.div`

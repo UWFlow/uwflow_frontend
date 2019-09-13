@@ -15,7 +15,7 @@ const CourseReviewFragment = {
       text
       useful
       user {
-        name
+        full_name
         program
       }
       course_review_votes_aggregate {
@@ -44,7 +44,7 @@ const CourseReviewFragment = {
       engaging
       text
       user {
-        name
+        full_name
         program
       }
       prof_review_votes_aggregate {

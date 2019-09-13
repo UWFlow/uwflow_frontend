@@ -10,6 +10,7 @@ export const EXPLORE_PAGE_ROUTE = '/explore';
 export const TREE_PAGE_ROUTE = '/tree';
 export const TREE_PAGE_WITH_COURSE_ROUTE = '/tree/:courseID';
 export const ABOUT_PAGE_ROUTE = '/about';
+export const PRIVACY_PAGE_ROUTE = '/privacy';
 export const TEST_PAGE_ROUTE = '/api-test';
 
 export const TREE_PAGE_ROUTES = [TREE_PAGE_ROUTE, TREE_PAGE_WITH_COURSE_ROUTE];
@@ -25,6 +26,7 @@ export const TREE_PAGE_WITH_COURSE_TESTER = pathToRegexp(
   TREE_PAGE_WITH_COURSE_ROUTE,
 );
 export const ABOUT_PAGE_TESTER = pathToRegexp(ABOUT_PAGE_ROUTE);
+export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const TEST_PAGE_TESTER = pathToRegexp(TEST_PAGE_ROUTE);
 
 export const TREE_PAGE_TESTERS = [
@@ -59,6 +61,9 @@ export const isOnAnyTreePageRoute = location =>
 
 export const isOnAboutPageRoute = location =>
   ABOUT_PAGE_TESTER.test(location.pathname);
+
+export const isOnPrivacyPageRoute = location =>
+  PRIVACY_PAGE_TESTER.test(location.pathname);
 
 export const isOnTestPageRoute = location =>
   TEST_PAGE_TESTER.test(location.pathname);

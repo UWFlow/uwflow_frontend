@@ -28,7 +28,7 @@ export const SliderHandle = styled.div`
   position: absolute;
   margin-left: -16px;
   margin-top: -20px;
-  zindex: 3;
+  z-index: 3;
   width: 32px;
   height: 32px;
   border: 3px solid ${({ theme }) => theme.white};
@@ -41,7 +41,7 @@ export const SliderHandle = styled.div`
 export const SliderTrack = styled.div`
   position: absolute;
   height: 8px;
-  zindex: 1;
+  z-index: 1;
   margin-top: -8px;
   background-color: ${({ color }) => color};
   border-radius: 4px;
@@ -54,7 +54,7 @@ export const SliderTick = styled.div`
   position: absolute;
   margin-left: -8px;
   margin-top: -11px;
-  zindex: 2;
+  z-index: 2;
   height: 8px;
   width: 8px;
   background-color: ${({ color }) => color};

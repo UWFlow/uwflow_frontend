@@ -20,7 +20,7 @@ const ProfileInfoHeader = ({ user }) => {
       <ProfileInfoSection>
         <UserPicture src={user.picture_url || placeholderImage} />
         <UserInfoWrapper>
-          <UserName>{user.name}</UserName>
+          <UserName>{user.full_name}</UserName>
           <UserProgram>{user.program}</UserProgram>
         </UserInfoWrapper>
       </ProfileInfoSection>

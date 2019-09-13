@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Search } from 'react-feather';
+import { useQuery } from 'react-apollo';
+import { compose } from 'redux';
+import { withTheme } from 'styled-components';
 
 /* Routes */
 import {
   LANDING_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
+  isOnProfilePageRoute,
+  isOnLandingPageRoute,
 } from '../../../Routes';
 
 /* Styled Components */
@@ -16,22 +21,68 @@ import {
   BlueText,
   ProfileButtonWrapper,
   NavbarContent,
+  ProfilePicture,
+  ProfileText
 } from './styles/Navbar';
 
 /* Child Components */
 import Textbox from './Textbox';
 import AuthModal from '../auth/AuthModal';
+import DropdownList from './dropdownList/DropdownList';
 
-export const NAVBAR_TEXTBOX_ID = 'NAVBAR_TEXTBOX';
+/* GraphQL Queries */
+import { GET_USER } from '../../../graphql/queries/profile/User';
 
-const Navbar = ({ history }) => {
-  const [AuthModalOpen, setAuthModalOpen] = useState(false);
+/* Constants */
+import KEYCODE from '../../../constants/KeycodeConstants';
+
+import { isLoggedIn } from '../../../utils/Auth';
+
+const placeholderImage
+  = 'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
+
+const renderProfilePicture = (data) => {
+    let user = {};
+    if (data && data.user) {
+      user = data.user[0];
+    }
+
+    return <ProfilePicture src={user.picture_url || placeholderImage} />;
+}
+
+const Navbar = ({ history, location, theme }) => {
+  const [searchText, setSearchText] = useState('');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [, forceUpdate] = useState(false);
+  const { data } = useQuery(GET_USER);
+
+  const handleProfileButtonClick = () => {
+    if (isLoggedIn()) {
+      history.push(PROFILE_PAGE_ROUTE);
+    } else {
+      setAuthModalOpen(true);
+    }
+  }
 
   const handleSearch = (event, text) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === KEYCODE.ENTER) {
       history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
     }
   };
+
+  const profilePicture = renderProfilePicture(data);
+
+  if (isOnLandingPageRoute(location)) {
+    return (
+      <NavbarWrapper landingPage={true}>
+        <NavbarContent>
+          <LogoWrapper to={LANDING_PAGE_ROUTE}>
+            UW <BlueText>Flow</BlueText>
+          </LogoWrapper>
+        </NavbarContent>
+      </NavbarWrapper>
+    )
+  }
 
   return (
     <>
@@ -41,23 +92,54 @@ const Navbar = ({ history }) => {
             UW <BlueText>Flow</BlueText>
           </LogoWrapper>
           <Textbox
-            ID={NAVBAR_TEXTBOX_ID}
             icon={Search}
-            initialPlaceholder="Explore or search for courses, subjects or professors"
+            text={searchText}
+            setText={setSearchText}
+            placeholder="Explore or search for courses, subjects or professors"
             handleKeyDown={handleSearch}
             maxLength={100}
           />
-          <ProfileButtonWrapper onClick={() => setAuthModalOpen(true)}>
-            Log In
+          <ProfileButtonWrapper>
+            {isLoggedIn() ? (
+              <>
+                <ProfileText onClick={handleProfileButtonClick}>
+                  {profilePicture}
+                  View profile
+                </ProfileText>
+                <DropdownList
+                  selectedIndex={-1}
+                  color={theme.dark1}
+                  itemColor={theme.dark1}
+                  options={['Log out']}
+                  onChange={(idx) => {
+                    if (idx === 0) {
+                      // log out
+                      localStorage.removeItem('token');
+                      if (isOnProfilePageRoute(location)) {
+                        history.push(LANDING_PAGE_ROUTE);
+                      } else {
+                        forceUpdate(x => !x)
+                      }
+                    }
+                  }}
+                  placeholder=''
+                />
+              </>
+            ) : (
+              <ProfileText onClick={handleProfileButtonClick}>
+                Log in
+              </ProfileText>
+            )
+          }
           </ProfileButtonWrapper>
         </NavbarContent>
       </NavbarWrapper>
       <AuthModal
-        isModalOpen={AuthModalOpen}
+        isModalOpen={authModalOpen}
         onCloseModal={() => setAuthModalOpen(false)}
       />
     </>
   );
 };
 
-export default withRouter(Navbar);
+export default compose(withTheme, withRouter)(Navbar);

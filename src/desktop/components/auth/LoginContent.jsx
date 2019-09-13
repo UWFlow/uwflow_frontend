@@ -1,64 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
-  Wrapper,
-  ContentWrapper,
   Header,
   ForgotPasswordWrapper,
   ForgotPasswordText,
-  OrWrapper,
-  PrivacyWrapper,
-  PrivacyPolicyText,
-  GreyText,
-  SwapModalWrapper,
-  SwapModalLink,
   TextboxWrapper,
-} from './styles/AuthModal';
-
-/* Constants */
-import { EMAIL_TEXTBOX_ID, PASSWORD_TEXTBOX_ID } from './AuthModal';
+  Form,
+  Error
+} from './styles/AuthForm';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
-const LoginContent = ({ onSwitchModal }) => (
-  <Wrapper>
-    <ContentWrapper>
+import { validateEmail } from '../../../utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../../../constants/Api';
+
+const LoginContent = ({
+  handleAuth,
+  formState,
+  setEmail,
+  setPassword
+}) => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState(false);
+
+  const validateFields = () => {
+    const emailValid = validateEmail(formState.email);
+    setEmailError(!emailValid);
+    return emailValid;
+  }
+
+  const handleLogin = async (event) => {
+    handleAuth(
+      event,
+      `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
+      {
+        email: formState.email,
+        password: formState.password
+      },
+      setErrorMessage,
+      validateFields
+    );
+  }
+
+  return (
+    <>
       <Header>Log in</Header>
-      <TextboxWrapper>
-        <Textbox
-          options={{ width: '100%' }}
-          ID={EMAIL_TEXTBOX_ID}
-          initialPlaceholder="Email address"
-        />
-      </TextboxWrapper>
-      <TextboxWrapper>
-        <Textbox
-          options={{ width: '100%' }}
-          ID={PASSWORD_TEXTBOX_ID}
-          initialPlaceholder="Password"
-        />
-      </TextboxWrapper>
-      <ForgotPasswordWrapper>
-        <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-      </ForgotPasswordWrapper>
-      <Button margin="0 0 16px 0" width="100%">
-        Log in
-      </Button>
-      <OrWrapper>OR</OrWrapper>
-      {/* TODO: FB and Google login buttons */}
-      <PrivacyWrapper>
-        <GreyText>Read our </GreyText>
-        <PrivacyPolicyText>Privacy Policy</PrivacyPolicyText>
-      </PrivacyWrapper>
-    </ContentWrapper>
-    <SwapModalWrapper>
-      New to UW Flow?
-      <SwapModalLink onClick={onSwitchModal}>Sign up</SwapModalLink>
-    </SwapModalWrapper>
-  </Wrapper>
-);
+      <Form onSubmit={handleLogin}>
+        <Error>{errorMessage}</Error>
+        <TextboxWrapper>
+          <Textbox
+            options={{ width: '100%', type: 'email' }}
+            placeholder="Email address"
+            error={emailError}
+            text={formState.email}
+            setText={(value) => {
+              setEmail(value);
+              setEmailError(false);
+            }}
+          />
+        </TextboxWrapper>
+        <TextboxWrapper>
+          <Textbox
+            options={{ width: '100%', type: 'password' }}
+            placeholder="Password"
+            text={formState.password}
+            setText={setPassword}
+          />
+        </TextboxWrapper>
+        <ForgotPasswordWrapper>
+          <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+        </ForgotPasswordWrapper>
+        <Button margin="0 0 16px 0" width="100%" onClick={handleLogin}>
+          Log in
+        </Button>
+      </Form>
+    </>
+  );
+}
+
+LoginContent.propTypes = {
+  handleAuth: PropTypes.func.isRequired,
+  formState: PropTypes.object.isRequired,
+  setEmail: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+}
 
 export default LoginContent;

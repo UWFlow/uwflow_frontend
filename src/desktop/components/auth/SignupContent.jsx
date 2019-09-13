@@ -1,91 +1,160 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
-  Wrapper,
-  ContentWrapper,
   Header,
   NamesSection,
   Spacer,
-  OrWrapper,
-  PrivacyWrapper,
-  PrivacyPolicyText,
-  GreyText,
-  SwapModalWrapper,
-  SwapModalLink,
   TextboxWrapper,
-} from './styles/AuthModal';
-
-/* Constants */
-import {
-  EMAIL_TEXTBOX_ID,
-  PASSWORD_TEXTBOX_ID,
-  FIRST_NAME_TEXTBOX_ID,
-  LAST_NAME_TEXTBOX_ID,
-  CONFIRM_PASSWORD_TEXTBOX_ID,
-} from './AuthModal';
+  Form,
+  Error
+} from './styles/AuthForm';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
 import Button from '../common/Button';
 
-const SignupContent = ({ onSwitchModal }) => (
-  <Wrapper>
-    <ContentWrapper>
+import { validateEmail } from '../../../utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from '../../../constants/Api';
+
+const MIN_PASSWORD_LENGTH = 6;
+
+const SignupContent = ({
+  handleAuth,
+  formState,
+  setFirstName,
+  setLastName,
+  setEmail,
+  setPassword,
+  setConfirmPassword
+}) => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+
+  const transformName = (name) => {
+    return name[0].toUpperCase() + name.slice(1);
+  }
+
+  const validateFields = () => {
+    setEmailError(!validateEmail(formState.email));
+    setFirstNameError(formState.firstName === '');
+    setLastNameError(formState.lastName === '');
+    setPasswordError(formState.password.length < MIN_PASSWORD_LENGTH);
+    setConfirmPasswordError(formState.password !== formState.confirmPassword);
+
+    return !(!validateEmail(formState.email)
+            || formState.firstName === ''
+            || formState.lastName === ''
+            || formState.password.length < MIN_PASSWORD_LENGTH
+            || formState.password !== formState.confirmPassword);
+  }
+
+  const handleSignUp = async (event) => {
+    handleAuth(
+      event,
+      `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
+      {
+        name: [
+          transformName(formState.firstName),
+          transformName(formState.lastName)
+        ].join(' '),
+        email: formState.email,
+        password: formState.password
+      },
+      setErrorMessage,
+      validateFields
+    );
+  }
+
+  return (
+    <>
       <Header>Sign up</Header>
-      <NamesSection>
+      <Form onSubmit={handleSignUp}>
+        <Error>{errorMessage}</Error>
+        <NamesSection>
+          <TextboxWrapper>
+            <Textbox
+              options={{ width: '100%' , name: 'firstname' }}
+              placeholder="First Name"
+              error={firstNameError}
+              text={formState.firstName}
+              setText={(value) => {
+                setFirstName(value);
+                setFirstNameError(false);
+              }}
+            />
+          </TextboxWrapper>
+          <Spacer />
+          <TextboxWrapper>
+            <Textbox
+              options={{ width: '100%', name: 'lastname' }}
+              placeholder="Last Name"
+              error={lastNameError}
+              text={formState.lastName}
+              setText={(value) => {
+                setLastName(value);
+                setLastNameError(false);
+              }}
+            />
+          </TextboxWrapper>
+        </NamesSection>
         <TextboxWrapper>
           <Textbox
-            options={{ width: '100%' }}
-            ID={FIRST_NAME_TEXTBOX_ID}
-            initialPlaceholder="First Name"
+            options={{ width: '100%', type: 'email' }}
+            placeholder="Email address"
+            error={emailError}
+            text={formState.email}
+            setText={(value) => {
+              setEmail(value);
+              setEmailError(false);
+            }}
           />
         </TextboxWrapper>
-        <Spacer />
         <TextboxWrapper>
           <Textbox
-            options={{ width: '100%' }}
-            ID={LAST_NAME_TEXTBOX_ID}
-            initialPlaceholder="Last Name"
+            options={{ width: '100%', type: 'password' }}
+            placeholder="Password"
+            error={passwordError}
+            text={formState.password}
+            setText={(value) => {
+              setPassword(value);
+              setPasswordError(passwordError && formState.password.length < MIN_PASSWORD_LENGTH);
+            }}
           />
         </TextboxWrapper>
-      </NamesSection>
-      <TextboxWrapper>
-        <Textbox
-          options={{ width: '100%' }}
-          ID={EMAIL_TEXTBOX_ID}
-          initialPlaceholder="Email address"
-        />
-      </TextboxWrapper>
-      <TextboxWrapper>
-        <Textbox
-          options={{ width: '100%' }}
-          ID={PASSWORD_TEXTBOX_ID}
-          initialPlaceholder="Password"
-        />
-      </TextboxWrapper>
-      <TextboxWrapper>
-        <Textbox
-          options={{ width: '100%' }}
-          ID={CONFIRM_PASSWORD_TEXTBOX_ID}
-          initialPlaceholder="Confirm Password"
-        />
-      </TextboxWrapper>
-      <Button margin="0 0 16px 0" width="100%">
-        Sign Up
-      </Button>
-      <OrWrapper>OR</OrWrapper>
-      {/* TODO: FB and Google login buttons */}
-      <PrivacyWrapper>
-        <GreyText>Read our </GreyText>
-        <PrivacyPolicyText>Privacy Policy</PrivacyPolicyText>
-      </PrivacyWrapper>
-    </ContentWrapper>
-    <SwapModalWrapper>
-      Already have an account?
-      <SwapModalLink onClick={onSwitchModal}>Log in </SwapModalLink>
-    </SwapModalWrapper>
-  </Wrapper>
-);
+        <TextboxWrapper>
+          <Textbox
+            options={{ width: '100%', type: 'password' }}
+            placeholder="Confirm Password"
+            error={confirmPasswordError}
+            text={formState.confirmPassword}
+            setText={(value) => {
+              setConfirmPassword(value);
+              setConfirmPasswordError(confirmPasswordError && value !== formState.password);
+            }}
+          />
+        </TextboxWrapper>
+        <Button margin="0 0 16px 0" width="100%" handleClick={handleSignUp}>
+          Sign Up
+        </Button>
+      </Form>
+    </>
+  );
+}
+
+SignupContent.propTypes = {
+  handleAuth: PropTypes.func.isRequired,
+  formState: PropTypes.object.isRequired,
+  setFirstName: PropTypes.func.isRequired,
+  setLastName: PropTypes.func.isRequired,
+  setEmail: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  setConfirmPassword: PropTypes.func.isRequired
+}
 
 export default SignupContent;

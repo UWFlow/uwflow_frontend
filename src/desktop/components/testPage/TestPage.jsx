@@ -6,19 +6,12 @@ import { Link } from 'react-router-dom';
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
 import Button from '../common/Button';
-import TestModal from '../common/modal/TestModal';
 import ProgressBar from '../common/ProgressBar';
 import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
 import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 
 /* Selectors */
 import { getTextboxText } from '../../reducers/TextboxReducer';
-
-/* Utils */
-import { externalCall } from '../../../utils/Api';
-
-/* Constants */
-import KEYCODE from '../../../constants/KeycodeConstants';
 
 /* Styled Components */
 import {} from './styles/TestPage';
@@ -29,11 +22,9 @@ const mapStateToProps = state => ({
 
 export const TESTPAGE_API_TEXTBOX = 'TESTPAGE_API_TEXTBOX';
 
-const TestPage = ({ getTextboxText }) => {
-  const handleKeyDown = event => {
-    if (event.keyCode === KEYCODE.ENTER) {
-      externalCall(getTextboxText(TESTPAGE_API_TEXTBOX), {});
-    }
+const TestPage = () => {
+  const handleKeyDown = () => {
+    return null;
   };
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -95,7 +86,6 @@ const TestPage = ({ getTextboxText }) => {
       <br />
       <Textbox
         handleKeyDown={handleKeyDown}
-        ID={TESTPAGE_API_TEXTBOX}
         initialPlaceholder="Enter an api endpoint"
         options={{ width: '500px' }}
       />
