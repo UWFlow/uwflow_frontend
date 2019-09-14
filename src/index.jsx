@@ -7,26 +7,31 @@ import { ApolloProvider } from 'react-apollo';
 
 import { configureStore } from './Store';
 import Theme from './constants/GlobalTheme';
-import client from './graphql/apollo';
+import client from './graphql/apollo.js';
 
 /* Child Components */
 import App from './App';
+import SearchProvider from './search/SearchProvider';
+import SearchClient from './search/SearchClient';
 
 /* Util */
 import createHistory, { syncReduxHistory } from './utils/History';
 
 const StartApp = (store, history) => {
   syncReduxHistory(store, history);
+  const searchClient = new SearchClient();
 
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <Provider store={store}>
-        <Router history={history}>
-          <ThemeProvider theme={Theme}>
-            <App />
-          </ThemeProvider>
-        </Router>
-      </Provider>
+      <SearchProvider client={searchClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <ThemeProvider theme={Theme}>
+              <App />
+            </ThemeProvider>
+          </Router>
+        </Provider>
+      </SearchProvider>
     </ApolloProvider>,
     document.getElementById('root'),
   );
