@@ -169,6 +169,7 @@ const CourseReviews = ({ courseID, theme }) => {
       </CourseReviewWrapper>
     );
   }
+  console.log(data);
 
   const courseReviews = data.course_review.map(r => ({
     upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
@@ -241,9 +242,7 @@ const CourseReviews = ({ courseID, theme }) => {
       onClick: () => setShowingProfReviews(false),
     },
     {
-      title: `Professor reviews (${
-        data.prof_review_aggregate.aggregate.count
-      })`,
+      title: `Professor reviews (${data.prof_review_aggregate.aggregate.count})`,
       render: () => ProfFilterDropdown,
       onClick: () => setShowingProfReviews(true),
     },

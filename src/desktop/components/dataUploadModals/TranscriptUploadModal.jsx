@@ -14,8 +14,6 @@ import {
   TranscriptStep1Picture,
   ScheduleStep3Wrapper,
   TranscriptUploadBox,
-  RightArrow,
-  UploadIcon,
   GreyText,
   TranscriptPrivacyPolicyWrapper,
   PrivacyPolicyHeader,
@@ -23,6 +21,7 @@ import {
   PrivacyPolicyLink,
   SkipStepWrapper,
 } from './styles/DataUploadModals';
+import { RightArrowIcon, UploadIcon } from '../../assets/FeatherIcons';
 
 /* Constants */
 import { TRANSCRIPT_PARSE_ENDPOINT } from '../../../constants/Api';
@@ -107,7 +106,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                 <TranscriptStep1Picture />
               </td>
               <td>
-                <RightArrow />
+                <RightArrowIcon color={theme.accent} height={100} width={80} />
               </td>
               <td>
                 <ScheduleStep3Wrapper>
@@ -118,7 +117,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                     encType="multipart/form-data"
                   >
                     <TranscriptUploadBox>
-                      <UploadIcon />
+                      <UploadIcon height={100} width={60} color={theme.dark3} />
                       <GreyText>
                         Drag and drop your transcript file here!
                       </GreyText>

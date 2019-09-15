@@ -17,14 +17,13 @@ import {
   SchedulePasteBoxWrapper,
   SchedulePasteBoxBackground,
   SchedulePasteBox,
-  RightArrow,
-  ClipboardIcon,
   GreyText,
   PrivacyPolicyWrapper,
   PrivacyPolicyText,
   PrivacyPolicyLink,
   SkipStepWrapper,
 } from './styles/DataUploadModals';
+import { RightArrowIcon, ClipboardIcon } from '../../assets/FeatherIcons';
 
 /* Constants */
 import { SCHEDULE_PARSE_ENDPOINT } from '../../../constants/Api';
@@ -90,19 +89,23 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                 <ScheduleStep1Picture />
               </td>
               <td>
-                <RightArrow />
+                <RightArrowIcon color={theme.accent} height={100} width={80} />
               </td>
               <td>
                 <ScheduleStep2Picture />
               </td>
               <td>
-                <RightArrow />
+                <RightArrowIcon color={theme.accent} height={100} width={80} />
               </td>
               <td>
                 <ScheduleStep3Wrapper>
                   <SchedulePasteBoxWrapper>
                     <SchedulePasteBoxBackground>
-                      <ClipboardIcon />
+                      <ClipboardIcon
+                        height={100}
+                        width={60}
+                        color={theme.dark3}
+                      />
                       <GreyText>Paste here! (Ctrl+V)</GreyText>
                     </SchedulePasteBoxBackground>
                     <SchedulePasteBox

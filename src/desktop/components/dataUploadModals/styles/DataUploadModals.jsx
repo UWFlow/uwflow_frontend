@@ -74,12 +74,6 @@ export const SchedulePasteBoxWrapper = styled.div`
   position: relative;
 `;
 
-export const ClipboardIcon = styled(Clipboard)`
-  height: 100px;
-  width: 60px;
-  color: ${({ theme }) => theme.dark3};
-`;
-
 export const SchedulePasteBoxBackground = styled.div`
   height: 280px;
   width: 300px;
@@ -111,13 +105,6 @@ export const GreyText = styled.div`
   color: ${({ theme }) => theme.dark3};
   ${Heading4}
   max-width: 160px;
-`;
-
-export const RightArrow = styled(ArrowRight)`
-  color: ${({ theme }) => theme.accent};
-  width: 80px;
-  height: 100px;
-  stroke-width: 3px;
 `;
 
 export const PrivacyPolicyWrapper = styled.div`
@@ -178,12 +165,6 @@ export const TranscriptUploadBox = styled.div`
   &:hover {
     border: 3px solid ${({ theme }) => theme.accentDark};
   }
-`;
-
-export const UploadIcon = styled(Upload)`
-  height: 100px;
-  width: 60px;
-  color: ${({ theme }) => theme.dark3};
 `;
 
 export const TranscriptPrivacyPolicyWrapper = styled.div`
