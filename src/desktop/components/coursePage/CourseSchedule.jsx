@@ -12,6 +12,7 @@ import { CourseScheduleWrapper } from './styles/CourseSchedule';
 
 /* GraphQL Queries */
 import { GET_COURSE_SCHEDULE } from '../../../graphql/queries/course/Course';
+import { termCodeToDate } from '../../../utils/Misc';
 
 const secsToTime = secs => {
   const t = Math.floor(secs / 3600) % 12;
@@ -55,7 +56,7 @@ const CourseSchedule = ({ courseID }) => {
 
   const tabList = termsOffered.map(term => {
     return {
-      title: term.toString(),
+      title: termCodeToDate(term),
       render: () => (
         <Table
           columns={courseScheduleTableColumns}
