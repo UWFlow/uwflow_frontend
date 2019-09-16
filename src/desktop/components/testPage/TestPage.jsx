@@ -29,6 +29,7 @@ const TestPage = () => {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModal2Open, setModal2Open] = useState(false);
+  const [textboxText, setTextboxText] = useState('');
 
   const tabList = [
     {
@@ -85,8 +86,10 @@ const TestPage = () => {
       <br />
       <br />
       <Textbox
+        text={textboxText}
+        setText={setTextboxText}
         handleKeyDown={handleKeyDown}
-        initialPlaceholder="Enter an api endpoint"
+        placeholder="Enter an api endpoint"
         options={{ width: '500px' }}
       />
       <br />

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import { withTheme } from 'styled-components';
+import { makePOSTRequest } from '../../../utils/Api';
 
 /* Styled Components */
 import {
@@ -23,6 +24,15 @@ import {
   SkipStepWrapper,
 } from './styles/DataUploadModals';
 
+/* Constants */
+import { TRANSCRIPT_PARSE_ENDPOINT } from '../../../constants/Api';
+import {
+  AWAITING_UPLOAD,
+  UPLOAD_PENDING,
+  UPLOAD_SUCCESSFUL,
+  UPLOAD_FAILED,
+} from '../../../constants/DataUploadStates';
+
 const privacyText = `
   Flow only uses your transcript so you can easily import your course
   history and leave reviews for courses you have taken. See our`;
@@ -35,11 +45,25 @@ const onDragOver = event => {
 };
 
 const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
-  const handleTranscriptDrop = event => {
+  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+
+  const handleTranscriptDrop = async event => {
     /* TODO: handle schedule paste */
-    console.log(event.dataTransfer);
+    console.log(event.dataTransfer.files);
     event.preventDefault();
     event.stopPropagation();
+    setUploadState(UPLOAD_PENDING);
+    const [response, status] = await makePOSTRequest(
+      TRANSCRIPT_PARSE_ENDPOINT,
+      {
+        file: event.dataTransfer.files,
+      },
+    );
+    if (status == 200) {
+      setUploadState(UPLOAD_SUCCESSFUL);
+    } else {
+      setUploadState(UPLOAD_FAILED);
+    }
   };
 
   useEffect(() => {
@@ -87,7 +111,12 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
               </td>
               <td>
                 <ScheduleStep3Wrapper>
-                  <form onDrop={handleTranscriptDrop} onDragOver={onDragOver}>
+                  <form
+                    onDrop={handleTranscriptDrop}
+                    onDragOver={onDragOver}
+                    method="post"
+                    encType="multipart/form-data"
+                  >
                     <TranscriptUploadBox>
                       <UploadIcon />
                       <GreyText>
