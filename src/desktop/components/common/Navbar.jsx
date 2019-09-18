@@ -42,7 +42,7 @@ const placeholderImage
   = 'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
 
 const renderProfilePicture = (data) => {
-    let user = {};
+    let user = { picture_url: null };
     if (data && data.user) {
       user = data.user[0];
     }

@@ -14,12 +14,3 @@ export const GET_PROF = gql`
   ${ProfFragment.profInfo}
   ${ProfFragment.profReviewAggregate}
 `;
-
-export const GET_ALL_PROFS_SHALLOW = gql`
-  query GET_ALL_PROFS_SHALLOW {
-    course {
-      ...ShallowProfInfoFragment
-    }
-  }
-  ${ProfFragment.shallowProfInfo}
-`;

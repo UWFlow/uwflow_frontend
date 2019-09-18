@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
 import {
@@ -21,7 +21,7 @@ import Background from '../../../img/background.png';
 import { isLoggedIn } from '../../../utils/Auth';
 import { PROFILE_PAGE_ROUTE } from '../../../Routes';
 
-const LandingPage = () => {
+const LandingPage = ({ history }) => {
   const [, forceUpdate] = useState(false);
 
   const handleAuthComplete = () => {
@@ -46,7 +46,7 @@ const LandingPage = () => {
           <BackgroundImage image={Background} />
           <AuthContent>
             {isLoggedIn()
-              ? <div>Welcome to UW Flow!<br /><Link to={PROFILE_PAGE_ROUTE}>Profile</Link></div>
+              ? history.push(PROFILE_PAGE_ROUTE)
               : <AuthForm onAuthComplete={handleAuthComplete} />}
           </AuthContent>
         </Column2>
@@ -55,4 +55,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default withRouter(LandingPage);

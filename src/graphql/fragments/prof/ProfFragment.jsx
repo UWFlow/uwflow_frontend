@@ -30,8 +30,8 @@ const ProfFragment = {
       }
     }
   `,
-  shallowProfInfo: gql`
-    fragment ShallowProfInfoFragment on prof {
+  profSearchInfo: gql`
+    fragment ProfSearchInfoFragment on prof {
       id
       name
     }

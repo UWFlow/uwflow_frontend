@@ -18,13 +18,6 @@ const CourseFragment = {
       prereqs
     }
   `,
-  shallowCourseInfo: gql`
-    fragment ShallowCourseInfoFragment on course {
-      id
-      code
-      name
-    }
-  `,
   courseSchedule: gql`
     fragment CourseSchedule on course {
       sections {
@@ -50,6 +43,13 @@ const CourseFragment = {
         }
       }
       id
+    }
+  `,
+  courseSearchInfo: gql`
+    fragment CourseSearchInfoFragment on course {
+      id
+      code
+      name
     }
   `,
 };

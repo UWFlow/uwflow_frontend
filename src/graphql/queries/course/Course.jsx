@@ -41,15 +41,6 @@ export const GET_COURSE = gql`
   ${CourseFragment.courseInfo}
 `;
 
-export const GET_ALL_COURSES_SHALLOW = gql`
-  query GET_ALL_COURSES_SHALLOW {
-    course {
-      ...ShallowCourseInfoFragment
-    }
-  }
-  ${CourseFragment.shallowCourseInfo}
-`;
-
 export const GET_COURSE_SCHEDULE = gql`
   query GET_COURSE_SCHEDULE($id: Int) {
     course(where: { id: { _eq: $id } }) {

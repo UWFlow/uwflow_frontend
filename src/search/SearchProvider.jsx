@@ -1,23 +1,24 @@
 
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { withApollo } from 'react-apollo';
 
 import { getSearchContext } from './SearchContext';
 
 const SearchProvider = ({
-  client,
+  client: apolloClient,
+  searchClient,
   children
-}) => {
+}) => {  
   useEffect(() => {
-    client.buildIndices();
-  }, [client]);
+    searchClient.buildIndices(apolloClient);
+  }, [searchClient, apolloClient]);
 
   const SearchContext = getSearchContext();
   return (
     <SearchContext.Consumer>
       {(context = {}) => {
-        if (context.client !== client) {
-          context = Object.assign({}, context, { client });
+        if (context.searchClient !== searchClient) {
+          context = Object.assign({}, context, { searchClient });
         }
 
         return (
@@ -30,8 +31,4 @@ const SearchProvider = ({
   );
 };
 
-SearchProvider.propTypes = {
-  children: PropTypes.any
-}
-
-export default SearchProvider;
+export default withApollo(SearchProvider);

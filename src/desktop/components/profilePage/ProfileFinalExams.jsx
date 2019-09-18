@@ -17,16 +17,16 @@ const examColumns = [
     Header: 'Course',
     accessor: 'code',
     maxWidth: 112,
-    Cell:  ({value}) => <CourseCode to={`/course/1`}>{value}</CourseCode>,
+    Cell:  ({cell}) => <CourseCode to={`/course/1`}>{cell.value}</CourseCode>,
   },
   {
     Header: 'Section(s)',
     accessor: 'sections',
     maxWidth: 112,
-    Cell:  ({value}) => (
+    Cell:  ({cell}) => (
     <>
-      {value.map((v, idx) =>
-        <span key={idx}>{v}{idx === value.length - 1 ? '' : ','}</span>
+      {cell.value.map((v, idx) =>
+        <span key={idx}>{v}{idx === v.length - 1 ? '' : ','}</span>
       )}
     </>),
   },

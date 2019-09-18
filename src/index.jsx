@@ -23,7 +23,7 @@ const StartApp = (store, history) => {
 
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <SearchProvider client={searchClient}>
+      <SearchProvider searchClient={searchClient}>
         <Provider store={store}>
           <Router history={history}>
             <ThemeProvider theme={Theme}>
