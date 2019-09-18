@@ -6,7 +6,6 @@ const CourseFragment = {
       id
       code
       name
-      description
       course_reviews_aggregate {
         aggregate {
           count(columns: text)
@@ -50,6 +49,11 @@ const CourseFragment = {
       id
       code
       name
+      profs_teaching {
+        prof {
+          name
+        }
+      }
     }
   `,
 };

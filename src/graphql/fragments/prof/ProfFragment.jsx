@@ -34,6 +34,11 @@ const ProfFragment = {
     fragment ProfSearchInfoFragment on prof {
       id
       name
+      prof_courses {
+        course {
+          code
+        }
+      }
     }
   `,
 };
