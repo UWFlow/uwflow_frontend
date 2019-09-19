@@ -54,7 +54,7 @@ const Navbar = ({ history, location, theme }) => {
   const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [, forceUpdate] = useState(false);
-  const { data } = useQuery(GET_USER);
+  const { data } = useQuery(GET_USER, { variables: { id: localStorage.getItem('user_id') } });
 
   const handleProfileButtonClick = () => {
     if (isLoggedIn()) {
@@ -114,7 +114,7 @@ const Navbar = ({ history, location, theme }) => {
                   onChange={(idx) => {
                     if (idx === 0) {
                       // log out
-                      localStorage.removeItem('token');
+                      localStorage.clear();
                       if (isOnProfilePageRoute(location)) {
                         history.push(LANDING_PAGE_ROUTE);
                       } else {

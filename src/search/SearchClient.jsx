@@ -8,7 +8,6 @@ const commonIndexConfig = {
   threshold: 0,
   resolution: 9,
   depth: 3,
-  cache: true,
 }
 
 const initCourseIndex = () => {
@@ -48,19 +47,39 @@ const initCourseCodeIndex = () => {
   });
 }
 
-let courseIndex = initCourseIndex();
-let profIndex = initProfIndex();
-let courseCodeIndex = initCourseCodeIndex();
+let courseIndex = null;
+let profIndex = null;
+let courseCodeIndex = null;
 
 class SearchClient {
-  autocompleteSearch = () => {}
+  search = (query, suggest = true) => {
+    const courseResults = courseIndex && courseIndex.search(query, {
+      field: ["code", "name", "profs_teaching"],
+      bool: "or",
+      suggest
+    });
+    const profResults = profIndex && profIndex.search(query, {
+      field: ["name", "prof_courses"],
+      bool: "or",
+      suggest
+    });
+    const courseCodeResults = courseCodeIndex && courseCodeIndex.search(query, {
+      field: ["code"],
+      suggest
+    });
 
-  executeSearch = () => {}
+    const results = {
+      courseResults,
+      profResults,
+      courseCodeResults,
+    }
+
+    return results;
+  }
 
   buildIndices = async (apolloClient) => {
     console.time('fetch');
     const { data } = await apolloClient.query({ query: GET_SEARCH_INDEX_DATA});
-    console.log(data);
     console.timeEnd('fetch');
 
     console.time('build');
@@ -98,8 +117,6 @@ class SearchClient {
     profIndex = newProfIndex;
     courseCodeIndex = newCourseCodeIndex;
     console.timeEnd('build');
-
-    console.log(courseCodeIndex.export());
   }
 }
 

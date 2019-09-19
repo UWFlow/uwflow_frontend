@@ -31,7 +31,9 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const setJWT = (response) => {
-    localStorage.setItem('token', response);
+    console.log(response);
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('user_id', response.user_id);
     onAuthComplete();
   }
 
