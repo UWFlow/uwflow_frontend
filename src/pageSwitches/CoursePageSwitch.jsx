@@ -24,9 +24,19 @@ export const CoursePageSwitch = ({ isDesktopPage, match }) => {
     variables: { id: courseID },
   });
   return isDesktopPage ? (
-    <DesktopCoursePage loading={loading} error={error} data={data} />
+    <DesktopCoursePage
+      loading={loading}
+      error={error}
+      data={data}
+      courseID={courseID}
+    />
   ) : (
-    <MobileCoursePage loading={loading} error={error} data={data} />
+    <MobileCoursePage
+      loading={loading}
+      error={error}
+      data={data}
+      courseID={courseID}
+    />
   );
 };
 

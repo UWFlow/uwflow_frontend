@@ -24,9 +24,19 @@ export const ProfPageSwitch = ({ isDesktopPage, match }) => {
     variables: { id: profID },
   });
   return isDesktopPage ? (
-    <DesktopProfPage loading={loading} error={error} data={data} />
+    <DesktopProfPage
+      loading={loading}
+      error={error}
+      data={data}
+      profID={profID}
+    />
   ) : (
-    <MobileProfPage loading={loading} error={error} data={data} />
+    <MobileProfPage
+      loading={loading}
+      error={error}
+      data={data}
+      profID={profID}
+    />
   );
 };
 
