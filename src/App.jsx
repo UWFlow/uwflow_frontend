@@ -23,9 +23,9 @@ import {
   LoadableTreePage,
   LoadableAboutPage,
   LoadableTestPage,
-  LoadableNotFoundPage
+  LoadableNotFoundPage,
 } from './LoadableComponents';
-import ModalRoot from './desktop/components/common/modal/ModalRoot';
+import ModalRoot from './basicComponents/modal/ModalRoot';
 import Navbar from './desktop/components/common/Navbar';
 
 const App = () => {

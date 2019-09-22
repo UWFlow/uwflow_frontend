@@ -8,22 +8,20 @@ import {
   ForgotPasswordText,
   TextboxWrapper,
   Form,
-  Error
+  Error,
 } from './styles/AuthForm';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
-import Button from '../common/Button';
+import Button from '../../../basicComponents/Button';
 
 import { validateEmail } from '../../../utils/Email';
-import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../../../constants/Api';
+import {
+  BACKEND_ENDPOINT,
+  EMAIL_AUTH_LOGIN_ENDPOINT,
+} from '../../../constants/Api';
 
-const LoginContent = ({
-  handleAuth,
-  formState,
-  setEmail,
-  setPassword
-}) => {
+const LoginContent = ({ handleAuth, formState, setEmail, setPassword }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
 
@@ -31,20 +29,20 @@ const LoginContent = ({
     const emailValid = validateEmail(formState.email);
     setEmailError(!emailValid);
     return emailValid;
-  }
+  };
 
-  const handleLogin = async (event) => {
+  const handleLogin = async event => {
     handleAuth(
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
       {
         email: formState.email,
-        password: formState.password
+        password: formState.password,
       },
       setErrorMessage,
-      validateFields
+      validateFields,
     );
-  }
+  };
 
   return (
     <>
@@ -57,7 +55,7 @@ const LoginContent = ({
             placeholder="Email address"
             error={emailError}
             text={formState.email}
-            setText={(value) => {
+            setText={value => {
               setEmail(value);
               setEmailError(false);
             }}
@@ -80,13 +78,13 @@ const LoginContent = ({
       </Form>
     </>
   );
-}
+};
 
 LoginContent.propTypes = {
   handleAuth: PropTypes.func.isRequired,
   formState: PropTypes.object.isRequired,
   setEmail: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
-}
+};
 
 export default LoginContent;

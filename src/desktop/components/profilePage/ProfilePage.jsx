@@ -9,7 +9,7 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
-import ModalHOC from '../common/modal/ModalHOC';
+import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
 
 /* Styled Components */

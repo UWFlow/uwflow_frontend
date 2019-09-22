@@ -7,8 +7,8 @@ import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
-import Button from '../common/Button';
-import ModalHOC from '../common/modal/ModalHOC';
+import Button from '../../../basicComponents/Button';
+import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 
 /* Styled Components */

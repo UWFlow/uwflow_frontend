@@ -8,15 +8,18 @@ import {
   Spacer,
   TextboxWrapper,
   Form,
-  Error
+  Error,
 } from './styles/AuthForm';
 
 /* Child Components */
 import Textbox from '../common/Textbox';
-import Button from '../common/Button';
+import Button from '../../../basicComponents/Button';
 
 import { validateEmail } from '../../../utils/Email';
-import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from '../../../constants/Api';
+import {
+  BACKEND_ENDPOINT,
+  EMAIL_AUTH_REGISTER_ENDPOINT,
+} from '../../../constants/Api';
 
 const MIN_PASSWORD_LENGTH = 6;
 
@@ -27,7 +30,7 @@ const SignupContent = ({
   setLastName,
   setEmail,
   setPassword,
-  setConfirmPassword
+  setConfirmPassword,
 }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
@@ -36,9 +39,9 @@ const SignupContent = ({
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const transformName = (name) => {
+  const transformName = name => {
     return name[0].toUpperCase() + name.slice(1);
-  }
+  };
 
   const validateFields = () => {
     setEmailError(!validateEmail(formState.email));
@@ -47,29 +50,31 @@ const SignupContent = ({
     setPasswordError(formState.password.length < MIN_PASSWORD_LENGTH);
     setConfirmPasswordError(formState.password !== formState.confirmPassword);
 
-    return !(!validateEmail(formState.email)
-            || formState.firstName === ''
-            || formState.lastName === ''
-            || formState.password.length < MIN_PASSWORD_LENGTH
-            || formState.password !== formState.confirmPassword);
-  }
+    return !(
+      !validateEmail(formState.email) ||
+      formState.firstName === '' ||
+      formState.lastName === '' ||
+      formState.password.length < MIN_PASSWORD_LENGTH ||
+      formState.password !== formState.confirmPassword
+    );
+  };
 
-  const handleSignUp = async (event) => {
+  const handleSignUp = async event => {
     handleAuth(
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
       {
         name: [
           transformName(formState.firstName),
-          transformName(formState.lastName)
+          transformName(formState.lastName),
         ].join(' '),
         email: formState.email,
-        password: formState.password
+        password: formState.password,
       },
       setErrorMessage,
-      validateFields
+      validateFields,
     );
-  }
+  };
 
   return (
     <>
@@ -79,11 +84,11 @@ const SignupContent = ({
         <NamesSection>
           <TextboxWrapper>
             <Textbox
-              options={{ width: '100%' , name: 'firstname' }}
+              options={{ width: '100%', name: 'firstname' }}
               placeholder="First Name"
               error={firstNameError}
               text={formState.firstName}
-              setText={(value) => {
+              setText={value => {
                 setFirstName(value);
                 setFirstNameError(false);
               }}
@@ -96,7 +101,7 @@ const SignupContent = ({
               placeholder="Last Name"
               error={lastNameError}
               text={formState.lastName}
-              setText={(value) => {
+              setText={value => {
                 setLastName(value);
                 setLastNameError(false);
               }}
@@ -109,7 +114,7 @@ const SignupContent = ({
             placeholder="Email address"
             error={emailError}
             text={formState.email}
-            setText={(value) => {
+            setText={value => {
               setEmail(value);
               setEmailError(false);
             }}
@@ -121,9 +126,12 @@ const SignupContent = ({
             placeholder="Password"
             error={passwordError}
             text={formState.password}
-            setText={(value) => {
+            setText={value => {
               setPassword(value);
-              setPasswordError(passwordError && formState.password.length < MIN_PASSWORD_LENGTH);
+              setPasswordError(
+                passwordError &&
+                  formState.password.length < MIN_PASSWORD_LENGTH,
+              );
             }}
           />
         </TextboxWrapper>
@@ -133,9 +141,11 @@ const SignupContent = ({
             placeholder="Confirm Password"
             error={confirmPasswordError}
             text={formState.confirmPassword}
-            setText={(value) => {
+            setText={value => {
               setConfirmPassword(value);
-              setConfirmPasswordError(confirmPasswordError && value !== formState.password);
+              setConfirmPasswordError(
+                confirmPasswordError && value !== formState.password,
+              );
             }}
           />
         </TextboxWrapper>
@@ -145,7 +155,7 @@ const SignupContent = ({
       </Form>
     </>
   );
-}
+};
 
 SignupContent.propTypes = {
   handleAuth: PropTypes.func.isRequired,
@@ -154,7 +164,7 @@ SignupContent.propTypes = {
   setLastName: PropTypes.func.isRequired,
   setEmail: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
-  setConfirmPassword: PropTypes.func.isRequired
-}
+  setConfirmPassword: PropTypes.func.isRequired,
+};
 
 export default SignupContent;
