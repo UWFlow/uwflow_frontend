@@ -21,14 +21,13 @@ export const WideColumn = `
   display: flex;
   flex-direction: column;
   margin-right: 32px;
+  width: 70%;
 `;
 
 export const ThinColumn = `
   display: flex;
   flex-direction: column;
   width: 30%;
-  min-width: 338px;
-  max-width: 338px;
 `;
 
 /* Fonts */
@@ -83,7 +82,7 @@ export const TextShadow = `
   0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
 
-export const Card = (padding='32px', margin='0') => `
+export const Card = (padding = '32px', margin = '0') => `
   display: flex;
   flex-direction: column;
   border-radius: 4px;

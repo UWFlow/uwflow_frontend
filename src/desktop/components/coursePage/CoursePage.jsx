@@ -79,7 +79,7 @@ const CoursePage = ({ match }) => {
     <CoursePageWrapper>
       {loading ? (
         <div>Loading ...</div>
-      ) : error || !data || data.course.length === 0 ? (
+      ) : error || !data || !data.course || data.course.length === 0 ? (
         <NotFoundPage text="Sorry, we couldn't find that course!" />
       ) : (
         <CoursePageContent
