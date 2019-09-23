@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import { withTheme } from 'styled-components';
+import { makePOSTRequest } from '../../../utils/Api';
 
 /* Styled Components */
 import {
@@ -25,10 +26,30 @@ import {
   SkipStepWrapper,
 } from './styles/DataUploadModals';
 
+/* Constants */
+import { SCHEDULE_PARSE_ENDPOINT } from '../../../constants/Api';
+import {
+  UPLOAD_PENDING,
+  AWAITING_UPLOAD,
+  UPLOAD_FAILED,
+  UPLOAD_SUCCESSFUL,
+} from '../../../constants/DataUploadStates';
+
 const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
-  const handleSchedulePaste = event => {
+  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+
+  const handleSchedulePaste = async event => {
     /* TODO: handle schedule paste */
     console.log(event.currentTarget.value);
+    setUploadState(UPLOAD_PENDING);
+    const [response, status] = await makePOSTRequest(SCHEDULE_PARSE_ENDPOINT, {
+      text: event.currentTarget.value,
+    });
+    if (status == 200) {
+      setUploadState(UPLOAD_SUCCESSFUL);
+    } else {
+      setUploadState(UPLOAD_FAILED);
+    }
   };
 
   return (

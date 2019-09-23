@@ -18,7 +18,7 @@ const Textbox = ({
     handleKeyDown(event, text);
   };
 
-  const onChange = (event) => {
+  const onChange = event => {
     setText(event.currentTarget.value);
   };
 
