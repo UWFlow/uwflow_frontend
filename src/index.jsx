@@ -19,7 +19,7 @@ import createHistory, { syncReduxHistory } from './utils/History';
 
 const StartApp = (store, history) => {
   syncReduxHistory(store, history);
-  const searchClient = new SearchClient();
+  const searchClient = new SearchClient(client);
 
   ReactDOM.render(
     <ApolloProvider client={client}>

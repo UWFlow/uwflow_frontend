@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Search } from 'react-feather';
-import { useQuery } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { compose } from 'redux';
 import { withTheme } from 'styled-components';
 
@@ -54,7 +54,6 @@ const Navbar = ({ history, location, theme }) => {
   const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [, forceUpdate] = useState(false);
-  const { data } = useQuery(GET_USER, { variables: { id: localStorage.getItem('user_id') } });
 
   const handleProfileButtonClick = () => {
     if (isLoggedIn()) {
@@ -69,8 +68,6 @@ const Navbar = ({ history, location, theme }) => {
       history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
     }
   };
-
-  const profilePicture = renderProfilePicture(data);
 
   if (isOnLandingPageRoute(location)) {
     return (
@@ -102,10 +99,14 @@ const Navbar = ({ history, location, theme }) => {
           <ProfileButtonWrapper>
             {isLoggedIn() ? (
               <>
-                <ProfileText onClick={handleProfileButtonClick}>
-                  {profilePicture}
-                  View profile
-                </ProfileText>
+                <Query query={GET_USER} variables={ {id: Number(localStorage.getItem('user_id'))} }>
+                  {({ data }) => (
+                    <ProfileText onClick={handleProfileButtonClick}>
+                      {renderProfilePicture(data)}
+                      View profile
+                    </ProfileText>
+                  )}
+                </Query>
                 <DropdownList
                   selectedIndex={-1}
                   color={theme.dark1}

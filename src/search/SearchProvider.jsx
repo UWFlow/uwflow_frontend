@@ -1,26 +1,12 @@
 
-import React, { useEffect } from 'react';
-import { withApollo } from 'react-apollo';
-import searchWorker from './searchWorker';
-import WebWorker from './workerSetup';
+import React from 'react';
 
 import { getSearchContext } from './SearchContext';
 
 const SearchProvider = ({
-  client: apolloClient,
   searchClient,
   children
 }) => {
-  useEffect(() => {
-    // build index using background worker to not block the main thread
-    const worker = new WebWorker(searchWorker);
-    worker.addEventListener('message', async _ => {
-      await searchClient.buildIndices(apolloClient);
-    });
-
-    worker.postMessage('');  
-  }, [searchClient, apolloClient]);
-
   const SearchContext = getSearchContext();
   return (
     <SearchContext.Consumer>
@@ -39,4 +25,4 @@ const SearchProvider = ({
   );
 };
 
-export default withApollo(SearchProvider);
+export default SearchProvider;
