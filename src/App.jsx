@@ -11,6 +11,7 @@ import {
   TREE_PAGE_ROUTES,
   ABOUT_PAGE_ROUTE,
   TEST_PAGE_ROUTE,
+  PRIVACY_PAGE_ROUTE,
 } from './Routes';
 
 /* Child Components */
@@ -24,6 +25,7 @@ import {
   LoadableAboutPage,
   LoadableTestPage,
   LoadableNotFoundPage,
+  LoadablePrivacyPage,
 } from './LoadableComponents';
 import ModalRoot from './basicComponents/modal/ModalRoot';
 import Navbar from './desktop/components/common/Navbar';
@@ -70,6 +72,11 @@ const App = () => {
           exact
           path={ABOUT_PAGE_ROUTE}
           component={() => <LoadableAboutPage />}
+        />
+        <Route
+          exact
+          path={PRIVACY_PAGE_ROUTE}
+          component={() => <LoadablePrivacyPage />}
         />
         <Route
           exact
