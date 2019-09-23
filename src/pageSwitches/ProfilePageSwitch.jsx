@@ -26,7 +26,7 @@ export const ProfilePageSwitch = ({ isDesktopPage, history }) => {
   if (!isLoggedIn()) {
     history.push(LANDING_PAGE_ROUTE);
   }
-  const { loading, error, data } = useQuery(GET_USER);
+  const { loading, error, data } = useQuery(GET_USER, { variables: { id: localStorage.getItem('user_id') } });
 
   return isDesktopPage ? (
     <DesktopProfilePage loading={loading} error={error} data={data} />

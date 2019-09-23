@@ -136,24 +136,17 @@ const ProfilePageContent = ({ user }) => {
   );
 }
 
-const ProfilePage = ({ history }) => {
-  if (!isLoggedIn()) {
-    history.push(LANDING_PAGE_ROUTE);
-  }
-  const { loading, error, data } = useQuery(GET_USER, { variables: { id: localStorage.getItem('user_id') } });
-
-  return (
-    <ProfilePageWrapper>
-      {loading
-        ? (<p>Loading ...</p>)
-        : (error || !data)
-          ? <div>Error</div>
-          : (
-            <ProfilePageContent user={{...data.user[0]}} />
-          )
-      }
-    </ProfilePageWrapper>
-  );
-};
+const ProfilePage = ({ data }) => (
+  <ProfilePageWrapper>
+    {loading
+      ? (<p>Loading ...</p>)
+      : (error || !data)
+        ? <div>Error</div>
+        : (
+          <ProfilePageContent user={{...data.user[0]}} />
+        )
+    }
+  </ProfilePageWrapper>
+);
 
 export default ProfilePage;
