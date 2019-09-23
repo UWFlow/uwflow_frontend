@@ -9,16 +9,16 @@ import {
   Footer,
   CancelButtonText,
   FooterQuestionWrapper,
-  SliderOptionText
+  SliderOptionText,
 } from './styles/CourseReviewCourseBox';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
 import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
-import RadioButton from '../common/RadioButton';
+import RadioButton from '../../../basicComponents/RadioButton';
 import DropdownList from '../common/dropdownList/DropdownList';
-import Button from '../common/Button';
+import Button from '../../../basicComponents/Button';
 
 const easyOptions = [
   'Very difficult',

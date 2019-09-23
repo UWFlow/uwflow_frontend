@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 /* Child Components */
 import Textbox from '../common/Textbox';
 import TabContainer from '../common/TabContainer';
-import Button from '../common/Button';
-import ProgressBar from '../common/ProgressBar';
+import Button from '../../../basicComponents/Button';
+import ProgressBar from '../../../basicComponents/ProgressBar';
 import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
 import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 

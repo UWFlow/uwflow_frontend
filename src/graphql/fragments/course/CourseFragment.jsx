@@ -15,7 +15,6 @@ const CourseFragment = {
       antireqs
       coreqs
       textbooks
-      sections
       prereqs
     }
   `,
@@ -28,7 +27,29 @@ const CourseFragment = {
   `,
   courseSchedule: gql`
     fragment CourseSchedule on course {
-      sections
+      sections {
+        enrollment_capacity
+        enrollment_total
+        class_number
+        campus
+        section
+        term
+        meetings {
+          days
+          start_date
+          end_date
+          start_seconds
+          end_seconds
+          location
+          prof {
+            id
+            name
+          }
+          is_closed
+          is_cancelled
+        }
+      }
+      id
     }
   `,
 };

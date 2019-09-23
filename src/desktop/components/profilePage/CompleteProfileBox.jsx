@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import CheckCircle from '../../components/common/CheckCircle';
+import CheckCircle from '../../../basicComponents/CheckCircle';
 
 /* Styled Components */
 import {
   CompleteProfileBoxWrapper,
   CompleteProfileHeading,
   CheckedItem,
-  CheckedText
+  CheckedText,
 } from './styles/CompleteProfileBox';
 
 const CompleteProfileBox = ({
@@ -42,7 +42,7 @@ const CompleteProfileBox = ({
         </CheckedText>
       </CheckedItem>
       <CheckedItem>
-        <CheckCircle color={theme.primary}  checked={hasProfsReviewed} />
+        <CheckCircle color={theme.primary} checked={hasProfsReviewed} />
         <CheckedText checked={hasProfsReviewed}>
           Add a rating for a professor
         </CheckedText>
@@ -56,7 +56,7 @@ CompleteProfileBox.propTypes = {
   hasCoursesReviewed: PropTypes.bool.isRequired,
   hasProfsReviewed: PropTypes.bool.isRequired,
   hasCourseInfo: PropTypes.bool.isRequired,
-  hasScheduleUploaded: PropTypes.bool.isRequired
-}
+  hasScheduleUploaded: PropTypes.bool.isRequired,
+};
 
 export default withTheme(CompleteProfileBox);

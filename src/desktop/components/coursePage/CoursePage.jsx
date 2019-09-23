@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -9,8 +7,8 @@ import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
-import Button from '../common/Button';
-import ModalHOC from '../common/modal/ModalHOC';
+import Button from '../../../basicComponents/Button';
+import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 
 /* Styled Components */
@@ -22,9 +20,6 @@ import {
   CourseReviewQuestionBox,
   CourseReviewQuestionText,
 } from './styles/CoursePage';
-
-/* GraphQL Queries */
-import { GET_COURSE } from '../../../graphql/queries/course/Course';
 
 const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
@@ -69,35 +64,28 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
   );
 };
 
-const CoursePage = ({ match }) => {
-  const courseID = match.params.courseID;
-  const { loading, error, data } = useQuery(GET_COURSE, {
-    variables: { id: courseID },
-  });
-
-  return (
-    <CoursePageWrapper>
-      {loading ? (
-        <div>Loading ...</div>
-      ) : error || !data || data.course.length === 0 ? (
-        <NotFoundPage text="Sorry, we couldn't find that course!" />
-      ) : (
-        <CoursePageContent
-          course={data.course[0]}
-          easy={data.aggregate_course_easy_buckets_aggregate}
-          liked={data.aggregate_course_liked_buckets_aggregate}
-          useful={data.aggregate_course_useful_buckets_aggregate}
-          courseID={courseID}
-        />
-      )}
-    </CoursePageWrapper>
-  );
-};
+const CoursePage = ({ loading, error, data, courseID }) => (
+  <CoursePageWrapper>
+    {loading ? (
+      <div>Loading ...</div>
+    ) : error || !data || !data.course || data.course.length === 0 ? (
+      <NotFoundPage text="Sorry, we couldn't find that course!" />
+    ) : (
+      <CoursePageContent
+        course={data.course[0]}
+        easy={data.aggregate_course_easy_buckets_aggregate}
+        liked={data.aggregate_course_liked_buckets_aggregate}
+        useful={data.aggregate_course_useful_buckets_aggregate}
+        courseID={courseID}
+      />
+    )}
+  </CoursePageWrapper>
+);
 
 CoursePage.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({ courseID: PropTypes.string }).isRequired,
-  }).isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  courseID: PropTypes.string,
 };
 
-export default withRouter(CoursePage);
+export default CoursePage;

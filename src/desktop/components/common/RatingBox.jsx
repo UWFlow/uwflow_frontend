@@ -22,7 +22,7 @@ import {
 } from './styles/RatingBox';
 
 /* Child Components */
-import ProgressBar from './ProgressBar';
+import ProgressBar from '../../../basicComponents/ProgressBar';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
@@ -33,7 +33,10 @@ export const RATING_BOX_WIDTH = 512;
 const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
   return (
-    <RatingBoxWrapper ratingBoxHeight={RATING_BOX_HEIGHT} ratingBoxWidth={RATING_BOX_WIDTH}>
+    <RatingBoxWrapper
+      ratingBoxHeight={RATING_BOX_HEIGHT}
+      ratingBoxWidth={RATING_BOX_WIDTH}
+    >
       <LikesColumn>
         <PieChart
           width={RATING_BOX_HEIGHT - 32}

@@ -3,22 +3,25 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import Button from '../common/Button';
+import Button from '../../../basicComponents/Button';
 
 /* Styled Components */
 import {
   ProfileCalendarWrapper,
   ProfileCalendarHeading,
   ProfileCalendarText,
-  ProfileCalendarImg
+  ProfileCalendarImg,
 } from './styles/ProfileCalendar';
 
 const ProfileCalendar = ({ theme }) => {
   return (
     <ProfileCalendarWrapper>
-      <ProfileCalendarHeading>Import your class schedule</ProfileCalendarHeading>
+      <ProfileCalendarHeading>
+        Import your class schedule
+      </ProfileCalendarHeading>
       <ProfileCalendarText>
-        To print, share, or export it to Google Calendar, Calendar.app, etc... It looks like:
+        To print, share, or export it to Google Calendar, Calendar.app, etc...
+        It looks like:
       </ProfileCalendarText>
       <ProfileCalendarImg>
         <Button
@@ -36,6 +39,6 @@ const ProfileCalendar = ({ theme }) => {
 
 ProfileCalendar.propTypes = {
   theme: PropTypes.object.isRequired,
-}
+};
 
 export default withTheme(ProfileCalendar);

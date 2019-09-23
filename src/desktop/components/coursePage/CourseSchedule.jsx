@@ -26,9 +26,13 @@ const CourseSchedule = ({ courseID }) => {
     variables: { id: courseID },
   });
 
-  const sections = data.course[0].sections;
+  const sections = data.course
+    ? data.course[0]
+      ? data.course[0].sections
+      : null
+    : null;
 
-  if (!sections) {
+  if (!sections || sections.length == 0) {
     return null;
   }
   const termsOffered = sections.reduce((allTerms, curr) => {

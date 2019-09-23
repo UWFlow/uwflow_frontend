@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Body, BoxShadow } from '../../../../../constants/Mixins';
+import { Body, BoxShadow } from '../../../constants/Mixins';
 
 export const SquareRatingWrapper = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export const UnitCircle = styled.div`
       : 'white'};
   ${({ border, theme }) => (border ? `border: 2px solid ${theme.light4}` : '')};
   margin: 0 1px;
-  ${({ filled }) => filled ? '' : BoxShadow}
+  ${({ filled }) => (filled ? '' : BoxShadow)}
 `;
 
 export const YNText = styled.div`

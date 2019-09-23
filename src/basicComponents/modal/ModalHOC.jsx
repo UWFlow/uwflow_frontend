@@ -12,10 +12,10 @@ import {
 
 /* Child Components */
 import ModalPortal from './ModalPortal';
-import FadeInOutAnimation from '../../../../utils/animation/FadeInOutAnimation';
+import FadeInOutAnimation from '../../utils/animation/FadeInOutAnimation';
 
 /* Getters */
-import { getHeight } from '../../../../data/reducers/BrowserReducer';
+import { getHeight } from '../../data/reducers/BrowserReducer';
 
 const mapStateToProps = state => ({
   windowHeight: getHeight(state),

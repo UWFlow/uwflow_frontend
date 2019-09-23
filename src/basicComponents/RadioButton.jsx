@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import CheckCircle from '../common/CheckCircle';
+import CheckCircle from './CheckCircle';
 
 /* Styled Components */
-import  {
+import {
   RadioButtonWrapper,
   RadioButtonOption,
-  RadioButtonText
-} from './styles/RadioButton';
+  RadioButtonText,
+} from '../desktop/components/common/styles/RadioButton';
 
 const RadioButton = ({
   color,
@@ -17,7 +17,7 @@ const RadioButton = ({
   options,
   margin = '0 0 40px 0',
   toggle = false,
-  onClick = () => {}
+  onClick = () => {},
 }) => {
   return (
     <RadioButtonWrapper margin={margin}>
@@ -29,9 +29,7 @@ const RadioButton = ({
             checked={(toggle && selected) || (!toggle && idx === selected)}
             onClick={() => onClick(idx)}
           />
-          <RadioButtonText>
-            {opt}
-          </RadioButtonText>
+          <RadioButtonText>{opt}</RadioButtonText>
         </RadioButtonOption>
       ))}
     </RadioButtonWrapper>

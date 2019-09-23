@@ -1,5 +1,5 @@
 import React from 'react';
-import ModalHOC from '../common/modal/ModalHOC';
+import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */

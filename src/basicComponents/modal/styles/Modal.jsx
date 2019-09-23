@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ModalZIndex } from '../../../../../constants/Mixins';
+import { ModalZIndex } from '../../../constants/Mixins';
 
 export const ModalBackdrop = styled.div`
   position: fixed;

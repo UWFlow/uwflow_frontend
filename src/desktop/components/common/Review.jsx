@@ -18,7 +18,7 @@ import {
 } from './styles/Review';
 
 /* Child Components */
-import SquareRatings from './squareRatings/SquareRatings';
+import SquareRatings from '../../../basicComponents/squareRatings/SquareRatings';
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {

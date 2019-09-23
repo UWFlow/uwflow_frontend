@@ -5,7 +5,7 @@ import { withTheme } from 'styled-components';
 
 /* Child Components */
 import TabContainer from '../common/TabContainer';
-import Button from '../common/Button';
+import Button from '../../../basicComponents/Button';
 import LikeCourseToggle from './LikeCourseToggle';
 
 /* Styled Components */
@@ -19,10 +19,10 @@ import {
   LikedThisCourseText,
   AddReviewIcon,
   ProfileCourseReviewButtonText,
-  ReviewButtonContents
+  ReviewButtonContents,
 } from './styles/ProfileCourses';
 
-const groupByTerm = (courses) => {
+const groupByTerm = courses => {
   return courses.reduce((groups, course) => {
     const termName = course.termName;
     groups[termName] = groups[termName] || [];
@@ -40,11 +40,17 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
         return courseGroups[termName].map((course, idx) => (
           <ProfileCoursesCourse key={idx}>
             <ProfileCourseText>
-              <ProfileCourseCode to="/course/1">{course.code}</ProfileCourseCode>
+              <ProfileCourseCode to="/course/1">
+                {course.code}
+              </ProfileCourseCode>
               <ProfileCourseName>{course.name}</ProfileCourseName>
             </ProfileCourseText>
             <ProfileCourseLiked>{course.liked}%</ProfileCourseLiked>
-            <LikedThisCourseText>liked this<br />course</LikedThisCourseText>
+            <LikedThisCourseText>
+              liked this
+              <br />
+              course
+            </LikedThisCourseText>
             <LikeCourseToggle liked={true} />
             <Button
               margin="0 0 0 16px"
@@ -57,39 +63,37 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
             >
               <ReviewButtonContents>
                 <AddReviewIcon>
-                  <PlusSquare
-                    color={theme.dark2}
-                    size={24}
-                    strokeWidth={2}
-                  />
+                  <PlusSquare color={theme.dark2} size={24} strokeWidth={2} />
                 </AddReviewIcon>
                 <ProfileCourseReviewButtonText>
                   Add review
                 </ProfileCourseReviewButtonText>
               </ReviewButtonContents>
             </Button>
-          </ProfileCoursesCourse> 
+          </ProfileCoursesCourse>
         ));
-      }
-    }
-  })
+      },
+    };
+  });
 
   return (
     <ProfileCoursesWrapper>
-      <TabContainer tabList={tabList} contentPadding='0' />
+      <TabContainer tabList={tabList} contentPadding="0" />
     </ProfileCoursesWrapper>
   );
 };
 
 ProfileCourses.propTypes = {
   theme: PropTypes.object.isRequired,
-  courses: PropTypes.arrayOf(PropTypes.shape({
-    term: PropTypes.string,
-    termName: PropTypes.string,
-    code: PropTypes.string,
-    name: PropTypes.string,
-    liked: PropTypes.number
-  })).isRequired,
+  courses: PropTypes.arrayOf(
+    PropTypes.shape({
+      term: PropTypes.string,
+      termName: PropTypes.string,
+      code: PropTypes.string,
+      name: PropTypes.string,
+      liked: PropTypes.number,
+    }),
+  ).isRequired,
   setReviewCourse: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
 };

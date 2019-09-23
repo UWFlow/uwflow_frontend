@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
-import RadioButton from '../common/RadioButton';
+import RadioButton from '../../../basicComponents/RadioButton';
 import MultiSelectButton from '../common/MultiSelectButton';
 import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
 import DropdownList from '../common/dropdownList/DropdownList';
@@ -19,13 +19,19 @@ import {
   NumRatingsText,
   BoldText,
   ResetButton,
-  HeaderButtonWrapper
+  HeaderButtonWrapper,
 } from './styles/SearchFilter';
 
-let courseNumberOptions = [1, 2, 3, 4].map(
-  (num) => <span><BoldText>{num}</BoldText>XX</span>
+let courseNumberOptions = [1, 2, 3, 4].map(num => (
+  <span>
+    <BoldText>{num}</BoldText>XX
+  </span>
+));
+courseNumberOptions.push(
+  <span>
+    <BoldText>5</BoldText>XX+
+  </span>,
 );
-courseNumberOptions.push(<span><BoldText>5</BoldText>XX+</span>)
 
 const SearchFilter = ({
   terms,
@@ -39,14 +45,15 @@ const SearchFilter = ({
   resetFilters,
   ratingFilters,
   courseSearch,
-  theme
+  theme,
 }) => {
-
   const ratingSlider = (
     <>
       <NumRatingsWrapper>
         <SearchFilterText>Min # of ratings</SearchFilterText>
-        <NumRatingsText>&ge; {ratingFilters[filterState.numRatings]} ratings</NumRatingsText>
+        <NumRatingsText>
+          &ge; {ratingFilters[filterState.numRatings]} ratings
+        </NumRatingsText>
       </NumRatingsWrapper>
       <DiscreteSlider
         numNodes={ratingFilters.length}
@@ -71,18 +78,16 @@ const SearchFilter = ({
             <MultiSelectButton
               options={courseNumberOptions}
               selected={filterState.courseCodes}
-              onClick={(idx) => {
+              onClick={idx => {
                 setCourseCodes([
                   ...filterState.courseCodes.slice(0, idx),
                   !filterState.courseCodes[idx],
-                  ...filterState.courseCodes.slice(idx + 1)
-                ])
+                  ...filterState.courseCodes.slice(idx + 1),
+                ]);
               }}
             />
           </SearchFilterSection>
-          <SearchFilterSection>
-            {ratingSlider}
-          </SearchFilterSection>
+          <SearchFilterSection>{ratingSlider}</SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>Offered in</SearchFilterText>
             <RadioButtonWrapper>
@@ -107,9 +112,7 @@ const SearchFilter = ({
         </>
       ) : (
         <>
-          <SearchFilterSection>
-            {ratingSlider}
-          </SearchFilterSection>
+          <SearchFilterSection>{ratingSlider}</SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>
               Show professors that
@@ -132,10 +135,12 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
-  terms: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    text: PropTypes.string
-  })).isRequired,
+  terms: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      text: PropTypes.string,
+    }),
+  ).isRequired,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
   filterState: PropTypes.shape({
     courseCodes: PropTypes.arrayOf(PropTypes.bool),
@@ -152,7 +157,7 @@ SearchFilter.propTypes = {
   resetFilters: PropTypes.func.isRequired,
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
   courseSearch: PropTypes.bool.isRequired,
-  theme: PropTypes.object.isRequired
-}
+  theme: PropTypes.object.isRequired,
+};
 
 export default withTheme(SearchFilter);

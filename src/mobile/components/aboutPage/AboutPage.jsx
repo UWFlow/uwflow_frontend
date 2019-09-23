@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AboutPage = () => {
-  return <>Desktop About Page</>;
+  return <div>Mobile About Page</div>;
 };
 
 export default AboutPage;

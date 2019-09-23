@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import ModalHOC from '../common/modal/ModalHOC';
+import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import AuthForm from './AuthForm';
 
 const AuthModal = ({ isModalOpen, onCloseModal }) => (
@@ -13,7 +13,7 @@ const AuthModal = ({ isModalOpen, onCloseModal }) => (
 
 AuthModal.propTypes = {
   isModalOpen: PropTypes.bool.isRequired,
-  onCloseModal: PropTypes.func.isRequired
-}
+  onCloseModal: PropTypes.func.isRequired,
+};
 
 export default AuthModal;
