@@ -1,4 +1,20 @@
-self.postMessage({ foo: 'foo' })
+import SearchClient from './SearchClient.js';
 
-// Respond to message from parent thread
-self.addEventListener('message', (event) => console.log(event))
+const client = new SearchClient();
+
+self.onmessage = async event => {
+    const { type } = event.data;
+    switch(type) {
+        case 'search':
+            const { query } = event.data;
+            const results = client.search(query);
+            postMessage({ type: 'search', results });
+            break;
+        case 'build':
+            const indices = await client.buildIndices(event.data.indices);
+            postMessage({ type: 'indices', indices })
+            break;
+        default:
+            break;
+    }
+};

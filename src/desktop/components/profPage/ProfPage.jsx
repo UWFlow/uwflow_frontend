@@ -49,7 +49,7 @@ const ProfPage = ({ loading, error, data, profID }) => (
 
 ProfPage.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.object,
   courseID: PropTypes.string,
 };
 

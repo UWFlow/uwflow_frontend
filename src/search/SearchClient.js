@@ -2,10 +2,6 @@ import FlexSearch from 'flexsearch';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
 
-const COURSE_INDEX_NAME = 'course_index';
-const PROF_INDEX_NAME = 'prof_index';
-const COURSE_CODE_INDEX_NAME = 'course_code_index';
-
 const SPLIT_COURSE_CODE_REGEX = /[a-z]+|[^a-z]+/gi;
 
 const commonIndexConfig = {
@@ -16,7 +12,7 @@ const commonIndexConfig = {
   resolution: 9,
 }
 
-const initCourseIndex = () => {
+export const initCourseIndex = () => {
   return new FlexSearch({
     ...commonIndexConfig,
     doc: {
@@ -33,7 +29,7 @@ const initCourseIndex = () => {
   });
 }
 
-const initProfIndex = () => {
+export const initProfIndex = () => {
   return new FlexSearch({
     ...commonIndexConfig,
     doc: {
@@ -46,7 +42,7 @@ const initProfIndex = () => {
   });
 }
 
-const initCourseCodeIndex = () => {
+export const initCourseCodeIndex = () => {
   return new FlexSearch({
     ...commonIndexConfig,
     doc: {
@@ -60,16 +56,12 @@ const initCourseCodeIndex = () => {
 
 class SearchClient {
   constructor() {
-    console.log("BUILDING!");
     this.courseIndex = initCourseIndex();
     this.profIndex = initProfIndex();
     this.courseCodeIndex = initCourseCodeIndex();
-    this.buildIndices();
   }
 
-  search(query = '', bool = 'or', suggest = true, limit = 5) {
-    console.log("SEARCHING!");
-
+  search(query = '', bool = 'or') {
     const parsedQuery = query === ''
       ? query : query.match(SPLIT_COURSE_CODE_REGEX).join(' ');
 
@@ -77,20 +69,19 @@ class SearchClient {
     const courseResults = this.courseIndex.search(parsedQuery, {
       field: ['code', 'name', 'profs'],
       bool,
-      limit,
+      limit: 4,
     });
 
     const profResults = this.profIndex.search(parsedQuery, {
       field: ['name', 'courses'],
       bool,
-      limit,
+      limit: 4,
     });
 
     const courseCodeResults = this.courseCodeIndex.search(parsedQuery, {
       field: ['code'],
-      bool,
-      suggest,
-      limit,
+      suggest: true,
+      limit: 1,
     });
 
     const results = {
@@ -102,15 +93,14 @@ class SearchClient {
     return results;
   }
 
-  async buildIndices() {
-    localStorage.clear();
+  async buildIndices(indices) {
     const newCourseIndex = initCourseIndex();
     const newProfIndex = initProfIndex();
     const newCourseCodeIndex = initCourseCodeIndex();
 
-    if (localStorage.getItem(COURSE_INDEX_NAME) === null
-        || localStorage.getItem(PROF_INDEX_NAME) === null
-        || localStorage.getItem(COURSE_CODE_INDEX_NAME) === null
+    if (indices.courseIndex === null
+        || indices.profIndex === null
+        || indices.courseCodeIndex === null
     ) {
       const response = await fetch(`${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`);
       const data = await response.json();
@@ -118,33 +108,29 @@ class SearchClient {
       // build new indices
       let courseCodeSet = new Set([]);
       data.courses.map(course => {
-        const splitCourseCode = course.code.match(SPLIT_COURSE_CODE_REGEX);
-        const courseLetters = splitCourseCode[0];
+        const courseLetters = course.code.match(SPLIT_COURSE_CODE_REGEX)[0];
         courseCodeSet.add(courseLetters);
       });
 
       newCourseIndex.add(data.courses);
       newProfIndex.add(data.profs);
-      newCourseCodeIndex.add(Array.from(courseCodeSet).map(code => {
-        return {
-          id: code,
-          code: code
-        }
-      }));
-
-      localStorage.setItem(COURSE_INDEX_NAME, LZString.compressToUTF16(newCourseIndex.export()));
-      localStorage.setItem(PROF_INDEX_NAME, LZString.compressToUTF16(newProfIndex.export()));
-      localStorage.setItem(COURSE_CODE_INDEX_NAME, LZString.compressToUTF16(newCourseCodeIndex.export()));
+      newCourseCodeIndex.add(Array.from(courseCodeSet).map(code => Object({ id: code, code: code })));
     } else {
-      newCourseIndex.import(LZString.decompressFromUTF16(localStorage.getItem(COURSE_INDEX_NAME)));
-      newProfIndex.import(LZString.decompressFromUTF16(localStorage.getItem(PROF_INDEX_NAME)));
-      newCourseCodeIndex.import(LZString.decompressFromUTF16(localStorage.getItem(COURSE_CODE_INDEX_NAME)));
+      newCourseIndex.import(LZString.decompressFromUTF16(indices.courseIndex));
+      newProfIndex.import(LZString.decompressFromUTF16(indices.profIndex));
+      newCourseCodeIndex.import(LZString.decompressFromUTF16(indices.courseCodeIndex));
     }
 
     // swap old indices with new
     this.courseIndex = newCourseIndex;
     this.profIndex = newProfIndex;
     this.courseCodeIndex = newCourseCodeIndex;
+
+    return {
+      courseIndex: LZString.compressToUTF16(this.courseIndex.export()),
+      profIndex: LZString.compressToUTF16(this.profIndex.export()),
+      courseCodeIndex: LZString.compressToUTF16(this.courseCodeIndex.export())
+    }
   }
 }
 

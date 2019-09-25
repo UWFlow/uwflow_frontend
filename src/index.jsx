@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 
 /* eslint-disable-next-line */
-import SearchWorker from 'worker-loader!./search/search.worker.js';
+import SearchWorker from './search/search.worker.js';
 
 import { configureStore } from './Store';
 import Theme from './constants/GlobalTheme';

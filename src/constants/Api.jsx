@@ -17,7 +17,7 @@ export const FACEBOOK_AUTH_ENDPOINT = '/auth/facebook/login';
 export const SCHEDULE_PARSE_ENDPOINT = '/parse/schedule';
 export const TRANSCRIPT_PARSE_ENDPOINT = '/parse/transcript';
 
-export const SEARCH_DATA_ENDPOINT = '/dump';
+export const SEARCH_DATA_ENDPOINT = '/data/search';
 
 export const GOOGLE_APP_ID = '292230821846-cogmasv1s0rbvhp0dr886vik2c73etb3';
 export const FACEBOOK_APP_ID = '289196947861602';
