@@ -1,8 +1,7 @@
 import FlexSearch from 'flexsearch';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
-
-const SPLIT_COURSE_CODE_REGEX = /[a-z]+|[^a-z]+/gi;
+import { SPLIT_COURSE_CODE_REGEX } from '../utils/Misc';
 
 const commonIndexConfig = {
   encode: 'advanced',

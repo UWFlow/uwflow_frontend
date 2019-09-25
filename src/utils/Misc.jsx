@@ -4,3 +4,5 @@ export const termCodeToDate = code => {
   const month = monthInt === 1 ? 'Winter' : monthInt === 5 ? 'Spring' : 'Fall';
   return `${month} ${year}`;
 };
+
+export const SPLIT_COURSE_CODE_REGEX = /[a-z]+|[^a-z]+/gi;

@@ -11,6 +11,7 @@ export const SearchInput = styled.input`
   border: ${({ error, theme }) => error ? `1px solid ${theme.red}` : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
+  font-size: ${({ options }) => (options.fontSize ? options.fontSize : 'inherit')};
   border-radius: 4px;
   background: ${({ transparent, theme }) => transparent ? 'transparent' : theme.light2};
   height: 48px;
@@ -38,6 +39,7 @@ export const AutocompleteInput = styled.input`
   border: ${({ error, theme }) => error ? `1px solid ${theme.red}` : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
+  font-size: ${({ options }) => (options.fontSize ? options.fontSize : 'inherit')};
   border-radius: 4px;
   background: ${({ theme }) => theme.light2};
   height: 48px;
