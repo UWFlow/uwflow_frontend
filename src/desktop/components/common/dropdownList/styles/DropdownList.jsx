@@ -34,7 +34,14 @@ export const DropdownMenu= styled.div`
   ${BoxShadow}
 `;
 
-export const MenuItem = styled.div`
+export const MenuItem = styled.button`
+  outline: none;
+  border: none;
+  display: block;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+
   color: ${({ theme, selected, itemColor }) =>
     itemColor ? itemColor : (selected ? theme.dark1 : theme.dark2)};
   background-color: ${({theme, selected}) => selected ? theme.light2 : theme.white};
@@ -55,7 +62,7 @@ export const MenuItem = styled.div`
     border-radius: 4px;
   }
 
-  &:hover {
+  &:hover, &:focus {
     color: ${({ theme }) => theme.primary};
   }
 `;

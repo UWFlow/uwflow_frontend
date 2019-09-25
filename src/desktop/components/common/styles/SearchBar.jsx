@@ -37,13 +37,13 @@ export const SearchResult = styled.button`
     border-bottom: none;
   }
 
-  &:hover {
+  &:hover, &:focus {
     background: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.light1} !important;
     border-bottom: none;
   }
 
-  &:hover span {
+  &:hover span, &:focus span {
     color: ${({ theme }) => theme.light1} !important;
   }
 `;
