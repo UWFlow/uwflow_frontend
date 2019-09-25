@@ -38,7 +38,7 @@ export const SearchResult = styled.button`
   }
 
   &:hover {
-    background: ${({ hoverColor }) => hoverColor};
+    background: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.light1} !important;
     border-bottom: none;
   }

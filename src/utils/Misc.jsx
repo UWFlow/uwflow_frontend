@@ -6,3 +6,19 @@ export const termCodeToDate = code => {
 };
 
 export const SPLIT_COURSE_CODE_REGEX = /[a-z]+|[^a-z]+/gi;
+
+export const splitCourseCode = (code) => {
+  if (code === '') {
+    return code;
+  }
+
+  let codeLetters = '';
+  let i = 0;
+  let curChar = code[i].toUpperCase();
+  while (curChar >= 'A' && curChar <= 'Z' && i < code.length) {
+    codeLetters += curChar;
+    i++;
+    curChar = code[i].toUpperCase();
+  }
+  return [codeLetters, code.slice(i)].join(' ');
+};

@@ -96,7 +96,8 @@ const Navbar = ({ history, location, theme }) => {
                   onChange={(idx) => {
                     if (idx === 0) {
                       // log out
-                      localStorage.clear();
+                      localStorage.removeItem('token');
+                      localStorage.removeItem('user_id');
                       if (isOnProfilePageRoute(location)) {
                         history.push(LANDING_PAGE_ROUTE);
                       } else {

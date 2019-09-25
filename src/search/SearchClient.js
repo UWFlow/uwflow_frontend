@@ -1,7 +1,7 @@
 import FlexSearch from 'flexsearch';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
-import { SPLIT_COURSE_CODE_REGEX } from '../utils/Misc';
+import { SPLIT_COURSE_CODE_REGEX, splitCourseCode } from '../utils/Misc';
 
 const commonIndexConfig = {
   encode: 'advanced',
@@ -18,7 +18,6 @@ export const initCourseIndex = () => {
       id: 'id',
       field: {
         code: {
-          tokenize: 'reverse',
           boost: 2
         },
         name: {},
@@ -64,7 +63,6 @@ class SearchClient {
     const parsedQuery = query === ''
       ? query : query.match(SPLIT_COURSE_CODE_REGEX).join(' ');
 
-
     const courseResults = this.courseIndex.search(parsedQuery, {
       field: ['code', 'name', 'profs'],
       bool,
@@ -74,7 +72,7 @@ class SearchClient {
     const profResults = this.profIndex.search(parsedQuery, {
       field: ['name', 'courses'],
       bool,
-      limit: 4,
+      limit: 2,
     });
 
     const courseCodeResults = this.courseCodeIndex.search(parsedQuery, {
@@ -106,13 +104,19 @@ class SearchClient {
 
       // build new indices
       let courseCodeSet = new Set([]);
-      data.courses.map(course => {
+      const courses = data.courses.map(course => {
         const courseLetters = course.code.match(SPLIT_COURSE_CODE_REGEX)[0];
         courseCodeSet.add(courseLetters);
-      });
 
-      newCourseIndex.add(data.courses);
-      newProfIndex.add(data.profs);
+        return {
+          ...course,
+          code: splitCourseCode(course.code)
+        }
+      });
+      const profs = data.profs;
+
+      newCourseIndex.add(courses);
+      newProfIndex.add(profs);
       newCourseCodeIndex.add(Array.from(courseCodeSet).map(code => Object({ id: code, code: code })));
     } else {
       newCourseIndex.import(LZString.decompressFromUTF16(indices.courseIndex));

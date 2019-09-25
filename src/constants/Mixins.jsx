@@ -7,11 +7,11 @@ export const PageContent = `
   width: 100%;
 
   @media only screen and (max-width: 1200px) {
-    padding: 0 32px;
+    padding: inherit 32px;
   }
 
   @media only screen and (max-width: 720px) {
-    padding: 0 4%;
+    padding: inherit 4%;
   }
 `;
 

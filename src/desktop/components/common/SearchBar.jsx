@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
-import { withTheme } from 'styled-components';
-import { compose } from 'redux';
 import { Search } from 'react-feather';
+import useOnClickOutside from 'use-onclickoutside'
 
 /* Routes */
 import { EXPLORE_PAGE_ROUTE } from '../../../Routes';
 
-import { SPLIT_COURSE_CODE_REGEX } from '../../../utils/Misc';
+import { splitCourseCode } from '../../../utils/Misc';
 
 import {
   SearchResultsWrapper,
@@ -23,26 +22,23 @@ import Textbox from './Textbox';
 import { useSearchContext } from '../../../search/SearchProvider';
 
 /* Constants */
-import KEYCODE from '../../../constants/KeycodeConstants';
+import KeycodeConstants from '../../../constants/KeycodeConstants';
 
-const SearchBar = ({ history, theme }) => {
+const SearchBar = ({ history }) => {
+  const ref = useRef();
+  const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState({});
   const { searchWorker } = useSearchContext();
 
-  const queryExploreCourses = (text) => {
-    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
-  };
-
-  const handleSearch = (event, text) => {
-    if (event.keyCode === KEYCODE.ENTER) {
-      queryExploreCourses(text);
+  const handleUserKeyPress = useCallback(event => {
+    const { keyCode } = event;
+    if (keyCode === KeycodeConstants.ESCAPE) {
+      setOpen(false);
     }
-  };
+  }, []);
 
-  const handleKeyStroke = (value) => {
-    setSearchText(value);
-    searchWorker.postMessage({ type: 'search', query: value });
+  useEffect(() => {
     searchWorker.addEventListener('message', event => {
       const { type } = event.data;
       if (type === 'search') {
@@ -50,10 +46,45 @@ const SearchBar = ({ history, theme }) => {
         setSearchResults(results);
       }
     });
+
+    window.addEventListener('keydown', handleUserKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleUserKeyPress);
+    };
+  }, [handleUserKeyPress, searchWorker]);
+
+  useOnClickOutside(ref, () => setOpen(false));
+
+  const queryExploreCourses = (text) => {
+    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
+  };
+
+  const goToCourse = (id) => {
+    history.push(`/course/${id}`);
+  };
+
+  const goToProf = (id) => {
+    history.push(`/prof/${id}`)
+  }
+
+  const handleSearch = (event, text) => {
+    if (event.keyCode === KeycodeConstants.ENTER) {
+      queryExploreCourses(text);
+    }
+  };
+
+  const handleKeyStroke = (value) => {
+    setSearchText(value);
+    setOpen(value !== '');
+    searchWorker.postMessage({ type: 'search', query: value });
   }
 
   const exploreResult  = (code = '') => (
-    <SearchResult onClick={() => queryExploreCourses(searchText)} hoverColor={theme.primary}>
+    <SearchResult
+      onClick={() => queryExploreCourses(searchText)}
+      key={code}
+    >
       <ExploreText>
         Explore all {code.toUpperCase()} courses and professors
       </ExploreText>
@@ -61,9 +92,12 @@ const SearchBar = ({ history, theme }) => {
   );
 
   const courseResult  = (course) => (
-    <SearchResult onClick={() => queryExploreCourses(searchText)} hoverColor={theme.courses}>
+    <SearchResult
+      onClick={() => goToCourse(course.id)}
+      key={course.id}
+    >
       <CourseText>
-        {course.code.toUpperCase().match(SPLIT_COURSE_CODE_REGEX).join(' ')}
+        {splitCourseCode(course.code.toUpperCase())}
       </CourseText>
       <Dash>&mdash;</Dash>
       {course.name}
@@ -71,7 +105,10 @@ const SearchBar = ({ history, theme }) => {
   );
 
   const profResult  = (prof) => (
-    <SearchResult onClick={() => queryExploreCourses(searchText)} hoverColor={theme.professors}>
+    <SearchResult
+      onClick={() => goToProf(prof.id)}
+      key={prof.id}
+    >
       <ProfText>{prof.name}</ProfText>
       <Dash>&mdash;</Dash>
       Professor
@@ -94,7 +131,7 @@ const SearchBar = ({ history, theme }) => {
       searchResults.courseResults.map(course => courseResult(course)) : null;
 
     const profResults = searchResults.profResults ?
-    searchResults.profResults.map(prof => profResult(prof)) : null;
+      searchResults.profResults.map(prof => profResult(prof)) : null;
 
     return (
       <SearchResultsWrapper>
@@ -110,20 +147,20 @@ const SearchBar = ({ history, theme }) => {
   }
 
   return (
-    <SearchBarWrapper>
+    <SearchBarWrapper ref={ref}>
       <Textbox
         icon={Search}
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Explore or search for courses, subjects or professors"
         handleKeyDown={handleSearch}
-        options={{ fontSize: '18px', width: '640px' }}
+        options={{ fontSize: '14px', width: '640px', borderRadius: open ? '4px 4px 0 0' : '4px' }}
         maxLength={100}
-        autocompletePlaceholder={autocompleteResult}
+        autocompletePlaceholder={autocompleteResult()}
       />
-      {renderSearchResults()}
+      {open && renderSearchResults()}
     </SearchBarWrapper>
   );
 }
 
-export default compose(withRouter, withTheme)(SearchBar);
+export default withRouter(SearchBar);

@@ -12,7 +12,7 @@ export const SearchInput = styled.input`
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) => (options.fontSize ? options.fontSize : 'inherit')};
-  border-radius: 4px;
+  border-radius: ${({ options }) => (options.borderRadius ? options.borderRadius : '4px')};;
   background: ${({ transparent, theme }) => transparent ? 'transparent' : theme.light2};
   height: 48px;
   z-index: 5;
@@ -40,7 +40,7 @@ export const AutocompleteInput = styled.input`
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) => (options.fontSize ? options.fontSize : 'inherit')};
-  border-radius: 4px;
+  border-radius: ${({ options }) => (options.borderRadius ? options.borderRadius : '4px')};;
   background: ${({ theme }) => theme.light2};
   height: 48px;
   color: ${({ theme }) => theme.dark3};
