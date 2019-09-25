@@ -1,28 +1,24 @@
 
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 
-import { getSearchContext } from './SearchContext';
+export const SearchContext = createContext();
 
-const SearchProvider = ({
-  searchClient,
-  children
-}) => {
-  const SearchContext = getSearchContext();
-  return (
-    <SearchContext.Consumer>
-      {(context = {}) => {
-        if (context.searchClient !== searchClient) {
-          context = Object.assign({}, context, { searchClient });
-        }
+export const useSearchContext = () => useContext(SearchContext);
 
-        return (
-          <SearchContext.Provider value={context}>
-            {children}
-          </SearchContext.Provider>
-        );
-      }}
-    </SearchContext.Consumer>
-  );
-};
+const SearchProvider = ({ searchWorker, children }) => (
+  <SearchContext.Consumer>
+    {(context = {}) => {
+      if (context.searchWorker !== searchWorker) {
+        context = Object.assign({}, context, { searchWorker });
+      }
+
+      return (
+        <SearchContext.Provider value={context}>
+          {children}
+        </SearchContext.Provider>
+      );
+    }}
+  </SearchContext.Consumer>
+);
 
 export default SearchProvider;

@@ -5,6 +5,9 @@ import { Router } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 
+/* eslint-disable-next-line */
+import SearchWorker from 'worker-loader!./search/search.worker.js';
+
 import { configureStore } from './Store';
 import Theme from './constants/GlobalTheme';
 import client from './graphql/apollo.js';
@@ -12,18 +15,16 @@ import client from './graphql/apollo.js';
 /* Child Components */
 import App from './App';
 import SearchProvider from './search/SearchProvider';
-import SearchClient from './search/SearchClient';
 
 /* Util */
 import createHistory, { syncReduxHistory } from './utils/History';
 
 const StartApp = (store, history) => {
   syncReduxHistory(store, history);
-  const searchClient = new SearchClient(client);
 
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <SearchProvider searchClient={searchClient}>
+      <SearchProvider searchWorker={new SearchWorker()}>
         <Provider store={store}>
           <Router history={history}>
             <ThemeProvider theme={Theme}>

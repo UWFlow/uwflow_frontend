@@ -22,6 +22,7 @@
     "graphql-tag": "^2.10.1",
     "history": "^4.9.0",
     "lodash": "^4.17.15",
+    "lz-string": "^1.4.4",
     "path-to-regexp": "^3.0.0",
     "query-string": "^6.8.2",
     "react": "^16.8.6",
@@ -60,6 +61,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.10.6"
+    "babel-plugin-styled-components": "^1.10.6",
+    "worker-loader": "^2.0.0"
   }
 }

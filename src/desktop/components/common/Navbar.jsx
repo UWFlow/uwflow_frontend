@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Search } from 'react-feather';
 import { Query } from 'react-apollo';
 import { compose } from 'redux';
 import { withTheme } from 'styled-components';
@@ -9,7 +8,6 @@ import { withTheme } from 'styled-components';
 import {
   LANDING_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
-  EXPLORE_PAGE_ROUTE,
   isOnProfilePageRoute,
   isOnLandingPageRoute,
 } from '../../../Routes';
@@ -26,15 +24,12 @@ import {
 } from './styles/Navbar';
 
 /* Child Components */
-import Textbox from './Textbox';
 import AuthModal from '../auth/AuthModal';
 import DropdownList from './dropdownList/DropdownList';
+import SearchBar from './SearchBar';
 
 /* GraphQL Queries */
 import { GET_USER } from '../../../graphql/queries/profile/User';
-
-/* Constants */
-import KEYCODE from '../../../constants/KeycodeConstants';
 
 import { isLoggedIn } from '../../../utils/Auth';
 
@@ -51,7 +46,6 @@ const renderProfilePicture = (data) => {
 }
 
 const Navbar = ({ history, location, theme }) => {
-  const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [, forceUpdate] = useState(false);
 
@@ -62,12 +56,6 @@ const Navbar = ({ history, location, theme }) => {
       setAuthModalOpen(true);
     }
   }
-
-  const handleSearch = (event, text) => {
-    if (event.keyCode === KEYCODE.ENTER) {
-      history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
-    }
-  };
 
   if (isOnLandingPageRoute(location)) {
     return (
@@ -88,14 +76,7 @@ const Navbar = ({ history, location, theme }) => {
           <LogoWrapper to={LANDING_PAGE_ROUTE}>
             UW <BlueText>Flow</BlueText>
           </LogoWrapper>
-          <Textbox
-            icon={Search}
-            text={searchText}
-            setText={setSearchText}
-            placeholder="Explore or search for courses, subjects or professors"
-            handleKeyDown={handleSearch}
-            maxLength={100}
-          />
+          <SearchBar />
           <ProfileButtonWrapper>
             {isLoggedIn() ? (
               <>

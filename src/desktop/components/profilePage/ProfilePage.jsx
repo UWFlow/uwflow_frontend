@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { useQuery } from 'react-apollo';
 
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
@@ -136,7 +134,7 @@ const ProfilePageContent = ({ user }) => {
   );
 }
 
-const ProfilePage = ({ data }) => (
+const ProfilePage = ({ loading, data, error }) => (
   <ProfilePageWrapper>
     {loading
       ? (<p>Loading ...</p>)
