@@ -6,12 +6,9 @@ export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
   width: 100%;
 
-  @media only screen and (max-width: 1200px) {
-    padding: inherit 32px;
-  }
-
-  @media only screen and (max-width: 720px) {
-    padding: inherit 4%;
+  @media only screen and (max-width: ${PAGE_CONTENT_WIDTH + 64}px) {
+    padding-left: 32px;
+    padding-right: 32px;
   }
 `;
 
