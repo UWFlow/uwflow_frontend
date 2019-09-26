@@ -28,7 +28,7 @@ export const SearchResult = styled.button`
   text-overflow: ellipsis;
   background: ${({ theme }) => theme.white};
   color: ${({ theme }) => theme.dark3};
-  padding: 8px 16px;
+  padding: 8px 24px;
   height: 48px;
   border-bottom: 1px solid ${({ theme }) => theme.light3};
 
@@ -48,21 +48,65 @@ export const SearchResult = styled.button`
   }
 `;
 
-export const ExploreText = styled.span`
+export const ResultLeft = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+`;
+
+const ResultText = `
+  display: flex;
+  align-items: center;
   color: ${({ theme }) => theme.primary};
   font-weight: 600;
+
+  svg {
+    margin-right: 24px;
+  }
+`
+
+export const ExploreText = styled.span`
+  color: ${({ theme }) => theme.primary};
+  ${ResultText}
 `;
 
 export const CourseText = styled.span`
   color: ${({ theme }) => theme.courses};
-  font-weight: 600;
+  ${ResultText}
 `;
 
 export const ProfText = styled.span`
   color: ${({ theme }) => theme.professors};
-  font-weight: 600;
+  ${ResultText}
 `;
 
 export const Dash = styled.span`
   margin: 0 4px;
+`;
+
+const ExploreSideButton = `
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+
+  &:hover, &:focus {
+    filter: brightness(85%);
+  }
+`;
+
+export const ExploreCourseProfs = styled.button`
+  background: ${({ theme }) => theme.professors};
+  color: ${({ theme }) => theme.white};
+  ${ExploreSideButton}
+`;
+
+export const ExploreProfCourses = styled.button`
+  background: ${({ theme }) => theme.courses};
+  color: ${({ theme }) => theme.white};
+  ${ExploreSideButton}
 `;

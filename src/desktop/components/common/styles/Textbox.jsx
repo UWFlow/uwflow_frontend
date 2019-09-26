@@ -13,21 +13,27 @@ export const SearchInput = styled.input`
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) => (options.fontSize ? options.fontSize : 'inherit')};
   border-radius: ${({ options }) => (options.borderRadius ? options.borderRadius : '4px')};;
-  background: ${({ transparent, theme }) => transparent ? 'transparent' : theme.light2};
+  background: ${({ autocompleteActive, theme }) =>
+    autocompleteActive ? 'transparent' : theme.light2};
+  font-weight: ${({ options }) => options.fontWeight ? options.fontWeight : '400'};
   height: 48px;
-  z-index: 5;
-  color: ${({ error, theme }) => error ? theme.red : theme.dark1};
+  z-index: 2;
+  color: ${({ error, theme }) => error ? theme.red : theme.dark2};
+  padding-left: ${({ hasIcon }) => hasIcon ? '72px' : 'auto'};
 
   &::-webkit-input-placeholder {
     color: ${({ error, theme }) => error ? theme.red : theme.dark3};
+    font-weight: 400;
   }
   
   &:-ms-input-placeholder {
     color: ${({ error, theme }) => error ? theme.red : theme.dark3};
+    font-weight: 400;
   }
   
   &::placeholder {
     color: ${({ error, theme }) => error ? theme.red : theme.dark3};
+    font-weight: 400;
   }  
 `;
 
@@ -45,4 +51,13 @@ export const AutocompleteInput = styled.input`
   height: 48px;
   color: ${({ theme }) => theme.dark3};
   z-index: 1;
+  padding-left: ${({ hasIcon }) => hasIcon ? '72px' : 'auto'};
+`;
+
+export const Icon = styled.div`
+  position: absolute;
+  top: 12px;
+  left: 24px;
+  z-index: 3;
+  color: ${({ theme }) => theme.dark3};
 `;

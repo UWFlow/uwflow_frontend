@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Search } from 'react-feather';
+import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside'
 
 /* Routes */
@@ -15,7 +15,10 @@ import {
   ExploreText,
   CourseText,
   ProfText,
-  Dash
+  Dash,
+  ExploreCourseProfs,
+  ExploreProfCourses,
+  ResultLeft
 } from './styles/SearchBar';
 
 import Textbox from './Textbox';
@@ -58,14 +61,17 @@ const SearchBar = ({ history }) => {
 
   const queryExploreCourses = (text) => {
     history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
+    setOpen(false);
   };
 
   const goToCourse = (id) => {
     history.push(`/course/${id}`);
+    setOpen(false);
   };
 
   const goToProf = (id) => {
-    history.push(`/prof/${id}`)
+    history.push(`/prof/${id}`);
+    setOpen(false);
   }
 
   const handleSearch = (event, text) => {
@@ -86,6 +92,7 @@ const SearchBar = ({ history }) => {
       key={code}
     >
       <ExploreText>
+        <Layers />
         Explore all {code.toUpperCase()} courses and professors
       </ExploreText>
     </SearchResult>
@@ -96,11 +103,17 @@ const SearchBar = ({ history }) => {
       onClick={() => goToCourse(course.id)}
       key={course.id}
     >
-      <CourseText>
-        {splitCourseCode(course.code.toUpperCase())}
-      </CourseText>
-      <Dash>&mdash;</Dash>
-      {course.name}
+      <ResultLeft>
+        <CourseText>
+          <Square />
+          {splitCourseCode(course.code.toUpperCase())}
+        </CourseText>
+        <Dash>&mdash;</Dash>
+        {course.name}
+      </ResultLeft>
+      <ExploreCourseProfs>
+        <Users />
+      </ExploreCourseProfs>
     </SearchResult>
   );
 
@@ -109,9 +122,17 @@ const SearchBar = ({ history }) => {
       onClick={() => goToProf(prof.id)}
       key={prof.id}
     >
-      <ProfText>{prof.name}</ProfText>
-      <Dash>&mdash;</Dash>
-      Professor
+      <ResultLeft>
+        <ProfText>
+          <User />
+          {prof.name}
+        </ProfText>
+        <Dash>&mdash;</Dash>
+        Professor
+      </ResultLeft>
+      <ExploreProfCourses>
+        <Layers />
+      </ExploreProfCourses>
     </SearchResult>
   );
 
@@ -149,12 +170,18 @@ const SearchBar = ({ history }) => {
   return (
     <SearchBarWrapper ref={ref}>
       <Textbox
-        icon={Search}
+        icon={<Search />}
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Explore or search for courses, subjects or professors"
         handleKeyDown={handleSearch}
-        options={{ fontSize: '14px', width: '640px', borderRadius: open ? '4px 4px 0 0' : '4px' }}
+        options={{
+          padding: '8px 24px',
+          fontSize: '14px',
+          width: '640px',
+          borderRadius: open ? '4px 4px 0 0' : '4px',
+          fontWeight: '600'
+        }}
         maxLength={100}
         autocompletePlaceholder={autocompleteResult()}
       />

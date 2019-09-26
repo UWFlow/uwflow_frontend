@@ -5,7 +5,7 @@ export const termCodeToDate = code => {
   return `${month} ${year}`;
 };
 
-export const SPLIT_COURSE_CODE_REGEX = /[a-z]+|[^a-z]+/gi;
+export const SPLIT_COURSE_CODE_REGEX = /[a-zA-Z]{2,}|[0-9]+/gi;
 
 export const splitCourseCode = (code) => {
   if (code === '') {

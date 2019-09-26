@@ -27,4 +27,4 @@ export const getBrowserState = state => getDataState(state).browser;
 export const getWidth = state => getBrowserState(state).width;
 export const getHeight = state => getBrowserState(state).height;
 export const getIsBrowserDesktop = state =>
-  getBrowserState(state).width > 800 && getBrowserState(state).height > 500;
+  getBrowserState(state).width > 767 && getBrowserState(state).height > 500;

@@ -78,7 +78,7 @@ class SearchClient {
     const courseCodeResults = this.courseCodeIndex.search(parsedQuery, {
       field: ['code'],
       suggest: true,
-      limit: 1,
+      limit: 2,
     });
 
     const results = {
