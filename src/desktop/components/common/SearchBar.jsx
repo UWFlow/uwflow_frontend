@@ -152,13 +152,13 @@ const SearchBar = ({ history }) => {
     }
 
     const courseCodeResults = searchResults.courseCodeResults && searchResults.courseCodeResults.length > 0 ?
-      searchResults.courseCodeResults.map(result => exploreResult(result.code)) : exploreResult();
+      searchResults.courseCodeResults.map(result => exploreResult(result.item.code)) : exploreResult();
 
     const courseResults = searchResults.courseResults ?
-      searchResults.courseResults.map(course => courseResult(course)) : null;
+      searchResults.courseResults.map(result => courseResult(result.item)) : null;
 
     const profResults = searchResults.profResults ?
-      searchResults.profResults.map(prof => profResult(prof)) : null;
+      searchResults.profResults.map(result => profResult(result.item)) : null;
 
     return (
       <SearchResultsWrapper>
