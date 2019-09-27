@@ -111,7 +111,10 @@ const SearchBar = ({ history }) => {
         <Dash>&mdash;</Dash>
         {course.name}
       </ResultLeft>
-      <ExploreCourseProfs>
+      <ExploreCourseProfs onClick={(e) => {
+        e.stopPropagation();
+        queryExploreCourses(course.code);
+      }}>
         <Users />
       </ExploreCourseProfs>
     </SearchResult>
@@ -130,7 +133,10 @@ const SearchBar = ({ history }) => {
         <Dash>&mdash;</Dash>
         Professor
       </ResultLeft>
-      <ExploreProfCourses>
+      <ExploreProfCourses onClick={(e) => {
+        e.stopPropagation();
+        queryExploreCourses(prof.name);
+      }}>
         <Layers />
       </ExploreProfCourses>
     </SearchResult>

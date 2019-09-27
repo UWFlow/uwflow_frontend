@@ -11,8 +11,8 @@ self.onmessage = async event => {
             postMessage({ type: 'search', results });
             break;
         case 'build':
-            const indices = await client.buildIndices(event.data.indices);
-            postMessage({ type: 'indices', indices })
+            const searchData = await client.buildIndices(event.data.searchData);
+            postMessage({ type: 'data', searchData })
             break;
         default:
             break;

@@ -85,27 +85,31 @@ export const Dash = styled.span`
 `;
 
 const ExploreSideButton = `
-  outline: none;
-  border: none;
   cursor: pointer;
   border-radius: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 32px;
   width: 32px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 
   &:hover, &:focus {
     filter: brightness(85%);
   }
 `;
 
-export const ExploreCourseProfs = styled.button`
+export const ExploreCourseProfs = styled.div`
   background: ${({ theme }) => theme.professors};
   color: ${({ theme }) => theme.white};
   ${ExploreSideButton}
 `;
 
-export const ExploreProfCourses = styled.button`
+export const ExploreProfCourses = styled.div`
   background: ${({ theme }) => theme.courses};
   color: ${({ theme }) => theme.white};
   ${ExploreSideButton}
