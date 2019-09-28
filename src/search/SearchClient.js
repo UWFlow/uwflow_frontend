@@ -1,49 +1,56 @@
-import Fuse from 'fuse.js';
+import MiniSearch from 'minisearch/src/MiniSearch';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
 import { SPLIT_COURSE_CODE_REGEX, splitCourseCode } from '../utils/Misc';
 
-const indexOptions = {
-  shouldSort: true,
-  includeMatches: true,
-  threshold: 0.5,
-  location: 0,
-  distance: 1,
-  maxPatternLength: 72,
-  minMatchCharLength: 2
+const MAX_AUTOCOMPLETE_LENGTH = 50;
+
+const searchOptions = {
+  fuzzy: 0.1,
+  prefix: true,
 };
 
 const courseIndexOptions = {
-  ...indexOptions,
-  keys: [{
-    name: 'code',
-    weight: 0.6
-  }, {
-    name: 'name',
-    weight: 0.4
-  }]
+  searchOptions: {
+    ...searchOptions,
+    boost: { code: 3 },
+  },
+  fields: ['code', 'name'],
+  storeFields: ['code', 'name'],
 }
 
 const profIndexOptions = {
-  ...indexOptions,
-  keys: ['name']
+  searchOptions: {
+    ...searchOptions,
+    boost: { name: 3 },
+  },
+  fields: ['name', 'courses'],
+  storeFields: ['name', 'courses'],
 }
 
 const courseCodeIndexOptions = {
-  ...indexOptions,
-  keys: ['code']
+  searchOptions,
+  fields: ['code'],
+  storeFields: ['code'],
 }
 
 class SearchClient {
   constructor() {
-    this.courseIndex = new Fuse([], courseIndexOptions);
-    this.profIndex = new Fuse([], profIndexOptions);
-    this.courseCodeIndex = new Fuse([], courseCodeIndexOptions);
+    this.courseIndex = new MiniSearch(courseIndexOptions);
+    this.profIndex = new MiniSearch(profIndexOptions);
+    this.courseCodeIndex = new MiniSearch(courseCodeIndexOptions);
   }
 
-  search(query = '') {
-    const splitQuery = query.match(SPLIT_COURSE_CODE_REGEX);
-    const parsedQuery = splitQuery === null ? query : splitQuery.join(' ');
+  autocomplete(query = '') {
+    if (query.length === 1) {
+      return { courseResults: [], profResults: [], courseCodeResults: [] }
+    }
+
+    if (query.length > MAX_AUTOCOMPLETE_LENGTH) {
+      query = query.slice(0, MAX_AUTOCOMPLETE_LENGTH);
+    }
+
+    const parsedQuery = query.split(' ').map(term => splitCourseCode(term)).join(' ');
 
     const courseResults = this.courseIndex.search(parsedQuery).slice(0, 4);
     const profResults = this.profIndex.search(parsedQuery).slice(0, 2);
@@ -58,6 +65,9 @@ class SearchClient {
 
   async buildIndices(searchData) {
     let parsedSearchData;
+    const newCourseIndex = new MiniSearch(courseIndexOptions);
+    const newProfIndex = new MiniSearch(profIndexOptions);
+    const newCourseCodeIndex = new MiniSearch(courseCodeIndexOptions);
 
     // fetch data if not passed in from localstorage
     if (searchData === null) {
@@ -69,21 +79,32 @@ class SearchClient {
 
     // parse data
     let courseCodeSet = new Set([]);
+
     const courses = parsedSearchData.courses.map(course => {
       const courseLetters = course.code.match(SPLIT_COURSE_CODE_REGEX)[0];
       courseCodeSet.add(courseLetters);
       return {
         ...course,
-        code: splitCourseCode(course.code)
+        code: splitCourseCode(course.code),
+        profs: course.profs === null ? '' : course.profs.join(' ')
       }
     });
-    const profs = parsedSearchData.profs;
-    const courseCodes = Array.from(courseCodeSet).map(code => Object({ code: code }));
+
+    const profs = parsedSearchData.profs.map(prof => {
+      return {
+        ...prof,
+        courses: prof.courses === null
+          ? '' : prof.courses.map(course => splitCourseCode(course)).join(' ')
+      }
+    });
+
+    const courseCodes = Array.from(courseCodeSet)
+      .map((code, idx) => Object({ id: idx, code }));
 
     // build new indices
-    const newCourseIndex = new Fuse(courses, courseIndexOptions);
-    const newProfIndex = new Fuse(profs, profIndexOptions);
-    const newCourseCodeIndex = new Fuse(courseCodes, courseCodeIndexOptions);
+    newCourseIndex.addAll(courses);
+    newProfIndex.addAll(profs);
+    newCourseCodeIndex.addAll(courseCodes);
 
     // swap old indices with new
     this.courseIndex = newCourseIndex;

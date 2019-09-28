@@ -24,8 +24,6 @@ export const SearchResult = styled.button`
   display: flex;
   align-items: center;
   width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   background: ${({ theme }) => theme.white};
   color: ${({ theme }) => theme.dark3};
   padding: 8px 24px;
@@ -52,6 +50,10 @@ export const ResultLeft = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
+  margin-right: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const ResultText = `
@@ -59,6 +61,7 @@ const ResultText = `
   align-items: center;
   color: ${({ theme }) => theme.primary};
   font-weight: 600;
+  width: max-content;
 
   svg {
     margin-right: 24px;

@@ -44,7 +44,7 @@ const SearchBar = ({ history }) => {
   useEffect(() => {
     searchWorker.addEventListener('message', event => {
       const { type } = event.data;
-      if (type === 'search') {
+      if (type === 'autocomplete') {
         const results = event.data.results;
         setSearchResults(results);
       }
@@ -83,7 +83,7 @@ const SearchBar = ({ history }) => {
   const handleKeyStroke = (value) => {
     setSearchText(value);
     setOpen(value !== '');
-    searchWorker.postMessage({ type: 'search', query: value });
+    searchWorker.postMessage({ type: 'autocomplete', query: value });
   }
 
   const exploreResult  = (code = '') => (
@@ -152,13 +152,13 @@ const SearchBar = ({ history }) => {
     }
 
     const courseCodeResults = searchResults.courseCodeResults && searchResults.courseCodeResults.length > 0 ?
-      searchResults.courseCodeResults.map(result => exploreResult(result.item.code)) : exploreResult();
+      searchResults.courseCodeResults.map(result => exploreResult(result.code)) : exploreResult();
 
     const courseResults = searchResults.courseResults ?
-      searchResults.courseResults.map(result => courseResult(result.item)) : null;
+      searchResults.courseResults.map(result => courseResult(result)) : null;
 
     const profResults = searchResults.profResults ?
-      searchResults.profResults.map(result => profResult(result.item)) : null;
+      searchResults.profResults.map(result => profResult(result)) : null;
 
     return (
       <SearchResultsWrapper>

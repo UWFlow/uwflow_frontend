@@ -5,10 +5,10 @@ const client = new SearchClient();
 self.onmessage = async event => {
     const { type } = event.data;
     switch(type) {
-        case 'search':
+        case 'autocomplete':
             const { query } = event.data;
-            const results = client.search(query);
-            postMessage({ type: 'search', results });
+            const results = client.autocomplete(query);
+            postMessage({ type: 'autocomplete', results });
             break;
         case 'build':
             const searchData = await client.buildIndices(event.data.searchData);

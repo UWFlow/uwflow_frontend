@@ -14,11 +14,10 @@ export const splitCourseCode = (code) => {
 
   let codeLetters = '';
   let i = 0;
-  let curChar = code[i].toUpperCase();
-  while (curChar >= 'A' && curChar <= 'Z' && i < code.length) {
-    codeLetters += curChar;
+  while (i < code.length && code[i].toUpperCase() >= 'A' && code[i].toUpperCase() <= 'Z') {
+    codeLetters += code[i].toUpperCase();
     i++;
-    curChar = code[i].toUpperCase();
   }
+
   return [codeLetters, code.slice(i)].join(' ');
 };
