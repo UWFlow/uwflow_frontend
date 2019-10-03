@@ -15,11 +15,15 @@ const PrivacyPage = () => (
     </PageHeader>
     <PageBody>
       <PageBodyParagraph>
-        At UW Flow, accessible from uwflow.com, one of our main priorities is
-        the privacy of our visitors. This Privacy Policy document outlines
-        information we collected and how we use it. If you have additional
-        questions or require more information about our Privacy Policy, do not
-        hesitate to contact us through email at info@uwflow.com.
+        At UW Flow, accessible from{' '}
+        <a href="https://uwflow.com" target="_blank" rel="noopener noreferrer">
+          uwflow.com
+        </a>
+        , one of our main priorities is the privacy of our visitors. This
+        Privacy Policy document outlines information we collected and how we use
+        it. If you have additional questions or require more information about
+        our Privacy Policy, do not hesitate to contact us through email at
+        info@uwflow.com.
       </PageBodyParagraph>
       <PageBodyHeader>Log Files</PageBodyHeader>
       <PageBodyParagraph>
@@ -57,11 +61,25 @@ const PrivacyPage = () => (
         Privacy Policies of these third parties for more detailed information.
         This may include their practices and instructions about how to opt-out
         of certain options. You may find a complete list of these Privacy
-        Policies and their links here: facebook.com/about/privacy,
-        policies.google.com/privacy. You can choose to disable cookies through
-        your individual browser options. More detailed information regarding
-        cookie management with specific web browsers can be found at the
-        browser’s websites.
+        Policies and their links here:{' '}
+        <a
+          href="https://facebook.com/about/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          facebook.com/about/privacy
+        </a>
+        ,{' '}
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          policies.google.com/privacy.
+        </a>{' '}
+        You can choose to disable cookies through your individual browser
+        options. More detailed information regarding cookie management with
+        specific web browsers can be found at the browser’s websites.
       </PageBodyParagraph>
       <PageBodyHeader>Information Regarding Children</PageBodyHeader>
       <PageBodyParagraph>
