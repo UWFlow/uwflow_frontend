@@ -6,6 +6,7 @@ import {
   Body,
   WideColumn,
 } from '../../../../constants/Mixins';
+import { Link } from 'react-router-dom';
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ export const PageHeader = styled.div`
 `;
 
 export const HeaderTextBox = styled.div`
-  ${PageContent}
+  ${WideColumn}
   display: flex;
   justify-content: flex-start;
 `;
@@ -44,6 +45,7 @@ export const PageBody = styled.div`
 export const PageContentWrapper = styled.div`
   ${PageContent}
   display: flex;
+  justify-content: center;
 `;
 
 export const PageBodyContent = styled.div`
@@ -60,4 +62,8 @@ export const PageBodyHeader = styled.div`
 export const PageBodyParagraph = styled.div`
   ${Body}
   margin-bottom: 32px;
+`;
+
+export const InlineLink = styled(Link)`
+  display: inline;
 `;

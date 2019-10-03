@@ -14,9 +14,11 @@ import {
 const AboutPage = () => (
   <PageWrapper>
     <PageHeader>
-      <HeaderTextBox>
-        <HeaderText>About Flow</HeaderText>
-      </HeaderTextBox>
+      <PageContentWrapper>
+        <HeaderTextBox>
+          <HeaderText>About Flow</HeaderText>
+        </HeaderTextBox>
+      </PageContentWrapper>
     </PageHeader>
     <PageBody>
       <PageContentWrapper>

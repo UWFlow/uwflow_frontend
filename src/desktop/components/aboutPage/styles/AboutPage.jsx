@@ -24,7 +24,7 @@ export const PageHeader = styled.div`
 `;
 
 export const HeaderTextBox = styled.div`
-  ${PageContent}
+  ${WideColumn}
   display: flex;
   justify-content: flex-start;
 `;
@@ -44,6 +44,7 @@ export const PageBody = styled.div`
 export const PageContentWrapper = styled.div`
   ${PageContent}
   display: flex;
+  justify-content: center;
 `;
 
 export const PageBodyContent = styled.div`

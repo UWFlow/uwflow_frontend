@@ -10,18 +10,18 @@ import {
 } from './styles/LandingPage';
 
 /* Child Components */
-import Navbar from '../../../desktop/components/common/Navbar';
+import SearchBar from '../../../desktop/components/common/SearchBar';
 
 const LandingPage = () => {
   return (
     <>
-      <Navbar />
       <LandingPageWrapper>
         <LandingPageContent>
           <TitleText>
             Join 16,500+
             <br /> UW students on Flow
           </TitleText>
+          <SearchBar />
           <Subheading>
             Plan courses
             <br />
