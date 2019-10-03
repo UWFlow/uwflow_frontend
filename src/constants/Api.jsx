@@ -1,7 +1,5 @@
-export const LOCAL_GRAPHQL_ENDPOINT = 'http://localhost:8080/v1/graphql';
-export const LOCAL_BACKEND_ENDPOINT = 'http://localhost:8081';
-
-export const AUTH_DICT = { 'x-hasura-admin-secret': 'secretinprod' };
+const LOCAL_GRAPHQL_ENDPOINT = 'http://localhost:8080/v1/graphql';
+const LOCAL_BACKEND_ENDPOINT = 'http://localhost:8081';
 
 export const GRAPHQL_ENDPOINT =
   process.env.NODE_ENV === 'development'
@@ -18,6 +16,8 @@ export const FACEBOOK_AUTH_ENDPOINT = '/auth/facebook/login';
 
 export const SCHEDULE_PARSE_ENDPOINT = '/parse/schedule';
 export const TRANSCRIPT_PARSE_ENDPOINT = '/parse/transcript';
+
+export const SEARCH_DATA_ENDPOINT = '/data/search';
 
 export const GOOGLE_APP_ID = '292230821846-cogmasv1s0rbvhp0dr886vik2c73etb3';
 export const FACEBOOK_APP_ID = '289196947861602';

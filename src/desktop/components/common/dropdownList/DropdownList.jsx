@@ -10,6 +10,7 @@ import {
   DropdownMenu,
   MenuItem
 } from './styles/DropdownList';
+import KeycodeConstants from '../../../../constants/KeycodeConstants';
 
 const DropdownList = ({
   selectedIndex,
@@ -24,12 +25,11 @@ const DropdownList = ({
 }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
-  useOnClickOutside(ref, () => {setOpen(false)});
+  useOnClickOutside(ref, () => setOpen(false));
 
   const handleUserKeyPress = useCallback(event => {
     const { keyCode } = event;
-    // ESC key
-    if (keyCode === 27) {
+    if (keyCode === KeycodeConstants.ESCAPE) {
       setOpen(false);
     }
   }, []);

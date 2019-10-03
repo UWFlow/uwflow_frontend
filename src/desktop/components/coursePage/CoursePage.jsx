@@ -84,7 +84,7 @@ const CoursePage = ({ loading, error, data, courseID }) => (
 
 CoursePage.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.object,
   courseID: PropTypes.string,
 };
 

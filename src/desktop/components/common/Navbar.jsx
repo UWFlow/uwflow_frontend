@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Search } from 'react-feather';
-import { useQuery } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { compose } from 'redux';
 import { withTheme } from 'styled-components';
 
@@ -9,7 +8,6 @@ import { withTheme } from 'styled-components';
 import {
   LANDING_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
-  EXPLORE_PAGE_ROUTE,
   isOnProfilePageRoute,
   isOnLandingPageRoute,
 } from '../../../Routes';
@@ -26,15 +24,12 @@ import {
 } from './styles/Navbar';
 
 /* Child Components */
-import Textbox from './Textbox';
 import AuthModal from '../auth/AuthModal';
 import DropdownList from './dropdownList/DropdownList';
+import SearchBar from './SearchBar';
 
 /* GraphQL Queries */
 import { GET_USER } from '../../../graphql/queries/profile/User';
-
-/* Constants */
-import KEYCODE from '../../../constants/KeycodeConstants';
 
 import { isLoggedIn } from '../../../utils/Auth';
 
@@ -42,7 +37,7 @@ const placeholderImage
   = 'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
 
 const renderProfilePicture = (data) => {
-    let user = {};
+    let user = { picture_url: null };
     if (data && data.user) {
       user = data.user[0];
     }
@@ -51,10 +46,8 @@ const renderProfilePicture = (data) => {
 }
 
 const Navbar = ({ history, location, theme }) => {
-  const [searchText, setSearchText] = useState('');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [, forceUpdate] = useState(false);
-  const { data } = useQuery(GET_USER);
 
   const handleProfileButtonClick = () => {
     if (isLoggedIn()) {
@@ -63,14 +56,6 @@ const Navbar = ({ history, location, theme }) => {
       setAuthModalOpen(true);
     }
   }
-
-  const handleSearch = (event, text) => {
-    if (event.keyCode === KEYCODE.ENTER) {
-      history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
-    }
-  };
-
-  const profilePicture = renderProfilePicture(data);
 
   if (isOnLandingPageRoute(location)) {
     return (
@@ -91,21 +76,18 @@ const Navbar = ({ history, location, theme }) => {
           <LogoWrapper to={LANDING_PAGE_ROUTE}>
             UW <BlueText>Flow</BlueText>
           </LogoWrapper>
-          <Textbox
-            icon={Search}
-            text={searchText}
-            setText={setSearchText}
-            placeholder="Explore or search for courses, subjects or professors"
-            handleKeyDown={handleSearch}
-            maxLength={100}
-          />
+          <SearchBar />
           <ProfileButtonWrapper>
             {isLoggedIn() ? (
               <>
-                <ProfileText onClick={handleProfileButtonClick}>
-                  {profilePicture}
-                  View profile
-                </ProfileText>
+                <Query query={GET_USER} variables={ {id: Number(localStorage.getItem('user_id'))} }>
+                  {({ data }) => (
+                    <ProfileText onClick={handleProfileButtonClick}>
+                      {renderProfilePicture(data)}
+                      View profile
+                    </ProfileText>
+                  )}
+                </Query>
                 <DropdownList
                   selectedIndex={-1}
                   color={theme.dark1}
@@ -115,6 +97,7 @@ const Navbar = ({ history, location, theme }) => {
                     if (idx === 0) {
                       // log out
                       localStorage.removeItem('token');
+                      localStorage.removeItem('user_id');
                       if (isOnProfilePageRoute(location)) {
                         history.push(LANDING_PAGE_ROUTE);
                       } else {

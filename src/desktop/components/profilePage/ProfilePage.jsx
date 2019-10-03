@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import { useQuery } from 'react-apollo';
 
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
@@ -134,17 +132,18 @@ const ProfilePageContent = ({ user }) => {
       </ModalHOC>
     </>
   );
-};
+}
 
-const ProfilePage = ({ loading, error, data }) => (
+const ProfilePage = ({ loading, data, error }) => (
   <ProfilePageWrapper>
-    {loading ? (
-      <p>Loading ...</p>
-    ) : error || !data ? (
-      <div>Error</div>
-    ) : (
-      <ProfilePageContent user={{ ...data.user[0] }} />
-    )}
+    {loading
+      ? (<p>Loading ...</p>)
+      : (error || !data)
+        ? <div>Error</div>
+        : (
+          <ProfilePageContent user={{...data.user[0]}} />
+        )
+    }
   </ProfilePageWrapper>
 );
 

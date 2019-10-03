@@ -6,7 +6,6 @@ const CourseFragment = {
       id
       code
       name
-      description
       course_reviews_aggregate {
         aggregate {
           count(columns: text)
@@ -16,13 +15,6 @@ const CourseFragment = {
       coreqs
       textbooks
       prereqs
-    }
-  `,
-  shallowCourseInfo: gql`
-    fragment ShallowCourseInfoFragment on course {
-      id
-      code
-      name
     }
   `,
   courseSchedule: gql`
@@ -50,6 +42,18 @@ const CourseFragment = {
         }
       }
       id
+    }
+  `,
+  courseSearchInfo: gql`
+    fragment CourseSearchInfoFragment on course {
+      id
+      code
+      name
+      profs_teaching {
+        prof {
+          name
+        }
+      }
     }
   `,
 };

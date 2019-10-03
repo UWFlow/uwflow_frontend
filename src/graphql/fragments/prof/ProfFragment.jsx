@@ -30,10 +30,15 @@ const ProfFragment = {
       }
     }
   `,
-  shallowProfInfo: gql`
-    fragment ShallowProfInfoFragment on prof {
+  profSearchInfo: gql`
+    fragment ProfSearchInfoFragment on prof {
       id
       name
+      prof_courses {
+        course {
+          code
+        }
+      }
     }
   `,
 };

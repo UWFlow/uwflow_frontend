@@ -4,7 +4,7 @@ import { Heading2 , PageContent} from '../../../../constants/Mixins';
 
 export const NotFoundPageWrapper = styled.div`
   min-height: 100%;
-  padding: 200px 0;
+  padding-top: 200px;
   margin: auto;
   ${PageContent}
 `;

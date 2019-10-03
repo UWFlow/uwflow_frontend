@@ -23,16 +23,16 @@ export const ExploreHeaderWrapper = styled.div`
 `;
 
 export const ExploreHeaderText = styled.div`
-  padding-top: 48px;
-  padding-bottom: 16px;
-  word-break: break-all;
   ${PageContent}
+  ${Heading2}
+  padding-top: 48px !important;
+  padding-bottom: 16px !important;
+  word-break: break-all;
   min-height: 104px;
   display: flex;
   flex-direction: row;
   margin: auto;
   position: relative;
-  ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;
 `;
