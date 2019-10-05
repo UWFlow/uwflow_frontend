@@ -32,6 +32,10 @@ export const LoadableAboutPage = loadable(() =>
   import(/* webpackPrefetch: true */ './pageSwitches/AboutPageSwitch'),
 );
 
+export const LoadablePrivacyPage = loadable(() =>
+  import(/* webpackPrefetch: true */ './pageSwitches/PrivacyPageSwitch'),
+);
+
 export const LoadableTestPage = loadable(() =>
   import(/* webpackPrefetch: true */ './desktop/components/testPage/TestPage'),
 );
