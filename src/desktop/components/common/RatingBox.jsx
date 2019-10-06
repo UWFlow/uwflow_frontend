@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PieChart, Pie, Cell } from 'recharts';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
   RatingBoxWrapper,
   LikesColumn,
-  NumbersInCircle,
-  LargePercentage,
-  GreyText,
   ProgressBarColumn,
   ProgressBarColumnWrapper,
   ProgressWrapper,
