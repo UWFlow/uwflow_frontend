@@ -241,9 +241,7 @@ const CourseReviews = ({ courseID, theme }) => {
       onClick: () => setShowingProfReviews(false),
     },
     {
-      title: `Professor reviews (${
-        data.prof_review_aggregate.aggregate.count
-      })`,
+      title: `Professor reviews (${data.prof_review_aggregate.aggregate.count})`,
       render: () => ProfFilterDropdown,
       onClick: () => setShowingProfReviews(true),
     },

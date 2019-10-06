@@ -8,10 +8,10 @@ import {
   ShortlistCourse,
   ShortListCourseText,
   ShortlistCourseCode,
-  ShortlistCourseName
+  ShortlistCourseName,
 } from './styles/ShortlistBox';
 
-import ShortlistStar from './ShortlistStar';
+import ShortlistStar from '../../../basicComponents/ShortlistStar';
 
 const ShortlistBox = ({ shortlistCourses }) => {
   return (
@@ -21,7 +21,7 @@ const ShortlistBox = ({ shortlistCourses }) => {
         <ShortlistCourse key={idx}>
           <ShortlistStar checked />
           <ShortListCourseText>
-            <ShortlistCourseCode to={"/course/1"}>
+            <ShortlistCourseCode to={'/course/1'}>
               {course.code}
             </ShortlistCourseCode>
             <ShortlistCourseName>{course.name}</ShortlistCourseName>
@@ -33,10 +33,12 @@ const ShortlistBox = ({ shortlistCourses }) => {
 };
 
 ShortlistBox.propTypes = {
-  shortlistCourses: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string,
-    name: PropTypes.string
-  })).isRequired
-}
+  shortlistCourses: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+      name: PropTypes.string,
+    }),
+  ).isRequired,
+};
 
 export default ShortlistBox;

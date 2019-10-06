@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
+import { ArrowRight, Clipboard } from 'react-feather';
 
 /* Styled Components */
 import {
@@ -17,8 +18,6 @@ import {
   SchedulePasteBoxWrapper,
   SchedulePasteBoxBackground,
   SchedulePasteBox,
-  RightArrow,
-  ClipboardIcon,
   GreyText,
   PrivacyPolicyWrapper,
   PrivacyPolicyText,
@@ -90,19 +89,19 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                 <ScheduleStep1Picture />
               </td>
               <td>
-                <RightArrow />
+                <ArrowRight color={theme.accent} height={100} width={80} />
               </td>
               <td>
                 <ScheduleStep2Picture />
               </td>
               <td>
-                <RightArrow />
+                <ArrowRight color={theme.accent} height={100} width={80} />
               </td>
               <td>
                 <ScheduleStep3Wrapper>
                   <SchedulePasteBoxWrapper>
                     <SchedulePasteBoxBackground>
-                      <ClipboardIcon />
+                      <Clipboard height={100} width={60} color={theme.dark3} />
                       <GreyText>Paste here! (Ctrl+V)</GreyText>
                     </SchedulePasteBoxBackground>
                     <SchedulePasteBox
