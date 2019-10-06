@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -53,4 +52,4 @@ ProfPage.propTypes = {
   courseID: PropTypes.string,
 };
 
-export default withRouter(ProfPage);
+export default ProfPage;
