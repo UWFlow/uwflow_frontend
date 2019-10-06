@@ -6,9 +6,16 @@ import { ProfPageWrapper } from './styles/ProfPage';
 
 /* Child Components */
 import NotFoundPage from '../notFoundPage/NotFoundPage';
+import ProfInfoHeader from './ProfInfoHeader';
+import ProfReviews from './ProfReviews';
 
 const ProfPageContent = ({ prof, profID }) => {
-  return <></>;
+  return (
+    <>
+      <ProfInfoHeader />
+      <ProfReviews />
+    </>
+  );
 };
 
 const ProfPage = ({ loading, error, data, profID }) => (
