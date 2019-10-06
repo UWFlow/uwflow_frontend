@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
+import { ArrowRight, Upload } from 'react-feather';
 
 /* Styled Components */
 import {
@@ -21,7 +22,6 @@ import {
   PrivacyPolicyLink,
   SkipStepWrapper,
 } from './styles/DataUploadModals';
-import { RightArrowIcon, UploadIcon } from '../../assets/FeatherIcons';
 
 /* Constants */
 import { TRANSCRIPT_PARSE_ENDPOINT } from '../../../constants/Api';
@@ -106,7 +106,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                 <TranscriptStep1Picture />
               </td>
               <td>
-                <RightArrowIcon color={theme.accent} height={100} width={80} />
+                <ArrowRight color={theme.accent} height={100} width={80} />
               </td>
               <td>
                 <ScheduleStep3Wrapper>
@@ -117,7 +117,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                     encType="multipart/form-data"
                   >
                     <TranscriptUploadBox>
-                      <UploadIcon height={100} width={60} color={theme.dark3} />
+                      <Upload height={100} width={60} color={theme.dark3} />
                       <GreyText>
                         Drag and drop your transcript file here!
                       </GreyText>
