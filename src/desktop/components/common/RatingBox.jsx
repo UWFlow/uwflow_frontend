@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PieChart, Pie, Cell } from 'recharts';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
   RatingBoxWrapper,
   LikesColumn,
-  NumbersInCircle,
-  LargePercentage,
-  GreyText,
   ProgressBarColumn,
   ProgressBarColumnWrapper,
   ProgressWrapper,
@@ -23,6 +19,7 @@ import {
 
 /* Child Components */
 import ProgressBar from '../../../basicComponents/ProgressBar';
+import CircularPercentage from '../../../basicComponents/statistics/CircularPercentage';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
@@ -38,26 +35,12 @@ const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
       ratingBoxWidth={RATING_BOX_WIDTH}
     >
       <LikesColumn>
-        <PieChart
-          width={RATING_BOX_HEIGHT - 32}
+        <CircularPercentage
           height={RATING_BOX_HEIGHT - 32}
-        >
-          <Pie
-            dataKey="value"
-            data={[{ value: likedPercent }, { value: 100 - likedPercent }]}
-            cx="50%"
-            cy="50%"
-            outerRadius={RATING_BOX_HEIGHT / 2 - 16}
-            innerRadius={RATING_BOX_HEIGHT / 2 - 32}
-          >
-            <Cell fill={theme.primary} />
-            <Cell fill={theme.light3} />
-          </Pie>
-        </PieChart>
-        <NumbersInCircle ratingBoxHeight={RATING_BOX_HEIGHT}>
-          <LargePercentage>{likedPercent}%</LargePercentage>
-          <GreyText>liked it</GreyText>
-        </NumbersInCircle>
+          percent={likedPercent}
+          barThickness={16}
+          label="liked it"
+        />
       </LikesColumn>
       <ProgressBarColumn>
         <ProgressBarColumnWrapper>

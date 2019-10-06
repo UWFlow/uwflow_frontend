@@ -20,26 +20,6 @@ export const LikesColumn = styled.div`
   position: relative;
 `;
 
-export const NumbersInCircle = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  bottom: 0;
-  left: 0;
-  height: ${({ ratingBoxHeight }) => ratingBoxHeight - 32}px;
-  width: ${({ ratingBoxHeight }) => ratingBoxHeight - 32}px;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const LargePercentage = styled.div`
-  ${Heading1};
-`;
-export const GreyText = styled.div`
-  color: ${({ theme }) => theme.dark2};
-  ${Small};
-`;
-
 export const ProgressBarColumn = styled.div`
   margin: 16px 0 16px 16px;
   display: flex;
