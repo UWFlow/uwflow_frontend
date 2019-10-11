@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { Heading1, Small } from '../../../constants/Mixins';
 
+export const CircleWrapper = styled.div`
+  position: relative;
+`;
+
 export const NumbersInCircle = styled.div`
   position: absolute;
   display: flex;

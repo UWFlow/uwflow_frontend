@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ProgressBarWrapper = styled.div`
-  width: ${({ width }) => width}px;
+  width: ${({ width }) => (Number.isInteger(width) ? `${width}px` : width)};
   height: ${({ height }) => height}px;
   display: flex;
   margin: 10px 8px 10px 0;

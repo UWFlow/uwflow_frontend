@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 /* Styled Components */
 import {
   ReviewWrapper,
-  ReviewPictureAndMetricsRow,
   ReviewTextWrapper,
   ReviewMetricsWrapper,
   ReviewMetricsBody,
@@ -53,27 +52,25 @@ const MetricIfExists = (metrics, metric) => {
 const Review = ({ upvotes, review, reviewer, prof, metrics }) => {
   return (
     <ReviewWrapper>
-      <ReviewPictureAndMetricsRow>
-        <ReviewPictureWrapper>
-          <ReviewPicture />
-          <ReviewUpvotes>{upvotes ? upvotes : 0}</ReviewUpvotes>
-        </ReviewPictureWrapper>
-        <ReviewMetricsWrapper>
-          <ReviewMetricsBody>
-            {MetricIfExists(metrics, 'clear')}
-            {MetricIfExists(metrics, 'engaging')}
-            {MetricIfExists(metrics, 'useful')}
-            {MetricIfExists(metrics, 'easy')}
-            {MetricIfExists(metrics, 'liked')}
-          </ReviewMetricsBody>
-        </ReviewMetricsWrapper>
-      </ReviewPictureAndMetricsRow>
+      <ReviewPictureWrapper>
+        <ReviewPicture />
+        <ReviewUpvotes>{upvotes ? upvotes : 0}</ReviewUpvotes>
+      </ReviewPictureWrapper>
       <ReviewTextWrapper>
         <ReviewText>{review}</ReviewText>
         <ReviewAuthor>
           -{reviewer.full_name}, a {review.program} student
         </ReviewAuthor>
       </ReviewTextWrapper>
+      <ReviewMetricsWrapper>
+        <ReviewMetricsBody>
+          {MetricIfExists(metrics, 'clear')}
+          {MetricIfExists(metrics, 'engaging')}
+          {MetricIfExists(metrics, 'useful')}
+          {MetricIfExists(metrics, 'easy')}
+          {MetricIfExists(metrics, 'liked')}
+        </ReviewMetricsBody>
+      </ReviewMetricsWrapper>
     </ReviewWrapper>
   );
 };
