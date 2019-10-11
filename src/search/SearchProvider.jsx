@@ -22,7 +22,7 @@ const SearchProvider = ({ searchWorker, children }) => {
         localStorage.setItem(SEARCH_DATA_ID, searchData);
       }
     });
-  }, []);
+  }, [searchWorker]);
 
   return (
     <SearchContext.Consumer>

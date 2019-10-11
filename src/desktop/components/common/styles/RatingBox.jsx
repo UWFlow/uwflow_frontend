@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading1, Small, Body, Link } from '../../../../constants/Mixins';
+import { Body, Link } from '../../../../constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`
   width: ${({ ratingBoxWidth }) => ratingBoxWidth}px;

@@ -22,11 +22,13 @@ import {
   ReviewButtonContents,
 } from './styles/ProfileCourses';
 
+import { termCodeToDate, splitCourseCode, processRating } from '../../../utils/Misc';
+
 const groupByTerm = courses => {
   return courses.reduce((groups, course) => {
-    const termName = course.termName;
-    groups[termName] = groups[termName] || [];
-    groups[termName].push(course);
+    const term = termCodeToDate(course.term);
+    groups[term] = groups[term] || [];
+    groups[term].push(course);
     return groups;
   }, {});
 };
@@ -37,15 +39,17 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
     return {
       title: termName,
       render: () => {
-        return courseGroups[termName].map((course, idx) => (
+        return courseGroups[termName].map((course_taken, idx) => (
           <ProfileCoursesCourse key={idx}>
             <ProfileCourseText>
-              <ProfileCourseCode to="/course/1">
-                {course.code}
+              <ProfileCourseCode to={`/course/${course_taken.course.code}`}>
+                {splitCourseCode(course_taken.course.code)}
               </ProfileCourseCode>
-              <ProfileCourseName>{course.name}</ProfileCourseName>
+              <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
             </ProfileCourseText>
-            <ProfileCourseLiked>{course.liked}%</ProfileCourseLiked>
+            <ProfileCourseLiked>
+              {processRating(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
+            </ProfileCourseLiked>
             <LikedThisCourseText>
               liked this
               <br />
@@ -85,15 +89,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
 
 ProfileCourses.propTypes = {
   theme: PropTypes.object.isRequired,
-  courses: PropTypes.arrayOf(
-    PropTypes.shape({
-      term: PropTypes.string,
-      termName: PropTypes.string,
-      code: PropTypes.string,
-      name: PropTypes.string,
-      liked: PropTypes.number,
-    }),
-  ).isRequired,
+  courses: PropTypes.arrayOf(PropTypes.object).isRequired,
   setReviewCourse: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
 };

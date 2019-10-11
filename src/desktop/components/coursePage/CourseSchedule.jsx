@@ -20,7 +20,7 @@ const secsToTime = secs => {
 };
 
 const CourseSchedule = ({ sections }) => {
-  if (!sections || sections.length == 0) {
+  if (!sections || sections.length === 0) {
     return null;
   }
   const termsOffered = sections.reduce((allTerms, curr) => {

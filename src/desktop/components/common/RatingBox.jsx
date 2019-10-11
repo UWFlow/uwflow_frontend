@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
@@ -27,8 +26,9 @@ export const RATING_BOX_WIDTH = 512;
 /*
   NOTE DATA FOR "LIKED" MUST BE PERCENTAGES[0]
 */
-const RatingBox = ({ percentages, numRatings, numReviews, theme }) => {
+const RatingBox = ({ percentages, numRatings, numReviews }) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
+
   return (
     <RatingBoxWrapper
       ratingBoxHeight={RATING_BOX_HEIGHT}
@@ -84,4 +84,4 @@ RatingBox.propTypes = {
   theme: PropTypes.object,
 };
 
-export default withTheme(RatingBox);
+export default RatingBox;
