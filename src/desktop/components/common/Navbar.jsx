@@ -31,6 +31,9 @@ import SearchBar from './SearchBar';
 /* GraphQL Queries */
 import { GET_USER } from '../../../graphql/queries/profile/User';
 
+/* Selectors */
+import { getIsBrowserDesktop } from '../../../data/reducers/BrowserReducer';
+
 import { isLoggedIn } from '../../../utils/Auth';
 
 const placeholderImage

@@ -13,8 +13,8 @@ import {
 } from './styles/ProfInfoHeader';
 
 const ProfInfoHeader = ({ prof }) => {
-  const percentClear = prof.reviewsAggregate.aggregate.avg.clear / 5;
-  const percentEngaging = prof.reviewsAggregate.aggregate.avg.engaging / 5;
+  const percentClear = prof.prof_reviews_aggregate.aggregate.avg.clear / 5;
+  const percentEngaging = prof.prof_reviews_aggregate.aggregate.avg.engaging / 5;
   return (
     <ProfInfoHeaderWrapper>
       <ProfNameSection>

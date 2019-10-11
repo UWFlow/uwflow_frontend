@@ -123,7 +123,7 @@ const ProfReviews = ({ profID, theme }) => {
 };
 
 ProfReviews.propTypes = {
-  profID: PropTypes.string.isRequired,
+  profID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   theme: PropTypes.object.isRequired,
 };
 

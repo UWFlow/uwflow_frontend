@@ -6,11 +6,11 @@ export const GET_PROF = gql`
   query GET_PROF($id: Int) {
     prof(where: { id: { _eq: $id } }) {
       ...ProfInfoFragment
-    }
-    prof_review_aggregate(where: { id: { _eq: $id } }) {
-      ...ProfReviewAggregateFragment
+      ...ProfReviewsAggregateFragment
+      ...ProfCourseReviewsAggregateFragment
     }
   }
   ${ProfFragment.profInfo}
-  ${ProfFragment.profReviewAggregate}
+  ${ProfFragment.profReviewsAggregate}
+  ${ProfFragment.profCourseReviewsAggregate}
 `;
