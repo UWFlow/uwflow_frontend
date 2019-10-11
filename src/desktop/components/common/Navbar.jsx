@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import { compose } from 'redux';
@@ -48,7 +49,11 @@ const renderProfilePicture = (data) => {
     return <ProfilePicture src={user.picture_url || placeholderImage} />;
 }
 
-const Navbar = ({ history, location, theme }) => {
+const mapStateToProps = state => ({
+  isDesktopPage: getIsBrowserDesktop(state),
+});
+
+const Navbar = ({ history, location, theme, isDesktopPage }) => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [, forceUpdate] = useState(false);
 
@@ -76,9 +81,11 @@ const Navbar = ({ history, location, theme }) => {
     <>
       <NavbarWrapper>
         <NavbarContent>
-          <LogoWrapper to={LANDING_PAGE_ROUTE}>
-            UW <BlueText>Flow</BlueText>
-          </LogoWrapper>
+          {isDesktopPage &&
+            <LogoWrapper to={LANDING_PAGE_ROUTE}>
+              UW <BlueText>Flow</BlueText>
+            </LogoWrapper>
+          }
           <SearchBar />
           <ProfileButtonWrapper>
             {isLoggedIn() ? (
@@ -87,7 +94,7 @@ const Navbar = ({ history, location, theme }) => {
                   {({ data }) => (
                     <ProfileText onClick={handleProfileButtonClick}>
                       {renderProfilePicture(data)}
-                      View profile
+                      {isDesktopPage && 'View profile'}
                     </ProfileText>
                   )}
                 </Query>
@@ -128,4 +135,4 @@ const Navbar = ({ history, location, theme }) => {
   );
 };
 
-export default compose(withTheme, withRouter)(Navbar);
+export default connect(mapStateToProps)(compose(withTheme, withRouter)(Navbar));

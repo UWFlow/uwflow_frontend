@@ -10,6 +10,11 @@ export const PageContent = `
     padding-left: 32px;
     padding-right: 32px;
   }
+
+  @media only screen and (max-width: 767px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 export const ModalZIndex = 'z-index: 2000;';
