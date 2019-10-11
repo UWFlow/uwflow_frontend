@@ -34,7 +34,10 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
       />
       <ColumnWrapper>
         <Column1>
+          {/*}
+          disabling course schedule for now cuz we don't handle the data properly
           <CourseSchedule courseID={courseID} />
+            {*/}
           <CourseReviewQuestionBox>
             <CourseReviewQuestionText>
               What do you think of {course.code}?

@@ -12,8 +12,8 @@ import ProfReviews from './ProfReviews';
 const ProfPageContent = ({ prof, profID }) => {
   return (
     <>
-      <ProfInfoHeader />
-      <ProfReviews />
+      <ProfInfoHeader prof={prof} />
+      <ProfReviews profID={profID} />
     </>
   );
 };

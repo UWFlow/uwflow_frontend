@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 /* Styled Components */
 import {
+  CircleWrapper,
   NumbersInCircle,
   LargePercentage,
   GreyText,
@@ -18,7 +19,7 @@ const CircularPercentage = ({
   barThickness,
   label,
 }) => (
-  <>
+  <CircleWrapper>
     <PieChart width={height} height={height}>
       <Pie
         dataKey="value"
@@ -36,7 +37,7 @@ const CircularPercentage = ({
       <LargePercentage>{percent}%</LargePercentage>
       <GreyText>{label}</GreyText>
     </NumbersInCircle>
-  </>
+  </CircleWrapper>
 );
 
 CircularPercentage.propTypes = {

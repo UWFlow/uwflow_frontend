@@ -14,12 +14,13 @@ export const ProfInfoHeaderWrapper = styled.div`
 
 export const ProfNameSection = styled.div`
   width: 100%;
-  min-height: 350px;
+  height: 130px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: flex-end;
   background-color: ${({ theme }) => theme.primary};
   position: relative;
+  padding: 16px;
 `;
 
 export const ProfDescriptionSection = styled.div`
@@ -31,11 +32,7 @@ export const ProfDescriptionSection = styled.div`
   display: flex;
 `;
 
-export const ProfNameWrapper = styled.div`
-  ${PageContent}
-  margin: auto;
-  margin-bottom: 48px;
-`;
+export const ProfNameWrapper = styled.div``;
 
 export const ProfName = styled.div`
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
