@@ -16,7 +16,10 @@ import {
 /* Child Components */
 import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
 
-const CourseInfoHeader = ({ course, liked, useful, easy }) => {
+const CourseInfoHeader = ({ course }) => {
+  const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
+  const { count, text_count } = course.course_reviews_aggregate.aggregate;
+
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
@@ -28,23 +31,20 @@ const CourseInfoHeader = ({ course, liked, useful, easy }) => {
       <CourseDescriptionSection>
         <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
           <RatingBox
-            numRatings={liked.aggregate.sum.count}
-            numReviews={course.course_reviews_aggregate.aggregate.count}
+            numRatings={count}
+            numReviews={text_count}
             percentages={[
               {
                 displayName: 'Likes',
-                percent:
-                  liked.aggregate.avg.liked / 5,
+                percent: liked / 5,
               },
               {
                 displayName: 'Useful',
-                percent:
-                  useful.aggregate.avg.useful / 5,
+                percent: useful / 5,
               },
               {
                 displayName: 'Easy',
-                percent:
-                  easy.aggregate.avg.easy / 5,
+                percent: easy / 5,
               },
             ]}
           />
@@ -58,10 +58,7 @@ const CourseInfoHeader = ({ course, liked, useful, easy }) => {
 };
 
 CourseInfoHeader.propTypes = {
-  course: PropTypes.object.isRequired,
-  liked: PropTypes.object.isRequired,
-  useful: PropTypes.object.isRequired,
-  easy: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired
 };
 
 export default CourseInfoHeader;

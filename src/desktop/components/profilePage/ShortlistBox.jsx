@@ -13,6 +13,8 @@ import {
 
 import ShortlistStar from '../../../basicComponents/ShortlistStar';
 
+import { splitCourseCode } from '../../../utils/Misc';
+
 const ShortlistBox = ({ shortlistCourses }) => {
   return (
     <ShortlistBoxWrapper>
@@ -21,8 +23,8 @@ const ShortlistBox = ({ shortlistCourses }) => {
         <ShortlistCourse key={idx}>
           <ShortlistStar checked />
           <ShortListCourseText>
-            <ShortlistCourseCode to={'/course/1'}>
-              {course.code}
+            <ShortlistCourseCode to={`/course/${course.code}`}>
+              {splitCourseCode(course.code)}
             </ShortlistCourseCode>
             <ShortlistCourseName>{course.name}</ShortlistCourseName>
           </ShortListCourseText>

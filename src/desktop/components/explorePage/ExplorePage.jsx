@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
+import { useQuery } from 'react-apollo';
 
 import {
   ExplorePageWrapper,
@@ -14,21 +15,26 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
+import { EXPLORE_CODE_QUERY } from '../../../graphql/queries/explore/Explore';
+import { useSearchContext } from '../../../search/SearchProvider';
+
 const NUM_COURSE_CODES = 5;
 
 const ExplorePageContent = ({
   query,
   terms,
-  courseSearch,
-  results
+  courseTab,
+  courses,
+  profs
 }) => {
   const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODES).fill(true));
   const [numRatings, setNumRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
   const [courseTaught, setCourseTaught] = useState(0);
-
-  const profCourses = courseSearch
+  const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
+ /*
+  const profCourses = courseTab
     ? []
     : Array.from(new Set(results.reduce(
       (acc, result) => acc.concat(result.courses),
@@ -107,11 +113,32 @@ const ExplorePageContent = ({
       </ColumnWrapper>
     </ExplorePageWrapper>
   );
+  */
+ return null;
 }
 
 const ExplorePage = ({ location }) => {
-  const { q: query, t } =   queryString.parse(location.search);
-  const courseSearch = !t || t === 'course' || t === 'c';
+  const { searchWorker } = useSearchContext();
+  const [courses, setCourses] = useState([]);
+  const [profs, setProfs] = useState([]);
+
+  useEffect(() => {
+    searchWorker.addEventListener('message', event => {
+      const { type } = event.data;
+      if (type === 'code_search' || type === 'search') {
+        const { courseResults, profResults } = event.data.results;
+        setCourses(courseResults);
+        setProfs(profResults);
+      }
+    });
+  }, [searchWorker]);
+
+
+  const { q: query, t: type, c: code } =   queryString.parse(location.search);
+  const courseTab = !type || type === 'course' || type === 'c';
+  const codeSearch = !!code;
+
+  searchWorker.postMessage({ type: codeSearch ? 'code_search' : 'search', query });
 
   const terms = [
     {
@@ -124,52 +151,15 @@ const ExplorePage = ({ location }) => {
     }
   ]
 
-  // TODO fetch actual data
-  const results = useMemo(() => courseSearch ? [
-    {
-      code: 'ECE 105',
-      name: 'Electricity and Magnetism',
-      ratings: 1295,
-      useful: '22%',
-      easy: '5%',
-      liked: '15%',
-      offered: ['1199']
-    },
-    {
-      code: 'MATH 239',
-      name: 'Introduction to Combinatorics',
-      ratings: 568,
-      useful: '89%',
-      easy: '32%',
-      liked: '65%',
-      offered: ['1195', '1199']
-    }
-  ] : [
-    {
-      name: 'Firas Mansour',
-      ratings: 125,
-      clear: '22%',
-      engaging: '5%',
-      liked: '15%',
-      courses: ['ECE 105']
-    },
-    {
-      name: 'Karen Yeats',
-      ratings: 249,
-      clear: '89%',
-      engaging: '32%',
-      liked: '65%',
-      courses: ['MATH 239']
-    }
-  ], [courseSearch]);
-
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
         query={query}
+        code={code}
         terms={terms}
-        courseSearch={courseSearch}
-        results={results}
+        courseTab={courseTab}
+        courses={courses}
+        profs={profs}
       />
     </ExplorePageWrapper>
   )

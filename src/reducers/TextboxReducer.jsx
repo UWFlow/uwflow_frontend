@@ -4,7 +4,7 @@ import {
   REGISTER_TEXTBOX,
   UNREGISTER_TEXTBOX,
   SET_TEXTBOX_TEXT,
-} from '../actions/TextboxActions';
+} from '../desktop/actions/TextboxActions';
 
 export default (
   state = {
