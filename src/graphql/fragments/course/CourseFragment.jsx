@@ -6,6 +6,7 @@ const CourseFragment = {
       id
       code
       name
+      description
       course_reviews_aggregate {
         aggregate {
           avg {

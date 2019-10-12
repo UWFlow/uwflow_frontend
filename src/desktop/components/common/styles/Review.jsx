@@ -67,10 +67,10 @@ export const SingleMetricWrapper = styled.tr``;
 export const SingleMetricSquares = styled.td`
   display: flex;
   justify-content: flex-end;
-  padding: 8px 0 8px 0;
+  padding: 0 0 16px 0;
 `;
 
 export const SingleMetricLabel = styled.td`
   ${Body}
-  padding: 8px 0 8px 4px;
+  padding: 0 0 16px 4px;
 `;

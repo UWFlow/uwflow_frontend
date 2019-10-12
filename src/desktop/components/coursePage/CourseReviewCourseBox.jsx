@@ -17,7 +17,7 @@ import { withTheme } from 'styled-components';
 /* Child Components */
 import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
 import RadioButton from '../../../basicComponents/RadioButton';
-import DropdownList from '../common/dropdownList/DropdownList';
+import DropdownList from '../../../basicComponents/DropdownList';
 import Button from '../../../basicComponents/Button';
 
 const easyOptions = [

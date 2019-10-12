@@ -11,6 +11,7 @@ export const ReviewWrapper = styled.div`
 
 export const ReviewPictureAndMetricsRow = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 export const ReviewPictureWrapper = styled.div`
@@ -48,12 +49,12 @@ export const SingleMetricWrapper = styled.tr``;
 export const SingleMetricSquares = styled.td`
   display: flex;
   justify-content: flex-end;
-  padding: 8px 0 8px 0;
+  padding-bottom: 4px;
 `;
 
 export const SingleMetricLabel = styled.td`
   ${Body}
-  padding: 8px 0 8px 4px;
+  padding-bottom: 4px;
 `;
 
 export const ReviewTextWrapper = styled.div`

@@ -26,7 +26,7 @@ import {
 
 /* Child Components */
 import AuthModal from '../../../auth/AuthModal';
-import DropdownList from './dropdownList/DropdownList';
+import DropdownList from '../../../basicComponents/DropdownList';
 import SearchBar from './SearchBar';
 
 /* GraphQL Queries */
