@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
@@ -8,9 +9,10 @@ import {
   ReviewTextWrapper,
   ReviewMetricsWrapper,
   ReviewMetricsBody,
-  ReviewPictureWrapper,
+  ReviewPictureAndUpvotesWrapper,
   ReviewPicture,
   ReviewUpvotes,
+  UpvoteNumber,
   ReviewText,
   ReviewAuthor,
   SingleMetricWrapper,
@@ -20,6 +22,7 @@ import {
 
 /* Child Components */
 import BubbleRatings from '../../../basicComponents/bubbleRatings/BubbleRatings';
+import { ThumbsUp } from 'react-feather';
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {
@@ -50,14 +53,24 @@ const MetricIfExists = (metrics, metric) => {
   }
 };
 
-const Review = ({ upvotes, review, reviewer, prof, metrics }) => {
+const Review = ({ upvotes, review, reviewer, metrics, theme }) => {
+  const userUpvoted = true;
   return (
     <ReviewWrapper>
       <ReviewPictureAndMetricsRow>
-        <ReviewPictureWrapper>
+        <ReviewPictureAndUpvotesWrapper>
           <ReviewPicture />
-          <ReviewUpvotes>{upvotes ? upvotes : 0}</ReviewUpvotes>
-        </ReviewPictureWrapper>
+          <ReviewUpvotes selected={userUpvoted}>
+            <ThumbsUp
+              color={userUpvoted ? 'white' : theme.dark3}
+              size={16}
+              strokeWidth={2}
+            />
+            <UpvoteNumber selected={userUpvoted}>
+              {upvotes ? upvotes : 0}
+            </UpvoteNumber>
+          </ReviewUpvotes>
+        </ReviewPictureAndUpvotesWrapper>
         <ReviewMetricsWrapper>
           <ReviewMetricsBody>
             {MetricIfExists(metrics, 'clear')}
@@ -95,4 +108,4 @@ Review.propTypes = {
   }),
 };
 
-export default Review;
+export default withTheme(Review);
