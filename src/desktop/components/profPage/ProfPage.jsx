@@ -14,13 +14,13 @@ import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 
-const ProfPageContent = ({ prof, profID }) => {
+const ProfPageContent = ({ prof }) => {
   return (
     <>
       <ProfInfoHeader prof={prof} />
       <ColumnWrapper>
         <Column1>
-          <ProfReviews profID={profID} />
+          <ProfReviews profID={prof.id} />
         </Column1>
         <Column2 />
       </ColumnWrapper>
@@ -28,20 +28,14 @@ const ProfPageContent = ({ prof, profID }) => {
   );
 };
 
-const ProfPage = ({ loading, error, data, profID }) => (
+const ProfPage = ({ loading, error, data }) => (
   <ProfPageWrapper>
     {loading ? (
       <div>Loading ...</div>
     ) : error || !data || data.prof.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that professor!" />
     ) : (
-      <ProfPageContent
-        prof={{
-          ...data.prof[0],
-          reviewsAggregate: data.prof_review_aggregate,
-        }}
-        profID={profID}
-      />
+      <ProfPageContent prof={data.prof[0]} />
     )}
   </ProfPageWrapper>
 );
@@ -49,7 +43,7 @@ const ProfPage = ({ loading, error, data, profID }) => (
 ProfPage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.object,
-  courseID: PropTypes.string,
+  data: PropTypes.object
 };
 
 export default ProfPage;

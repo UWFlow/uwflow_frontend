@@ -24,6 +24,10 @@ export const ReviewPicture = styled.div`
   border-radius: 4px 4px 0 0;
 `;
 
+export const ReviewPictureAndMetricsRow = styled.div`
+  display: flex;
+`;
+
 export const ReviewUpvotes = styled.div`
   width: 80px;
   background-color: ${({ theme }) => theme.primary};

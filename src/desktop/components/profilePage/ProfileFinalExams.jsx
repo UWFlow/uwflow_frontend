@@ -17,7 +17,7 @@ const examColumns = [
     Header: 'Course',
     accessor: 'code',
     maxWidth: 112,
-    Cell:  ({cell}) => <CourseCode to={`/course/1`}>{cell.value}</CourseCode>,
+    Cell:  ({cell}) => <CourseCode to={`/course/${cell.value}`}>{cell.value}</CourseCode>,
   },
   {
     Header: 'Section(s)',

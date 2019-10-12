@@ -7,7 +7,7 @@ export const courseColumns = [
     accessor: 'code',
     align: 'left',
     maxWidth: 112,
-    Cell: ({ value }) => <CourseCode to={`/course/1`}>{value}</CourseCode>,
+    Cell: ({ cell }) => <CourseCode to={`/course/${cell.value}`}>{cell.value}</CourseCode>,
   },
   {
     Header: 'Course Name',
@@ -45,7 +45,7 @@ export const profColumns = [
     Header: 'Professor name',
     accessor: 'name',
     align: 'left',
-    Cell: ({ value }) => <ProfName to={`/prof/1`}>{value}</ProfName>,
+    Cell: ({ value }) => <ProfName to={`/prof/${value}`}>{value}</ProfName>,
   },
   {
     Header: 'Ratings',

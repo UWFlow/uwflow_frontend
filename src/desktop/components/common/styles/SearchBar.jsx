@@ -4,7 +4,7 @@ import { BoxShadow, Body } from '../../../../constants/Mixins';
 export const SearchBarWrapper = styled.div`
   position: relative;
   width: 100%;
-  max-width: fit-content;
+  max-width: 640px;
   z-index: 10;
 `;
 

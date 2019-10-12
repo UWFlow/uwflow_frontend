@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 export const CoursePageSwitch = ({ isDesktopPage, match }) => {
   const courseID = match.params.courseID;
   const { loading, error, data } = useQuery(GET_COURSE, {
-    variables: { id: courseID },
+    variables: { code: courseID },
   });
   return isDesktopPage ? (
     <DesktopCoursePage

@@ -13,10 +13,6 @@ export const NavbarWrapper = styled.div`
   ${({ landingPage }) => landingPage ? '' : BoxShadow};
   border-radius: 4px;
   display: flex;
-
-  @media only screen and (max-width: 720px) {
-    padding: 0 5%;
-  }
 `;
 
 export const NavbarContent = styled.div`
@@ -25,6 +21,10 @@ export const NavbarContent = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: auto;
+
+  @media only screen and (max-width: 767px) {
+    padding: 0 16px;
+  }
 `;
 
 export const LogoWrapper = styled(Link)`
@@ -54,6 +54,10 @@ export const ProfileButtonWrapper = styled.div`
   border: none;
   margin-left: 40px;
   ${Heading4}
+
+  @media only screen and (max-width: 767px) {
+    margin-left: 24px;
+  }
 `;
 
 export const ProfilePicture = styled.img`
@@ -64,6 +68,10 @@ export const ProfilePicture = styled.img`
   margin-right: 16px;
   object-fit: cover;
   ${BoxShadow}
+
+  @media only screen and (max-width: 767px) {
+    margin-right: 0;
+  }
 `;
 
 export const ProfileText = styled.div`

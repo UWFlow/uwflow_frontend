@@ -5,11 +5,6 @@ const ProfFragment = {
     fragment ProfInfoFragment on prof {
       name
       id
-      prof_reviews_aggregate {
-        aggregate {
-          count(columns: text)
-        }
-      }
       course_reviews_aggregate {
         aggregate {
           avg {
@@ -20,23 +15,28 @@ const ProfFragment = {
       }
     }
   `,
-  profReviewAggregate: gql`
-    fragment ProfReviewAggregateFragment on prof_review_aggregate {
-      aggregate {
-        avg {
-          clear
-          engaging
+  profReviewsAggregate: gql`
+    fragment ProfReviewsAggregateFragment on prof {
+      prof_reviews_aggregate {
+        aggregate {
+          avg {
+            clear
+            engaging
+          }
+          count
+          text_count: count(columns: text)
         }
       }
     }
   `,
-  profSearchInfo: gql`
-    fragment ProfSearchInfoFragment on prof {
-      id
-      name
-      prof_courses {
-        course {
-          code
+  profCourseReviewsAggregate: gql`
+    fragment ProfCourseReviewsAggregateFragment on prof {
+      course_reviews_aggregate {
+        aggregate {
+          avg {
+            liked
+          }
+          count(columns: liked)
         }
       }
     }

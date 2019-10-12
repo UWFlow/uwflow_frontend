@@ -1,5 +1,4 @@
 import React from 'react';
-import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -11,7 +10,6 @@ import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 import { CourseScheduleWrapper } from './styles/CourseSchedule';
 
 /* GraphQL Queries */
-import { GET_COURSE_SCHEDULE } from '../../../graphql/queries/course/Course';
 import { termCodeToDate } from '../../../utils/Misc';
 
 const secsToTime = secs => {
@@ -21,18 +19,8 @@ const secsToTime = secs => {
   return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
 };
 
-const CourseSchedule = ({ courseID }) => {
-  const { loading, error, data } = useQuery(GET_COURSE_SCHEDULE, {
-    variables: { id: courseID },
-  });
-
-  const sections = data.course
-    ? data.course[0]
-      ? data.course[0].sections
-      : null
-    : null;
-
-  if (!sections || sections.length == 0) {
+const CourseSchedule = ({ sections }) => {
+  if (!sections || sections.length === 0) {
     return null;
   }
   const termsOffered = sections.reduce((allTerms, curr) => {

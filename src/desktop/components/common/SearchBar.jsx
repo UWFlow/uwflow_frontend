@@ -64,8 +64,8 @@ const SearchBar = ({ history }) => {
     setOpen(false);
   };
 
-  const goToCourse = (id) => {
-    history.push(`/course/${id}`);
+  const goToCourse = (code) => {
+    history.push(`/course/${code}`);
     setOpen(false);
   };
 
@@ -100,7 +100,7 @@ const SearchBar = ({ history }) => {
 
   const courseResult  = (course) => (
     <SearchResult
-      onClick={() => goToCourse(course.id)}
+      onClick={() => goToCourse(course.code.split(' ').join('').toLowerCase())} // convert back to raw code
       key={course.id}
     >
       <ResultLeft>
@@ -184,7 +184,7 @@ const SearchBar = ({ history }) => {
         options={{
           padding: '8px 24px',
           fontSize: '14px',
-          width: '640px',
+          width: '100%',
           borderRadius: open ? '4px 4px 0 0' : '4px',
           fontWeight: '600'
         }}

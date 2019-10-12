@@ -18,44 +18,6 @@ import {
   Column2,
 } from './styles/ProfilePage';
 
-const dummyCourses = [
-  {
-    term: '1195',
-    termName: 'Spring 2019',
-    code: 'CS 488',
-    name: 'Introduction to Computer Graphics',
-    liked: 87,
-  },
-  {
-    term: '1195',
-    termName: 'Spring 2019',
-    code: 'ECE 222',
-    name: 'Digital Computers',
-    liked: 55,
-  },
-  {
-    term: '1195',
-    termName: 'Spring 2019',
-    code: 'CS 341',
-    name: 'Algorithms',
-    liked: 95,
-  },
-  {
-    term: '1191',
-    termName: 'Fall 2018',
-    code: 'ECE 124',
-    name: 'Digital Circuits',
-    liked: 67,
-  },
-  {
-    term: '1191',
-    termName: 'Fall 2018',
-    code: 'CS 241',
-    name: 'Foundations of Sequential Programs',
-    liked: 82,
-  },
-];
-
 const dummyFinals = [
   {
     code: 'ECE 105',
@@ -73,21 +35,10 @@ const dummyFinals = [
   },
 ];
 
-const dummyShortlist = [
-  {
-    code: 'CS 480',
-    name: 'Introduction to Machine Learning',
-  },
-  {
-    code: 'CO 487',
-    name: 'Applied Cryptography',
-  },
-];
-
 const ProfilePageContent = ({ user }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
-  const courseCodes = dummyCourses.map(course => course.code);
+  const courseCodes = user.courses_taken.map(course_taken => course_taken.course.code);
 
   return (
     <>
@@ -96,7 +47,7 @@ const ProfilePageContent = ({ user }) => {
         <Column1>
           <ProfileCalendar />
           <ProfileCourses
-            courses={dummyCourses}
+            courses={user.courses_taken}
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
           />
@@ -115,7 +66,7 @@ const ProfilePageContent = ({ user }) => {
             hasCoursesReviewed={false}
             hasProfsReviewed={false}
           />
-          <ShortlistBox shortlistCourses={dummyShortlist} />
+          <ShortlistBox shortlistCourses={user.shortlist} />
         </Column2>
       </ColumnWrapper>
       <ModalHOC

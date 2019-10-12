@@ -28,14 +28,12 @@ export const ProfPageSwitch = ({ isDesktopPage, match }) => {
       loading={loading}
       error={error}
       data={data}
-      profID={profID}
     />
   ) : (
     <MobileProfPage
       loading={loading}
       error={error}
       data={data}
-      profID={profID}
     />
   );
 };

@@ -8,7 +8,13 @@ const CourseFragment = {
       name
       course_reviews_aggregate {
         aggregate {
-          count(columns: text)
+          avg {
+            easy
+            liked
+            useful
+          }
+          text_count: count(columns: text)
+          count
         }
       }
       antireqs
@@ -42,18 +48,6 @@ const CourseFragment = {
         }
       }
       id
-    }
-  `,
-  courseSearchInfo: gql`
-    fragment CourseSearchInfoFragment on course {
-      id
-      code
-      name
-      profs_teaching {
-        prof {
-          name
-        }
-      }
     }
   `,
 };

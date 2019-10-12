@@ -21,23 +21,17 @@ import {
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
-const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
+const CoursePageContent = ({ course }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   return (
     <>
       <CourseInfoHeader
         course={course}
-        liked={liked}
-        easy={easy}
-        useful={useful}
       />
       <ColumnWrapper>
         <Column1>
-          {/*}
-          disabling course schedule for now cuz we don't handle the data properly
-          <CourseSchedule courseID={courseID} />
-            {*/}
+          {/*<CourseSchedule sections={course.sections} />*/}
           <CourseReviewQuestionBox>
             <CourseReviewQuestionText>
               What do you think of {course.code}?
@@ -53,11 +47,11 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
             onCloseModal={() => setReviewModalOpen(false)}
           >
             <CourseReviewCourseBox
-              courseIDList={[courseID]}
+              courseIDList={[course.id]}
               onCancel={() => setReviewModalOpen(false)}
             />
           </ModalHOC>
-          <CourseReviews courseID={courseID} />
+          <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
           <ExtraInfoBox />
@@ -67,20 +61,14 @@ const CoursePageContent = ({ course, liked, easy, useful, courseID }) => {
   );
 };
 
-const CoursePage = ({ loading, error, data, courseID }) => (
+const CoursePage = ({ loading, error, data }) => (
   <CoursePageWrapper>
     {loading ? (
       <div>Loading ...</div>
     ) : error || !data || !data.course || data.course.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that course!" />
     ) : (
-      <CoursePageContent
-        course={data.course[0]}
-        easy={data.aggregate_course_easy_buckets_aggregate}
-        liked={data.aggregate_course_liked_buckets_aggregate}
-        useful={data.aggregate_course_useful_buckets_aggregate}
-        courseID={courseID}
-      />
+      <CoursePageContent course={data.course[0]} />
     )}
   </CoursePageWrapper>
 );
@@ -88,7 +76,7 @@ const CoursePage = ({ loading, error, data, courseID }) => (
 CoursePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.object,
-  courseID: PropTypes.string,
+  data: PropTypes.object
 };
 
 export default CoursePage;
