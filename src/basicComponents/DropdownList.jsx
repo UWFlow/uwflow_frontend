@@ -1,6 +1,6 @@
-import React,{ useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import useOnClickOutside from 'use-onclickoutside'
+import useOnClickOutside from 'use-onclickoutside';
 import { ChevronDown } from 'react-feather';
 
 /* Styled Components */
@@ -8,9 +8,9 @@ import {
   DropdownWrapper,
   DropdownControl,
   DropdownMenu,
-  MenuItem
+  MenuItem,
 } from './styles/DropdownList';
-import KeycodeConstants from '../../../../constants/KeycodeConstants';
+import KeycodeConstants from '../constants/KeycodeConstants';
 
 const DropdownList = ({
   selectedIndex,
@@ -21,7 +21,7 @@ const DropdownList = ({
   zIndex = 4,
   width = 'fit-content',
   margin = 'auto',
-  itemColor = null
+  itemColor = null,
 }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
@@ -43,13 +43,9 @@ const DropdownList = ({
 
   return (
     <DropdownWrapper zIndex={zIndex} ref={ref} width={width} margin={margin}>
-      <DropdownControl
-        open={open}
-        color={color}
-        onClick={() => setOpen(!open)}
-      >
+      <DropdownControl open={open} color={color} onClick={() => setOpen(!open)}>
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
-        <ChevronDown/>
+        <ChevronDown />
       </DropdownControl>
       <DropdownMenu open={open}>
         {options.map((opt, idx) => (
@@ -79,7 +75,7 @@ DropdownList.propTypes = {
   placeholder: PropTypes.string,
   width: PropTypes.string,
   margin: PropTypes.string,
-  itemColor: PropTypes.string
+  itemColor: PropTypes.string,
 };
 
 export default DropdownList;

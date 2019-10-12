@@ -9,8 +9,6 @@ import {
 } from './styles/CollapseableContainer';
 import { ChevronDown } from 'react-feather';
 
-export const HEADER_HEIGHT = 30;
-
 const CollapseableContainer = ({
   title,
   renderContent,

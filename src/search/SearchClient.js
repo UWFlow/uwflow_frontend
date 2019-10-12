@@ -12,8 +12,8 @@ const searchOptions = {
 
 const codeSearchOptions = {
   fuzzy: 0,
-  prefix: false
-}
+  prefix: false,
+};
 
 const courseIndexOptions = {
   searchOptions: {
@@ -22,7 +22,7 @@ const courseIndexOptions = {
   },
   fields: ['code', 'name'],
   storeFields: ['code', 'name'],
-}
+};
 
 const profIndexOptions = {
   searchOptions: {
@@ -31,13 +31,13 @@ const profIndexOptions = {
   },
   fields: ['name', 'courses'],
   storeFields: ['name', 'courses'],
-}
+};
 
 const courseCodeIndexOptions = {
   searchOptions,
   fields: ['code'],
   storeFields: ['code'],
-}
+};
 
 class SearchClient {
   constructor() {
@@ -48,52 +48,64 @@ class SearchClient {
 
   codeSearch(query = '') {
     if (query.length === 0) {
-      return { courseResults: [], profResults: [], courseCodeResults: [] }
+      return { courseResults: [], profResults: [], courseCodeResults: [] };
     }
 
-    const courseResults = this.courseIndex.search(parsedQuery, codeSearchOptions);
+    const courseResults = this.courseIndex.search(
+      parsedQuery,
+      codeSearchOptions,
+    );
     const profResults = this.profIndex.search(parsedQuery, codeSearchOptions);
 
     return {
       courseResults,
       profResults,
-    }
+    };
   }
 
   search(query = '') {
     if (query.length === 0) {
-      return { courseResults: [], profResults: [], courseCodeResults: [] }
+      return { courseResults: [], profResults: [], courseCodeResults: [] };
     }
 
-    const courseResults = this.courseIndex.search(parsedQuery, { fields: ['code', 'name'] });
-    const profResults = this.profIndex.search(parsedQuery, { fields: ['name', 'courses'] });
+    const courseResults = this.courseIndex.search(parsedQuery, {
+      fields: ['code', 'name'],
+    });
+    const profResults = this.profIndex.search(parsedQuery, {
+      fields: ['name', 'courses'],
+    });
 
     return {
       courseResults,
       profResults,
-    }
+    };
   }
 
   autocomplete(query = '') {
     if (query.length === 1) {
-      return { courseResults: [], profResults: [], courseCodeResults: [] }
+      return { courseResults: [], profResults: [], courseCodeResults: [] };
     }
 
     if (query.length > MAX_AUTOCOMPLETE_LENGTH) {
       query = query.slice(0, MAX_AUTOCOMPLETE_LENGTH);
     }
 
-    const parsedQuery = query.split(' ').map(term => splitCourseCode(term)).join(' ');
+    const parsedQuery = query
+      .split(' ')
+      .map(term => splitCourseCode(term))
+      .join(' ');
 
     const courseResults = this.courseIndex.search(parsedQuery).slice(0, 4);
     const profResults = this.profIndex.search(parsedQuery).slice(0, 2);
-    const courseCodeResults = this.courseCodeIndex.search(parsedQuery).slice(0, 2);
+    const courseCodeResults = this.courseCodeIndex
+      .search(parsedQuery)
+      .slice(0, 2);
 
     return {
       courseResults,
       profResults,
       courseCodeResults,
-    }
+    };
   }
 
   async buildIndices(searchData) {
@@ -104,7 +116,9 @@ class SearchClient {
 
     // fetch data if not passed in from localstorage
     if (searchData === null) {
-      const response = await fetch(`${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`);
+      const response = await fetch(
+        `${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`,
+      );
       parsedSearchData = await response.json();
     } else {
       parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData));
@@ -119,20 +133,23 @@ class SearchClient {
       return {
         ...course,
         code: splitCourseCode(course.code),
-        profs: course.profs === null ? '' : course.profs.join(' ')
-      }
+        profs: course.profs === null ? '' : course.profs.join(' '),
+      };
     });
 
     const profs = parsedSearchData.profs.map(prof => {
       return {
         ...prof,
-        courses: prof.courses === null
-          ? '' : prof.courses.map(course => splitCourseCode(course)).join(' ')
-      }
+        courses:
+          prof.courses === null
+            ? ''
+            : prof.courses.map(course => splitCourseCode(course)).join(' '),
+      };
     });
 
-    const courseCodes = Array.from(courseCodeSet)
-      .map((code, idx) => Object({ id: idx, code }));
+    const courseCodes = Array.from(courseCodeSet).map((code, idx) =>
+      Object({ id: idx, code }),
+    );
 
     // build new indices
     newCourseIndex.addAll(courses);

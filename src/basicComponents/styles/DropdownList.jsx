@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading4, BoxShadow } from '../../../../../constants/Mixins';
+import { Heading4, BoxShadow } from '../../constants/Mixins';
 
 export const DropdownWrapper = styled.div`
   color: ${({ color }) => color};
@@ -18,11 +18,11 @@ export const DropdownControl = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${({ theme, open, color }) => open ? theme.light3 : color};
+  color: ${({ theme, open, color }) => (open ? theme.light3 : color)};
   ${Heading4}
 `;
 
-export const DropdownMenu= styled.div`
+export const DropdownMenu = styled.div`
   display: flex;
   display: ${({ open }) => (open ? 'block' : 'none')};
   position: absolute;
@@ -43,8 +43,9 @@ export const MenuItem = styled.button`
   text-align: left;
 
   color: ${({ theme, selected, itemColor }) =>
-    itemColor ? itemColor : (selected ? theme.dark1 : theme.dark2)};
-  background-color: ${({theme, selected}) => selected ? theme.light2 : theme.white};
+    itemColor ? itemColor : selected ? theme.dark1 : theme.dark2};
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.light2 : theme.white};
   padding: 16px;
   border-radius: 0;
   border: 1px solid ${({ theme }) => theme.light2};
@@ -57,12 +58,13 @@ export const MenuItem = styled.button`
   &:last-child {
     border-radius: 0 0 4px 4px;
   }
-  
+
   &:only-child {
     border-radius: 4px;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: ${({ theme }) => theme.primary};
   }
 `;

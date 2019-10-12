@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
@@ -19,7 +20,7 @@ const mapStateToProps = state => ({
 });
 
 export const CoursePageSwitch = ({ isDesktopPage, match }) => {
-  const courseID = match.params.courseID;
+  const courseID = _.replace(_.toLower(match.params.courseID), ' ', '');
   const { loading, error, data } = useQuery(GET_COURSE, {
     variables: { code: courseID },
   });

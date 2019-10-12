@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Heading3, BoxShadow } from '../../../../constants/Mixins';
-import { HEADER_HEIGHT } from '../CollapseableContainer';
+
+const HEADER_HEIGHT = 50;
 
 export const ContainerWrapper = styled.div`
   display: flex;
@@ -18,6 +19,9 @@ export const HeaderWrapper = styled.div`
 export const HeaderTitleBox = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
+  background: white;
+  width: 100%;
 `;
 
 export const HeaderTitleText = styled.div`
@@ -26,6 +30,12 @@ export const HeaderTitleText = styled.div`
 
 export const HeaderChevronBox = styled.div`
   width: ${HEADER_HEIGHT}px;
+  height: ${HEADER_HEIGHT}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-export const ContentWrapper = styled.div``;
+export const ContentWrapper = styled.div`
+  background: white;
+`;
