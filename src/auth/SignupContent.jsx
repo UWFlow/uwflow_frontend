@@ -12,14 +12,14 @@ import {
 } from './styles/AuthForm';
 
 /* Child Components */
-import Textbox from '../common/Textbox';
-import Button from '../../../basicComponents/Button';
+import Textbox from '../basicComponents/Textbox';
+import Button from '../basicComponents/Button';
 
-import { validateEmail } from '../../../utils/Email';
+import { validateEmail } from '../utils/Email';
 import {
   BACKEND_ENDPOINT,
   EMAIL_AUTH_REGISTER_ENDPOINT,
-} from '../../../constants/Api';
+} from '../constants/Api';
 
 const MIN_PASSWORD_LENGTH = 6;
 

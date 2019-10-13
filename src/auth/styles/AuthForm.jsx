@@ -1,20 +1,15 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {
-  Heading2,
-  Heading4,
-  Body,
-  BoxShadow,
-} from '../../../../constants/Mixins';
+import { Heading2, Heading4, Body, BoxShadow } from '../../constants/Mixins';
 
 export const Wrapper = styled.div`
-  ${BoxShadow}  
+  ${BoxShadow}
   background: white;
   display: flex;
   flex-direction: column;
   margin-top: 32px;
   margin-bottom: 32px;
-  width: 400px;
+  width: ${({ width }) => width}px;
   border-radius: 4px;
   height: fit-content;
 `;

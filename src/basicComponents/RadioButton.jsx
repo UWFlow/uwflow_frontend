@@ -9,7 +9,7 @@ import {
   RadioButtonWrapper,
   RadioButtonOption,
   RadioButtonText,
-} from '../desktop/components/common/styles/RadioButton';
+} from './styles/RadioButton';
 
 const RadioButton = ({
   color,
