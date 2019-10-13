@@ -5,14 +5,22 @@ import PropTypes from 'prop-types';
 import CourseInfoHeader from './CourseInfoHeader';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 import CourseReviews from './CourseReviews';
+import CourseExtraInfo from './CourseExtraInfo';
 
 /* Styled Components */
 import { CoursePageWrapper } from './styles/CoursePage';
 
 const CoursePageContent = ({ course }) => {
+  console.log(course);
   return (
     <>
       <CourseInfoHeader course={course} />
+      <CourseExtraInfo
+        courseCode={course.code}
+        prereqs={course.prerequisites}
+        postreqs={course.postrequisites}
+        textbooks={course.textbooks}
+      />
       <CourseReviews courseID={course.id} />
     </>
   );

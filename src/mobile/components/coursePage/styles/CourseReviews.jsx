@@ -50,7 +50,8 @@ export const ProfName = styled.div`
 
 export const ProfLikedMetric = styled.div`
   display: flex;
-  margin: 16px;
+  margin: 8px 16px 16px 16px;
+  align-items: center;
 `;
 
 export const ProfLikedPercent = styled.div`
@@ -64,4 +65,6 @@ export const ProfLikedPercentLabel = styled.div`
 
 export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
+  padding: 24px 16px;
+  border-bottom: 2px solid ${({ theme }) => theme.light2};
 `;

@@ -22,6 +22,20 @@ const CourseFragment = {
       coreqs
       textbooks
       prereqs
+      prerequisites {
+        course {
+          code
+          id
+          name
+        }
+      }
+      postrequisites {
+        course {
+          code
+          id
+          name
+        }
+      }
     }
   `,
   courseSchedule: gql`

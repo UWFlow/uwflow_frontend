@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Heading3, BoxShadow } from '../../../../constants/Mixins';
 
-const HEADER_HEIGHT = 50;
+const HEADER_HEIGHT = 60;
 
 export const ContainerWrapper = styled.div`
   display: flex;

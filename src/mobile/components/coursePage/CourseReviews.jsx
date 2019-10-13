@@ -96,9 +96,10 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = reviewsByProf => {
+const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
   return (
     <CourseProfReviewsWrapper>
+      {ProfFilterDropdown}
       {reviewsByProf.map((curr, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
           <ProfName>{curr.prof}</ProfName>
@@ -221,7 +222,7 @@ const CourseReviews = ({ courseID, theme }) => {
   return (
     <CourseReviewWrapper>
       <CollapseableContainer
-        title="Course comments"
+        title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
         renderContent={() =>
           CourseCourseReviews(
             courseReviews,
@@ -234,8 +235,10 @@ const CourseReviews = ({ courseID, theme }) => {
         }
       />
       <CollapseableContainer
-        title="Professor comments"
-        renderContent={() => CourseProfReviews(reviewsByProf)}
+        title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
+        renderContent={() =>
+          CourseProfReviews(reviewsByProf, ProfFilterDropdown)
+        }
       />
     </CourseReviewWrapper>
   );
