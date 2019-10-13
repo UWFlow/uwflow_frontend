@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { ProfPageWrapper } from './styles/ProfPage';
 
 /* Child Components */
-import NotFoundPage from '../notFoundPage/NotFoundPage';
+import NotFoundPage from '../../../desktop/components/notFoundPage/NotFoundPage';
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
 
@@ -33,7 +33,7 @@ const ProfPage = ({ loading, error, data }) => (
 ProfPage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.object,
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default ProfPage;
