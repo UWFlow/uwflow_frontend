@@ -10,6 +10,7 @@ export const LandingPageWrapper = styled.div`
   width: 100%;
   height: 100%;
   ${PageContentZIndex}
+  padding: 16px;
 `;
 
 export const LandingPageContent = styled.div`
