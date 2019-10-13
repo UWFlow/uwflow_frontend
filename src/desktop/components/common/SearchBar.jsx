@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Search, Layers, Square, User, Users } from 'react-feather';
-import useOnClickOutside from 'use-onclickoutside'
+import useOnClickOutside from 'use-onclickoutside';
 
 /* Routes */
 import { EXPLORE_PAGE_ROUTE } from '../../../Routes';
@@ -18,10 +18,10 @@ import {
   Dash,
   ExploreCourseProfs,
   ExploreProfCourses,
-  ResultLeft
+  ResultLeft,
 } from './styles/SearchBar';
 
-import Textbox from './Textbox';
+import Textbox from '../../../basicComponents/Textbox';
 import { useSearchContext } from '../../../search/SearchProvider';
 
 /* Constants */
@@ -59,20 +59,20 @@ const SearchBar = ({ history }) => {
 
   useOnClickOutside(ref, () => setOpen(false));
 
-  const queryExploreCourses = (text) => {
+  const queryExploreCourses = text => {
     history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
     setOpen(false);
   };
 
-  const goToCourse = (code) => {
+  const goToCourse = code => {
     history.push(`/course/${code}`);
     setOpen(false);
   };
 
-  const goToProf = (id) => {
+  const goToProf = id => {
     history.push(`/prof/${id}`);
     setOpen(false);
-  }
+  };
 
   const handleSearch = (event, text) => {
     if (event.keyCode === KeycodeConstants.ENTER) {
@@ -80,17 +80,14 @@ const SearchBar = ({ history }) => {
     }
   };
 
-  const handleKeyStroke = (value) => {
+  const handleKeyStroke = value => {
     setSearchText(value);
     setOpen(value !== '');
     searchWorker.postMessage({ type: 'autocomplete', query: value });
-  }
+  };
 
-  const exploreResult  = (code = '') => (
-    <SearchResult
-      onClick={() => queryExploreCourses(searchText)}
-      key={code}
-    >
+  const exploreResult = (code = '') => (
+    <SearchResult onClick={() => queryExploreCourses(searchText)} key={code}>
       <ExploreText>
         <Layers />
         Explore all {code.toUpperCase()} courses and professors
@@ -98,9 +95,16 @@ const SearchBar = ({ history }) => {
     </SearchResult>
   );
 
-  const courseResult  = (course) => (
+  const courseResult = course => (
     <SearchResult
-      onClick={() => goToCourse(course.code.split(' ').join('').toLowerCase())} // convert back to raw code
+      onClick={() =>
+        goToCourse(
+          course.code
+            .split(' ')
+            .join('')
+            .toLowerCase(),
+        )
+      } // convert back to raw code
       key={course.id}
     >
       <ResultLeft>
@@ -111,20 +115,19 @@ const SearchBar = ({ history }) => {
         <Dash>&mdash;</Dash>
         {course.name}
       </ResultLeft>
-      <ExploreCourseProfs onClick={(e) => {
-        e.stopPropagation();
-        queryExploreCourses(course.code);
-      }}>
+      <ExploreCourseProfs
+        onClick={e => {
+          e.stopPropagation();
+          queryExploreCourses(course.code);
+        }}
+      >
         <Users />
       </ExploreCourseProfs>
     </SearchResult>
   );
 
-  const profResult  = (prof) => (
-    <SearchResult
-      onClick={() => goToProf(prof.id)}
-      key={prof.id}
-    >
+  const profResult = prof => (
+    <SearchResult onClick={() => goToProf(prof.id)} key={prof.id}>
       <ResultLeft>
         <ProfText>
           <User />
@@ -133,10 +136,12 @@ const SearchBar = ({ history }) => {
         <Dash>&mdash;</Dash>
         Professor
       </ResultLeft>
-      <ExploreProfCourses onClick={(e) => {
-        e.stopPropagation();
-        queryExploreCourses(prof.name);
-      }}>
+      <ExploreProfCourses
+        onClick={e => {
+          e.stopPropagation();
+          queryExploreCourses(prof.name);
+        }}
+      >
         <Layers />
       </ExploreProfCourses>
     </SearchResult>
@@ -151,14 +156,21 @@ const SearchBar = ({ history }) => {
       return exploreResult();
     }
 
-    const courseCodeResults = searchResults.courseCodeResults && searchResults.courseCodeResults.length > 0 ?
-      searchResults.courseCodeResults.map(result => exploreResult(result.code)) : exploreResult();
+    const courseCodeResults =
+      searchResults.courseCodeResults &&
+      searchResults.courseCodeResults.length > 0
+        ? searchResults.courseCodeResults.map(result =>
+            exploreResult(result.code),
+          )
+        : exploreResult();
 
-    const courseResults = searchResults.courseResults ?
-      searchResults.courseResults.map(result => courseResult(result)) : null;
+    const courseResults = searchResults.courseResults
+      ? searchResults.courseResults.map(result => courseResult(result))
+      : null;
 
-    const profResults = searchResults.profResults ?
-      searchResults.profResults.map(result => profResult(result)) : null;
+    const profResults = searchResults.profResults
+      ? searchResults.profResults.map(result => profResult(result))
+      : null;
 
     return (
       <SearchResultsWrapper>
@@ -167,11 +179,11 @@ const SearchBar = ({ history }) => {
         {profResults}
       </SearchResultsWrapper>
     );
-  }
+  };
 
   const autocompleteResult = () => {
     return null;
-  }
+  };
 
   return (
     <SearchBarWrapper ref={ref}>
@@ -186,7 +198,7 @@ const SearchBar = ({ history }) => {
           fontSize: '14px',
           width: '100%',
           borderRadius: open ? '4px 4px 0 0' : '4px',
-          fontWeight: '600'
+          fontWeight: '600',
         }}
         maxLength={100}
         autocompletePlaceholder={autocompleteResult()}
@@ -194,6 +206,6 @@ const SearchBar = ({ history }) => {
       {open && renderSearchResults()}
     </SearchBarWrapper>
   );
-}
+};
 
 export default withRouter(SearchBar);

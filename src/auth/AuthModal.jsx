@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import ModalHOC from '../../../basicComponents/modal/ModalHOC';
+import ModalHOC from '../basicComponents/modal/ModalHOC';
 import AuthForm from './AuthForm';
 
-const AuthModal = ({ isModalOpen, onCloseModal }) => (
+const AuthModal = ({ isModalOpen, onCloseModal, width }) => (
   <ModalHOC isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
-    <AuthForm onAuthComplete={onCloseModal} />
+    <AuthForm onAuthComplete={onCloseModal} width={width} />
   </ModalHOC>
 );
 

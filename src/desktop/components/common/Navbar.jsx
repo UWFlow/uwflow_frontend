@@ -21,11 +21,11 @@ import {
   ProfileButtonWrapper,
   NavbarContent,
   ProfilePicture,
-  ProfileText
+  ProfileText,
 } from './styles/Navbar';
 
 /* Child Components */
-import AuthModal from '../auth/AuthModal';
+import AuthModal from '../../../auth/AuthModal';
 import DropdownList from './dropdownList/DropdownList';
 import SearchBar from './SearchBar';
 
@@ -37,17 +37,17 @@ import { getIsBrowserDesktop } from '../../../data/reducers/BrowserReducer';
 
 import { isLoggedIn } from '../../../utils/Auth';
 
-const placeholderImage
-  = 'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
+const placeholderImage =
+  'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
 
-const renderProfilePicture = (data) => {
-    let user = { picture_url: null };
-    if (data && data.user) {
-      user = data.user[0];
-    }
+const renderProfilePicture = data => {
+  let user = { picture_url: null };
+  if (data && data.user) {
+    user = data.user[0];
+  }
 
-    return <ProfilePicture src={user.picture_url || placeholderImage} />;
-}
+  return <ProfilePicture src={user.picture_url || placeholderImage} />;
+};
 
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
@@ -63,7 +63,7 @@ const Navbar = ({ history, location, theme, isDesktopPage }) => {
     } else {
       setAuthModalOpen(true);
     }
-  }
+  };
 
   if (isOnLandingPageRoute(location)) {
     return (
@@ -74,23 +74,26 @@ const Navbar = ({ history, location, theme, isDesktopPage }) => {
           </LogoWrapper>
         </NavbarContent>
       </NavbarWrapper>
-    )
+    );
   }
 
   return (
     <>
       <NavbarWrapper>
         <NavbarContent>
-          {isDesktopPage &&
+          {isDesktopPage && (
             <LogoWrapper to={LANDING_PAGE_ROUTE}>
               UW <BlueText>Flow</BlueText>
             </LogoWrapper>
-          }
+          )}
           <SearchBar />
           <ProfileButtonWrapper>
             {isLoggedIn() ? (
               <>
-                <Query query={GET_USER} variables={ {id: Number(localStorage.getItem('user_id'))} }>
+                <Query
+                  query={GET_USER}
+                  variables={{ id: Number(localStorage.getItem('user_id')) }}
+                >
                   {({ data }) => (
                     <ProfileText onClick={handleProfileButtonClick}>
                       {renderProfilePicture(data)}
@@ -103,7 +106,7 @@ const Navbar = ({ history, location, theme, isDesktopPage }) => {
                   color={theme.dark1}
                   itemColor={theme.dark1}
                   options={['Log out']}
-                  onChange={(idx) => {
+                  onChange={idx => {
                     if (idx === 0) {
                       // log out
                       localStorage.removeItem('token');
@@ -111,28 +114,33 @@ const Navbar = ({ history, location, theme, isDesktopPage }) => {
                       if (isOnProfilePageRoute(location)) {
                         history.push(LANDING_PAGE_ROUTE);
                       } else {
-                        forceUpdate(x => !x)
+                        forceUpdate(x => !x);
                       }
                     }
                   }}
-                  placeholder=''
+                  placeholder=""
                 />
               </>
             ) : (
               <ProfileText onClick={handleProfileButtonClick}>
                 Log in
               </ProfileText>
-            )
-          }
+            )}
           </ProfileButtonWrapper>
         </NavbarContent>
       </NavbarWrapper>
       <AuthModal
         isModalOpen={authModalOpen}
         onCloseModal={() => setAuthModalOpen(false)}
+        width={isDesktopPage ? 400 : 350}
       />
     </>
   );
 };
 
-export default connect(mapStateToProps)(compose(withTheme, withRouter)(Navbar));
+export default connect(mapStateToProps)(
+  compose(
+    withTheme,
+    withRouter,
+  )(Navbar),
+);

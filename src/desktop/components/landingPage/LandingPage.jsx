@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
@@ -11,11 +11,11 @@ import {
   Subheading,
   BackgroundImage,
   BlueBackground,
-  AuthContent
+  AuthContent,
 } from './styles/LandingPage';
 
 /* Child Components */
-import AuthForm from '../auth/AuthForm';
+import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
 import { isLoggedIn } from '../../../utils/Auth';
@@ -27,13 +27,16 @@ const LandingPage = ({ history }) => {
 
   const handleAuthComplete = () => {
     forceUpdate(x => !x);
-  }
+  };
 
   return (
     <LandingPageWrapper>
       <LandingPageContent>
         <Column1>
-          <TitleText>Join 16,500+<br /> UW students on Flow</TitleText>
+          <TitleText>
+            Join 16,500+
+            <br /> UW students on Flow
+          </TitleText>
           <SearchBar />
           <Subheading>
             Plan courses
@@ -47,9 +50,11 @@ const LandingPage = ({ history }) => {
           <BlueBackground />
           <BackgroundImage image={Background} />
           <AuthContent>
-            {isLoggedIn()
-              ? history.push(PROFILE_PAGE_ROUTE)
-              : <AuthForm onAuthComplete={handleAuthComplete} />}
+            {isLoggedIn() ? (
+              history.push(PROFILE_PAGE_ROUTE)
+            ) : (
+              <AuthForm onAuthComplete={handleAuthComplete} />
+            )}
           </AuthContent>
         </Column2>
       </LandingPageContent>

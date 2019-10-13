@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
-import { SearchInput, SearchInputWrapper, AutocompleteInput, Icon } from './styles/Textbox';
+import {
+  SearchInput,
+  SearchInputWrapper,
+  AutocompleteInput,
+  Icon,
+} from './styles/Textbox';
 
 const Textbox = ({
   text,
@@ -25,14 +30,14 @@ const Textbox = ({
 
   return (
     <SearchInputWrapper>
-      {autocompletePlaceholder &&
+      {autocompletePlaceholder && (
         <AutocompleteInput
           value={autocompletePlaceholder}
           options={options}
           hasIcon={!!icon}
           disabled
         />
-      }
+      )}
       {icon && <Icon>{icon}</Icon>}
       <SearchInput
         type={options.type ? options.type : 'text'}

@@ -12,14 +12,11 @@ import {
 } from './styles/AuthForm';
 
 /* Child Components */
-import Textbox from '../common/Textbox';
-import Button from '../../../basicComponents/Button';
+import Textbox from '../basicComponents/Textbox';
+import Button from '../basicComponents/Button';
 
-import { validateEmail } from '../../../utils/Email';
-import {
-  BACKEND_ENDPOINT,
-  EMAIL_AUTH_LOGIN_ENDPOINT,
-} from '../../../constants/Api';
+import { validateEmail } from '../utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../constants/Api';
 
 const LoginContent = ({ handleAuth, formState, setEmail, setPassword }) => {
   const [errorMessage, setErrorMessage] = useState('');
