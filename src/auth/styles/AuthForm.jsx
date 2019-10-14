@@ -50,6 +50,7 @@ export const ForgotPasswordWrapper = styled.div`
 
 export const ForgotPasswordText = styled.div`
   color: ${({ theme }) => theme.dark1};
+  cursor: pointer;
 `;
 
 export const OrWrapper = styled.div`

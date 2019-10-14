@@ -18,7 +18,13 @@ import Button from '../basicComponents/Button';
 import { validateEmail } from '../utils/Email';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../constants/Api';
 
-const LoginContent = ({ handleAuth, formState, setEmail, setPassword }) => {
+const LoginContent = ({
+  handleAuth,
+  formState,
+  setEmail,
+  setPassword,
+  onShowResetPassword,
+}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
 
@@ -67,7 +73,9 @@ const LoginContent = ({ handleAuth, formState, setEmail, setPassword }) => {
           />
         </TextboxWrapper>
         <ForgotPasswordWrapper>
-          <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+          <ForgotPasswordText onClick={onShowResetPassword}>
+            Forgot password?
+          </ForgotPasswordText>
         </ForgotPasswordWrapper>
         <Button margin="0 0 16px 0" width="100%" onClick={handleLogin}>
           Log in
