@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 /* Child Components */
 import CourseInfoHeader from './CourseInfoHeader';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
+import NotFoundPage from '../../../desktop/components/notFoundPage/NotFoundPage';
 import CourseReviews from './CourseReviews';
 import CourseExtraInfo from './CourseExtraInfo';
 
