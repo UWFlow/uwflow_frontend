@@ -5,6 +5,14 @@ import ModalHOC from '../basicComponents/modal/ModalHOC';
 import Textbox from '../basicComponents/Textbox';
 import Button from '../basicComponents/Button';
 
+/* Constants */
+import {
+  BACKEND_ENDPOINT,
+  RESET_PASSWORD_KEY_EMAIL_ENDPOINT,
+  RESET_PASSWORD_VERIFY_KEY_ENDPOINT,
+  RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
+} from '../constants/Api';
+
 /* Styled Components */
 import { Wrapper, Header, Form } from './styles/ResetPasswordModal';
 import { TextboxWrapper } from './styles/ResetPasswordModal';
@@ -96,14 +104,48 @@ const ENTER_NEW_PASSWORD_FORM = 'NEW_PASSWORD';
 
 const ResetPasswordModal = ({ handleClose, isOpen }) => {
   const [showingForm, setShowingForm] = useState(RESET_PASSWORD_FORM);
+  const [savedCode, setCode] = useState('')
 
-  const handleSendResetEmail = email => {
+  const handleSendResetEmail = async email => {
+    //TODO: set loading state
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${RESET_PASSWORD_KEY_EMAIL_ENDPOINT}`,
+      { email: email },
+    );
+    if (status >= 400) {
+      // ERROR
+    } else {
+      // SUCCESS
+    }
     setShowingForm(ENTER_RESET_CODE_FORM);
   };
+
   const handleSubmitResetCode = code => {
+    //TODO: set loading state
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${RESET_PASSWORD_VERIFY_KEY_ENDPOINT}`,
+      { key: code },
+    );
+    if (status >= 400) {
+      // ERROR
+    } else {
+      // SUCCESS
+      setCode(code)
+    }
     setShowingForm(ENTER_NEW_PASSWORD_FORM);
   };
+
   const handleNewPassword = (newPass, confirmNewPass) => {
+    //TODO: set loading state
+    const [response, status] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${RESET_PASSWORD_KEY_EMAIL_ENDPOINT}`,
+      { key: savedCode, password: newPass },
+    );
+    if (status >= 400) {
+      // ERROR
+    } else {
+      // SUCCESS
+    }
     handleClose();
   };
 
