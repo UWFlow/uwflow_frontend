@@ -1,76 +1,59 @@
 import styled from 'styled-components';
 import {
-  Card,
   Heading2,
-  Body,
   Heading4,
-  Heading1,
+  Body,
   BoxShadow,
 } from '../../../../constants/Mixins';
 
 export const ProfCourseReviewWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  color: ${({ theme }) => theme.dark2};
-`;
-
-export const ReviewsForSingleCourseWrapper = styled.div`
-  ${Card()}
-  ${BoxShadow}
-  margin-bottom: 32px;
-`;
-
-export const CourseRatings = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const CourseHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  margin-right: 24px;
-`;
-
-export const CourseNameAndCode = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const CourseCode = styled.div`
-  ${Heading2}
-  margin-bottom: 16px;
-`;
-
-export const CourseName = styled.div`
-  ${Heading2}
-  font-size: 24px;
 `;
 
 export const DropdownPanelWrapper = styled.div`
   display: flex;
-  margin: 0 32px 32px 0;
-  align-items: center;
+  padding: 16px;
+  background: white;
+  ${BoxShadow}
+  margin-bottom: 16px;
 `;
 
 export const DropdownTableText = styled.div`
   ${Heading4}
-  color: ${({ theme }) => theme.dark1};
+  white-space: nowrap;
+`;
+
+export const ReviewsForSingleCourseWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: white;
+  margin-bottom: 16px;
+`;
+
+export const CourseCode = styled.div`
+  ${Heading2}
+  color: ${({ theme }) => theme.professors}
+  margin: 16px;
 `;
 
 export const CourseLikedMetric = styled.div`
   display: flex;
+  margin: 8px 16px 16px 16px;
   align-items: center;
 `;
 
 export const CourseLikedPercent = styled.div`
-  ${Heading1}
+  ${Heading2}
+  margin-right: 16px;
 `;
 
 export const CourseLikedPercentLabel = styled.div`
   ${Body}
-  width: 65px;
-  margin-left: 12px;
+`;
+
+export const ProfDropdownPanelWrapper = styled.div`
+  display: flex;
+  padding: 24px 16px;
+  border-bottom: 2px solid ${({ theme }) => theme.light2};
 `;

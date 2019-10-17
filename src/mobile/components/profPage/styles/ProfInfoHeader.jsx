@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1 } from '../../../../constants/Mixins';
+import { Heading2 } from '../../../../constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -14,7 +14,7 @@ export const ProfInfoHeaderWrapper = styled.div`
 
 export const ProfNameSection = styled.div`
   width: 100%;
-  height: 130px;
+  padding-top: 48px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -28,5 +28,5 @@ export const ProfNameWrapper = styled.div``;
 export const ProfName = styled.div`
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   color: ${({ theme }) => theme.white};
-  ${Heading1}
+  ${Heading2}
 `;
