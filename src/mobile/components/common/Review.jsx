@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
   ReviewWrapper,
+  ReviewPictureAndMetricsRow,
   ReviewTextWrapper,
   ReviewMetricsWrapper,
   ReviewMetricsBody,
-  ReviewPictureWrapper,
+  ReviewPictureAndUpvotesWrapper,
   ReviewPicture,
   ReviewUpvotes,
+  UpvoteNumber,
   ReviewText,
   ReviewAuthor,
   SingleMetricWrapper,
@@ -18,7 +21,8 @@ import {
 } from './styles/Review';
 
 /* Child Components */
-import SquareRatings from '../../../basicComponents/squareRatings/SquareRatings';
+import BubbleRatings from '../../../basicComponents/bubbleRatings/BubbleRatings';
+import { ThumbsUp } from 'react-feather';
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {
@@ -26,7 +30,7 @@ const MetricIfExists = (metrics, metric) => {
       return (
         <SingleMetricWrapper>
           <SingleMetricSquares>
-            <SquareRatings boolRating={metrics[metric]} />
+            <BubbleRatings boolRating={metrics[metric]} />
           </SingleMetricSquares>
           <SingleMetricLabel>
             {metric === 'liked' ? 'Liked it' : metric}?
@@ -37,7 +41,7 @@ const MetricIfExists = (metrics, metric) => {
       return (
         <SingleMetricWrapper>
           <SingleMetricSquares>
-            <SquareRatings total={5} rating={metrics[metric]} />
+            <BubbleRatings total={5} rating={metrics[metric]} />
           </SingleMetricSquares>
           <SingleMetricLabel>
             {' '}
@@ -49,28 +53,40 @@ const MetricIfExists = (metrics, metric) => {
   }
 };
 
-const Review = ({ upvotes, review, reviewer, prof, metrics }) => {
+const Review = ({ upvotes, review, reviewer, metrics, theme }) => {
+  const userUpvoted = true;
   return (
     <ReviewWrapper>
-      <ReviewPictureWrapper>
-        <ReviewPicture />
-        <ReviewUpvotes>{upvotes ? upvotes : 0}</ReviewUpvotes>
-      </ReviewPictureWrapper>
+      <ReviewPictureAndMetricsRow>
+        <ReviewPictureAndUpvotesWrapper>
+          <ReviewPicture />
+          <ReviewUpvotes selected={userUpvoted}>
+            <ThumbsUp
+              color={userUpvoted ? 'white' : theme.dark3}
+              size={16}
+              strokeWidth={2}
+            />
+            <UpvoteNumber selected={userUpvoted}>
+              {upvotes ? upvotes : 0}
+            </UpvoteNumber>
+          </ReviewUpvotes>
+        </ReviewPictureAndUpvotesWrapper>
+        <ReviewMetricsWrapper>
+          <ReviewMetricsBody>
+            {MetricIfExists(metrics, 'clear')}
+            {MetricIfExists(metrics, 'engaging')}
+            {MetricIfExists(metrics, 'useful')}
+            {MetricIfExists(metrics, 'easy')}
+            {MetricIfExists(metrics, 'liked')}
+          </ReviewMetricsBody>
+        </ReviewMetricsWrapper>
+      </ReviewPictureAndMetricsRow>
       <ReviewTextWrapper>
         <ReviewText>{review}</ReviewText>
         <ReviewAuthor>
           -{reviewer.full_name}, a {review.program} student
         </ReviewAuthor>
       </ReviewTextWrapper>
-      <ReviewMetricsWrapper>
-        <ReviewMetricsBody>
-          {MetricIfExists(metrics, 'clear')}
-          {MetricIfExists(metrics, 'engaging')}
-          {MetricIfExists(metrics, 'useful')}
-          {MetricIfExists(metrics, 'easy')}
-          {MetricIfExists(metrics, 'liked')}
-        </ReviewMetricsBody>
-      </ReviewMetricsWrapper>
     </ReviewWrapper>
   );
 };
@@ -92,4 +108,4 @@ Review.propTypes = {
   }),
 };
 
-export default Review;
+export default withTheme(Review);

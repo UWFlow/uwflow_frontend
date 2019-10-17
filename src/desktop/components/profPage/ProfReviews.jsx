@@ -20,7 +20,7 @@ import {
 
 /* Child Components */
 import Review from '../common/Review';
-import DropdownList from '../common/dropdownList/DropdownList';
+import DropdownList from '../../../basicComponents/DropdownList';
 
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
@@ -101,7 +101,7 @@ const ProfReviews = ({ profID, theme }) => {
                 color={theme.primary}
                 selectedIndex={selectedSort}
                 options={['most helpful', 'most recent']}
-                onChange={(value) => setSelectedSort(value)}
+                onChange={value => setSelectedSort(value)}
               />
             </DropdownPanelWrapper>
             {curr.reviews.map(review => {

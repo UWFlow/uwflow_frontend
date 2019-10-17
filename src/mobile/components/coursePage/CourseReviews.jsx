@@ -13,7 +13,6 @@ import {
   DropdownPanelWrapper,
   ProfDropdownPanelWrapper,
   DropdownTableText,
-  ProfHeader,
   ProfName,
   ProfLikedMetric,
   ProfLikedPercent,
@@ -21,7 +20,7 @@ import {
 } from './styles/CourseReviews';
 
 /* Child Components */
-import TabContainer from '../common/TabContainer';
+import CollapseableContainer from '../common/CollapseableContainer';
 import Review from '../common/Review';
 import DropdownList from '../../../basicComponents/DropdownList';
 
@@ -97,22 +96,17 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = reviewsByProf => {
+const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
   return (
     <CourseProfReviewsWrapper>
+      {ProfFilterDropdown}
       {reviewsByProf.map((curr, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
-          <ProfHeader>
-            <ProfName>{curr.prof}</ProfName>
-            <ProfLikedMetric>
-              <ProfLikedPercent>
-                {Math.round(curr.likes * 100)}%
-              </ProfLikedPercent>
-              <ProfLikedPercentLabel>
-                liked this professor
-              </ProfLikedPercentLabel>
-            </ProfLikedMetric>
-          </ProfHeader>
+          <ProfName>{curr.prof}</ProfName>
+          <ProfLikedMetric>
+            <ProfLikedPercent>{Math.round(curr.likes * 100)}%</ProfLikedPercent>
+            <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
+          </ProfLikedMetric>
           {curr.reviews.map(review => {
             return (
               <Review
@@ -160,7 +154,6 @@ const CourseReviews = ({ courseID, theme }) => {
   const [courseSort, setCourseSort] = useState(0);
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);
-  const [showingProfReviews, setShowingProfReviews] = useState(false);
 
   if (loading) {
     return (
@@ -226,31 +219,27 @@ const CourseReviews = ({ courseID, theme }) => {
     </ProfDropdownPanelWrapper>
   );
 
-  const tabList = [
-    {
-      title: `Course reviews (${data.course_review_aggregate.aggregate.count})`,
-      render: () =>
-        CourseCourseReviews(
-          courseReviews,
-          theme,
-          courseSort,
-          setCourseSort,
-          courseProfFilter,
-          setCourseProfFilter,
-        ),
-      onClick: () => setShowingProfReviews(false),
-    },
-    {
-      title: `Professor reviews (${data.prof_review_aggregate.aggregate.count})`,
-      render: () => ProfFilterDropdown,
-      onClick: () => setShowingProfReviews(true),
-    },
-  ];
-
   return (
     <CourseReviewWrapper>
-      <TabContainer tabList={tabList} initialSelectedTab={0} />
-      {showingProfReviews && CourseProfReviews(reviewsByProf)}
+      <CollapseableContainer
+        title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
+        renderContent={() =>
+          CourseCourseReviews(
+            courseReviews,
+            theme,
+            courseSort,
+            setCourseSort,
+            courseProfFilter,
+            setCourseProfFilter,
+          )
+        }
+      />
+      <CollapseableContainer
+        title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
+        renderContent={() =>
+          CourseProfReviews(reviewsByProf, ProfFilterDropdown)
+        }
+      />
     </CourseReviewWrapper>
   );
 };

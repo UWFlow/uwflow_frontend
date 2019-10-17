@@ -9,12 +9,20 @@ import {
   YNText,
 } from './styles/SquareRatings';
 
-const YesNoRating = ({ boolRating, theme }) => (
+const YesNoRating = ({ boolRating, theme, diameter = 20 }) => (
   <>
-    <UnitCircle filled={boolRating} diameter={20} emptyColor={theme.dark3}>
+    <UnitCircle
+      filled={boolRating}
+      diameter={diameter}
+      emptyColor={theme.dark3}
+    >
       <YNText>Y</YNText>
     </UnitCircle>
-    <UnitCircle filled={!boolRating} diameter={20} emptyColor={theme.dark3}>
+    <UnitCircle
+      filled={!boolRating}
+      diameter={diameter}
+      emptyColor={theme.dark3}
+    >
       <YNText>N</YNText>
     </UnitCircle>
   </>

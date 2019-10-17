@@ -6,6 +6,7 @@ const CourseFragment = {
       id
       code
       name
+      description
       course_reviews_aggregate {
         aggregate {
           avg {
@@ -21,6 +22,20 @@ const CourseFragment = {
       coreqs
       textbooks
       prereqs
+      prerequisites {
+        course {
+          code
+          id
+          name
+        }
+      }
+      postrequisites {
+        course {
+          code
+          id
+          name
+        }
+      }
     }
   `,
   courseSchedule: gql`
