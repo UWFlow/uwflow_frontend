@@ -5,7 +5,7 @@ import { Heading1, Heading2 } from '../../../../constants/Mixins';
 
 export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   position: relative;

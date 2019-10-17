@@ -11,20 +11,19 @@ import {
   Header,
   LineOfText,
   CourseText,
-  TextbookText,
   GreyText,
 } from './styles/CourseExtraInfo';
 
-const processCourseCode = code => _.toUpper(code);
+import { splitCourseCode } from '../../../utils/Misc';
 
-const CourseExtraInfo = ({ prereqs, postreqs, textbooks, courseCode }) => {
+const CourseExtraInfo = ({ prereqs, postreqs, courseCode }) => {
   return (
     <CourseExtraInfoWrapper>
-      <Header>{`${processCourseCode(courseCode)} prerequisites`}</Header>
+      <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
       {prereqs.map(course => (
         <LineOfText>
           <CourseText to={getCoursePageRoute(course.course.code)}>
-            {`${processCourseCode(course.course.code)} - ${course.course.name}`}
+            {`${splitCourseCode(course.course.code)} - ${course.course.name}`}
           </CourseText>
         </LineOfText>
       ))}
@@ -33,29 +32,17 @@ const CourseExtraInfo = ({ prereqs, postreqs, textbooks, courseCode }) => {
           <GreyText>No Prerequisites</GreyText>
         </LineOfText>
       )}
-      <Header>{`${processCourseCode(courseCode)} leads to`}</Header>
+      <Header>{`${splitCourseCode(courseCode)} leads to`}</Header>
       {postreqs.map(course => (
         <LineOfText>
           <CourseText to={getCoursePageRoute(course.course.code)}>
-            {`${processCourseCode(course.course.code)} - ${course.course.name}`}
+            {`${splitCourseCode(course.course.code)} - ${course.course.name}`}
           </CourseText>
         </LineOfText>
       ))}
       {postreqs.length == 0 && (
         <LineOfText>
           <GreyText>Nothing</GreyText>
-        </LineOfText>
-      )}
-      <Header>Relevant textbooks</Header>
-      {textbooks &&
-        textbooks.map(book => (
-          <LineOfText>
-            <TextbookText>{book}</TextbookText>
-          </LineOfText>
-        ))}
-      {(!textbooks || textbooks.length == 0) && (
-        <LineOfText>
-          <GreyText>None</GreyText>
         </LineOfText>
       )}
     </CourseExtraInfoWrapper>
@@ -77,7 +64,6 @@ CourseExtraInfo.propTypes = {
       name: PropTypes.string,
     }),
   ),
-  textbooks: PropTypes.object,
 };
 
 export default CourseExtraInfo;

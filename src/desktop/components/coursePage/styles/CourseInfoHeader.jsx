@@ -14,7 +14,7 @@ export const CourseInfoHeaderWrapper = styled.div`
 
 export const CourseCodeAndNameSection = styled.div`
   width: 100%;
-  min-height: 350px;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -31,7 +31,7 @@ export const CourseCodeAndNameWrapper = styled.div`
 export const CourseDescriptionSection = styled.div`
   position: relative;
   ${PageContent}
-  height: 200px;
+  padding-bottom: 48px;
   margin: auto;
 `;
 
@@ -60,5 +60,5 @@ export const Description = styled.div`
 export const RatingsSection = styled.div`
   position: absolute;
   right: 0;
-  bottom: ${({ ratingBoxHeight }) => 200 - ratingBoxHeight / 2}px;
+  top: ${({ ratingBoxHeight }) => -ratingBoxHeight / 2}px;
 `;

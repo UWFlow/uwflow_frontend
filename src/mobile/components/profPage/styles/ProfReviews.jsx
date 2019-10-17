@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import {
   Heading2,
   Heading4,
@@ -16,7 +17,7 @@ export const DropdownPanelWrapper = styled.div`
   padding: 16px;
   background: white;
   ${BoxShadow}
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 `;
 
 export const DropdownTableText = styled.div`
@@ -28,12 +29,12 @@ export const ReviewsForSingleCourseWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background: white;
-  margin-bottom: 16px;
+  margin-bottom: 48px;
 `;
 
-export const CourseCode = styled.div`
+export const CourseCode = styled(Link)`
   ${Heading2}
-  color: ${({ theme }) => theme.professors}
+  color: ${({ theme }) => theme.courses}
   margin: 16px;
 `;
 

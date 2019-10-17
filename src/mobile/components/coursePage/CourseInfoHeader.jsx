@@ -16,6 +16,8 @@ import {
   CourseName,
 } from './styles/CourseInfoHeader';
 
+import { splitCourseCode } from '../../../utils/Misc';
+
 const CourseInfoHeader = ({ course }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
@@ -25,7 +27,7 @@ const CourseInfoHeader = ({ course }) => {
     <CourseInfoHeaderWrapper>
       <CourseNameSection>
         <CourseCodeAndStar>
-          <CourseCode>{_.toUpper(course.code)}</CourseCode>
+          <CourseCode>{splitCourseCode(course.code)}</CourseCode>
           <StarAlignmentWrapper>
             <ShortlistStar
               size={36}
@@ -38,7 +40,7 @@ const CourseInfoHeader = ({ course }) => {
       </CourseNameSection>
       <RatingBox
         numRatings={count}
-        numReviews={text_count}
+        numComments={text_count}
         percentages={[
           {
             displayName: 'Likes',

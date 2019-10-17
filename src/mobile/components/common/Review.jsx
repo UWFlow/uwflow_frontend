@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
+import { ThumbsUp } from 'react-feather';
 
 /* Styled Components */
 import {
@@ -22,7 +23,6 @@ import {
 
 /* Child Components */
 import BubbleRatings from '../../../basicComponents/bubbleRatings/BubbleRatings';
-import { ThumbsUp } from 'react-feather';
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {

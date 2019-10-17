@@ -12,25 +12,33 @@ export const ReviewWrapper = styled.div`
 
 export const ReviewPictureWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  margin-right: 24px;
+  align-items: center;
+  margin-bottom: 32px;
+  margin-right: 32px;
+  position: relative;
 `;
 
 export const ReviewPicture = styled.div`
-  width: 80px;
-  height: 112px;
-  background-color: ${({ theme }) => theme.light3};
-  border-radius: 4px 4px 0 0;
+  width: 64px;
+  height: 64px;
+  background-color: ${({ theme }) => theme.dark3};
+  border-radius: 32px 32px 32px 32px;
 `;
 
 export const ReviewUpvotes = styled.div`
-  width: 80px;
-  background-color: ${({ theme }) => theme.primary};
+  position: absolute;
+  bottom: -8px;
+  right: -16px;
+  width: 40px;
+  height: 40px;
+  ${({ selected, theme }) =>
+    selected ? `background-color:${theme.primary};` : ''}
   display: flex;
   justify-content: center;
+  align-items: center;
   color: white;
-  border-radius: 0 0 4px 4px;
+  border-radius: 20px 20px 20px 20px;
+  border: 2px solid ${({ theme }) => theme.light3};
 `;
 
 export const ReviewTextWrapper = styled.div`
@@ -70,4 +78,10 @@ export const SingleMetricLabel = styled.td`
   color: ${({theme}) => theme.dark2};
   padding-left: 8px;
   vertical-align: top;
+`;
+
+export const UpvoteNumber = styled.div`
+  ${Body}
+  color: ${({ selected, theme }) => (selected ? 'white' : theme.dark3)}
+  margin-left: 4px;
 `;

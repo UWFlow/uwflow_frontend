@@ -4,6 +4,10 @@ import { Body, BoxShadow } from '../../../constants/Mixins';
 export const BubbleRatingsWrapper = styled.div`
   display: flex;
   padding-bottom: 16px;
+
+  @media only screen and (max-width: 768px) {
+    padding-bottom: 8px
+  }
 `;
 
 export const UnitCircle = styled.div`

@@ -7,7 +7,7 @@ export const CourseExtraInfoWrapper = styled.div`
   flex-direction: column;
   padding: 16px;
   background: white;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 `;
 
 export const Header = styled.div`
@@ -22,11 +22,6 @@ export const LineOfText = styled.div`
 export const CourseText = styled(Link)`
   ${Body}
   color: ${({ theme }) => theme.courses};
-`;
-
-export const TextbookText = styled.div`
-  ${Body}
-  color: ${({ theme }) => theme.professors};
 `;
 
 export const GreyText = styled.div`

@@ -34,7 +34,7 @@ const RatingBox = ({ percentages, numRatings, numComments, width }) => {
     <RatingBoxWrapper>
       <CircularPercentageWrapper>
         <CircularPercentage
-          height={width / 2 - 32}
+          height={Math.min(width / 2 - 32, 200)}
           percent={likedPercent}
           barThickness={16}
           label="liked"
@@ -57,11 +57,10 @@ const RatingBox = ({ percentages, numRatings, numComments, width }) => {
         <ReviewsAndGraphButtonWrapper>
           <NumCommentsAndRatingsWrapper>
             <NumCommentsWrapper>
-              {numComments} {numComments === 1 ? 'review' : 'reviews'}
+              {numComments} {numComments === 1 ? 'comment' : 'comments'}
             </NumCommentsWrapper>
             <NumRatingsWrapper>
-              {numRatings}
-              {numRatings === 1 ? ' rating' : ' ratings'}
+              {numRatings} {numRatings === 1 ? 'rating' : 'ratings'}
             </NumRatingsWrapper>
           </NumCommentsAndRatingsWrapper>
         </ReviewsAndGraphButtonWrapper>

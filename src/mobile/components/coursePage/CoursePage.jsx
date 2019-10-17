@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -11,7 +11,6 @@ import CourseExtraInfo from './CourseExtraInfo';
 import { CoursePageWrapper } from './styles/CoursePage';
 
 const CoursePageContent = ({ course }) => {
-  console.log(course);
   return (
     <>
       <CourseInfoHeader course={course} />
@@ -19,7 +18,6 @@ const CoursePageContent = ({ course }) => {
         courseCode={course.code}
         prereqs={course.prerequisites}
         postreqs={course.postrequisites}
-        textbooks={course.textbooks}
       />
       <CourseReviews courseID={course.id} />
     </>

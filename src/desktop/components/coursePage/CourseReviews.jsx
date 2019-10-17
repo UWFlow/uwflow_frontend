@@ -100,20 +100,20 @@ CourseCourseReviews.propTypes = {
 const CourseProfReviews = reviewsByProf => {
   return (
     <CourseProfReviewsWrapper>
-      {reviewsByProf.map((curr, idx) => (
+      {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
           <ProfHeader>
-            <ProfName to={`/prof/${curr.id}`}>{curr.name}</ProfName>
+            <ProfName to={`/prof/${prof.id}`}>{prof.name}</ProfName>
             <ProfLikedMetric>
               <ProfLikedPercent>
-                {Math.round(curr.liked * 100)}%
+                {Math.round(prof.liked * 100)}%
               </ProfLikedPercent>
               <ProfLikedPercentLabel>
                 liked this professor
               </ProfLikedPercentLabel>
             </ProfLikedMetric>
           </ProfHeader>
-          {curr.reviews.map(review => {
+          {prof.reviews.map(review => {
             return (
               <Review
                 key={review.reviewer.full_name}

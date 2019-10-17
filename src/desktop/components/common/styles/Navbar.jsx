@@ -22,7 +22,7 @@ export const NavbarContent = styled.div`
   align-items: center;
   margin: auto;
 
-  @media only screen and (max-width: 767px) {
+  @media only screen and (max-width: 768px) {
     padding: 0 16px;
   }
 `;
@@ -55,7 +55,7 @@ export const ProfileButtonWrapper = styled.div`
   margin-left: 40px;
   ${Heading4}
 
-  @media only screen and (max-width: 767px) {
+  @media only screen and (max-width: 768px) {
     margin-left: 24px;
   }
 `;
@@ -69,7 +69,7 @@ export const ProfilePicture = styled.img`
   object-fit: cover;
   ${BoxShadow}
 
-  @media only screen and (max-width: 767px) {
+  @media only screen and (max-width: 768px) {
     margin-right: 0;
   }
 `;
