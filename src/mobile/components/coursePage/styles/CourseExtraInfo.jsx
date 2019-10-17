@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading4, Body } from '../../../../constants/Mixins';
+import { Heading4, Body, BoxShadow } from '../../../../constants/Mixins';
 import { Link } from 'react-router-dom';
 
 export const CourseExtraInfoWrapper = styled.div`
@@ -8,6 +8,7 @@ export const CourseExtraInfoWrapper = styled.div`
   padding: 16px;
   background: white;
   margin-bottom: 32px;
+  ${BoxShadow}
 `;
 
 export const Header = styled.div`

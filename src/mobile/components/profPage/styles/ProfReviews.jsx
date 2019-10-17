@@ -30,6 +30,7 @@ export const ReviewsForSingleCourseWrapper = styled.div`
   flex-direction: column;
   background: white;
   margin-bottom: 48px;
+  ${BoxShadow}
 `;
 
 export const CourseCode = styled(Link)`

@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { Body } from '../../../../constants/Mixins';
+import { Body, BoxShadow } from '../../../../constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  ${BoxShadow}
 `;
 
 export const CircularPercentageWrapper = styled.div`

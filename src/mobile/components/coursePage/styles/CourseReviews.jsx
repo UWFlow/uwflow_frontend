@@ -67,5 +67,5 @@ export const ProfLikedPercentLabel = styled.div`
 export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
   padding: 24px 16px;
-  border-bottom: 2px solid ${({ theme }) => theme.light2};
+  border-bottom: 1px solid ${({ theme }) => theme.light2};
 `;

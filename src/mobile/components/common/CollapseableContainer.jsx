@@ -7,7 +7,7 @@ import {
   HeaderChevronBox,
   ContentWrapper,
 } from './styles/CollapseableContainer';
-import { ChevronDown } from 'react-feather';
+import { ChevronDown, ChevronUp } from 'react-feather';
 
 const CollapseableContainer = ({
   title,
@@ -22,7 +22,7 @@ const CollapseableContainer = ({
           <HeaderTitleText>{title}</HeaderTitleText>
         </HeaderTitleBox>
         <HeaderChevronBox onClick={() => setIsOpen(!isOpen)}>
-          <ChevronDown />
+          {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
       </HeaderWrapper>
       {isOpen && <ContentWrapper>{renderContent()}</ContentWrapper>}
