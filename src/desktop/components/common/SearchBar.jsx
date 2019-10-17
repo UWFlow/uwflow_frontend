@@ -59,8 +59,9 @@ const SearchBar = ({ history }) => {
 
   useOnClickOutside(ref, () => setOpen(false));
 
-  const queryExploreCourses = text => {
-    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}`);
+  const queryExploreCourses = (text, codeSearch = false) => {
+    const codeTerm = codeSearch ? '&c=t' : '';
+    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(text)}${codeTerm}`);
     setOpen(false);
   };
 
@@ -87,7 +88,7 @@ const SearchBar = ({ history }) => {
   };
 
   const exploreResult = (code = '') => (
-    <SearchResult onClick={() => queryExploreCourses(searchText)} key={code}>
+    <SearchResult onClick={() => queryExploreCourses(searchText, true)} key={code}>
       <ExploreText>
         <Layers />
         Explore all {code.toUpperCase()} courses and professors

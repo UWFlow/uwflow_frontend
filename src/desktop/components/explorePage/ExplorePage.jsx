@@ -19,8 +19,9 @@ import {
   buildExploreCodeQuery,
   buildExploreQuery
 } from '../../../graphql/queries/explore/Explore';
+import { splitCourseCode } from '../../../utils/Misc';
 
-const NUM_COURSE_CODES = 5;
+const NUM_COURSE_CODE_FILTERS = 5;
 
 const ExplorePageContent = ({
   query,
@@ -31,7 +32,7 @@ const ExplorePageContent = ({
   fetchMore,
   loading
 }) => {
-  const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODES).fill(true));
+  const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODE_FILTERS).fill(true));
   const [numCourseRatings, setNumCourseRatings] = useState(0);
   const [numProfRatings, setNumProfRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
@@ -78,7 +79,7 @@ const ExplorePageContent = ({
   }
 
   const resetCourseFilters = () => {
-    setCourseCodes(Array(NUM_COURSE_CODES).fill(true));
+    setCourseCodes(Array(NUM_COURSE_CODE_FILTERS).fill(true));
     setNumCourseRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);
@@ -136,20 +137,11 @@ const ExplorePage = ({ location }) => {
   const codeSearch = !!code;
 
   const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
-  const parsedQuery = codeSearch ? `${query}%` : `%${query}%` 
 
   const { data, fetchMore, loading } = useQuery(
-    exploreQuery('{course_reviews_aggregate: {count: desc}}'),
-    { 
-      variables: {
-        query,
-        course_offset: 0,
-        prof_offset: 0
-      }
-    }
+    exploreQuery('{course_reviews_aggregate: {count: desc}}', query),
+    {variables: { course_offset: 0, prof_offset: 0 }}
   );
-
-
 
   const terms = [
     {
