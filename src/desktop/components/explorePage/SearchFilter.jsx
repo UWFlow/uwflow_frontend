@@ -135,7 +135,7 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
-  terms: PropTypes.object.isRequired,
+  terms: PropTypes.array,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
   filterState: PropTypes.object.isRequired,
   setCourseCodes: PropTypes.func.isRequired,

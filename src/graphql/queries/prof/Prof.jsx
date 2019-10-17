@@ -7,8 +7,10 @@ export const GET_PROF = gql`
     prof(where: { id: { _eq: $id } }) {
       ...ProfInfoFragment
       ...ProfCourseReviewsAggregateFragment
+      ...ProfCoursesTaughtFragment
     }
   }
   ${ProfFragment.profInfo}
   ${ProfFragment.profCourseReviewsAggregate}
+  ${ProfFragment.profCoursesTaught}
 `;

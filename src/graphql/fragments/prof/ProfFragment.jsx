@@ -28,6 +28,15 @@ const ProfFragment = {
       }
     }
   `,
+  profCoursesTaught: gql`
+    fragment ProfCoursesTaughtFragment on prof {
+      prof_courses {
+        course {
+          code
+        }
+      }
+    }
+  `
 };
 
 export default ProfFragment;

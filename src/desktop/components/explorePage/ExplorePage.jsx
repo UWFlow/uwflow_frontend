@@ -1,7 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { withRouter } from 'react-router-dom';
-import { useQuery } from 'react-apollo';
-import queryString from 'query-string';
 
 import {
   ExplorePageWrapper,
@@ -15,20 +12,15 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-import {
-  buildExploreCodeQuery,
-  buildExploreQuery
-} from '../../../graphql/queries/explore/Explore';
-import { splitCourseCode } from '../../../utils/Misc';
-
 const NUM_COURSE_CODE_FILTERS = 5;
+const ratingFilters = [0, 10, 20, 30, 40, 50, 75, 100, 200, 500]
 
 const ExplorePageContent = ({
   query,
   terms,
-  courseTab,
   codeSearch,
-  results,
+  courseTab,
+  data,
   fetchMore,
   loading
 }) => {
@@ -40,35 +32,8 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
-  console.log(results);
-
-  const computeRatingFilters = (results) => {
-    if (results === undefined || results === null) {
-      return { courseRatingFilters: [], profRatingFilters: [] };
-    }
-
-    let ratings = results !== null ? results.map(res => Number(res.ratings)) : [];
-    ratings.sort((a, b) => a - b);
-
-    let filters;
-    if (ratings.length === 0) {
-      filters = [0, 1];
-    } else if (ratings.length === 1) {
-      filters = [0, ratings[0]];
-    } else {
-      const ratingsPerFilter = Math.ceil(ratings.length / 10);
-      filters = ratings.filter((_, idx) => {
-        return idx % ratingsPerFilter === 0;
-      });
-    }
-
-    return filters;
-  }
-
-  const { courseRatingFilters, profRatingFilters } = useMemo(() => computeRatingFilters(results), [results]);
-  
-  const profCourses = [];
-
+  const profCourses = !!data ? data.prof.map(prof => prof.prof_courses) : [];
+  console.log(data);
   const filterState = {
     courseCodes,
     numCourseRatings,
@@ -92,7 +57,7 @@ const ExplorePageContent = ({
 
   return (
     <ExplorePageWrapper>
-      {/*<ExploreHeaderWrapper>
+      <ExploreHeaderWrapper>
         <ExploreHeaderText>
           {codeSearch ? `Showing all ${query} courses` : `Showing results for "${query}"`}
         </ExploreHeaderText>
@@ -101,12 +66,10 @@ const ExplorePageContent = ({
         <Column1>
           <SearchResults
             filterState={filterState}
-            courses={courseData}
-            profs={profData}
+            data={data}
             exploreTab={exploreTab}
             setExploreTab={setExploreTab}
-            courseRatingFilters={courseRatingFilters}
-            profRatingFilters={profRatingFilters}
+            ratingFilters={ratingFilters}
             profCourses={profCourses}
           />
         </Column1>
@@ -126,23 +89,12 @@ const ExplorePageContent = ({
             exploreTab={exploreTab}
           />
         </Column2>
-    </ColumnWrapper>*/}
+    </ColumnWrapper>
     </ExplorePageWrapper>
   );
 }
 
-const ExplorePage = ({ location }) => {
-  const { q: query, t: type, c: code } = queryString.parse(location.search);
-  const courseTab = !type || type === 'course' || type === 'c';
-  const codeSearch = !!code;
-
-  const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
-
-  const { data, fetchMore, loading } = useQuery(
-    exploreQuery('{course_reviews_aggregate: {count: desc}}', query),
-    {variables: { course_offset: 0, prof_offset: 0 }}
-  );
-
+const ExplorePage = ({ query, codeSearch, courseTab, data, fetchMore, loading }) => {
   const terms = [
     {
       id: '1199',
@@ -158,11 +110,10 @@ const ExplorePage = ({ location }) => {
     <ExplorePageWrapper>
       <ExplorePageContent
         query={query}
-        code={code}
         terms={terms}
         codeSearch={codeSearch}
         courseTab={courseTab}
-        results={data}
+        data={data}
         fetchMore={fetchMore}
         loading={loading}
       />
@@ -170,4 +121,4 @@ const ExplorePage = ({ location }) => {
   )
 };
 
-export default withRouter(ExplorePage);
+export default ExplorePage;

@@ -18,9 +18,12 @@ import RatingBox, {
   RATING_BOX_WIDTH,
 } from '../common/RatingBox';
 
+import { splitCourseCode } from '../../../utils/Misc';
+
 const ProfInfoHeader = ({ prof }) => {
   const percentClear = prof.prof_reviews_aggregate.aggregate.avg.clear / 5;
   const percentEngaging = prof.prof_reviews_aggregate.aggregate.avg.engaging / 5;
+  const profCourses = prof.prof_courses.map(course => splitCourseCode(course.code));
 
   return (
     <ProfInfoHeaderWrapper>
@@ -50,9 +53,8 @@ const ProfInfoHeader = ({ prof }) => {
             ]}
           />
         </RatingsSection>
-        {/* TODO(Max): Remove hard coded courses */}
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          Teaches ECE 105, ECE 106
+          Teaches {profCourses.join(', ')}
         </Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>

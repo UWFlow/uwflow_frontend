@@ -11,13 +11,14 @@ import { courseColumns, profColumns } from './TableData';
 
 const SearchResults = ({
   filterState,
-  courses,
-  profs,
+  data,
   courseSearch,
-  courseRatingFilters,
-  profRatingFilters,
+  ratingFilters,
   profCourses
 }) => {
+  const courses = !!data ? data.course : [];
+  const profs = !!data ? data.prof : [];
+
   const courseCodeRegex = useCallback(() => {
     let regexStr = '';
     for (let i = filterState.courseCodes.length - 1; i >= 0; i--) {
@@ -33,13 +34,13 @@ const SearchResults = ({
     const regex = courseCodeRegex();
     return courses.filter(
       (course) => regex.test(course.code)
-        && course.ratings >= courseRatingFilters[filterState.numCourseRatings]
+        && course.ratings >= ratingFilters[filterState.numCourseRatings]
     );
   };
 
   const filterProfs = () => {
     return profs.filter(prof =>
-      prof.ratings >= profRatingFilters[filterState.numProfRatings]
+      prof.ratings >= ratingFilters[filterState.numProfRatings]
         && (filterState.courseTaught === 0
             || prof.courses.includes(profCourses[filterState.courseTaught]))
     )
@@ -65,8 +66,7 @@ SearchResults.propTypes = {
     nextTerm: PropTypes.bool,
     courseTaught: PropTypes.number,
   }).isRequired,
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  courseSearch: PropTypes.bool.isRequired,
+  results: PropTypes.arrayOf(PropTypes.object),
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
