@@ -39,7 +39,7 @@ const RatingBox = ({ percentages, numRatings, numComments }) => {
           height={RATING_BOX_HEIGHT - 32}
           percent={likedPercent}
           barThickness={16}
-          label="liked it"
+          label="liked"
         />
       </LikesColumn>
       <ProgressBarColumn>

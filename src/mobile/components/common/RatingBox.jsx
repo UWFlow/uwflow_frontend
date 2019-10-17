@@ -37,7 +37,7 @@ const RatingBox = ({ percentages, numRatings, numComments, width }) => {
           height={width / 2 - 32}
           percent={likedPercent}
           barThickness={16}
-          label="liked it"
+          label="liked"
         />
       </CircularPercentageWrapper>
       <RatingBarsColumn>

@@ -29,7 +29,7 @@ const MetricIfExists = (metrics, metric) => {
             <BubbleRatings boolRating={metrics[metric]} />
           </SingleMetricSquares>
           <SingleMetricLabel>
-            {metric === 'liked' ? 'Liked it' : metric}?
+            {metric === 'liked' ? 'Liked' : metric}?
           </SingleMetricLabel>
         </SingleMetricWrapper>
       );

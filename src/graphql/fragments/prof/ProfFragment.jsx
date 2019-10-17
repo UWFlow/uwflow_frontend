@@ -10,9 +10,8 @@ const ProfFragment = {
           avg {
             clear
             engaging
-            liked
           }
-          count(columns: liked)
+          count
           text_count: count(columns: text)
         }
       }
@@ -25,7 +24,6 @@ const ProfFragment = {
           avg {
             liked
           }
-          count(columns: liked)
         }
       }
     }

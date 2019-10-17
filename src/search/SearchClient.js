@@ -42,25 +42,6 @@ class SearchClient {
     this.courseCodeIndex = new MiniSearch(courseCodeIndexOptions);
   }
 
-  search(query = '') {
-    while (!this.built) {
-      continue;
-    }
-
-    if (query.length === 0) {
-      return { courseResults: [], profResults: [], courseCodeResults: [] };
-    }
-
-    const parsedQuery = query.split(' ').map(term => splitCourseCode(term)).join(' ');
-    const courseResults = this.courseIndex.search(parsedQuery, { fields: ['code', 'name', 'profs'] });
-    const profResults = this.profIndex.search(parsedQuery, { fields: ['name', 'courses'] });
-
-    return {
-      courseResults,
-      profResults,
-    };
-  }
-
   autocomplete(query = '') {
     if (query.length === 1) {
       return { courseResults: [], profResults: [], courseCodeResults: [] };

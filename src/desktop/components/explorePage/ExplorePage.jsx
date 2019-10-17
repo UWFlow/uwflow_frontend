@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useQuery } from 'react-apollo';
 import queryString from 'query-string';
 
 import {
@@ -14,7 +15,10 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-import { useSearchContext } from '../../../search/SearchProvider';
+import {
+  buildExploreCodeQuery,
+  buildExploreQuery
+} from '../../../graphql/queries/explore/Explore';
 
 const NUM_COURSE_CODES = 5;
 
@@ -23,7 +27,9 @@ const ExplorePageContent = ({
   terms,
   courseTab,
   codeSearch,
-  results
+  results,
+  fetchMore,
+  loading
 }) => {
   const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODES).fill(true));
   const [numCourseRatings, setNumCourseRatings] = useState(0);
@@ -33,10 +39,13 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
-  const courseResults = results !== null ? results.courseResults : [];
-  const profResults = results !== null ? results.profResults : [];
+  console.log(results);
 
   const computeRatingFilters = (results) => {
+    if (results === undefined || results === null) {
+      return { courseRatingFilters: [], profRatingFilters: [] };
+    }
+
     let ratings = results !== null ? results.map(res => Number(res.ratings)) : [];
     ratings.sort((a, b) => a - b);
 
@@ -55,15 +64,9 @@ const ExplorePageContent = ({
     return filters;
   }
 
-  const courseRatingFilters = useMemo(() => computeRatingFilters(courseResults), [courseResults]);
-  const profRatingFilters = useMemo(() => computeRatingFilters(profResults), [profResults]);
+  const { courseRatingFilters, profRatingFilters } = useMemo(() => computeRatingFilters(results), [results]);
   
-  const profCourses = useMemo(() => Array.from(
-    new Set(profResults.reduce(
-      (acc, prof) => acc.concat(prof.courses),
-      ['any courses']
-    ))
-  ), [profResults]);
+  const profCourses = [];
 
   const filterState = {
     courseCodes,
@@ -86,13 +89,9 @@ const ExplorePageContent = ({
     setCourseTaught(0);
   }
 
-  if (results === null) {
-    return <div>Loading...</div>
-  }
-
   return (
     <ExplorePageWrapper>
-      <ExploreHeaderWrapper>
+      {/*<ExploreHeaderWrapper>
         <ExploreHeaderText>
           {codeSearch ? `Showing all ${query} courses` : `Showing results for "${query}"`}
         </ExploreHeaderText>
@@ -101,8 +100,8 @@ const ExplorePageContent = ({
         <Column1>
           <SearchResults
             filterState={filterState}
-            courses={courseResults}
-            profs={profResults}
+            courses={courseData}
+            profs={profData}
             exploreTab={exploreTab}
             setExploreTab={setExploreTab}
             courseRatingFilters={courseRatingFilters}
@@ -126,31 +125,31 @@ const ExplorePageContent = ({
             exploreTab={exploreTab}
           />
         </Column2>
-      </ColumnWrapper>
+    </ColumnWrapper>*/}
     </ExplorePageWrapper>
   );
 }
 
 const ExplorePage = ({ location }) => {
-  const { searchWorker } = useSearchContext();
-  const [results, setResults] = useState(null);
-
-  useEffect(() => {
-    searchWorker.addEventListener('message', event => {
-      const { type } = event.data;
-      if (type === 'search') {
-        setResults(event.data.results);
-      }
-    });
-  }, [searchWorker]);
-
   const { q: query, t: type, c: code } = queryString.parse(location.search);
   const courseTab = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
-  
-  if (!codeSearch) {
-    searchWorker.postMessage({ type: 'search', query });
-  }
+
+  const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
+  const parsedQuery = codeSearch ? `${query}%` : `%${query}%` 
+
+  const { data, fetchMore, loading } = useQuery(
+    exploreQuery('{course_reviews_aggregate: {count: desc}}'),
+    { 
+      variables: {
+        query,
+        course_offset: 0,
+        prof_offset: 0
+      }
+    }
+  );
+
+
 
   const terms = [
     {
@@ -163,8 +162,6 @@ const ExplorePage = ({ location }) => {
     }
   ]
 
-  console.log(results);
-
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
@@ -173,7 +170,9 @@ const ExplorePage = ({ location }) => {
         terms={terms}
         codeSearch={codeSearch}
         courseTab={courseTab}
-        results={results}
+        results={data}
+        fetchMore={fetchMore}
+        loading={loading}
       />
     </ExplorePageWrapper>
   )
