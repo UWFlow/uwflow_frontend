@@ -7,8 +7,10 @@ export const GET_COURSE = gql`
     course(where: { code: { _eq: $code } }) {
       ...CourseInfoFragment
       ...CourseSchedule
+      ...CourseRequirements
     }
   }
   ${CourseFragment.courseInfo}
   ${CourseFragment.courseSchedule}
+  ${CourseFragment.courseRequirements}
 `;

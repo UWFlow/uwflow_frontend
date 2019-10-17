@@ -3,27 +3,16 @@ import gql from 'graphql-tag';
 const ProfFragment = {
   profInfo: gql`
     fragment ProfInfoFragment on prof {
-      name
       id
-      course_reviews_aggregate {
-        aggregate {
-          avg {
-            liked
-          }
-          count(columns: liked)
-        }
-      }
-    }
-  `,
-  profReviewsAggregate: gql`
-    fragment ProfReviewsAggregateFragment on prof {
+      name
       prof_reviews_aggregate {
         aggregate {
           avg {
             clear
             engaging
+            liked
           }
-          count
+          count(columns: liked)
           text_count: count(columns: text)
         }
       }

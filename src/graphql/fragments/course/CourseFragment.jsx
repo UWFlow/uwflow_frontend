@@ -14,26 +14,8 @@ const CourseFragment = {
             liked
             useful
           }
+          count(columns: liked)
           text_count: count(columns: text)
-          count
-        }
-      }
-      antireqs
-      coreqs
-      textbooks
-      prereqs
-      prerequisites {
-        course {
-          code
-          id
-          name
-        }
-      }
-      postrequisites {
-        course {
-          code
-          id
-          name
         }
       }
     }
@@ -62,9 +44,29 @@ const CourseFragment = {
           is_cancelled
         }
       }
-      id
     }
   `,
+  courseRequirements: gql`
+  fragment CourseRequirements on course {
+    antireqs
+    coreqs
+    prereqs
+    prerequisites {
+      course {
+        id
+        code
+        name
+      }
+    }
+    postrequisites {
+      course {
+        id
+        code
+        name
+      }
+    }
+  }
+  `
 };
 
 export default CourseFragment;
