@@ -11,9 +11,11 @@ import { courseColumns, profColumns } from './TableData';
 
 const SearchResults = ({
   filterState,
-  results,
+  courses,
+  profs,
   courseSearch,
-  ratingFilters,
+  courseRatingFilters,
+  profRatingFilters,
   profCourses
 }) => {
   const courseCodeRegex = useCallback(() => {
@@ -27,26 +29,26 @@ const SearchResults = ({
     return new RegExp(regexStr);
   }, [filterState]);
 
-  const filterCourses = (results) => {
+  const filterCourses = () => {
     const regex = courseCodeRegex();
-    return results.filter(
-      (res) => regex.test(res.code)
-        && res.ratings >= ratingFilters[filterState.numRatings]
+    return courses.filter(
+      (course) => regex.test(course.code)
+        && course.ratings >= courseRatingFilters[filterState.numCourseRatings]
     );
   };
 
-  const filterProfs = (results) => {
-    return results.filter(res =>
-      res.ratings >= ratingFilters[filterState.numRatings]
+  const filterProfs = () => {
+    return profs.filter(prof =>
+      prof.ratings >= profRatingFilters[filterState.numProfRatings]
         && (filterState.courseTaught === 0
-            || res.courses.includes(profCourses[filterState.courseTaught]))
+            || prof.courses.includes(profCourses[filterState.courseTaught]))
     )
   };
 
   return (
     <SearchResultsWrapper>
       <Table
-        data={courseSearch ? filterCourses(results) : filterProfs(results)}
+        data={courseSearch ? filterCourses() : filterProfs()}
         columns={courseSearch ? courseColumns : profColumns}
         rightAlignIndex={courseSearch ? 2 : 1}
         sortable

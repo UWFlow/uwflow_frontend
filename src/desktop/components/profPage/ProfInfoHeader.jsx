@@ -32,8 +32,8 @@ const ProfInfoHeader = ({ prof }) => {
       <ProfDescriptionSection>
         <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
           <RatingBox
-            numRatings={prof.course_reviews_aggregate.aggregate.count}
-            numReviews={prof.prof_reviews_aggregate.aggregate.count}
+            numRatings={prof.prof_reviews_aggregate.aggregate.count}
+            numComments={prof.prof_reviews_aggregate.aggregate.text_count}
             percentages={[
               {
                 displayName: 'Likes',

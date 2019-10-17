@@ -45,13 +45,13 @@ export const ReviewsAndGraphButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const NumReviewsAndRatingsWrapper = styled.div`
+export const NumCommentsAndRatingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 0 16px 0;
 `;
 
-export const NumReviewsWrapper = styled.div`
+export const NumCommentsWrapper = styled.div`
   ${Body}
   color: ${({ theme }) => theme.dark3};
 `;

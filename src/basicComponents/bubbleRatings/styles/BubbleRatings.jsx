@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Body, BoxShadow } from '../../../constants/Mixins';
 
-export const SquareRatingWrapper = styled.div`
+export const BubbleRatingsWrapper = styled.div`
   display: flex;
+  padding-bottom: 16px;
 `;
 
 export const UnitCircle = styled.div`
@@ -21,16 +22,25 @@ export const UnitCircle = styled.div`
       : emptyColor
       ? emptyColor
       : 'white'};
-  ${({ border, theme }) => (border ? `border: 2px solid ${theme.light4}` : '')};
+  border: 2px solid ${({ filled, theme }) => (filled ? theme.primaryDark : theme.light4)};
   margin: 0 1px;
   ${({ filled }) => (filled ? '' : BoxShadow)}
 `;
 
-export const YNText = styled.div`
+export const ThumbsWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Thumb = styled.div`
   ${Body}
-  position: absolute;
-  top: 3px;
-  left: 5px;
-  font-family: 'Anderson Grotesk';
-  color: white;
+  cursor: pointer;
+  color: ${({theme, colored}) => colored ? theme.primary : theme.light4};
+  margin-left: 4px;
+
+  &:hover {
+    color: ${({theme}) => theme.primary};
+  }
 `;

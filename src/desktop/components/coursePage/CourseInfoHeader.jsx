@@ -32,7 +32,7 @@ const CourseInfoHeader = ({ course }) => {
         <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
           <RatingBox
             numRatings={count}
-            numReviews={text_count}
+            numComments={text_count}
             percentages={[
               {
                 displayName: 'Likes',

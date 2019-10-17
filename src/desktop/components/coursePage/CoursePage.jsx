@@ -21,6 +21,8 @@ import {
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
+import { splitCourseCode } from '../../../utils/Misc';
+
 const CoursePageContent = ({ course }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
@@ -34,7 +36,7 @@ const CoursePageContent = ({ course }) => {
           {/*<CourseSchedule sections={course.sections} />*/}
           <CourseReviewQuestionBox>
             <CourseReviewQuestionText>
-              What do you think of {course.code}?
+              What do you think of {splitCourseCode(course.code)}?
             </CourseReviewQuestionText>
             <Button
               children="Add your review"

@@ -24,10 +24,6 @@ export const ReviewPicture = styled.div`
   border-radius: 4px 4px 0 0;
 `;
 
-export const ReviewPictureAndMetricsRow = styled.div`
-  display: flex;
-`;
-
 export const ReviewUpvotes = styled.div`
   width: 80px;
   background-color: ${({ theme }) => theme.primary};
@@ -56,8 +52,8 @@ export const ReviewAuthor = styled.div`
 `;
 
 export const ReviewMetricsWrapper = styled.table`
-  min-width: 158px;
-  margin-left: 8px;
+  min-width: 168px;
+  margin-left: 16px;
 `;
 
 export const ReviewMetricsBody = styled.tbody``;
@@ -67,10 +63,11 @@ export const SingleMetricWrapper = styled.tr``;
 export const SingleMetricSquares = styled.td`
   display: flex;
   justify-content: flex-end;
-  padding: 0 0 16px 0;
 `;
 
 export const SingleMetricLabel = styled.td`
   ${Body}
-  padding: 0 0 16px 4px;
+  color: ${({theme}) => theme.dark2};
+  padding-left: 8px;
+  vertical-align: top;
 `;

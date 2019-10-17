@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
-import { useQuery } from 'react-apollo';
 
 import {
   ExplorePageWrapper,
@@ -15,7 +14,6 @@ import {
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
-import { EXPLORE_CODE_QUERY } from '../../../graphql/queries/explore/Explore';
 import { useSearchContext } from '../../../search/SearchProvider';
 
 const NUM_COURSE_CODES = 5;
@@ -24,25 +22,22 @@ const ExplorePageContent = ({
   query,
   terms,
   courseTab,
-  courses,
-  profs
+  codeSearch,
+  results
 }) => {
   const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODES).fill(true));
-  const [numRatings, setNumRatings] = useState(0);
+  const [numCourseRatings, setNumCourseRatings] = useState(0);
+  const [numProfRatings, setNumProfRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
   const [nextTerm, setNextTerm] = useState(false);
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
- /*
-  const profCourses = courseTab
-    ? []
-    : Array.from(new Set(results.reduce(
-      (acc, result) => acc.concat(result.courses),
-      ['any courses']
-    )));
+
+  const courseResults = results !== null ? results.courseResults : [];
+  const profResults = results !== null ? results.profResults : [];
 
   const computeRatingFilters = (results) => {
-    let ratings = results.map(res => Number(res.ratings));
+    let ratings = results !== null ? results.map(res => Number(res.ratings)) : [];
     ratings.sort((a, b) => a - b);
 
     let filters;
@@ -60,38 +55,58 @@ const ExplorePageContent = ({
     return filters;
   }
 
-  const ratingFilters = useMemo(() => computeRatingFilters(results), [results]);
+  const courseRatingFilters = useMemo(() => computeRatingFilters(courseResults), [courseResults]);
+  const profRatingFilters = useMemo(() => computeRatingFilters(profResults), [profResults]);
+  
+  const profCourses = useMemo(() => Array.from(
+    new Set(profResults.reduce(
+      (acc, prof) => acc.concat(prof.courses),
+      ['any courses']
+    ))
+  ), [profResults]);
 
   const filterState = {
     courseCodes,
-    numRatings,
+    numCourseRatings,
+    numProfRatings,
     currentTerm,
     nextTerm,
     courseTaught
   }
 
-  const resetFilters = () => {
+  const resetCourseFilters = () => {
     setCourseCodes(Array(NUM_COURSE_CODES).fill(true));
-    setNumRatings(0);
+    setNumCourseRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);
+  }
+
+  const resetProfFilters = () => {
+    setNumProfRatings(0);
     setCourseTaught(0);
+  }
+
+  if (results === null) {
+    return <div>Loading...</div>
   }
 
   return (
     <ExplorePageWrapper>
       <ExploreHeaderWrapper>
         <ExploreHeaderText>
-          Showing {results.length} results for "{query}"
+          {codeSearch ? `Showing all ${query} courses` : `Showing results for "${query}"`}
         </ExploreHeaderText>
       </ExploreHeaderWrapper>
       <ColumnWrapper>
         <Column1>
           <SearchResults
             filterState={filterState}
-            results={results}
-            courseSearch={courseSearch}
-            ratingFilters={ratingFilters}
+            courses={courseResults}
+            profs={profResults}
+            exploreTab={exploreTab}
+            setExploreTab={setExploreTab}
+            courseRatingFilters={courseRatingFilters}
+            profRatingFilters={profRatingFilters}
             profCourses={profCourses}
           />
         </Column1>
@@ -101,55 +116,54 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setCourseCodes={setCourseCodes}
-            setNumRatings={setNumRatings}
+            setNumCourseRatings={setNumCourseRatings}
+            setNumProfRatings={setNumProfRatings}
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
             setCourseTaught={setCourseTaught}
-            resetFilters={resetFilters}
-            ratingFilters={ratingFilters}
-            courseSearch={courseSearch}
+            resetCourseFilters={resetCourseFilters}
+            resetProfFilters={resetProfFilters}
+            exploreTab={exploreTab}
           />
         </Column2>
       </ColumnWrapper>
     </ExplorePageWrapper>
   );
-  */
- return null;
 }
 
 const ExplorePage = ({ location }) => {
   const { searchWorker } = useSearchContext();
-  const [courses, setCourses] = useState([]);
-  const [profs, setProfs] = useState([]);
+  const [results, setResults] = useState(null);
 
   useEffect(() => {
     searchWorker.addEventListener('message', event => {
       const { type } = event.data;
-      if (type === 'code_search' || type === 'search') {
-        const { courseResults, profResults } = event.data.results;
-        setCourses(courseResults);
-        setProfs(profResults);
+      if (type === 'search') {
+        setResults(event.data.results);
       }
     });
   }, [searchWorker]);
 
-
-  const { q: query, t: type, c: code } =   queryString.parse(location.search);
+  const { q: query, t: type, c: code } = queryString.parse(location.search);
   const courseTab = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
-
-  searchWorker.postMessage({ type: codeSearch ? 'code_search' : 'search', query });
+  
+  if (!codeSearch) {
+    searchWorker.postMessage({ type: 'search', query });
+  }
 
   const terms = [
     {
-      id: '1195',
-      text: 'This Term (Spring 2019)'
+      id: '1199',
+      text: 'This Term (Fall 2019)'
     },
     {
-      id: '1199',
-      text: 'Next Term (Fall 2019)'
+      id: '1201',
+      text: 'Next Term (Winter 2020)'
     }
   ]
+
+  console.log(results);
 
   return (
     <ExplorePageWrapper>
@@ -157,9 +171,9 @@ const ExplorePage = ({ location }) => {
         query={query}
         code={code}
         terms={terms}
+        codeSearch={codeSearch}
         courseTab={courseTab}
-        courses={courses}
-        profs={profs}
+        results={results}
       />
     </ExplorePageWrapper>
   )

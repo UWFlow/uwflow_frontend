@@ -52,7 +52,7 @@ const SearchFilter = ({
       <NumRatingsWrapper>
         <SearchFilterText>Min # of ratings</SearchFilterText>
         <NumRatingsText>
-          &ge; {ratingFilters[filterState.numRatings]} ratings
+          &ge; {ratingFilters[filterState.numCourseRatings]} ratings
         </NumRatingsText>
       </NumRatingsWrapper>
       <DiscreteSlider
@@ -135,20 +135,9 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
-  terms: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      text: PropTypes.string,
-    }),
-  ).isRequired,
+  terms: PropTypes.object.isRequired,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
-  filterState: PropTypes.shape({
-    courseCodes: PropTypes.arrayOf(PropTypes.bool),
-    numRatings: PropTypes.number,
-    currentTerm: PropTypes.bool,
-    nextTerm: PropTypes.bool,
-    courseTaught: PropTypes.number,
-  }).isRequired,
+  filterState: PropTypes.object.isRequired,
   setCourseCodes: PropTypes.func.isRequired,
   setCurrentTerm: PropTypes.func.isRequired,
   setNextTerm: PropTypes.func.isRequired,

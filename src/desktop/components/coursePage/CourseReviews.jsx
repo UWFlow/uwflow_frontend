@@ -214,6 +214,8 @@ const CourseReviews = ({ courseID, theme }) => {
     return allProfs;
   }, []);
 
+  console.log(reviewsByProf);
+
   const ProfFilterDropdown = (
     <ProfDropdownPanelWrapper>
       <DropdownTableText>Filter by professor: </DropdownTableText>
@@ -256,7 +258,7 @@ const CourseReviews = ({ courseID, theme }) => {
 };
 
 CourseReviews.propTypes = {
-  courseID: PropTypes.string.isRequired,
+  courseID: PropTypes.number.isRequired,
   theme: PropTypes.object.isRequired,
 };
 

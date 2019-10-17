@@ -10,19 +10,14 @@ const searchOptions = {
   prefix: true,
 };
 
-const codeSearchOptions = {
-  fuzzy: 0,
-  prefix: false,
-};
-
 const courseIndexOptions = {
   searchOptions: {
     ...searchOptions,
     boost: { code: 3 },
   },
-  fields: ['code', 'name'],
-  storeFields: ['code', 'name'],
-};
+  fields: ['code', 'name', 'profs'],
+  storeFields: ['code', 'name', 'profs'],
+}
 
 const profIndexOptions = {
   searchOptions: {
@@ -41,39 +36,24 @@ const courseCodeIndexOptions = {
 
 class SearchClient {
   constructor() {
+    this.built = false;
     this.courseIndex = new MiniSearch(courseIndexOptions);
     this.profIndex = new MiniSearch(profIndexOptions);
     this.courseCodeIndex = new MiniSearch(courseCodeIndexOptions);
   }
 
-  codeSearch(query = '') {
-    if (query.length === 0) {
-      return { courseResults: [], profResults: [], courseCodeResults: [] };
-    }
-
-    const courseResults = this.courseIndex.search(
-      parsedQuery,
-      codeSearchOptions,
-    );
-    const profResults = this.profIndex.search(parsedQuery, codeSearchOptions);
-
-    return {
-      courseResults,
-      profResults,
-    };
-  }
-
   search(query = '') {
+    while (!this.built) {
+      continue;
+    }
+
     if (query.length === 0) {
       return { courseResults: [], profResults: [], courseCodeResults: [] };
     }
 
-    const courseResults = this.courseIndex.search(parsedQuery, {
-      fields: ['code', 'name'],
-    });
-    const profResults = this.profIndex.search(parsedQuery, {
-      fields: ['name', 'courses'],
-    });
+    const parsedQuery = query.split(' ').map(term => splitCourseCode(term)).join(' ');
+    const courseResults = this.courseIndex.search(parsedQuery, { fields: ['code', 'name', 'profs'] });
+    const profResults = this.profIndex.search(parsedQuery, { fields: ['name', 'courses'] });
 
     return {
       courseResults,
@@ -160,6 +140,7 @@ class SearchClient {
     this.courseIndex = newCourseIndex;
     this.profIndex = newProfIndex;
     this.courseCodeIndex = newCourseCodeIndex;
+    this.built = true;
 
     // return compressed raw data for localstorage
     return LZString.compressToUTF16(JSON.stringify(parsedSearchData));

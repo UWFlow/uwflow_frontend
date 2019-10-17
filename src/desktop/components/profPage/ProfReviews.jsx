@@ -25,6 +25,8 @@ import DropdownList from '../../../basicComponents/DropdownList';
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
 
+import { splitCourseCode } from '../../../utils/Misc';
+
 const ProfReviews = ({ profID, theme }) => {
   const [selectedSort, setSelectedSort] = useState(0);
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
@@ -43,7 +45,7 @@ const ProfReviews = ({ profID, theme }) => {
     let courseObject;
     let foundCourseObject = false;
     for (let i of allCourses) {
-      if (current.course && current.course.id === i.courseID) {
+      if (current.course && current.course.id === i.id) {
         courseObject = i;
         foundCourseObject = true;
         break;
@@ -51,10 +53,10 @@ const ProfReviews = ({ profID, theme }) => {
     }
     if (!foundCourseObject) {
       courseObject = {
-        course: current.course ? current.course.name : '',
-        courseCode: current.course ? current.course.code : '',
-        courseID: current.course ? current.course.id : -1,
-        likes: current.course
+        id: current.course ? current.course.id : -1,
+        name: current.course ? current.course.name : '',
+        code: current.course ? current.course.code : '',
+        liked: current.course
           ? current.course.course_reviews_aggregate.aggregate.avg.liked / 5
           : 0,
         reviews: [],
@@ -73,22 +75,23 @@ const ProfReviews = ({ profID, theme }) => {
     return allCourses;
   }, []);
 
+  console.log(reviewsByCourse);
+
   return (
     <ProfCourseReviewWrapper>
-      {reviewsByCourse.map(curr => {
+      {reviewsByCourse.map((course, idx) => {
         return (
-          <ReviewsForSingleCourseWrapper key={curr.courseID}>
-            <CourseHeader key={curr.course}>
+          <ReviewsForSingleCourseWrapper key={idx}>
+            <CourseHeader key={course.id}>
               <CourseNameAndCode>
-                <CourseCode>
-                  {curr.courseCode.charAt(0).toUpperCase() +
-                    curr.courseCode.slice(1)}
+                <CourseCode to={`/course/${course.code}`}>
+                  {splitCourseCode(course.code)}
                 </CourseCode>
-                <CourseName>{curr.course}</CourseName>
+                <CourseName>{course.name}</CourseName>
               </CourseNameAndCode>
               <CourseLikedMetric>
                 <CourseLikedPercent>
-                  {Math.round(curr.likes * 100)}%
+                  {Math.round(course.liked * 100)}%
                 </CourseLikedPercent>
                 <CourseLikedPercentLabel>
                   liked this course
@@ -104,7 +107,7 @@ const ProfReviews = ({ profID, theme }) => {
                 onChange={value => setSelectedSort(value)}
               />
             </DropdownPanelWrapper>
-            {curr.reviews.map(review => {
+            {course.reviews.map(review => {
               return (
                 <Review
                   key={review.reviewer.full_name}

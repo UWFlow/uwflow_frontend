@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
 import {
   Card,
   Heading2,
@@ -18,6 +20,7 @@ export const ProfCourseReviewWrapper = styled.div`
 export const ReviewsForSingleCourseWrapper = styled.div`
   ${Card()}
   ${BoxShadow}
+  padding-bottom: 0;
   margin-bottom: 32px;
 `;
 
@@ -39,8 +42,9 @@ export const CourseNameAndCode = styled.div`
   flex-direction: column;
 `;
 
-export const CourseCode = styled.div`
+export const CourseCode = styled(Link)`
   ${Heading2}
+  color: ${({ theme }) => theme.courses};
   margin-bottom: 16px;
 `;
 
@@ -51,7 +55,7 @@ export const CourseName = styled.div`
 
 export const DropdownPanelWrapper = styled.div`
   display: flex;
-  margin: 0 32px 32px 0;
+  margin: 16px 32px 32px 0;
   align-items: center;
 `;
 
@@ -71,6 +75,6 @@ export const CourseLikedPercent = styled.div`
 
 export const CourseLikedPercentLabel = styled.div`
   ${Body}
-  width: 65px;
-  margin-left: 12px;
+  width: 64px;
+  margin-left: 16px;
 `;
