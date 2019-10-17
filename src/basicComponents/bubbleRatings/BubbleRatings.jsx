@@ -24,13 +24,12 @@ const Thumbs = ({ boolRating }) => (
 
 const Squares = ({ rating, total }) => (
   <>
-    {Array.apply(null, Array(total)).map((v, ind) => {
+    {Array.apply(null, Array(total)).map((_, ind) => {
       return (
         <UnitCircle
           key={ind}
           filled={ind < rating}
           diameter={16}
-          border={!(ind < rating)}
         />
       );
     })}

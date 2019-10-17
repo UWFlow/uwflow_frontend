@@ -19,6 +19,7 @@ const ProfReviewFragment = {
       engaging
       clear
       user {
+        id
         full_name
         program
       }

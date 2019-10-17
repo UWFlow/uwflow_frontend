@@ -103,10 +103,10 @@ const CourseProfReviews = reviewsByProf => {
       {reviewsByProf.map((curr, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
           <ProfHeader>
-            <ProfName>{curr.prof}</ProfName>
+            <ProfName to={`/prof/${curr.id}`}>{curr.name}</ProfName>
             <ProfLikedMetric>
               <ProfLikedPercent>
-                {Math.round(curr.likes * 100)}%
+                {Math.round(curr.liked * 100)}%
               </ProfLikedPercent>
               <ProfLikedPercentLabel>
                 liked this professor
@@ -186,7 +186,7 @@ const CourseReviews = ({ courseID, theme }) => {
     let profObject;
     let foundProfObject = false;
     for (let i of allProfs) {
-      if (current.prof && current.prof.name === i.prof) {
+      if (current.prof && current.prof.name === i.name) {
         profObject = i;
         foundProfObject = true;
         break;
@@ -194,8 +194,9 @@ const CourseReviews = ({ courseID, theme }) => {
     }
     if (!foundProfObject) {
       profObject = {
-        prof: current.prof ? current.prof.name : '',
-        likes: current.prof
+        id: current.prof ? current.prof.id : 0,
+        name: current.prof ? current.prof.name : '',
+        liked: current.prof
           ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5
           : 0,
         reviews: [],
@@ -213,8 +214,6 @@ const CourseReviews = ({ courseID, theme }) => {
     });
     return allProfs;
   }, []);
-
-  console.log(reviewsByProf);
 
   const ProfFilterDropdown = (
     <ProfDropdownPanelWrapper>

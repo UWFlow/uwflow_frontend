@@ -19,7 +19,7 @@ import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/Rating
 const CourseInfoHeader = ({ course }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
-
+  console.log(course);
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>

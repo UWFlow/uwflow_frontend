@@ -75,8 +75,6 @@ const ProfReviews = ({ profID, theme }) => {
     return allCourses;
   }, []);
 
-  console.log(reviewsByCourse);
-
   return (
     <ProfCourseReviewWrapper>
       {reviewsByCourse.map((course, idx) => {
