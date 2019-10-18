@@ -32,8 +32,13 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
-  const profCourses = !!data ? data.prof.map(prof => prof.prof_courses) : [];
-  console.log(data);
+  let profCourses = !!data ? data.prof.reduce((acc, prof) => {
+    return acc.concat(prof.prof_courses.map(course => course.code));
+  }, ['any course']) : ['any course'];
+  profCourses = profCourses.filter(code => !!code);
+
+  console.log(data, profCourses);
+
   const filterState = {
     courseCodes,
     numCourseRatings,
@@ -59,7 +64,9 @@ const ExplorePageContent = ({
     <ExplorePageWrapper>
       <ExploreHeaderWrapper>
         <ExploreHeaderText>
-          {codeSearch ? `Showing all ${query} courses` : `Showing results for "${query}"`}
+          {codeSearch
+            ? `Showing all ${query.toUpperCase()} courses and professors`
+            : `Showing results for "${query}"`}
         </ExploreHeaderText>
       </ExploreHeaderWrapper>
       <ColumnWrapper>
@@ -79,14 +86,13 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setCourseCodes={setCourseCodes}
-            setNumCourseRatings={setNumCourseRatings}
-            setNumProfRatings={setNumProfRatings}
+            setNumRatings={exploreTab === 0 ? setNumCourseRatings : setNumProfRatings}
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
             setCourseTaught={setCourseTaught}
-            resetCourseFilters={resetCourseFilters}
-            resetProfFilters={resetProfFilters}
-            exploreTab={exploreTab}
+            ratingFilters={ratingFilters}
+            resetFilters={exploreTab === 0 ? resetCourseFilters : resetProfFilters}
+            courseSearch={exploreTab === 0}
           />
         </Column2>
     </ColumnWrapper>

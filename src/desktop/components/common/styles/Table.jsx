@@ -28,7 +28,7 @@ export const HeaderCell = styled.th`
   padding-bottom: 16px;
 
   padding-left: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
-  padding-right: ${({ rightAlign }) => (rightAlign ? '0' : '16px')};
+  padding-right: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
 
   &:first-child {
     padding-left: 32px;

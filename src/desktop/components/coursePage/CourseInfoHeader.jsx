@@ -15,16 +15,19 @@ import {
 
 /* Child Components */
 import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
+import { splitCourseCode } from '../../../utils/Misc';
 
 const CourseInfoHeader = ({ course }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
-  console.log(course);
+
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
         <CourseCodeAndNameWrapper>
-          <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>{course.code}</CourseCode>
+          <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
+            {splitCourseCode(course.code)}
+          </CourseCode>
           <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
         </CourseCodeAndNameWrapper>
       </CourseCodeAndNameSection>

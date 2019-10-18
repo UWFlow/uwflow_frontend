@@ -8,8 +8,7 @@ import {
   PageBody,
   PageContentWrapper,
   PageBodyContent,
-  PageBodyParagraph,
-  InlineLink,
+  PageBodyParagraph
 } from './styles/PrivacyPage';
 
 const PrivacyPage = () => (

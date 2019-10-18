@@ -63,7 +63,3 @@ export const PageBodyParagraph = styled.div`
   ${Body}
   margin-bottom: 32px;
 `;
-
-export const InlineLink = styled(Link)`
-  display: inline;
-`;

@@ -47,17 +47,19 @@ const SearchFilter = ({
   courseSearch,
   theme,
 }) => {
+  const numRatings = courseSearch ? filterState.numCourseRatings : filterState.numProfRatings;
+  
   const ratingSlider = (
     <>
       <NumRatingsWrapper>
         <SearchFilterText>Min # of ratings</SearchFilterText>
         <NumRatingsText>
-          &ge; {ratingFilters[filterState.numCourseRatings]} ratings
+          &ge; {ratingFilters[numRatings]} ratings
         </NumRatingsText>
       </NumRatingsWrapper>
       <DiscreteSlider
         numNodes={ratingFilters.length}
-        currentNode={filterState.numRatings}
+        currentNode={numRatings}
         color={theme.primary}
         onUpdate={value => setNumRatings(value[0])}
         showTicks={false}

@@ -12,12 +12,33 @@ import { courseColumns, profColumns } from './TableData';
 const SearchResults = ({
   filterState,
   data,
-  courseSearch,
+  exploreTab,
+  setExploreTab,
   ratingFilters,
   profCourses
 }) => {
-  const courses = !!data ? data.course : [];
-  const profs = !!data ? data.prof : [];
+  const courses = !!data ? data.course.map(course => Object({
+    id: course.id,
+    code: course.code,
+    name: course.name,
+    description: course.description,
+    ratings: course.course_reviews_aggregate.aggregate.count,
+    easy: course.course_reviews_aggregate.aggregate.avg.easy / 5,
+    liked: course.course_reviews_aggregate.aggregate.avg.liked / 5,
+    useful: course.course_reviews_aggregate.aggregate.avg.useful / 5
+  })) : [];
+
+  const profs = !!data ? data.prof.map(prof => Object({
+    id_name: {
+      id: prof.id,
+      name: prof.name,
+    },
+    ratings: prof.prof_reviews_aggregate.aggregate.count,
+    clear: prof.prof_reviews_aggregate.aggregate.avg.clear / 5,
+    engaging: prof.prof_reviews_aggregate.aggregate.avg.engaging / 5,
+    liked: prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+    courses: prof.prof_courses.map(course => course.code)
+  })) : [];
 
   const courseCodeRegex = useCallback(() => {
     let regexStr = '';
@@ -43,8 +64,10 @@ const SearchResults = ({
       prof.ratings >= ratingFilters[filterState.numProfRatings]
         && (filterState.courseTaught === 0
             || prof.courses.includes(profCourses[filterState.courseTaught]))
-    )
+    );
   };
+
+  const courseSearch = exploreTab === 0;
 
   return (
     <SearchResultsWrapper>

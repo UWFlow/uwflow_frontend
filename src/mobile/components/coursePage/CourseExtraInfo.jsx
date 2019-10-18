@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 /* Route Getters */
 import { getCoursePageRoute } from '../../../Routes';
@@ -27,7 +26,7 @@ const CourseExtraInfo = ({ prereqs, postreqs, courseCode }) => {
           </CourseText>
         </LineOfText>
       ))}
-      {prereqs.length == 0 && (
+      {prereqs.length === 0 && (
         <LineOfText>
           <GreyText>No Prerequisites</GreyText>
         </LineOfText>
@@ -40,7 +39,7 @@ const CourseExtraInfo = ({ prereqs, postreqs, courseCode }) => {
           </CourseText>
         </LineOfText>
       ))}
-      {postreqs.length == 0 && (
+      {postreqs.length === 0 && (
         <LineOfText>
           <GreyText>Nothing</GreyText>
         </LineOfText>

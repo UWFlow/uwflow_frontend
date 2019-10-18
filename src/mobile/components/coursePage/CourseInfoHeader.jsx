@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 /* Child Components */
 import RatingBox from '../common/RatingBox';
