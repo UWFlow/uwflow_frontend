@@ -6,6 +6,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import NotFoundPage from '../../../desktop/components/notFoundPage/NotFoundPage';
 import CourseReviews from './CourseReviews';
 import CourseExtraInfo from './CourseExtraInfo';
+import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 
 /* Styled Components */
 import { CoursePageWrapper } from './styles/CoursePage';
@@ -27,7 +28,7 @@ const CoursePageContent = ({ course }) => {
 const CoursePage = ({ loading, error, data }) => (
   <CoursePageWrapper>
     {loading ? (
-      <div>Loading ...</div>
+      <LoadingSpinner />
     ) : error || !data || !data.course || data.course.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that course!" />
     ) : (

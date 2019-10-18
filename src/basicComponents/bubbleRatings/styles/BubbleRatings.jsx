@@ -40,11 +40,6 @@ export const ThumbsWrapper = styled.div`
 
 export const Thumb = styled.div`
   ${Body}
-  cursor: pointer;
   color: ${({theme, colored}) => colored ? theme.primary : theme.light4};
   margin-left: 4px;
-
-  &:hover {
-    color: ${({theme}) => theme.primary};
-  }
 `;

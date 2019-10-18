@@ -21,6 +21,7 @@ import {
 /* Child Components */
 import DropdownList from '../../../basicComponents/DropdownList.jsx';
 import Review from '../common/Review.jsx';
+import LoadingSpinner from '../../../basicComponents/LoadingSpinner.jsx';
 
 import { splitCourseCode } from '../../../utils/Misc';
 
@@ -33,7 +34,7 @@ const ProfReviews = ({ profID, theme }) => {
   if (loading) {
     return (
       <ProfCourseReviewWrapper>
-        <div>Loading ...</div>
+        <LoadingSpinner />
       </ProfCourseReviewWrapper>
     );
   }

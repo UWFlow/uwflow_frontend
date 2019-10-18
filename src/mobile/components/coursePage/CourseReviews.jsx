@@ -23,6 +23,7 @@ import {
 import CollapseableContainer from '../common/CollapseableContainer';
 import Review from '../common/Review';
 import DropdownList from '../../../basicComponents/DropdownList';
+import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
@@ -158,7 +159,7 @@ const CourseReviews = ({ courseID, theme }) => {
   if (loading) {
     return (
       <CourseReviewWrapper>
-        <div>Loading ...</div>
+        <LoadingSpinner />
       </CourseReviewWrapper>
     );
   }

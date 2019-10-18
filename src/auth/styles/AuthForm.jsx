@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   margin-top: 32px;
   margin-bottom: 32px;
-  width: ${({ width }) => width}px;
+  width: ${({ width }) => width ? width : '400'}px;
   border-radius: 4px;
   height: fit-content;
 `;

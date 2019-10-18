@@ -8,6 +8,7 @@ import { ProfPageWrapper } from './styles/ProfPage';
 import NotFoundPage from '../../../desktop/components/notFoundPage/NotFoundPage';
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
+import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 
 const ProfPageContent = ({ prof }) => {
   return (
@@ -21,7 +22,7 @@ const ProfPageContent = ({ prof }) => {
 const ProfPage = ({ loading, error, data }) => (
   <ProfPageWrapper>
     {loading ? (
-      <div>Loading ...</div>
+      <LoadingSpinner />
     ) : error || !data || data.prof.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that professor!" />
     ) : (

@@ -21,6 +21,7 @@ import {
 /* Child Components */
 import Review from '../common/Review';
 import DropdownList from '../../../basicComponents/DropdownList';
+import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
@@ -36,7 +37,7 @@ const ProfReviews = ({ profID, theme }) => {
   if (loading) {
     return (
       <ProfCourseReviewWrapper>
-        <div>Loading ...</div>
+        <LoadingSpinner />
       </ProfCourseReviewWrapper>
     );
   }

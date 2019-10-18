@@ -10,6 +10,7 @@ import CourseReviewCourseBox from './CourseReviewCourseBox';
 import Button from '../../../basicComponents/Button';
 import ModalHOC from '../../../basicComponents/modal/ModalHOC';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
+import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 
 /* Styled Components */
 import {
@@ -66,7 +67,7 @@ const CoursePageContent = ({ course }) => {
 const CoursePage = ({ loading, error, data }) => (
   <CoursePageWrapper>
     {loading ? (
-      <div>Loading ...</div>
+      <LoadingSpinner />
     ) : error || !data || !data.course || data.course.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that course!" />
     ) : (
