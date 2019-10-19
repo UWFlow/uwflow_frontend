@@ -21,3 +21,7 @@ export const SEARCH_DATA_ENDPOINT = '/data/search';
 
 export const GOOGLE_APP_ID = '292230821846-cogmasv1s0rbvhp0dr886vik2c73etb3';
 export const FACEBOOK_APP_ID = '289196947861602';
+
+export const RESET_PASSWORD_KEY_EMAIL_ENDPOINT = '/forgot-password/send-email';
+export const RESET_PASSWORD_VERIFY_KEY_ENDPOINT = '/forgot-password/verify';
+export const RESET_PASSWORD_RESET_PASSWORD_ENDPOINT = '/forgot-password/reset';
