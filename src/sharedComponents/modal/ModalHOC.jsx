@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -33,6 +33,7 @@ const ModalHOC = ({
   isBrowserDesktop,
 }) => {
   const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
+  const classesOnBody = useRef(false);
 
   const handleKeyPress = useCallback(
     event => {
@@ -58,10 +59,18 @@ const ModalHOC = ({
       if (isBrowserDesktop) {
         document.body.classList.add('modal-padding');
       }
+      classesOnBody.current = true;
     } else {
       document.body.classList.remove('no-scroll');
       document.body.classList.remove('modal-padding');
+      classesOnBody.current = false;
     }
+    return () => {
+      if (classesOnBody.current) {
+        document.body.classList.remove('no-scroll');
+        document.body.classList.remove('modal-padding');
+      }
+    };
   }, [isModalOpen, isTrulyOpen]);
 
   const onAnimationFinish = () => {
@@ -93,7 +102,11 @@ const ModalHOC = ({
             onClick={onCloseModal}
           >
             <FadeInOutAnimation isOpen={isModalOpen} styles={{ zIndex: '2' }}>
-              <ModalWrapper>{children}</ModalWrapper>
+              <ModalWrapper
+                padRight={isBrowserDesktop && !isModalOpen && isTrulyOpen}
+              >
+                {children}
+              </ModalWrapper>
             </FadeInOutAnimation>
           </ModalScrollableWrapper>
         </div>
