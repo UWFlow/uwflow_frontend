@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 
+/* Custom Hooks */
+import { useCourseReviewsReducer } from '../../../data/custom_hooks/UseCourseReviewsReducer';
+
 /* Styled Components */
 import {
   CourseReviewWrapper,
@@ -105,9 +108,7 @@ const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
       {ProfFilterDropdown}
       {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
-          <ProfName to={getProfPageRoute(prof.id)}>
-            {prof.name}
-          </ProfName>
+          <ProfName to={getProfPageRoute(prof.id)}>{prof.name}</ProfName>
           <ProfLikedMetric>
             <ProfLikedPercent>{Math.round(prof.liked * 100)}%</ProfLikedPercent>
             <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
@@ -159,6 +160,7 @@ const CourseReviews = ({ courseID, theme }) => {
   const [courseSort, setCourseSort] = useState(0);
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);
+  const [reviewDataState, dispatch] = useCourseReviewsReducer(data);
 
   if (loading) {
     return (
@@ -167,51 +169,6 @@ const CourseReviews = ({ courseID, theme }) => {
       </CourseReviewWrapper>
     );
   }
-
-  const courseReviews = data.course_review.map(r => ({
-    upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
-    review: r.text,
-    reviewer: r.user,
-    metrics: {
-      useful: r.useful,
-      easy: r.easy,
-      liked: r.liked != null,
-    },
-    prof: r.prof ? r.prof.name : '',
-  }));
-
-  const reviewsByProf = data.prof_review.reduce((allProfs, current) => {
-    let profObject;
-    let foundProfObject = false;
-    for (let i of allProfs) {
-      if (current.prof && current.prof.name === i.name) {
-        profObject = i;
-        foundProfObject = true;
-        break;
-      }
-    }
-    if (!foundProfObject) {
-      profObject = {
-        id: current.prof ? current.prof.id : 0,
-        name: current.prof ? current.prof.name : '',
-        liked: current.prof
-          ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5
-          : 0,
-        reviews: [],
-      };
-      allProfs.push(profObject);
-    }
-    profObject.reviews.push({
-      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
-      review: current.text,
-      reviewer: current.user,
-      metrics: {
-        clear: current.clear,
-        engaging: current.engaging,
-      },
-    });
-    return allProfs;
-  }, []);
 
   const ProfFilterDropdown = (
     <ProfDropdownPanelWrapper>
@@ -231,7 +188,7 @@ const CourseReviews = ({ courseID, theme }) => {
         title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
         renderContent={() =>
           CourseCourseReviews(
-            courseReviews,
+            reviewDataState.courseReviews,
             theme,
             courseSort,
             setCourseSort,
@@ -243,7 +200,7 @@ const CourseReviews = ({ courseID, theme }) => {
       <CollapseableContainer
         title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
         renderContent={() =>
-          CourseProfReviews(reviewsByProf, ProfFilterDropdown)
+          CourseProfReviews(reviewDataState.reviewsByProf, ProfFilterDropdown)
         }
       />
     </CourseReviewWrapper>
