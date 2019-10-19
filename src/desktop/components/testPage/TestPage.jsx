@@ -13,9 +13,6 @@ import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 /* Selectors */
 import { getTextboxText } from '../../../reducers/TextboxReducer';
 
-/* Styled Components */
-import {} from './styles/TestPage';
-
 const mapStateToProps = state => ({
   getTextboxText: ID => getTextboxText(state, ID),
 });

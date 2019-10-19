@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow } from '../../../../../constants/Mixins';
+import { BoxShadow } from '../../../constants/Mixins';
 
 export const DiscreteSliderWrapper = styled.div`
   color: ${({ color }) => color};

@@ -4,7 +4,7 @@ import { withTheme } from 'styled-components';
 
 import RadioButton from '../../../sharedComponents/input/RadioButton';
 import MultiSelectButton from '../../../sharedComponents/input/MultiSelectButton';
-import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
+import DiscreteSlider from '../../../sharedComponents/discreteSlider/DiscreteSlider';
 import DropdownList from '../../../sharedComponents/input/DropdownList';
 
 /* Styled Components */
@@ -47,8 +47,10 @@ const SearchFilter = ({
   courseSearch,
   theme,
 }) => {
-  const numRatings = courseSearch ? filterState.numCourseRatings : filterState.numProfRatings;
-  
+  const numRatings = courseSearch
+    ? filterState.numCourseRatings
+    : filterState.numProfRatings;
+
   const ratingSlider = (
     <>
       <NumRatingsWrapper>

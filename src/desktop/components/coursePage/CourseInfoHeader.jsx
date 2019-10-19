@@ -12,11 +12,14 @@ import {
   Description,
   RatingsSection,
   CourseCodeAndStar,
-  StarAlignmentWrapper
+  StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
 
 /* Child Components */
-import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
+import RatingBox, {
+  RATING_BOX_HEIGHT,
+  RATING_BOX_WIDTH,
+} from '../common/RatingBox';
 import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
 
 import { splitCourseCode } from '../../../utils/Misc';
@@ -29,7 +32,7 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
 
   const onStarClick = () => {
     isLoggedIn() ? setIsStarClicked(!isStarClicked) : setAuthModalOpen(true);
-  }
+  };
 
   return (
     <CourseInfoHeaderWrapper>
@@ -47,11 +50,13 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
               />
             </StarAlignmentWrapper>
           </CourseCodeAndStar>
-          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
+          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>
+            {course.name}
+          </CourseName>
         </CourseCodeAndNameWrapper>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
-        <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
+        <RatingsSection>
           <RatingBox
             numRatings={count}
             numComments={text_count}
@@ -80,7 +85,7 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
 };
 
 CourseInfoHeader.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
 };
 
 export default CourseInfoHeader;

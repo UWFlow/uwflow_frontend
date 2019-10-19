@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, Heading2, Body, PageContent } from '../../../../constants/Mixins';
+import {
+  Heading1,
+  Heading2,
+  Body,
+  PageContent,
+} from '../../../../constants/Mixins';
 
 export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -59,7 +64,7 @@ export const Description = styled.div`
 export const RatingsSection = styled.div`
   position: absolute;
   right: 0;
-  top: ${({ ratingBoxHeight }) => -ratingBoxHeight / 2}px;
+  bottom: 32px;
 `;
 
 export const CourseCodeAndStar = styled.div`
