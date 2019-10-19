@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
-import { isLoggedIn } from '../utils/Auth';
+import { getIsLoggedIn } from '../data/reducers/AuthReducer';
 
 /* Child Components */
 import DesktopProfilePage from '../desktop/components/profilePage/ProfilePage';
@@ -20,13 +20,15 @@ import { LANDING_PAGE_ROUTE } from '../Routes';
 
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
+  isLoggedIn: getIsLoggedIn(state)
 });
 
-export const ProfilePageSwitch = ({ isDesktopPage, history }) => {
-  if (!isLoggedIn()) {
+export const ProfilePageSwitch = ({ isDesktopPage, history, isLoggedIn }) => {
+  const { loading, error, data } = useQuery(GET_USER, { variables: { id: localStorage.getItem('user_id') } });
+
+  if (!isLoggedIn) {
     history.push(LANDING_PAGE_ROUTE);
   }
-  const { loading, error, data } = useQuery(GET_USER, { variables: { id: localStorage.getItem('user_id') } });
 
   return isDesktopPage ? (
     <DesktopProfilePage loading={loading} error={error} data={data} />
