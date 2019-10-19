@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
+
+/* Custom Reducers */
+import useProfReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from '../../../data/custom_hooks/UseProfReviewsReducer';
 
 /* Styled Components */
 import {
@@ -34,6 +39,16 @@ const ProfReviews = ({ profID, theme }) => {
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
   });
+  const [reviewDataState, dispatch] = useProfReviewsReducer(data);
+
+  useEffect(() => {
+    if (data) {
+      dispatch({
+        type: UPDATE_REVIEW_DATA,
+        payload: data,
+      });
+    }
+  }, [data]);
 
   if (loading) {
     return (
@@ -43,43 +58,9 @@ const ProfReviews = ({ profID, theme }) => {
     );
   }
 
-  const reviewsByCourse = data.prof_review.reduce((allCourses, current) => {
-    let courseObject;
-    let foundCourseObject = false;
-    for (let i of allCourses) {
-      if (current.course && current.course.id === i.id) {
-        courseObject = i;
-        foundCourseObject = true;
-        break;
-      }
-    }
-    if (!foundCourseObject) {
-      courseObject = {
-        id: current.course ? current.course.id : -1,
-        name: current.course ? current.course.name : '',
-        code: current.course ? current.course.code : '',
-        liked: current.course
-          ? current.course.course_reviews_aggregate.aggregate.avg.liked / 5
-          : 0,
-        reviews: [],
-      };
-      allCourses.push(courseObject);
-    }
-    courseObject.reviews.push({
-      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
-      review: current.text,
-      reviewer: current.user,
-      metrics: {
-        clear: current.clear,
-        engaging: current.engaging,
-      },
-    });
-    return allCourses;
-  }, []);
-
   return (
     <ProfCourseReviewWrapper>
-      {reviewsByCourse.map((course, idx) => {
+      {reviewDataState.reviewsByCourse.map((course, idx) => {
         return (
           <ReviewsForSingleCourseWrapper key={idx}>
             <CourseHeader key={course.id}>
