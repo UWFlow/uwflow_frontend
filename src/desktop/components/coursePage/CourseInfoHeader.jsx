@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -11,23 +11,37 @@ import {
   CourseName,
   Description,
   RatingsSection,
+  CourseCodeAndStar,
+  StarAlignmentWrapper
 } from './styles/CourseInfoHeader';
 
 /* Child Components */
 import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
+import ShortlistStar from '../../../basicComponents/ShortlistStar';
+
 import { splitCourseCode } from '../../../utils/Misc';
 
 const CourseInfoHeader = ({ course }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
+  const [isStarClicked, setIsStarClicked] = useState(false);
 
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
         <CourseCodeAndNameWrapper>
-          <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
-            {splitCourseCode(course.code)}
-          </CourseCode>
+          <CourseCodeAndStar>
+            <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
+              {splitCourseCode(course.code)}
+            </CourseCode>
+            <StarAlignmentWrapper>
+              <ShortlistStar
+                size={36}
+                checked={isStarClicked}
+                onClick={() => setIsStarClicked(!isStarClicked)}
+              />
+            </StarAlignmentWrapper>
+          </CourseCodeAndStar>
           <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
         </CourseCodeAndNameWrapper>
       </CourseCodeAndNameSection>

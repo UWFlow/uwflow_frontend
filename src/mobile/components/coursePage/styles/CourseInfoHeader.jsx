@@ -14,7 +14,7 @@ export const CourseInfoHeaderWrapper = styled.div`
 
 export const CourseNameSection = styled.div`
   width: 100%;
-  height: 162px;
+  min-height: 162px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

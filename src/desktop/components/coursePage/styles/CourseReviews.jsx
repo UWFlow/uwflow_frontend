@@ -68,6 +68,6 @@ export const ProfLikedPercent = styled.div`
 
 export const ProfLikedPercentLabel = styled.div`
   ${Body}
-  width: 65px;
+  width: 64px;
   margin-left: 12px;
 `;

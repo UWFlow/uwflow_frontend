@@ -12,7 +12,6 @@ export const ReviewWrapper = styled.div`
 
 export const ReviewPictureWrapper = styled.div`
   display: flex;
-  align-items: center;
   margin-bottom: 32px;
   margin-right: 32px;
   position: relative;
@@ -27,7 +26,7 @@ export const ReviewPicture = styled.div`
 
 export const ReviewUpvotes = styled.div`
   position: absolute;
-  bottom: -8px;
+  top: 36px;
   right: -16px;
   width: 40px;
   height: 40px;
@@ -38,7 +37,13 @@ export const ReviewUpvotes = styled.div`
   align-items: center;
   color: white;
   border-radius: 20px 20px 20px 20px;
+  cursor: pointer;
   border: 2px solid ${({ theme }) => theme.light3};
+
+  &:hover {
+    ${({ selected, theme }) =>
+      `background-color:${selected ? theme.primaryDark : theme.light3};`
+  }
 `;
 
 export const ReviewTextWrapper = styled.div`

@@ -46,6 +46,8 @@ export const ProfileCourseLiked = styled.div`
   font-size: 36px;
   color: ${({theme}) => theme.dark2};
   margin-right: 16px;
+  display: flex;
+  align-items: center;
 `;
 
 export const LikedThisCourseText = styled.div`

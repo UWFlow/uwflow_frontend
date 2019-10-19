@@ -60,7 +60,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
             <Button
               margin="0 0 0 16px"
               padding="8px"
-              height={40}
+              height={48}
               handleClick={() => {
                 setReviewCourse(idx);
                 openModal();

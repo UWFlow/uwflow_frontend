@@ -38,7 +38,6 @@ export const CourseDescriptionSection = styled.div`
 export const CourseCode = styled.div`
   color: ${({ theme }) => theme.light2};
   ${Heading1};
-  margin-bottom: 16px;
   text-transform: uppercase;
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
 `;
@@ -61,4 +60,16 @@ export const RatingsSection = styled.div`
   position: absolute;
   right: 0;
   top: ${({ ratingBoxHeight }) => -ratingBoxHeight / 2}px;
+`;
+
+export const CourseCodeAndStar = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+export const StarAlignmentWrapper = styled.div`
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
 `;
