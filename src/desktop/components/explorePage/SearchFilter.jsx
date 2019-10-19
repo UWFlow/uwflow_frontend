@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
-import RadioButton from '../../../basicComponents/RadioButton';
-import MultiSelectButton from '../common/MultiSelectButton';
-import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
-import DropdownList from '../../../basicComponents/DropdownList';
+import RadioButton from '../../../sharedComponents/input/RadioButton';
+import MultiSelectButton from '../../../sharedComponents/input/MultiSelectButton';
+import DiscreteSlider from '../../../sharedComponents/discreteSlider/DiscreteSlider';
+import DropdownList from '../../../sharedComponents/input/DropdownList';
 
 /* Styled Components */
 import {
@@ -47,17 +47,21 @@ const SearchFilter = ({
   courseSearch,
   theme,
 }) => {
+  const numRatings = courseSearch
+    ? filterState.numCourseRatings
+    : filterState.numProfRatings;
+
   const ratingSlider = (
     <>
       <NumRatingsWrapper>
         <SearchFilterText>Min # of ratings</SearchFilterText>
         <NumRatingsText>
-          &ge; {ratingFilters[filterState.numRatings]} ratings
+          &ge; {ratingFilters[numRatings]} ratings
         </NumRatingsText>
       </NumRatingsWrapper>
       <DiscreteSlider
         numNodes={ratingFilters.length}
-        currentNode={filterState.numRatings}
+        currentNode={numRatings}
         color={theme.primary}
         onUpdate={value => setNumRatings(value[0])}
         showTicks={false}
@@ -135,20 +139,9 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
-  terms: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      text: PropTypes.string,
-    }),
-  ).isRequired,
+  terms: PropTypes.array,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
-  filterState: PropTypes.shape({
-    courseCodes: PropTypes.arrayOf(PropTypes.bool),
-    numRatings: PropTypes.number,
-    currentTerm: PropTypes.bool,
-    nextTerm: PropTypes.bool,
-    courseTaught: PropTypes.number,
-  }).isRequired,
+  filterState: PropTypes.object.isRequired,
   setCourseCodes: PropTypes.func.isRequired,
   setCurrentTerm: PropTypes.func.isRequired,
   setNextTerm: PropTypes.func.isRequired,

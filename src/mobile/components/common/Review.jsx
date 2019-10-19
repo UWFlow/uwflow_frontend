@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
+import { ThumbsUp } from 'react-feather';
 
 /* Styled Components */
 import {
@@ -21,8 +22,7 @@ import {
 } from './styles/Review';
 
 /* Child Components */
-import BubbleRatings from '../../../basicComponents/bubbleRatings/BubbleRatings';
-import { ThumbsUp } from 'react-feather';
+import BubbleRatings from '../../../sharedComponents/input/BubbleRatings';
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {
@@ -33,7 +33,7 @@ const MetricIfExists = (metrics, metric) => {
             <BubbleRatings boolRating={metrics[metric]} />
           </SingleMetricSquares>
           <SingleMetricLabel>
-            {metric === 'liked' ? 'Liked it' : metric}?
+            {metric === 'liked' ? 'Liked' : metric}?
           </SingleMetricLabel>
         </SingleMetricWrapper>
       );

@@ -15,10 +15,10 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import DiscreteSlider from '../common/discreteSlider/DiscreteSlider';
-import RadioButton from '../../../basicComponents/RadioButton';
-import DropdownList from '../../../basicComponents/DropdownList';
-import Button from '../../../basicComponents/Button';
+import DiscreteSlider from '../../../sharedComponents/discreteSlider/DiscreteSlider';
+import RadioButton from '../../../sharedComponents/input/RadioButton';
+import DropdownList from '../../../sharedComponents/input/DropdownList';
+import Button from '../../../sharedComponents/input/Button';
 
 const easyOptions = [
   'Very difficult',
@@ -190,7 +190,7 @@ const CourseReviewCourseBox = ({
 };
 
 CourseReviewCourseBox.propTypes = {
-  courseIDList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  courseIDList: PropTypes.array.isRequired,
   theme: PropTypes.object.isRequired,
   selectedCourseIndex: PropTypes.number,
   setSelectedCourseIndex: PropTypes.func,

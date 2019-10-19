@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import {
   Card,
   Heading1,
@@ -51,8 +52,9 @@ export const ProfHeader = styled.div`
   align-items: center;
 `;
 
-export const ProfName = styled.div`
+export const ProfName = styled(Link)`
   ${Heading2}
+  color: ${({theme}) => theme.professors}
 `;
 
 export const ProfLikedMetric = styled.div`
@@ -66,6 +68,6 @@ export const ProfLikedPercent = styled.div`
 
 export const ProfLikedPercentLabel = styled.div`
   ${Body}
-  width: 65px;
+  width: 64px;
   margin-left: 12px;
 `;

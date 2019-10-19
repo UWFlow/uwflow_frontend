@@ -3,18 +3,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* Child Components */
-import Textbox from '../../../basicComponents/Textbox';
-import TabContainer from '../common/TabContainer';
-import Button from '../../../basicComponents/Button';
-import ProgressBar from '../../../basicComponents/ProgressBar';
+import Textbox from '../../../sharedComponents/input/Textbox';
+import TabContainer from '../../../sharedComponents/display/TabContainer';
+import Button from '../../../sharedComponents/input/Button';
+import ProgressBar from '../../../sharedComponents/display/ProgressBar';
 import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
 import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 
 /* Selectors */
 import { getTextboxText } from '../../../reducers/TextboxReducer';
-
-/* Styled Components */
-import {} from './styles/TestPage';
 
 const mapStateToProps = state => ({
   getTextboxText: ID => getTextboxText(state, ID),

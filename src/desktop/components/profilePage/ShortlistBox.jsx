@@ -11,11 +11,13 @@ import {
   ShortlistCourseName,
 } from './styles/ShortlistBox';
 
-import ShortlistStar from '../../../basicComponents/ShortlistStar';
+import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
 
 import { splitCourseCode } from '../../../utils/Misc';
+import { getCoursePageRoute } from '../../../Routes';
 
 const ShortlistBox = ({ shortlistCourses }) => {
+  console.log(shortlistCourses)
   return (
     <ShortlistBoxWrapper>
       <ShortlistHeading>Shortlist</ShortlistHeading>
@@ -23,10 +25,10 @@ const ShortlistBox = ({ shortlistCourses }) => {
         <ShortlistCourse key={idx}>
           <ShortlistStar checked />
           <ShortListCourseText>
-            <ShortlistCourseCode to={`/course/${course.code}`}>
-              {splitCourseCode(course.code)}
+            <ShortlistCourseCode to={getCoursePageRoute(course.course.code)}>
+              {splitCourseCode(course.course.code)}
             </ShortlistCourseCode>
-            <ShortlistCourseName>{course.name}</ShortlistCourseName>
+            <ShortlistCourseName>{course.course.name}</ShortlistCourseName>
           </ShortListCourseText>
         </ShortlistCourse>
       ))}

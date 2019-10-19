@@ -29,6 +29,7 @@ export const ReviewTextArea = styled.textarea`
   height: ${({ rows }) => rows * 16}px;
   resize: none;
   ${BoxShadow}
+  ${Body}
 `;
 
 export const MetricQuestionWrapper = styled.div`

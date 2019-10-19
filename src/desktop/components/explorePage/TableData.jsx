@@ -1,18 +1,25 @@
 import React from 'react';
 import { CourseCode, ProfName } from './styles/ExplorePage';
 
+import { splitCourseCode } from '../../../utils/Misc';
+import { getCoursePageRoute, getProfPageRoute } from '../../../Routes';
+
 export const courseColumns = [
   {
     Header: 'Course code',
     accessor: 'code',
     align: 'left',
     maxWidth: 112,
-    Cell: ({ cell }) => <CourseCode to={`/course/${cell.value}`}>{cell.value}</CourseCode>,
+    Cell: ({ cell }) => (
+      <CourseCode to={getCoursePageRoute(cell.value)}>{
+        splitCourseCode(cell.value)}
+      </CourseCode>
+    ),
   },
   {
     Header: 'Course Name',
     accessor: 'name',
-    align: 'left',
+    align: 'left'
   },
   {
     Header: 'Ratings',
@@ -25,27 +32,34 @@ export const courseColumns = [
     accessor: 'useful',
     align: 'right',
     maxWidth: 64,
+    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`
   },
   {
     Header: 'Easy',
     accessor: 'easy',
     align: 'right',
     maxWidth: 64,
+    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     maxWidth: 64,
+    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`
   },
 ];
 
 export const profColumns = [
   {
     Header: 'Professor name',
-    accessor: 'name',
+    accessor: 'id_name',
     align: 'left',
-    Cell: ({ value }) => <ProfName to={`/prof/${value}`}>{value}</ProfName>,
+    Cell: ({ cell }) => (
+      <ProfName to={getProfPageRoute(cell.value.id)}>
+        {cell.value.name}
+      </ProfName>
+    ),
   },
   {
     Header: 'Ratings',
@@ -58,17 +72,20 @@ export const profColumns = [
     accessor: 'clear',
     align: 'right',
     maxWidth: 64,
+    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`,
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
     maxWidth: 64,
+    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`,
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     maxWidth: 64,
+    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`,
   },
 ];

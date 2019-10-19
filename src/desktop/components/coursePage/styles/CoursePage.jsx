@@ -34,7 +34,7 @@ export const Column2 = styled.div`
 `;
 
 export const ExtraInfoBoxWrapper = styled.div`
-  ${Card('24px')}
+  ${Card('32px 24px')}
   ${BoxShadow}
   ${Heading4}
 `;

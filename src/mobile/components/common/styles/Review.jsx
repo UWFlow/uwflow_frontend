@@ -3,7 +3,7 @@ import { BoxShadow, Body } from '../../../../constants/Mixins';
 
 export const ReviewWrapper = styled.div`
   ${BoxShadow}
-  padding:  16px;
+  padding: 16px;
   margin-bottom: 32px;
   background-color: ${({ theme }) => theme.light1};
   align-content: center;
@@ -21,11 +21,15 @@ export const ReviewPictureAndUpvotesWrapper = styled.div`
 `;
 
 export const ReviewPicture = styled.div`
-  width: 70px;
-  height: 70px;
+  width: 64px;
+  height: 64px;
   background-color: ${({ theme }) => theme.dark3};
-  border-radius: 35px 35px 35px 35px;
+  border-radius: 32px 32px 32px 32px;
   margin-right: 16px;
+
+  @media only screen and (max-width: 320px) {
+    margin-right: 8px
+  }
 `;
 
 export const ReviewUpvotes = styled.div`
@@ -59,12 +63,11 @@ export const SingleMetricWrapper = styled.tr``;
 export const SingleMetricSquares = styled.td`
   display: flex;
   justify-content: flex-end;
-  padding-bottom: 4px;
 `;
 
 export const SingleMetricLabel = styled.td`
   ${Body}
-  padding-bottom: 4px;
+  vertical-align: top;
 `;
 
 export const ReviewTextWrapper = styled.div`

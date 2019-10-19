@@ -6,16 +6,40 @@ import {
   SearchResultsWrapper
 } from './styles/SearchResults';
 
-import Table from '../common/Table';
+import Table from '../../../sharedComponents/display/Table';
 import { courseColumns, profColumns } from './TableData';
 
 const SearchResults = ({
   filterState,
-  results,
-  courseSearch,
+  data,
+  exploreTab,
+  setExploreTab,
   ratingFilters,
   profCourses
 }) => {
+  const courses = !!data ? data.course.map(course => Object({
+    id: course.id,
+    code: course.code,
+    name: course.name,
+    description: course.description,
+    ratings: course.course_reviews_aggregate.aggregate.count,
+    easy: course.course_reviews_aggregate.aggregate.avg.easy / 5,
+    liked: course.course_reviews_aggregate.aggregate.avg.liked / 5,
+    useful: course.course_reviews_aggregate.aggregate.avg.useful / 5
+  })) : [];
+
+  const profs = !!data ? data.prof.map(prof => Object({
+    id_name: {
+      id: prof.id,
+      name: prof.name,
+    },
+    ratings: prof.prof_reviews_aggregate.aggregate.count,
+    clear: prof.prof_reviews_aggregate.aggregate.avg.clear / 5,
+    engaging: prof.prof_reviews_aggregate.aggregate.avg.engaging / 5,
+    liked: prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+    courses: prof.prof_courses.map(course => course.code)
+  })) : [];
+
   const courseCodeRegex = useCallback(() => {
     let regexStr = '';
     for (let i = filterState.courseCodes.length - 1; i >= 0; i--) {
@@ -27,26 +51,28 @@ const SearchResults = ({
     return new RegExp(regexStr);
   }, [filterState]);
 
-  const filterCourses = (results) => {
+  const filterCourses = () => {
     const regex = courseCodeRegex();
-    return results.filter(
-      (res) => regex.test(res.code)
-        && res.ratings >= ratingFilters[filterState.numRatings]
+    return courses.filter(
+      (course) => regex.test(course.code)
+        && course.ratings >= ratingFilters[filterState.numCourseRatings]
     );
   };
 
-  const filterProfs = (results) => {
-    return results.filter(res =>
-      res.ratings >= ratingFilters[filterState.numRatings]
+  const filterProfs = () => {
+    return profs.filter(prof =>
+      prof.ratings >= ratingFilters[filterState.numProfRatings]
         && (filterState.courseTaught === 0
-            || res.courses.includes(profCourses[filterState.courseTaught]))
-    )
+            || prof.courses.includes(profCourses[filterState.courseTaught]))
+    );
   };
+
+  const courseSearch = exploreTab === 0;
 
   return (
     <SearchResultsWrapper>
       <Table
-        data={courseSearch ? filterCourses(results) : filterProfs(results)}
+        data={courseSearch ? filterCourses() : filterProfs()}
         columns={courseSearch ? courseColumns : profColumns}
         rightAlignIndex={courseSearch ? 2 : 1}
         sortable
@@ -63,8 +89,7 @@ SearchResults.propTypes = {
     nextTerm: PropTypes.bool,
     courseTaught: PropTypes.number,
   }).isRequired,
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  courseSearch: PropTypes.bool.isRequired,
+  results: PropTypes.arrayOf(PropTypes.object),
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
 }

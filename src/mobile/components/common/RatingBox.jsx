@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { getWidth } from '../../../data/reducers/BrowserReducer';
 
 /* Child Components */
-import CircularPercentage from '../../../basicComponents/statistics/CircularPercentage';
-import ProgressBar from '../../../basicComponents/ProgressBar';
+import CircularPercentage from '../../../sharedComponents/statistics/CircularPercentage';
+import ProgressBar from '../../../sharedComponents/display/ProgressBar';
 
 /* Styled Components */
 import {
@@ -19,8 +19,8 @@ import {
   ProgressBarWrapper,
   ProgressNumberLabel,
   ReviewsAndGraphButtonWrapper,
-  NumReviewsAndRatingsWrapper,
-  NumReviewsWrapper,
+  NumCommentsAndRatingsWrapper,
+  NumCommentsWrapper,
   NumRatingsWrapper,
 } from './styles/RatingBox';
 
@@ -28,16 +28,16 @@ const mapStateToProps = state => ({
   width: getWidth(state),
 });
 
-const RatingBox = ({ percentages, numRatings, numReviews, theme, width }) => {
+const RatingBox = ({ percentages, numRatings, numComments, width }) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
   return (
     <RatingBoxWrapper>
       <CircularPercentageWrapper>
         <CircularPercentage
-          height={width / 2 - 32}
+          height={Math.min(width / 2 - 32, 200)}
           percent={likedPercent}
           barThickness={16}
-          label="liked it"
+          label="liked"
         />
       </CircularPercentageWrapper>
       <RatingBarsColumn>
@@ -55,15 +55,14 @@ const RatingBox = ({ percentages, numRatings, numReviews, theme, width }) => {
           ),
         )}
         <ReviewsAndGraphButtonWrapper>
-          <NumReviewsAndRatingsWrapper>
-            <NumReviewsWrapper>
-              {numReviews} {numReviews === 1 ? 'review' : 'reviews'}
-            </NumReviewsWrapper>
+          <NumCommentsAndRatingsWrapper>
+            <NumCommentsWrapper>
+              {numComments} {numComments === 1 ? 'comment' : 'comments'}
+            </NumCommentsWrapper>
             <NumRatingsWrapper>
-              {numRatings}
-              {numRatings === 1 ? ' rating' : ' ratings'}
+              {numRatings} {numRatings === 1 ? 'rating' : 'ratings'}
             </NumRatingsWrapper>
-          </NumReviewsAndRatingsWrapper>
+          </NumCommentsAndRatingsWrapper>
         </ReviewsAndGraphButtonWrapper>
       </RatingBarsColumn>
     </RatingBoxWrapper>
@@ -78,8 +77,7 @@ RatingBox.propTypes = {
     }),
   ),
   numRatings: PropTypes.number,
-  numReviews: PropTypes.number,
-  theme: PropTypes.object,
+  numComments: PropTypes.number,
 };
 
 export default connect(mapStateToProps)(RatingBox);

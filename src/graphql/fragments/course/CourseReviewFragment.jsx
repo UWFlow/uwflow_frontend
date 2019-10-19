@@ -3,18 +3,21 @@ import gql from 'graphql-tag';
 const CourseReviewFragment = {
   courseReviewInfo: gql`
     fragment CourseReviewInfoFragment on course_review {
+      id
       course {
+        id
         code
       }
       easy
-      id
       liked
       prof {
+        id
         name
       }
       text
       useful
       user {
+        id
         full_name
         program
       }
@@ -31,6 +34,7 @@ const CourseReviewFragment = {
     fragment ProfReviewInfoFragment on prof_review {
       id
       prof {
+        id
         name
         course_reviews_aggregate {
           aggregate {
@@ -44,6 +48,7 @@ const CourseReviewFragment = {
       engaging
       text
       user {
+        id
         full_name
         program
       }

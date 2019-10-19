@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Body, Link } from '../../../../constants/Mixins';
+import { Body, BoxShadow } from '../../../../constants/Mixins';
+import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
 
 export const RatingBoxWrapper = styled.div`
   width: ${({ ratingBoxWidth }) => ratingBoxWidth}px;
@@ -10,7 +11,11 @@ export const RatingBoxWrapper = styled.div`
     ${({ ratingBoxHeight }) => ratingBoxHeight / 2}px;
   justify-content: space-between;
   position: relative;
-  box-shadow: 2px 2px 1px ${({ theme }) => theme.light3};
+  ${BoxShadow}
+
+  @media only screen and (max-width: ${PAGE_CONTENT_WIDTH + 32}px) {
+    margin-right: 32px;
+  }
 `;
 
 export const LikesColumn = styled.div`
@@ -48,19 +53,18 @@ export const ProgressNumberLabel = styled.div`
   margin: 8px;
 `;
 
-export const NumReviewsAndRatingsWrapper = styled.div`
+export const NumCommentsAndRatingsWrapper = styled.div`
   display: flex;
   margin: 8px;
 `;
 
-export const NumReviewsWrapper = styled.div`
-  ${Link};
-  color: ${({ theme }) => theme.primary};
-  text-decoration: underline;
-  cursor: pointer;
+export const NumCommentsWrapper = styled.div`
+  ${Body};
+  color: ${({ theme }) => theme.dark3};
 `;
 
 export const NumRatingsWrapper = styled.div`
   ${Body};
   margin-left: 24px;
+  color: ${({ theme }) => theme.dark3};
 `;

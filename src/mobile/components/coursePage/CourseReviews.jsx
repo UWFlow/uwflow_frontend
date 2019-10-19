@@ -22,10 +22,13 @@ import {
 /* Child Components */
 import CollapseableContainer from '../common/CollapseableContainer';
 import Review from '../common/Review';
-import DropdownList from '../../../basicComponents/DropdownList';
+import DropdownList from '../../../sharedComponents/input/DropdownList';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
+
+import { getProfPageRoute } from '../../../Routes';
 
 const CourseCourseReviews = (
   reviews,
@@ -100,14 +103,16 @@ const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
   return (
     <CourseProfReviewsWrapper>
       {ProfFilterDropdown}
-      {reviewsByProf.map((curr, idx) => (
+      {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
-          <ProfName>{curr.prof}</ProfName>
+          <ProfName to={getProfPageRoute(prof.id)}>
+            {prof.name}
+          </ProfName>
           <ProfLikedMetric>
-            <ProfLikedPercent>{Math.round(curr.likes * 100)}%</ProfLikedPercent>
+            <ProfLikedPercent>{Math.round(prof.liked * 100)}%</ProfLikedPercent>
             <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
           </ProfLikedMetric>
-          {curr.reviews.map(review => {
+          {prof.reviews.map(review => {
             return (
               <Review
                 key={review.reviewer.full_name}
@@ -158,7 +163,7 @@ const CourseReviews = ({ courseID, theme }) => {
   if (loading) {
     return (
       <CourseReviewWrapper>
-        <div>Loading ...</div>
+        <LoadingSpinner />
       </CourseReviewWrapper>
     );
   }
@@ -179,7 +184,7 @@ const CourseReviews = ({ courseID, theme }) => {
     let profObject;
     let foundProfObject = false;
     for (let i of allProfs) {
-      if (current.prof && current.prof.name === i.prof) {
+      if (current.prof && current.prof.name === i.name) {
         profObject = i;
         foundProfObject = true;
         break;
@@ -187,8 +192,9 @@ const CourseReviews = ({ courseID, theme }) => {
     }
     if (!foundProfObject) {
       profObject = {
-        prof: current.prof ? current.prof.name : '',
-        likes: current.prof
+        id: current.prof ? current.prof.id : 0,
+        name: current.prof ? current.prof.name : '',
+        liked: current.prof
           ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5
           : 0,
         reviews: [],

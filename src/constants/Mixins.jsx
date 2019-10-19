@@ -11,7 +11,7 @@ export const PageContent = `
     padding-right: 32px;
   }
 
-  @media only screen and (max-width: 767px) {
+  @media only screen and (max-width: 768px) {
     padding-left: 0;
     padding-right: 0;
   }

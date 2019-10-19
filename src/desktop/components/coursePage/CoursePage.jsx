@@ -7,9 +7,12 @@ import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
-import Button from '../../../basicComponents/Button';
-import ModalHOC from '../../../basicComponents/modal/ModalHOC';
+import Button from '../../../sharedComponents/input/Button';
+import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
+import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
+import AuthModal from '../../../auth/AuthModal';
 
 /* Styled Components */
 import {
@@ -21,26 +24,39 @@ import {
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
-const CoursePageContent = ({ course }) => {
+import { splitCourseCode } from '../../../utils/Misc';
+import { isLoggedIn } from '../../../utils/Auth';
+
+const CoursePageContent = ({ course, shortlisted, userReview }) => {
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
+
+  const handleReviewClick = () => {
+    isLoggedIn() ? setReviewModalOpen(true) : setAuthModalOpen(true);
+  }
 
   return (
     <>
       <CourseInfoHeader
         course={course}
+        shortlisted={shortlisted}
+        setAuthModalOpen={setAuthModalOpen}
       />
       <ColumnWrapper>
         <Column1>
           {/*<CourseSchedule sections={course.sections} />*/}
           <CourseReviewQuestionBox>
             <CourseReviewQuestionText>
-              What do you think of {course.code}?
+              What do you think of {splitCourseCode(course.code)}?
             </CourseReviewQuestionText>
+            <LikeCourseToggle liked={true} />
             <Button
-              children="Add your review"
               width={200}
-              handleClick={() => setReviewModalOpen(true)}
-            />
+              padding="16px 24px"
+              handleClick={handleReviewClick}
+            >
+              {userReview ? 'Edit your review' : 'Add your review'}
+            </Button>
           </CourseReviewQuestionBox>
           <ModalHOC
             isModalOpen={reviewModalOpen}
@@ -48,15 +64,25 @@ const CoursePageContent = ({ course }) => {
           >
             <CourseReviewCourseBox
               courseIDList={[course.id]}
+              reviewData={userReview}
               onCancel={() => setReviewModalOpen(false)}
             />
           </ModalHOC>
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
-          <ExtraInfoBox />
+          <ExtraInfoBox
+            courseCode={course.code}
+            prereqs={course.prerequisites}
+            postreqs={course.postrequisites}
+          />
         </Column2>
       </ColumnWrapper>
+      <AuthModal
+        isModalOpen={authModalOpen}
+        onCloseModal={() => setAuthModalOpen(false)}
+        width={400}
+      />
     </>
   );
 };
@@ -64,11 +90,16 @@ const CoursePageContent = ({ course }) => {
 const CoursePage = ({ loading, error, data }) => (
   <CoursePageWrapper>
     {loading ? (
-      <div>Loading ...</div>
+      <LoadingSpinner />
     ) : error || !data || !data.course || data.course.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that course!" />
     ) : (
-      <CoursePageContent course={data.course[0]} />
+      <CoursePageContent
+        course={data.course[0]}
+        shortlisted={data.user_shortlist && data.user_shortlist.length > 0}
+        userReview={data.course_review
+          && data.course_review.length > 0 ? data.course_review[0] : null}
+      />
     )}
   </CoursePageWrapper>
 );

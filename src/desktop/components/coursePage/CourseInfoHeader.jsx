@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -11,28 +11,55 @@ import {
   CourseName,
   Description,
   RatingsSection,
+  CourseCodeAndStar,
+  StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
 
 /* Child Components */
-import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
+import RatingBox, {
+  RATING_BOX_HEIGHT,
+  RATING_BOX_WIDTH,
+} from '../common/RatingBox';
+import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
 
-const CourseInfoHeader = ({ course }) => {
+import { splitCourseCode } from '../../../utils/Misc';
+import { isLoggedIn } from '../../../utils/Auth';
+
+const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
+  const [isStarClicked, setIsStarClicked] = useState(shortlisted);
+
+  const onStarClick = () => {
+    isLoggedIn() ? setIsStarClicked(!isStarClicked) : setAuthModalOpen(true);
+  };
 
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
         <CourseCodeAndNameWrapper>
-          <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>{course.code}</CourseCode>
-          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
+          <CourseCodeAndStar>
+            <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
+              {splitCourseCode(course.code)}
+            </CourseCode>
+            <StarAlignmentWrapper>
+              <ShortlistStar
+                size={36}
+                checked={isStarClicked}
+                onClick={onStarClick}
+              />
+            </StarAlignmentWrapper>
+          </CourseCodeAndStar>
+          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>
+            {course.name}
+          </CourseName>
         </CourseCodeAndNameWrapper>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
-        <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
+        <RatingsSection>
           <RatingBox
             numRatings={count}
-            numReviews={text_count}
+            numComments={text_count}
             percentages={[
               {
                 displayName: 'Likes',
@@ -58,7 +85,7 @@ const CourseInfoHeader = ({ course }) => {
 };
 
 CourseInfoHeader.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
 };
 
 export default CourseInfoHeader;

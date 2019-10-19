@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ModalHOC from '../../../basicComponents/modal/ModalHOC';
+import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';

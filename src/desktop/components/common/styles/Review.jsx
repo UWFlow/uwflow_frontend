@@ -12,29 +12,38 @@ export const ReviewWrapper = styled.div`
 
 export const ReviewPictureWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  margin-right: 24px;
+  margin-bottom: 32px;
+  margin-right: 32px;
+  position: relative;
 `;
 
 export const ReviewPicture = styled.div`
-  width: 80px;
-  height: 112px;
-  background-color: ${({ theme }) => theme.light3};
-  border-radius: 4px 4px 0 0;
-`;
-
-export const ReviewPictureAndMetricsRow = styled.div`
-  display: flex;
+  width: 64px;
+  height: 64px;
+  background-color: ${({ theme }) => theme.dark3};
+  border-radius: 32px 32px 32px 32px;
 `;
 
 export const ReviewUpvotes = styled.div`
-  width: 80px;
-  background-color: ${({ theme }) => theme.primary};
+  position: absolute;
+  top: 36px;
+  right: -16px;
+  width: 40px;
+  height: 40px;
+  ${({ selected, theme }) =>
+    selected ? `background-color:${theme.primary};` : ''}
   display: flex;
   justify-content: center;
+  align-items: center;
   color: white;
-  border-radius: 0 0 4px 4px;
+  border-radius: 20px 20px 20px 20px;
+  cursor: pointer;
+  border: 2px solid ${({ theme }) => theme.light3};
+
+  &:hover {
+    ${({ selected, theme }) =>
+      `background-color:${selected ? theme.primaryDark : theme.light3};`
+  }
 `;
 
 export const ReviewTextWrapper = styled.div`
@@ -56,8 +65,8 @@ export const ReviewAuthor = styled.div`
 `;
 
 export const ReviewMetricsWrapper = styled.table`
-  min-width: 158px;
-  margin-left: 8px;
+  min-width: 168px;
+  margin-left: 16px;
 `;
 
 export const ReviewMetricsBody = styled.tbody``;
@@ -67,10 +76,17 @@ export const SingleMetricWrapper = styled.tr``;
 export const SingleMetricSquares = styled.td`
   display: flex;
   justify-content: flex-end;
-  padding: 0 0 16px 0;
 `;
 
 export const SingleMetricLabel = styled.td`
   ${Body}
-  padding: 0 0 16px 4px;
+  color: ${({theme}) => theme.dark2};
+  padding-left: 8px;
+  vertical-align: top;
+`;
+
+export const UpvoteNumber = styled.div`
+  ${Body}
+  color: ${({ selected, theme }) => (selected ? 'white' : theme.dark3)}
+  margin-left: 4px;
 `;

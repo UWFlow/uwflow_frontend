@@ -4,9 +4,9 @@ import { PlusSquare } from 'react-feather';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import TabContainer from '../common/TabContainer';
-import Button from '../../../basicComponents/Button';
-import LikeCourseToggle from './LikeCourseToggle';
+import TabContainer from '../../../sharedComponents/display/TabContainer';
+import Button from '../../../sharedComponents/input/Button';
+import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
 
 /* Styled Components */
 import {
@@ -23,6 +23,7 @@ import {
 } from './styles/ProfileCourses';
 
 import { termCodeToDate, splitCourseCode, processRating } from '../../../utils/Misc';
+import { getCoursePageRoute } from '../../../Routes';
 
 const groupByTerm = courses => {
   return courses.reduce((groups, course) => {
@@ -42,7 +43,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
         return courseGroups[termName].map((course_taken, idx) => (
           <ProfileCoursesCourse key={idx}>
             <ProfileCourseText>
-              <ProfileCourseCode to={`/course/${course_taken.course.code}`}>
+              <ProfileCourseCode to={getCoursePageRoute(course_taken.course.code)}>
                 {splitCourseCode(course_taken.course.code)}
               </ProfileCourseCode>
               <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
@@ -59,7 +60,8 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
             <Button
               margin="0 0 0 16px"
               padding="8px"
-              height={40}
+              height={48}
+              maxHeight={48}
               handleClick={() => {
                 setReviewCourse(idx);
                 openModal();

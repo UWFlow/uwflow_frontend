@@ -8,7 +8,7 @@ export const termCodeToDate = code => {
 export const SPLIT_COURSE_CODE_REGEX = /[a-zA-Z]{2,}|[0-9]+/gi;
 
 export const splitCourseCode = (code) => {
-  if (code === '') {
+  if (!code || code === '') {
     return code;
   }
 
@@ -19,7 +19,7 @@ export const splitCourseCode = (code) => {
     i++;
   }
 
-  return [codeLetters, code.slice(i)].join(' ');
+  return [codeLetters, code.slice(i)].join(' ').toUpperCase();
 };
 
 export const processRating = (rating) => {

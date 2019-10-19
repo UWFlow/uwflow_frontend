@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import { Heading3, BoxShadow } from '../../../../constants/Mixins';
 
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 64;
 
 export const ContainerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   ${BoxShadow}
+  margin-bottom: 48px;
 `;
 
 export const HeaderWrapper = styled.div`
@@ -34,6 +35,7 @@ export const HeaderChevronBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const ContentWrapper = styled.div`

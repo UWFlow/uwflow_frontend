@@ -19,8 +19,7 @@ import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
 import { isLoggedIn } from '../../../utils/Auth';
-import { PROFILE_PAGE_ROUTE } from '../../../Routes';
-import SearchBar from '../common/SearchBar';
+import SearchBar from '../../../sharedComponents/navbar/SearchBar';
 
 const LandingPage = ({ history }) => {
   const [, forceUpdate] = useState(false);
@@ -49,13 +48,9 @@ const LandingPage = ({ history }) => {
         <Column2>
           <BlueBackground />
           <BackgroundImage image={Background} />
-          <AuthContent>
-            {isLoggedIn() ? (
-              history.push(PROFILE_PAGE_ROUTE)
-            ) : (
-              <AuthForm onAuthComplete={handleAuthComplete} />
-            )}
-          </AuthContent>
+          {!isLoggedIn() && <AuthContent>
+            <AuthForm onAuthComplete={handleAuthComplete} />
+          </AuthContent>}
         </Column2>
       </LandingPageContent>
     </LandingPageWrapper>

@@ -11,14 +11,14 @@ import {
   ProgressTextLabel,
   ProgressBarWrapper,
   ProgressNumberLabel,
-  NumReviewsAndRatingsWrapper,
-  NumReviewsWrapper,
+  NumCommentsAndRatingsWrapper,
+  NumCommentsWrapper,
   NumRatingsWrapper,
 } from './styles/RatingBox';
 
 /* Child Components */
-import ProgressBar from '../../../basicComponents/ProgressBar';
-import CircularPercentage from '../../../basicComponents/statistics/CircularPercentage';
+import ProgressBar from '../../../sharedComponents/display/ProgressBar';
+import CircularPercentage from '../../../sharedComponents/statistics/CircularPercentage';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
@@ -26,7 +26,7 @@ export const RATING_BOX_WIDTH = 512;
 /*
   NOTE DATA FOR "LIKED" MUST BE PERCENTAGES[0]
 */
-const RatingBox = ({ percentages, numRatings, numReviews }) => {
+const RatingBox = ({ percentages, numRatings, numComments }) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
 
   return (
@@ -39,7 +39,7 @@ const RatingBox = ({ percentages, numRatings, numReviews }) => {
           height={RATING_BOX_HEIGHT - 32}
           percent={likedPercent}
           barThickness={16}
-          label="liked it"
+          label="liked"
         />
       </LikesColumn>
       <ProgressBarColumn>
@@ -57,15 +57,15 @@ const RatingBox = ({ percentages, numRatings, numReviews }) => {
               </ProgressWrapper>
             ),
           )}
-          <NumReviewsAndRatingsWrapper>
-            <NumReviewsWrapper>
-              {numReviews} {numReviews === 1 ? 'review' : 'reviews'}
-            </NumReviewsWrapper>
+          <NumCommentsAndRatingsWrapper>
+            <NumCommentsWrapper>
+              {numComments} {numComments === 1 ? 'comment' : 'comments'}
+            </NumCommentsWrapper>
             <NumRatingsWrapper>
               {numRatings}
               {numRatings === 1 ? ' rating' : ' ratings'}
             </NumRatingsWrapper>
-          </NumReviewsAndRatingsWrapper>
+          </NumCommentsAndRatingsWrapper>
         </ProgressBarColumnWrapper>
       </ProgressBarColumn>
     </RatingBoxWrapper>
@@ -80,7 +80,7 @@ RatingBox.propTypes = {
     }),
   ),
   numRatings: PropTypes.number,
-  numReviews: PropTypes.number,
+  numComments: PropTypes.number,
   theme: PropTypes.object,
 };
 

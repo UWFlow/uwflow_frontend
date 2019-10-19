@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Heading2, Heading4, Body } from '../../../../constants/Mixins';
 
 export const CourseReviewWrapper = styled.div`
@@ -42,7 +43,7 @@ export const ReviewsForSingleProfWrapper = styled.div`
   flex-direction: column;
 `;
 
-export const ProfName = styled.div`
+export const ProfName = styled(Link)`
   ${Heading2}
   color: ${({ theme }) => theme.professors}
   margin: 16px;
@@ -66,5 +67,5 @@ export const ProfLikedPercentLabel = styled.div`
 export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
   padding: 24px 16px;
-  border-bottom: 2px solid ${({ theme }) => theme.light2};
+  border-bottom: 1px solid ${({ theme }) => theme.light2};
 `;

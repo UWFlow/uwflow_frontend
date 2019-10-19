@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 /* Child Components */
 import RatingBox from '../common/RatingBox';
-import ShortlistStar from '../../../basicComponents/ShortlistStar';
+import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
 
 /* Styled Components */
 import {
@@ -16,21 +15,28 @@ import {
   CourseName,
 } from './styles/CourseInfoHeader';
 
-const CourseInfoHeader = ({ course }) => {
+import { splitCourseCode } from '../../../utils/Misc';
+import { isLoggedIn } from '../../../utils/Auth';
+
+const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
-  const [isStarClicked, setIsStarClicked] = useState(false);
+  const [isStarClicked, setIsStarClicked] = useState(shortlisted);
+
+  const onStarClick = () => {
+    isLoggedIn() ? setIsStarClicked(!isStarClicked) : setAuthModalOpen(true);
+  }
 
   return (
     <CourseInfoHeaderWrapper>
       <CourseNameSection>
         <CourseCodeAndStar>
-          <CourseCode>{_.toUpper(course.code)}</CourseCode>
+          <CourseCode>{splitCourseCode(course.code)}</CourseCode>
           <StarAlignmentWrapper>
             <ShortlistStar
               size={36}
               checked={isStarClicked}
-              onClick={() => setIsStarClicked(!isStarClicked)}
+              onClick={onStarClick}
             />
           </StarAlignmentWrapper>
         </CourseCodeAndStar>
@@ -38,7 +44,7 @@ const CourseInfoHeader = ({ course }) => {
       </CourseNameSection>
       <RatingBox
         numRatings={count}
-        numReviews={text_count}
+        numComments={text_count}
         percentages={[
           {
             displayName: 'Likes',

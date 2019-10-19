@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, Heading2, Body, PageContent } from '../../../../constants/Mixins';
+import {
+  Heading1,
+  Heading2,
+  Body,
+  PageContent,
+} from '../../../../constants/Mixins';
 
 export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -14,7 +19,7 @@ export const CourseInfoHeaderWrapper = styled.div`
 
 export const CourseCodeAndNameSection = styled.div`
   width: 100%;
-  min-height: 350px;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -31,14 +36,13 @@ export const CourseCodeAndNameWrapper = styled.div`
 export const CourseDescriptionSection = styled.div`
   position: relative;
   ${PageContent}
-  height: 200px;
+  padding-bottom: 48px;
   margin: auto;
 `;
 
 export const CourseCode = styled.div`
   color: ${({ theme }) => theme.light2};
   ${Heading1};
-  margin-bottom: 16px;
   text-transform: uppercase;
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
 `;
@@ -60,5 +64,17 @@ export const Description = styled.div`
 export const RatingsSection = styled.div`
   position: absolute;
   right: 0;
-  bottom: ${({ ratingBoxHeight }) => 200 - ratingBoxHeight / 2}px;
+  bottom: 32px;
+`;
+
+export const CourseCodeAndStar = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+export const StarAlignmentWrapper = styled.div`
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
 `;

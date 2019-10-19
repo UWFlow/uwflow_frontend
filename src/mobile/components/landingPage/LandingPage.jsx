@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 /* Styled Components */
 import {
@@ -10,7 +9,7 @@ import {
 } from './styles/LandingPage';
 
 /* Child Components */
-import SearchBar from '../../../desktop/components/common/SearchBar';
+import SearchBar from '../../../sharedComponents/navbar/SearchBar';
 
 const LandingPage = () => {
   return (

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { Heading1, Small, Body, Link } from '../../../../constants/Mixins';
+import { Body, BoxShadow } from '../../../../constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`
   width: 100%;
   display: flex;
+  justify-content: space-between;
+  ${BoxShadow}
 `;
 
 export const CircularPercentageWrapper = styled.div`
@@ -17,6 +19,7 @@ export const RatingBarsColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 360px;
 `;
 
 export const ProgressWrapper = styled.div`
@@ -45,15 +48,16 @@ export const ReviewsAndGraphButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const NumReviewsAndRatingsWrapper = styled.div`
+export const NumCommentsAndRatingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 0 16px 0;
 `;
 
-export const NumReviewsWrapper = styled.div`
+export const NumCommentsWrapper = styled.div`
   ${Body}
   color: ${({ theme }) => theme.dark3};
+  margin-bottom: 8px;
 `;
 
 export const NumRatingsWrapper = styled.div`

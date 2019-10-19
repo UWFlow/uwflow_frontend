@@ -1,11 +1,5 @@
 import styled from 'styled-components';
-import {
-  PageContent,
-  Heading2,
-  Heading4,
-  Body,
-  WideColumn,
-} from '../../../../constants/Mixins';
+import { PageContent, Heading2 } from '../../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -23,42 +17,15 @@ export const PageHeader = styled.div`
   margin-bottom: 32px;
 `;
 
-export const HeaderTextBox = styled.div`
-  ${WideColumn}
-  display: flex;
-  justify-content: flex-start;
-`;
-
 export const HeaderText = styled.div`
+  ${PageContent}
   ${Heading2}
   color: white;
-`;
-
-export const PageBody = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  max-width: 720px;
 `;
 
 export const PageContentWrapper = styled.div`
   ${PageContent}
-  display: flex;
-  justify-content: center;
-`;
-
-export const PageBodyContent = styled.div`
-  ${WideColumn}
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
-
-export const PageBodyHeader = styled.div`
-  ${Heading4}
-`;
-
-export const PageBodyParagraph = styled.div`
-  ${Body}
-  margin-bottom: 32px;
+  max-width: 720px;
+  margin: auto;
 `;
