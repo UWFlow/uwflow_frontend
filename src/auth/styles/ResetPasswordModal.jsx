@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading3 } from '../../constants/Mixins';
+import { Heading3, Body } from '../../constants/Mixins';
 
 export const Wrapper = styled.div`
   padding: 16px;
@@ -19,4 +19,11 @@ export const TextboxWrapper = styled.div`
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
+`;
+
+export const Error = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.red};
+  margin-bottom: 16px;
+  width: 100%;
 `;
