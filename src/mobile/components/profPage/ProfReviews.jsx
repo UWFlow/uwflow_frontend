@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
+
+/* Custom Reducers */
+import useProfReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from '../../../data/custom_hooks/UseProfReviewsReducer';
 
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
@@ -27,10 +32,20 @@ import { splitCourseCode } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes.jsx';
 
 const ProfReviews = ({ profID, theme }) => {
-  const [selectedSort, setSelectedSort] = useState(0);
+  const [selectedFilter, setSelectedFilter] = useState(0);
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
   });
+  const [reviewDataState, dispatch] = useProfReviewsReducer(data);
+
+  useEffect(() => {
+    if (data) {
+      dispatch({
+        type: UPDATE_REVIEW_DATA,
+        payload: data,
+      });
+    }
+  }, [data]);
 
   if (loading) {
     return (
@@ -40,39 +55,13 @@ const ProfReviews = ({ profID, theme }) => {
     );
   }
 
-  const reviewsByCourse = data.prof_review.reduce((allCourses, current) => {
-    let courseObject;
-    let foundCourseObject = false;
-    for (let i of allCourses) {
-      if (current.course && current.course.id === i.id) {
-        courseObject = i;
-        foundCourseObject = true;
-        break;
-      }
-    }
-    if (!foundCourseObject) {
-      courseObject = {
-        id: current.course ? current.course.id : -1,
-        name: current.course ? current.course.name : '',
-        code: current.course ? current.course.code : '',
-        liked: current.course
-          ? current.course.course_reviews_aggregate.aggregate.avg.liked / 5
-          : 0,
-        reviews: [],
-      };
-      allCourses.push(courseObject);
-    }
-    courseObject.reviews.push({
-      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
-      review: current.text,
-      reviewer: current.user,
-      metrics: {
-        clear: current.clear,
-        engaging: current.engaging,
-      },
-    });
-    return allCourses;
-  }, []);
+  const courseFilterOptions = ['show all courses', ...reviewDataState.courses];
+
+  const reviewsByCourseToShow = reviewDataState.reviewsByCourse.filter(
+    reviews =>
+      selectedFilter === 0 ||
+      reviews.code === courseFilterOptions[selectedFilter],
+  );
 
   return (
     <>
@@ -80,13 +69,13 @@ const ProfReviews = ({ profID, theme }) => {
         <DropdownTableText>Filter by course: </DropdownTableText>
         <DropdownList
           color={theme.primary}
-          selectedIndex={selectedSort}
-          options={['show all courses']}
-          onChange={value => setSelectedSort(value)}
+          selectedIndex={selectedFilter}
+          options={courseFilterOptions}
+          onChange={value => setSelectedFilter(value)}
         />
       </DropdownPanelWrapper>
       <ProfCourseReviewWrapper>
-        {reviewsByCourse.map((course, idx) => {
+        {reviewsByCourseToShow.map((course, idx) => {
           return (
             <ReviewsForSingleCourseWrapper key={idx}>
               <CourseCode to={getCoursePageRoute(course.code)}>
