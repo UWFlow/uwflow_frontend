@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 /* Child Components */
-import ModalHOC from '../basicComponents/modal/ModalHOC';
-import Textbox from '../basicComponents/Textbox';
-import Button from '../basicComponents/Button';
+import ModalHOC from '../sharedComponents/modal/ModalHOC';
+import Textbox from '../sharedComponents/input/Textbox';
+import Button from '../sharedComponents/input/Button';
 
 /* Utils */
 import { makePOSTRequest } from '../utils/Api';
