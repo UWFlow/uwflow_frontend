@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+export const UPDATE_REVIEW_DATA = 'update review data';
+export const SORT_COURSE_REVIEWS_BY_PROF = 'sort by prof';
+
 const convertInputToState = data => {
+  if (!data) {
+    return {
+      courseReviews: [],
+      reviewsByProf: [],
+      courseReviewProfs: [],
+      profReviewProfs: [],
+    };
+  }
   const courseReviews = data.course_review.map(r => ({
     upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
     review: r.text,
@@ -47,16 +58,39 @@ const convertInputToState = data => {
     return allProfs;
   }, []);
 
+  const courseReviewProfs = data.course_review.reduce((allProfs, review) => {
+    if (review.prof && !allProfs.includes(review.prof.name)) {
+      allProfs.push(review.prof.name);
+    }
+    return allProfs;
+  }, []);
+
+  const profReviewProfs = reviewsByProf.map(obj => obj.name);
+
   return {
     courseReviews,
     reviewsByProf,
+    courseReviewProfs,
+    profReviewProfs,
   };
 };
 
-export const useCourseReviewsReducer = initialState => {
+const processDispatch = (currentState, action) => {
+  switch (action.type) {
+    case UPDATE_REVIEW_DATA:
+      return convertInputToState(action.payload);
+    default:
+      return currentState;
+  }
+};
+
+const useCourseReviewsReducer = initialState => {
   const [state, setState] = useState(convertInputToState(initialState));
 
-  const dispatch = (action, payload) => {};
+  const dispatch = action => {
+    const newState = processDispatch(state, action);
+    setState(newState);
+  };
 
   return [state, dispatch];
 };
@@ -125,3 +159,5 @@ useCourseReviewsReducer.propTypes = {
     ),
   }),
 };
+
+export default useCourseReviewsReducer;
