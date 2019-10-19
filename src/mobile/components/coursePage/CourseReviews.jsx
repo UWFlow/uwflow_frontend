@@ -28,6 +28,8 @@ import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
 
+import { getProfPageRoute } from '../../../Routes';
+
 const CourseCourseReviews = (
   reviews,
   theme,
@@ -103,7 +105,9 @@ const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
       {ProfFilterDropdown}
       {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
-          <ProfName to={`/prof/${prof.id}`}>{prof.name}</ProfName>
+          <ProfName to={getProfPageRoute(prof.id)}>
+            {prof.name}
+          </ProfName>
           <ProfLikedMetric>
             <ProfLikedPercent>{Math.round(prof.liked * 100)}%</ProfLikedPercent>
             <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>

@@ -27,6 +27,7 @@ import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
 
 import { splitCourseCode } from '../../../utils/Misc';
+import { getCoursePageRoute } from '../../../Routes';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedSort, setSelectedSort] = useState(0);
@@ -83,7 +84,7 @@ const ProfReviews = ({ profID, theme }) => {
           <ReviewsForSingleCourseWrapper key={idx}>
             <CourseHeader key={course.id}>
               <CourseNameAndCode>
-                <CourseCode to={`/course/${course.code}`}>
+                <CourseCode to={getCoursePageRoute(course.code)}>
                   {splitCourseCode(course.code)}
                 </CourseCode>
                 <CourseName>{course.name}</CourseName>

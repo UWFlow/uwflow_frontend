@@ -2,6 +2,7 @@ import React from 'react';
 import { CourseCode, ProfName } from './styles/ExplorePage';
 
 import { splitCourseCode } from '../../../utils/Misc';
+import { getCoursePageRoute, getProfPageRoute } from '../../../Routes';
 
 export const courseColumns = [
   {
@@ -9,7 +10,11 @@ export const courseColumns = [
     accessor: 'code',
     align: 'left',
     maxWidth: 112,
-    Cell: ({ cell }) => <CourseCode to={`/course/${cell.value}`}>{splitCourseCode(cell.value)}</CourseCode>,
+    Cell: ({ cell }) => (
+      <CourseCode to={getCoursePageRoute(cell.value)}>{
+        splitCourseCode(cell.value)}
+      </CourseCode>
+    ),
   },
   {
     Header: 'Course Name',
@@ -51,7 +56,7 @@ export const profColumns = [
     accessor: 'id_name',
     align: 'left',
     Cell: ({ cell }) => (
-      <ProfName to={`/prof/${cell.value.id}`}>
+      <ProfName to={getProfPageRoute(cell.value.id)}>
         {cell.value.name}
       </ProfName>
     ),

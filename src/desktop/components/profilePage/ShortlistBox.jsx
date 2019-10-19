@@ -14,6 +14,7 @@ import {
 import ShortlistStar from '../../../basicComponents/ShortlistStar';
 
 import { splitCourseCode } from '../../../utils/Misc';
+import { getCoursePageRoute } from '../../../Routes';
 
 const ShortlistBox = ({ shortlistCourses }) => {
   return (
@@ -23,7 +24,7 @@ const ShortlistBox = ({ shortlistCourses }) => {
         <ShortlistCourse key={idx}>
           <ShortlistStar checked />
           <ShortListCourseText>
-            <ShortlistCourseCode to={`/course/${course.code}`}>
+            <ShortlistCourseCode to={getCoursePageRoute(course.code)}>
               {splitCourseCode(course.code)}
             </ShortlistCourseCode>
             <ShortlistCourseName>{course.name}</ShortlistCourseName>

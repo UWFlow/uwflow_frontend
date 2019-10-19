@@ -76,8 +76,6 @@ export const toTreePageRoute = pathToRegexp.compile(
 );
 
 /* Route Getters */
-export const getCoursePageRoute = courseID => {
-  toCoursePageRoute({ courseID });
-};
+export const getCoursePageRoute = courseID => toCoursePageRoute({ courseID });
 export const getProfPageRoute = profID => toProfPageRoute({ profID });
 export const getTreePageRoute = courseID => toTreePageRoute({ courseID });

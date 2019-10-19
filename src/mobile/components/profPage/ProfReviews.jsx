@@ -24,6 +24,7 @@ import Review from '../common/Review.jsx';
 import LoadingSpinner from '../../../basicComponents/LoadingSpinner.jsx';
 
 import { splitCourseCode } from '../../../utils/Misc';
+import { getCoursePageRoute } from '../../../Routes.jsx';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedSort, setSelectedSort] = useState(0);
@@ -88,7 +89,7 @@ const ProfReviews = ({ profID, theme }) => {
         {reviewsByCourse.map((course, idx) => {
           return (
             <ReviewsForSingleCourseWrapper key={idx}>
-              <CourseCode to={`/course/${course.code}`}>
+              <CourseCode to={getCoursePageRoute(course.code)}>
                 {splitCourseCode(course.code)}
               </CourseCode>
               <CourseLikedMetric>

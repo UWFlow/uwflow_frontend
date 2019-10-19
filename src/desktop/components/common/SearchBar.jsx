@@ -4,7 +4,7 @@ import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
 
 /* Routes */
-import { EXPLORE_PAGE_ROUTE } from '../../../Routes';
+import { EXPLORE_PAGE_ROUTE, getCoursePageRoute, getProfPageRoute } from '../../../Routes';
 
 import { splitCourseCode } from '../../../utils/Misc';
 
@@ -66,12 +66,12 @@ const SearchBar = ({ history }) => {
   };
 
   const goToCourse = code => {
-    history.push(`/course/${code}`);
+    history.push(getCoursePageRoute(code));
     setOpen(false);
   };
 
   const goToProf = id => {
-    history.push(`/prof/${id}`);
+    history.push(getProfPageRoute(id));
     setOpen(false);
   };
 

@@ -58,8 +58,3 @@ a {
   font-weight: 500;
   color: #006ed8;
 }
-
-body.modal-open {
-  overflow: hidden;
-  padding-right: 16px;
-}

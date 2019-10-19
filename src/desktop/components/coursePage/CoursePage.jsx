@@ -57,7 +57,11 @@ const CoursePageContent = ({ course }) => {
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
-          <ExtraInfoBox />
+          <ExtraInfoBox
+            courseCode={course.code}
+            prereqs={course.prerequisites}
+            postreqs={course.postrequisites}
+          />
         </Column2>
       </ColumnWrapper>
     </>

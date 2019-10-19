@@ -11,13 +11,19 @@ import {
 } from './styles/ProfileFinalExams';
 
 import Table from '../common/Table';
+import { getCoursePageRoute } from '../../../Routes';
+import { splitCourseCode } from '../../../utils/Misc';
 
 const examColumns = [
   {
     Header: 'Course',
     accessor: 'code',
     maxWidth: 112,
-    Cell:  ({cell}) => <CourseCode to={`/course/${cell.value}`}>{cell.value}</CourseCode>,
+    Cell:  ({cell}) => (
+      <CourseCode to={getCoursePageRoute(cell.value)}>
+        {splitCourseCode(cell.value)}
+      </CourseCode>
+    ),
   },
   {
     Header: 'Section(s)',
