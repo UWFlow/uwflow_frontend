@@ -59,7 +59,11 @@ a {
   color: #006ed8;
 }
 
-body.modal-open {
+body.no-scroll {
+  height: 100vh;
   overflow: hidden;
-  padding-right: 16px;
+}
+
+body.modal-padding {
+  padding-right: 17px;
 }
