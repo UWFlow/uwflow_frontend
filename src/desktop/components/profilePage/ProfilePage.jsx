@@ -7,9 +7,9 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
-import ModalHOC from '../../../basicComponents/modal/ModalHOC';
+import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 /* Styled Components */
 import {

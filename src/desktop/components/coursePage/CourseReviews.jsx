@@ -21,10 +21,10 @@ import {
 } from './styles/CourseReviews';
 
 /* Child Components */
-import TabContainer from '../common/TabContainer';
+import TabContainer from '../../../sharedComponents/display/TabContainer';
 import Review from '../common/Review';
-import DropdownList from '../../../basicComponents/DropdownList';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import DropdownList from '../../../sharedComponents/input/DropdownList';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';

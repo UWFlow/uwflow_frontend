@@ -11,7 +11,7 @@ import {
   PROFILE_PAGE_ROUTE,
   isOnProfilePageRoute,
   isOnLandingPageRoute,
-} from '../../../Routes';
+} from '../../Routes';
 
 /* Styled Components */
 import {
@@ -25,17 +25,17 @@ import {
 } from './styles/Navbar';
 
 /* Child Components */
-import AuthModal from '../../../auth/AuthModal';
-import DropdownList from '../../../basicComponents/DropdownList';
+import AuthModal from '../../auth/AuthModal';
+import DropdownList from '../input/DropdownList';
 import SearchBar from './SearchBar';
 
 /* GraphQL Queries */
-import { GET_USER } from '../../../graphql/queries/profile/User';
+import { GET_USER } from '../../graphql/queries/profile/User';
 
 /* Selectors */
-import { getIsBrowserDesktop } from '../../../data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
-import { isLoggedIn } from '../../../utils/Auth';
+import { isLoggedIn } from '../../utils/Auth';
 
 const placeholderImage =
   'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';

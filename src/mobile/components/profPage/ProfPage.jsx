@@ -8,7 +8,7 @@ import { ProfPageWrapper } from './styles/ProfPage';
 import NotFoundPage from '../../../desktop/components/notFoundPage/NotFoundPage';
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 const ProfPageContent = ({ prof }) => {
   return (

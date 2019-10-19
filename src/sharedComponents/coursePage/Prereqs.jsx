@@ -16,8 +16,8 @@ const Prereqs = ({ prereqs, postreqs, courseCode }) => {
   return (
     <>
       <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
-        {prereqs.map(course => (
-          <LineOfText>
+        {prereqs.map((course, idx) => (
+          <LineOfText key={idx}>
             <CourseText to={getCoursePageRoute(course.course.code)}>
               {`${splitCourseCode(course.course.code)} - ${course.course.name}`}
             </CourseText>
@@ -29,8 +29,8 @@ const Prereqs = ({ prereqs, postreqs, courseCode }) => {
           </LineOfText>
         )}
       <Header>{`${splitCourseCode(courseCode)} leads to`}</Header>
-      {postreqs.map(course => (
-        <LineOfText>
+      {postreqs.map((course, idx) => (
+        <LineOfText key={idx}>
           <CourseText to={getCoursePageRoute(course.course.code)}>
             {`${splitCourseCode(course.course.code)} - ${course.course.name}`}
           </CourseText>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
@@ -13,30 +12,34 @@ import DesktopCoursePage from '../desktop/components/coursePage/CoursePage';
 import MobileCoursePage from '../mobile/components/coursePage/CoursePage';
 
 /* Queries */
-import { GET_COURSE } from '../graphql/queries/course/Course';
+import { buildCourseQuery } from '../graphql/queries/course/Course';
+import { isLoggedIn, getUserId } from '../utils/Auth';
 
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
 });
 
 export const CoursePageSwitch = ({ isDesktopPage, match }) => {
-  const courseID = _.replace(_.toLower(match.params.courseID), ' ', '');
-  const { loading, error, data } = useQuery(GET_COURSE, {
-    variables: { code: courseID },
+  const courseCode = match.params.courseID.toLowerCase();
+  const query = buildCourseQuery(isLoggedIn(), getUserId());
+
+  const { loading, error, data } = useQuery(query, {
+    variables: { code: courseCode },
   });
+
+  console.log(data);
+
   return isDesktopPage ? (
     <DesktopCoursePage
       loading={loading}
       error={error}
       data={data}
-      courseID={courseID}
     />
   ) : (
     <MobileCoursePage
       loading={loading}
       error={error}
       data={data}
-      courseID={courseID}
     />
   );
 };

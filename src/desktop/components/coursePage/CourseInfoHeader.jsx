@@ -17,14 +17,14 @@ import {
 
 /* Child Components */
 import RatingBox, { RATING_BOX_HEIGHT, RATING_BOX_WIDTH } from '../common/RatingBox';
-import ShortlistStar from '../../../basicComponents/ShortlistStar';
+import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
 
 import { splitCourseCode } from '../../../utils/Misc';
 
-const CourseInfoHeader = ({ course }) => {
+const CourseInfoHeader = ({ course, shortlisted }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
   const { count, text_count } = course.course_reviews_aggregate.aggregate;
-  const [isStarClicked, setIsStarClicked] = useState(false);
+  const [isStarClicked, setIsStarClicked] = useState(shortlisted);
 
   return (
     <CourseInfoHeaderWrapper>

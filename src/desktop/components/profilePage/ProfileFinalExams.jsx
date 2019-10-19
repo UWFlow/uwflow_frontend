@@ -10,7 +10,7 @@ import {
   CourseCode
 } from './styles/ProfileFinalExams';
 
-import Table from '../common/Table';
+import Table from '../../../sharedComponents/display/Table';
 import { getCoursePageRoute } from '../../../Routes';
 import { splitCourseCode } from '../../../utils/Misc';
 

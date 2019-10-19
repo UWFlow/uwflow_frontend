@@ -13,7 +13,7 @@ import {
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 const ProfPageContent = ({ prof }) => {
   return (

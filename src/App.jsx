@@ -8,7 +8,6 @@ import {
   COURSE_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
   PROF_PAGE_ROUTE,
-  TREE_PAGE_ROUTES,
   ABOUT_PAGE_ROUTE,
   TEST_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
@@ -21,14 +20,13 @@ import {
   LoadableCoursePage,
   LoadableExplorePage,
   LoadableProfPage,
-  LoadableTreePage,
   LoadableAboutPage,
   LoadableTestPage,
   LoadableNotFoundPage,
   LoadablePrivacyPage,
 } from './LoadableComponents';
-import ModalRoot from './basicComponents/modal/ModalRoot';
-import Navbar from './desktop/components/common/Navbar';
+import ModalRoot from './sharedComponents/modal/ModalRoot';
+import Navbar from './sharedComponents/navbar/Navbar';
 
 const App = () => {
   return (
@@ -60,14 +58,6 @@ const App = () => {
           path={EXPLORE_PAGE_ROUTE}
           component={() => <LoadableExplorePage />}
         />
-        {TREE_PAGE_ROUTES.map((route, index) => (
-          <Route
-            key={index}
-            exact
-            path={route}
-            component={() => <LoadableTreePage />}
-          />
-        ))}
         <Route
           exact
           path={ABOUT_PAGE_ROUTE}

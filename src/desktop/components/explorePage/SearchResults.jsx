@@ -6,7 +6,7 @@ import {
   SearchResultsWrapper
 } from './styles/SearchResults';
 
-import Table from '../common/Table';
+import Table from '../../../sharedComponents/display/Table';
 import { courseColumns, profColumns } from './TableData';
 
 const SearchResults = ({

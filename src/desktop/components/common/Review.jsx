@@ -21,7 +21,7 @@ import {
 } from './styles/Review';
 
 /* Child Components */
-import BubbleRatings from '../../../basicComponents/bubbleRatings/BubbleRatings';
+import BubbleRatings from '../../../sharedComponents/input/BubbleRatings';
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {

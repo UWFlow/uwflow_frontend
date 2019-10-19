@@ -24,10 +24,6 @@ export const LoadableNotFoundPage = loadable(() =>
   import(/* webpackPrefetch: true */ './pageSwitches/NotFoundPageSwitch'),
 );
 
-export const LoadableTreePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/treePage/TreePage'),
-);
-
 export const LoadableAboutPage = loadable(() =>
   import(/* webpackPrefetch: true */ './pageSwitches/AboutPageSwitch'),
 );

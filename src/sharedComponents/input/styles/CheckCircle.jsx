@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow } from '../../constants/Mixins';
+import { BoxShadow } from '../../../constants/Mixins';
 
 export const CheckCircleWrapper = styled.div`
   width: ${({ width }) => width}px;

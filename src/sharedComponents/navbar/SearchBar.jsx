@@ -4,9 +4,9 @@ import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
 
 /* Routes */
-import { EXPLORE_PAGE_ROUTE, getCoursePageRoute, getProfPageRoute } from '../../../Routes';
+import { EXPLORE_PAGE_ROUTE, getCoursePageRoute, getProfPageRoute } from '../../Routes';
 
-import { splitCourseCode } from '../../../utils/Misc';
+import { splitCourseCode } from '../../utils/Misc';
 
 import {
   SearchResultsWrapper,
@@ -21,11 +21,11 @@ import {
   ResultLeft,
 } from './styles/SearchBar';
 
-import Textbox from '../../../basicComponents/Textbox';
-import { useSearchContext } from '../../../search/SearchProvider';
+import Textbox from '../input/Textbox';
+import { useSearchContext } from '../../search/SearchProvider';
 
 /* Constants */
-import KeycodeConstants from '../../../constants/KeycodeConstants';
+import KeycodeConstants from '../../constants/KeycodeConstants';
 
 const SearchBar = ({ history }) => {
   const ref = useRef();

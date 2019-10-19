@@ -19,7 +19,7 @@ import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
 import { isLoggedIn } from '../../../utils/Auth';
-import SearchBar from '../common/SearchBar';
+import SearchBar from '../../../sharedComponents/navbar/SearchBar';
 
 const LandingPage = ({ history }) => {
   const [, forceUpdate] = useState(false);

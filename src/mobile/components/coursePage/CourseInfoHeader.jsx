@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 /* Child Components */
 import RatingBox from '../common/RatingBox';
-import ShortlistStar from '../../../basicComponents/ShortlistStar';
+import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
 
 /* Styled Components */
 import {

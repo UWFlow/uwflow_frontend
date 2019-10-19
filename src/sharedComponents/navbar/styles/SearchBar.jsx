@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow, Body } from '../../../../constants/Mixins';
+import { BoxShadow, Body } from '../../../constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
   position: relative;

@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { getWidth } from '../../../data/reducers/BrowserReducer';
 
 /* Child Components */
-import CircularPercentage from '../../../basicComponents/statistics/CircularPercentage';
-import ProgressBar from '../../../basicComponents/ProgressBar';
+import CircularPercentage from '../../../sharedComponents/statistics/CircularPercentage';
+import ProgressBar from '../../../sharedComponents/display/ProgressBar';
 
 /* Styled Components */
 import {

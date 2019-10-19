@@ -5,7 +5,7 @@ import {
   CourseExtraInfoWrapper,
 } from './styles/CourseExtraInfo';
 
-import Prereqs from '../../../basicComponents/coursePage/Prereqs';
+import Prereqs from '../../../sharedComponents/coursePage/Prereqs';
 
 const CourseExtraInfo = ({ prereqs, postreqs, courseCode }) => {
   return (

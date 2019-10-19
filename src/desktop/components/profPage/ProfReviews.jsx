@@ -20,8 +20,8 @@ import {
 
 /* Child Components */
 import Review from '../common/Review';
-import DropdownList from '../../../basicComponents/DropdownList';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import DropdownList from '../../../sharedComponents/input/DropdownList';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';

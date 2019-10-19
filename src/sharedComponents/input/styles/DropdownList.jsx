@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading4, BoxShadow } from '../../constants/Mixins';
+import { Heading4, BoxShadow } from '../../../constants/Mixins';
 
 export const DropdownWrapper = styled.div`
   color: ${({ color }) => color};

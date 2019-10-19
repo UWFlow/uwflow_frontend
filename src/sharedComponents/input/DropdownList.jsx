@@ -10,7 +10,7 @@ import {
   DropdownMenu,
   MenuItem,
 } from './styles/DropdownList';
-import KeycodeConstants from '../constants/KeycodeConstants';
+import KeycodeConstants from '../../constants/KeycodeConstants';
 
 const DropdownList = ({
   selectedIndex,

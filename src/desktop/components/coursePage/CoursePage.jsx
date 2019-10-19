@@ -7,10 +7,10 @@ import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
-import Button from '../../../basicComponents/Button';
-import ModalHOC from '../../../basicComponents/modal/ModalHOC';
+import Button from '../../../sharedComponents/input/Button';
+import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 /* Styled Components */
 import {
@@ -24,13 +24,14 @@ import {
 
 import { splitCourseCode } from '../../../utils/Misc';
 
-const CoursePageContent = ({ course }) => {
+const CoursePageContent = ({ course, shortlisted, userReview }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   return (
     <>
       <CourseInfoHeader
         course={course}
+        shortlisted={shortlisted}
       />
       <ColumnWrapper>
         <Column1>
@@ -40,10 +41,11 @@ const CoursePageContent = ({ course }) => {
               What do you think of {splitCourseCode(course.code)}?
             </CourseReviewQuestionText>
             <Button
-              children="Add your review"
               width={200}
               handleClick={() => setReviewModalOpen(true)}
-            />
+            >
+              {userReview ? 'Edit your review' : 'Add your review'}
+            </Button>
           </CourseReviewQuestionBox>
           <ModalHOC
             isModalOpen={reviewModalOpen}
@@ -51,6 +53,7 @@ const CoursePageContent = ({ course }) => {
           >
             <CourseReviewCourseBox
               courseIDList={[course.id]}
+              reviewData={userReview}
               onCancel={() => setReviewModalOpen(false)}
             />
           </ModalHOC>
@@ -75,7 +78,12 @@ const CoursePage = ({ loading, error, data }) => (
     ) : error || !data || !data.course || data.course.length === 0 ? (
       <NotFoundPage text="Sorry, we couldn't find that course!" />
     ) : (
-      <CoursePageContent course={data.course[0]} />
+      <CoursePageContent
+        course={data.course[0]}
+        shortlisted={data.user_shortlist && data.user_shortlist.length > 0}
+        userReview={data.course_review
+          && data.course_review.length > 0 ? data.course_review[0] : null}
+      />
     )}
   </CoursePageWrapper>
 );

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Body, BoxShadow } from '../../../../constants/Mixins';
+import { Body, BoxShadow } from '../../../constants/Mixins';
 
 export const MultiSelectButtonWrapper = styled.div`
   width: 100%;

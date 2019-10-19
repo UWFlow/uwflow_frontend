@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading4, PageContent, BoxShadow } from '../../../../constants/Mixins';
+import { Heading4, PageContent, BoxShadow } from '../../../constants/Mixins';
 
 export const NavbarWrapper = styled.div`
   top: 0;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from '../../../../constants/Mixins';
+import { Link } from '../../../constants/Mixins';
 
 export const TableWrapper = styled.table`
   width: 100%;

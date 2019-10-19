@@ -6,7 +6,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import NotFoundPage from '../../../desktop/components/notFoundPage/NotFoundPage';
 import CourseReviews from './CourseReviews';
 import CourseExtraInfo from './CourseExtraInfo';
-import LoadingSpinner from '../../../basicComponents/LoadingSpinner';
+import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 /* Styled Components */
 import { CoursePageWrapper } from './styles/CoursePage';
