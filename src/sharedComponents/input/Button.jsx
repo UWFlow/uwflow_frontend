@@ -12,6 +12,7 @@ const Button = ({
   padding = '16px 48px',
   handleClick = () => {},
   height = 48,
+  maxHeight = '100%',
   hasShadow = true,
   width,
 }) => {
@@ -26,6 +27,7 @@ const Button = ({
       margin={margin}
       padding={padding}
       width={width}
+      maxHeight={maxHeight}
     >
       <ButtonText>{children}</ButtonText>
     </ButtonWrapper>
@@ -36,6 +38,7 @@ Button.propTypes = {
   children: PropTypes.any,
   handleClick: PropTypes.func,
   height: PropTypes.number,
+  maxHeight: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
   color: PropTypes.string,
   hoverColor: PropTypes.string,
   borderColor: PropTypes.string,

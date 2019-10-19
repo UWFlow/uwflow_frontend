@@ -11,6 +11,8 @@ import Button from '../../../sharedComponents/input/Button';
 import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
+import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
+import AuthModal from '../../../auth/AuthModal';
 
 /* Styled Components */
 import {
@@ -23,15 +25,22 @@ import {
 } from './styles/CoursePage';
 
 import { splitCourseCode } from '../../../utils/Misc';
+import { isLoggedIn } from '../../../utils/Auth';
 
 const CoursePageContent = ({ course, shortlisted, userReview }) => {
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
+
+  const handleReviewClick = () => {
+    isLoggedIn() ? setReviewModalOpen(true) : setAuthModalOpen(true);
+  }
 
   return (
     <>
       <CourseInfoHeader
         course={course}
         shortlisted={shortlisted}
+        setAuthModalOpen={setAuthModalOpen}
       />
       <ColumnWrapper>
         <Column1>
@@ -40,9 +49,11 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
             <CourseReviewQuestionText>
               What do you think of {splitCourseCode(course.code)}?
             </CourseReviewQuestionText>
+            <LikeCourseToggle liked={true} />
             <Button
               width={200}
-              handleClick={() => setReviewModalOpen(true)}
+              padding="16px 24px"
+              handleClick={handleReviewClick}
             >
               {userReview ? 'Edit your review' : 'Add your review'}
             </Button>
@@ -67,6 +78,11 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
           />
         </Column2>
       </ColumnWrapper>
+      <AuthModal
+        isModalOpen={authModalOpen}
+        onCloseModal={() => setAuthModalOpen(false)}
+        width={400}
+      />
     </>
   );
 };

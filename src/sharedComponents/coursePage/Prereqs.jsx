@@ -28,6 +28,7 @@ const Prereqs = ({ prereqs, postreqs, courseCode }) => {
             <GreyText>No prerequisites</GreyText>
           </LineOfText>
         )}
+      <br />
       <Header>{`${splitCourseCode(courseCode)} leads to`}</Header>
       {postreqs.map((course, idx) => (
         <LineOfText key={idx}>
@@ -38,7 +39,7 @@ const Prereqs = ({ prereqs, postreqs, courseCode }) => {
       ))}
       {postreqs.length === 0 && (
         <LineOfText>
-          <GreyText>N/A</GreyText>
+          <GreyText>Nothing</GreyText>
         </LineOfText>
       )}
     </>

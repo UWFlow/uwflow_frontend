@@ -12,6 +12,7 @@ export const ButtonWrapper = styled.button`
   padding: ${({ padding }) => padding};
   color: ${({ theme }) => theme.dark1};
   min-height: ${({ height }) => height}px;
+  max-height: ${({ maxHeight }) => maxHeight}px;
   margin: ${({ margin }) => margin};
   background: ${({ theme, color = theme.accent }) => color};
   ${({ hasShadow }) =>

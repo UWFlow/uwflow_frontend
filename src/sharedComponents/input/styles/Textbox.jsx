@@ -38,6 +38,10 @@ export const SearchInput = styled.input`
     color: ${({ error, theme }) => (error ? theme.red : theme.dark3)};
     font-weight: 400;
   }
+
+  @media only screen and (max-width: 768px) {
+    padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};
+  }
 `;
 
 export const AutocompleteInput = styled.input`
@@ -57,6 +61,10 @@ export const AutocompleteInput = styled.input`
   color: ${({ theme }) => theme.dark3};
   z-index: 1;
   padding-left: ${({ hasIcon }) => (hasIcon ? '72px' : 'auto')};
+
+  @media only screen and (max-width: 768px) {
+    padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};
+  }
 `;
 
 export const Icon = styled.div`
@@ -65,4 +73,8 @@ export const Icon = styled.div`
   left: 24px;
   z-index: 3;
   color: ${({ theme }) => theme.dark3};
+
+  @media only screen and (max-width: 768px) {
+    left: 16px;
+  }
 `;

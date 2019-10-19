@@ -5,7 +5,7 @@ import { withTheme } from 'styled-components';
 /* Styled Components */
 import { ShortlistStarWrapper } from './styles/ShortlistStar';
 
-const ShortlistStar = ({ theme, checked, size = 32, onClick = () => {} }) => {
+const ShortlistStar = ({ theme, checked = false, size = 32, onClick = () => {} }) => {
   return (
     <ShortlistStarWrapper
       onClick={onClick}
@@ -20,7 +20,7 @@ const ShortlistStar = ({ theme, checked, size = 32, onClick = () => {} }) => {
 
 ShortlistStar.propTypes = {
   theme: PropTypes.object.isRequired,
-  checked: PropTypes.bool.isRequired,
+  checked: PropTypes.bool,
   size: PropTypes.number,
   onClick: PropTypes.func,
 };
