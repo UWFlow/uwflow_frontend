@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -17,12 +18,15 @@ import {
 import LoginContent from './LoginContent';
 import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
-
-import { makePOSTRequest } from '../utils/Api';
-import { PRIVACY_PAGE_ROUTE } from '../Routes';
 import ResetPasswordModal from './ResetPasswordModal';
 
+import { PRIVACY_PAGE_ROUTE } from '../Routes';
+import { makePOSTRequest } from '../utils/Api';
+import { LOGGED_IN } from '../data/actions/AuthActions';
+
 export const AuthForm = ({ onAuthComplete = () => {}, width }) => {
+  const dispatch = useDispatch();
+
   const [showLoginForm, setShowLoginForm] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -32,9 +36,9 @@ export const AuthForm = ({ onAuthComplete = () => {}, width }) => {
   const [showResetPassword, setShowResetPassword] = useState(false);
 
   const setJWT = response => {
-    console.log(response);
     localStorage.setItem('token', response.token);
     localStorage.setItem('user_id', response.user_id);
+    dispatch({ type: LOGGED_IN });
     onAuthComplete();
   };
 

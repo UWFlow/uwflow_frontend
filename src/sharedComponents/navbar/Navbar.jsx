@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import { compose } from 'redux';
@@ -9,7 +9,6 @@ import { withTheme } from 'styled-components';
 import {
   LANDING_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
-  isOnProfilePageRoute,
   isOnLandingPageRoute,
 } from '../../Routes';
 
@@ -34,8 +33,8 @@ import { GET_USER } from '../../graphql/queries/profile/User';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
-import { isLoggedIn } from '../../utils/Auth';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { LOGGED_OUT } from '../../data/actions/AuthActions';
 
 const placeholderImage =
   'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
@@ -51,18 +50,15 @@ const renderProfilePicture = data => {
 
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
+  isLoggedIn: getIsLoggedIn(state),
 });
 
-const Navbar = ({ history, location, theme, isDesktopPage }) => {
+const Navbar = ({ history, location, theme, isDesktopPage, isLoggedIn }) => {
+  const dispatch = useDispatch();
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [, forceUpdate] = useState(false);
 
   const handleProfileButtonClick = () => {
-    if (isLoggedIn()) {
-      history.push(PROFILE_PAGE_ROUTE);
-    } else {
-      setAuthModalOpen(true);
-    }
+    isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : setAuthModalOpen(true);
   };
 
   if (isOnLandingPageRoute(location)) {
@@ -88,7 +84,7 @@ const Navbar = ({ history, location, theme, isDesktopPage }) => {
           )}
           <SearchBar />
           <ProfileButtonWrapper>
-            {isLoggedIn() ? (
+            {isLoggedIn ? (
               <>
                 <Query
                   query={GET_USER}
@@ -111,11 +107,7 @@ const Navbar = ({ history, location, theme, isDesktopPage }) => {
                       // log out
                       localStorage.removeItem('token');
                       localStorage.removeItem('user_id');
-                      if (isOnProfilePageRoute(location)) {
-                        history.push(LANDING_PAGE_ROUTE);
-                      } else {
-                        forceUpdate(x => !x);
-                      }
+                      dispatch({ type: LOGGED_OUT });
                     }
                   }}
                   placeholder=""

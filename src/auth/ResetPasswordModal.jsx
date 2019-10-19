@@ -17,7 +17,7 @@ import {
 } from '../constants/Api';
 
 /* Styled Components */
-import { Wrapper, Header, Form, Error } from './styles/ResetPasswordModal';
+import { Wrapper, Header, Error } from './styles/ResetPasswordModal';
 import { TextboxWrapper } from './styles/ResetPasswordModal';
 
 const ResetPasswordForm = ({ onSubmit, error }) => {

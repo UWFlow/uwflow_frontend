@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 /* Styled Components */
 import {
@@ -18,16 +18,15 @@ import {
 import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
-import { isLoggedIn } from '../../../utils/Auth';
+import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
 import SearchBar from '../../../sharedComponents/navbar/SearchBar';
 
-const LandingPage = ({ history }) => {
-  const [, forceUpdate] = useState(false);
 
-  const handleAuthComplete = () => {
-    forceUpdate(x => !x);
-  };
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state)
+});
 
+const LandingPage = ({ isLoggedIn }) => {
   return (
     <LandingPageWrapper>
       <LandingPageContent>
@@ -48,8 +47,8 @@ const LandingPage = ({ history }) => {
         <Column2>
           <BlueBackground />
           <BackgroundImage image={Background} />
-          {!isLoggedIn() && <AuthContent>
-            <AuthForm onAuthComplete={handleAuthComplete} />
+          {!isLoggedIn && <AuthContent>
+            <AuthForm />
           </AuthContent>}
         </Column2>
       </LandingPageContent>
@@ -57,4 +56,4 @@ const LandingPage = ({ history }) => {
   );
 };
 
-export default withRouter(LandingPage);
+export default connect(mapStateToProps)(LandingPage);
