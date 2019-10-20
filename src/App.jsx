@@ -26,7 +26,8 @@ import {
   LoadablePrivacyPage,
 } from './LoadableComponents';
 import ModalRoot from './sharedComponents/modal/ModalRoot';
-import Navbar from './sharedComponents/navbar/Navbar';
+import Navbar from './sharedComponents/navigation/Navbar';
+import Footer from './sharedComponents/navigation/Footer';
 
 const App = () => {
   return (
@@ -75,6 +76,7 @@ const App = () => {
         />
         <Route path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
+      <Footer />
       <ModalRoot />
     </>
   );

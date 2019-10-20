@@ -55,7 +55,7 @@ export const Column2 = styled.div`
 `;
 
 export const BlueBackground = styled.div`
-  background:${({ theme }) => theme.primary};
+  background:${({ theme }) => theme.primaryExtraDark};
   mix-blend-mode: multiply;
   opacity: 0.8;
   position: absolute;

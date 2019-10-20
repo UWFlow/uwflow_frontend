@@ -12,7 +12,7 @@ export const PageHeader = styled.div`
   align-items: flex-end;
   width: 100%;
   height: 208px;
-  background: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => theme.primaryExtraDark};
   padding-bottom: 32px;
   margin-bottom: 32px;
 `;

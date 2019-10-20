@@ -14,7 +14,7 @@ export const PageHeader = styled.div`
   align-items: center;
   width: 100%;
   height: 80px;
-  background: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => theme.primaryExtraDark};
   padding: 24px 16px;
   margin-bottom: 24px;
 `;

@@ -10,14 +10,13 @@ export const ExplorePageWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   min-height: 100%;
-  padding-bottom: 200px;
 `;
 
 export const ExploreHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primaryExtraDark};
   flex-direction: column;
   position: relative;
 `;

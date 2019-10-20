@@ -2,6 +2,7 @@ export default {
   /* Colours */
   primary: '#0052cc',
   primaryDark: '#0747a6',
+  primaryExtraDark: '#042049',
   courses: '#ff8b00',
   professors: '#36b37e',
   accent: '#ffc400',

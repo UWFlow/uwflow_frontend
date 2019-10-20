@@ -19,7 +19,7 @@ import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
 import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
-import SearchBar from '../../../sharedComponents/navbar/SearchBar';
+import SearchBar from '../../../sharedComponents/navigation/SearchBar';
 
 
 const mapStateToProps = state => ({

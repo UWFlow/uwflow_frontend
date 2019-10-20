@@ -7,7 +7,7 @@ export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primaryExtraDark};
   flex-direction: column;
   position: relative;
 `;

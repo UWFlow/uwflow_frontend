@@ -9,7 +9,7 @@ import {
 } from './styles/LandingPage';
 
 /* Child Components */
-import SearchBar from '../../../sharedComponents/navbar/SearchBar';
+import SearchBar from '../../../sharedComponents/navigation/SearchBar';
 
 const LandingPage = () => {
   return (
