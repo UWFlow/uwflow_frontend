@@ -11,6 +11,8 @@ import { getIsLoggedIn } from '../data/reducers/AuthReducer';
 /* Child Components */
 import DesktopCoursePage from '../desktop/components/coursePage/CoursePage';
 import MobileCoursePage from '../mobile/components/coursePage/CoursePage';
+import LoadingSpinner from '../sharedComponents/display/LoadingSpinner';
+import NotFoundPage from '../desktop/components/notFoundPage/NotFoundPage';
 
 /* Queries */
 import { buildCourseQuery } from '../graphql/queries/course/Course';
@@ -18,7 +20,7 @@ import { getUserId } from '../utils/Auth';
 
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
-  isLoggedIn: getIsLoggedIn(state)
+  isLoggedIn: getIsLoggedIn(state),
 });
 
 export const CoursePageSwitch = ({ isDesktopPage, match, isLoggedIn }) => {
@@ -29,20 +31,14 @@ export const CoursePageSwitch = ({ isDesktopPage, match, isLoggedIn }) => {
     variables: { code: courseCode },
   });
 
-  console.log(data);
-
-  return isDesktopPage ? (
-    <DesktopCoursePage
-      loading={loading}
-      error={error}
-      data={data}
-    />
+  return loading ? (
+    <LoadingSpinner />
+  ) : error || !data || !data.course || data.course.length === 0 ? (
+    <NotFoundPage text="Sorry, we couldn't find that course!" />
+  ) : isDesktopPage ? (
+    <DesktopCoursePage data={data} />
   ) : (
-    <MobileCoursePage
-      loading={loading}
-      error={error}
-      data={data}
-    />
+    <MobileCoursePage data={data} />
   );
 };
 

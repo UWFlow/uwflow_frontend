@@ -12,8 +12,6 @@ import {
 /* Child Components */
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
-import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 
 const ProfPageContent = ({ prof }) => {
   return (
@@ -29,22 +27,16 @@ const ProfPageContent = ({ prof }) => {
   );
 };
 
-const ProfPage = ({ loading, error, data }) => (
+const ProfPage = ({ data }) => (
   <ProfPageWrapper>
-    {loading ? (
-      <LoadingSpinner />
-    ) : error || !data || data.prof.length === 0 ? (
-      <NotFoundPage text="Sorry, we couldn't find that professor!" />
-    ) : (
-      <ProfPageContent prof={data.prof[0]} />
-    )}
+    <ProfPageContent prof={data.prof[0]} />
   </ProfPageWrapper>
 );
 
 ProfPage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.object,
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default ProfPage;

@@ -39,7 +39,9 @@ const dummyFinals = [
 const ProfilePageContent = ({ user }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
-  const courseCodes = user.courses_taken.map(course_taken => course_taken.course.code);
+  const courseCodes = user.courses_taken.map(
+    course_taken => course_taken.course.code,
+  );
 
   return (
     <>
@@ -84,18 +86,11 @@ const ProfilePageContent = ({ user }) => {
       </ModalHOC>
     </>
   );
-}
+};
 
-const ProfilePage = ({ loading, data, error }) => (
+const ProfilePage = ({ data }) => (
   <ProfilePageWrapper>
-    {loading
-      ? (<LoadingSpinner />)
-      : (error || !data)
-        ? <div>Error</div>
-        : (
-          <ProfilePageContent user={{...data.user[0]}} />
-        )
-    }
+    <ProfilePageContent user={{ ...data.user[0] }} />
   </ProfilePageWrapper>
 );
 

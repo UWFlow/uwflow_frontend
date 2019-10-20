@@ -9,8 +9,6 @@ import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from './CourseReviewCourseBox';
 import Button from '../../../sharedComponents/input/Button';
 import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
-import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
 import AuthModal from '../../../auth/AuthModal';
 
@@ -33,7 +31,7 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
 
   const handleReviewClick = () => {
     isLoggedIn() ? setReviewModalOpen(true) : setAuthModalOpen(true);
-  }
+  };
 
   return (
     <>
@@ -87,27 +85,24 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
   );
 };
 
-const CoursePage = ({ loading, error, data }) => (
+const CoursePage = ({ data }) => (
   <CoursePageWrapper>
-    {loading ? (
-      <LoadingSpinner />
-    ) : error || !data || !data.course || data.course.length === 0 ? (
-      <NotFoundPage text="Sorry, we couldn't find that course!" />
-    ) : (
-      <CoursePageContent
-        course={data.course[0]}
-        shortlisted={data.user_shortlist && data.user_shortlist.length > 0}
-        userReview={data.course_review
-          && data.course_review.length > 0 ? data.course_review[0] : null}
-      />
-    )}
+    <CoursePageContent
+      course={data.course[0]}
+      shortlisted={data.user_shortlist && data.user_shortlist.length > 0}
+      userReview={
+        data.course_review && data.course_review.length > 0
+          ? data.course_review[0]
+          : null
+      }
+    />
   </CoursePageWrapper>
 );
 
 CoursePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.object,
-  data: PropTypes.object
+  data: PropTypes.object,
 };
 
 export default CoursePage;
