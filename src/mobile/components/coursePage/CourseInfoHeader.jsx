@@ -13,6 +13,7 @@ import {
   StarAlignmentWrapper,
   CourseCode,
   CourseName,
+  CourseDescription,
 } from './styles/CourseInfoHeader';
 
 import { splitCourseCode } from '../../../utils/Misc';
@@ -59,7 +60,11 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
             percent: useful / 5,
           },
         ]}
+        withShadow={false}
       />
+      <CourseDescription>
+        {course.description}
+      </CourseDescription>
     </CourseInfoHeaderWrapper>
   );
 };

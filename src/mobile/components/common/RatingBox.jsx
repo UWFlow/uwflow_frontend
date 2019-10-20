@@ -28,10 +28,10 @@ const mapStateToProps = state => ({
   width: getWidth(state),
 });
 
-const RatingBox = ({ percentages, numRatings, numComments, width }) => {
+const RatingBox = ({ percentages, numRatings, numComments, width, withShadow = true }) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
   return (
-    <RatingBoxWrapper>
+    <RatingBoxWrapper withShadow={withShadow}>
       <CircularPercentageWrapper>
         <CircularPercentage
           height={Math.min(width / 2 - 32, 200)}

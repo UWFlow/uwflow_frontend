@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, Heading2 } from '../../../../constants/Mixins';
+import { Heading1, Heading2, Body } from '../../../../constants/Mixins';
 
 export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -26,22 +26,28 @@ export const CourseNameSection = styled.div`
 export const CourseCodeAndStar = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 `;
 
 export const StarAlignmentWrapper = styled.div`
-  position: relative;
-  bottom: 1px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const CourseCode = styled.div`
   ${Heading1}
   color: ${({ theme }) => theme.white};;
   margin-right: 16px;
-  margin-bottom: 16px;
 `;
 
 export const CourseName = styled.div`
   ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;
+`;
+
+export const CourseDescription = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.dark2};
+  padding: 16px;
 `;

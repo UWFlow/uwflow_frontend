@@ -60,6 +60,7 @@ const CourseCourseReviews = (
               'most recent',
             ]}
             onChange={value => setCourseSort(value)}
+            zIndex={5}
           />
         </DropdownPanelWrapper>
         <DropdownPanelWrapper>
@@ -69,6 +70,7 @@ const CourseCourseReviews = (
             selectedIndex={courseProfFilter}
             options={courseProfFilterOptions}
             onChange={value => setCourseProfFilter(value)}
+            zIndex={4}
           />
         </DropdownPanelWrapper>
       </ReviewsOptionsWrapper>
@@ -204,11 +206,6 @@ const CourseReviews = ({ courseID, theme }) => {
       profReviewFilter === 0 ||
       review.name === profProfFilterOptions[profReviewFilter],
   );
-
-  const numProfReviews = profReviewsToShow.reduce((total, curr) => {
-    total += curr.reviews.length;
-    return total;
-  }, 0);
 
   const ProfFilterDropdown = (
     <ProfDropdownPanelWrapper>

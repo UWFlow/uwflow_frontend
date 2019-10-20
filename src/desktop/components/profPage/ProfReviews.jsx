@@ -21,6 +21,7 @@ import {
   CourseLikedMetric,
   CourseLikedPercent,
   CourseLikedPercentLabel,
+  ProfCourseFilterWrapper
 } from './styles/ProfReviews';
 
 /* Child Components */
@@ -35,6 +36,7 @@ import { splitCourseCode } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes';
 
 const ProfReviews = ({ profID, theme }) => {
+  const [selectedFilter, setSelectedFilter] = useState(0);
   const [selectedSort, setSelectedSort] = useState(0);
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
@@ -58,9 +60,33 @@ const ProfReviews = ({ profID, theme }) => {
     );
   }
 
+  const courseFilterOptions = ['show all courses', ...reviewDataState.courses];
+  const courseFilterDisplayOptions = [
+    'show all courses',
+    ...reviewDataState.courses.map(code => splitCourseCode(code)),
+  ];
+
+  const reviewsByCourseToShow = reviewDataState.reviewsByCourse.filter(
+    reviews =>
+      selectedFilter === 0 ||
+      reviews.code === courseFilterOptions[selectedFilter],
+  );
+
   return (
     <ProfCourseReviewWrapper>
-      {reviewDataState.reviewsByCourse.map((course, idx) => {
+      <ProfCourseFilterWrapper>
+        <DropdownPanelWrapper>
+          <DropdownTableText>Filter by course: </DropdownTableText>
+          <DropdownList
+            color={theme.courses}
+            selectedIndex={selectedFilter}
+            options={courseFilterDisplayOptions}
+            onChange={value => setSelectedFilter(value)}
+            zIndex={5}
+          />
+        </DropdownPanelWrapper>
+      </ProfCourseFilterWrapper>
+      {reviewsByCourseToShow.map((course, idx) => {
         return (
           <ReviewsForSingleCourseWrapper key={idx}>
             <CourseHeader key={course.id}>

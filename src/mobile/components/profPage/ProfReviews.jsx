@@ -56,6 +56,10 @@ const ProfReviews = ({ profID, theme }) => {
   }
 
   const courseFilterOptions = ['show all courses', ...reviewDataState.courses];
+  const courseFilterDisplayOptions = [
+    'show all courses',
+    ...reviewDataState.courses.map(code => splitCourseCode(code)),
+  ];
 
   const reviewsByCourseToShow = reviewDataState.reviewsByCourse.filter(
     reviews =>
@@ -68,9 +72,9 @@ const ProfReviews = ({ profID, theme }) => {
       <DropdownPanelWrapper>
         <DropdownTableText>Filter by course: </DropdownTableText>
         <DropdownList
-          color={theme.primary}
+          color={theme.courses}
           selectedIndex={selectedFilter}
-          options={courseFilterOptions}
+          options={courseFilterDisplayOptions}
           onChange={value => setSelectedFilter(value)}
         />
       </DropdownPanelWrapper>
