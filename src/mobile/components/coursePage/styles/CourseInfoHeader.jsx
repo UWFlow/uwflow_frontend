@@ -46,8 +46,13 @@ export const CourseName = styled.div`
   font-weight: 400;
 `;
 
-export const CourseDescription = styled.div`
+export const CourseDescriptionSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+`;
+
+export const CourseDescriptionParagraph = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.dark2};
-  padding: 16px;
+  margin-bottom: 16px;
 `;

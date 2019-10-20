@@ -18,8 +18,10 @@ import {
   isOnLandingPageRoute
 } from '../../Routes';
 
+export const FOOTER_HEIGHT = 120;
+
 const Footer = ({ location }) => (
-  <FooterWrapper noMargin={isOnLandingPageRoute(location)}>
+  <FooterWrapper noMargin={isOnLandingPageRoute(location)} height={FOOTER_HEIGHT}>
     <FooterContent>
       <FooterLeft>
         <FooterPageLink to={LANDING_PAGE_ROUTE}>

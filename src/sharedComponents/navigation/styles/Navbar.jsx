@@ -5,13 +5,14 @@ export const NavbarWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  min-height: 80px;
   background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
   ${({ landingPage }) => landingPage ? '' : BoxShadow};
   border-radius: 4px;
   display: flex;
+  ${BoxShadow}
 `;
 
 export const NavbarContent = styled.div`

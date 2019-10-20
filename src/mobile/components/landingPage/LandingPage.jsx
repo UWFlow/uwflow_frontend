@@ -6,26 +6,37 @@ import {
   LandingPageContent,
   TitleText,
   Subheading,
+  LogoProfileWrapper,
+  TextSpacing
 } from './styles/LandingPage';
 
 /* Child Components */
 import SearchBar from '../../../sharedComponents/navigation/SearchBar';
+import ProfileDropdown from '../../../sharedComponents/navigation/ProfileDropdown';
+import FlowLogo from '../../../sharedComponents/navigation/FlowLogo';
 
 const LandingPage = () => {
   return (
     <>
       <LandingPageWrapper>
+        <LogoProfileWrapper>
+          <FlowLogo />
+          <ProfileDropdown />
+        </LogoProfileWrapper>
         <LandingPageContent>
           <TitleText>
-            Join 16,500+
-            <br /> UW students on Flow
+            Join 25,000+
+            <br />
+            UW students on Flow
           </TitleText>
           <SearchBar />
+          <TextSpacing />
+          <TextSpacing />
           <Subheading>
             Plan courses
-            <br />
+            <TextSpacing />
             Read course and professor reviews
-            <br />
+            <TextSpacing />
             Export your class and exam schedule
           </Subheading>
         </LandingPageContent>

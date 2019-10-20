@@ -6,7 +6,7 @@ import { Body, PageContent } from '../../../constants/Mixins';
 export const FooterWrapper = styled.div`
   background: ${({ theme }) => theme.primaryExtraDark};
   height: 100%;
-  min-height: 112px;
+  min-height: ${({ height }) => height}px;
   display: flex;
   align-items: center;
   margin-top: ${({ noMargin }) => noMargin ? '0' : '32px'};

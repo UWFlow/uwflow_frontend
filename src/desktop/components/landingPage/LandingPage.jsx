@@ -22,6 +22,7 @@ import Background from '../../../img/background.png';
 import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
 import SearchBar from '../../../sharedComponents/navigation/SearchBar';
 import FlowLogo from '../../../sharedComponents/navigation/FlowLogo';
+import ProfileDropdown from '../../../sharedComponents/navigation/ProfileDropdown';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state)
@@ -34,10 +35,12 @@ const LandingPage = ({ isLoggedIn }) => {
         <Column1TextWrapper>
           <LogoWrapper>
             <FlowLogo />
+            {isLoggedIn && <ProfileDropdown /> }
           </LogoWrapper>
           <TitleText>
-            Join 16,500+
-            <br /> UW students on Flow
+            Join 25,000+
+            <br />
+            UW students on Flow
           </TitleText>
           <SearchBar />
           <Subheading>

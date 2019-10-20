@@ -17,6 +17,10 @@ export const LogoWrapper = styled.div`
   position: absolute;
   top: 32px;
   left: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex: 1;
 `;
 
 export const TitleText = styled.div`
@@ -48,12 +52,13 @@ export const Column1 = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-right: 120px;
+  padding-right: 120px;
   padding-bottom: 160px;
   padding-left: calc(60% - ${PAGE_CONTENT_WIDTH}px - 120px);
 
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     padding-left: 0;
+    padding-right: 48px;
   }
 `;
 

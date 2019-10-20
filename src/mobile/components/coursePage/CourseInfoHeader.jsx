@@ -13,7 +13,8 @@ import {
   StarAlignmentWrapper,
   CourseCode,
   CourseName,
-  CourseDescription,
+  CourseDescriptionSection,
+  CourseDescriptionParagraph,
 } from './styles/CourseInfoHeader';
 
 import { splitCourseCode } from '../../../utils/Misc';
@@ -26,7 +27,7 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
 
   const onStarClick = () => {
     isLoggedIn() ? setIsStarClicked(!isStarClicked) : setAuthModalOpen(true);
-  }
+  };
 
   return (
     <CourseInfoHeaderWrapper>
@@ -61,9 +62,11 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
           },
         ]}
       />
-      <CourseDescription>
-        {course.description}
-      </CourseDescription>
+      <CourseDescriptionSection>
+        <CourseDescriptionParagraph>
+          {course.description}
+        </CourseDescriptionParagraph>
+      </CourseDescriptionSection>
     </CourseInfoHeaderWrapper>
   );
 };

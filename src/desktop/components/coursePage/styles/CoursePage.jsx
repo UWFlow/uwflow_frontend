@@ -47,8 +47,14 @@ export const CourseReviewQuestionBox = styled.div`
   margin-bottom: 32px;
 `;
 
+export const CourseQuestionTextAndToggle = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const CourseReviewQuestionText = styled.div`
   ${Heading3}
+  margin-right: 24px;
 `;
 
 export const AddReviewButton = styled.div`
