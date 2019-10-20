@@ -13,7 +13,11 @@ import ShortlistContent from '../../../sharedComponents/profilePage/ShortlistCon
 import {
   ProfilePageWrapper,
   CompleteProfileWrapper,
+  ProfileFinalExamsHeader,
+  ProfileFinalExamsWrapper,
+  ProfileFinalExamsContent,
 } from './styles/ProfilePage';
+import FinalExamTable from '../../../sharedComponents/coursePage/FinalExamTable';
 
 const dummyFinals = [
   {
@@ -46,6 +50,14 @@ const ProfilePageContent = ({ user }) => {
       <CollapseableContainer title="Shortlist" centerHeader={false}>
         <ShortlistContent shortlistCourses={user.shortlist} />
       </CollapseableContainer>
+      <ProfileFinalExamsWrapper>
+        <ProfileFinalExamsHeader>
+          On campus final exams
+        </ProfileFinalExamsHeader>
+        <ProfileFinalExamsContent>
+          <FinalExamTable courses={dummyFinals} />
+        </ProfileFinalExamsContent>
+      </ProfileFinalExamsWrapper>
       <ModalHOC
         isModalOpen={reviewModalOpen}
         onCloseModal={() => setReviewModalOpen(false)}

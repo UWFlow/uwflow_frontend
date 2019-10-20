@@ -12,3 +12,7 @@ export const ProfileFinalExamsHeader = styled.div`
   ${Heading3}
   color: ${({ theme }) => theme.dark1};
 `;
+
+export const ProfileFinalExamsContent = styled.div`
+  overflow-x: auto;
+`;

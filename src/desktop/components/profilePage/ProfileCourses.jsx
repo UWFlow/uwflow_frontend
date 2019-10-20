@@ -27,15 +27,19 @@ import { getCoursePageRoute } from '../../../Routes';
 
 const groupByTerm = courses => {
   return courses.reduce((groups, course) => {
-    const term = termCodeToDate(course.term);
-    groups[term] = groups[term] || [];
-    groups[term].push(course);
+    groups[course.term] = groups[course.term] || [];
+    groups[course.term].push(course);
     return groups;
   }, {});
 };
 
 const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
-  const courseGroups = groupByTerm(courses);
+  const unorderedGroups = groupByTerm(courses);
+  const courseGroups = {};
+  Object.keys(unorderedGroups).sort().reverse().forEach(term => {
+    courseGroups[termCodeToDate(term)] = unorderedGroups[term];
+  });
+
   const tabList = Object.keys(courseGroups).map(termName => {
     return {
       title: termName,

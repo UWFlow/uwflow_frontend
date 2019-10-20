@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {
   ProfileFinalExamsWrapper,
   ProfileFinalExamsHeader,
+  ProfileFinalExamsContent,
 } from './styles/ProfileFinalExams';
 
 import FinalExamTable from '../../../sharedComponents/coursePage/FinalExamTable';
@@ -17,7 +18,9 @@ const ProfileFinalExams = ({ courses }) => {
         <ProfileFinalExamsHeader>
           On campus final exams
         </ProfileFinalExamsHeader>
-        <FinalExamTable courses={courses} />
+        <ProfileFinalExamsContent>
+          <FinalExamTable courses={courses} />
+        </ProfileFinalExamsContent>
       </ProfileFinalExamsWrapper>
       <LastUpdatedSchedule />
     </>

@@ -42,7 +42,7 @@ export const Tab = styled.div`
 
 export const ContentContainer = styled.div`
   width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   background: white;
   padding: ${({ padding }) => padding};
