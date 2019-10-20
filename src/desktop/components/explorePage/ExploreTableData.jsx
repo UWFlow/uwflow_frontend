@@ -9,7 +9,7 @@ export const courseColumns = [
     Header: 'Course code',
     accessor: 'code',
     align: 'left',
-    maxWidth: 112,
+    maxWidth: 120,
     Cell: ({ cell }) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>{
         splitCourseCode(cell.value)}
@@ -19,13 +19,14 @@ export const courseColumns = [
   {
     Header: 'Course Name',
     accessor: 'name',
-    align: 'left'
+    align: 'left',
+    maxWidth: 128
   },
   {
     Header: 'Ratings',
     accessor: 'ratings',
     align: 'right',
-    maxWidth: 112,
+    maxWidth: 80,
   },
   {
     Header: 'Useful',
@@ -55,6 +56,7 @@ export const profColumns = [
     Header: 'Professor name',
     accessor: 'id_name',
     align: 'left',
+    maxWidth: 160,
     Cell: ({ cell }) => (
       <ProfName to={getProfPageRoute(cell.value.id)}>
         {cell.value.name}
@@ -64,8 +66,8 @@ export const profColumns = [
   {
     Header: 'Ratings',
     accessor: 'ratings',
-    align: 'left',
-    maxWidth: 112,
+    align: 'right',
+    maxWidth: 80,
   },
   {
     Header: 'Clear',

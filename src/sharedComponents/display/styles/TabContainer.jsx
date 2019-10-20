@@ -5,7 +5,6 @@ export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};
   border-radius: 4px;
   background: ${({ theme }) => theme.white};
-  border: 2px solid ${({ theme }) => theme.light2};
   ${BoxShadow}
 `;
 
@@ -43,6 +42,8 @@ export const Tab = styled.div`
 
 export const ContentContainer = styled.div`
   width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
   background: white;
   padding: ${({ padding }) => padding};
   border-radius: 0 0 4px 4px;

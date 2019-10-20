@@ -30,6 +30,7 @@ html {
   text-rendering: optimizeLegibility;
 
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 
 /**

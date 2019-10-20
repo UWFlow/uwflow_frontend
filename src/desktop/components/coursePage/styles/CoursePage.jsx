@@ -50,6 +50,7 @@ export const CourseReviewQuestionBox = styled.div`
 export const CourseQuestionTextAndToggle = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 24px;
 `;
 
 export const CourseReviewQuestionText = styled.div`

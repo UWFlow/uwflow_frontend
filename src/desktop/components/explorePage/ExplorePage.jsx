@@ -13,7 +13,7 @@ import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
 const NUM_COURSE_CODE_FILTERS = 5;
-const ratingFilters = [0, 10, 20, 30, 40, 50, 75, 100, 200, 500]
+const ratingFilters = [0, 10, 20, 50, 100, 250, 500];
 
 const ExplorePageContent = ({
   query,
@@ -78,6 +78,8 @@ const ExplorePageContent = ({
             setExploreTab={setExploreTab}
             ratingFilters={ratingFilters}
             profCourses={profCourses}
+            loading={loading}
+            fetchMore={fetchMore}
           />
         </Column1>
         <Column2>
