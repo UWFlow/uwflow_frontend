@@ -42,7 +42,9 @@ const LandingPage = ({ isLoggedIn }) => {
             <br />
             UW students on Flow
           </TitleText>
-          <SearchBar />
+          <SearchBar colored />
+          <br />
+          <br />
           <Subheading>
             Plan courses
             <br />

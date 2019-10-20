@@ -29,7 +29,7 @@ const LandingPage = () => {
             <br />
             UW students on Flow
           </TitleText>
-          <SearchBar />
+          <SearchBar colored />
           <TextSpacing />
           <TextSpacing />
           <Subheading>

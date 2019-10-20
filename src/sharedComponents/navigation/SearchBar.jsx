@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
+import { withTheme } from 'styled-components';
+import { compose } from 'redux';
 import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
 
@@ -27,7 +29,7 @@ import { useSearchContext } from '../../search/SearchProvider';
 /* Constants */
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
-const SearchBar = ({ history }) => {
+const SearchBar = ({ history, theme, colored = false }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -174,7 +176,7 @@ const SearchBar = ({ history }) => {
       : null;
 
     return (
-      <SearchResultsWrapper>
+      <SearchResultsWrapper >
         {courseCodeResults}
         {courseResults}
         {profResults}
@@ -200,6 +202,7 @@ const SearchBar = ({ history }) => {
           width: '100%',
           borderRadius: open ? '4px 4px 0 0' : '4px',
           fontWeight: '600',
+          border: colored ? `2px solid ${theme.primary}` : 'none',
         }}
         maxLength={100}
         autocompletePlaceholder={autocompleteResult()}
@@ -209,4 +212,4 @@ const SearchBar = ({ history }) => {
   );
 };
 
-export default withRouter(SearchBar);
+export default compose(withTheme, withRouter)(SearchBar);

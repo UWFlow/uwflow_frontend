@@ -8,7 +8,10 @@ export const SearchInputWrapper = styled.div`
 export const SearchInput = styled.input`
   position: relative;
   outline: none;
-  border: ${({ error, theme }) => (error ? `1px solid ${theme.red}` : 'none')};
+  border: ${({ options, error, theme }) => 
+    error
+      ? `1px solid ${theme.red}`
+      : options.border ? options.border : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) =>
