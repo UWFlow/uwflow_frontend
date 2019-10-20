@@ -228,18 +228,19 @@ const CourseReviews = ({ courseID, theme }) => {
         title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
       >
         {CourseCourseReviews(
-          courseReviews,
+          courseReviewsToShow,
           theme,
           courseSort,
           setCourseSort,
           courseProfFilter,
+          courseProfFilterOptions,
           setCourseProfFilter,
         )}
       </CollapseableContainer>
       <CollapseableContainer
         title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
       >
-        {CourseProfReviews(reviewsByProf, ProfFilterDropdown)}
+        {CourseProfReviews(profReviewsToShow, ProfFilterDropdown)}
       </CollapseableContainer>
     </CourseReviewWrapper>
   );

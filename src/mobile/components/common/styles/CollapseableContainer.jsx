@@ -17,16 +17,14 @@ export const HeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const HeaderTitleBox = styled.div`
+export const HeaderTitle = styled.div`
+  ${Heading3}
   display: flex;
   align-items: center;
+  justify-content: ${({ centerHeader }) => centerHeader ? 'center' : 'flex-begin'};
   padding-left: 16px;
   background: white;
   width: 100%;
-`;
-
-export const HeaderTitleText = styled.div`
-  ${Heading3}
 `;
 
 export const HeaderChevronBox = styled.div`

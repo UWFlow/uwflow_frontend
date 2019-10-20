@@ -43,7 +43,7 @@ const ProfilePageContent = ({ user }) => {
       <CompleteProfileWrapper>
         <CompleteProfileContent user={user} />
       </CompleteProfileWrapper>
-      <CollapseableContainer title="Shortlist">
+      <CollapseableContainer title="Shortlist" centerHeader={false}>
         <ShortlistContent shortlistCourses={user.shortlist} />
       </CollapseableContainer>
       <ModalHOC

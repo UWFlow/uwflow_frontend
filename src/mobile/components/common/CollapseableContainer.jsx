@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {
   ContainerWrapper,
   HeaderWrapper,
-  HeaderTitleBox,
-  HeaderTitleText,
+  HeaderTitle,
   HeaderChevronBox,
   ContentWrapper,
 } from './styles/CollapseableContainer';
@@ -13,14 +12,15 @@ const CollapseableContainer = ({
   title,
   children,
   isInitiallyOpen = true,
+  centerHeader = true,
 }) => {
   const [isOpen, setIsOpen] = useState(isInitiallyOpen);
   return (
     <ContainerWrapper>
       <HeaderWrapper>
-        <HeaderTitleBox>
-          <HeaderTitleText>{title}</HeaderTitleText>
-        </HeaderTitleBox>
+        <HeaderTitle centerHeader={centerHeader}>
+          {title}
+        </HeaderTitle>
         <HeaderChevronBox onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
