@@ -10,6 +10,8 @@ import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
 /* Child Components */
 import DesktopProfPage from '../desktop/components/profPage/ProfPage';
 import MobileProfPage from '../mobile/components/profPage/ProfPage';
+import LoadingSpinner from '../sharedComponents/display/LoadingSpinner';
+import NotFoundPage from '../desktop/components/notFoundPage/NotFoundPage';
 
 /* Queries */
 import { GET_PROF } from '../graphql/queries/prof/Prof';
@@ -23,18 +25,15 @@ export const ProfPageSwitch = ({ isDesktopPage, match }) => {
   const { loading, error, data } = useQuery(GET_PROF, {
     variables: { id: profID },
   });
-  return isDesktopPage ? (
-    <DesktopProfPage
-      loading={loading}
-      error={error}
-      data={data}
-    />
+
+  return loading ? (
+    <LoadingSpinner />
+  ) : error || !data || data.prof.length === 0 ? (
+    <NotFoundPage text="Sorry, we couldn't find that professor!" />
+  ) : isDesktopPage ? (
+    <DesktopProfPage data={data} />
   ) : (
-    <MobileProfPage
-      loading={loading}
-      error={error}
-      data={data}
-    />
+    <MobileProfPage data={data} />
   );
 };
 
