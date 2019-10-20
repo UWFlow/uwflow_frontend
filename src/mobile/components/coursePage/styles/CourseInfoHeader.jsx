@@ -56,14 +56,3 @@ export const CourseDescriptionParagraph = styled.div`
   ${Body}
   margin-bottom: 16px;
 `;
-
-export const CourseDescriptionSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 0 16px;
-`;
-
-export const CourseDescriptionParagraph = styled.div`
-  ${Body}
-  margin-bottom: 16px;
-`;

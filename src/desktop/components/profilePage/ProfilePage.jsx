@@ -55,13 +55,7 @@ const ProfilePageContent = ({ user }) => {
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
           />
-          <ProfileFinalExams
-            courses={dummyFinals}
-            lastUpdated={{
-              time: 18,
-              url: 'adm.uwaterloo.ca',
-            }}
-          />
+          <ProfileFinalExams courses={dummyFinals} />
         </Column1>
         <Column2>
           <CompleteProfileWrapper>

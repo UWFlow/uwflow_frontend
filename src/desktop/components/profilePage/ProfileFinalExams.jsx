@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 import {
   ProfileFinalExamsWrapper,
   ProfileFinalExamsHeader,
-  LastUpdatedText,
-  LastUpdatedLink,
 } from './styles/ProfileFinalExams';
 
-import FinalExamTable from '../../../sharedComponents/profilePage/FinalExamTable';
+import FinalExamTable from '../../../sharedComponents/coursePage/FinalExamTable';
+import LastUpdatedSchedule from '../../../sharedComponents/coursePage/LastUpdatedSchedule';
 
-const ProfileFinalExams = ({ courses, lastUpdated }) => {
+const ProfileFinalExams = ({ courses }) => {
   return (
     <>
       <ProfileFinalExamsWrapper>
@@ -20,26 +19,13 @@ const ProfileFinalExams = ({ courses, lastUpdated }) => {
         </ProfileFinalExamsHeader>
         <FinalExamTable courses={courses} />
       </ProfileFinalExamsWrapper>
-      <LastUpdatedText>
-        Last updated {lastUpdated.time} minutes ago from
-        {' '}
-        <LastUpdatedLink href={lastUpdated.url} target="_blank">
-          {lastUpdated.url}
-        </LastUpdatedLink>
-      </LastUpdatedText>
+      <LastUpdatedSchedule />
     </>
   );
 };
 
 ProfileFinalExams.propTypes = {
-  courses: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string,
-    sections: PropTypes.arrayOf(PropTypes.string),
-    time: PropTypes.string,
-    date: PropTypes.string,
-    location: PropTypes.string
-  })),
-  lastUpdated: PropTypes.object
+  courses: PropTypes.array.isRequired
 };
 
 export default ProfileFinalExams;
