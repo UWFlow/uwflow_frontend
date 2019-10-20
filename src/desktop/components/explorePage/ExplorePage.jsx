@@ -13,7 +13,7 @@ import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
 const NUM_COURSE_CODE_FILTERS = 5;
-const ratingFilters = [0, 10, 20, 50, 100, 250, 500];
+const RATING_FILTERS = [0, 10, 20, 50, 100, 250, 500, 1000];
 
 const ExplorePageContent = ({
   query,
@@ -76,7 +76,7 @@ const ExplorePageContent = ({
             data={data}
             exploreTab={exploreTab}
             setExploreTab={setExploreTab}
-            ratingFilters={ratingFilters}
+            ratingFilters={RATING_FILTERS}
             profCourses={profCourses}
             loading={loading}
             fetchMore={fetchMore}
@@ -92,7 +92,7 @@ const ExplorePageContent = ({
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
             setCourseTaught={setCourseTaught}
-            ratingFilters={ratingFilters}
+            ratingFilters={RATING_FILTERS}
             resetFilters={exploreTab === 0 ? resetCourseFilters : resetProfFilters}
             courseSearch={exploreTab === 0}
           />

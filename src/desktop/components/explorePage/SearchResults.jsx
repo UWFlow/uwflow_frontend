@@ -85,6 +85,7 @@ const SearchResults = ({
           render: results
         },
       ]}
+      initialSelectedTab={exploreTab}
       contentPadding="0"
     />
   );

@@ -98,4 +98,4 @@ export const Cell = styled.td`
   }
 `;
 
-export const TableBottom = styled.div``;
+export const TableBottom = styled.tr``;

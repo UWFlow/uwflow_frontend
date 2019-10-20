@@ -98,8 +98,8 @@ const Table = ({ columns, data, sortable = false, loading = false, fetchMore = (
             </Cell>
           </Row>
         )}
+        <TableBottom ref={bottomRef} />
       </TableBody>
-      <TableBottom ref={bottomRef} />
     </TableWrapper>
   );
 };

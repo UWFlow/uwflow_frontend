@@ -61,9 +61,10 @@ const SearchBar = ({ history, theme, colored = false }) => {
 
   useOnClickOutside(ref, () => setOpen(false));
 
-  const queryExploreCourses = (query, codeSearch = false) => {
+  const queryExploreCourses = (query, codeSearch = false, profSearch = false) => {
     const codeTerm = codeSearch ? '&c=t' : '';
-    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}`);
+    const profTerm = profSearch ? '&t=p' : '';
+    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}${profTerm}`);
     setOpen(false);
   };
 
@@ -121,7 +122,7 @@ const SearchBar = ({ history, theme, colored = false }) => {
       <ExploreCourseProfs
         onClick={e => {
           e.stopPropagation();
-          queryExploreCourses(course.code);
+          queryExploreCourses(course.code, false, true);
         }}
       >
         <Users />
