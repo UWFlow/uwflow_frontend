@@ -40,7 +40,7 @@ const convertInputToState = data => {
         id: current.prof ? current.prof.id : 0,
         name: current.prof ? current.prof.name : '',
         liked: current.prof
-          ? current.prof.course_reviews_aggregate.aggregate.avg.liked / 5
+          ? current.prof.course_reviews_aggregate.aggregate.avg.liked
           : 0,
         reviews: [],
       };

@@ -50,7 +50,7 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
         percentages={[
           {
             displayName: 'Likes',
-            percent: liked / 5,
+            percent: liked,
           },
           {
             displayName: 'Easy',

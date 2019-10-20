@@ -22,7 +22,7 @@ import {
   ReviewButtonContents,
 } from './styles/ProfileCourses';
 
-import { termCodeToDate, splitCourseCode, processRating } from '../../../utils/Misc';
+import { termCodeToDate, splitCourseCode, processLiked } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes';
 
 const groupByTerm = courses => {
@@ -53,7 +53,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
               <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
             </ProfileCourseText>
             <ProfileCourseLiked>
-              {processRating(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
+              {processLiked(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
             </ProfileCourseLiked>
             <LikedThisCourseText>
               liked this

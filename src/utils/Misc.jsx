@@ -22,6 +22,6 @@ export const splitCourseCode = (code) => {
   return [codeLetters, code.slice(i)].join(' ').toUpperCase();
 };
 
-export const processRating = (rating) => {
-  return rating !== null ? `${Math.round(rating / 5 * 100)}%` : 'N/A'
+export const processLiked = (rating) => {
+  return rating !== null ? `${Math.round(rating * 100)}%` : 'N/A'
 }

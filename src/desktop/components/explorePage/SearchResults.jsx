@@ -22,7 +22,7 @@ const SearchResults = ({
     description: course.description,
     ratings: course.course_reviews_aggregate.aggregate.count,
     easy: course.course_reviews_aggregate.aggregate.avg.easy / 5,
-    liked: course.course_reviews_aggregate.aggregate.avg.liked / 5,
+    liked: course.course_reviews_aggregate.aggregate.avg.liked,
     useful: course.course_reviews_aggregate.aggregate.avg.useful / 5
   })) : [];
 
@@ -34,7 +34,7 @@ const SearchResults = ({
     ratings: prof.prof_reviews_aggregate.aggregate.count,
     clear: prof.prof_reviews_aggregate.aggregate.avg.clear / 5,
     engaging: prof.prof_reviews_aggregate.aggregate.avg.engaging / 5,
-    liked: prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+    liked: prof.course_reviews_aggregate.aggregate.avg.liked,
     courses: prof.prof_courses.map(course => course.code)
   })) : [];
 
