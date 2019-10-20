@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
 import {
@@ -10,10 +11,15 @@ import {
   FooterNormalLink,
 } from './styles/Footer';
 
-import { LANDING_PAGE_ROUTE, ABOUT_PAGE_ROUTE, PRIVACY_PAGE_ROUTE } from '../../Routes';
+import {
+  LANDING_PAGE_ROUTE,
+  ABOUT_PAGE_ROUTE,
+  PRIVACY_PAGE_ROUTE,
+  isOnLandingPageRoute
+} from '../../Routes';
 
-const Footer = () => (
-  <FooterWrapper>
+const Footer = ({ location }) => (
+  <FooterWrapper noMargin={isOnLandingPageRoute(location)}>
     <FooterContent>
       <FooterLeft>
         <FooterPageLink to={LANDING_PAGE_ROUTE}>
@@ -41,4 +47,4 @@ const Footer = () => (
   </FooterWrapper>
 );
 
-export default Footer;
+export default withRouter(Footer);

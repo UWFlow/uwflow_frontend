@@ -60,7 +60,6 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
             percent: useful / 5,
           },
         ]}
-        withShadow={false}
       />
       <CourseDescription>
         {course.description}

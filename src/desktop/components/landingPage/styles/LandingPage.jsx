@@ -2,26 +2,21 @@ import styled from 'styled-components';
 import {
   Heading1,
   Heading3,
-  PageContentZIndex,
-  PageContent
 } from '../../../../constants/Mixins';
 
+import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+
 export const LandingPageWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   width: 100vw;
-  height: 100%;
-  ${PageContentZIndex}
+  min-height: 100vh;
+  display: flex;
+  padding-left: 32px;
 `;
 
-export const LandingPageContent = styled.div`
-  ${PageContent}
-  display: flex;
-  flex-direction: row;
-  margin: auto;
-  height: 100%;
+export const LogoWrapper = styled.div`
+  position: absolute;
+  top: 32px;
+  left: 0;
 `;
 
 export const TitleText = styled.div`
@@ -40,24 +35,48 @@ export const Subheading = styled.div`
   line-height: 2.0; 
 `;
 
+export const Column1TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+`;
+
 export const Column1 = styled.div`
   position: relative;
   display: flex;
+  flex: 1;
   flex-direction: column;
   margin-right: 120px;
+  padding-bottom: 160px;
+  padding-left: calc(60% - ${PAGE_CONTENT_WIDTH}px - 120px);
+
+  @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
+    padding-left: 0;
+  }
 `;
 
 export const Column2 = styled.div`
   position: relative;
   display: flex;
-  flex-direction: row;
-  padding: 0 120px;
+  flex: 1;
+  width: 40%;
+  min-width: ${({ loggedIn }) => loggedIn ? '0' : '600px'};
+  align-items: center;
+  ${({ loggedIn }) => loggedIn ? 'max-width: 320px;' : ''}
+
+  @media only screen and (max-width: 1024px) {
+    min-width: ${({ loggedIn }) => loggedIn ? '100px' : '480px'};
+    ${({ loggedIn }) => loggedIn ? 'max-width: 25%;' : ''}
+    align-items: none;
+  }
 `;
 
 export const BlueBackground = styled.div`
   background:${({ theme }) => theme.primaryExtraDark};
   mix-blend-mode: multiply;
-  opacity: 0.8;
+  opacity: 0.85;
   position: absolute;
   top: 0;
   left: 0;
@@ -73,11 +92,11 @@ export const BackgroundImage = styled.div`
   top: 0;
   left: 0;
   height: 100%;
-  width: calc(100%);
+  width: 100%;
   z-index: -2;
 `;
 
 export const AuthContent = styled.div`
   position: relative;
-  margin: 96px auto;
+  margin: auto;
 `;

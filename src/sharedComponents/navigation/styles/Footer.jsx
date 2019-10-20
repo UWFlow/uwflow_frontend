@@ -9,11 +9,12 @@ export const FooterWrapper = styled.div`
   min-height: 112px;
   display: flex;
   align-items: center;
-  margin-top: 32px;
+  margin-top: ${({ noMargin }) => noMargin ? '0' : '32px'};
 `;
 
 export const FooterContent = styled.div`
   ${PageContent}
+  margin: auto;
   display: flex;
   justify-content: space-between;
 
@@ -21,7 +22,7 @@ export const FooterContent = styled.div`
     padding: 0 16px;
   }
 
-  @media only screen and (max-width: 424px) {
+  @media only screen and (max-width: 450px) {
     display: block;
   }
 `;
@@ -51,7 +52,7 @@ export const FooterNormalLink = styled.a`
   font-weight: 400;
   margin-left: 16px;
 
-  @media only screen and (max-width: 424px) {
+  @media only screen and (max-width: 450px) {
     margin: 16px 16px 0 0;
   }
 `;
