@@ -38,7 +38,7 @@ Button.propTypes = {
   children: PropTypes.any,
   handleClick: PropTypes.func,
   height: PropTypes.number,
-  maxHeight: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
+  maxHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   color: PropTypes.string,
   hoverColor: PropTypes.string,
   borderColor: PropTypes.string,

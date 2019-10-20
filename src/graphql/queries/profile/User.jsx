@@ -8,9 +8,13 @@ export const GET_USER = gql`
       ...UserInfoFragment
       ...UserShortlistFragment
       ...UserCoursesTakenFragment
+      ...UserReviewsFragment
+      ...UserScheduleFragment
     }
   }
   ${UserFragment.userInfo}
   ${UserFragment.userShortlist}
   ${UserFragment.userCoursesTaken}
+  ${UserFragment.userReviews}
+  ${UserFragment.userSchedule}
 `;

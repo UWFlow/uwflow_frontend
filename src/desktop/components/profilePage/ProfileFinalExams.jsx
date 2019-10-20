@@ -7,50 +7,9 @@ import {
   ProfileFinalExamsHeader,
   LastUpdatedText,
   LastUpdatedLink,
-  CourseCode
 } from './styles/ProfileFinalExams';
 
-import Table from '../../../sharedComponents/display/Table';
-import { getCoursePageRoute } from '../../../Routes';
-import { splitCourseCode } from '../../../utils/Misc';
-
-const examColumns = [
-  {
-    Header: 'Course',
-    accessor: 'code',
-    maxWidth: 112,
-    Cell:  ({cell}) => (
-      <CourseCode to={getCoursePageRoute(cell.value)}>
-        {splitCourseCode(cell.value)}
-      </CourseCode>
-    ),
-  },
-  {
-    Header: 'Section(s)',
-    accessor: 'sections',
-    maxWidth: 112,
-    Cell:  ({cell}) => (
-    <>
-      {cell.value.map((v, idx) =>
-        <span key={idx}>{v}{idx === v.length - 1 ? '' : ','}</span>
-      )}
-    </>),
-  },
-  {
-    Header: 'Time',
-    accessor: 'time',
-    maxWidth: 160,
-  },
-  {
-    Header: 'Date',
-    accessor: 'date',
-    maxWidth: 160,
-  },
-  {
-    Header: 'Location',
-    accessor: 'location'
-  },
-]
+import FinalExamTable from '../../../sharedComponents/profilePage/FinalExamTable';
 
 const ProfileFinalExams = ({ courses, lastUpdated }) => {
   return (
@@ -59,11 +18,7 @@ const ProfileFinalExams = ({ courses, lastUpdated }) => {
         <ProfileFinalExamsHeader>
           On campus final exams
         </ProfileFinalExamsHeader>
-        <Table
-          columns={examColumns}
-          data={courses}
-
-        />
+        <FinalExamTable courses={courses} />
       </ProfileFinalExamsWrapper>
       <LastUpdatedText>
         Last updated {lastUpdated.time} minutes ago from

@@ -3,25 +3,26 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import CheckCircle from '../../../sharedComponents/input/CheckCircle';
+import CheckCircle from '../input/CheckCircle';
 
 /* Styled Components */
 import {
-  CompleteProfileBoxWrapper,
   CompleteProfileHeading,
   CheckedItem,
   CheckedText,
-} from './styles/CompleteProfileBox';
+} from './styles/CompleteProfileContent';
 
-const CompleteProfileBox = ({
+const CompleteProfileContent = ({
   theme,
-  hasCoursesReviewed,
-  hasProfsReviewed,
-  hasCourseInfo,
-  hasScheduleUploaded,
+  user
 }) => {
+  const hasScheduleUploaded = user.schedule && user.schedule.length > 0;
+  const hasCourseInfo = user.courses_taken && user.courses_taken.length > 0;
+  const hasCoursesReviewed = user.course_reviews && user.course_reviews.length > 0;
+  const hasProfsReviewed = user.prof_reviews && user.prof_reviews.length > 0;
+
   return (
-    <CompleteProfileBoxWrapper>
+    <>
       <CompleteProfileHeading>Complete your profile</CompleteProfileHeading>
       <CheckedItem>
         <CheckCircle color={theme.primary} checked={hasScheduleUploaded} />
@@ -47,16 +48,13 @@ const CompleteProfileBox = ({
           Add a rating for a professor
         </CheckedText>
       </CheckedItem>
-    </CompleteProfileBoxWrapper>
+    </>
   );
 };
 
-CompleteProfileBox.propTypes = {
+CompleteProfileContent.propTypes = {
   theme: PropTypes.object.isRequired,
-  hasCoursesReviewed: PropTypes.bool.isRequired,
-  hasProfsReviewed: PropTypes.bool.isRequired,
-  hasCourseInfo: PropTypes.bool.isRequired,
-  hasScheduleUploaded: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired
 };
 
-export default withTheme(CompleteProfileBox);
+export default withTheme(CompleteProfileContent);

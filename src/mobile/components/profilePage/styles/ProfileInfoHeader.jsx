@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, PageContent, Heading2 } from '../../../../constants/Mixins';
+import { Heading1, Heading2 } from '../../../../constants/Mixins';
 
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -13,27 +13,18 @@ export const ProfileInfoHeaderWrapper = styled.div`
 `;
 
 export const ProfileInfoSection = styled.div`
-  padding: 52px 0;
-  ${PageContent}
-  min-height: 320px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  padding: 16px;
   margin: auto;
   position: relative;
 `;
 
 export const UserPicture = styled.img`
-  width: 208px;
-  height: 208px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   border: 5px solid ${({ theme }) => theme.light1};
-  margin-right: 32px;
+  margin-bottom: 16px;
   object-fit: cover;
-`;
-
-export const UserInfoWrapper = styled.div`
-  margin: 48px 0;
 `;
 
 export const UserName = styled.div`

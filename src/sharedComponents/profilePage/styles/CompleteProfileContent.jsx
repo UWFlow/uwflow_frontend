@@ -1,15 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow, Heading3, Heading4 } from '../../../../constants/Mixins';
-
-export const CompleteProfileBoxWrapper = styled.div`
-  width: 100%;
-  padding: 32px;
-  padding-bottom: 0;
-  margin-bottom: 32px;
-  border-radius: 4px;
-  background-color: ${({theme}) => theme.white};
-  ${BoxShadow}  
-`;
+import { Heading3, Heading4 } from '../../../constants/Mixins';
 
 export const CompleteProfileHeading = styled.div`
   ${Heading3}

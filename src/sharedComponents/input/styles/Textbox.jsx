@@ -8,7 +8,10 @@ export const SearchInputWrapper = styled.div`
 export const SearchInput = styled.input`
   position: relative;
   outline: none;
-  border: ${({ error, theme }) => (error ? `1px solid ${theme.red}` : 'none')};
+  border: ${({ options, error, theme }) => 
+    error
+      ? `1px solid ${theme.red}`
+      : options.border ? options.border : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) =>
@@ -39,7 +42,7 @@ export const SearchInput = styled.input`
     font-weight: 400;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 800px) {
     padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};
   }
 `;
@@ -62,7 +65,7 @@ export const AutocompleteInput = styled.input`
   z-index: 1;
   padding-left: ${({ hasIcon }) => (hasIcon ? '72px' : 'auto')};
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 800px) {
     padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};
   }
 `;
@@ -74,7 +77,7 @@ export const Icon = styled.div`
   z-index: 3;
   color: ${({ theme }) => theme.dark3};
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 800px) {
     left: 16px;
   }
 `;

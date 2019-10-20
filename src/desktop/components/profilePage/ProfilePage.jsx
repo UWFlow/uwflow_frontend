@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
-import CompleteProfileBox from './CompleteProfileBox';
 import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
 import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
-import CourseReviewCourseBox from '../coursePage/CourseReviewCourseBox';
+import CourseReviewCourseBox from '../../../sharedComponents/coursePage/CourseReviewCourseBox';
 import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
+import CompleteProfileContent from '../../../sharedComponents/profilePage/CompleteProfileContent';
 
 /* Styled Components */
 import {
   ProfilePageWrapper,
+  CompleteProfileWrapper,
   ColumnWrapper,
   Column1,
   Column2,
@@ -63,12 +64,9 @@ const ProfilePageContent = ({ user }) => {
           />
         </Column1>
         <Column2>
-          <CompleteProfileBox
-            hasScheduleUploaded={true}
-            hasCourseInfo={true}
-            hasCoursesReviewed={false}
-            hasProfsReviewed={false}
-          />
+          <CompleteProfileWrapper>
+            <CompleteProfileContent user={user} />
+          </CompleteProfileWrapper>
           <ShortlistBox shortlistCourses={user.shortlist} />
         </Column2>
       </ColumnWrapper>

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link as RouterLink } from 'react-router-dom';
 import { Card, BoxShadow, Heading3, Body, Link } from '../../../../constants/Mixins';
 
 export const ProfileFinalExamsWrapper = styled.div`
@@ -23,9 +22,4 @@ export const LastUpdatedText = styled.div`
 export const LastUpdatedLink = styled.a`
   ${Link}
   color: ${({ theme }) => theme.dark3};
-`;
-
-export const CourseCode = styled(RouterLink)`
-  ${Link}
-  color: ${({ theme }) => theme.courses};
 `;

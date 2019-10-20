@@ -17,6 +17,14 @@ export const ProfCourseReviewWrapper = styled.div`
   color: ${({ theme }) => theme.dark2};
 `;
 
+export const ProfCourseFilterWrapper = styled.div`
+  ${Card()}
+  ${BoxShadow}
+  padding-bottom: 0;
+  padding-top: 16px;
+  margin-bottom: 32px;
+`;
+
 export const ReviewsForSingleCourseWrapper = styled.div`
   ${Card()}
   ${BoxShadow}

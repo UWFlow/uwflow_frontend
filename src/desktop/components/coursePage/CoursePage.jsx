@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -6,7 +7,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from './CourseReviewCourseBox';
+import CourseReviewCourseBox from '../../../sharedComponents/coursePage/CourseReviewCourseBox';
 import Button from '../../../sharedComponents/input/Button';
 import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
@@ -24,14 +25,18 @@ import {
 } from './styles/CoursePage';
 
 import { splitCourseCode } from '../../../utils/Misc';
-import { isLoggedIn } from '../../../utils/Auth';
+import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
 
-const CoursePageContent = ({ course, shortlisted, userReview }) => {
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
+
+const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   const handleReviewClick = () => {
-    isLoggedIn() ? setReviewModalOpen(true) : setAuthModalOpen(true);
+    isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
   };
 
   return (
@@ -88,24 +93,23 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
   );
 };
 
-const CoursePage = ({ data }) => (
+const CoursePage = ({ data, isLoggedIn }) => (
   <CoursePageWrapper>
     <CoursePageContent
       course={data.course[0]}
-      shortlisted={data.user_shortlist && data.user_shortlist.length > 0}
+      shortlisted={isLoggedIn && data.user_shortlist.length > 0}
       userReview={
-        data.course_review && data.course_review.length > 0
+        isLoggedIn && data.course_review.length > 0
           ? data.course_review[0]
           : null
       }
+      isLoggedIn={isLoggedIn}
     />
   </CoursePageWrapper>
 );
 
 CoursePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.object,
   data: PropTypes.object,
 };
 
-export default CoursePage;
+export default connect(mapStateToProps)(CoursePage);

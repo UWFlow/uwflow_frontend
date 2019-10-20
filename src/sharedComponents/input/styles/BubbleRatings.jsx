@@ -5,7 +5,7 @@ export const BubbleRatingsWrapper = styled.div`
   display: flex;
   padding-bottom: 16px;
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 800px) {
     padding-bottom: 8px
   }
 `;

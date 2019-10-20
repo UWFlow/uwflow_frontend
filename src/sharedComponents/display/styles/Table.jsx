@@ -3,6 +3,7 @@ import { Link } from '../../../constants/Mixins';
 
 export const TableWrapper = styled.table`
   width: 100%;
+  min-width: 512px;
   border-radius: 4px;
   text-align: left;
   table-layout: auto;
@@ -78,6 +79,7 @@ export const Cell = styled.td`
   padding-top: 16px;
   padding-bottom: 16px;
   text-align: ${({ align }) => (align ? align : 'left')};
+  vertical-align: top;
 
   &:first-child {
     padding-left: 32px;

@@ -18,7 +18,7 @@ export const ProfNameSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primaryExtraDark};
   position: relative;
 `;
 

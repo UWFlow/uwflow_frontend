@@ -12,7 +12,7 @@ export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
-  background-color: white;
+  background-color: ${({ theme }) => theme.white};
   flex-direction: column;
   position: relative;
 `;
@@ -23,7 +23,7 @@ export const CourseCodeAndNameSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primaryExtraDark};
   position: relative;
 `;
 
@@ -41,16 +41,17 @@ export const CourseDescriptionSection = styled.div`
 `;
 
 export const CourseCode = styled.div`
-  color: ${({ theme }) => theme.light2};
+  color: ${({ theme }) => theme.white};
   ${Heading1};
   text-transform: uppercase;
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
 `;
 
 export const CourseName = styled.div`
-  color: ${({ theme }) => theme.light3};
+  color: ${({ theme }) => theme.light1};
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   ${Heading2};
+  font-weight: 400;
 `;
 
 export const Description = styled.div`

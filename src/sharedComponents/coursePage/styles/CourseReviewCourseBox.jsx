@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, BoxShadow, Heading4, Body } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Heading4, Body } from '../../../constants/Mixins';
 
 export const CourseReviewCourseBoxWrapper = styled.div`
   ${Card('24px', '32px 0')}

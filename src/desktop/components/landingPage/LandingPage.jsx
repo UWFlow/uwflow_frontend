@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 /* Styled Components */
 import {
   LandingPageWrapper,
-  LandingPageContent,
+  Column1TextWrapper,
   Column1,
   Column2,
   TitleText,
@@ -12,6 +12,7 @@ import {
   BackgroundImage,
   BlueBackground,
   AuthContent,
+  LogoWrapper
 } from './styles/LandingPage';
 
 /* Child Components */
@@ -19,8 +20,9 @@ import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
 import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
-import SearchBar from '../../../sharedComponents/navbar/SearchBar';
-
+import SearchBar from '../../../sharedComponents/navigation/SearchBar';
+import FlowLogo from '../../../sharedComponents/navigation/FlowLogo';
+import ProfileDropdown from '../../../sharedComponents/navigation/ProfileDropdown';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state)
@@ -29,13 +31,20 @@ const mapStateToProps = state => ({
 const LandingPage = ({ isLoggedIn }) => {
   return (
     <LandingPageWrapper>
-      <LandingPageContent>
-        <Column1>
+      <Column1 loggedIn={isLoggedIn}>
+        <Column1TextWrapper>
+          <LogoWrapper>
+            <FlowLogo />
+            {isLoggedIn && <ProfileDropdown /> }
+          </LogoWrapper>
           <TitleText>
-            Join 16,500+
-            <br /> UW students on Flow
+            Join 25,000+
+            <br />
+            UW students on Flow
           </TitleText>
-          <SearchBar />
+          <SearchBar colored />
+          <br />
+          <br />
           <Subheading>
             Plan courses
             <br />
@@ -43,15 +52,17 @@ const LandingPage = ({ isLoggedIn }) => {
             <br />
             Export your class and exam schedule
           </Subheading>
-        </Column1>
-        <Column2>
-          <BlueBackground />
-          <BackgroundImage image={Background} />
-          {!isLoggedIn && <AuthContent>
+        </Column1TextWrapper>
+      </Column1>
+      <Column2 loggedIn={isLoggedIn}>
+        <BlueBackground />
+        <BackgroundImage image={Background} />
+        {!isLoggedIn && (
+          <AuthContent>
             <AuthForm />
-          </AuthContent>}
-        </Column2>
-      </LandingPageContent>
+          </AuthContent>
+        )}
+      </Column2>
     </LandingPageWrapper>
   );
 };

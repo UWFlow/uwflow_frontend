@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -10,7 +11,13 @@ import AuthModal from '../../../auth/AuthModal';
 /* Styled Components */
 import { CoursePageWrapper } from './styles/CoursePage';
 
-const CoursePageContent = ({ course, shortlisted, userReview }) => {
+import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
+
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
+
+const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
   return (
@@ -35,24 +42,23 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
   );
 };
 
-const CoursePage = ({ data }) => (
+const CoursePage = ({ data, isLoggedIn }) => (
   <CoursePageWrapper>
     <CoursePageContent
       course={data.course[0]}
-      shortlisted={data.user_shortlist && data.user_shortlist.length > 0}
+      shortlisted={isLoggedIn && data.user_shortlist.length > 0}
       userReview={
-        data.course_review && data.course_review.length > 0
+        isLoggedIn && data.course_review.length > 0
           ? data.course_review[0]
           : null
       }
+      isLoggedIn={isLoggedIn}
     />
   </CoursePageWrapper>
 );
 
 CoursePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.object,
   data: PropTypes.object,
 };
 
-export default CoursePage;
+export default connect(mapStateToProps)(CoursePage);

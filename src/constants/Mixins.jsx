@@ -11,7 +11,7 @@ export const PageContent = `
     padding-right: 32px;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 800px) {
     padding-left: 0;
     padding-right: 0;
   }
@@ -37,12 +37,20 @@ export const Heading1 = `
   font-family: 'Anderson Grotesk';
   font-size: 48px;
   font-weight: 600;
+
+  @media only screen and (max-width: 800px) {
+    font-size: 40px;
+  }
 `;
 
 export const Heading2 = `
   font-family: 'Anderson Grotesk';
   font-size: 32px;
   font-weight: 600;
+
+  @media only screen and (max-width: 800px) {
+    font-size: 28px;
+  }
 `;
 
 export const Heading3 = `

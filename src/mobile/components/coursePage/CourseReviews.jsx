@@ -60,6 +60,7 @@ const CourseCourseReviews = (
               'most recent',
             ]}
             onChange={value => setCourseSort(value)}
+            zIndex={5}
           />
         </DropdownPanelWrapper>
         <DropdownPanelWrapper>
@@ -69,6 +70,7 @@ const CourseCourseReviews = (
             selectedIndex={courseProfFilter}
             options={courseProfFilterOptions}
             onChange={value => setCourseProfFilter(value)}
+            zIndex={4}
           />
         </DropdownPanelWrapper>
       </ReviewsOptionsWrapper>
@@ -205,11 +207,6 @@ const CourseReviews = ({ courseID, theme }) => {
       review.name === profProfFilterOptions[profReviewFilter],
   );
 
-  const numProfReviews = profReviewsToShow.reduce((total, curr) => {
-    total += curr.reviews.length;
-    return total;
-  }, 0);
-
   const ProfFilterDropdown = (
     <ProfDropdownPanelWrapper>
       <DropdownTableText>Filter by professor: </DropdownTableText>
@@ -225,25 +222,23 @@ const CourseReviews = ({ courseID, theme }) => {
   return (
     <CourseReviewWrapper>
       <CollapseableContainer
-        title={`Course comments (${courseReviewsToShow.length})`}
-        renderContent={() =>
-          CourseCourseReviews(
-            courseReviewsToShow,
-            theme,
-            courseSort,
-            setCourseSort,
-            courseProfFilter,
-            courseProfFilterOptions,
-            setCourseProfFilter,
-          )
-        }
-      />
+        title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
+      >
+        {CourseCourseReviews(
+          courseReviewsToShow,
+          theme,
+          courseSort,
+          setCourseSort,
+          courseProfFilter,
+          courseProfFilterOptions,
+          setCourseProfFilter,
+        )}
+      </CollapseableContainer>
       <CollapseableContainer
-        title={`Professor comments (${numProfReviews})`}
-        renderContent={() =>
-          CourseProfReviews(profReviewsToShow, ProfFilterDropdown)
-        }
-      />
+        title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
+      >
+        {CourseProfReviews(profReviewsToShow, ProfFilterDropdown)}
+      </CollapseableContainer>
     </CourseReviewWrapper>
   );
 };

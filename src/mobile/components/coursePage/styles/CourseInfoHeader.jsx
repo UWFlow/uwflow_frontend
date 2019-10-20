@@ -18,7 +18,7 @@ export const CourseNameSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primaryExtraDark};
   position: relative;
   padding: 16px;
 `;
@@ -26,22 +26,35 @@ export const CourseNameSection = styled.div`
 export const CourseCodeAndStar = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
 `;
 
 export const StarAlignmentWrapper = styled.div`
-  position: relative;
-  bottom: 1px;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const CourseCode = styled.div`
   ${Heading1}
-  color: white;
+  color: ${({ theme }) => theme.white};;
   margin-right: 16px;
 `;
 
 export const CourseName = styled.div`
   ${Heading2}
-  color: white
+  color: ${({ theme }) => theme.light1};
+  font-weight: 400;
+`;
+
+export const CourseDescriptionSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+`;
+
+export const CourseDescriptionParagraph = styled.div`
+  ${Body}
+  margin-bottom: 16px;
 `;
 
 export const CourseDescriptionSection = styled.div`
