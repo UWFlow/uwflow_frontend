@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {
   ShortlistBoxWrapper,
   ShortlistHeading,
+  ShortlistContentWrapper
 } from './styles/ShortlistBox';
 
 import ShortlistContent from '../../../sharedComponents/profilePage/ShortlistContent';
@@ -13,7 +14,9 @@ const ShortlistBox = ({ shortlistCourses }) => {
   return (
     <ShortlistBoxWrapper>
       <ShortlistHeading>Shortlist</ShortlistHeading>
-      <ShortlistContent shortlistCourses={shortlistCourses} />
+      <ShortlistContentWrapper>
+        <ShortlistContent shortlistCourses={shortlistCourses} />
+      </ShortlistContentWrapper>
     </ShortlistBoxWrapper>
   );
 };

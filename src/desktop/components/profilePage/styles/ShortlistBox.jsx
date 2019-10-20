@@ -12,4 +12,9 @@ export const ShortlistHeading = styled.div`
   ${Heading3}
   color: ${({theme}) => theme.dark1};
   padding: 32px 32px 16px 32px;
+  border-bottom: 1px solid ${({theme}) => theme.light3};
+`;
+
+export const ShortlistContentWrapper = styled.div`
+  padding: 0 16px;
 `;

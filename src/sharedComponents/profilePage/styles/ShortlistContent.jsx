@@ -6,8 +6,7 @@ export const ShortlistCourse = styled.div`
   display: flex;
   flex-direction: row;
   vertical-align: middle;
-  padding: 16px 32px;
-  border-top: 1px solid ${({theme}) => theme.light3};
+  padding: 16px;
 `;
 
 export const ShortListCourseText = styled.div`

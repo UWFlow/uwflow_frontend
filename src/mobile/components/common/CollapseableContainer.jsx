@@ -11,7 +11,7 @@ import { ChevronDown, ChevronUp } from 'react-feather';
 
 const CollapseableContainer = ({
   title,
-  renderContent,
+  children,
   isInitiallyOpen = true,
 }) => {
   const [isOpen, setIsOpen] = useState(isInitiallyOpen);
@@ -25,7 +25,7 @@ const CollapseableContainer = ({
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
       </HeaderWrapper>
-      {isOpen && <ContentWrapper>{renderContent()}</ContentWrapper>}
+      {isOpen && <ContentWrapper>{children}</ContentWrapper>}
     </ContainerWrapper>
   );
 };

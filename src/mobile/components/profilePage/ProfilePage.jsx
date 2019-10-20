@@ -6,6 +6,8 @@ import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import CourseReviewCourseBox from '../../../sharedComponents/coursePage/CourseReviewCourseBox';
 import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 import CompleteProfileContent from '../../../sharedComponents/profilePage/CompleteProfileContent';
+import CollapseableContainer from '../common/CollapseableContainer';
+import ShortlistContent from '../../../sharedComponents/profilePage/ShortlistContent';
 
 /* Styled Components */
 import {
@@ -41,6 +43,9 @@ const ProfilePageContent = ({ user }) => {
       <CompleteProfileWrapper>
         <CompleteProfileContent user={user} />
       </CompleteProfileWrapper>
+      <CollapseableContainer title="Shortlist">
+        <ShortlistContent shortlistCourses={user.shortlist} />
+      </CollapseableContainer>
       <ModalHOC
         isModalOpen={reviewModalOpen}
         onCloseModal={() => setReviewModalOpen(false)}

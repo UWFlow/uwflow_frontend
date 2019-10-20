@@ -13,7 +13,6 @@ export const CompleteProfileWrapper = styled.div`
   padding: 24px 16px;
   padding-bottom: 0;
   margin-bottom: 32px;
-  border-radius: 4px;
   background-color: ${({theme}) => theme.white};
   ${BoxShadow}  
 `;
