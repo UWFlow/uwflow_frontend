@@ -6,7 +6,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from './CourseReviewCourseBox';
+import CourseReviewCourseBox from '../../../sharedComponents/coursePage/CourseReviewCourseBox';
 import Button from '../../../sharedComponents/input/Button';
 import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
 import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';

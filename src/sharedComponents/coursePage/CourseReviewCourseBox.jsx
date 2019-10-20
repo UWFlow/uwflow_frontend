@@ -15,10 +15,10 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import DiscreteSlider from '../../../sharedComponents/discreteSlider/DiscreteSlider';
-import RadioButton from '../../../sharedComponents/input/RadioButton';
-import DropdownList from '../../../sharedComponents/input/DropdownList';
-import Button from '../../../sharedComponents/input/Button';
+import DiscreteSlider from '../discreteSlider/DiscreteSlider';
+import RadioButton from '../input/RadioButton';
+import DropdownList from '../input/DropdownList';
+import Button from '../input/Button';
 
 const easyOptions = [
   'Very difficult',

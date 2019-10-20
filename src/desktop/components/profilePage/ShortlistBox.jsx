@@ -5,33 +5,15 @@ import PropTypes from 'prop-types';
 import {
   ShortlistBoxWrapper,
   ShortlistHeading,
-  ShortlistCourse,
-  ShortListCourseText,
-  ShortlistCourseCode,
-  ShortlistCourseName,
 } from './styles/ShortlistBox';
 
-import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
-
-import { splitCourseCode } from '../../../utils/Misc';
-import { getCoursePageRoute } from '../../../Routes';
+import ShortlistContent from '../../../sharedComponents/profilePage/ShortlistContent';
 
 const ShortlistBox = ({ shortlistCourses }) => {
-  console.log(shortlistCourses)
   return (
     <ShortlistBoxWrapper>
       <ShortlistHeading>Shortlist</ShortlistHeading>
-      {shortlistCourses.map((course, idx) => (
-        <ShortlistCourse key={idx}>
-          <ShortlistStar checked />
-          <ShortListCourseText>
-            <ShortlistCourseCode to={getCoursePageRoute(course.course.code)}>
-              {splitCourseCode(course.course.code)}
-            </ShortlistCourseCode>
-            <ShortlistCourseName>{course.course.name}</ShortlistCourseName>
-          </ShortListCourseText>
-        </ShortlistCourse>
-      ))}
+      <ShortlistContent shortlistCourses={shortlistCourses} />
     </ShortlistBoxWrapper>
   );
 };

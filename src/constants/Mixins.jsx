@@ -37,12 +37,20 @@ export const Heading1 = `
   font-family: 'Anderson Grotesk';
   font-size: 48px;
   font-weight: 600;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 40px;
+  }
 `;
 
 export const Heading2 = `
   font-family: 'Anderson Grotesk';
   font-size: 32px;
   font-weight: 600;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 28px;
+  }
 `;
 
 export const Heading3 = `

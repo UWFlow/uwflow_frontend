@@ -14,8 +14,8 @@ const UserFragment = {
       shortlist {
         course {
           id
-          name
           code
+          name
         }
       }
     }
@@ -25,9 +25,9 @@ const UserFragment = {
       courses_taken {
         term
         course {
-          name
-          code
           id
+          code
+          name
           course_reviews_aggregate {
             aggregate {
               avg {
@@ -35,6 +35,39 @@ const UserFragment = {
               }
             }
           }
+        }
+      }
+    }
+  `,
+  userReviews: gql`
+    fragment UserReviewsFragment on user {
+      course_reviews {
+        id
+        course_id
+        prof_id
+        easy
+        liked
+        useful
+        text  
+      }
+      prof_reviews {
+        id
+        course_id
+        prof_id
+        clear
+        engaging
+        text
+      }
+    }
+  `,
+  userSchedule: gql`
+    fragment UserScheduleFragment on user {
+      schedule {
+        user_id,
+        section_id,
+        section {
+          id,
+          campus
         }
       }
     }

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading2 } from '../../../../constants/Mixins';
+import { Heading1 } from '../../../../constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -28,5 +28,5 @@ export const ProfNameWrapper = styled.div``;
 export const ProfName = styled.div`
   max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   color: ${({ theme }) => theme.white};
-  ${Heading2}
+  ${Heading1}
 `;

@@ -35,11 +35,13 @@ export const StarAlignmentWrapper = styled.div`
 
 export const CourseCode = styled.div`
   ${Heading1}
-  color: white;
+  color: ${({ theme }) => theme.white};;
   margin-right: 16px;
+  margin-bottom: 16px;
 `;
 
 export const CourseName = styled.div`
   ${Heading2}
-  color: white
+  color: ${({ theme }) => theme.light1};
+  font-weight: 400;
 `;

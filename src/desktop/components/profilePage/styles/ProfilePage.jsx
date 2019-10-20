@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { WideColumn, ThinColumn, PageContent } from '../../../../constants/Mixins';
+import { WideColumn, ThinColumn, PageContent, BoxShadow } from '../../../../constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`
   display: flex;
@@ -23,11 +23,12 @@ export const Column2 = styled.div`
   ${ThinColumn}
 `;
 
-export const UserCoursesWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const UserCoursesHeader = styled.div`
-  display: flex;
+export const CompleteProfileWrapper = styled.div`
+  width: 100%;
+  padding: 32px;
+  padding-bottom: 0;
+  margin-bottom: 32px;
+  border-radius: 4px;
+  background-color: ${({theme}) => theme.white};
+  ${BoxShadow}  
 `;
