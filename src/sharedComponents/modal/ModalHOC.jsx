@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,14 +15,25 @@ import ModalPortal from './ModalPortal';
 import FadeInOutAnimation from '../../utils/animation/FadeInOutAnimation';
 
 /* Getters */
-import { getHeight } from '../../data/reducers/BrowserReducer';
+import {
+  getHeight,
+  getIsBrowserDesktop,
+} from '../../data/reducers/BrowserReducer';
 
 const mapStateToProps = state => ({
   windowHeight: getHeight(state),
+  isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
+const ModalHOC = ({
+  children,
+  onCloseModal,
+  isModalOpen,
+  windowHeight,
+  isBrowserDesktop,
+}) => {
   const [isTrulyOpen, setTrulyOpen] = useState(isModalOpen);
+  const classesOnBody = useRef(false);
 
   const handleKeyPress = useCallback(
     event => {
@@ -44,10 +55,22 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
 
   useEffect(() => {
     if (isModalOpen || isTrulyOpen) {
-      document.body.classList.add('modal-open');
+      document.body.classList.add('no-scroll');
+      if (isBrowserDesktop) {
+        document.body.classList.add('modal-padding');
+      }
+      classesOnBody.current = true;
     } else {
-      document.body.classList.remove('modal-open');
+      document.body.classList.remove('no-scroll');
+      document.body.classList.remove('modal-padding');
+      classesOnBody.current = false;
     }
+    return () => {
+      if (classesOnBody.current) {
+        document.body.classList.remove('no-scroll');
+        document.body.classList.remove('modal-padding');
+      }
+    };
   }, [isModalOpen, isTrulyOpen]);
 
   const onAnimationFinish = () => {
@@ -79,7 +102,11 @@ const ModalHOC = ({ children, onCloseModal, isModalOpen, windowHeight }) => {
             onClick={onCloseModal}
           >
             <FadeInOutAnimation isOpen={isModalOpen} styles={{ zIndex: '2' }}>
-              <ModalWrapper>{children}</ModalWrapper>
+              <ModalWrapper
+                padRight={isBrowserDesktop && !isModalOpen && isTrulyOpen}
+              >
+                {children}
+              </ModalWrapper>
             </FadeInOutAnimation>
           </ModalScrollableWrapper>
         </div>

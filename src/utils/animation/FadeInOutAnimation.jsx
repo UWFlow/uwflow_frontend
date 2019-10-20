@@ -24,7 +24,7 @@ const FadeInOutAnimation = ({
     from: { opacity: isOpen ? 0 : endOpacity },
     to: { opacity: isOpen ? endOpacity : 0 },
     onRest: onRest,
-    config: config.default,
+    config: { mass: 1, tension: 200, friction: 26 },
   });
 
   return isTrulyOpen || isOpen ? (

@@ -33,6 +33,8 @@ export const ModalWrapper = styled.div.attrs(() => ({
   onClick: event => event.stopPropagation(),
 }))`
   z-index: 2;
+  position: relative;
+  ${({ padRight }) => (padRight ? `right: 8px;` : '')}
 `;
 
 export const ModalContainer = styled.div`
