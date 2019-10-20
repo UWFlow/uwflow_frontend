@@ -19,6 +19,7 @@ import {
   Column1,
   Column2,
   CourseReviewQuestionBox,
+  CourseQuestionTextAndToggle,
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
@@ -44,10 +45,12 @@ const CoursePageContent = ({ course, shortlisted, userReview }) => {
         <Column1>
           {/*<CourseSchedule sections={course.sections} />*/}
           <CourseReviewQuestionBox>
-            <CourseReviewQuestionText>
-              What do you think of {splitCourseCode(course.code)}?
-            </CourseReviewQuestionText>
-            <LikeCourseToggle liked={true} />
+            <CourseQuestionTextAndToggle>
+              <CourseReviewQuestionText>
+                What do you think of {splitCourseCode(course.code)}?
+              </CourseReviewQuestionText>
+              <LikeCourseToggle liked={true} />
+            </CourseQuestionTextAndToggle>
             <Button
               width={200}
               padding="16px 24px"

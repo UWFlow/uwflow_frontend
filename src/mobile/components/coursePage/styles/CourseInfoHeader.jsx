@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 /* Mixins */
-import { Heading1, Heading2 } from '../../../../constants/Mixins';
+import { Heading1, Heading2, Body } from '../../../../constants/Mixins';
 
 export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -42,4 +42,15 @@ export const CourseCode = styled.div`
 export const CourseName = styled.div`
   ${Heading2}
   color: white
+`;
+
+export const CourseDescriptionSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+`;
+
+export const CourseDescriptionParagraph = styled.div`
+  ${Body}
+  margin-bottom: 16px;
 `;
