@@ -64,9 +64,9 @@ export const getCurrentTermCode = () => {
   const curDate = new Date();
   const curMonth = curDate.getMonth();
   const curYear = curDate.getFullYear();
-
-  let monthInt = (1 <= curMonth <= 4) ? 1 : ( 5 <= curMonth <= 8) ? 5 : 9;
-  return (curYear - 1900) * 10 + monthInt;
+  let monthInt = (0 <= curMonth  && curMonth <= 3)
+    ? 1 : (4 <= curMonth && curMonth <= 7) ? 5 : 9;
+  return ((curYear - 1900) * 10) + monthInt;
 };
 
 export const getNextTermCode = () => {

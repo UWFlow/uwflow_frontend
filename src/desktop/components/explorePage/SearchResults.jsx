@@ -5,6 +5,11 @@ import Table from '../../../sharedComponents/display/Table';
 import TabContainer from '../../../sharedComponents/display/TabContainer';
 import { courseColumns, profColumns } from './ExploreTableData';
 
+import { getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';
+
+const currentTermCode = getCurrentTermCode();
+const nextTermCode = getNextTermCode();
+
 const SearchResults = ({
   filterState,
   data,
@@ -23,7 +28,8 @@ const SearchResults = ({
     ratings: course.course_reviews_aggregate.aggregate.count,
     easy: course.course_reviews_aggregate.aggregate.avg.easy / 5,
     liked: course.course_reviews_aggregate.aggregate.avg.liked,
-    useful: course.course_reviews_aggregate.aggregate.avg.useful / 5
+    useful: course.course_reviews_aggregate.aggregate.avg.useful / 5,
+    sections: course.sections, 
   })) : [];
 
   const profs = data ? data.prof.map(prof => Object({
@@ -52,6 +58,10 @@ const SearchResults = ({
   const filteredCourses = courses.filter(course => 
     courseCodeRegex().test(course.code)
       && course.ratings >= ratingFilters[filterState.numCourseRatings]
+      && (!filterState.currentTerm || (filterState.currentTerm && course.sections
+          && course.sections.some(section => Number(section.term) === currentTermCode)))
+      && (!filterState.nextTerm || (filterState.nextTerm && course.sections
+          && course.sections.some(section => Number(section.term) === nextTermCode)))
   );
 
   const filteredProfs = profs.filter(prof =>
@@ -92,13 +102,7 @@ const SearchResults = ({
 };
 
 SearchResults.propTypes = {
-  filterState: PropTypes.shape({
-    courseCodes: PropTypes.arrayOf(PropTypes.bool),
-    numRatings: PropTypes.number,
-    currentTerm: PropTypes.bool,
-    nextTerm: PropTypes.bool,
-    courseTaught: PropTypes.number,
-  }).isRequired,
+  filterState: PropTypes.object.isRequired,
   results: PropTypes.arrayOf(PropTypes.object),
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,

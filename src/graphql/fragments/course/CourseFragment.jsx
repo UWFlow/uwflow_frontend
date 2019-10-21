@@ -20,8 +20,15 @@ const CourseFragment = {
       }
     }
   `,
+  courseTerm: gql`
+    fragment CourseTermFragment on course {
+      sections {
+        term
+      }
+    }
+  `,
   courseSchedule: gql`
-    fragment CourseSchedule on course {
+    fragment CourseScheduleFragment on course {
       sections {
         id
         enrollment_capacity
@@ -57,7 +64,7 @@ const CourseFragment = {
     }
   `,
   courseRequirements: gql`
-  fragment CourseRequirements on course {
+  fragment CourseRequirementsFragment on course {
     antireqs
     coreqs
     prereqs

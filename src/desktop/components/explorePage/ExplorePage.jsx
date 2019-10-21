@@ -11,13 +11,13 @@ import {
 
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
+import { getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';
 
 const NUM_COURSE_CODE_FILTERS = 5;
 const RATING_FILTERS = [0, 10, 20, 50, 100, 250, 500, 1000];
 
 const ExplorePageContent = ({
   query,
-  terms,
   codeSearch,
   courseTab,
   data,
@@ -36,8 +36,6 @@ const ExplorePageContent = ({
     return acc.concat(prof.prof_courses.map(course => course.code));
   }, ['any course']) : ['any course'];
   profCourses = profCourses.filter(code => !!code);
-
-  console.log(data, profCourses);
 
   const filterState = {
     courseCodes,
@@ -84,7 +82,6 @@ const ExplorePageContent = ({
         </Column1>
         <Column2>
           <SearchFilter
-            terms={terms}
             profCourses={profCourses}
             filterState={filterState}
             setCourseCodes={setCourseCodes}
@@ -103,22 +100,10 @@ const ExplorePageContent = ({
 }
 
 const ExplorePage = ({ query, codeSearch, courseTab, data, fetchMore, loading }) => {
-  const terms = [
-    {
-      id: '1199',
-      text: 'This Term (Fall 2019)'
-    },
-    {
-      id: '1201',
-      text: 'Next Term (Winter 2020)'
-    }
-  ]
-
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
         query={query}
-        terms={terms}
         codeSearch={codeSearch}
         courseTab={courseTab}
         data={data}

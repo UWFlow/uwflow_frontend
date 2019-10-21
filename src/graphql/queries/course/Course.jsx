@@ -7,8 +7,8 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
     query GET_COURSE($code: String) {
       course(where: { code: { _eq: $code } }) {
         ...CourseInfoFragment
-        ...CourseSchedule
-        ...CourseRequirements
+        ...CourseScheduleFragment
+        ...CourseRequirementsFragment
       }
       ${fetchUserData ?
         `user_shortlist(where: {
