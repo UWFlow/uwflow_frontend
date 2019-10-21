@@ -14,6 +14,14 @@ export const SearchResultsWrapper = styled.div`
   background: ${({ theme }) => theme.white};
   ${BoxShadow}
   border-radius:  0 0 4px 4px;
+
+  ${({ maximizeWidth }) => maximizeWidth
+    ? `@media only screen and (max-width: 425px) {
+      width: 100vw;
+      margin-top: 16px;
+      margin-left: -17px; // including border 1px
+    }` : ''
+  }
 `;
 
 export const SearchResult = styled.button`

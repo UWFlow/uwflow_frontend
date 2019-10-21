@@ -29,7 +29,7 @@ import { useSearchContext } from '../../search/SearchProvider';
 /* Constants */
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
-const SearchBar = ({ history, theme, colored = false }) => {
+const SearchBar = ({ history, theme, colored = false, maximizeWidth = false }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -177,7 +177,7 @@ const SearchBar = ({ history, theme, colored = false }) => {
       : null;
 
     return (
-      <SearchResultsWrapper >
+      <SearchResultsWrapper maximizeWidth={maximizeWidth}>
         {courseCodeResults}
         {courseResults}
         {profResults}

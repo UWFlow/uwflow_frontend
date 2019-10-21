@@ -53,12 +53,12 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
             percent: liked,
           },
           {
-            displayName: 'Easy',
-            percent: easy / 5,
-          },
-          {
             displayName: 'Useful',
             percent: useful / 5,
+          },
+          {
+            displayName: 'Easy',
+            percent: easy / 5,
           },
         ]}
       />

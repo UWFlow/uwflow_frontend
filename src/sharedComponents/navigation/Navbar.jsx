@@ -34,7 +34,7 @@ const Navbar = ({ location, isDesktopPage }) => {
       <NavbarWrapper>
         <NavbarContent>
           {isDesktopPage && <FlowLogo />}
-          <SearchBar />
+          <SearchBar maximizeWidth />
           <ProfileDropdown />
         </NavbarContent>
       </NavbarWrapper>

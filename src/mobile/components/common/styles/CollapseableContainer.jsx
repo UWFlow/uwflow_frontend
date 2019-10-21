@@ -8,7 +8,7 @@ export const ContainerWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   ${BoxShadow}
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 `;
 
 export const HeaderWrapper = styled.div`
