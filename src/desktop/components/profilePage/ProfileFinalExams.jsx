@@ -11,6 +11,8 @@ import {
 import FinalExamTable from '../../../sharedComponents/coursePage/FinalExamTable';
 import LastUpdatedSchedule from '../../../sharedComponents/coursePage/LastUpdatedSchedule';
 
+import { processMultipleCourseExams } from '../../../utils/FinalExams';
+
 const ProfileFinalExams = ({ courses }) => {
   return (
     <>
@@ -19,7 +21,7 @@ const ProfileFinalExams = ({ courses }) => {
           On campus final exams
         </ProfileFinalExamsHeader>
         <ProfileFinalExamsContent>
-          <FinalExamTable courses={courses} />
+          <FinalExamTable courses={processMultipleCourseExams(courses)} />
         </ProfileFinalExamsContent>
       </ProfileFinalExamsWrapper>
       <LastUpdatedSchedule />

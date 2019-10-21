@@ -8,6 +8,7 @@ import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 import CompleteProfileContent from '../../../sharedComponents/profilePage/CompleteProfileContent';
 import CollapseableContainer from '../common/CollapseableContainer';
 import ShortlistContent from '../../../sharedComponents/profilePage/ShortlistContent';
+import FinalExamTable from '../../../sharedComponents/coursePage/FinalExamTable';
 
 /* Styled Components */
 import {
@@ -17,24 +18,8 @@ import {
   ProfileFinalExamsWrapper,
   ProfileFinalExamsContent,
 } from './styles/ProfilePage';
-import FinalExamTable from '../../../sharedComponents/coursePage/FinalExamTable';
 
-const dummyFinals = [
-  {
-    code: 'ECE 105',
-    sections: ['101', '102'],
-    time: '9:00 AM - 11:30 AM',
-    date: 'Friday, Aug 9th',
-    location: 'PAC 1, 2, 3',
-  },
-  {
-    code: 'MATH 239',
-    sections: ['201', '202'],
-    time: '12:30 PM - 3:00 PM',
-    date: 'Tuesday, Aug 13th',
-    location: 'MC 1006',
-  },
-];
+import { processMultipleCourseExams } from '../../../utils/FinalExams';
 
 const ProfilePageContent = ({ user }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
@@ -55,7 +40,7 @@ const ProfilePageContent = ({ user }) => {
           On campus final exams
         </ProfileFinalExamsHeader>
         <ProfileFinalExamsContent>
-          <FinalExamTable courses={dummyFinals} />
+          <FinalExamTable courses={processMultipleCourseExams(user.courses_taken)} />
         </ProfileFinalExamsContent>
       </ProfileFinalExamsWrapper>
       <ModalHOC

@@ -62,7 +62,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
             </LikedThisCourseText>
             <LikeCourseToggle liked={true} />
             <Button
-              margin="0 0 0 16px"
+              margin="auto 0 auto 16px"
               padding="8px"
               height={48}
               maxHeight={48}

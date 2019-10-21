@@ -20,23 +20,6 @@ import {
   Column2,
 } from './styles/ProfilePage';
 
-const dummyFinals = [
-  {
-    code: 'ECE 105',
-    sections: ['101', '102'],
-    time: '9:00 AM - 11:30 AM',
-    date: 'Friday, Aug 9th',
-    location: 'PAC 1, 2, 3',
-  },
-  {
-    code: 'MATH 239',
-    sections: ['201', '202'],
-    time: '12:30 PM - 3:00 PM',
-    date: 'Tuesday, Aug 13th',
-    location: 'MC 1006',
-  },
-];
-
 const ProfilePageContent = ({ user }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
@@ -55,7 +38,7 @@ const ProfilePageContent = ({ user }) => {
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
           />
-          <ProfileFinalExams courses={dummyFinals} />
+          <ProfileFinalExams courses={user.courses_taken} />
         </Column1>
         <Column2>
           <CompleteProfileWrapper>

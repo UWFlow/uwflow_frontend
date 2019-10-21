@@ -23,6 +23,7 @@ const CourseFragment = {
   courseSchedule: gql`
     fragment CourseSchedule on course {
       sections {
+        id
         enrollment_capacity
         enrollment_total
         class_number
@@ -42,6 +43,15 @@ const CourseFragment = {
           }
           is_closed
           is_cancelled
+        }
+        exams {
+          date
+          day
+          end_seconds
+          is_tba
+          location
+          section_id
+          start_seconds
         }
       }
     }
