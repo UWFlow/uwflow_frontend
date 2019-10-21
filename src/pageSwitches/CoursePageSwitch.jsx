@@ -24,7 +24,7 @@ const mapStateToProps = state => ({
 });
 
 export const CoursePageSwitch = ({ isDesktopPage, match, isLoggedIn }) => {
-  const courseCode = match.params.courseID.toLowerCase();
+  const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn, getUserId());
 
   const { loading, error, data } = useQuery(query, {
@@ -45,7 +45,7 @@ export const CoursePageSwitch = ({ isDesktopPage, match, isLoggedIn }) => {
 CoursePageSwitch.propTypes = {
   isDesktopPage: PropTypes.bool,
   match: PropTypes.shape({
-    params: PropTypes.shape({ courseID: PropTypes.string }),
+    params: PropTypes.shape({ courseCode: PropTypes.string }),
   }),
 };
 

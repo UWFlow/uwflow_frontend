@@ -114,7 +114,7 @@ const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
       {ProfFilterDropdown}
       {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
-          <ProfName to={getProfPageRoute(prof.id)}>{prof.name}</ProfName>
+          <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
           <ProfLikedMetric>
             <ProfLikedPercent>{Math.round(prof.liked * 100)}%</ProfLikedPercent>
             <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>

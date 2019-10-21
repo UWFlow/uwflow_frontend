@@ -12,6 +12,7 @@ const CourseReviewFragment = {
       liked
       prof {
         id
+        code
         name
       }
       text
@@ -35,6 +36,7 @@ const CourseReviewFragment = {
       id
       prof {
         id
+        code
         name
         course_reviews_aggregate {
           aggregate {

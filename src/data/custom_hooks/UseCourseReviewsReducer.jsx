@@ -38,6 +38,7 @@ const convertInputToState = data => {
     if (!foundProfObject) {
       profObject = {
         id: current.prof ? current.prof.id : 0,
+        code: current.prof ? current.prof.code : '',
         name: current.prof ? current.prof.name : '',
         liked: current.prof
           ? current.prof.course_reviews_aggregate.aggregate.avg.liked

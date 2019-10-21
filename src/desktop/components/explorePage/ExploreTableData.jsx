@@ -54,11 +54,11 @@ export const courseColumns = [
 export const profColumns = [
   {
     Header: 'Professor name',
-    accessor: 'id_name',
+    accessor: 'code_name',
     align: 'left',
     maxWidth: 160,
     Cell: ({ cell }) => (
-      <ProfName to={getProfPageRoute(cell.value.id)}>
+      <ProfName to={getProfPageRoute(cell.value.code)}>
         {cell.value.name}
       </ProfName>
     ),

@@ -21,9 +21,9 @@ const mapStateToProps = state => ({
 });
 
 export const ProfPageSwitch = ({ isDesktopPage, match }) => {
-  const profID = match.params.profID;
+  const profCode = match.params.profCode.toLowerCase();
   const { loading, error, data } = useQuery(GET_PROF, {
-    variables: { id: profID },
+    variables: { code: profCode },
   });
 
   return loading ? (
@@ -40,7 +40,7 @@ export const ProfPageSwitch = ({ isDesktopPage, match }) => {
 ProfPageSwitch.propTypes = {
   isDesktopPage: PropTypes.bool,
   match: PropTypes.shape({
-    params: PropTypes.shape({ courseID: PropTypes.string }),
+    params: PropTypes.shape({ profCode: PropTypes.string }),
   }),
 };
 

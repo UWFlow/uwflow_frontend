@@ -43,7 +43,7 @@ const ProfInfoHeader = ({ prof }) => {
         ]}
       />
       <ProfCoursesText>
-        Teaches {profCourses.join(', ')}
+        {profCourses.length > 0 ? `Teaches ${profCourses.join(', ')}` : 'No courses taught'}
       </ProfCoursesText>
     </ProfInfoHeaderWrapper>
   );

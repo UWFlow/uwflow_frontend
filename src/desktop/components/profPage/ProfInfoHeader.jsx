@@ -54,7 +54,7 @@ const ProfInfoHeader = ({ prof }) => {
           />
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          Teaches {profCourses.join(', ')}
+          {profCourses.length > 0 ? `Teaches ${profCourses.join(', ')}` : 'No courses taught'}
         </Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>

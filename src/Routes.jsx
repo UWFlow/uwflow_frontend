@@ -4,8 +4,8 @@ import pathToRegexp from 'path-to-regexp';
 /* Page Routes */
 export const LANDING_PAGE_ROUTE = '/';
 export const PROFILE_PAGE_ROUTE = '/profile';
-export const COURSE_PAGE_ROUTE = '/course/:courseID';
-export const PROF_PAGE_ROUTE = '/prof/:profID';
+export const COURSE_PAGE_ROUTE = '/course/:courseCode';
+export const PROF_PAGE_ROUTE = '/prof/:profCode';
 export const EXPLORE_PAGE_ROUTE = '/explore';
 export const ABOUT_PAGE_ROUTE = '/about';
 export const PRIVACY_PAGE_ROUTE = '/privacy';
@@ -51,5 +51,5 @@ export const toCoursePageRoute = pathToRegexp.compile(COURSE_PAGE_ROUTE);
 export const toProfPageRoute = pathToRegexp.compile(PROF_PAGE_ROUTE);
 
 /* Route Getters */
-export const getCoursePageRoute = courseID => toCoursePageRoute({ courseID });
-export const getProfPageRoute = profID => toProfPageRoute({ profID });
+export const getCoursePageRoute = courseCode => toCoursePageRoute({ courseCode });
+export const getProfPageRoute = profCode => toProfPageRoute({ profCode });

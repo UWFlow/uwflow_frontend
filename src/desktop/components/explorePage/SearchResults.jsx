@@ -33,8 +33,8 @@ const SearchResults = ({
   })) : [];
 
   const profs = data ? data.prof.map(prof => Object({
-    id_name: {
-      id: prof.id,
+    code_name: {
+      code: prof.code,
       name: prof.name,
     },
     ratings: prof.prof_reviews_aggregate.aggregate.count,

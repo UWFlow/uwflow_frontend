@@ -73,8 +73,8 @@ const SearchBar = ({ history, theme, colored = false, maximizeWidth = false }) =
     setOpen(false);
   };
 
-  const goToProf = id => {
-    history.push(getProfPageRoute(id));
+  const goToProf = code => {
+    history.push(getProfPageRoute(code));
     setOpen(false);
   };
 
@@ -131,7 +131,7 @@ const SearchBar = ({ history, theme, colored = false, maximizeWidth = false }) =
   );
 
   const profResult = prof => (
-    <SearchResult onClick={() => goToProf(prof.id)} key={prof.id}>
+    <SearchResult onClick={() => goToProf(prof.code)} key={prof.id}>
       <ResultLeft>
         <ProfText>
           <User />
