@@ -3,7 +3,7 @@ import { Link } from '../../../constants/Mixins';
 
 export const TableWrapper = styled.table`
   width: 100%;
-  min-width: 512px;
+  min-width: 100%;
   border-radius: 4px;
   text-align: left;
   table-layout: auto;
@@ -24,9 +24,10 @@ export const HeaderRow = styled.tr`
 export const HeaderCell = styled.th`
   text-align: ${({ align }) => (align ? align : 'left')};
   width: ${({ maxWidth }) => maxWidth + 16}px;
-  max-width: ${({ maxWidth }) => maxWidth + 16}px;
+  min-width: ${({ maxWidth }) => maxWidth + 16}px;
   padding-top: 16px;
   padding-bottom: 16px;
+  vertical-align: top;
 
   padding-left: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
   padding-right: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
@@ -66,6 +67,7 @@ export const TableBody = styled.tbody`
 `;
 
 export const Row = styled.tr`
+  position: relative;
   width: 100%;
   border-radius: 4px;
   border-bottom: 1px solid ${({ theme }) => theme.light3};
@@ -95,3 +97,5 @@ export const Cell = styled.td`
     padding: auto 32px;
   }
 `;
+
+export const TableBottom = styled.tr``;

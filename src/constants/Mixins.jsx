@@ -22,7 +22,7 @@ export const ModalZIndex = 'z-index: 2000;';
 export const WideColumn = `
   display: flex;
   flex-direction: column;
-  margin-right: 32px;
+  padding-right: 32px;
   width: 70%;
 `;
 

@@ -35,6 +35,19 @@ const UserFragment = {
               }
             }
           }
+          sections {
+            id
+            term
+            exams {
+              date
+              day
+              end_seconds
+              is_tba
+              location
+              section_id
+              start_seconds
+            }
+          }
         }
       }
     }

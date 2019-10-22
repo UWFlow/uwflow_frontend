@@ -12,7 +12,7 @@ const examColumns = [
   {
     Header: 'Course',
     accessor: 'code',
-    maxWidth: 112,
+    maxWidth: 120,
     Cell:  ({cell}) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
         {splitCourseCode(cell.value)}
@@ -22,13 +22,8 @@ const examColumns = [
   {
     Header: 'Section(s)',
     accessor: 'sections',
-    maxWidth: 112,
-    Cell:  ({cell}) => (
-    <>
-      {cell.value.map((v, idx) =>
-        <span key={idx}>{v}{idx === v.length - 1 ? '' : ','}</span>
-      )}
-    </>),
+    maxWidth: 120,
+    Cell:  ({cell}) => {cell.value.join(', ')},
   },
   {
     Header: 'Time',
@@ -42,7 +37,8 @@ const examColumns = [
   },
   {
     Header: 'Location',
-    accessor: 'location'
+    accessor: 'location',
+    maxWidth: 120,
   },
 ]
 

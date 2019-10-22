@@ -70,7 +70,7 @@ const CourseSchedule = ({ sections }) => {
 };
 
 CourseSchedule.propTypes = {
-  courseID: PropTypes.string.isRequired,
+  sections: PropTypes.array,
 };
 
 export default CourseSchedule;

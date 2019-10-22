@@ -8,9 +8,9 @@ import {
     CircleSvgGrey
 } from './styles/LoadingSpinner';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ margin = "32px auto" }) => {
   return (
-    <LoadingSpinnerWrapper>
+    <LoadingSpinnerWrapper margin={margin}>
         <CircularSvg viewBox="24 24 48 48">
             <CircleSvgGrey
                 cx="48"

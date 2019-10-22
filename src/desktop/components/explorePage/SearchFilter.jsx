@@ -21,6 +21,7 @@ import {
   ResetButton,
   HeaderButtonWrapper,
 } from './styles/SearchFilter';
+import { termCodeToDate, getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';
 
 let courseNumberOptions = [1, 2, 3, 4].map(num => (
   <span>
@@ -33,8 +34,10 @@ courseNumberOptions.push(
   </span>,
 );
 
+const currentTermString = termCodeToDate(getCurrentTermCode());
+const nextTermString = termCodeToDate(getNextTermCode());
+
 const SearchFilter = ({
-  terms,
   profCourses,
   filterState,
   setCourseCodes,
@@ -98,7 +101,7 @@ const SearchFilter = ({
               <RadioButton
                 color={theme.primary}
                 selected={filterState.currentTerm}
-                options={[terms[0].text]}
+                options={[`This term (${currentTermString})`]}
                 margin="8px 16px 0 0"
                 onClick={() => setCurrentTerm(!filterState.currentTerm)}
                 toggle
@@ -106,7 +109,7 @@ const SearchFilter = ({
               <RadioButton
                 color={theme.primary}
                 selected={filterState.nextTerm}
-                options={[terms[1].text]}
+                options={[`Next term (${nextTermString})`]}
                 margin="8px 0 0 0"
                 onClick={() => setNextTerm(!filterState.nextTerm)}
                 toggle
@@ -139,7 +142,6 @@ const SearchFilter = ({
 };
 
 SearchFilter.propTypes = {
-  terms: PropTypes.array,
   profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
   filterState: PropTypes.object.isRequired,
   setCourseCodes: PropTypes.func.isRequired,

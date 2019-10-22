@@ -23,7 +23,7 @@ const DashAnimation = keyframes`
 
 export const LoadingSpinnerWrapper = styled.div`
   position: relative;
-  margin: 32px auto;
+  margin: ${({ margin }) => margin};
   width: 48px;
   height: 48px;
   content: '';

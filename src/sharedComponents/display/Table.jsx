@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 
@@ -12,9 +12,36 @@ import {
   HeaderCell,
   SortArrow,
   HeaderText,
+  TableBottom,
 } from './styles/Table';
 
-const Table = ({ columns, data, sortable = false }) => {
+import LoadingSpinner from '../display/LoadingSpinner';
+
+const Table = ({ columns, data, sortable = false, loading = false, fetchMore = () => {} }) => {
+  const [shouldFetchMore, setShouldFetchMore] = useState(false);
+  const bottomRef = useRef(null);
+
+  const setFetchMore = () => {
+    if (bottomRef.current) {
+      const distanceFromBottom = bottomRef.current.offsetTop - window.scrollY;
+      if (distanceFromBottom < 1000 && !loading) {
+        setShouldFetchMore(true);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (shouldFetchMore) {
+      fetchMore();
+      setShouldFetchMore(false);
+    }
+  }, [shouldFetchMore]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => setFetchMore());
+    return window.removeEventListener('scroll', () => setFetchMore());
+  }, [bottomRef, loading]);
+
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(
     {
       columns,
@@ -64,6 +91,14 @@ const Table = ({ columns, data, sortable = false }) => {
               </Row>
             ),
         )}
+        {loading && (
+          <Row>
+            <Cell colSpan={columns.length} style={{padding: 0}}>
+              <LoadingSpinner margin={"4px auto"} />
+            </Cell>
+          </Row>
+        )}
+        <TableBottom ref={bottomRef} />
       </TableBody>
     </TableWrapper>
   );

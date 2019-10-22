@@ -112,7 +112,7 @@ const CourseProfReviews = reviewsByProf => {
       {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
           <ProfHeader>
-            <ProfName to={getProfPageRoute(prof.id)}>{prof.name}</ProfName>
+            <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
             <ProfLikedMetric>
               <ProfLikedPercent>
                 {Math.round(prof.liked * 100)}%

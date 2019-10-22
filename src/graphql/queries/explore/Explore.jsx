@@ -15,6 +15,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
       where: {code: {_ilike: "${query}%"}}
     ) {
       ...CourseInfoFragment
+      ...CourseTermFragment
     }
     course_aggregate(where: {code: {_ilike: "${query}%"}}) {
       aggregate {
@@ -27,6 +28,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
       where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}
     ) {
       ...ProfInfoFragment
+      ...ProfProfReviewsAggregateFragment
       ...ProfCourseReviewsAggregateFragment
       ...ProfCoursesTaughtFragment
     }
@@ -37,7 +39,9 @@ export const buildExploreCodeQuery = (sort, query) => gql`
     }  
   }
   ${CourseFragment.courseInfo}
+  ${CourseFragment.courseTerm}
   ${ProfFragment.profInfo}
+  ${ProfFragment.profProfReviewsAggregate}  
   ${ProfFragment.profCourseReviewsAggregate}  
   ${ProfFragment.profCoursesTaught}
 `;
@@ -80,6 +84,7 @@ export const buildExploreQuery = (sort, query) => {
         where: ${parsedCourseQuery}
       ) {
         ...CourseInfoFragment
+        ...CourseTermFragment
       }
       course_aggregate(where: ${parsedCourseQuery}) {
         aggregate {
@@ -92,6 +97,7 @@ export const buildExploreQuery = (sort, query) => {
         where: ${parsedProfQuery}
       ) {
         ...ProfInfoFragment
+        ...ProfProfReviewsAggregateFragment
         ...ProfCourseReviewsAggregateFragment
         ...ProfCoursesTaughtFragment
       }
@@ -102,7 +108,9 @@ export const buildExploreQuery = (sort, query) => {
       }
     }
     ${CourseFragment.courseInfo}
+    ${CourseFragment.courseTerm}
     ${ProfFragment.profInfo}
+    ${ProfFragment.profProfReviewsAggregate}  
     ${ProfFragment.profCourseReviewsAggregate}
     ${ProfFragment.profCoursesTaught}
   `

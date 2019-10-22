@@ -26,7 +26,7 @@ const convertInputToState = data => {
         name: current.course ? current.course.name : '',
         code: current.course ? current.course.code : '',
         liked: current.course
-          ? current.course.course_reviews_aggregate.aggregate.avg.liked / 5
+          ? current.course.course_reviews_aggregate.aggregate.avg.liked
           : 0,
         reviews: [],
       };

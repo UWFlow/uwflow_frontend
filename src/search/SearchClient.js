@@ -25,7 +25,7 @@ const profIndexOptions = {
     boost: { name: 3 },
   },
   fields: ['name', 'courses'],
-  storeFields: ['name', 'courses'],
+  storeFields: ['code', 'name', 'courses'],
 };
 
 const courseCodeIndexOptions = {

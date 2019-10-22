@@ -22,20 +22,24 @@ import {
   ReviewButtonContents,
 } from './styles/ProfileCourses';
 
-import { termCodeToDate, splitCourseCode, processRating } from '../../../utils/Misc';
+import { termCodeToDate, splitCourseCode, processLiked } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes';
 
 const groupByTerm = courses => {
   return courses.reduce((groups, course) => {
-    const term = termCodeToDate(course.term);
-    groups[term] = groups[term] || [];
-    groups[term].push(course);
+    groups[course.term] = groups[course.term] || [];
+    groups[course.term].push(course);
     return groups;
   }, {});
 };
 
 const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
-  const courseGroups = groupByTerm(courses);
+  const unorderedGroups = groupByTerm(courses);
+  const courseGroups = {};
+  Object.keys(unorderedGroups).sort().reverse().forEach(term => {
+    courseGroups[termCodeToDate(term)] = unorderedGroups[term];
+  });
+
   const tabList = Object.keys(courseGroups).map(termName => {
     return {
       title: termName,
@@ -49,7 +53,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
               <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
             </ProfileCourseText>
             <ProfileCourseLiked>
-              {processRating(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
+              {processLiked(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
             </ProfileCourseLiked>
             <LikedThisCourseText>
               liked this
@@ -58,7 +62,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
             </LikedThisCourseText>
             <LikeCourseToggle liked={true} />
             <Button
-              margin="0 0 0 16px"
+              margin="auto 0 auto 16px"
               padding="8px"
               height={48}
               maxHeight={48}

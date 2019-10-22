@@ -29,7 +29,7 @@ import { useSearchContext } from '../../search/SearchProvider';
 /* Constants */
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
-const SearchBar = ({ history, theme, colored = false }) => {
+const SearchBar = ({ history, theme, colored = false, maximizeWidth = false }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -61,9 +61,10 @@ const SearchBar = ({ history, theme, colored = false }) => {
 
   useOnClickOutside(ref, () => setOpen(false));
 
-  const queryExploreCourses = (query, codeSearch = false) => {
+  const queryExploreCourses = (query, codeSearch = false, profSearch = false) => {
     const codeTerm = codeSearch ? '&c=t' : '';
-    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}`);
+    const profTerm = profSearch ? '&t=p' : '';
+    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}${profTerm}`);
     setOpen(false);
   };
 
@@ -72,8 +73,8 @@ const SearchBar = ({ history, theme, colored = false }) => {
     setOpen(false);
   };
 
-  const goToProf = id => {
-    history.push(getProfPageRoute(id));
+  const goToProf = code => {
+    history.push(getProfPageRoute(code));
     setOpen(false);
   };
 
@@ -121,7 +122,7 @@ const SearchBar = ({ history, theme, colored = false }) => {
       <ExploreCourseProfs
         onClick={e => {
           e.stopPropagation();
-          queryExploreCourses(course.code);
+          queryExploreCourses(course.code, false, true);
         }}
       >
         <Users />
@@ -130,7 +131,7 @@ const SearchBar = ({ history, theme, colored = false }) => {
   );
 
   const profResult = prof => (
-    <SearchResult onClick={() => goToProf(prof.id)} key={prof.id}>
+    <SearchResult onClick={() => goToProf(prof.code)} key={prof.id}>
       <ResultLeft>
         <ProfText>
           <User />
@@ -176,7 +177,7 @@ const SearchBar = ({ history, theme, colored = false }) => {
       : null;
 
     return (
-      <SearchResultsWrapper >
+      <SearchResultsWrapper maximizeWidth={maximizeWidth}>
         {courseCodeResults}
         {courseResults}
         {profResults}

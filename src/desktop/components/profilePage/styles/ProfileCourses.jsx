@@ -25,7 +25,13 @@ export const ProfileCourseText = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 32px;
+  min-width: 112px;
   width: 100%;
+
+
+  @media only screen and (max-width: 900px) {
+    max-width: 112px;
+  }
 `;
 
 export const ProfileCourseCode = styled(RouterLink)`
@@ -56,6 +62,7 @@ export const LikedThisCourseText = styled.div`
   margin: auto 0;
   margin-right: 16px;
   width: 100%;
+  min-width: 64px;
   max-width: 64px;
 `;
 

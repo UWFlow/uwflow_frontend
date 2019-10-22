@@ -5,6 +5,11 @@ const ProfFragment = {
     fragment ProfInfoFragment on prof {
       id
       name
+      code
+    }
+  `,
+  profProfReviewsAggregate: gql`
+    fragment ProfProfReviewsAggregateFragment on prof {
       prof_reviews_aggregate {
         aggregate {
           avg {

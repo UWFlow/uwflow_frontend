@@ -20,9 +20,17 @@ const CourseFragment = {
       }
     }
   `,
-  courseSchedule: gql`
-    fragment CourseSchedule on course {
+  courseTerm: gql`
+    fragment CourseTermFragment on course {
       sections {
+        term
+      }
+    }
+  `,
+  courseSchedule: gql`
+    fragment CourseScheduleFragment on course {
+      sections {
+        id
         enrollment_capacity
         enrollment_total
         class_number
@@ -43,23 +51,32 @@ const CourseFragment = {
           is_closed
           is_cancelled
         }
+        exams {
+          date
+          day
+          end_seconds
+          is_tba
+          location
+          section_id
+          start_seconds
+        }
       }
     }
   `,
   courseRequirements: gql`
-  fragment CourseRequirements on course {
+  fragment CourseRequirementsFragment on course {
     antireqs
     coreqs
     prereqs
     prerequisites {
-      course {
+      prerequisite {
         id
         code
         name
       }
     }
     postrequisites {
-      course {
+      postrequisite {
         id
         code
         name

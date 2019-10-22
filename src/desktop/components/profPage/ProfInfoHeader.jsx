@@ -40,7 +40,7 @@ const ProfInfoHeader = ({ prof }) => {
             percentages={[
               {
                 displayName: 'Likes',
-                percent: prof.course_reviews_aggregate.aggregate.avg.liked / 5,
+                percent: prof.course_reviews_aggregate.aggregate.avg.liked,
               },
               {
                 displayName: 'Clear',
@@ -54,7 +54,7 @@ const ProfInfoHeader = ({ prof }) => {
           />
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          Teaches {profCourses.join(', ')}
+          {profCourses.length > 0 ? `Teaches ${profCourses.join(', ')}` : 'No courses taught'}
         </Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>
