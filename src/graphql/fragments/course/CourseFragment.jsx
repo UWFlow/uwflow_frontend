@@ -69,14 +69,14 @@ const CourseFragment = {
     coreqs
     prereqs
     prerequisites {
-      course {
+      prerequisite {
         id
         code
         name
       }
     }
     postrequisites {
-      course {
+      postrequisite {
         id
         code
         name

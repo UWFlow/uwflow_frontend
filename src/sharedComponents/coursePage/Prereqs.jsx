@@ -13,13 +13,14 @@ import { splitCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
 const Prereqs = ({ prereqs, postreqs, courseCode }) => {
+  console.log(prereqs);
   return (
     <>
       <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
-        {prereqs.map((course, idx) => (
+        {prereqs.map((prereq, idx) => (
           <LineOfText key={idx}>
-            <CourseText to={getCoursePageRoute(course.course.code)}>
-              {`${splitCourseCode(course.course.code)} - ${course.course.name}`}
+            <CourseText to={getCoursePageRoute(prereq.prerequisite.code)}>
+              {`${splitCourseCode(prereq.prerequisite.code)} - ${prereq.prerequisite.name}`}
             </CourseText>
           </LineOfText>
         ))}
@@ -30,10 +31,10 @@ const Prereqs = ({ prereqs, postreqs, courseCode }) => {
         )}
       <br />
       <Header>{`${splitCourseCode(courseCode)} leads to`}</Header>
-      {postreqs.map((course, idx) => (
+      {postreqs.map((postreq, idx) => (
         <LineOfText key={idx}>
-          <CourseText to={getCoursePageRoute(course.course.code)}>
-            {`${splitCourseCode(course.course.code)} - ${course.course.name}`}
+          <CourseText to={getCoursePageRoute(postreq.postrequisite.code)}>
+            {`${splitCourseCode(postreq.postrequisite.code)} - ${postreq.postrequisite.name}`}
           </CourseText>
         </LineOfText>
       ))}
