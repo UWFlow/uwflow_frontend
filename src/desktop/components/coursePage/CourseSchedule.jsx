@@ -32,10 +32,10 @@ const CourseSchedule = ({ sections }) => {
 
   const sectionsCleanedData = sections.map(s => ({
     term: s.term,
-    section: { section: s.section, numRows: s.classes.length },
+    section: { section: s.section, numRows: s.meetings.length },
     class_number: s.class_number,
     enrolled: { capacity: s.enrollment_capacity, filled: s.enrollment_total },
-    classes: s.classes.map(cl => ({
+    classes: s.meetings.map(cl => ({
       time: {
         start: secsToTime(cl.start_seconds),
         end: secsToTime(cl.end_seconds),
@@ -70,7 +70,32 @@ const CourseSchedule = ({ sections }) => {
 };
 
 CourseSchedule.propTypes = {
-  sections: PropTypes.array,
+  sections: PropTypes.arrayOf(
+    PropTypes.shape({
+      campus: PropTypes.string,
+      class_number: PropTypes.number,
+      enrollment_capacity: PropTypes.number,
+      enrollment_total: PropTypes.number,
+      meetings: PropTypes.arrayOf(
+        PropTypes.shape({
+          days: PropTypes.arrayOf(PropTypes.string),
+          end_date: PropTypes.string,
+          end_seconds: PropTypes.number,
+          is_cancelled: PropTypes.bool,
+          is_closed: PropTypes.bool,
+          location: PropTypes.string,
+          prof: PropTypes.shape({
+            id: PropTypes.number,
+            name: PropTypes.string,
+          }),
+          start_date: PropTypes.string,
+          start_seconds: PropTypes.number,
+        }),
+      ),
+      section: PropTypes.string,
+      term: PropTypes.number,
+    }),
+  ),
 };
 
 export default CourseSchedule;

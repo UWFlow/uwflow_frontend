@@ -38,7 +38,7 @@ const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
   };
-
+  console.log(course);
   return (
     <>
       <CourseInfoHeader
