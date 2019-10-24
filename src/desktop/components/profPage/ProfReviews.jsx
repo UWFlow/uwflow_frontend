@@ -12,6 +12,7 @@ import useProfReviewsReducer, {
 import {
   ProfCourseReviewWrapper,
   ReviewsForSingleCourseWrapper,
+  ReviewListWrapper,
   CourseHeader,
   CourseNameAndCode,
   CourseCode,
@@ -21,7 +22,9 @@ import {
   CourseLikedMetric,
   CourseLikedPercent,
   CourseLikedPercentLabel,
-  ProfCourseFilterWrapper
+  ProfCourseFilterWrapper,
+  ShowMoreReviewsSection,
+  ShowMoreReviewsText,
 } from './styles/ProfReviews';
 
 /* Child Components */
@@ -34,6 +37,7 @@ import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
 
 import { splitCourseCode } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes';
+import { MIN_REVIEWS_SHOWN } from '../../../constants/PageConstants';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedFilter, setSelectedFilter] = useState(0);
@@ -42,6 +46,7 @@ const ProfReviews = ({ profID, theme }) => {
     variables: { id: profID },
   });
   const [reviewDataState, dispatch] = useProfReviewsReducer(data);
+  const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
   useEffect(() => {
     if (data) {
@@ -89,42 +94,61 @@ const ProfReviews = ({ profID, theme }) => {
       {reviewsByCourseToShow.map((course, idx) => {
         return (
           <ReviewsForSingleCourseWrapper key={idx}>
-            <CourseHeader key={course.id}>
-              <CourseNameAndCode>
-                <CourseCode to={getCoursePageRoute(course.code)}>
-                  {splitCourseCode(course.code)}
-                </CourseCode>
-                <CourseName>{course.name}</CourseName>
-              </CourseNameAndCode>
-              <CourseLikedMetric>
-                <CourseLikedPercent>
-                  {Math.round(course.liked * 100)}%
-                </CourseLikedPercent>
-                <CourseLikedPercentLabel>
-                  liked this course
-                </CourseLikedPercentLabel>
-              </CourseLikedMetric>
-            </CourseHeader>
-            <DropdownPanelWrapper>
-              <DropdownTableText>Sort by: </DropdownTableText>
-              <DropdownList
-                color={theme.primary}
-                selectedIndex={selectedSort}
-                options={['most helpful', 'most recent']}
-                onChange={value => setSelectedSort(value)}
-              />
-            </DropdownPanelWrapper>
-            {course.reviews.map(review => {
-              return (
-                <Review
-                  key={review.reviewer.full_name}
-                  upvotes={review.upvotes}
-                  review={review.review}
-                  reviewer={review.reviewer}
-                  metrics={review.metrics}
+            <ReviewListWrapper>
+              <CourseHeader key={course.id}>
+                <CourseNameAndCode>
+                  <CourseCode to={getCoursePageRoute(course.code)}>
+                    {splitCourseCode(course.code)}
+                  </CourseCode>
+                  <CourseName>{course.name}</CourseName>
+                </CourseNameAndCode>
+                <CourseLikedMetric>
+                  <CourseLikedPercent>
+                    {Math.round(course.liked * 100)}%
+                  </CourseLikedPercent>
+                  <CourseLikedPercentLabel>
+                    liked this course
+                  </CourseLikedPercentLabel>
+                </CourseLikedMetric>
+              </CourseHeader>
+              <DropdownPanelWrapper>
+                <DropdownTableText>Sort by: </DropdownTableText>
+                <DropdownList
+                  color={theme.primary}
+                  selectedIndex={selectedSort}
+                  options={['most helpful', 'most recent']}
+                  onChange={value => setSelectedSort(value)}
                 />
-              );
-            })}
+              </DropdownPanelWrapper>
+              {course.reviews.map((review, i) => {
+                if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code])
+                  return (
+                    <Review
+                      key={review.reviewer.full_name}
+                      upvotes={review.upvotes}
+                      review={review.review}
+                      reviewer={review.reviewer}
+                      metrics={review.metrics}
+                    />
+                  );
+              })}
+            </ReviewListWrapper>
+            {course.reviews.length > MIN_REVIEWS_SHOWN && (
+              <ShowMoreReviewsSection
+                onClick={() =>
+                  setShowingReviewsMap({
+                    ...showingReviewsMap,
+                    [course.code]: !showingReviewsMap[course.code],
+                  })
+                }
+              >
+                <ShowMoreReviewsText>
+                  {showingReviewsMap[idx]
+                    ? `Show less reviews`
+                    : `Show all ${course.reviews.length} reviews`}
+                </ShowMoreReviewsText>
+              </ShowMoreReviewsSection>
+            )}
           </ReviewsForSingleCourseWrapper>
         );
       })}

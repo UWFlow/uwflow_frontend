@@ -59,3 +59,18 @@ export const ProfDropdownPanelWrapper = styled.div`
   padding: 24px 16px;
   border-bottom: 2px solid ${({ theme }) => theme.light2};
 `;
+
+export const ShowMoreReviewsSection = styled.div`
+  background: ${({ theme }) => theme.light3};
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  cursor: pointer;
+`;
+
+export const ShowMoreReviewsText = styled.div`
+  ${Heading4}
+  cursor: pointer;
+`;

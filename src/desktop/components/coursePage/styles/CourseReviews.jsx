@@ -11,6 +11,11 @@ import {
 
 export const CourseReviewWrapper = styled.div``;
 
+export const ReviewWithButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const CourseCourseReviewsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,9 +26,13 @@ export const CourseProfReviewsWrapper = styled.div`
 `;
 
 export const ReviewsForSingleProfWrapper = styled.div`
-  ${Card()}
+  ${Card('0')}
   ${BoxShadow}
   margin-bottom: 32px;
+`;
+
+export const ReviewListWrapper = styled.div`
+  padding: 32px 32px 0 32px;
 `;
 
 export const ReviewsOptionsWrapper = styled.div`
@@ -39,6 +48,7 @@ export const DropdownPanelWrapper = styled.div`
 export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding: 32px;
 `;
 
 export const DropdownTableText = styled.div`
@@ -54,7 +64,7 @@ export const ProfHeader = styled.div`
 
 export const ProfName = styled(Link)`
   ${Heading2}
-  color: ${({theme}) => theme.professors}
+  color: ${({ theme }) => theme.professors}
 `;
 
 export const ProfLikedMetric = styled.div`
@@ -70,4 +80,19 @@ export const ProfLikedPercentLabel = styled.div`
   ${Body}
   width: 64px;
   margin-left: 12px;
+`;
+
+export const ShowMoreReviewsSection = styled.div`
+  background: ${({ theme }) => theme.light3};
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  cursor: pointer;
+`;
+
+export const ShowMoreReviewsText = styled.div`
+  ${Heading4}
+  cursor: pointer;
 `;
