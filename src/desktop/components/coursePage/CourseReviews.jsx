@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 
+/* Constants */
+import { MIN_REVIEWS_SHOWN } from '../../../constants/PageConstants';
+
 /* Custom Hooks */
 import useCourseReviewsReducer, {
   UPDATE_REVIEW_DATA,
@@ -12,9 +15,11 @@ import useCourseReviewsReducer, {
 /* Styled Components */
 import {
   CourseReviewWrapper,
+  ReviewWithButtonWrapper,
   CourseCourseReviewsWrapper,
   CourseProfReviewsWrapper,
   ReviewsForSingleProfWrapper,
+  ReviewListWrapper,
   ReviewsOptionsWrapper,
   DropdownPanelWrapper,
   ProfDropdownPanelWrapper,
@@ -24,6 +29,8 @@ import {
   ProfLikedMetric,
   ProfLikedPercent,
   ProfLikedPercentLabel,
+  ShowMoreReviewsSection,
+  ShowMoreReviewsText,
 } from './styles/CourseReviews';
 
 /* Child Components */
@@ -36,7 +43,7 @@ import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
 import { getProfPageRoute } from '../../../Routes';
 
-const CourseCourseReviews = (
+const CourseCourseReviews = ({
   reviews,
   theme,
   courseSort,
@@ -44,45 +51,61 @@ const CourseCourseReviews = (
   courseProfFilter,
   courseProfFilterOptions,
   setCourseProfFilter,
-) => {
+}) => {
+  const [showingAllReviews, setShowingAllReviews] = useState(false);
+
   return (
     <CourseCourseReviewsWrapper>
-      <ReviewsOptionsWrapper>
-        <DropdownPanelWrapper>
-          <DropdownTableText>Sort by: </DropdownTableText>
-          <DropdownList
-            color={theme.primary}
-            selectedIndex={courseSort}
-            options={[
-              'least recent',
-              'least helpful',
-              'most helpful',
-              'most recent',
-            ]}
-            onChange={value => setCourseSort(value)}
-          />
-        </DropdownPanelWrapper>
-        <DropdownPanelWrapper>
-          <DropdownTableText>Filter by professor: </DropdownTableText>
-          <DropdownList
-            color={theme.professors}
-            selectedIndex={courseProfFilter}
-            options={courseProfFilterOptions}
-            onChange={value => setCourseProfFilter(value)}
-          />
-        </DropdownPanelWrapper>
-      </ReviewsOptionsWrapper>
-      {reviews.map((review, i) => {
-        return (
-          <Review
-            key={i}
-            upvotes={review.upvotes}
-            review={review.review}
-            reviewer={review.reviewer}
-            metrics={review.metrics}
-          />
-        );
-      })}
+      <ReviewListWrapper>
+        <ReviewsOptionsWrapper>
+          <DropdownPanelWrapper>
+            <DropdownTableText>Sort by: </DropdownTableText>
+            <DropdownList
+              color={theme.primary}
+              selectedIndex={courseSort}
+              options={[
+                'least recent',
+                'least helpful',
+                'most helpful',
+                'most recent',
+              ]}
+              onChange={value => setCourseSort(value)}
+            />
+          </DropdownPanelWrapper>
+          <DropdownPanelWrapper>
+            <DropdownTableText>Filter by professor: </DropdownTableText>
+            <DropdownList
+              color={theme.professors}
+              selectedIndex={courseProfFilter}
+              options={courseProfFilterOptions}
+              onChange={value => setCourseProfFilter(value)}
+            />
+          </DropdownPanelWrapper>
+        </ReviewsOptionsWrapper>
+        {reviews.map((review, i) => {
+          if (i < MIN_REVIEWS_SHOWN || showingAllReviews)
+            return (
+              <Review
+                key={i}
+                upvotes={review.upvotes}
+                review={review.review}
+                reviewer={review.reviewer}
+                metrics={review.metrics}
+              />
+            );
+        })}
+      </ReviewListWrapper>
+      {reviews.length > MIN_REVIEWS_SHOWN && (
+        <ShowMoreReviewsSection
+          onClick={() => setShowingAllReviews(!showingAllReviews)}
+        >
+          <ShowMoreReviewsText>
+            {showingAllReviews
+              ? `Show less reviews`
+              : `Show all ${reviews.length} reviews`}
+          </ShowMoreReviewsText>
+        </ShowMoreReviewsSection>
+      )}
     </CourseCourseReviewsWrapper>
   );
 };
@@ -106,33 +129,54 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = reviewsByProf => {
+const CourseProfReviews = ({ reviewsByProf }) => {
+  const [showingReviewsMap, setShowingReviewsMap] = useState({});
+
   return (
     <CourseProfReviewsWrapper>
       {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
-          <ProfHeader>
-            <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
-            <ProfLikedMetric>
-              <ProfLikedPercent>
-                {Math.round(prof.liked * 100)}%
-              </ProfLikedPercent>
-              <ProfLikedPercentLabel>
-                liked this professor
-              </ProfLikedPercentLabel>
-            </ProfLikedMetric>
-          </ProfHeader>
-          {prof.reviews.map(review => {
-            return (
-              <Review
-                key={review.reviewer.full_name}
-                upvotes={review.upvotes}
-                review={review.review}
-                reviewer={review.reviewer}
-                metrics={review.metrics}
-              />
-            );
-          })}
+          <ReviewListWrapper>
+            <ProfHeader>
+              <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
+              <ProfLikedMetric>
+                <ProfLikedPercent>
+                  {Math.round(prof.liked * 100)}%
+                </ProfLikedPercent>
+                <ProfLikedPercentLabel>
+                  liked this professor
+                </ProfLikedPercentLabel>
+              </ProfLikedMetric>
+            </ProfHeader>
+            {prof.reviews.map((review, i) => {
+              if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name])
+                return (
+                  <Review
+                    key={review.reviewer.full_name}
+                    upvotes={review.upvotes}
+                    review={review.review}
+                    reviewer={review.reviewer}
+                    metrics={review.metrics}
+                  />
+                );
+            })}
+          </ReviewListWrapper>
+          {prof.reviews.length > MIN_REVIEWS_SHOWN && (
+            <ShowMoreReviewsSection
+              onClick={() =>
+                setShowingReviewsMap({
+                  ...showingReviewsMap,
+                  [prof.name]: !showingReviewsMap[prof.name],
+                })
+              }
+            >
+              <ShowMoreReviewsText>
+                {showingReviewsMap[prof.name]
+                  ? `Show less reviews`
+                  : `Show all ${prof.reviews.length} reviews`}
+              </ShowMoreReviewsText>
+            </ShowMoreReviewsSection>
+          )}
         </ReviewsForSingleProfWrapper>
       ))}
     </CourseProfReviewsWrapper>
@@ -231,16 +275,17 @@ const CourseReviews = ({ courseID, theme }) => {
   const tabList = [
     {
       title: `Course reviews (${courseReviewsToShow.length})`,
-      render: () =>
-        CourseCourseReviews(
-          courseReviewsToShow,
-          theme,
-          courseSort,
-          setCourseSort,
-          courseProfFilter,
-          courseProfFilterOptions,
-          setCourseProfFilter,
-        ),
+      render: () => (
+        <CourseCourseReviews
+          reviews={courseReviewsToShow}
+          theme={theme}
+          courseSort={courseSort}
+          setCourseSort={setCourseSort}
+          courseProfFilter={courseProfFilter}
+          courseProfFilterOptions={courseProfFilterOptions}
+          setCourseProfFilter={setCourseProfFilter}
+        />
+      ),
       onClick: () => setShowingProfReviews(false),
     },
     {
@@ -252,8 +297,14 @@ const CourseReviews = ({ courseID, theme }) => {
 
   return (
     <CourseReviewWrapper>
-      <TabContainer tabList={tabList} initialSelectedTab={0} />
-      {showingProfReviews && CourseProfReviews(profReviewsToShow)}
+      <TabContainer
+        tabList={tabList}
+        initialSelectedTab={0}
+        contentPadding="0"
+      />
+      {showingProfReviews && (
+        <CourseProfReviews reviewsByProf={profReviewsToShow} />
+      )}
     </CourseReviewWrapper>
   );
 };

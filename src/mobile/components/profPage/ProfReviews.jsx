@@ -21,6 +21,8 @@ import {
   CourseLikedMetric,
   CourseLikedPercent,
   CourseLikedPercentLabel,
+  ShowMoreReviewsSection,
+  ShowMoreReviewsText,
 } from './styles/ProfReviews';
 
 /* Child Components */
@@ -30,6 +32,7 @@ import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner.jsx
 
 import { splitCourseCode } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes.jsx';
+import { MIN_REVIEWS_SHOWN } from '../../../constants/PageConstants';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedFilter, setSelectedFilter] = useState(0);
@@ -37,6 +40,7 @@ const ProfReviews = ({ profID, theme }) => {
     variables: { id: profID },
   });
   const [reviewDataState, dispatch] = useProfReviewsReducer(data);
+  const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
   useEffect(() => {
     if (data) {
@@ -93,17 +97,34 @@ const ProfReviews = ({ profID, theme }) => {
                   liked this course
                 </CourseLikedPercentLabel>
               </CourseLikedMetric>
-              {course.reviews.map(review => {
-                return (
-                  <Review
-                    key={review.reviewer.full_name}
-                    upvotes={review.upvotes}
-                    review={review.review}
-                    reviewer={review.reviewer}
-                    metrics={review.metrics}
-                  />
-                );
+              {course.reviews.map((review, i) => {
+                if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code])
+                  return (
+                    <Review
+                      key={review.reviewer.full_name}
+                      upvotes={review.upvotes}
+                      review={review.review}
+                      reviewer={review.reviewer}
+                      metrics={review.metrics}
+                    />
+                  );
               })}
+              {course.reviews.length > MIN_REVIEWS_SHOWN && (
+                <ShowMoreReviewsSection
+                  onClick={() =>
+                    setShowingReviewsMap({
+                      ...showingReviewsMap,
+                      [course.code]: !showingReviewsMap[course.code],
+                    })
+                  }
+                >
+                  <ShowMoreReviewsText>
+                    {showingReviewsMap[course.code]
+                      ? `Show less reviews`
+                      : `Show all ${course.reviews.length} reviews`}
+                  </ShowMoreReviewsText>
+                </ShowMoreReviewsSection>
+              )}
             </ReviewsForSingleCourseWrapper>
           );
         })}

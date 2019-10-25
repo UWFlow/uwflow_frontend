@@ -32,7 +32,7 @@ export const DropdownTableText = styled.div`
 `;
 
 export const CourseProfReviewsWrapper = styled.div`
-  background: white;
+  background: ${({ theme }) => theme.light1};
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -41,6 +41,8 @@ export const CourseProfReviewsWrapper = styled.div`
 export const ReviewsForSingleProfWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 32px;
+  background: white;
 `;
 
 export const ProfName = styled(Link)`
@@ -68,4 +70,20 @@ export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
   padding: 24px 16px;
   border-bottom: 1px solid ${({ theme }) => theme.light2};
+  background: white;
+`;
+
+export const ShowMoreReviewsSection = styled.div`
+  background: ${({ theme }) => theme.light3};
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  cursor: pointer;
+`;
+
+export const ShowMoreReviewsText = styled.div`
+  ${Heading4}
+  cursor: pointer;
 `;

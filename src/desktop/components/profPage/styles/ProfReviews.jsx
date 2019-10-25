@@ -26,10 +26,14 @@ export const ProfCourseFilterWrapper = styled.div`
 `;
 
 export const ReviewsForSingleCourseWrapper = styled.div`
-  ${Card()}
+  ${Card('0')}
   ${BoxShadow}
   padding-bottom: 0;
   margin-bottom: 32px;
+`;
+
+export const ReviewListWrapper = styled.div`
+  padding: 32px 32px 0 32px;
 `;
 
 export const CourseRatings = styled.div`
@@ -85,4 +89,19 @@ export const CourseLikedPercentLabel = styled.div`
   ${Body}
   width: 64px;
   margin-left: 16px;
+`;
+
+export const ShowMoreReviewsSection = styled.div`
+  background: ${({ theme }) => theme.light3};
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  cursor: pointer;
+`;
+
+export const ShowMoreReviewsText = styled.div`
+  ${Heading4}
+  cursor: pointer;
 `;

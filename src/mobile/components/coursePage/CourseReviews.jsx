@@ -23,6 +23,8 @@ import {
   ProfLikedMetric,
   ProfLikedPercent,
   ProfLikedPercentLabel,
+  ShowMoreReviewsSection,
+  ShowMoreReviewsText,
 } from './styles/CourseReviews';
 
 /* Child Components */
@@ -35,8 +37,9 @@ import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
 
 import { getProfPageRoute } from '../../../Routes';
+import { MIN_REVIEWS_SHOWN } from '../../../constants/PageConstants';
 
-const CourseCourseReviews = (
+const CourseCourseReviews = ({
   reviews,
   theme,
   courseSort,
@@ -44,7 +47,9 @@ const CourseCourseReviews = (
   courseProfFilter,
   courseProfFilterOptions,
   setCourseProfFilter,
-) => {
+}) => {
+  const [showingAllReviews, setShowingAllReviews] = useState(false);
+
   return (
     <CourseCourseReviewsWrapper>
       <ReviewsOptionsWrapper>
@@ -75,16 +80,28 @@ const CourseCourseReviews = (
         </DropdownPanelWrapper>
       </ReviewsOptionsWrapper>
       {reviews.map((review, i) => {
-        return (
-          <Review
-            key={i}
-            upvotes={review.upvotes}
-            review={review.review}
-            reviewer={review.reviewer}
-            metrics={review.metrics}
-          />
-        );
+        if (i < MIN_REVIEWS_SHOWN || showingAllReviews)
+          return (
+            <Review
+              key={i}
+              upvotes={review.upvotes}
+              review={review.review}
+              reviewer={review.reviewer}
+              metrics={review.metrics}
+            />
+          );
       })}
+      {reviews.length > MIN_REVIEWS_SHOWN && (
+        <ShowMoreReviewsSection
+          onClick={() => setShowingAllReviews(!showingAllReviews)}
+        >
+          <ShowMoreReviewsText>
+            {showingAllReviews
+              ? `Show less reviews`
+              : `Show all ${reviews.length} reviews`}
+          </ShowMoreReviewsText>
+        </ShowMoreReviewsSection>
+      )}
     </CourseCourseReviewsWrapper>
   );
 };
@@ -108,7 +125,9 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
+const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
+  const [showingReviewsMap, setShowingReviewsMap] = useState({});
+
   return (
     <CourseProfReviewsWrapper>
       {ProfFilterDropdown}
@@ -119,17 +138,34 @@ const CourseProfReviews = (reviewsByProf, ProfFilterDropdown) => {
             <ProfLikedPercent>{Math.round(prof.liked * 100)}%</ProfLikedPercent>
             <ProfLikedPercentLabel>liked this professor</ProfLikedPercentLabel>
           </ProfLikedMetric>
-          {prof.reviews.map(review => {
-            return (
-              <Review
-                key={review.reviewer.full_name}
-                upvotes={review.upvotes}
-                review={review.review}
-                reviewer={review.reviewer}
-                metrics={review.metrics}
-              />
-            );
+          {prof.reviews.map((review, i) => {
+            if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name])
+              return (
+                <Review
+                  key={review.reviewer.full_name}
+                  upvotes={review.upvotes}
+                  review={review.review}
+                  reviewer={review.reviewer}
+                  metrics={review.metrics}
+                />
+              );
           })}
+          {prof.reviews.length > MIN_REVIEWS_SHOWN && (
+            <ShowMoreReviewsSection
+              onClick={() =>
+                setShowingReviewsMap({
+                  ...showingReviewsMap,
+                  [prof.name]: !showingReviewsMap[prof.name],
+                })
+              }
+            >
+              <ShowMoreReviewsText>
+                {showingReviewsMap[prof.name]
+                  ? `Show less reviews`
+                  : `Show all ${prof.reviews.length} reviews`}
+              </ShowMoreReviewsText>
+            </ShowMoreReviewsSection>
+          )}
         </ReviewsForSingleProfWrapper>
       ))}
     </CourseProfReviewsWrapper>
@@ -224,20 +260,23 @@ const CourseReviews = ({ courseID, theme }) => {
       <CollapseableContainer
         title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
       >
-        {CourseCourseReviews(
-          courseReviewsToShow,
-          theme,
-          courseSort,
-          setCourseSort,
-          courseProfFilter,
-          courseProfFilterOptions,
-          setCourseProfFilter,
-        )}
+        <CourseCourseReviews
+          reviews={courseReviewsToShow}
+          theme={theme}
+          courseSort={courseSort}
+          setCourseSort={setCourseSort}
+          courseProfFilter={courseProfFilter}
+          courseProfFilterOptions={courseProfFilterOptions}
+          setCourseProfFilter={setCourseProfFilter}
+        />
       </CollapseableContainer>
       <CollapseableContainer
         title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
       >
-        {CourseProfReviews(profReviewsToShow, ProfFilterDropdown)}
+        <CourseProfReviews
+          reviewsByProf={profReviewsToShow}
+          ProfFilterDropdown={ProfFilterDropdown}
+        />
       </CollapseableContainer>
     </CourseReviewWrapper>
   );
