@@ -19,6 +19,90 @@ const secsToTime = secs => {
   return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
 };
 
+// We first group the data by unique combinations of time of day range,
+// location and instructor. Note that in almost all cases each time of day range
+// should correspond to only one tuple (location, instructor). We sort these groups
+// by start time of the time of day range. Now, each group should have a time of day
+// range, location, instructor, and all the more specific 'timeranges' the classes occur in.
+// Each timerange contains days of the week the class occurs as well as the start and end dates
+// of the weeks that timerange applies. We assume that, if the start and end dates are the same,
+// the time range is valid for the week beginning on that date and otherwise, the time range is
+// valid for the whole term. We order the timeranges for each grouping as follows:
+// the time range valid for the whole term, if it exists, comes first and everything else
+// is sorted by date.
+const getInfoGroupings = meetings => {
+  var groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
+    const key = `${curr.start_seconds}${curr.end_seconds}${curr.location}${
+      curr.prof ? curr.prof.name : ''
+    }`;
+    if (!groupings[key]) {
+      groupings[key] = {
+        startSeconds: curr.start_seconds,
+        endSeconds: curr.end_seconds,
+        startTime: secsToTime(curr.start_seconds),
+        endTime: secsToTime(curr.end_seconds),
+        location: curr.location,
+        prof: curr.prof
+          ? {
+              id: curr.prof.id,
+              name: curr.prof.name,
+            }
+          : null,
+        timeRanges: [],
+      };
+    }
+    groupings[key].timeRanges.push({
+      days: curr.days,
+      startDate: curr.start_date,
+      endDate: curr.end_date,
+    });
+    return groupings;
+  }, {});
+  var answer = [];
+  // Sort timeRanges for each group
+  Object.entries(groupedByTimeOfDay).forEach(entry => {
+    entry[1].timeRanges.sort((a, b) => a.startDate > b.startDate);
+    answer.push(entry[1]);
+  });
+  // Merge and sort days of week for timeRanges that occur in the same date range
+  const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not to0 sure about saturday and sunday
+  answer.forEach(entry => {
+    var newTimeRanges = [];
+    var newDays = [];
+    entry.timeRanges.forEach((currRange, i) => {
+      if (i < entry.timeRanges.length - 1) {
+        const nextRange = entry.timeRanges[i + 1];
+        if (
+          currRange.startDate == nextRange.startDate &&
+          currRange.endDate == nextRange.endDate
+        ) {
+          for (var day of currRange.days) {
+            if (!newDays.includes(day)) {
+              newDays.push(day);
+            }
+          }
+          return;
+        }
+      }
+      for (var day of currRange.days) {
+        if (!newDays.includes(day)) {
+          newDays.push(day);
+        }
+      }
+      newDays.sort((a, b) => daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b));
+      newTimeRanges.push({
+        days: newDays,
+        startDate: currRange.startDate,
+        endDate: currRange.endDate,
+      });
+      newDays = [];
+    });
+    entry.timeRanges = newTimeRanges;
+  });
+  answer.sort((a, b) => a.startSeconds - b.startSeconds);
+  return answer;
+};
+
 const CourseSchedule = ({ sections }) => {
   if (!sections || sections.length === 0) {
     return null;
@@ -31,30 +115,33 @@ const CourseSchedule = ({ sections }) => {
   }, []);
 
   const sectionsCleanedData = sections.map(s => ({
+    section: s.section,
+    class: s.class_number,
     term: s.term,
-    section: { section: s.section, numRows: s.meetings.length },
-    class_number: s.class_number,
-    enrolled: { capacity: s.enrollment_capacity, filled: s.enrollment_total },
-    classes: s.meetings.map(cl => ({
-      time: {
-        start: secsToTime(cl.start_seconds),
-        end: secsToTime(cl.end_seconds),
-      },
-      date: cl.days,
-      location: cl.location,
-      instructor: cl.prof_id,
-    })),
+    enrolled: {
+      section: s.section,
+      class: s.class_number,
+      filled: s.enrollment_total,
+      capacity: s.enrollment_capacity,
+    },
+    // Every grouping contains a single time of day, location, and instructor
+    // and the classes that occur with those parameters.
+    infoGroupings: getInfoGroupings(s.meetings),
   }));
+
+  console.log(sectionsCleanedData);
 
   const tabList = termsOffered.map(term => {
     return {
       title: termCodeToDate(term),
-      render: () => (
+      render: () =>
+        /*
         <Table
           columns={courseScheduleTableColumns}
           data={sectionsCleanedData.filter(c => c.term === term)}
         />
-      ),
+        */
+        null,
     };
   });
 

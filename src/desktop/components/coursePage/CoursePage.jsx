@@ -48,7 +48,7 @@ const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
       />
       <ColumnWrapper>
         <Column1>
-          {/*<CourseSchedule sections={course.sections} />*/}
+          <CourseSchedule sections={course.sections} />
           <CourseReviewQuestionBox>
             <CourseQuestionTextAndToggle>
               <CourseReviewQuestionText>
