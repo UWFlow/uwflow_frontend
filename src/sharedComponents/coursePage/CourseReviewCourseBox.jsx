@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Trash2 } from 'react-feather';
 import {
   CourseReviewCourseBoxWrapper,
   QuestionText,
@@ -7,6 +8,7 @@ import {
   ReviewTextArea,
   QuestionWrapper,
   Footer,
+  DeleteIconWrapper,
   CancelButtonText,
   FooterQuestionWrapper,
   SliderOptionText,
@@ -163,6 +165,9 @@ const CourseReviewCourseBox = ({
       <ReviewTextArea rows={5} placeholder="Add any comments or tips..." />
 
       <Footer>
+        <DeleteIconWrapper>
+          <Trash2 color={theme.red} />
+        </DeleteIconWrapper>
         <FooterQuestionWrapper>
           <QuestionText>Post: </QuestionText>
           <DropdownList
