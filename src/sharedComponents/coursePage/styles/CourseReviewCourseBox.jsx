@@ -4,7 +4,7 @@ import { Card, BoxShadow, Heading4, Body } from '../../../constants/Mixins';
 export const CourseReviewCourseBoxWrapper = styled.div`
   ${Card('24px', '32px 0')}
   ${BoxShadow}
-  max-width: 640px;
+  width: 660px;
 `;
 
 export const QuestionText = styled.div`
@@ -13,7 +13,7 @@ export const QuestionText = styled.div`
 
 export const SliderOptionText = styled.div`
   ${Body}
-  color: ${({theme}) => theme.dark2};
+  color: ${({ theme }) => theme.dark2};
   font-weight: 600;
   margin-left: 40px;
   margin-bottom: 40px;
@@ -54,7 +54,16 @@ export const QuestionWrapper = styled.div`
 export const Footer = styled.div`
   display: flex;
   position: relative;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const DeleteIconWrapper = styled.div`
+  display: flex;
+  border-radius: 4px;
+  padding: 4px;
+  border: 2px solid ${({ theme }) => theme.red};
+  cursor: pointer;
 `;
 
 export const FooterQuestionWrapper = styled.div`
