@@ -19,11 +19,8 @@ const secsToTime = secs => {
   return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
 };
 
-// We first group the data by unique combinations of time of day range,
-// location and instructor. Note that in almost all cases each time of day range
-// should correspond to only one tuple (location, instructor). We sort these groups
-// by start time of the time of day range. Now, each group should have a time of day
-// range, location, instructor, and all the more specific 'timeranges' the classes occur in.
+// We first group the data by time of day range (start and end time) Now, each group should have
+// a time of day range, location, instructor, and all the more specific 'timeranges' the classes occur in.
 // Each timerange contains days of the week the class occurs as well as the start and end dates
 // of the weeks that timerange applies. We assume that, if the start and end dates are the same,
 // the time range is valid for the week beginning on that date and otherwise, the time range is
@@ -32,9 +29,7 @@ const secsToTime = secs => {
 // is sorted by date.
 const getInfoGroupings = meetings => {
   var groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
-    const key = `${curr.start_seconds}${curr.end_seconds}${curr.location}${
-      curr.prof ? curr.prof.name : ''
-    }`;
+    const key = `${curr.start_seconds} ${curr.end_seconds}`;
     if (!groupings[key]) {
       groupings[key] = {
         startSeconds: curr.start_seconds,
