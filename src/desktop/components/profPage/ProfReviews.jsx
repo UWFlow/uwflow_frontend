@@ -13,6 +13,7 @@ import {
   ProfCourseReviewWrapper,
   ReviewsForSingleCourseWrapper,
   ReviewListWrapper,
+  NoReviewsBox,
   CourseHeader,
   CourseNameAndCode,
   CourseCode,
@@ -76,6 +77,10 @@ const ProfReviews = ({ profID, theme }) => {
       selectedFilter === 0 ||
       reviews.code === courseFilterOptions[selectedFilter],
   );
+
+  if (reviewDataState.courses.length == 0) {
+    return <NoReviewsBox>No Reviews</NoReviewsBox>;
+  }
 
   return (
     <ProfCourseReviewWrapper>

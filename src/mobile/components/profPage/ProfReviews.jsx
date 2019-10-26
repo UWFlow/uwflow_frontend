@@ -14,6 +14,7 @@ import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
 /* Styled Components */
 import {
   ProfCourseReviewWrapper,
+  NoReviewsBox,
   DropdownPanelWrapper,
   DropdownTableText,
   ReviewsForSingleCourseWrapper,
@@ -70,6 +71,10 @@ const ProfReviews = ({ profID, theme }) => {
       selectedFilter === 0 ||
       reviews.code === courseFilterOptions[selectedFilter],
   );
+
+  if (reviewDataState.courses.length == 0) {
+    return <NoReviewsBox>No Reviews</NoReviewsBox>;
+  }
 
   return (
     <>

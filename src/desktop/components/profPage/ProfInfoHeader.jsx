@@ -22,8 +22,11 @@ import { splitCourseCode } from '../../../utils/Misc';
 
 const ProfInfoHeader = ({ prof }) => {
   const percentClear = prof.prof_reviews_aggregate.aggregate.avg.clear / 5;
-  const percentEngaging = prof.prof_reviews_aggregate.aggregate.avg.engaging / 5;
-  const profCourses = prof.prof_courses.map(course => splitCourseCode(course.code));
+  const percentEngaging =
+    prof.prof_reviews_aggregate.aggregate.avg.engaging / 5;
+  const profCourses = prof.prof_courses.map(course =>
+    splitCourseCode(course.code),
+  );
 
   return (
     <ProfInfoHeaderWrapper>
@@ -54,7 +57,9 @@ const ProfInfoHeader = ({ prof }) => {
           />
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          {profCourses.length > 0 ? `Teaches ${profCourses.join(', ')}` : 'No courses taught'}
+          {profCourses.length > 0
+            ? `Currently teaches ${profCourses.join(', ')}`
+            : 'Not currently teaching anything'}
         </Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>

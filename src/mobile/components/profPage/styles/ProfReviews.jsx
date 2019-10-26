@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import {
   Heading2,
+  Heading3,
   Heading4,
   Body,
   BoxShadow,
@@ -10,6 +11,16 @@ import {
 export const ProfCourseReviewWrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const NoReviewsBox = styled.div`
+  display: flex;
+  padding: 16px;
+  background: white;
+  align-items: center;
+  justify-content: flex-start;
+  ${Heading3}
+  color: ${({ theme }) => theme.dark2}
 `;
 
 export const DropdownPanelWrapper = styled.div`
