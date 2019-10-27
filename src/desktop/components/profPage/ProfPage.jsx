@@ -14,6 +14,7 @@ import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
 
 const ProfPageContent = ({ prof }) => {
+  console.log(prof);
   return (
     <>
       <ProfInfoHeader prof={prof} />

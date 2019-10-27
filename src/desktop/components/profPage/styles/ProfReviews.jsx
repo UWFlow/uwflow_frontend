@@ -8,6 +8,7 @@ import {
   Heading4,
   Heading1,
   BoxShadow,
+  Heading3,
 } from '../../../../constants/Mixins';
 
 export const ProfCourseReviewWrapper = styled.div`
@@ -23,6 +24,16 @@ export const ProfCourseFilterWrapper = styled.div`
   padding-bottom: 0;
   padding-top: 16px;
   margin-bottom: 32px;
+`;
+
+export const NoReviewsBox = styled.div`
+  display: flex;
+  padding: 32px;
+  background: white;
+  align-items: center;
+  justify-content: flex-start;
+  ${Heading3}
+  color: ${({ theme }) => theme.dark2}
 `;
 
 export const ReviewsForSingleCourseWrapper = styled.div`
