@@ -9,7 +9,15 @@ export const makePOSTRequest = async (endpoint, data, options = {}) => {
     },
     body: JSON.stringify(data),
   });
-  return [await res.json(), await res.status];
+  const text = await res.text();
+  const status = await res.status;
+  var respJSON;
+  try {
+    respJSON = JSON.parse(text);
+  } catch (err) {
+    respJSON = {};
+  }
+  return [respJSON, status];
 };
 
 export const sendFile = async (endpoint, data) => {
