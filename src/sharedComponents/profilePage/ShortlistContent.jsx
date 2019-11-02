@@ -41,6 +41,11 @@ const ShortlistContent = ({ shortlistCourses }) => {
           </ShortListCourseText>
         </ShortlistCourse>
       ))}
+      {shortlistCourses.length === 0 ? (
+        <ShortlistCourse>
+          No shortlisted courses found
+        </ShortlistCourse>
+      ) : null}
     </>
   );
 };
