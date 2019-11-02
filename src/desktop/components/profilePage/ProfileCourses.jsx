@@ -86,11 +86,11 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
     };
   });
 
-  return (
+  return tabList.length > 0 ? (
     <ProfileCoursesWrapper>
       <TabContainer tabList={tabList} contentPadding="0" />
     </ProfileCoursesWrapper>
-  );
+  ) : null;
 };
 
 ProfileCourses.propTypes = {

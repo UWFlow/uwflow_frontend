@@ -7,6 +7,8 @@ import { courseColumns, profColumns } from './ExploreTableData';
 
 import { getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';
 
+import { SearchResultsContent } from './styles/SearchResults';
+
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
 
@@ -72,13 +74,15 @@ const SearchResults = ({
 
   const courseSearch = exploreTab === 0;
   const results = () => (
-    <Table
-      data={courseSearch ? filteredCourses : filteredProfs}
-      columns={courseSearch ? courseColumns : profColumns}
-      rightAlignIndex={courseSearch ? 2 : 1}
-      sortable
-      loading={loading}
-    />
+    <SearchResultsContent>
+      <Table
+        data={courseSearch ? filteredCourses : filteredProfs}
+        columns={courseSearch ? courseColumns : profColumns}
+        rightAlignIndex={courseSearch ? 2 : 1}
+        sortable
+        loading={loading}
+      />
+    </SearchResultsContent>
   );
 
   return (

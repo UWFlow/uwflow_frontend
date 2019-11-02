@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ProfileHeader from '../../../../img/user_v1.svg';
 
 /* Mixins */
 import { Heading1, Heading2 } from '../../../../constants/Mixins';
@@ -8,13 +9,14 @@ export const ProfileInfoHeaderWrapper = styled.div`
   margin-bottom: 32px;
   display: flex;
   background-color: ${({ theme }) => theme.primaryExtraDark};
+  background: url(${ProfileHeader});
+  background-size: cover;
   flex-direction: column;
   position: relative;
 `;
 
 export const ProfileInfoSection = styled.div`
   padding: 16px;
-  margin: auto;
   position: relative;
 `;
 
@@ -30,7 +32,7 @@ export const UserPicture = styled.img`
 export const UserName = styled.div`
   ${Heading1}
   color: ${({ theme }) => theme.white};
-  margin-bottom: 16px;
+  margin-bottom: ${({ hasProgram }) => hasProgram ? '16px' : '0'};
 `;
 
 export const UserProgram = styled.div`

@@ -1,0 +1,69 @@
+@font-face {
+  font-family: 'Anderson Grotesk';
+  src: local('Anderson Grotesk'),
+    url(fonts/AndersonGrotesk-Bold.otf) format('woff');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Anderson Grotesk';
+  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('woff');
+  font-weight: 400;
+}
+
+html {
+  /* Load system fonts */
+  font-family: Inter, -apple-system, BlinkMacSystemFont, San Francisco, Roboto,
+    Segoe UI, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  color: #31393c;
+  background: #f4f5f7;
+  scroll-behavior: smooth;
+
+  /* Make type rendering look crisper */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Disable auto-enlargement of small text in Safari */
+  text-size-adjust: 100%;
+
+  /* Enable kerning and optional ligatures */
+  text-rendering: optimizeLegibility;
+
+  box-sizing: border-box;
+}
+
+/**
+ * Form elements render using OS defaults,
+ * so font-family inheritance must be specifically declared
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
+}
+
+a {
+  font-size: 14px;
+  font-weight: 500;
+  color: #006ed8;
+}
+
+body.no-scroll {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.modal-padding {
+  padding-right: 17px;
+}

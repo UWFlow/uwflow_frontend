@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '../../../../constants/Mixins';
+import ExploreHeader from '../../../../img/explore_v1.svg';
 
 /* Mixins */
 import { Heading2, PageContent, WideColumn, ThinColumn } from '../../../../constants/Mixins';
@@ -17,6 +18,8 @@ export const ExploreHeaderWrapper = styled.div`
   margin-bottom: 32px;
   display: flex;
   background-color: ${({ theme }) => theme.primaryExtraDark};
+  background: url(${ExploreHeader});
+  background-size: cover;
   flex-direction: column;
   position: relative;
 `;
