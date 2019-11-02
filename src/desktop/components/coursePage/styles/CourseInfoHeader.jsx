@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import CourseHeader from '../../../../img/course_v1.svg';
 
 /* Mixins */
 import {
@@ -24,6 +25,8 @@ export const CourseCodeAndNameSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   background-color: ${({ theme }) => theme.primaryExtraDark};
+  background: url(${CourseHeader});
+  background-size: cover;
   position: relative;
 `;
 

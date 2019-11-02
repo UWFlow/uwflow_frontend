@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ProfileHeader from '../../../../img/user_v1.svg';
 
 /* Mixins */
 import { Heading1, PageContent, Heading2 } from '../../../../constants/Mixins';
@@ -8,6 +9,8 @@ export const ProfileInfoHeaderWrapper = styled.div`
   margin-bottom: 32px;
   display: flex;
   background-color: ${({ theme }) => theme.primaryExtraDark};
+  background: url(${ProfileHeader});
+  background-size: cover;
   flex-direction: column;
   position: relative;
 `;

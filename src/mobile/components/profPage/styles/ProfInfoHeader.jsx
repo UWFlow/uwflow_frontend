@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ProfHeader from '../../../../img/prof_v1.svg';
 
 /* Mixins */
 import { Heading1, Heading3 } from '../../../../constants/Mixins';
@@ -19,6 +20,8 @@ export const ProfNameSection = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   background-color: ${({ theme }) => theme.primaryExtraDark};
+  background: url(${ProfHeader});
+  background-size: cover;
   position: relative;
   padding: 16px;
 `;
