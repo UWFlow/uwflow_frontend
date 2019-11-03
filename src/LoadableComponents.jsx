@@ -1,27 +1,27 @@
 import loadable from '@loadable/component';
 
 export const LoadableLandingPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/landingPage/LandingPage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/LandingPageSwitch'),
 );
 
 export const LoadableProfilePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/profilePage/ProfilePage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/ProfilePageSwitch'),
 );
 
 export const LoadableCoursePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/coursePage/CoursePage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/CoursePageSwitch'),
 );
 
 export const LoadableProfPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/profPage/ProfPage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/ProfPageSwitch'),
 );
 
 export const LoadableExplorePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/explorePage/ExplorePage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/ExplorePageSwitch'),
 );
 
 export const LoadableNotFoundPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/notFoundPage/NotFoundPage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/NotFoundPageSwitch'),
 );
 
 export const LoadableAboutPage = loadable(() =>
@@ -29,7 +29,7 @@ export const LoadableAboutPage = loadable(() =>
 );
 
 export const LoadablePrivacyPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/privacyPage/PrivacyPage'),
+  import(/* webpackPrefetch: true */ './pageSwitches/PrivacyPageSwitch'),
 );
 
 export const LoadableTestPage = loadable(() =>
