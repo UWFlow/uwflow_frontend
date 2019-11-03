@@ -1,3 +1,4 @@
+import breakpoint from 'styled-components-breakpoint';
 import { PAGE_CONTENT_WIDTH } from './PageConstants';
 
 export const PageContentZIndex = 'z-index: -1;';
@@ -11,10 +12,10 @@ export const PageContent = `
     padding-right: 32px;
   }
 
-  @media only screen and (max-width: 800px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  ${breakpoint('mobile', 'tablet')`
+      padding-left: 0;
+      padding-right: 0;
+  `}
 `;
 
 export const ModalZIndex = 'z-index: 2000;';
@@ -38,9 +39,9 @@ export const Heading1 = `
   font-size: 48px;
   font-weight: 600;
 
-  @media only screen and (max-width: 800px) {
+  ${breakpoint('mobile', 'tablet')`
     font-size: 40px;
-  }
+  `}
 `;
 
 export const Heading2 = `
@@ -48,9 +49,9 @@ export const Heading2 = `
   font-size: 32px;
   font-weight: 600;
 
-  @media only screen and (max-width: 800px) {
+  ${breakpoint('mobile', 'tablet')`
     font-size: 28px;
-  }
+  `}
 `;
 
 export const Heading3 = `

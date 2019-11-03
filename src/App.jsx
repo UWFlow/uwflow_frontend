@@ -14,17 +14,16 @@ import {
 } from './Routes';
 
 /* Child Components */
-import {
-  LoadableLandingPage,
-  LoadableProfilePage,
-  LoadableCoursePage,
-  LoadableExplorePage,
-  LoadableProfPage,
-  LoadableAboutPage,
-  LoadableTestPage,
-  LoadableNotFoundPage,
-  LoadablePrivacyPage,
-} from './LoadableComponents';
+import LandingPage from './desktop/components/landingPage/LandingPage';
+import ProfilePage from './desktop/components/profilePage/ProfilePage';
+import CoursePage from './desktop/components/coursePage/CoursePage';
+import ExplorePage from './desktop/components/explorePage/ExplorePage';
+import ProfPage from './desktop/components/profilePage/ProfilePage';
+import AboutPage from './desktop/components/aboutPage/AboutPage';
+import TestPage from './desktop/components/testPage/TestPage';
+import NotFoundPage from './desktop/components/notFoundPage/NotFoundPage';
+import PrivacyPage from './desktop/components/privacyPage/PrivacyPage';
+
 import ModalRoot from './sharedComponents/modal/ModalRoot';
 import Navbar from './sharedComponents/navigation/Navbar';
 import Footer from './sharedComponents/navigation/Footer';
@@ -37,44 +36,44 @@ const App = () => {
         <Route
           exact
           path={LANDING_PAGE_ROUTE}
-          component={() => <LoadableLandingPage />}
+          component={() => <LandingPage />}
         />
         <Route
           exact
           path={PROFILE_PAGE_ROUTE}
-          component={() => <LoadableProfilePage />}
+          component={() => <ProfilePage />}
         />
         <Route
           exact
           path={COURSE_PAGE_ROUTE}
-          component={() => <LoadableCoursePage />}
+          component={() => <CoursePage />}
         />
         <Route
           exact
           path={PROF_PAGE_ROUTE}
-          component={() => <LoadableProfPage />}
+          component={() => <ProfPage />}
         />
         <Route
           exact
           path={EXPLORE_PAGE_ROUTE}
-          component={() => <LoadableExplorePage />}
+          component={() => <ExplorePage />}
         />
         <Route
           exact
           path={ABOUT_PAGE_ROUTE}
-          component={() => <LoadableAboutPage />}
+          component={() => <AboutPage />}
         />
         <Route
           exact
           path={PRIVACY_PAGE_ROUTE}
-          component={() => <LoadablePrivacyPage />}
+          component={() => <PrivacyPage />}
         />
         <Route
           exact
           path={TEST_PAGE_ROUTE}
-          component={() => <LoadableTestPage />}
+          component={() => <TestPage />}
         />
-        <Route path="*" component={() => <LoadableNotFoundPage />} />
+        <Route path="*" component={() => <NotFoundPage />} />
       </Switch>
       <Footer />
       <ModalRoot />

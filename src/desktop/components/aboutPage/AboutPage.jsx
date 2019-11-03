@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
   PageWrapper,
@@ -9,15 +11,36 @@ import {
 
 import AboutContent from '../../../sharedComponents/aboutPage/AboutContent';
 
-const AboutPage = () => (
-  <PageWrapper>
-    <PageHeader>
-      <HeaderText>About Flow</HeaderText>
-    </PageHeader>
-    <PageContentWrapper>
-      <AboutContent />
-    </PageContentWrapper>
-  </PageWrapper>
+import { getIsBrowserDesktop } from '../../../data/reducers/BrowserReducer';
+
+const mapStateToProps = state => ({
+  isDesktop: getIsBrowserDesktop(state),
+});
+
+const AboutPage = ({ isDesktop }) => (
+  isDesktop ? (
+    <PageWrapper>
+      <PageHeader>
+        <HeaderText>About Flow</HeaderText>
+      </PageHeader>
+      <PageContentWrapper>
+        <AboutContent />
+      </PageContentWrapper>
+    </PageWrapper>
+  ) : (
+    <PageWrapper>
+      <PageHeader>
+        <HeaderText>About Flow</HeaderText>
+      </PageHeader>
+      <PageContentWrapper>
+        <AboutContent />
+      </PageContentWrapper>
+    </PageWrapper>
+  )
 );
 
-export default AboutPage;
+AboutPage.propTypes = {
+  isDesktop: PropTypes.bool,
+};
+
+export default connect(mapStateToProps)(AboutPage);
