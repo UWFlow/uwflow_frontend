@@ -1,3 +1,5 @@
+import { PAGE_CONTENT_WIDTH } from './PageConstants';
+
 export default {
   /* Colours */
   primary: '#0052cc',
@@ -24,4 +26,10 @@ export default {
   facebook: '#3c5a99',
 
   transparent: 'rgba(0,0,0,0)',
+
+  breakpoints: {
+    mobile: 0,
+    tablet: 800,
+    desktop: PAGE_CONTENT_WIDTH
+  }
 };

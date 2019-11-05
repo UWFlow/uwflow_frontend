@@ -1,4 +1,5 @@
 import { PAGE_CONTENT_WIDTH } from './PageConstants';
+import theme from './GlobalTheme';
 
 export const PageContentZIndex = 'z-index: -1;';
 
@@ -6,14 +7,12 @@ export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
   width: 100%;
 
-  @media only screen and (max-width: ${PAGE_CONTENT_WIDTH + 64}px) {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
+  padding-left: 32px;
+  padding-right: 32px;
 
-  @media only screen and (max-width: 800px) {
-    padding-left: 0;
-    padding-right: 0;
+  @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
+      padding-left: 0;
+      padding-right: 0;
   }
 `;
 
@@ -38,7 +37,7 @@ export const Heading1 = `
   font-size: 48px;
   font-weight: 600;
 
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
     font-size: 40px;
   }
 `;
@@ -48,7 +47,7 @@ export const Heading2 = `
   font-size: 32px;
   font-weight: 600;
 
-  @media only screen and (max-width: 800px) {
+  @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
     font-size: 28px;
   }
 `;

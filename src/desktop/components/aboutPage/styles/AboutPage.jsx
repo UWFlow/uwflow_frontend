@@ -1,9 +1,15 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { PageContent, Heading2 } from '../../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  ${breakpoint('mobile', 'tablet')`
+    width: 100%;
+    overflow: scroll;
+  `}
 `;
 
 export const PageHeader = styled.div`
@@ -15,17 +21,26 @@ export const PageHeader = styled.div`
   background: ${({ theme }) => theme.primaryExtraDark};
   padding-bottom: 32px;
   margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    height: auto;
+    padding: 32px 16px;
+  `}
 `;
 
 export const HeaderText = styled.div`
   ${PageContent}
   ${Heading2}
-  color: white;
   max-width: 720px;
+  color: white;
 `;
 
 export const PageContentWrapper = styled.div`
   ${PageContent}
   max-width: 720px;
   margin: auto;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 0 16px 16px 16px;
+  `}
 `;

@@ -25,7 +25,7 @@ export const LoadableNotFoundPage = loadable(() =>
 );
 
 export const LoadableAboutPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/AboutPageSwitch'),
+  import(/* webpackPrefetch: true */ './desktop/components/aboutPage/AboutPage'),
 );
 
 export const LoadablePrivacyPage = loadable(() =>
