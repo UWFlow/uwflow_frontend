@@ -17,8 +17,8 @@ import {
 } from './styles/RatingBox';
 
 /* Child Components */
-import ProgressBar from '../../../sharedComponents/display/ProgressBar';
-import CircularPercentage from '../../../sharedComponents/statistics/CircularPercentage';
+import ProgressBar from '../../../components/display/ProgressBar';
+import CircularPercentage from '../../../components/statistics/CircularPercentage';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;

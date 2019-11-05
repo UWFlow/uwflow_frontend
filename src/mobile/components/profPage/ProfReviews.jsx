@@ -27,9 +27,9 @@ import {
 } from './styles/ProfReviews';
 
 /* Child Components */
-import DropdownList from '../../../sharedComponents/input/DropdownList.jsx';
+import DropdownList from '../../../components/input/DropdownList.jsx';
 import Review from '../common/Review.jsx';
-import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner.jsx';
+import LoadingSpinner from '../../../components/display/LoadingSpinner.jsx';
 
 import { splitCourseCode } from '../../../utils/Misc';
 import { getCoursePageRoute } from '../../../Routes.jsx';

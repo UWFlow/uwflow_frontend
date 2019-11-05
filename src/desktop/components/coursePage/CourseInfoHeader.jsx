@@ -16,8 +16,10 @@ import {
 } from './styles/CourseInfoHeader';
 
 /* Child Components */
-import RatingBox, { RATING_BOX_WIDTH } from '../common/RatingBox';
-import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
+import RatingBox, {
+  RATING_BOX_WIDTH,
+} from '../../../components/display/RatingBox';
+import ShortlistStar from '../../../components/input/ShortlistStar';
 
 import { splitCourseCode } from '../../../utils/Misc';
 import { isLoggedIn } from '../../../utils/Auth';

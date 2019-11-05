@@ -11,7 +11,7 @@ import { getIsLoggedIn } from '../data/reducers/AuthReducer';
 /* Child Components */
 import DesktopProfilePage from '../desktop/components/profilePage/ProfilePage';
 import MobileProfilePage from '../mobile/components/profilePage/ProfilePage';
-import LoadingSpinner from '../sharedComponents/display/LoadingSpinner';
+import LoadingSpinner from '../components/display/LoadingSpinner';
 
 /* Queries */
 import { GET_USER } from '../graphql/queries/profile/User';

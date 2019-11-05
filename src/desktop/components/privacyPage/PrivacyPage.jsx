@@ -7,7 +7,7 @@ import {
   PageContentWrapper,
 } from './styles/PrivacyPage';
 
-import PrivacyContent from '../../../sharedComponents/privacyPage/PrivacyContent';
+import PrivacyContent from '../../../components/privacyPage/PrivacyContent';
 
 const PrivacyPage = () => (
   <PageWrapper>

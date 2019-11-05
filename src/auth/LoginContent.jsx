@@ -12,8 +12,8 @@ import {
 } from './styles/AuthForm';
 
 /* Child Components */
-import Textbox from '../sharedComponents/input/Textbox';
-import Button from '../sharedComponents/input/Button';
+import Textbox from '../components/input/Textbox';
+import Button from '../components/input/Button';
 
 import { validateEmail } from '../utils/Email';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../constants/Api';

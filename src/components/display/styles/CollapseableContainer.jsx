@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading3, BoxShadow } from '../../../../constants/Mixins';
+import { Heading3, BoxShadow } from '../../../constants/Mixins';
 
 const HEADER_HEIGHT = 64;
 
@@ -21,7 +21,8 @@ export const HeaderTitle = styled.div`
   ${Heading3}
   display: flex;
   align-items: center;
-  justify-content: ${({ centerHeader }) => centerHeader ? 'center' : 'flex-begin'};
+  justify-content: ${({ centerHeader }) =>
+    centerHeader ? 'center' : 'flex-begin'};
   padding-left: 16px;
   background: white;
   width: 100%;

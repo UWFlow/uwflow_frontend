@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 /* Child Components */
-import ModalHOC from '../sharedComponents/modal/ModalHOC';
-import Textbox from '../sharedComponents/input/Textbox';
-import Button from '../sharedComponents/input/Button';
-import LoadingSpinner from '../sharedComponents/display/LoadingSpinner';
+import ModalHOC from '../components/modal/ModalHOC';
+import Textbox from '../components/input/Textbox';
+import Button from '../components/input/Button';
+import LoadingSpinner from '../components/display/LoadingSpinner';
 
 /* Utils */
 import { makePOSTRequest } from '../utils/Api';

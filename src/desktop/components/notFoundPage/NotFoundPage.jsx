@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Button from '../../../sharedComponents/input/Button';
+import Button from '../../../components/input/Button';
 import { LANDING_PAGE_ROUTE } from '../../../Routes';
 
 import { NotFoundPageWrapper, NotFoundText } from './styles/NotFoundPage';

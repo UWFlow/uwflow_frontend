@@ -6,7 +6,7 @@ import {
   PageContent,
 } from '../../../../constants/Mixins';
 
-import { FOOTER_HEIGHT } from '../../../../sharedComponents/navigation/Footer';
+import { FOOTER_HEIGHT } from '../../../../components/navigation/Footer';
 
 export const LandingPageWrapper = styled.div`
   width: 100%;

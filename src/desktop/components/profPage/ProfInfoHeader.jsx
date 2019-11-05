@@ -16,7 +16,7 @@ import {
 import RatingBox, {
   RATING_BOX_HEIGHT,
   RATING_BOX_WIDTH,
-} from '../common/RatingBox';
+} from '../../../components/display/RatingBox';
 
 import { splitCourseCode } from '../../../utils/Misc';
 

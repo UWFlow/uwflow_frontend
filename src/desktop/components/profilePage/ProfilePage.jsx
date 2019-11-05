@@ -6,10 +6,10 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
-import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
-import CourseReviewCourseBox from '../../../sharedComponents/coursePage/CourseReviewCourseBox';
-import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
-import CompleteProfileContent from '../../../sharedComponents/profilePage/CompleteProfileContent';
+import ModalHOC from '../../../components/modal/ModalHOC';
+import CourseReviewCourseBox from '../../../components/coursePage/CourseReviewCourseBox';
+import LoadingSpinner from '../../../components/display/LoadingSpinner';
+import CompleteProfileContent from '../../../components/profilePage/CompleteProfileContent';
 
 /* Styled Components */
 import {

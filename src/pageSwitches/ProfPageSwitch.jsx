@@ -10,7 +10,7 @@ import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
 /* Child Components */
 import DesktopProfPage from '../desktop/components/profPage/ProfPage';
 import MobileProfPage from '../mobile/components/profPage/ProfPage';
-import LoadingSpinner from '../sharedComponents/display/LoadingSpinner';
+import LoadingSpinner from '../components/display/LoadingSpinner';
 import NotFoundPage from '../desktop/components/notFoundPage/NotFoundPage';
 
 /* Queries */

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import Button from '../../../sharedComponents/input/Button';
+import Button from '../../../components/input/Button';
 
 /* Styled Components */
 import {

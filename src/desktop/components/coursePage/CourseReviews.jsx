@@ -34,10 +34,10 @@ import {
 } from './styles/CourseReviews';
 
 /* Child Components */
-import TabContainer from '../../../sharedComponents/display/TabContainer';
+import TabContainer from '../../../components/display/TabContainer';
 import Review from '../common/Review';
-import DropdownList from '../../../sharedComponents/input/DropdownList';
-import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
+import DropdownList from '../../../components/input/DropdownList';
+import LoadingSpinner from '../../../components/display/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';

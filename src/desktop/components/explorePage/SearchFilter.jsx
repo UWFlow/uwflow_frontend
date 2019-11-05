@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
-import RadioButton from '../../../sharedComponents/input/RadioButton';
-import MultiSelectButton from '../../../sharedComponents/input/MultiSelectButton';
-import DiscreteSlider from '../../../sharedComponents/discreteSlider/DiscreteSlider';
-import DropdownList from '../../../sharedComponents/input/DropdownList';
+import RadioButton from '../../../components/input/RadioButton';
+import MultiSelectButton from '../../../components/input/MultiSelectButton';
+import DiscreteSlider from '../../../components/discreteSlider/DiscreteSlider';
+import DropdownList from '../../../components/input/DropdownList';
 
 /* Styled Components */
 import {

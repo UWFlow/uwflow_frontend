@@ -4,9 +4,9 @@ import { PlusSquare } from 'react-feather';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import TabContainer from '../../../sharedComponents/display/TabContainer';
-import Button from '../../../sharedComponents/input/Button';
-import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
+import TabContainer from '../../../components/display/TabContainer';
+import Button from '../../../components/input/Button';
+import LikeCourseToggle from '../../../components/input/LikeCourseToggle';
 
 /* Styled Components */
 import {

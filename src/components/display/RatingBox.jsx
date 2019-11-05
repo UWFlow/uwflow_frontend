@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 /* Selectors */
-import { getWidth } from '../../../data/reducers/BrowserReducer';
+import {
+  getWidth,
+  getIsBrowserDesktop,
+} from '../../data/reducers/BrowserReducer';
 
 /* Styled Components */
 import {
@@ -21,21 +24,41 @@ import {
 } from './styles/RatingBox';
 
 /* Child Components */
-import CircularPercentage from '../../../components/statistics/CircularPercentage';
-import ProgressBar from '../../../components/display/ProgressBar';
+import ProgressBar from './ProgressBar';
+import CircularPercentage from '../statistics/CircularPercentage';
+
+export const RATING_BOX_HEIGHT = 244;
+export const RATING_BOX_WIDTH = 512;
 
 const mapStateToProps = state => ({
   width: getWidth(state),
+  isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const RatingBox = ({ percentages, numRatings, numComments, width }) => {
+/*
+  NOTE DATA FOR "LIKED" MUST BE PERCENTAGES[0]
+*/
+const RatingBox = ({
+  percentages,
+  numRatings,
+  numComments,
+  width,
+  isBrowserDesktop,
+}) => {
   const likedPercent = Math.round(percentages[0].percent * 100);
 
   return (
-    <RatingBoxWrapper>
+    <RatingBoxWrapper
+      ratingBoxHeight={RATING_BOX_HEIGHT}
+      ratingBoxWidth={RATING_BOX_WIDTH}
+    >
       <CircularPercentageWrapper>
         <CircularPercentage
-          height={Math.min(width / 2 - 32, 200)}
+          height={
+            isBrowserDesktop
+              ? RATING_BOX_HEIGHT - 32
+              : Math.min(width / 2 - 32, 200)
+          }
           percent={likedPercent}
           barThickness={16}
           label="liked"
@@ -64,6 +87,7 @@ const RatingBox = ({ percentages, numRatings, numComments, width }) => {
               {numRatings} {numRatings === 1 ? 'rating' : 'ratings'}
             </NumRatingsWrapper>
           </NumCommentsAndRatingsWrapper>
+          {/* Graph button goes here */}
         </ReviewsAndGraphButtonWrapper>
       </RatingBarsColumn>
     </RatingBoxWrapper>
@@ -79,6 +103,7 @@ RatingBox.propTypes = {
   ),
   numRatings: PropTypes.number,
   numComments: PropTypes.number,
+  theme: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(RatingBox);
