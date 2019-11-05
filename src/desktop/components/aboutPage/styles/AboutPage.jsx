@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, Heading2, isMobile } from '../../../../constants/Mixins';
+import { PageContent, Heading2 } from '../../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -23,29 +23,22 @@ export const PageHeader = styled.div`
   margin-bottom: 32px;
 
   ${breakpoint('mobile', 'tablet')`
-    height: 80px;
-    padding:16px;
-    padding-left: 0;
-    margin-bottom: 24px;
+    height: auto;
+    padding: 32px 16px;
   `}
 `;
 
 export const HeaderText = styled.div`
+  ${PageContent}
   ${Heading2}
+  max-width: 720px;
   color: white;
-
-  ${breakpoint('tablet')`
-    ${PageContent}
-    max-width: 720px;
-  `}
 `;
 
 export const PageContentWrapper = styled.div`
-  ${breakpoint('tablet')`
-    ${PageContent}
-    max-width: 720px;
-    margin: auto;
-  `}
+  ${PageContent}
+  max-width: 720px;
+  margin: auto;
 
   ${breakpoint('mobile', 'tablet')`
     padding: 0 16px 16px 16px;

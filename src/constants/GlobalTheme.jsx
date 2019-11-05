@@ -24,4 +24,10 @@ export default {
   facebook: '#3c5a99',
 
   transparent: 'rgba(0,0,0,0)',
+
+  breakpoints: {
+    mobile: 0,
+    tablet: 800,
+    desktop: 1200
+  }
 };
