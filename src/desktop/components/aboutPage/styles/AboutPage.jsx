@@ -32,7 +32,7 @@ export const HeaderText = styled.div`
   ${PageContent}
   ${Heading2}
   max-width: 720px;
-  color: white;
+  color: ${({ theme }) => theme.white};
 `;
 
 export const PageContentWrapper = styled.div`

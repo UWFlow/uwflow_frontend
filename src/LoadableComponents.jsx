@@ -29,7 +29,7 @@ export const LoadableAboutPage = loadable(() =>
 );
 
 export const LoadablePrivacyPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/PrivacyPageSwitch'),
+  import(/* webpackPrefetch: true */ './desktop/components/privacyPage/PrivacyPage'),
 );
 
 export const LoadableTestPage = loadable(() =>
