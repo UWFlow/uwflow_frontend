@@ -28,7 +28,7 @@ import {
 
 /* Child Components */
 import DropdownList from '../../../components/input/DropdownList.jsx';
-import Review from '../common/Review.jsx';
+import Review from '../../../components/display/Review.jsx';
 import LoadingSpinner from '../../../components/display/LoadingSpinner.jsx';
 
 import { splitCourseCode } from '../../../utils/Misc';

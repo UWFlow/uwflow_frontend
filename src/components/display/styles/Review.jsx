@@ -1,12 +1,23 @@
 import styled from 'styled-components';
-import { BoxShadow, Body } from '../../../../constants/Mixins';
+import breakpoint from 'styled-components-breakpoint';
+import { Card, BoxShadow, Body } from '../../../constants/Mixins';
 
 export const ReviewWrapper = styled.div`
   ${BoxShadow}
-  padding: 16px;
   margin-bottom: 32px;
   background-color: ${({ theme }) => theme.light1};
-  align-content: center;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 16px;
+    align-content: center;
+  `}
+
+  ${breakpoint('desktop')`
+    ${Card('24px 32px')}
+    margin-bottom: 32px;
+    justify-content: space-between;
+    flex-direction: row;
+  `}
 `;
 
 export const ReviewPictureAndMetricsRow = styled.div`
@@ -16,8 +27,16 @@ export const ReviewPictureAndMetricsRow = styled.div`
 
 export const ReviewPictureAndUpvotesWrapper = styled.div`
   display: flex;
-  align-items: center;
   margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    align-items: center;
+  `}
+
+  ${breakpoint('desktop')`
+    margin-right: 32px;
+    position: relative;
+  `}
 `;
 
 export const ReviewPicture = styled.div`
@@ -25,11 +44,14 @@ export const ReviewPicture = styled.div`
   height: 64px;
   background-color: ${({ theme }) => theme.dark3};
   border-radius: 32px 32px 32px 32px;
-  margin-right: 16px;
 
-  @media only screen and (max-width: 320px) {
+  ${breakpoint('tablet')`
+    margin-right: 16px;
+  `}
+
+  ${breakpoint('mobile')`
     margin-right: 8px;
-  }
+  `}
 `;
 
 export const ReviewUpvotes = styled.div`
@@ -43,6 +65,17 @@ export const ReviewUpvotes = styled.div`
   color: white;
   border-radius: 20px 20px 20px 20px;
   border: 2px solid ${({ theme }) => theme.light3};
+
+  &:hover {
+    ${({ selected, theme }) =>
+      `background-color:${selected ? theme.primaryDark : theme.light3};`}
+
+  ${breakpoint('desktop')`
+    position: absolute;
+    top: 36px;
+    right: -16px;
+    cursor: pointer;
+  `}
 `;
 
 export const ReviewTextWrapper = styled.div`
@@ -64,8 +97,8 @@ export const ReviewAuthor = styled.div`
 `;
 
 export const ReviewMetricsWrapper = styled.table`
-  min-width: 158px;
-  margin-left: 8px;
+  min-width: 168px;
+  margin-left: 16px;
 `;
 
 export const ReviewMetricsBody = styled.tbody``;
@@ -79,6 +112,8 @@ export const SingleMetricSquares = styled.td`
 
 export const SingleMetricLabel = styled.td`
   ${Body}
+  color: ${({ theme }) => theme.dark2};
+  padding-left: 8px;
   vertical-align: top;
 `;
 

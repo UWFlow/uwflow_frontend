@@ -35,7 +35,7 @@ import {
 
 /* Child Components */
 import TabContainer from '../../../components/display/TabContainer';
-import Review from '../common/Review';
+import Review from '../../../components/display/Review';
 import DropdownList from '../../../components/input/DropdownList';
 import LoadingSpinner from '../../../components/display/LoadingSpinner';
 

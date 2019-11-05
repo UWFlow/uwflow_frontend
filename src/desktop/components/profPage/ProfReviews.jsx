@@ -29,7 +29,7 @@ import {
 } from './styles/ProfReviews';
 
 /* Child Components */
-import Review from '../common/Review';
+import Review from '../../../components/display/Review';
 import DropdownList from '../../../components/input/DropdownList';
 import LoadingSpinner from '../../../components/display/LoadingSpinner';
 

@@ -29,7 +29,7 @@ import {
 
 /* Child Components */
 import CollapseableContainer from '../../../components/display/CollapseableContainer';
-import Review from '../common/Review';
+import Review from '../../../components/display/Review';
 import DropdownList from '../../../components/input/DropdownList';
 import LoadingSpinner from '../../../components/display/LoadingSpinner';
 
