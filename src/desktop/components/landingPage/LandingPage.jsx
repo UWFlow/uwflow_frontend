@@ -20,9 +20,9 @@ import AuthForm from '../../../auth/AuthForm';
 import Background from '../../../img/background.png';
 
 import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
-import SearchBar from '../../../sharedComponents/navigation/SearchBar';
-import FlowLogo from '../../../sharedComponents/navigation/FlowLogo';
-import ProfileDropdown from '../../../sharedComponents/navigation/ProfileDropdown';
+import SearchBar from '../../../components/navigation/SearchBar';
+import FlowLogo from '../../../components/navigation/FlowLogo';
+import ProfileDropdown from '../../../components/navigation/ProfileDropdown';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state)

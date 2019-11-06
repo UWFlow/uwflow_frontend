@@ -11,9 +11,9 @@ import {
 } from './styles/LandingPage';
 
 /* Child Components */
-import SearchBar from '../../../sharedComponents/navigation/SearchBar';
-import ProfileDropdown from '../../../sharedComponents/navigation/ProfileDropdown';
-import FlowLogo from '../../../sharedComponents/navigation/FlowLogo';
+import SearchBar from '../../../components/navigation/SearchBar';
+import ProfileDropdown from '../../../components/navigation/ProfileDropdown';
+import FlowLogo from '../../../components/navigation/FlowLogo';
 
 const LandingPage = () => {
   return (

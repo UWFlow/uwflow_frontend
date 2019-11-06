@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import TabContainer from '../../../sharedComponents/display/TabContainer';
-import Table from '../../../sharedComponents/display/Table';
+import TabContainer from '../../../components/display/TabContainer';
+import Table from '../../../components/display/Table';
 import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 /* Styled Components */

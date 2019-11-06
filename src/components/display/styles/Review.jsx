@@ -1,20 +1,42 @@
 import styled from 'styled-components';
-import { Card, BoxShadow, Body } from '../../../../constants/Mixins';
+import breakpoint from 'styled-components-breakpoint';
+import { Card, BoxShadow, Body } from '../../../constants/Mixins';
 
 export const ReviewWrapper = styled.div`
-  ${Card('24px 32px')}
   ${BoxShadow}
   margin-bottom: 32px;
   background-color: ${({ theme }) => theme.light1};
-  justify-content: space-between;
-  flex-direction: row;
+
+  ${breakpoint('mobile', 'desktop')`
+    padding: 16px;
+    align-content: center;
+  `}
+
+  ${breakpoint('desktop')`
+    ${Card('24px 32px')}
+    margin-bottom: 32px;
+    justify-content: space-between;
+    flex-direction: row;
+  `}
 `;
 
-export const ReviewPictureWrapper = styled.div`
+export const ReviewPictureAndMetricsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const ReviewPictureAndUpvotesWrapper = styled.div`
   display: flex;
   margin-bottom: 32px;
-  margin-right: 32px;
-  position: relative;
+
+  ${breakpoint('mobile', 'desktop')`
+    align-items: center;
+  `}
+
+  ${breakpoint('desktop')`
+    margin-right: 32px;
+    position: relative;
+  `}
 `;
 
 export const ReviewPicture = styled.div`
@@ -22,12 +44,17 @@ export const ReviewPicture = styled.div`
   height: 64px;
   background-color: ${({ theme }) => theme.dark3};
   border-radius: 32px 32px 32px 32px;
+
+  ${breakpoint('tablet', 'desktop')`
+    margin-right: 16px;
+  `}
+
+  ${breakpoint('mobile', 'tablet')`
+    margin-right: 8px;
+  `}
 `;
 
 export const ReviewUpvotes = styled.div`
-  position: absolute;
-  top: 36px;
-  right: -16px;
   width: 40px;
   height: 40px;
   ${({ selected, theme }) =>
@@ -37,13 +64,18 @@ export const ReviewUpvotes = styled.div`
   align-items: center;
   color: white;
   border-radius: 20px 20px 20px 20px;
-  cursor: pointer;
   border: 2px solid ${({ theme }) => theme.light3};
 
   &:hover {
     ${({ selected, theme }) =>
-      `background-color:${selected ? theme.primaryDark : theme.light3};`
-  }
+      `background-color:${selected ? theme.primaryDark : theme.light3};`}
+
+  ${breakpoint('desktop')`
+    position: absolute;
+    top: 36px;
+    right: -16px;
+    cursor: pointer;
+  `}
 `;
 
 export const ReviewTextWrapper = styled.div`
@@ -80,7 +112,7 @@ export const SingleMetricSquares = styled.td`
 
 export const SingleMetricLabel = styled.td`
   ${Body}
-  color: ${({theme}) => theme.dark2};
+  color: ${({ theme }) => theme.dark2};
   padding-left: 8px;
   vertical-align: top;
 `;

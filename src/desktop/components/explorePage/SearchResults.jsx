@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-import Table from '../../../sharedComponents/display/Table';
-import TabContainer from '../../../sharedComponents/display/TabContainer';
+import Table from '../../../components/display/Table';
+import TabContainer from '../../../components/display/TabContainer';
 import { courseColumns, profColumns } from './ExploreTableData';
 
 import { getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';

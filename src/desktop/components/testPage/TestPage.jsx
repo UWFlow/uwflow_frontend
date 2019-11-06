@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* Child Components */
-import Textbox from '../../../sharedComponents/input/Textbox';
-import TabContainer from '../../../sharedComponents/display/TabContainer';
-import Button from '../../../sharedComponents/input/Button';
-import ProgressBar from '../../../sharedComponents/display/ProgressBar';
+import Textbox from '../../../components/input/Textbox';
+import TabContainer from '../../../components/display/TabContainer';
+import Button from '../../../components/input/Button';
+import ProgressBar from '../../../components/display/ProgressBar';
 import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
 import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 

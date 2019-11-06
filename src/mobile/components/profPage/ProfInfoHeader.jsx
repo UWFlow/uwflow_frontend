@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import RatingBox from '../common/RatingBox';
+import RatingBox from '../../../components/display/RatingBox';
 
 /* Styled Components */
 import {

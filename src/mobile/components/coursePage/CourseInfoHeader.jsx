@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import RatingBox from '../common/RatingBox';
-import ShortlistStar from '../../../sharedComponents/input/ShortlistStar';
+import RatingBox from '../../../components/display/RatingBox';
+import ShortlistStar from '../../../components/input/ShortlistStar';
 
 /* Styled Components */
 import {

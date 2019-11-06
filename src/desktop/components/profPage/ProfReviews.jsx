@@ -29,9 +29,9 @@ import {
 } from './styles/ProfReviews';
 
 /* Child Components */
-import Review from '../common/Review';
-import DropdownList from '../../../sharedComponents/input/DropdownList';
-import LoadingSpinner from '../../../sharedComponents/display/LoadingSpinner';
+import Review from '../../../components/display/Review';
+import DropdownList from '../../../components/input/DropdownList';
+import LoadingSpinner from '../../../components/display/LoadingSpinner';
 
 /* GraphQL Queries */
 import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';

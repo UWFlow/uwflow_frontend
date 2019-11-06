@@ -18,9 +18,7 @@ const CollapseableContainer = ({
   return (
     <ContainerWrapper>
       <HeaderWrapper>
-        <HeaderTitle centerHeader={centerHeader}>
-          {title}
-        </HeaderTitle>
+        <HeaderTitle centerHeader={centerHeader}>{title}</HeaderTitle>
         <HeaderChevronBox onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>

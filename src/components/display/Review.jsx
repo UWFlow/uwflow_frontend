@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
+
+/* Selectors */
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* Styled Components */
 import {
@@ -13,16 +17,20 @@ import {
   ReviewPictureAndUpvotesWrapper,
   ReviewPicture,
   ReviewUpvotes,
-  UpvoteNumber,
   ReviewText,
   ReviewAuthor,
+  UpvoteNumber,
   SingleMetricWrapper,
   SingleMetricSquares,
   SingleMetricLabel,
 } from './styles/Review';
 
 /* Child Components */
-import BubbleRatings from '../../../sharedComponents/input/BubbleRatings';
+import BubbleRatings from '../input/BubbleRatings';
+
+const mapStateToProps = state => ({
+  isBrowserDesktop: getIsBrowserDesktop(state),
+});
 
 const MetricIfExists = (metrics, metric) => {
   if (metrics[metric] !== null && metrics[metric] !== undefined) {
@@ -53,7 +61,14 @@ const MetricIfExists = (metrics, metric) => {
   }
 };
 
-const Review = ({ upvotes, review, reviewer, metrics, theme }) => {
+const Review = ({
+  upvotes,
+  review,
+  reviewer,
+  metrics,
+  theme,
+  isBrowserDesktop,
+}) => {
   const userUpvoted = true;
   return (
     <ReviewWrapper>
@@ -71,6 +86,14 @@ const Review = ({ upvotes, review, reviewer, metrics, theme }) => {
             </UpvoteNumber>
           </ReviewUpvotes>
         </ReviewPictureAndUpvotesWrapper>
+        {isBrowserDesktop && (
+          <ReviewTextWrapper>
+            <ReviewText>{review}</ReviewText>
+            <ReviewAuthor>
+              -{reviewer.full_name}, a {review.program} student
+            </ReviewAuthor>
+          </ReviewTextWrapper>
+        )}
         <ReviewMetricsWrapper>
           <ReviewMetricsBody>
             {MetricIfExists(metrics, 'clear')}
@@ -81,12 +104,14 @@ const Review = ({ upvotes, review, reviewer, metrics, theme }) => {
           </ReviewMetricsBody>
         </ReviewMetricsWrapper>
       </ReviewPictureAndMetricsRow>
-      <ReviewTextWrapper>
-        <ReviewText>{review}</ReviewText>
-        <ReviewAuthor>
-          -{reviewer.full_name}, a {review.program} student
-        </ReviewAuthor>
-      </ReviewTextWrapper>
+      {!isBrowserDesktop && (
+        <ReviewTextWrapper>
+          <ReviewText>{review}</ReviewText>
+          <ReviewAuthor>
+            -{reviewer.full_name}, a {review.program} student
+          </ReviewAuthor>
+        </ReviewTextWrapper>
+      )}
     </ReviewWrapper>
   );
 };
@@ -98,7 +123,6 @@ Review.propTypes = {
     name: PropTypes.string,
     program: PropTypes.string,
   }),
-  prof: PropTypes.string,
   metrics: PropTypes.shape({
     useful: PropTypes.number, //not all these metrics have to exist, we should only display the ones that do
     easy: PropTypes.number, //for example course review only has useful, easy liked,
@@ -108,4 +132,4 @@ Review.propTypes = {
   }),
 };
 
-export default withTheme(Review);
+export default withTheme(connect(mapStateToProps)(Review));

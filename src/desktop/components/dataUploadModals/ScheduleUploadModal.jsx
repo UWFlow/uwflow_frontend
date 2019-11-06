@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
+import ModalHOC from '../../../components/modal/ModalHOC';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';

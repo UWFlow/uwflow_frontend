@@ -7,7 +7,7 @@ import {
   PageContentWrapper,
 } from './styles/AboutPage';
 
-import AboutContent from '../../../sharedComponents/aboutPage/AboutContent';
+import AboutContent from '../../../components/aboutPage/AboutContent';
 
 const AboutPage = () => (
   <PageWrapper>

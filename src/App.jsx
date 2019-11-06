@@ -25,9 +25,9 @@ import {
   LoadableNotFoundPage,
   LoadablePrivacyPage,
 } from './LoadableComponents';
-import ModalRoot from './sharedComponents/modal/ModalRoot';
-import Navbar from './sharedComponents/navigation/Navbar';
-import Footer from './sharedComponents/navigation/Footer';
+import ModalRoot from './components/modal/ModalRoot';
+import Navbar from './components/navigation/Navbar';
+import Footer from './components/navigation/Footer';
 
 const App = () => {
   return (

@@ -7,10 +7,10 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../../sharedComponents/coursePage/CourseReviewCourseBox';
-import Button from '../../../sharedComponents/input/Button';
-import ModalHOC from '../../../sharedComponents/modal/ModalHOC';
-import LikeCourseToggle from '../../../sharedComponents/input/LikeCourseToggle';
+import CourseReviewCourseBox from '../../../components/coursePage/CourseReviewCourseBox';
+import Button from '../../../components/input/Button';
+import ModalHOC from '../../../components/modal/ModalHOC';
+import LikeCourseToggle from '../../../components/input/LikeCourseToggle';
 import AuthModal from '../../../auth/AuthModal';
 
 /* Styled Components */
