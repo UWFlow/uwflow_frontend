@@ -7,7 +7,7 @@ import {
   InstructorLink,
   ColorBar,
 } from './styles/CourseSchedule';
-import { getProfPageRoute } from '../../../Routes';
+import { getProfPageRoute } from '../../Routes';
 
 export const LEC = 'LEC';
 export const LAB = 'LAB';

@@ -1,90 +1,84 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import CourseHeader from '../../../img/course_v1.svg';
 
-/* Styled Components */
+/* Mixins */
 import {
-  CourseInfoHeaderWrapper,
-  CourseCodeAndNameSection,
-  CourseDescriptionSection,
-  CourseCodeAndNameWrapper,
-  CourseCode,
-  CourseName,
-  Description,
-  RatingsSection,
-  CourseCodeAndStar,
-  StarAlignmentWrapper,
-} from './styles/CourseInfoHeader';
+  Heading1,
+  Heading2,
+  Body,
+  PageContent,
+} from '../../../constants/Mixins';
 
-/* Child Components */
-import RatingBox, {
-  RATING_BOX_WIDTH,
-} from '../../../components/display/RatingBox';
-import ShortlistStar from '../../../components/input/ShortlistStar';
+export const CourseInfoHeaderWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 32px;
+  display: flex;
+  background-color: ${({ theme }) => theme.white};
+  flex-direction: column;
+  position: relative;
+`;
 
-import { splitCourseCode } from '../../../utils/Misc';
-import { isLoggedIn } from '../../../utils/Auth';
+export const CourseCodeAndNameSection = styled.div`
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: ${({ theme }) => theme.primaryExtraDark};
+  background: url(${CourseHeader});
+  background-size: cover;
+  position: relative;
+`;
 
-const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
-  const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
-  const { count, text_count } = course.course_reviews_aggregate.aggregate;
-  const [isStarClicked, setIsStarClicked] = useState(shortlisted);
+export const CourseCodeAndNameWrapper = styled.div`
+  ${PageContent}
+  margin: auto;
+  margin-bottom: 48px;
+`;
 
-  const onStarClick = () => {
-    isLoggedIn() ? setIsStarClicked(!isStarClicked) : setAuthModalOpen(true);
-  };
+export const CourseDescriptionSection = styled.div`
+  position: relative;
+  ${PageContent}
+  padding-bottom: 48px;
+  margin: auto;
+`;
 
-  return (
-    <CourseInfoHeaderWrapper>
-      <CourseCodeAndNameSection>
-        <CourseCodeAndNameWrapper>
-          <CourseCodeAndStar>
-            <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
-              {splitCourseCode(course.code)}
-            </CourseCode>
-            <StarAlignmentWrapper>
-              <ShortlistStar
-                size={36}
-                checked={isStarClicked}
-                onClick={onStarClick}
-              />
-            </StarAlignmentWrapper>
-          </CourseCodeAndStar>
-          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>
-            {course.name}
-          </CourseName>
-        </CourseCodeAndNameWrapper>
-      </CourseCodeAndNameSection>
-      <CourseDescriptionSection>
-        <RatingsSection>
-          <RatingBox
-            numRatings={count}
-            numComments={text_count}
-            percentages={[
-              {
-                displayName: 'Likes',
-                percent: liked,
-              },
-              {
-                displayName: 'Useful',
-                percent: useful / 5,
-              },
-              {
-                displayName: 'Easy',
-                percent: easy / 5,
-              },
-            ]}
-          />
-        </RatingsSection>
-        <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          {course.description}
-        </Description>
-      </CourseDescriptionSection>
-    </CourseInfoHeaderWrapper>
-  );
-};
+export const CourseCode = styled.div`
+  color: ${({ theme }) => theme.white};
+  ${Heading1};
+  text-transform: uppercase;
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+`;
 
-CourseInfoHeader.propTypes = {
-  course: PropTypes.object.isRequired,
-};
+export const CourseName = styled.div`
+  color: ${({ theme }) => theme.light1};
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+  ${Heading2};
+  font-weight: 400;
+`;
 
-export default CourseInfoHeader;
+export const Description = styled.div`
+  ${Body}
+  margin-top: 48px;
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+  line-height: 1.5;
+  color: ${({ theme }) => theme.dark1};
+`;
+
+export const RatingsSection = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 32px;
+`;
+
+export const CourseCodeAndStar = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+`;
+
+export const StarAlignmentWrapper = styled.div`
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+`;

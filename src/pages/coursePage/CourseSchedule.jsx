@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import TabContainer from '../../../components/display/TabContainer';
-import Table from '../../../components/display/Table';
+import TabContainer from '../../components/display/TabContainer';
+import Table from '../../components/display/Table';
 import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 /* Styled Components */
 import { CourseScheduleWrapper } from './styles/CourseSchedule';
 
 /* GraphQL Queries */
-import { termCodeToDate } from '../../../utils/Misc';
+import { termCodeToDate } from '../../utils/Misc';
 
 const secsToTime = secs => {
   const t = Math.floor(secs / 3600) % 12;

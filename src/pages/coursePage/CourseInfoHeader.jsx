@@ -21,8 +21,8 @@ import RatingBox, {
 } from '../../components/display/RatingBox';
 import ShortlistStar from '../../components/input/ShortlistStar';
 
-import { splitCourseCode } from '../../../utils/Misc';
-import { isLoggedIn } from '../../../utils/Auth';
+import { splitCourseCode } from '../../utils/Misc';
+import { isLoggedIn } from '../../utils/Auth';
 
 const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
   const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
