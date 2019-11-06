@@ -9,7 +9,7 @@ import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
 import { getIsLoggedIn } from '../data/reducers/AuthReducer';
 
 /* Child Components */
-import DesktopCoursePage from '../desktop/components/coursePage/CoursePage';
+import DesktopCoursePage from '../pages/coursePage/CoursePage';
 import MobileCoursePage from '../mobile/components/coursePage/CoursePage';
 import LoadingSpinner from '../components/display/LoadingSpinner';
 import NotFoundPage from '../pages/notFoundPage/NotFoundPage';

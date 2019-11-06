@@ -4,13 +4,13 @@ import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 
 /* Constants */
-import { MIN_REVIEWS_SHOWN } from '../../../constants/PageConstants';
+import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
 /* Custom Hooks */
 import useCourseReviewsReducer, {
   UPDATE_REVIEW_DATA,
   SORT_COURSE_REVIEWS_BY_PROF,
-} from '../../../data/custom_hooks/UseCourseReviewsReducer';
+} from '../../data/custom_hooks/UseCourseReviewsReducer';
 
 /* Styled Components */
 import {
@@ -34,14 +34,14 @@ import {
 } from './styles/CourseReviews';
 
 /* Child Components */
-import TabContainer from '../../../components/display/TabContainer';
-import Review from '../../../components/display/Review';
-import DropdownList from '../../../components/input/DropdownList';
-import LoadingSpinner from '../../../components/display/LoadingSpinner';
+import TabContainer from '../../components/display/TabContainer';
+import Review from '../../components/display/Review';
+import DropdownList from '../../components/input/DropdownList';
+import LoadingSpinner from '../../components/display/LoadingSpinner';
 
 /* GraphQL Queries */
-import { GET_COURSE_REVIEW } from '../../../graphql/queries/course/CourseReview.jsx';
-import { getProfPageRoute } from '../../../Routes';
+import { GET_COURSE_REVIEW } from '../../graphql/queries/course/CourseReview.jsx';
+import { getProfPageRoute } from '../../Routes';
 
 const CourseCourseReviews = ({
   reviews,

@@ -3,7 +3,7 @@ import React from 'react';
 /* Styled Components */
 import { ExtraInfoBoxWrapper } from './styles/CoursePage';
 
-import Prereqs from '../../../components/coursePage/Prereqs';
+import Prereqs from '../../components/coursePage/Prereqs';
 
 const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
   return (

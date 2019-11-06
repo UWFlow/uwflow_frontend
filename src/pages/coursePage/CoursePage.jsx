@@ -7,11 +7,11 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../../components/coursePage/CourseReviewCourseBox';
-import Button from '../../../components/input/Button';
-import ModalHOC from '../../../components/modal/ModalHOC';
-import LikeCourseToggle from '../../../components/input/LikeCourseToggle';
-import AuthModal from '../../../auth/AuthModal';
+import CourseReviewCourseBox from '../../components/coursePage/CourseReviewCourseBox';
+import Button from '../../components/input/Button';
+import ModalHOC from '../../components/modal/ModalHOC';
+import LikeCourseToggle from '../../components/input/LikeCourseToggle';
+import AuthModal from '../../auth/AuthModal';
 
 /* Styled Components */
 import {
@@ -24,8 +24,8 @@ import {
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
-import { splitCourseCode } from '../../../utils/Misc';
-import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
+import { splitCourseCode } from '../../utils/Misc';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),

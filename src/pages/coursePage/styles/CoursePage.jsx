@@ -1,115 +1,66 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { PageContent } from '../../../constants/Mixins';
 
-/* Child Components */
-import CourseInfoHeader from './CourseInfoHeader';
-import CourseSchedule from './CourseSchedule';
-import ExtraInfoBox from './ExtraInfoBox';
-import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../../components/coursePage/CourseReviewCourseBox';
-import Button from '../../../components/input/Button';
-import ModalHOC from '../../../components/modal/ModalHOC';
-import LikeCourseToggle from '../../../components/input/LikeCourseToggle';
-import AuthModal from '../../../auth/AuthModal';
-
-/* Styled Components */
+/* Mixins */
 import {
-  CoursePageWrapper,
-  ColumnWrapper,
-  Column1,
-  Column2,
-  CourseReviewQuestionBox,
-  CourseQuestionTextAndToggle,
-  CourseReviewQuestionText,
-} from './styles/CoursePage';
+  Card,
+  WideColumn,
+  ThinColumn,
+  BoxShadow,
+  Heading3,
+  Heading4,
+} from '../../../constants/Mixins';
 
-import { splitCourseCode } from '../../../utils/Misc';
-import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
+export const CoursePageWrapper = styled.div`
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
-const mapStateToProps = state => ({
-  isLoggedIn: getIsLoggedIn(state),
-});
+export const ColumnWrapper = styled.div`
+  ${PageContent}
+  margin: auto;
+  display: flex;
+`;
 
-const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
-  const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+export const Column1 = styled.div`
+  ${WideColumn}
+`;
 
-  const handleReviewClick = () => {
-    isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
-  };
-  console.log(course);
-  return (
-    <>
-      <CourseInfoHeader
-        course={course}
-        shortlisted={shortlisted}
-        setAuthModalOpen={setAuthModalOpen}
-      />
-      <ColumnWrapper>
-        <Column1>
-          <CourseSchedule sections={course.sections} />
-          <CourseReviewQuestionBox>
-            <CourseQuestionTextAndToggle>
-              <CourseReviewQuestionText>
-                What do you think of {splitCourseCode(course.code)}?
-              </CourseReviewQuestionText>
-              <LikeCourseToggle liked={true} />
-            </CourseQuestionTextAndToggle>
-            <Button
-              width={200}
-              padding="16px 24px"
-              handleClick={handleReviewClick}
-            >
-              {userReview ? 'Edit your review' : 'Add your review'}
-            </Button>
-          </CourseReviewQuestionBox>
-          <ModalHOC
-            isModalOpen={reviewModalOpen}
-            onCloseModal={() => setReviewModalOpen(false)}
-          >
-            <CourseReviewCourseBox
-              courseIDList={[course.id]}
-              reviewData={userReview}
-              onCancel={() => setReviewModalOpen(false)}
-            />
-          </ModalHOC>
-          <CourseReviews courseID={course.id} />
-        </Column1>
-        <Column2>
-          <ExtraInfoBox
-            courseCode={course.code}
-            prereqs={course.prerequisites}
-            postreqs={course.postrequisites}
-          />
-        </Column2>
-      </ColumnWrapper>
-      <AuthModal
-        isModalOpen={authModalOpen}
-        onCloseModal={() => setAuthModalOpen(false)}
-        width={400}
-      />
-    </>
-  );
-};
+export const Column2 = styled.div`
+  ${ThinColumn}
+`;
 
-const CoursePage = ({ data, isLoggedIn }) => (
-  <CoursePageWrapper>
-    <CoursePageContent
-      course={data.course[0]}
-      shortlisted={isLoggedIn && data.user_shortlist.length > 0}
-      userReview={
-        isLoggedIn && data.course_review.length > 0
-          ? data.course_review[0]
-          : null
-      }
-      isLoggedIn={isLoggedIn}
-    />
-  </CoursePageWrapper>
-);
+export const ExtraInfoBoxWrapper = styled.div`
+  ${Card('32px 24px')}
+  ${BoxShadow}
+  ${Heading4}
+`;
 
-CoursePage.propTypes = {
-  data: PropTypes.object,
-};
+export const CourseReviewQuestionBox = styled.div`
+  ${Card('24px')}
+  ${BoxShadow}
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+`;
 
-export default connect(mapStateToProps)(CoursePage);
+export const CourseQuestionTextAndToggle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
+`;
+
+export const CourseReviewQuestionText = styled.div`
+  ${Heading3}
+  margin-right: 24px;
+`;
+
+export const AddReviewButton = styled.div`
+  background-color: ${({ theme }) => theme.accent} ${Heading3};
+  padding: 8px 24px 8px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+`;
