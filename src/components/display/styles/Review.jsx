@@ -7,7 +7,7 @@ export const ReviewWrapper = styled.div`
   margin-bottom: 32px;
   background-color: ${({ theme }) => theme.light1};
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('mobile', 'desktop')`
     padding: 16px;
     align-content: center;
   `}
@@ -29,7 +29,7 @@ export const ReviewPictureAndUpvotesWrapper = styled.div`
   display: flex;
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('mobile', 'desktop')`
     align-items: center;
   `}
 
@@ -45,11 +45,11 @@ export const ReviewPicture = styled.div`
   background-color: ${({ theme }) => theme.dark3};
   border-radius: 32px 32px 32px 32px;
 
-  ${breakpoint('tablet')`
+  ${breakpoint('tablet', 'desktop')`
     margin-right: 16px;
   `}
 
-  ${breakpoint('mobile')`
+  ${breakpoint('mobile', 'tablet')`
     margin-right: 8px;
   `}
 `;
