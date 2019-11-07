@@ -39,7 +39,7 @@ export const StarAlignmentWrapper = styled.div`
 
 export const CourseCode = styled.div`
   ${Heading1}
-  color: ${({ theme }) => theme.white};;
+  color: white;
   margin-right: 16px;
 `;
 
