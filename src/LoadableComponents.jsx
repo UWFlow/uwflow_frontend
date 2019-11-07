@@ -9,7 +9,7 @@ export const LoadableProfilePage = loadable(() =>
 );
 
 export const LoadableCoursePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/CoursePageSwitch'),
+  import(/* webpackPrefetch: true */ './pages/coursePage/CoursePage'),
 );
 
 export const LoadableProfPage = loadable(() =>
@@ -25,11 +25,15 @@ export const LoadableNotFoundPage = loadable(() =>
 );
 
 export const LoadableAboutPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/aboutPage/AboutPage'),
+  import(
+    /* webpackPrefetch: true */ './desktop/components/aboutPage/AboutPage'
+  ),
 );
 
 export const LoadablePrivacyPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/privacyPage/PrivacyPage'),
+  import(
+    /* webpackPrefetch: true */ './desktop/components/privacyPage/PrivacyPage'
+  ),
 );
 
 export const LoadableTestPage = loadable(() =>
