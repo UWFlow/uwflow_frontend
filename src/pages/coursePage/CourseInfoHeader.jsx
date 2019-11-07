@@ -6,7 +6,6 @@ import {
   CourseInfoHeaderWrapper,
   CourseCodeAndNameSection,
   CourseDescriptionSection,
-  CourseCodeAndNameWrapper,
   CourseCode,
   CourseName,
   Description,
@@ -36,23 +35,19 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
-        <CourseCodeAndNameWrapper>
-          <CourseCodeAndStar>
-            <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
-              {splitCourseCode(course.code)}
-            </CourseCode>
-            <StarAlignmentWrapper>
-              <ShortlistStar
-                size={36}
-                checked={isStarClicked}
-                onClick={onStarClick}
-              />
-            </StarAlignmentWrapper>
-          </CourseCodeAndStar>
-          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>
-            {course.name}
-          </CourseName>
-        </CourseCodeAndNameWrapper>
+        <CourseCodeAndStar>
+          <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
+            {splitCourseCode(course.code)}
+          </CourseCode>
+          <StarAlignmentWrapper>
+            <ShortlistStar
+              size={36}
+              checked={isStarClicked}
+              onClick={onStarClick}
+            />
+          </StarAlignmentWrapper>
+        </CourseCodeAndStar>
+        <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
         <RatingsSection>

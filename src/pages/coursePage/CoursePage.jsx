@@ -26,12 +26,20 @@ import {
 
 import { splitCourseCode } from '../../utils/Misc';
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
+  isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
+const CoursePageContent = ({
+  course,
+  shortlisted,
+  userReview,
+  isLoggedIn,
+  isBrowserDesktop,
+}) => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
@@ -48,32 +56,36 @@ const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
       />
       <ColumnWrapper>
         <Column1>
-          <CourseSchedule sections={course.sections} />
-          <CourseReviewQuestionBox>
-            <CourseQuestionTextAndToggle>
-              <CourseReviewQuestionText>
-                What do you think of {splitCourseCode(course.code)}?
-              </CourseReviewQuestionText>
-              <LikeCourseToggle liked={true} />
-            </CourseQuestionTextAndToggle>
-            <Button
-              width={200}
-              padding="16px 24px"
-              handleClick={handleReviewClick}
-            >
-              {userReview ? 'Edit your review' : 'Add your review'}
-            </Button>
-          </CourseReviewQuestionBox>
-          <ModalHOC
-            isModalOpen={reviewModalOpen}
-            onCloseModal={() => setReviewModalOpen(false)}
-          >
-            <CourseReviewCourseBox
-              courseIDList={[course.id]}
-              reviewData={userReview}
-              onCancel={() => setReviewModalOpen(false)}
-            />
-          </ModalHOC>
+          {isBrowserDesktop && (
+            <>
+              <CourseSchedule sections={course.sections} />
+              <CourseReviewQuestionBox>
+                <CourseQuestionTextAndToggle>
+                  <CourseReviewQuestionText>
+                    What do you think of {splitCourseCode(course.code)}?
+                  </CourseReviewQuestionText>
+                  <LikeCourseToggle liked={true} />
+                </CourseQuestionTextAndToggle>
+                <Button
+                  width={200}
+                  padding="16px 24px"
+                  handleClick={handleReviewClick}
+                >
+                  {userReview ? 'Edit your review' : 'Add your review'}
+                </Button>
+              </CourseReviewQuestionBox>
+              <ModalHOC
+                isModalOpen={reviewModalOpen}
+                onCloseModal={() => setReviewModalOpen(false)}
+              >
+                <CourseReviewCourseBox
+                  courseIDList={[course.id]}
+                  reviewData={userReview}
+                  onCancel={() => setReviewModalOpen(false)}
+                />
+              </ModalHOC>
+            </>
+          )}
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
