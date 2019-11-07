@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { useQuery } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -12,6 +14,12 @@ import Button from '../../components/input/Button';
 import ModalHOC from '../../components/modal/ModalHOC';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
 import AuthModal from '../../auth/AuthModal';
+import LoadingSpinner from '../../components/display/LoadingSpinner';
+import NotFoundPage from '../../desktop/components/notFoundPage/NotFoundPage';
+
+/* Queries */
+import { buildCourseQuery } from '../../graphql/queries/course/Course';
+import { getUserId } from '../../utils/Auth';
 
 /* Styled Components */
 import {
@@ -105,23 +113,36 @@ const CoursePageContent = ({
   );
 };
 
-const CoursePage = ({ data, isLoggedIn }) => (
-  <CoursePageWrapper>
-    <CoursePageContent
-      course={data.course[0]}
-      shortlisted={isLoggedIn && data.user_shortlist.length > 0}
-      userReview={
-        isLoggedIn && data.course_review.length > 0
-          ? data.course_review[0]
-          : null
-      }
-      isLoggedIn={isLoggedIn}
-    />
-  </CoursePageWrapper>
-);
+const CoursePage = ({ match, isLoggedIn }) => {
+  const courseCode = match.params.courseCode.toLowerCase();
+  const query = buildCourseQuery(isLoggedIn, getUserId());
+
+  const { loading, error, data } = useQuery(query, {
+    variables: { code: courseCode },
+  });
+
+  return loading ? (
+    <LoadingSpinner />
+  ) : error || !data || !data.course || data.course.length === 0 ? (
+    <NotFoundPage text="Sorry, we couldn't find that course!" />
+  ) : (
+    <CoursePageWrapper>
+      <CoursePageContent
+        course={data.course[0]}
+        shortlisted={isLoggedIn && data.user_shortlist.length > 0}
+        userReview={
+          isLoggedIn && data.course_review.length > 0
+            ? data.course_review[0]
+            : null
+        }
+        isLoggedIn={isLoggedIn}
+      />
+    </CoursePageWrapper>
+  );
+};
 
 CoursePage.propTypes = {
   data: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(CoursePage);
+export default withRouter(connect(mapStateToProps)(CoursePage));
