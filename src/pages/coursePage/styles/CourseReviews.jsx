@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 import {
   Card,
@@ -9,9 +10,7 @@ import {
   BoxShadow,
 } from '../../../constants/Mixins';
 
-export const CourseReviewWrapper = styled.div``;
-
-export const ReviewWithButtonWrapper = styled.div`
+export const CourseReviewWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -21,28 +20,31 @@ export const CourseCourseReviewsWrapper = styled.div`
   flex-direction: column;
 `;
 
-export const CourseProfReviewsWrapper = styled.div`
-  padding-top: 12px;
-`;
-
-export const ReviewsForSingleProfWrapper = styled.div`
-  ${Card('0')}
-  ${BoxShadow}
-  margin-bottom: 32px;
-`;
-
 export const ReviewListWrapper = styled.div`
-  padding: 32px 32px 0 32px;
+  ${breakpoint('tablet')`
+    padding: 32px 32px 0 32px;
+  `}
 `;
 
 export const ReviewsOptionsWrapper = styled.div`
   display: flex;
+
+  ${breakpoint('mobile', 'tablet')`
+    flex-direction: column;
+    margin: 16px;
+  `}
 `;
 
 export const DropdownPanelWrapper = styled.div`
   display: flex;
   margin: 0 32px 32px 0;
   align-items: center;
+
+  ${breakpoint('mobile', 'tablet')`
+    :not(first-child) {
+      margin: 0 32px 24px 0;
+    }
+  `}
 `;
 
 export const ProfDropdownPanelWrapper = styled.div`
@@ -53,6 +55,16 @@ export const ProfDropdownPanelWrapper = styled.div`
 
 export const DropdownTableText = styled.div`
   ${Heading4}
+`;
+
+export const CourseProfReviewsWrapper = styled.div`
+  padding-top: 12px;
+`;
+
+export const ReviewsForSingleProfWrapper = styled.div`
+  ${Card('0')}
+  ${BoxShadow}
+  margin-bottom: 32px;
 `;
 
 export const ProfHeader = styled.div`

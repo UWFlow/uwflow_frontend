@@ -15,7 +15,6 @@ import useCourseReviewsReducer, {
 /* Styled Components */
 import {
   CourseReviewWrapper,
-  ReviewWithButtonWrapper,
   CourseCourseReviewsWrapper,
   CourseProfReviewsWrapper,
   ReviewsForSingleProfWrapper,

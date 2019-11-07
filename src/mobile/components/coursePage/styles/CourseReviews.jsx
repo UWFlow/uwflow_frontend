@@ -19,11 +19,19 @@ export const ReviewsOptionsWrapper = styled.div`
   flex-direction: column;
   margin: 16px;
 `;
+
 export const DropdownPanelWrapper = styled.div`
   display: flex;
   :not(first-child) {
     margin-top: 24px;
   }
+`;
+
+export const ProfDropdownPanelWrapper = styled.div`
+  display: flex;
+  padding: 24px 16px;
+  border-bottom: 1px solid ${({ theme }) => theme.light2};
+  background: white;
 `;
 
 export const DropdownTableText = styled.div`
@@ -64,13 +72,6 @@ export const ProfLikedPercent = styled.div`
 
 export const ProfLikedPercentLabel = styled.div`
   ${Body}
-`;
-
-export const ProfDropdownPanelWrapper = styled.div`
-  display: flex;
-  padding: 24px 16px;
-  border-bottom: 1px solid ${({ theme }) => theme.light2};
-  background: white;
 `;
 
 export const ShowMoreReviewsSection = styled.div`
