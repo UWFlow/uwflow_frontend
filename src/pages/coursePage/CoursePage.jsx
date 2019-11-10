@@ -27,6 +27,7 @@ import {
   ColumnWrapper,
   Column1,
   Column2,
+  ScheduleAndReviewWrapper,
   CourseReviewQuestionBox,
   CourseQuestionTextAndToggle,
   CourseReviewQuestionText,
@@ -65,7 +66,7 @@ const CoursePageContent = ({
       <ColumnWrapper>
         <Column1>
           {isBrowserDesktop && (
-            <>
+            <ScheduleAndReviewWrapper>
               <CourseSchedule sections={course.sections} />
               <CourseReviewQuestionBox>
                 <CourseQuestionTextAndToggle>
@@ -92,7 +93,7 @@ const CoursePageContent = ({
                   onCancel={() => setReviewModalOpen(false)}
                 />
               </ModalHOC>
-            </>
+            </ScheduleAndReviewWrapper>
           )}
           <CourseReviews courseID={course.id} />
         </Column1>

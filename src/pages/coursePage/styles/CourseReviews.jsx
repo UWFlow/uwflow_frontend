@@ -44,6 +44,10 @@ export const DropdownPanelWrapper = styled.div`
     :not(first-child) {
       margin: 0 32px 24px 0;
     }
+
+    :last-child{
+      margin-bottom: 16px;
+    }
   `}
 `;
 
@@ -51,14 +55,28 @@ export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 24px 16px;
+    border-bottom: 1px solid ${({ theme }) => theme.light2};
+    background-color: white;
+  `}
 `;
 
 export const DropdownTableText = styled.div`
   ${Heading4}
+  white-space: nowrap;
 `;
 
 export const CourseProfReviewsWrapper = styled.div`
-  padding-top: 12px;
+  background: ${({ theme }) => theme.light1};
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  ${breakpoint('tablet')`
+    margin-top: 32px;
+  `}
 `;
 
 export const ReviewsForSingleProfWrapper = styled.div`
@@ -72,16 +90,31 @@ export const ProfHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 32px;
   align-items: center;
+
+  ${breakpoint('mobile', 'tablet')`
+    flex-direction: column;
+    justfiy-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  `}
 `;
 
 export const ProfName = styled(Link)`
   ${Heading2}
   color: ${({ theme }) => theme.professors}
+
+  ${breakpoint('mobile', 'tablet')`
+    margin: 16px;
+  `}
 `;
 
 export const ProfLikedMetric = styled.div`
   display: flex;
   align-items: center;
+
+  ${breakpoint('mobile', 'tablet')`
+    margin: 8px 16px 16px 16px;
+  `}
 `;
 
 export const ProfLikedPercent = styled.div`
@@ -92,6 +125,10 @@ export const ProfLikedPercentLabel = styled.div`
   ${Body}
   width: 64px;
   margin-left: 12px;
+
+  ${breakpoint('mobile', 'tablet')`
+    width: 100%;
+  `}
 `;
 
 export const ShowMoreReviewsSection = styled.div`
