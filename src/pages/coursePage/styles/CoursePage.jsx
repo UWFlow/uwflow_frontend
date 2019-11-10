@@ -49,6 +49,13 @@ export const ExtraInfoBoxWrapper = styled.div`
   ${Card('32px 24px')}
   ${BoxShadow}
   ${Heading4}
+  margin-bottom: 32px;
+`;
+
+export const ScheduleAndReviewWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const CourseReviewQuestionBox = styled.div`

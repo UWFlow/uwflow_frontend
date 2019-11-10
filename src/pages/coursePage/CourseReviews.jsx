@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
@@ -37,6 +38,10 @@ import TabContainer from '../../components/display/TabContainer';
 import Review from '../../components/display/Review';
 import DropdownList from '../../components/input/DropdownList';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
+import CollapseableContainer from '../../components/display/CollapseableContainer';
+
+/* Selectors */
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* GraphQL Queries */
 import { GET_COURSE_REVIEW } from '../../graphql/queries/course/CourseReview.jsx';
@@ -128,11 +133,12 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = ({ reviewsByProf }) => {
+const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
   const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
   return (
     <CourseProfReviewsWrapper>
+      {ProfFilterDropdown}
       {reviewsByProf.map((prof, idx) => (
         <ReviewsForSingleProfWrapper key={idx}>
           <ReviewListWrapper>
@@ -205,7 +211,11 @@ CourseProfReviews.propTypes = {
   ).isRequired,
 };
 
-const CourseReviews = ({ courseID, theme }) => {
+const mapStateToProps = state => ({
+  isBrowserDesktop: getIsBrowserDesktop(state),
+});
+
+const CourseReviews = ({ courseID, theme, isBrowserDesktop }) => {
   const { loading, data } = useQuery(GET_COURSE_REVIEW, {
     variables: { id: courseID },
   });
@@ -296,13 +306,43 @@ const CourseReviews = ({ courseID, theme }) => {
 
   return (
     <CourseReviewWrapper>
-      <TabContainer
-        tabList={tabList}
-        initialSelectedTab={0}
-        contentPadding="0"
-      />
-      {showingProfReviews && (
-        <CourseProfReviews reviewsByProf={profReviewsToShow} />
+      {isBrowserDesktop && (
+        <TabContainer
+          tabList={tabList}
+          initialSelectedTab={0}
+          contentPadding="0"
+        />
+      )}
+      {showingProfReviews && isBrowserDesktop && (
+        <CourseProfReviews
+          reviewsByProf={profReviewsToShow}
+          ProfFilterDropdown={isBrowserDesktop ? null : ProfFilterDropdown}
+        />
+      )}
+      {!isBrowserDesktop && (
+        <>
+          <CollapseableContainer
+            title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
+          >
+            <CourseCourseReviews
+              reviews={courseReviewsToShow}
+              theme={theme}
+              courseSort={courseSort}
+              setCourseSort={setCourseSort}
+              courseProfFilter={courseProfFilter}
+              courseProfFilterOptions={courseProfFilterOptions}
+              setCourseProfFilter={setCourseProfFilter}
+            />
+          </CollapseableContainer>
+          <CollapseableContainer
+            title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
+          >
+            <CourseProfReviews
+              reviewsByProf={profReviewsToShow}
+              ProfFilterDropdown={ProfFilterDropdown}
+            />
+          </CollapseableContainer>
+        </>
       )}
     </CourseReviewWrapper>
   );
@@ -313,4 +353,4 @@ CourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withTheme(CourseReviews);
+export default withTheme(connect(mapStateToProps)(CourseReviews));
