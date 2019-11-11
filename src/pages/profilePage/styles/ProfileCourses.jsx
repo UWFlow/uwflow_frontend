@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
 import { Heading1, Body, Link } from '../../../constants/Mixins';
 
@@ -20,6 +21,10 @@ export const ProfileCoursesCourse = styled.div`
   &:last-child {
     border: none;
   }
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 16px;
+  `}
 `;
 
 export const ProfileCourseText = styled.div`

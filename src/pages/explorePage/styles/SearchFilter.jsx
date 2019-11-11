@@ -1,10 +1,15 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Card, BoxShadow, Heading3, Heading4, Body } from '../../../constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
   ${Card('40px 32px')}
   ${BoxShadow}
   margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 24px 16px;
+  `}
 `;
 
 export const SearchFilterHeader = styled.div`

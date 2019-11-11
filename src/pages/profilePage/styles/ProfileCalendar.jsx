@@ -1,10 +1,15 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Card, BoxShadow } from '../../../constants/Mixins';
 
 export const ProfileCalendarWrapper = styled.div`
   ${Card()}
   ${BoxShadow}
   margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 24px 16px;
+  `}
 `;
 
 export const ProfileCalendarHeading = styled.div`
