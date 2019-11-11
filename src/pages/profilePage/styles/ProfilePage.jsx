@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { WideColumn, ThinColumn, PageContent, BoxShadow } from '../../../../constants/Mixins';
+import { WideColumn, ThinColumn, PageContent, BoxShadow } from '../../../constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`
   display: flex;

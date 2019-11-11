@@ -8,7 +8,7 @@ import {
   ShortlistContentWrapper
 } from './styles/ShortlistBox';
 
-import ShortlistContent from '../../../components/profilePage/ShortlistContent';
+import ShortlistContent from '../../components/profilePage/ShortlistContent';
 
 const ShortlistBox = ({ shortlistCourses }) => {
   return (

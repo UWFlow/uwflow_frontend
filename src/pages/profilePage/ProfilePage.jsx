@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { useQuery } from 'react-apollo';
 
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
@@ -6,10 +9,10 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
-import ModalHOC from '../../../components/modal/ModalHOC';
-import CourseReviewCourseBox from '../../../components/coursePage/CourseReviewCourseBox';
-import LoadingSpinner from '../../../components/display/LoadingSpinner';
-import CompleteProfileContent from '../../../components/profilePage/CompleteProfileContent';
+import ModalHOC from '../../components/modal/ModalHOC';
+import CourseReviewCourseBox from '../../components/coursePage/CourseReviewCourseBox';
+import LoadingSpinner from '../../components/display/LoadingSpinner';
+import CompleteProfileContent from '../../components/profilePage/CompleteProfileContent';
 
 /* Styled Components */
 import {
@@ -19,6 +22,19 @@ import {
   Column1,
   Column2,
 } from './styles/ProfilePage';
+
+/* Selectors */
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+
+/* Queries */
+import { GET_USER } from '../../graphql/queries/profile/User';
+
+/* Routes */
+import { LANDING_PAGE_ROUTE } from '../../Routes';
+
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
 
 const ProfilePageContent = ({ user }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
@@ -63,10 +79,24 @@ const ProfilePageContent = ({ user }) => {
   );
 };
 
-const ProfilePage = ({ data }) => (
-  <ProfilePageWrapper>
-    <ProfilePageContent user={{ ...data.user[0] }} />
-  </ProfilePageWrapper>
-);
+export const ProfilePage = ({ history, isLoggedIn }) => {
+  const { loading, error, data } = useQuery(GET_USER, {
+    variables: { id: localStorage.getItem('user_id') },
+  });
 
-export default ProfilePage;
+  if (!isLoggedIn) {
+    history.push(LANDING_PAGE_ROUTE);
+  }
+
+  return loading ? (
+    <LoadingSpinner />
+  ) : error || !data ? (
+    <div>Error</div>
+  ) : (
+    <ProfilePageWrapper>
+      <ProfilePageContent user={{ ...data.user[0] }} />
+    </ProfilePageWrapper>
+  );
+};
+
+export default withRouter(connect(mapStateToProps)(ProfilePage));

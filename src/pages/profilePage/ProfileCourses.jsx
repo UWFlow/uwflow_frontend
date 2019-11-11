@@ -4,9 +4,9 @@ import { PlusSquare } from 'react-feather';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import TabContainer from '../../../components/display/TabContainer';
-import Button from '../../../components/input/Button';
-import LikeCourseToggle from '../../../components/input/LikeCourseToggle';
+import TabContainer from '../../components/display/TabContainer';
+import Button from '../../components/input/Button';
+import LikeCourseToggle from '../../components/input/LikeCourseToggle';
 
 /* Styled Components */
 import {
@@ -22,8 +22,8 @@ import {
   ReviewButtonContents,
 } from './styles/ProfileCourses';
 
-import { termCodeToDate, splitCourseCode, processLiked } from '../../../utils/Misc';
-import { getCoursePageRoute } from '../../../Routes';
+import { termCodeToDate, splitCourseCode, processLiked } from '../../utils/Misc';
+import { getCoursePageRoute } from '../../Routes';
 
 const groupByTerm = courses => {
   return courses.reduce((groups, course) => {

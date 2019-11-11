@@ -18,10 +18,13 @@ const ProfReviewFragment = {
       }
       engaging
       clear
-      user {
-        id
+      author {
         full_name
         program
+        picture_url
+      }
+      user {
+        id
       }
       prof_review_votes_aggregate {
         aggregate {

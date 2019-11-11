@@ -8,10 +8,10 @@ import {
   ProfileFinalExamsContent,
 } from './styles/ProfileFinalExams';
 
-import FinalExamTable from '../../../components/coursePage/FinalExamTable';
-import LastUpdatedSchedule from '../../../components/coursePage/LastUpdatedSchedule';
+import FinalExamTable from '../../components/coursePage/FinalExamTable';
+import LastUpdatedSchedule from '../../components/coursePage/LastUpdatedSchedule';
 
-import { processMultipleCourseExams } from '../../../utils/FinalExams';
+import { processMultipleCourseExams } from '../../utils/FinalExams';
 
 const ProfileFinalExams = ({ courses }) => {
   return (

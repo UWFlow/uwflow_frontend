@@ -5,7 +5,7 @@ export const LoadableLandingPage = loadable(() =>
 );
 
 export const LoadableProfilePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/ProfilePageSwitch'),
+  import(/* webpackPrefetch: true */ './pages/profilePage/ProfilePage'),
 );
 
 export const LoadableCoursePage = loadable(() =>

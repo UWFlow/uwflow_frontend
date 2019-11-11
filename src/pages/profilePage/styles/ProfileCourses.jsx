@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { Heading1, Body, Link } from '../../../../constants/Mixins';
+import { Heading1, Body, Link } from '../../../constants/Mixins';
 
 export const ProfileCoursesWrapper = styled.div`
   display: flex;

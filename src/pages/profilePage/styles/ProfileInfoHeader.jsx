@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import ProfileHeader from '../../../../img/user_v1.svg';
+import ProfileHeader from '../../../img/user_v1.svg';
 
 /* Mixins */
-import { Heading1, PageContent, Heading2 } from '../../../../constants/Mixins';
+import { Heading1, PageContent, Heading2 } from '../../../constants/Mixins';
 
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
