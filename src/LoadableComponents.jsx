@@ -13,7 +13,7 @@ export const LoadableCoursePage = loadable(() =>
 );
 
 export const LoadableProfPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/ProfPageSwitch'),
+  import(/* webpackPrefetch: true */ './pages/profPage/ProfPage'),
 );
 
 export const LoadableExplorePage = loadable(() =>
@@ -21,7 +21,7 @@ export const LoadableExplorePage = loadable(() =>
 );
 
 export const LoadableNotFoundPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/NotFoundPageSwitch'),
+  import(/* webpackPrefetch: true */ './pages/notFoundPage/NotFoundPage'),
 );
 
 export const LoadableAboutPage = loadable(() =>

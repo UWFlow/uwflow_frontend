@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent } from '../../../constants/Mixins';
 
 /* Mixins */
 import {
+  PageContent,
   Card,
   WideColumn,
   ThinColumn,

@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import CourseHeader from '../../../img/course_v1.svg';
+import ProfHeader from '../../../img/prof_v1.svg';
 
 /* Mixins */
-import {
-  Heading1,
-  Heading2,
-  Body,
-  PageContent,
-} from '../../../constants/Mixins';
+import { Heading1, Heading3, PageContent } from '../../../constants/Mixins';
 
-export const CourseInfoHeaderWrapper = styled.div`
+export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
@@ -19,50 +14,44 @@ export const CourseInfoHeaderWrapper = styled.div`
   position: relative;
 `;
 
-export const CourseCodeAndNameSection = styled.div`
+export const ProfNameSection = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   background-color: ${({ theme }) => theme.primaryExtraDark};
-  background: url(${CourseHeader});
+  background: url(${ProfHeader});
   background-size: cover;
   position: relative;
-  min-height: 160px;
+  min-height: 120px;
   padding: 16px;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 24px 16px;
+  `}
 
   ${breakpoint('tablet')`
     min-height: 320px;
   `}
 `;
 
-export const CourseCodeAndStar = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-
-  ${breakpoint('tablet')`
-    ${PageContent}
-    margin: 0 auto;
-  `}
-`;
-
-export const StarAlignmentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  ${breakpoint('tablet')`
-    margin-left: 16px;
-  `}
-`;
-
-export const CourseCode = styled.div`
-  ${Heading1}
-  color: white;
-  text-transform: uppercase;
+export const ProfNameWrapper = styled.div`
+  ${PageContent}
+  margin: auto;
+  margin-bottom: 48px;
 
   ${breakpoint('mobile', 'tablet')`
-    margin-right: 16px;
+    margin-bottom: 0;
+  `}
+`;
+
+export const ProfName = styled.div`
+  color: ${({ theme }) => theme.white};
+  ${Heading1}
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 0 16px;
+    min-width: 100%;
   `}
 
   ${breakpoint('tablet')`
@@ -70,18 +59,7 @@ export const CourseCode = styled.div`
   `}
 `;
 
-export const CourseName = styled.div`
-  ${Heading2}
-  color: ${({ theme }) => theme.light1};
-  font-weight: 400;
-
-  ${breakpoint('tablet')`
-    ${PageContent}
-    margin: 16px auto 0 auto;
-  `}
-`;
-
-export const CourseDescriptionSection = styled.div`
+export const ProfDescriptionSection = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -95,8 +73,12 @@ export const CourseDescriptionSection = styled.div`
 `;
 
 export const Description = styled.div`
-  ${Body}
-  color: ${({ theme }) => theme.dark1};
+  ${Heading3}
+  position: relative;
+  margin: auto 0;
+  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+  vertical-align: middle;
+  color: ${({ theme }) => theme.dark2};
 
   ${breakpoint('mobile', 'tablet')`
     margin-bottom: 16px;

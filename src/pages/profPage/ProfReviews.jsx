@@ -6,7 +6,7 @@ import { withTheme } from 'styled-components';
 /* Custom Reducers */
 import useProfReviewsReducer, {
   UPDATE_REVIEW_DATA,
-} from '../../../data/custom_hooks/UseProfReviewsReducer';
+} from '../../data/custom_hooks/UseProfReviewsReducer';
 
 /* Styled Components */
 import {
@@ -29,16 +29,16 @@ import {
 } from './styles/ProfReviews';
 
 /* Child Components */
-import Review from '../../../components/display/Review';
-import DropdownList from '../../../components/input/DropdownList';
-import LoadingSpinner from '../../../components/display/LoadingSpinner';
+import Review from '../../components/display/Review';
+import DropdownList from '../../components/input/DropdownList';
+import LoadingSpinner from '../../components/display/LoadingSpinner';
 
 /* GraphQL Queries */
-import { GET_PROF_REVIEW } from '../../../graphql/queries/prof/ProfReview.jsx';
+import { GET_PROF_REVIEW } from '../../graphql/queries/prof/ProfReview.jsx';
 
-import { splitCourseCode } from '../../../utils/Misc';
-import { getCoursePageRoute } from '../../../Routes';
-import { MIN_REVIEWS_SHOWN } from '../../../constants/PageConstants';
+import { splitCourseCode } from '../../utils/Misc';
+import { getCoursePageRoute } from '../../Routes';
+import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedFilter, setSelectedFilter] = useState(0);

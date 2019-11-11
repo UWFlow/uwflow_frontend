@@ -119,6 +119,10 @@ export const ProfLikedMetric = styled.div`
 
 export const ProfLikedPercent = styled.div`
   ${Heading1}
+
+  ${breakpoint('mobile', 'tablet')`
+    font-size: 32px;
+  `}
 `;
 
 export const ProfLikedPercentLabel = styled.div`
