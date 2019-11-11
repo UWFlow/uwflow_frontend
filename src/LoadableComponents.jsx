@@ -26,13 +26,13 @@ export const LoadableNotFoundPage = loadable(() =>
 
 export const LoadableAboutPage = loadable(() =>
   import(
-    /* webpackPrefetch: true */ './desktop/components/aboutPage/AboutPage'
+    /* webpackPrefetch: true */ './pages/aboutPage/AboutPage'
   ),
 );
 
 export const LoadablePrivacyPage = loadable(() =>
   import(
-    /* webpackPrefetch: true */ './desktop/components/privacyPage/PrivacyPage'
+    /* webpackPrefetch: true */ './pages/privacyPage/PrivacyPage'
   ),
 );
 
