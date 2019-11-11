@@ -34,7 +34,7 @@ export const ExploreHeaderText = styled.div`
   margin: auto;
   position: relative;
   color: ${({ theme }) => theme.light1};
-  font-weight: 400;
+  font-weight: 600;
 `;
 
 
