@@ -23,7 +23,7 @@ const CourseReviewFragment = {
         picture_url
       }
       user {
-        id
+        user_id
       }
       course_review_votes_aggregate {
         aggregate {
@@ -58,7 +58,7 @@ const CourseReviewFragment = {
         picture_url
       }
       user {
-        id
+        user_id
       }
       prof_review_votes_aggregate {
         aggregate {

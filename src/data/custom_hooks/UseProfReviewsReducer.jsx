@@ -35,7 +35,8 @@ const convertInputToState = data => {
     courseObject.reviews.push({
       upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
       review: current.text,
-      reviewer: current.user,
+      author: current.author,
+      user: current.user,
       metrics: {
         clear: current.clear,
         engaging: current.engaging,
@@ -96,11 +97,14 @@ useProfReviewsReducer.propTypes = {
         }),
       }),
       text: PropTypes.string,
-      user: PropTypes.shape({
+      author: PropTypes.shape({
         full_name: PropTypes.string,
-        id: PropTypes.number,
         program: PropTypes.string,
+        picture_url: PropTypes.string,
       }),
+      user: PropTypes.shape({
+        user_id: PropTypes.number
+      })
     }),
   ),
 };

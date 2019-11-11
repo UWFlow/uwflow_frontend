@@ -103,16 +103,9 @@ const ProfReviews = ({ profID, theme }) => {
                 </CourseLikedPercentLabel>
               </CourseLikedMetric>
               {course.reviews.map((review, i) => {
-                if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code])
-                  return (
-                    <Review
-                      key={review.reviewer.full_name}
-                      upvotes={review.upvotes}
-                      review={review.review}
-                      reviewer={review.reviewer}
-                      metrics={review.metrics}
-                    />
-                  );
+                if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code]) {
+                  return <Review key={i} review={review} />;
+                }
               })}
               {course.reviews.length > MIN_REVIEWS_SHOWN && (
                 <ShowMoreReviewsSection

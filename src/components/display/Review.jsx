@@ -62,13 +62,21 @@ const MetricIfExists = (metrics, metric) => {
 };
 
 const Review = ({
-  upvotes,
   review,
-  reviewer,
-  metrics,
   theme,
   isBrowserDesktop,
 }) => {
+  const { upvotes, review: reviewText, author, user, metrics } = review;
+
+  const reviewContent = (
+    <ReviewTextWrapper>
+      <ReviewText>{reviewText}</ReviewText>
+      <ReviewAuthor>
+        -{author.full_name}, a {author.program} student
+      </ReviewAuthor>
+    </ReviewTextWrapper>
+  );
+
   const userUpvoted = true;
   return (
     <ReviewWrapper>
@@ -86,14 +94,7 @@ const Review = ({
             </UpvoteNumber>
           </ReviewUpvotes>
         </ReviewPictureAndUpvotesWrapper>
-        {isBrowserDesktop && (
-          <ReviewTextWrapper>
-            <ReviewText>{review}</ReviewText>
-            <ReviewAuthor>
-              -{reviewer.full_name}, a {review.program} student
-            </ReviewAuthor>
-          </ReviewTextWrapper>
-        )}
+        {isBrowserDesktop && reviewContent}
         <ReviewMetricsWrapper>
           <ReviewMetricsBody>
             {MetricIfExists(metrics, 'clear')}
@@ -104,32 +105,32 @@ const Review = ({
           </ReviewMetricsBody>
         </ReviewMetricsWrapper>
       </ReviewPictureAndMetricsRow>
-      {!isBrowserDesktop && (
-        <ReviewTextWrapper>
-          <ReviewText>{review}</ReviewText>
-          <ReviewAuthor>
-            -{reviewer.full_name}, a {review.program} student
-          </ReviewAuthor>
-        </ReviewTextWrapper>
-      )}
+      {!isBrowserDesktop && reviewContent}
     </ReviewWrapper>
   );
 };
 
 Review.propTypes = {
   upvotes: PropTypes.number,
-  review: PropTypes.string,
-  reviewer: PropTypes.shape({
-    name: PropTypes.string,
-    program: PropTypes.string,
-  }),
-  metrics: PropTypes.shape({
-    useful: PropTypes.number, //not all these metrics have to exist, we should only display the ones that do
-    easy: PropTypes.number, //for example course review only has useful, easy liked,
-    liked: PropTypes.bool, //prof review only has liked, clear and engagin
-    clear: PropTypes.number,
-    engaging: PropTypes.number,
-  }),
+  review: PropTypes.shape({
+    upvotes: PropTypes.number,
+    review: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      full_name: PropTypes.string,
+      program: PropTypes.string,
+      picture_url: PropTypes.string
+    }).isRequired,
+    user: PropTypes.shape({
+      user_id: PropTypes.number
+    }),
+    metrics: PropTypes.shape({
+      useful: PropTypes.number, //not all these metrics have to exist, we should only display the ones that do
+      easy: PropTypes.number, //for example course review only has useful, easy liked,
+      liked: PropTypes.bool, //prof review only has liked, clear and engagin
+      clear: PropTypes.number,
+      engaging: PropTypes.number,
+    }).isRequired,
+  }).isRequired
 };
 
 export default withTheme(connect(mapStateToProps)(Review));

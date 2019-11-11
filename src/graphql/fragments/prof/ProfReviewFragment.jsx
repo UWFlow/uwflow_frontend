@@ -22,9 +22,9 @@ const ProfReviewFragment = {
         full_name
         program
         picture_url
-      }
+      } 
       user {
-        id
+        user_id
       }
       prof_review_votes_aggregate {
         aggregate {
