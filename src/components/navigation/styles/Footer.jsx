@@ -9,7 +9,7 @@ export const FooterWrapper = styled.div`
   min-height: ${({ height }) => height}px;
   display: flex;
   align-items: center;
-  margin-top: ${({ noMargin }) => noMargin ? '0' : '32px'};
+  margin-top: ${({ noMargin, marginTop }) => noMargin ? '0' : `${marginTop}px`};
 `;
 
 export const FooterContent = styled.div`

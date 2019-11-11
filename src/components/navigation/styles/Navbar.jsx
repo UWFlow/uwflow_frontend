@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { PageContent, BoxShadow } from '../../../constants/Mixins';
 
 export const NavbarWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 80px;
+  min-height: ${({ height }) => height}px;
+  height: ${({ height }) => height}px;
   background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
@@ -22,7 +24,7 @@ export const NavbarContent = styled.div`
   align-items: center;
   margin: auto;
 
-  @media only screen and (max-width: 800px) {
+  ${breakpoint('mobile', 'tablet')`
     padding: 0 16px;
-  }
+  `}
 `;

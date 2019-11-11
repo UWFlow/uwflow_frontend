@@ -64,7 +64,6 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
             {({ data }) => (
               <ProfileText onClick={handleProfileButtonClick}>
                 {renderProfilePicture(data)}
-                {isDesktopPage && 'View profile'}
               </ProfileText>
             )}
           </Query>
@@ -72,16 +71,20 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
             selectedIndex={-1}
             color={theme.dark1}
             itemColor={theme.dark1}
-            options={['Log out']}
+            options={['View profile', 'Log out']}
             onChange={idx => {
-              if (idx === 0) {
+              if (idx === 1) {
                 // log out
                 localStorage.removeItem('token');
                 localStorage.removeItem('user_id');
                 dispatch({ type: LOGGED_OUT });
+              } else {
+                handleProfileButtonClick();
               }
             }}
             placeholder=""
+            zIndex={10}
+            menuOffset={24}
           />
         </>
       ) : (

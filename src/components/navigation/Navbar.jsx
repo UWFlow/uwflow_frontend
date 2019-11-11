@@ -20,6 +20,8 @@ import FlowLogo from './FlowLogo';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import ProfileDropdown from './ProfileDropdown';
 
+export const NAVBAR_HEIGHT = 80;
+
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
 });
@@ -31,7 +33,7 @@ const Navbar = ({ location, isDesktopPage }) => {
 
   return (
     <>
-      <NavbarWrapper>
+      <NavbarWrapper height={NAVBAR_HEIGHT}>
         <NavbarContent>
           {isDesktopPage && <FlowLogo />}
           <SearchBar maximizeWidth />

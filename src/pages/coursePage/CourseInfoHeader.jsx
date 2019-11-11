@@ -7,6 +7,7 @@ import {
   CourseCodeAndNameSection,
   CourseDescriptionSection,
   CourseCode,
+  CourseNameWrapper,
   CourseName,
   Description,
   RatingsSection,
@@ -47,7 +48,11 @@ const CourseInfoHeader = ({ course, shortlisted, setAuthModalOpen }) => {
             />
           </StarAlignmentWrapper>
         </CourseCodeAndStar>
-        <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>{course.name}</CourseName>
+        <CourseNameWrapper>
+          <CourseName ratingBoxWidth={RATING_BOX_WIDTH}>
+            {course.name}
+          </CourseName>
+        </CourseNameWrapper>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
         <RatingsSection>

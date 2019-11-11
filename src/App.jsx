@@ -28,54 +28,57 @@ import {
 import ModalRoot from './components/modal/ModalRoot';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
+import { ContentHeightWrapper } from './components/navigation/styles/ContentHeight';
 
 const App = () => {
   return (
     <>
       <Navbar />
-      <Switch>
-        <Route
-          exact
-          path={LANDING_PAGE_ROUTE}
-          component={() => <LoadableLandingPage />}
-        />
-        <Route
-          exact
-          path={PROFILE_PAGE_ROUTE}
-          component={() => <LoadableProfilePage />}
-        />
-        <Route
-          exact
-          path={COURSE_PAGE_ROUTE}
-          component={() => <LoadableCoursePage />}
-        />
-        <Route
-          exact
-          path={PROF_PAGE_ROUTE}
-          component={() => <LoadableProfPage />}
-        />
-        <Route
-          exact
-          path={EXPLORE_PAGE_ROUTE}
-          component={() => <LoadableExplorePage />}
-        />
-        <Route
-          exact
-          path={ABOUT_PAGE_ROUTE}
-          component={() => <LoadableAboutPage />}
-        />
-        <Route
-          exact
-          path={PRIVACY_PAGE_ROUTE}
-          component={() => <LoadablePrivacyPage />}
-        />
-        <Route
-          exact
-          path={TEST_PAGE_ROUTE}
-          component={() => <LoadableTestPage />}
-        />
-        <Route path="*" component={() => <LoadableNotFoundPage />} />
-      </Switch>
+      <ContentHeightWrapper>
+        <Switch>
+          <Route
+            exact
+            path={LANDING_PAGE_ROUTE}
+            component={() => <LoadableLandingPage />}
+          />
+          <Route
+            exact
+            path={PROFILE_PAGE_ROUTE}
+            component={() => <LoadableProfilePage />}
+          />
+          <Route
+            exact
+            path={COURSE_PAGE_ROUTE}
+            component={() => <LoadableCoursePage />}
+          />
+          <Route
+            exact
+            path={PROF_PAGE_ROUTE}
+            component={() => <LoadableProfPage />}
+          />
+          <Route
+            exact
+            path={EXPLORE_PAGE_ROUTE}
+            component={() => <LoadableExplorePage />}
+          />
+          <Route
+            exact
+            path={ABOUT_PAGE_ROUTE}
+            component={() => <LoadableAboutPage />}
+          />
+          <Route
+            exact
+            path={PRIVACY_PAGE_ROUTE}
+            component={() => <LoadablePrivacyPage />}
+          />
+          <Route
+            exact
+            path={TEST_PAGE_ROUTE}
+            component={() => <LoadableTestPage />}
+          />
+          <Route path="*" component={() => <LoadableNotFoundPage />} />
+        </Switch>
+      </ContentHeightWrapper>
       <Footer />
       <ModalRoot />
     </>

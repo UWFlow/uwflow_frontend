@@ -70,14 +70,20 @@ export const CourseCode = styled.div`
   `}
 `;
 
+export const CourseNameWrapper = styled.div`
+  ${breakpoint('tablet')`
+    ${PageContent}
+    margin: 16px auto 0 auto;
+  `}
+`;
+
 export const CourseName = styled.div`
   ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;
 
   ${breakpoint('tablet')`
-    ${PageContent}
-    margin: 16px auto 0 auto;
+    max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   `}
 `;
 
