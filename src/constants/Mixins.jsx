@@ -3,6 +3,14 @@ import theme from './GlobalTheme';
 
 export const PageContentZIndex = 'z-index: -1;';
 
+export const PageWrapper = `
+  padding-top: 80px;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+`;
+
 export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
   width: 100%;
@@ -34,11 +42,11 @@ export const ThinColumn = `
 /* Fonts */
 export const Heading1 = `
   font-family: 'Anderson Grotesk';
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 600;
 
   @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
-    font-size: 40px;
+    font-size: 32px;
   }
 `;
 
@@ -84,6 +92,10 @@ export const Link = `
 export const BoxShadow = `
   box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
   0px 0px 5px rgba(142, 147, 148, 0.2);
+`;
+
+export const DarkBoxShadow = `
+  box-shadow: 0px 0px 10px ${theme.primaryExtraDark}
 `;
 
 export const TextShadow = `

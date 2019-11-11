@@ -1,15 +1,9 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, Heading2 } from '../../../../constants/Mixins';
+import { PageContent, Heading2, PageWrapper as _PageWrapper } from '../../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  ${breakpoint('mobile', 'tablet')`
-    width: 100%;
-    overflow: scroll;
-  `}
+  ${_PageWrapper}
 `;
 
 export const PageHeader = styled.div`

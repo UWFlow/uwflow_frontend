@@ -18,11 +18,11 @@ import {
   isOnLandingPageRoute
 } from '../../Routes';
 
-export const FOOTER_HEIGHT = 120;
+export const FOOTER_HEIGHT = 70;
 
 const Footer = ({ location }) => (
   <FooterWrapper noMargin={isOnLandingPageRoute(location)} height={FOOTER_HEIGHT}>
-    <FooterContent>
+    <FooterContent noMargin = {isOnLandingPageRoute(location)}>
       <FooterLeft>
         <FooterPageLink to={LANDING_PAGE_ROUTE}>
           Home

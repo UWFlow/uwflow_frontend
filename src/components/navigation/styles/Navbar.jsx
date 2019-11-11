@@ -5,6 +5,8 @@ export const NavbarWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
+  position: fixed;
+  z-index: 1;
   min-height: 80px;
   background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
