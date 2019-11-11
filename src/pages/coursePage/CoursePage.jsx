@@ -33,9 +33,11 @@ import {
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
-import { splitCourseCode } from '../../utils/Misc';
+/* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+
+import { splitCourseCode } from '../../utils/Misc';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),

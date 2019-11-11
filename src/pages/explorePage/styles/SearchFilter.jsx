@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, BoxShadow, Heading3, Heading4, Body } from '../../../../constants/Mixins';
+import { Card, BoxShadow, Heading3, Heading4, Body } from '../../../constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
   ${Card('40px 32px')}

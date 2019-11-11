@@ -1,4 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { useQuery } from 'react-apollo';
+import queryString from 'query-string';
 
 import {
   ExplorePageWrapper,
@@ -11,7 +15,14 @@ import {
 
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
-import { getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';
+
+/* Selectors */
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+
+import {
+  buildExploreCodeQuery,
+  buildExploreQuery
+} from '../../graphql/queries/explore/Explore';
 
 const NUM_COURSE_CODE_FILTERS = 5;
 const RATING_FILTERS = [0, 10, 20, 50, 100, 250, 500, 1000];
@@ -99,7 +110,22 @@ const ExplorePageContent = ({
   );
 }
 
-const ExplorePage = ({ query, codeSearch, courseTab, data, fetchMore, loading }) => {
+const mapStateToProps = state => ({
+  isDesktopPage: getIsBrowserDesktop(state),
+});
+
+const ExplorePage = ({ isDesktopPage, location }) => {
+  const { q: query, t: type, c: code } = queryString.parse(location.search);
+  const courseTab = !type || type === 'course' || type === 'c';
+  const codeSearch = !!code;
+
+  const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
+
+  const { data, fetchMore, loading } = useQuery(
+    exploreQuery('{course_reviews_aggregate: {count: desc}}', query),
+    {variables: { course_offset: 0, prof_offset: 0 }}
+  );
+  
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
@@ -109,9 +135,10 @@ const ExplorePage = ({ query, codeSearch, courseTab, data, fetchMore, loading })
         data={data}
         fetchMore={fetchMore}
         loading={loading}
+        isDesktopPage={isDesktopPage}
       />
     </ExplorePageWrapper>
   )
 };
 
-export default ExplorePage;
+export default withRouter(connect(mapStateToProps)(ExplorePage));

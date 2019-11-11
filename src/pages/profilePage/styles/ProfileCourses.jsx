@@ -15,6 +15,7 @@ export const ProfileCoursesCourse = styled.div`
   flex-direction: row;
   padding: 24px 32px;
   border-bottom: 1px solid ${({theme}) => theme.light3};
+  justify-content: space-between;
 
   &:last-child {
     border: none;
@@ -28,9 +29,8 @@ export const ProfileCourseText = styled.div`
   min-width: 112px;
   width: 100%;
 
-
-  @media only screen and (max-width: 900px) {
-    max-width: 112px;
+  @media only screen and (max-width: 500px) {
+    margin-right: 16px;
   }
 `;
 
@@ -86,4 +86,20 @@ export const ReviewButtonContents = styled.div`
   align-items: center;
   width: fit-content;
   margin: auto;
+`;
+
+export const LikeToggleWrapper = styled.span`
+  display: flex;
+
+  @media only screen and (max-width: 920px) {
+    display: none;
+  }
+`;
+
+export const LikedCourseWrapper = styled.span`
+  display: flex;
+  
+  @media only screen and (max-width: 500px) {
+    display: none;
+  }
 `;

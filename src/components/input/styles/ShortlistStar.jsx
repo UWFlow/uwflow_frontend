@@ -10,11 +10,11 @@ export const ShortlistStarWrapper = styled(Star)`
   user-select: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  stroke: ${({ checked, theme }) => (checked ? theme.accent : theme.white)};
+  stroke: ${({ checked, theme }) => (checked ? theme.accent : theme.light3)};
 
   &:hover {
     fill: ${({ checked, theme }) =>
       checked ? theme.accentDark : 'none'};
-    stroke: ${({ checked, theme }) => (checked ? theme.accentDark : theme.light3)};
+    stroke: ${({ checked, theme }) => (checked ? theme.accentDark : theme.light2)};
   }
 `;

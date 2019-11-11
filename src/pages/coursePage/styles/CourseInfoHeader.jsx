@@ -14,7 +14,7 @@ export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
-  background-color: white;
+  background-color: ${({ theme }) => theme.white};
   flex-direction: column;
   position: relative;
 `;

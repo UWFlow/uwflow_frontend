@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
-import RadioButton from '../../../components/input/RadioButton';
-import MultiSelectButton from '../../../components/input/MultiSelectButton';
-import DiscreteSlider from '../../../components/discreteSlider/DiscreteSlider';
-import DropdownList from '../../../components/input/DropdownList';
+import RadioButton from '../../components/input/RadioButton';
+import MultiSelectButton from '../../components/input/MultiSelectButton';
+import DiscreteSlider from '../../components/discreteSlider/DiscreteSlider';
+import DropdownList from '../../components/input/DropdownList';
 
 /* Styled Components */
 import {
@@ -21,7 +21,7 @@ import {
   ResetButton,
   HeaderButtonWrapper,
 } from './styles/SearchFilter';
-import { termCodeToDate, getCurrentTermCode, getNextTermCode } from '../../../utils/Misc';
+import { termCodeToDate, getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
 
 let courseNumberOptions = [1, 2, 3, 4].map(num => (
   <span>

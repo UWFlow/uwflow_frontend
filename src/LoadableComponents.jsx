@@ -17,7 +17,7 @@ export const LoadableProfPage = loadable(() =>
 );
 
 export const LoadableExplorePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/ExplorePageSwitch'),
+  import(/* webpackPrefetch: true */ './pages/explorePage/ExplorePage'),
 );
 
 export const LoadableNotFoundPage = loadable(() =>

@@ -20,6 +20,8 @@ import {
   AddReviewIcon,
   ProfileCourseReviewButtonText,
   ReviewButtonContents,
+  LikeToggleWrapper,
+  LikedCourseWrapper
 } from './styles/ProfileCourses';
 
 import { termCodeToDate, splitCourseCode, processLiked } from '../../utils/Misc';
@@ -52,15 +54,19 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
               </ProfileCourseCode>
               <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
             </ProfileCourseText>
-            <ProfileCourseLiked>
-              {processLiked(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
-            </ProfileCourseLiked>
-            <LikedThisCourseText>
-              liked this
-              <br />
-              course
-            </LikedThisCourseText>
-            <LikeCourseToggle liked={true} />
+            <LikedCourseWrapper>
+              <ProfileCourseLiked>
+                {processLiked(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
+              </ProfileCourseLiked>
+              <LikedThisCourseText>
+                liked this
+                <br />
+                course
+              </LikedThisCourseText>
+            </LikedCourseWrapper>
+            <LikeToggleWrapper>
+              <LikeCourseToggle liked={true} />
+            </LikeToggleWrapper>
             <Button
               margin="auto 0 auto 16px"
               padding="8px"

@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '../../../../constants/Mixins';
-import ExploreHeader from '../../../../img/explore_v1.svg';
+import ExploreHeader from '../../../img/explore_v1.svg';
 
 /* Mixins */
-import { Heading2, PageContent, WideColumn, ThinColumn } from '../../../../constants/Mixins';
+import { Heading2, PageContent, WideColumn, ThinColumn, Link } from '../../../constants/Mixins';
 
 export const ExplorePageWrapper = styled.div`
   display: flex;

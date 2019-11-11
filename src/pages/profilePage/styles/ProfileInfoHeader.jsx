@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import ProfileHeader from '../../../img/user_v1.svg';
 
 /* Mixins */
@@ -16,14 +17,19 @@ export const ProfileInfoHeaderWrapper = styled.div`
 `;
 
 export const ProfileInfoSection = styled.div`
-  padding: 52px 0;
-  ${PageContent}
-  min-height: 320px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   margin: auto;
   position: relative;
+  padding: 32px 16px;
+
+  ${breakpoint('tablet')`
+    ${PageContent}
+    padding: 52px 16px;
+    flex-direction: row;
+    align-items: center;
+    min-height: 320px;
+  `}
 `;
 
 export const UserPicture = styled.img`
@@ -33,10 +39,20 @@ export const UserPicture = styled.img`
   border: 5px solid ${({ theme }) => theme.light1};
   margin-right: 32px;
   object-fit: cover;
+
+  ${breakpoint('mobile', 'tablet')`
+    width: 96px;
+    height: 96px;
+    margin-bottom: 16px;
+  `}
 `;
 
 export const UserInfoWrapper = styled.div`
   margin: 48px 0;
+
+  ${breakpoint('mobile', 'tablet')`
+    margin: 0;
+  `}
 `;
 
 export const UserName = styled.div`
