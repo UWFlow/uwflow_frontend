@@ -11,7 +11,7 @@ import { getIsBrowserDesktop } from '../data/reducers/BrowserReducer';
 import DesktopProfPage from '../desktop/components/profPage/ProfPage';
 import MobileProfPage from '../mobile/components/profPage/ProfPage';
 import LoadingSpinner from '../components/display/LoadingSpinner';
-import NotFoundPage from '../desktop/components/notFoundPage/NotFoundPage';
+import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
 
 /* Queries */
 import { GET_PROF } from '../graphql/queries/prof/Prof';

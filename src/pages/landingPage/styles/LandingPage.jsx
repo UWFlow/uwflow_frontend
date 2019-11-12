@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Heading1 } from '../../../../constants/Mixins';
+import { Heading1 } from '../../../constants/Mixins';
 
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
 export const LandingPageWrapper = styled.div`
   width: 100vw;

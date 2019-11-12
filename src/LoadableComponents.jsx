@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 
 export const LoadableLandingPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/landingPage/LandingPage'),
+  import(/* webpackPrefetch: true */ './pages/landingPage/LandingPage'),
 );
 
 export const LoadableProfilePage = loadable(() =>
@@ -21,7 +21,7 @@ export const LoadableExplorePage = loadable(() =>
 );
 
 export const LoadableNotFoundPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/notFoundPage/NotFoundPage'),
+  import(/* webpackPrefetch: true */ './pages/notFoundPage/NotFoundPage'),
 );
 
 export const LoadableAboutPage = loadable(() =>

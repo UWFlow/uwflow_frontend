@@ -16,13 +16,13 @@ import {
 } from './styles/LandingPage';
 
 /* Child Components */
-import AuthForm from '../../../auth/AuthForm';
-import Background from '../../../img/background.png';
+import AuthForm from '../../auth/AuthForm';
+import Background from '../../img/background.png';
 
-import { getIsLoggedIn } from '../../../data/reducers/AuthReducer';
-import SearchBar from '../../../components/navigation/SearchBar';
-import ProfileDropdown from '../../../components/navigation/ProfileDropdown';
-import { getIsBrowserDesktop } from '../../../data/reducers/BrowserReducer';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import SearchBar from '../../components/navigation/SearchBar';
+import ProfileDropdown from '../../components/navigation/ProfileDropdown';
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
