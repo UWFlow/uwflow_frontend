@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading4, Body } from '../../../constants/Mixins';
+import { Heading3, Body } from '../../../constants/Mixins';
 
 export const PageBody = styled.div`
   display: flex;
@@ -10,10 +10,12 @@ export const PageBody = styled.div`
 `;
 
 export const PageBodyHeader = styled.div`
-  ${Heading4}
+  ${Heading3}
+  margin-bottom: 4px;
 `;
 
 export const PageBodyParagraph = styled.div`
   ${Body}
+  line-height: 1.2;
   margin-bottom: 32px;
 `;

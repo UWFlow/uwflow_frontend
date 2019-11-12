@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Button from '../../../components/input/Button';
-import { LANDING_PAGE_ROUTE } from '../../../Routes';
+import Button from '../../components/input/Button';
+import { LANDING_PAGE_ROUTE } from '../../Routes';
 
-import { NotFoundPageWrapper, NotFoundText } from './styles/NotFoundPage';
+import { NotFoundPageWrapper, NotFoundImage, PageHeader, HeaderText } from './styles/NotFoundPage';
 
 const NotFoundPage = ({ text, history }) => {
   const handleClick = () => {
@@ -16,7 +16,10 @@ const NotFoundPage = ({ text, history }) => {
 
   return (
     <NotFoundPageWrapper>
-      <NotFoundText>{displayText}</NotFoundText>
+      <PageHeader>
+        <HeaderText>{displayText}</HeaderText>
+      </PageHeader>
+      <NotFoundImage />
       <Button handleClick={handleClick}>Home</Button>
     </NotFoundPageWrapper>
   );

@@ -57,7 +57,7 @@ const CoursePageContent = ({ course, shortlisted, userReview, isLoggedIn }) => {
               <LikeCourseToggle liked={true} />
             </CourseQuestionTextAndToggle>
             <Button
-              width={200}
+              width="200px"
               padding="16px 24px"
               handleClick={handleReviewClick}
             >

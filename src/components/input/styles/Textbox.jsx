@@ -16,29 +16,27 @@ export const SearchInput = styled.input`
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) =>
     options.fontSize ? options.fontSize : 'inherit'};
-  border-radius: ${({ options }) =>
-    options.borderRadius ? options.borderRadius : '4px'};
+  border-radius: 4px;
   background: ${({ autocompleteActive, theme }) =>
     autocompleteActive ? 'transparent' : theme.light2};
-  font-weight: ${({ options }) =>
-    options.fontWeight ? options.fontWeight : '400'};
   height: 48px;
   z-index: 2;
-  color: ${({ error, theme }) => (error ? theme.red : theme.dark2)};
+  color: ${({ error, theme }) => (error ? theme.red : theme.dark1)};
+  background-color: ${({ options }) => (options ? options.backgroundColor : '')};
   padding-left: ${({ hasIcon }) => (hasIcon ? '72px' : 'auto')};
 
-  &::-webkit-input-placeholder {
-    color: ${({ error, theme }) => (error ? theme.red : theme.dark3)};
+  &:-ms-input-placeholder {
+    color: ${({ error, options, theme }) => (error ? theme.red : (options ? options.color : theme.dark3))};
     font-weight: 400;
   }
-
-  &:-ms-input-placeholder {
-    color: ${({ error, theme }) => (error ? theme.red : theme.dark3)};
+  
+  &::-webkit-input-placeholder {
+    color: ${({ error, options, theme }) => (error ? theme.red : (options ? options.color : theme.dark3))};
     font-weight: 400;
   }
 
   &::placeholder {
-    color: ${({ error, theme }) => (error ? theme.red : theme.dark3)};
+    color: ${({ error, options, theme }) => (error ? theme.red : (options ? options.color : theme.dark3))};
     font-weight: 400;
   }
 

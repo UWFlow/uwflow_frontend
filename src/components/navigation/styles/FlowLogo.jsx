@@ -14,6 +14,7 @@ export const FlowLogoWrapper = styled(Link)`
   ${Heading4}
   font-size: 24px;
   margin-right: 40px;
+  font-weight: 600;
 `;
 
 export const BlueText = styled.div`

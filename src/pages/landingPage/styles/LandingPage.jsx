@@ -1,64 +1,52 @@
 import styled from 'styled-components';
-import {
-  Heading1,
-  Heading3,
-} from '../../../../constants/Mixins';
+import { Heading1 } from '../../../constants/Mixins';
 
-import { PAGE_CONTENT_WIDTH } from '../../../../constants/PageConstants';
+import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
 export const LandingPageWrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
   display: flex;
-  padding-left: 32px;
 `;
 
-export const LogoWrapper = styled.div`
+export const ProfileWrapper = styled.div`
   position: absolute;
-  top: 32px;
-  left: 0;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  flex: 1;
+  right: 0;
+  top: 0;
+  padding: 64px;
 `;
 
 export const TitleText = styled.div`
   ${Heading1}
   color: ${({ theme }) => theme.dark1};
   margin-bottom: 16px;
-  margin-top: 256px;
 `;
 
 export const Subheading = styled.div`
-  ${Heading3}
-  color: ${({ theme }) => theme.dark2};
-  margin-top: 16px;
+  color: ${({ theme }) => theme.dark3};
   font-size: 24px;
   font-weight: 300;
-  line-height: 2.0; 
+  margin-top: 32px;
 `;
 
 export const Column1TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 64px;
   flex: 1;
-  position: relative;
+  width: 100%;
 `;
 
 export const Column1 = styled.div`
+  background-color: white;
   position: relative;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  padding-right: 120px;
-  padding-bottom: 160px;
-  padding-left: calc(60% - ${PAGE_CONTENT_WIDTH}px - 120px);
+  flex: 3;
 
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     padding-left: 0;
-    padding-right: 48px;
   }
 `;
 
@@ -66,8 +54,7 @@ export const Column2 = styled.div`
   position: relative;
   display: flex;
   flex: 1;
-  width: 40%;
-  min-width: ${({ loggedIn }) => loggedIn ? '0' : '600px'};
+  min-width: ${({ loggedIn }) => loggedIn ? '0' : '500px'};
   align-items: center;
   ${({ loggedIn }) => loggedIn ? 'max-width: 320px;' : ''}
 

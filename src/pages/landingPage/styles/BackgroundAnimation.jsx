@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BackgroundZIndex } from '../../../../constants/Mixins';
+import { BackgroundZIndex } from '../../../constants/Mixins';
 
 export const Canvas = styled.canvas`
   width: ${({ width }) => width}px;

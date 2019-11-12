@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { randBetween, pickOneRandomly } from '../../../utils/Random';
+import { randBetween, pickOneRandomly } from '../../utils/Random';
 
 /* Selectors */
 import { getHeight, getWidth } from '../../../data/reducers/BrowserReducer';

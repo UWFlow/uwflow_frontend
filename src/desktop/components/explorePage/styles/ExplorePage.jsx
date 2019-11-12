@@ -4,13 +4,11 @@ import { Link } from '../../../../constants/Mixins';
 import ExploreHeader from '../../../../img/explore_v1.svg';
 
 /* Mixins */
-import { Heading2, PageContent, WideColumn, ThinColumn } from '../../../../constants/Mixins';
+import { Heading2, PageContent, WideColumn, ThinColumn, PageWrapper } from '../../../../constants/Mixins';
 
 export const ExplorePageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100%;
+  ${PageWrapper}
+  padding-top: 40px;
 `;
 
 export const ExploreHeaderWrapper = styled.div`
@@ -36,7 +34,7 @@ export const ExploreHeaderText = styled.div`
   margin: auto;
   position: relative;
   color: ${({ theme }) => theme.light1};
-  font-weight: 400;
+  font-weight: 600;
 `;
 
 

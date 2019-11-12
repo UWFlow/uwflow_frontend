@@ -12,7 +12,7 @@ import { getIsLoggedIn } from '../data/reducers/AuthReducer';
 import DesktopCoursePage from '../desktop/components/coursePage/CoursePage';
 import MobileCoursePage from '../mobile/components/coursePage/CoursePage';
 import LoadingSpinner from '../components/display/LoadingSpinner';
-import NotFoundPage from '../desktop/components/notFoundPage/NotFoundPage';
+import NotFoundPage from '../pages/notFoundPage/NotFoundPage';
 
 /* Queries */
 import { buildCourseQuery } from '../graphql/queries/course/Course';
