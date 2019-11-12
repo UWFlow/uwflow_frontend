@@ -15,7 +15,7 @@ import ModalHOC from '../../components/modal/ModalHOC';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
 import AuthModal from '../../auth/AuthModal';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
-import NotFoundPage from '../../desktop/components/notFoundPage/NotFoundPage';
+import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
 
 /* Queries */
 import { buildCourseQuery } from '../../graphql/queries/course/Course';
