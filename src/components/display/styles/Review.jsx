@@ -23,6 +23,7 @@ export const ReviewWrapper = styled.div`
 export const ReviewPictureAndMetricsRow = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%;
 `;
 
 export const ReviewPictureAndUpvotesWrapper = styled.div`
@@ -69,6 +70,7 @@ export const ReviewUpvotes = styled.div`
   &:hover {
     ${({ selected, theme }) =>
       `background-color:${selected ? theme.primaryDark : theme.light3};`}
+  }
 
   ${breakpoint('desktop')`
     position: absolute;
