@@ -1,5 +1,5 @@
 /* Utils */
-import pathToRegexp from 'path-to-regexp';
+import { pathToRegexp, compile } from 'path-to-regexp';
 
 /* Page Routes */
 export const LANDING_PAGE_ROUTE = '/';
@@ -47,8 +47,8 @@ export const isOnTestPageRoute = location =>
   TEST_PAGE_TESTER.test(location.pathname);
 
 /* Route Generators */
-export const toCoursePageRoute = pathToRegexp.compile(COURSE_PAGE_ROUTE);
-export const toProfPageRoute = pathToRegexp.compile(PROF_PAGE_ROUTE);
+export const toCoursePageRoute = compile(COURSE_PAGE_ROUTE);
+export const toProfPageRoute = compile(PROF_PAGE_ROUTE);
 
 /* Route Getters */
 export const getCoursePageRoute = courseCode => toCoursePageRoute({ courseCode });

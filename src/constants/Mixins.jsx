@@ -11,8 +11,8 @@ export const PageContent = `
   padding-right: 32px;
 
   @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
-      padding-left: 0;
-      padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 `;
 
