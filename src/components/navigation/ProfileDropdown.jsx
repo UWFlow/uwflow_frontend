@@ -95,7 +95,7 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
       <AuthModal
         isModalOpen={authModalOpen}
         onCloseModal={() => setAuthModalOpen(false)}
-        width={isDesktopPage ? 400 : 350}
+        width={isDesktopPage ? '400px': '100vw'}
       />
     </ProfileDropdownWrapper>
   );

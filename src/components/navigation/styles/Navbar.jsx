@@ -8,6 +8,8 @@ export const NavbarWrapper = styled.div`
   width: 100%;
   min-height: ${({ height }) => height}px;
   height: ${({ height }) => height}px;
+  position: fixed;
+  z-index: 1;
   background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
@@ -26,5 +28,6 @@ export const NavbarContent = styled.div`
 
   ${breakpoint('mobile', 'tablet')`
     padding: 0 16px;
+    width: 100%;
   `}
 `;

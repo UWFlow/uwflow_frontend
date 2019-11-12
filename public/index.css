@@ -1,12 +1,16 @@
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk'),
-    url(fonts/AndersonGrotesk-Bold.otf) format('woff');
+  src: local('Anderson Grotesk UltraBold'), url(fonts/AndersonGrotesk-Ultraold.otf) format('otf');
+  font-weight: 800;
+}
+@font-face {
+  font-family: 'Anderson Grotesk';
+  src: local('Anderson Grotesk Bold'), url(fonts/AndersonGrotesk-Bold.otf) format('otf');
   font-weight: 600;
 }
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('woff');
+  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('otf');
   font-weight: 400;
 }
 

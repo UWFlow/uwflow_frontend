@@ -1,15 +1,9 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, Heading2, Heading4, Body } from '../../../constants/Mixins';
+import { PageContent, Heading2, Heading3, Body, PageWrapper as _PageWrapper } from '../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  ${breakpoint('mobile', 'tablet')`
-    width: 100%;
-    overflow: scroll;
-  `}
+  ${_PageWrapper}
 `;
 
 export const PageHeader = styled.div`
@@ -54,10 +48,12 @@ export const PageBody = styled.div`
 `;
 
 export const PageBodyHeader = styled.div`
-  ${Heading4}
+  ${Heading3}
+  margin-bottom: 4px;
 `;
 
 export const PageBodyParagraph = styled.div`
   ${Body}
+  line-height: 1.2;
   margin-bottom: 32px;
 `;

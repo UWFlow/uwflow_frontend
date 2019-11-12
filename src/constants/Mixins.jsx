@@ -1,7 +1,17 @@
 import { PAGE_CONTENT_WIDTH } from './PageConstants';
+import { FOOTER_HEIGHT, FOOTER_MARGIN_TOP } from '../components/navigation/Footer';
+import { NAVBAR_HEIGHT } from '../components/navigation/Navbar';
+
 import theme from './GlobalTheme';
 
 export const PageContentZIndex = 'z-index: -1;';
+export const PageWrapper = `
+  padding-top: ${NAVBAR_HEIGHT}px;
+  width: 100%;
+  min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px);
+  display: flex;
+  flex-direction: column;
+`;
 
 export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
@@ -34,18 +44,18 @@ export const ThinColumn = `
 /* Fonts */
 export const Heading1 = `
   font-family: 'Anderson Grotesk';
-  font-size: 48px;
-  font-weight: 600;
+  font-size: 40px;
+  font-weight: 800;
 
   @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
-    font-size: 40px;
+    font-size: 32px;
   }
 `;
 
 export const Heading2 = `
   font-family: 'Anderson Grotesk';
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 800;
 
   @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
     font-size: 28px;
@@ -84,6 +94,10 @@ export const Link = `
 export const BoxShadow = `
   box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
   0px 0px 5px rgba(142, 147, 148, 0.2);
+`;
+
+export const DarkBoxShadow = `
+  box-shadow: 0px 0px 10px ${theme.primaryExtraDark}
 `;
 
 export const TextShadow = `

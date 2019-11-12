@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { WideColumn, ThinColumn, PageContent, BoxShadow } from '../../../constants/Mixins';
+import { WideColumn, ThinColumn, PageContent, BoxShadow, PageWrapper } from '../../../constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100%;
+  ${PageWrapper}
 `;
 
 export const ColumnWrapper = styled.div`

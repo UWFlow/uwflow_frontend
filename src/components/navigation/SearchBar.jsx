@@ -29,7 +29,7 @@ import { useSearchContext } from '../../search/SearchProvider';
 /* Constants */
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
-const SearchBar = ({ history, theme, colored = false, maximizeWidth = false }) => {
+const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -189,22 +189,22 @@ const SearchBar = ({ history, theme, colored = false, maximizeWidth = false }) =
     return null;
   };
 
+  const options = isLanding ? {
+    width: '100%',
+    backgroundColor: 'white',
+    color: theme.primary,
+    border: `2px solid ${theme.primary}`
+  } : { width: '100%' }
+
   return (
-    <SearchBarWrapper ref={ref}>
+    <SearchBarWrapper ref={ref} isLanding={isLanding}>
       <Textbox
-        icon={<Search />}
+        icon={<Search color={isLanding ? theme.primary : theme.dark3} />}
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Explore or search for courses, subjects or professors"
         handleKeyDown={handleSearch}
-        options={{
-          padding: '8px 24px',
-          fontSize: '14px',
-          width: '100%',
-          borderRadius: open ? '4px 4px 0 0' : '4px',
-          fontWeight: '600',
-          border: colored ? `2px solid ${theme.primary}` : 'none',
-        }}
+        options={options}
         maxLength={100}
         autocompletePlaceholder={autocompleteResult()}
       />

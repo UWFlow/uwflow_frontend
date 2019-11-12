@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { BoxShadow, Body } from '../../../constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
+  ${({ isLanding }) => isLanding && `
+    ${BoxShadow}
+  `}
   position: relative;
   width: 100%;
   max-width: 640px;

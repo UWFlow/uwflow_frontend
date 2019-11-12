@@ -9,7 +9,7 @@ const Button = ({
   hoverColor,
   borderColor,
   margin = '0',
-  padding = '16px 48px',
+  padding = '8px 32px',
   handleClick = () => {},
   height = 48,
   maxHeight = '100%',

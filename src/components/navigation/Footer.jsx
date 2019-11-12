@@ -42,9 +42,6 @@ const Footer = ({ location }) => (
         <FooterNormalLink href="mailto:hello@uwflow.com?Subject=Hello!" target="_blank" rel="noopener noreferrer">
           Email
         </FooterNormalLink>
-        <FooterNormalLink href="https://twitter.com/useflow" target="_blank" rel="noopener noreferrer">
-          Twitter
-        </FooterNormalLink>
       </FooterRight>
     </FooterContent>
   </FooterWrapper>

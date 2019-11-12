@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 
 export const LoadableLandingPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pageSwitches/LandingPageSwitch'),
+  import(/* webpackPrefetch: true */ './pages/landingPage/LandingPage'),
 );
 
 export const LoadableProfilePage = loadable(() =>
@@ -25,15 +25,11 @@ export const LoadableNotFoundPage = loadable(() =>
 );
 
 export const LoadableAboutPage = loadable(() =>
-  import(
-    /* webpackPrefetch: true */ './pages/aboutPage/AboutPage'
-  ),
+  import(/* webpackPrefetch: true */ './pages/aboutPage/AboutPage'),
 );
 
 export const LoadablePrivacyPage = loadable(() =>
-  import(
-    /* webpackPrefetch: true */ './pages/privacyPage/PrivacyPage'
-  ),
+  import(/* webpackPrefetch: true */ './pages/privacyPage/PrivacyPage'),
 );
 
 export const LoadableTestPage = loadable(() =>

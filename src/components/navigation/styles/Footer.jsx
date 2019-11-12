@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 
 import { Body, PageContent } from '../../../constants/Mixins';
@@ -18,12 +19,13 @@ export const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media only screen and (max-width: 800px) {
+  ${breakpoint('mobile', 'tablet')`
     padding: 0 16px;
-  }
+    width: 100%;
+  `}
 
   @media only screen and (max-width: 450px) {
-    display: block;
+    flex-direction: column;
   }
 `;
 
@@ -39,18 +41,18 @@ export const FooterRight = styled.div`
 
 export const FooterPageLink = styled(Link)`
   ${Body}
-  color: ${({ theme }) => theme.light1};
-  text-decoration: underline;
+  color: ${({ theme }) => theme.light2};
+  text-decoration: none;
   font-weight: 400;
-  margin-right: 16px;
+  margin-right: 32px;
 `;
 
 export const FooterNormalLink = styled.a`
   ${Body}
-  color: ${({ theme }) => theme.light1};
-  text-decoration: underline;
+  color: ${({ theme }) => theme.light2};
+  text-decoration: none;
   font-weight: 400;
-  margin-left: 16px;
+  margin-left: 32px;
 
   @media only screen and (max-width: 450px) {
     margin: 16px 16px 0 0;

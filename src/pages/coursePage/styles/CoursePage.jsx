@@ -10,13 +10,11 @@ import {
   BoxShadow,
   Heading3,
   Heading4,
+  PageWrapper
 } from '../../../constants/Mixins';
 
 export const CoursePageWrapper = styled.div`
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  ${PageWrapper}
 `;
 
 export const ColumnWrapper = styled.div`
