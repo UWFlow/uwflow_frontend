@@ -1,22 +1,22 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { PageContent, BoxShadow } from '../../../constants/Mixins';
+import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 
 export const NavbarWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  min-height: ${({ height }) => height}px;
-  height: ${({ height }) => height}px;
+  min-height: ${NAVBAR_HEIGHT}px;
+  height: ${NAVBAR_HEIGHT}px;
   position: fixed;
   z-index: 1;
   background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
-  ${({ landingPage }) => landingPage ? '' : BoxShadow};
+  ${({ landingPage }) => landingPage ? '' : BoxShadow}
   border-radius: 4px;
   display: flex;
-  ${BoxShadow}
 `;
 
 export const NavbarContent = styled.div`

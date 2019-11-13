@@ -1,16 +1,13 @@
-import { PAGE_CONTENT_WIDTH } from './PageConstants';
-import { FOOTER_HEIGHT, FOOTER_MARGIN_TOP } from '../components/navigation/Footer';
-import { NAVBAR_HEIGHT } from '../components/navigation/Navbar';
-
+import { PAGE_CONTENT_WIDTH, FOOTER_HEIGHT, FOOTER_MARGIN_TOP, NAVBAR_HEIGHT } from './PageConstants';
 import theme from './GlobalTheme';
 
 export const PageContentZIndex = 'z-index: -1;';
+
 export const PageWrapper = `
-  padding-top: ${NAVBAR_HEIGHT}px;
-  width: 100%;
-  min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px);
+  min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px - ${NAVBAR_HEIGHT}px);
   display: flex;
   flex-direction: column;
+  padding-top: ${NAVBAR_HEIGHT}px;
 `;
 
 export const PageContent = `

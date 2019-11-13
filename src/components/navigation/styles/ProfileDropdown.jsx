@@ -9,7 +9,6 @@ export const ProfileDropdownWrapper = styled.div`
   outline: 0;
   border: none;
   margin-left: 40px;
-  ${Heading4}
 
   ${breakpoint('mobile', 'tablet')`
     margin-left: 24px;
@@ -26,11 +25,12 @@ export const ProfilePicture = styled.img`
 `;
 
 export const ProfileText = styled.div`
+  ${Heading4}
   color: ${({ theme }) => theme.dark1};
   text-decoration: none;
   display: flex;
   align-items: center;
-  margin-right: 8px;
+  width: max-content;
 
   &:hover {
     color: ${({ theme }) => theme.primary};

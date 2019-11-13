@@ -22,9 +22,6 @@ const CourseReviewFragment = {
         program
         picture_url
       }
-      user {
-        user_id
-      }
       course_review_votes_aggregate {
         aggregate {
           sum {
@@ -56,9 +53,6 @@ const CourseReviewFragment = {
         full_name
         program
         picture_url
-      }
-      user {
-        user_id
       }
       prof_review_votes_aggregate {
         aggregate {

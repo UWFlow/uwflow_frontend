@@ -3,14 +3,15 @@ import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 
 import { Body, PageContent } from '../../../constants/Mixins';
+import { FOOTER_MARGIN_TOP, FOOTER_HEIGHT } from '../../../constants/PageConstants';
 
 export const FooterWrapper = styled.div`
   background: ${({ theme }) => theme.primaryExtraDark};
   height: 100%;
-  min-height: ${({ height }) => height}px;
+  min-height: ${FOOTER_HEIGHT}px;
   display: flex;
   align-items: center;
-  margin-top: ${({ noMargin, marginTop }) => noMargin ? '0' : `${marginTop}px`};
+  margin-top: ${({ noMargin }) => noMargin ? '0' : `${FOOTER_MARGIN_TOP}px`};
 `;
 
 export const FooterContent = styled.div`
