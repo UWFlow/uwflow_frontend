@@ -27,7 +27,7 @@ export const DropdownMenu = styled.div`
   display: ${({ open }) => (open ? 'block' : 'none')};
   position: absolute;
   border-radius: 4px;
-  top: calc(100% + 8px);
+  top: calc(100% + ${({ menuOffset }) => menuOffset}px);
   right: 0;
   width: max-content;
   background-color: ${({ theme }) => theme.white};

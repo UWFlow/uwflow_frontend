@@ -33,9 +33,11 @@ import {
   CourseReviewQuestionText,
 } from './styles/CoursePage';
 
-import { splitCourseCode } from '../../utils/Misc';
+/* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+
+import { splitCourseCode } from '../../utils/Misc';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -45,7 +47,6 @@ const mapStateToProps = state => ({
 const CoursePageContent = ({
   course,
   shortlisted,
-  userReview,
   isLoggedIn,
   isBrowserDesktop,
 }) => {
@@ -56,6 +57,8 @@ const CoursePageContent = ({
     isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
   };
   console.log(course);
+  const userReview = false; // TODO finish fetching user review
+
   return (
     <>
       <CourseInfoHeader
@@ -89,7 +92,6 @@ const CoursePageContent = ({
               >
                 <CourseReviewCourseBox
                   courseIDList={[course.id]}
-                  reviewData={userReview}
                   onCancel={() => setReviewModalOpen(false)}
                 />
               </ModalHOC>
@@ -131,11 +133,6 @@ const CoursePage = ({ match, isLoggedIn }) => {
       <CoursePageContent
         course={data.course[0]}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
-        userReview={
-          isLoggedIn && data.course_review.length > 0
-            ? data.course_review[0]
-            : null
-        }
         isLoggedIn={isLoggedIn}
       />
     </CoursePageWrapper>

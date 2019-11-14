@@ -18,11 +18,9 @@ import {
   isOnLandingPageRoute
 } from '../../Routes';
 
-export const FOOTER_HEIGHT = 70;
-
 const Footer = ({ location }) => (
-  <FooterWrapper noMargin={isOnLandingPageRoute(location)} height={FOOTER_HEIGHT}>
-    <FooterContent noMargin = {isOnLandingPageRoute(location)}>
+  <FooterWrapper noMargin={isOnLandingPageRoute(location)}>
+    <FooterContent>
       <FooterLeft>
         <FooterPageLink to={LANDING_PAGE_ROUTE}>
           Home
@@ -40,9 +38,6 @@ const Footer = ({ location }) => (
         </FooterNormalLink>
         <FooterNormalLink href="mailto:hello@uwflow.com?Subject=Hello!" target="_blank" rel="noopener noreferrer">
           Email
-        </FooterNormalLink>
-        <FooterNormalLink href="https://twitter.com/useflow" target="_blank" rel="noopener noreferrer">
-          Twitter
         </FooterNormalLink>
       </FooterRight>
     </FooterContent>

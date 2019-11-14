@@ -22,6 +22,7 @@ const DropdownList = ({
   width = 'fit-content',
   margin = 'auto',
   itemColor = null,
+  menuOffset = 8
 }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
@@ -47,7 +48,7 @@ const DropdownList = ({
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
         <ChevronDown />
       </DropdownControl>
-      <DropdownMenu open={open}>
+      <DropdownMenu open={open} menuOffset={menuOffset}>
         {options.map((opt, idx) => (
           <MenuItem
             key={idx}

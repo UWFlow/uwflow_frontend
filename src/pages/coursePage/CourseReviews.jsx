@@ -87,16 +87,9 @@ const CourseCourseReviews = ({
           </DropdownPanelWrapper>
         </ReviewsOptionsWrapper>
         {reviews.map((review, i) => {
-          if (i < MIN_REVIEWS_SHOWN || showingAllReviews)
-            return (
-              <Review
-                key={i}
-                upvotes={review.upvotes}
-                review={review.review}
-                reviewer={review.reviewer}
-                metrics={review.metrics}
-              />
-            );
+          if (i < MIN_REVIEWS_SHOWN || showingAllReviews) {
+            return <Review key={i} review={review} />;
+          }
         })}
       </ReviewListWrapper>
       {reviews.length > MIN_REVIEWS_SHOWN && (
@@ -118,10 +111,14 @@ CourseCourseReviews.propTypes = {
   reviews: PropTypes.arrayOf(
     PropTypes.shape({
       upvotes: PropTypes.number,
-      review: PropTypes.object,
-      reviewer: PropTypes.shape({
-        name: PropTypes.string,
+      review: PropTypes.string,
+      author: PropTypes.shape({
+        full_name: PropTypes.string,
         program: PropTypes.string,
+        picture_url: PropTypes.string
+      }),
+      user: PropTypes.shape({
+        user_id: PropTypes.number
       }),
       metrics: PropTypes.shape({
         useful: PropTypes.number,
@@ -154,16 +151,9 @@ const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
               </ProfLikedMetric>
             </ProfHeader>
             {prof.reviews.map((review, i) => {
-              if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name])
-                return (
-                  <Review
-                    key={review.reviewer.full_name}
-                    upvotes={review.upvotes}
-                    review={review.review}
-                    reviewer={review.reviewer}
-                    metrics={review.metrics}
-                  />
-                );
+              if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name]) {
+                return <Review key={i} review={review} />;
+              }
             })}
           </ReviewListWrapper>
           {prof.reviews.length > MIN_REVIEWS_SHOWN && (
@@ -196,15 +186,19 @@ CourseProfReviews.propTypes = {
       reviews: PropTypes.arrayOf(
         PropTypes.shape({
           upvotes: PropTypes.number,
-          review: PropTypes.object,
-          reviewer: PropTypes.shape({
-            name: PropTypes.string,
+          review: PropTypes.string,
+          author: PropTypes.shape({
+            full_name: PropTypes.string,
             program: PropTypes.string,
+            picture_url: PropTypes.string
+          }).isRequired,
+          user: PropTypes.shape({
+            user_id: PropTypes.number
           }),
           metrics: PropTypes.shape({
-            clear: PropTypes.bool, //these probably should be numbers but server returns bools rn
-            engaging: PropTypes.bool,
-          }),
+            clear: PropTypes.number,
+            engaging: PropTypes.number,
+          }).isRequired,
         }),
       ),
     }),

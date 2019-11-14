@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 
 /* Routes */
 import { isOnLandingPageRoute } from '../../Routes';
-
 /* Styled Components */
 import {
   NavbarWrapper,

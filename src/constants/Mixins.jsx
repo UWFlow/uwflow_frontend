@@ -1,14 +1,13 @@
-import { PAGE_CONTENT_WIDTH } from './PageConstants';
+import { PAGE_CONTENT_WIDTH, FOOTER_HEIGHT, FOOTER_MARGIN_TOP, NAVBAR_HEIGHT } from './PageConstants';
 import theme from './GlobalTheme';
 
 export const PageContentZIndex = 'z-index: -1;';
 
 export const PageWrapper = `
-  padding-top: 80px;
-  width: 100%;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px - ${NAVBAR_HEIGHT}px);
   display: flex;
   flex-direction: column;
+  padding-top: ${NAVBAR_HEIGHT}px;
 `;
 
 export const PageContent = `
@@ -19,8 +18,8 @@ export const PageContent = `
   padding-right: 32px;
 
   @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
-      padding-left: 0;
-      padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 `;
 

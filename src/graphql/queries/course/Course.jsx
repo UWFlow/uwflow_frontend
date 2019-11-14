@@ -19,13 +19,6 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           course {
             code
           }
-        }
-        course_review(where: {
-          user_id: {_eq: ${userId}},
-          course: {code: {_eq: $code}}}
-        ) {
-          id
-          user_id
         }` : ''
       }
     }

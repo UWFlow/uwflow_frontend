@@ -1,22 +1,20 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent } from '../../../constants/Mixins';
 
 /* Mixins */
 import {
+  PageContent,
   Card,
   WideColumn,
   ThinColumn,
   BoxShadow,
   Heading3,
   Heading4,
+  PageWrapper
 } from '../../../constants/Mixins';
 
 export const CoursePageWrapper = styled.div`
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  ${PageWrapper}
 `;
 
 export const ColumnWrapper = styled.div`
@@ -29,7 +27,7 @@ export const ColumnWrapper = styled.div`
 export const Column1 = styled.div`
   ${WideColumn}
 
-  ${breakpoint('mobile', 'desktop')`
+  ${breakpoint('mobile', 'tablet')`
     width: 100%;
     padding: 0;
     order: 2;
@@ -39,7 +37,7 @@ export const Column1 = styled.div`
 export const Column2 = styled.div`
   ${ThinColumn}
 
-  ${breakpoint('mobile', 'desktop')`
+  ${breakpoint('mobile', 'tablet')`
     width: 100%;
     order: 1;
   `}

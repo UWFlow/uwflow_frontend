@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Body, BoxShadow } from '../../../constants/Mixins';
-import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
 export const RatingBoxWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  @media only screen and (min-width: ${832}px) {
+
+  ${breakpoint('tablet')`
     width: ${({ ratingBoxWidth }) => ratingBoxWidth}px;
     height: ${({ ratingBoxHeight }) => ratingBoxHeight}px;
     background-color: white;
@@ -16,7 +16,7 @@ export const RatingBoxWrapper = styled.div`
     position: relative;
     ${BoxShadow}
     margin-right: 32px;
-  }
+  `}
 `;
 
 export const CircularPercentageWrapper = styled.div`

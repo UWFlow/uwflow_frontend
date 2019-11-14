@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Heading4, BoxShadow } from '../../../constants/Mixins';
 
 export const ProfileDropdownWrapper = styled.div`
@@ -8,11 +9,10 @@ export const ProfileDropdownWrapper = styled.div`
   outline: 0;
   border: none;
   margin-left: 40px;
-  ${Heading4}
 
-  @media only screen and (max-width: 800px) {
+  ${breakpoint('mobile', 'tablet')`
     margin-left: 24px;
-  }
+  `}
 `;
 
 export const ProfilePicture = styled.img`
@@ -20,21 +20,17 @@ export const ProfilePicture = styled.img`
   height: 48px;
   border-radius: 50%;
   border: 2px solid ${({ theme }) => theme.primaryDark};
-  margin-right: 16px;
   object-fit: cover;
   ${BoxShadow}
-
-  @media only screen and (max-width: 800px) {
-    margin-right: 0;
-  }
 `;
 
 export const ProfileText = styled.div`
+  ${Heading4}
   color: ${({ theme }) => theme.dark1};
   text-decoration: none;
   display: flex;
   align-items: center;
-  margin-right: 8px;
+  width: max-content;
 
   &:hover {
     color: ${({ theme }) => theme.primary};

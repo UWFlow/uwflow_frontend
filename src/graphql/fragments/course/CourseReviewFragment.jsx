@@ -17,10 +17,10 @@ const CourseReviewFragment = {
       }
       text
       useful
-      user {
-        id
+      author {
         full_name
         program
+        picture_url
       }
       course_review_votes_aggregate {
         aggregate {
@@ -49,10 +49,10 @@ const CourseReviewFragment = {
       clear
       engaging
       text
-      user {
-        id
+      author {
         full_name
         program
+        picture_url
       }
       prof_review_votes_aggregate {
         aggregate {

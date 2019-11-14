@@ -1,4 +1,4 @@
-import { PAGE_CONTENT_WIDTH } from './PageConstants';
+import { PAGE_CONTENT_WIDTH, BREAKPOINT_WIDTH } from './PageConstants';
 
 export default {
   /* Colours */
@@ -29,7 +29,7 @@ export default {
 
   breakpoints: {
     mobile: 0,
-    tablet: 800,
+    tablet: BREAKPOINT_WIDTH,
     desktop: PAGE_CONTENT_WIDTH
   }
 };

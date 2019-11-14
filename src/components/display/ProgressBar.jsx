@@ -14,7 +14,7 @@ const ProgressBar = ({ percentComplete, width = 188, height = 16 }) => {
 
 ProgressBar.propTypes = {
   percentComplete: PropTypes.number,
-  width: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.number,
 };
 

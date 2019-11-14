@@ -22,7 +22,6 @@ export const PageHeader = styled.div`
   height: 150px;
   background: ${({ theme }) => theme.primaryExtraDark};
   padding-bottom: 32px;
-
   ${breakpoint('mobile', 'tablet')`
     height: auto;
     padding: 32px 16px;

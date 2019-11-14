@@ -16,7 +16,8 @@ const convertInputToState = data => {
   const courseReviews = data.course_review.map(r => ({
     upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
     review: r.text,
-    reviewer: r.user,
+    author: r.author,
+    user: r.user,
     metrics: {
       useful: r.useful,
       easy: r.easy,
@@ -50,7 +51,8 @@ const convertInputToState = data => {
     profObject.reviews.push({
       upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
       review: current.text,
-      reviewer: current.user,
+      author: current.author,
+      user: current.user,
       metrics: {
         clear: current.clear,
         engaging: current.engaging,
@@ -120,11 +122,14 @@ useCourseReviewsReducer.propTypes = {
         }),
         text: PropTypes.string,
         useful: PropTypes.number,
-        user: PropTypes.shape({
+        author: PropTypes.shape({
           full_name: PropTypes.string,
-          id: PropTypes.number,
           program: PropTypes.string,
+          picture_url: PropTypes.string,
         }),
+        user: PropTypes.shape({
+          user_id: PropTypes.number
+        })
       }),
     ),
     prof_review: PropTypes.arrayOf(
@@ -151,11 +156,14 @@ useCourseReviewsReducer.propTypes = {
           }),
         }),
         text: PropTypes.string,
-        user: PropTypes.shape({
+        author: PropTypes.shape({
           full_name: PropTypes.string,
-          id: PropTypes.number,
           program: PropTypes.string,
+          picture_url: PropTypes.string,
         }),
+        user: PropTypes.shape({
+          user_id: PropTypes.number
+        })
       }),
     ),
   }),

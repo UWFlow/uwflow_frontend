@@ -14,7 +14,7 @@ export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
-  background-color: white;
+  background-color: ${({ theme }) => theme.white};
   flex-direction: column;
   position: relative;
 `;
@@ -28,13 +28,11 @@ export const CourseCodeAndNameSection = styled.div`
   background: url(${CourseHeader});
   background-size: cover;
   position: relative;
-  min-height: 162px;
+  min-height: 160px;
   padding: 16px;
 
   ${breakpoint('tablet')`
     min-height: 320px;
-    padding-bottom: 48px;
-    padding-left: 32px;
   `}
 `;
 
@@ -42,6 +40,11 @@ export const CourseCodeAndStar = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+
+  ${breakpoint('tablet')`
+    ${PageContent}
+    margin: 0 auto;
+  `}
 `;
 
 export const StarAlignmentWrapper = styled.div`
@@ -67,6 +70,13 @@ export const CourseCode = styled.div`
   `}
 `;
 
+export const CourseNameWrapper = styled.div`
+  ${breakpoint('tablet')`
+    ${PageContent}
+    margin: 16px auto 0 auto;
+  `}
+`;
+
 export const CourseName = styled.div`
   ${Heading2}
   color: ${({ theme }) => theme.light1};
@@ -80,7 +90,8 @@ export const CourseName = styled.div`
 export const CourseDescriptionSection = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 16px;
+  padding: 0;
+  position: relative;
 
   ${breakpoint('tablet')`
     ${PageContent}
@@ -95,12 +106,13 @@ export const Description = styled.div`
 
   ${breakpoint('mobile', 'tablet')`
     margin-bottom: 16px;
+    padding: 0 16px;
+    min-width: 100%;
   `}
 
   ${breakpoint('tablet')`
     margin-top: 48px;
     max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
-    line-height: 1.5;
   `}
 `;
 
