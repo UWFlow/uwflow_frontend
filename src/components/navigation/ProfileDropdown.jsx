@@ -24,8 +24,9 @@ import { GET_USER } from '../../graphql/queries/profile/User';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { LOGGED_OUT } from '../../data/actions/AuthActions';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+
+import { logOut } from '../../utils/Auth';
 
 const mapStateToProps = state => ({
   isDesktopPage: getIsBrowserDesktop(state),
@@ -36,10 +37,14 @@ const mapStateToProps = state => ({
 const placeholderImage =
   'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
 
-const renderProfilePicture = data => {
+const renderProfilePicture = (data, dispatch) => {
   let user = { picture_url: null };
   if (data && data.user) {
-    user = data.user[0];
+    if (data.user.length > 0) {
+      user = data.user[0];
+    } else {
+      logOut(dispatch);
+    }
   }
 
   return <ProfilePicture src={user.picture_url || placeholderImage} />;
@@ -63,7 +68,7 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
           >
             {({ data }) => (
               <ProfileText onClick={handleProfileButtonClick}>
-                {renderProfilePicture(data)}
+                {renderProfilePicture(data, dispatch)}
               </ProfileText>
             )}
           </Query>
@@ -73,13 +78,10 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
             itemColor={theme.dark1}
             options={['View profile', 'Log out']}
             onChange={idx => {
-              if (idx === 1) {
-                // log out
-                localStorage.removeItem('token');
-                localStorage.removeItem('user_id');
-                dispatch({ type: LOGGED_OUT });
-              } else {
+              if (idx === 0) {
                 handleProfileButtonClick();
+              } else {
+                logOut(dispatch);
               }
             }}
             placeholder=""

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 
@@ -32,6 +32,8 @@ import { GET_USER } from '../../graphql/queries/profile/User';
 
 /* Routes */
 import { LANDING_PAGE_ROUTE } from '../../Routes';
+import NotFoundPage from '../notFoundPage/NotFoundPage';
+import { logOut } from '../../utils/Auth';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -84,9 +86,15 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
 };
 
 export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
+  const dispatch = useDispatch();
+
   const { loading, error, data } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
   });
+
+  if (data && data.user.length === 0) {
+    logOut(dispatch);
+  }
 
   if (!isLoggedIn) {
     history.push(LANDING_PAGE_ROUTE);
@@ -95,7 +103,7 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   return loading ? (
     <LoadingSpinner />
   ) : error || !data ? (
-    <div>Error</div>
+    <NotFoundPage />
   ) : (
     <ProfilePageWrapper>
       <ProfilePageContent user={{ ...data.user[0] }} isBrowserDesktop={isBrowserDesktop} />

@@ -6,6 +6,7 @@ import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 
 import { GRAPHQL_ENDPOINT } from '../constants/Api';
+import { logOut } from '../utils/Auth';
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -24,7 +25,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) => {
       console.log(`[GQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-      // TODO network error
+      // hard coded error message for now
+      if (message.includes('JWT')) {
+        logOut();
+      }
       return null;
     });
   }

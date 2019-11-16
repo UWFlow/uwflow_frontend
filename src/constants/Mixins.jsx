@@ -4,7 +4,7 @@ import theme from './GlobalTheme';
 export const PageContentZIndex = 'z-index: -1;';
 
 export const PageWrapper = `
-  min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px - ${NAVBAR_HEIGHT}px);
+  min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px);
   display: flex;
   flex-direction: column;
   padding-top: ${NAVBAR_HEIGHT}px;

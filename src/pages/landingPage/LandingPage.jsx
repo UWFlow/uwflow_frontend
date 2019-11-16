@@ -44,7 +44,7 @@ const LandingPage = ({ isLoggedIn, isDesktop }) => {
       <Column1 loggedIn={isLoggedIn}>
         <Column1TextWrapper>
           <ProfileWrapper>
-            {isLoggedIn || !isDesktop && <ProfileDropdown /> }
+            {(isLoggedIn || !isDesktop) && <ProfileDropdown /> }
           </ProfileWrapper>
           <TitleText>
             UW Flow
