@@ -110,11 +110,7 @@ const ExplorePageContent = ({
   );
 }
 
-const mapStateToProps = state => ({
-  isDesktopPage: getIsBrowserDesktop(state),
-});
-
-const ExplorePage = ({ isDesktopPage, location }) => {
+const ExplorePage = ({ location }) => {
   const { q: query, t: type, c: code } = queryString.parse(location.search);
   const courseTab = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
@@ -135,10 +131,9 @@ const ExplorePage = ({ isDesktopPage, location }) => {
         data={data}
         fetchMore={fetchMore}
         loading={loading}
-        isDesktopPage={isDesktopPage}
       />
     </ExplorePageWrapper>
   )
 };
 
-export default withRouter(connect(mapStateToProps)(ExplorePage));
+export default withRouter(ExplorePage);

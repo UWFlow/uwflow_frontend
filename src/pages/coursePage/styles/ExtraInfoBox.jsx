@@ -1,7 +1,14 @@
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
 
-import { Heading3, Body } from '../../../constants/Mixins';
+import { Card, BoxShadow, Heading4, Heading3, Body } from '../../../constants/Mixins';
+
+export const ExtraInfoBoxWrapper = styled.div`
+${Card('32px 24px')}
+${BoxShadow}
+${Heading4}
+margin-bottom: 32px;
+`;
 
 export const Header = styled.div`
   ${Heading3}
@@ -25,3 +32,4 @@ export const GreyText = styled.div`
   ${Body}
   color: ${({ theme }) => theme.light4};
 `;
+

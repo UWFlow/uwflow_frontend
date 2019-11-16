@@ -4,7 +4,7 @@ import { withTheme } from 'styled-components';
 
 import RadioButton from '../../components/input/RadioButton';
 import MultiSelectButton from '../../components/input/MultiSelectButton';
-import DiscreteSlider from '../../components/discreteSlider/DiscreteSlider';
+import DiscreteSlider from '../../components/input/DiscreteSlider';
 import DropdownList from '../../components/input/DropdownList';
 
 /* Styled Components */

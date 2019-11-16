@@ -9,7 +9,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../components/coursePage/CourseReviewCourseBox';
+import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
 import ModalHOC from '../../components/modal/ModalHOC';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
@@ -40,8 +40,8 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import { splitCourseCode } from '../../utils/Misc';
 
 const mapStateToProps = state => ({
-  isLoggedIn: getIsLoggedIn(state),
   isBrowserDesktop: getIsBrowserDesktop(state),
+  isLoggedIn: getIsLoggedIn(state)
 });
 
 const CoursePageContent = ({
@@ -56,7 +56,7 @@ const CoursePageContent = ({
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
   };
-  console.log(course);
+  console.log(isBrowserDesktop, isLoggedIn);
   const userReview = false; // TODO finish fetching user review
 
   return (
@@ -110,13 +110,13 @@ const CoursePageContent = ({
       <AuthModal
         isModalOpen={authModalOpen}
         onCloseModal={() => setAuthModalOpen(false)}
-        width={400}
+        width={isBrowserDesktop ? '400px': '95vw'}
       />
     </>
   );
 };
 
-const CoursePage = ({ match, isLoggedIn }) => {
+const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn, getUserId());
 
@@ -134,6 +134,7 @@ const CoursePage = ({ match, isLoggedIn }) => {
         course={data.course[0]}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}
+        isBrowserDesktop={isBrowserDesktop}
       />
     </CoursePageWrapper>
   );

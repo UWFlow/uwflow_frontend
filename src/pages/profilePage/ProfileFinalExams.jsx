@@ -8,8 +8,8 @@ import {
   ProfileFinalExamsContent,
 } from './styles/ProfileFinalExams';
 
-import FinalExamTable from '../../components/coursePage/FinalExamTable';
-import LastUpdatedSchedule from '../../components/coursePage/LastUpdatedSchedule';
+import FinalExamTable from '../../components/common/FinalExamTable';
+import LastUpdatedSchedule from '../../components/common/LastUpdatedSchedule';
 
 import { processMultipleCourseExams } from '../../utils/FinalExams';
 

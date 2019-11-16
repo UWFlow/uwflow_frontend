@@ -11,7 +11,7 @@ import ScheduleUploadModal from '../dataUploadModals/ScheduleUploadModal';
 import TranscriptUploadModal from '../dataUploadModals/TranscriptUploadModal';
 
 /* Selectors */
-import { getTextboxText } from '../../../reducers/TextboxReducer';
+import { getTextboxText } from '../../../data/reducers/TextboxReducer';
 
 const mapStateToProps = state => ({
   getTextboxText: ID => getTextboxText(state, ID),

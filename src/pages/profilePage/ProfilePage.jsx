@@ -10,7 +10,7 @@ import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
 import ModalHOC from '../../components/modal/ModalHOC';
-import CourseReviewCourseBox from '../../components/coursePage/CourseReviewCourseBox';
+import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import CompleteProfileContent from './CompleteProfileContent';
 

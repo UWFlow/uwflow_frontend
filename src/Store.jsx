@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
 /* Reducers */
-import DesktopReducer from './reducers/DesktopReducer';
+import DesktopReducer from './data/reducers/DesktopReducer';
 import DataReducer from './data/reducers/DataReducer';
 
 /* Actions */

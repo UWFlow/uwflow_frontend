@@ -20,10 +20,10 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import ProfileDropdown from './ProfileDropdown';
 
 const mapStateToProps = state => ({
-  isDesktopPage: getIsBrowserDesktop(state),
+  isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const Navbar = ({ location, isDesktopPage }) => {
+const Navbar = ({ location, isBrowserDesktop }) => {
   if (isOnLandingPageRoute(location)) {
     return null;
   }
@@ -32,7 +32,7 @@ const Navbar = ({ location, isDesktopPage }) => {
     <>
       <NavbarWrapper>
         <NavbarContent>
-          {isDesktopPage && <FlowLogo />}
+          {isBrowserDesktop && <FlowLogo />}
           <SearchBar maximizeWidth />
           <ProfileDropdown />
         </NavbarContent>

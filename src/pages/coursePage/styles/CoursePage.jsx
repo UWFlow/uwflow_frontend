@@ -9,7 +9,6 @@ import {
   ThinColumn,
   BoxShadow,
   Heading3,
-  Heading4,
   PageWrapper
 } from '../../../constants/Mixins';
 
@@ -41,13 +40,6 @@ export const Column2 = styled.div`
     width: 100%;
     order: 1;
   `}
-`;
-
-export const ExtraInfoBoxWrapper = styled.div`
-  ${Card('32px 24px')}
-  ${BoxShadow}
-  ${Heading4}
-  margin-bottom: 32px;
 `;
 
 export const ScheduleAndReviewWrapper = styled.div`

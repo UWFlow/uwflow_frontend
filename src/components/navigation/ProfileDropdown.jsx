@@ -29,7 +29,7 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import { logOut } from '../../utils/Auth';
 
 const mapStateToProps = state => ({
-  isDesktopPage: getIsBrowserDesktop(state),
+  isBrowserDesktop: getIsBrowserDesktop(state),
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -50,7 +50,7 @@ const renderProfilePicture = (data, dispatch) => {
   return <ProfilePicture src={user.picture_url || placeholderImage} />;
 };
 
-const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
+const ProfileDropdown = ({ history, theme, isLoggedIn, isBrowserDesktop }) => {
   const dispatch = useDispatch();
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
@@ -97,7 +97,7 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isDesktopPage }) => {
       <AuthModal
         isModalOpen={authModalOpen}
         onCloseModal={() => setAuthModalOpen(false)}
-        width={isDesktopPage ? '400px': '100vw'}
+        width={isBrowserDesktop ? '400px': '95vw'}
       />
     </ProfileDropdownWrapper>
   );

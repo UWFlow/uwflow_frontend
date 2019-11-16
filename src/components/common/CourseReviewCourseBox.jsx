@@ -17,10 +17,10 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import DiscreteSlider from '../discreteSlider/DiscreteSlider';
 import RadioButton from '../input/RadioButton';
 import DropdownList from '../input/DropdownList';
 import Button from '../input/Button';
+import DiscreteSlider from '../input/DiscreteSlider';
 
 const easyOptions = [
   'Very difficult',

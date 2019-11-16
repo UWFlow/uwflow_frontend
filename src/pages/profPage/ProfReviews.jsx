@@ -6,7 +6,7 @@ import { withTheme } from 'styled-components';
 /* Custom Reducers */
 import useProfReviewsReducer, {
   UPDATE_REVIEW_DATA,
-} from '../../data/custom_hooks/UseProfReviewsReducer';
+} from '../../data/hooks/UseProfReviewsReducer';
 
 /* Styled Components */
 import {

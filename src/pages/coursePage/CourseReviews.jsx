@@ -10,8 +10,7 @@ import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 /* Custom Hooks */
 import useCourseReviewsReducer, {
   UPDATE_REVIEW_DATA,
-  SORT_COURSE_REVIEWS_BY_PROF,
-} from '../../data/custom_hooks/UseCourseReviewsReducer';
+} from '../../data/hooks/UseCourseReviewsReducer';
 
 /* Styled Components */
 import {
