@@ -35,16 +35,16 @@ import {
 } from '../../../constants/DataUploadStates';
 
 const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
-  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+  const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleSchedulePaste = async event => {
     /* TODO: handle schedule paste */
     console.log(event.currentTarget.value);
     setUploadState(UPLOAD_PENDING);
-    const [response, status] = await makePOSTRequest(SCHEDULE_PARSE_ENDPOINT, {
+    const [, status] = await makePOSTRequest(SCHEDULE_PARSE_ENDPOINT, {
       text: event.currentTarget.value,
     });
-    if (status == 200) {
+    if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
     } else {
       setUploadState(UPLOAD_FAILED);

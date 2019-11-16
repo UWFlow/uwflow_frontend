@@ -66,7 +66,7 @@ const Review = ({
   theme,
   isBrowserDesktop,
 }) => {
-  const { upvotes, review: reviewText, author, user, metrics } = review;
+  const { upvotes, review: reviewText, author, metrics } = review;
 
   const reviewContent = (
     <ReviewTextWrapper>
@@ -76,7 +76,8 @@ const Review = ({
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
-
+  
+  // TODO(Edwin)
   const userUpvoted = true;
   return (
     <ReviewWrapper>

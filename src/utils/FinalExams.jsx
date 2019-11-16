@@ -5,7 +5,7 @@ export const processSectionExams = (sections, courseCode) => {
     if (!isCurrentTerm(section.term)) {
       return groups;
     }
-    section.exams.map(exam => {
+    section.exams.forEach(exam => {
       const examKey = `${courseCode}${exam.is_tba}${exam.location}${exam.date}${exam.start_seconds}${exam.end_seconds}`;
       if (examKey in groups) {
         groups[examKey].sections.push(section.section);

@@ -13,6 +13,7 @@ export const PageWrapper = `
 export const PageContent = `
   max-width: ${PAGE_CONTENT_WIDTH}px;
   width: 100%;
+  margin: 0 auto;
 
   padding-left: 32px;
   padding-right: 32px;

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 import { Heading2, Heading4, Body, BoxShadow } from '../../constants/Mixins';
 

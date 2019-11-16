@@ -71,7 +71,7 @@ const ModalHOC = ({
         document.body.classList.remove('modal-padding');
       }
     };
-  }, [isModalOpen, isTrulyOpen]);
+  }, [isModalOpen, isTrulyOpen, isBrowserDesktop]);
 
   const onAnimationFinish = () => {
     setTrulyOpen(isModalOpen);

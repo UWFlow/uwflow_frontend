@@ -168,7 +168,7 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
       // SUCCESS
       setEmail(email);
       setSuccessMessage('Successfully sent reset code!');
-      if (showingForm != ENTER_RESET_CODE_FORM) {
+      if (showingForm !== ENTER_RESET_CODE_FORM) {
         setTimeout(() => {
           setSuccessMessage('');
           setShowingForm(ENTER_RESET_CODE_FORM);

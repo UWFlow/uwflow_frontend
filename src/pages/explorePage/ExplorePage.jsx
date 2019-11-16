@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import queryString from 'query-string';
@@ -15,9 +14,6 @@ import {
 
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
-
-/* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 import {
   buildExploreCodeQuery,

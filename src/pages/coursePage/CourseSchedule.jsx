@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 /* Child Components */
 import TabContainer from '../../components/display/TabContainer';
-import Table from '../../components/display/Table';
-import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
+// import Table from '../../components/display/Table';
+// import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 /* Styled Components */
 import { CourseScheduleWrapper } from './styles/CourseSchedule';
@@ -28,8 +28,9 @@ const secsToTime = secs => {
 // the time range valid for the whole term, if it exists, comes first and everything else
 // is sorted by date.
 const getInfoGroupings = meetings => {
-  var groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
+  let groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
     const key = `${curr.start_seconds} ${curr.end_seconds}`;
+  
     if (!groupings[key]) {
       groupings[key] = {
         startSeconds: curr.start_seconds,
@@ -46,6 +47,7 @@ const getInfoGroupings = meetings => {
         timeRanges: [],
       };
     }
+  
     groupings[key].timeRanges.push({
       days: curr.days,
       startDate: curr.start_date,
@@ -53,25 +55,27 @@ const getInfoGroupings = meetings => {
     });
     return groupings;
   }, {});
-  var answer = [];
+
+  let answer = [];
   // Sort timeRanges for each group
   Object.entries(groupedByTimeOfDay).forEach(entry => {
     entry[1].timeRanges.sort((a, b) => a.startDate > b.startDate);
     answer.push(entry[1]);
   });
+
   // Merge and sort days of week for timeRanges that occur in the same date range
   const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not to0 sure about saturday and sunday
   answer.forEach(entry => {
-    var newTimeRanges = [];
-    var newDays = [];
+    let newTimeRanges = [];
+    let newDays = [];
     entry.timeRanges.forEach((currRange, i) => {
       if (i < entry.timeRanges.length - 1) {
         const nextRange = entry.timeRanges[i + 1];
         if (
-          currRange.startDate == nextRange.startDate &&
-          currRange.endDate == nextRange.endDate
+          currRange.startDate === nextRange.startDate &&
+          currRange.endDate === nextRange.endDate
         ) {
-          for (var day of currRange.days) {
+          for (let day of currRange.days) {
             if (!newDays.includes(day)) {
               newDays.push(day);
             }
@@ -79,7 +83,8 @@ const getInfoGroupings = meetings => {
           return;
         }
       }
-      for (var day of currRange.days) {
+
+      for (let day of currRange.days) {
         if (!newDays.includes(day)) {
           newDays.push(day);
         }
@@ -94,6 +99,7 @@ const getInfoGroupings = meetings => {
     });
     entry.timeRanges = newTimeRanges;
   });
+
   answer.sort((a, b) => a.startSeconds - b.startSeconds);
   return answer;
 };

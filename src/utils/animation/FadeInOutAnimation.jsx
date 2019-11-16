@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 /* Child Components */
-import { config, useSpring } from 'react-spring';
+import { useSpring } from 'react-spring';
 
 /* Styled Components */
 import { ContentWrapper } from './styles/Animations';

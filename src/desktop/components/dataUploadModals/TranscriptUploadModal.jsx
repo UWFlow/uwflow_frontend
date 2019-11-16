@@ -44,7 +44,7 @@ const onDragOver = event => {
 };
 
 const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
-  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+  const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleTranscriptDrop = async event => {
     /* TODO: handle schedule paste */
@@ -52,13 +52,13 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
     event.preventDefault();
     event.stopPropagation();
     setUploadState(UPLOAD_PENDING);
-    const [response, status] = await makePOSTRequest(
+    const [, status] = await makePOSTRequest(
       TRANSCRIPT_PARSE_ENDPOINT,
       {
         file: event.dataTransfer.files,
       },
     );
-    if (status == 200) {
+    if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
     } else {
       setUploadState(UPLOAD_FAILED);

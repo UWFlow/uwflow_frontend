@@ -35,11 +35,13 @@ const Table = ({ columns, data, sortable = false, loading = false, fetchMore = (
       fetchMore();
       setShouldFetchMore(false);
     }
-  }, [shouldFetchMore]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldFetchMore, fetchMore]);
 
   useEffect(() => {
     window.addEventListener('scroll', () => setFetchMore());
     return window.removeEventListener('scroll', () => setFetchMore());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bottomRef, loading]);
 
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(

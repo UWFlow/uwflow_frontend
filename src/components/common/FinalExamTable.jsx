@@ -13,7 +13,7 @@ const examColumns = [
     Header: 'Course',
     accessor: 'code',
     maxWidth: 120,
-    Cell:  ({cell}) => (
+    Cell: ({cell}) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
         {splitCourseCode(cell.value)}
       </CourseCode>
@@ -23,7 +23,7 @@ const examColumns = [
     Header: 'Section(s)',
     accessor: 'sections',
     maxWidth: 120,
-    Cell:  ({cell}) => {cell.value.join(', ')},
+    Cell: ({cell}) => {cell.value.join(', ')},
   },
   {
     Header: 'Time',

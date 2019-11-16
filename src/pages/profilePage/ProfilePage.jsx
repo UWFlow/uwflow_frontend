@@ -28,7 +28,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* Queries */
-import { GET_USER } from '../../graphql/queries/profile/User';
+import { GET_USER } from '../../graphql/queries/user/User';
 
 /* Routes */
 import { LANDING_PAGE_ROUTE } from '../../Routes';

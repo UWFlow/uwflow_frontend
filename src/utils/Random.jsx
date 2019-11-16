@@ -8,7 +8,7 @@ export const shouldDoWithProbablity = probability => {
 
 export const pickOneRandomly = set => {
   const n = Math.random();
-  var accumulator = 0;
+  let accumulator = 0;
   for (const key of Object.keys(set)) {
     accumulator += set[key];
     if (accumulator > n) {

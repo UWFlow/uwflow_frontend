@@ -13,14 +13,13 @@ import {
 } from './styles/ProfileDropdown';
 
 /* Child Components */
-import AuthModal from '../../auth/AuthModal';
 import DropdownList from '../input/DropdownList';
 
 /* Routes */
 import { PROFILE_PAGE_ROUTE } from '../../Routes';
 
 /* GraphQL Queries */
-import { GET_USER } from '../../graphql/queries/profile/User';
+import { GET_USER } from '../../graphql/queries/user/User';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';

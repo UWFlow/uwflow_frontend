@@ -46,16 +46,17 @@ const ProfReviews = ({ profID, theme }) => {
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
   });
-  const [reviewDataState, dispatch] = useProfReviewsReducer(data);
+  const [reviewDataState, dispatchReviews] = useProfReviewsReducer(data);
   const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
   useEffect(() => {
     if (data) {
-      dispatch({
+      dispatchReviews({
         type: UPDATE_REVIEW_DATA,
         payload: data,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) {
@@ -78,7 +79,7 @@ const ProfReviews = ({ profID, theme }) => {
       reviews.code === courseFilterOptions[selectedFilter],
   );
 
-  if (reviewDataState.courses.length == 0) {
+  if (reviewDataState.courses.length === 0) {
     return <NoReviewsBox>No Reviews</NoReviewsBox>;
   }
 
@@ -125,11 +126,11 @@ const ProfReviews = ({ profID, theme }) => {
                   onChange={value => setSelectedSort(value)}
                 />
               </DropdownPanelWrapper>
-              {course.reviews.map((review, i) => {
-                if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code]) {
-                  return <Review key={i} review={review} />;
-                }
-              })}
+              {course.reviews.filter((_, i) => {
+                return i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code];
+              }).map((review, i) => (
+                <Review key={i} review={review} />
+              ))}
             </ReviewListWrapper>
             {course.reviews.length > MIN_REVIEWS_SHOWN && (
               <ShowMoreReviewsSection

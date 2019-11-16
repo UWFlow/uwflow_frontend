@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -28,16 +28,19 @@ const mapStateToProps = state => ({
 });
 
 const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
+  const sortedShortlist = shortlistCourses.sort((a, b) =>
+    (a.course.code > b.course.code) - (a.course.code < b.course.code));
+
   const shorlistContent = (
     <>
-      {shortlistCourses.map((course, idx) => (
+      {sortedShortlist.map((entry, idx) => (
         <ShortlistCourse key={idx}>
-          <ShortlistStar initialState={true} courseID={course.course.id} />
+          <ShortlistStar initialState={true} courseID={entry.course.id} />
           <ShortListCourseText>
-            <ShortlistCourseCode to={getCoursePageRoute(course.course.code)}>
-              {splitCourseCode(course.course.code)}
+            <ShortlistCourseCode to={getCoursePageRoute(entry.course.code)}>
+              {splitCourseCode(entry.course.code)}
             </ShortlistCourseCode>
-            <ShortlistCourseName>{course.course.name}</ShortlistCourseName>
+            <ShortlistCourseName>{entry.course.name}</ShortlistCourseName>
           </ShortListCourseText>
         </ShortlistCourse>
       ))}
