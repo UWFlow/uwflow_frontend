@@ -65,7 +65,7 @@ const ProfileCourses = ({ theme, courses, setReviewCourse, openModal }) => {
               </LikedThisCourseText>
             </LikedCourseWrapper>
             <LikeToggleWrapper>
-              <LikeCourseToggle liked={true} />
+              <LikeCourseToggle courseID={course_taken.course.id} initialState={true} />
             </LikeToggleWrapper>
             <Button
               margin="auto 0 auto 16px"

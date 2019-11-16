@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { ThumbsUp, ThumbsDown } from 'react-feather';
 import { withTheme } from 'styled-components';
 
@@ -9,16 +9,40 @@ import {
   LikeCourseToggleButton
 } from './styles/LikeCourseToggle';
 
-const LikeCourseToggle = ({
-  theme, liked = null, onClick = () => {}
-}) => {
+/* Selectors */
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { authModalOpen } from '../../data/actions/AuthActions';
+
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
+
+const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) => {
+  const userID = localStorage.getItem('user_id');
+
+  const dispatch = useDispatch();
+  const [liked, setLiked] = useState(initialState);
+
+  const toggleOnClick = (targetState) => {
+    if (!isLoggedIn) {
+      dispatch(authModalOpen());
+      return
+    }
+
+    if (liked === targetState) {
+      setLiked(null);
+    } else {
+      setLiked(targetState)
+    }
+  }
+
   return (
     <LikeCourseToggleWrapper>
       <LikeCourseToggleButton
         left
         noneSelected={liked === null}
         selected={liked === true}
-        onClick={() => onClick(true)}
+        onClick={() => toggleOnClick(true)}
       >
         <ThumbsUp
           color={liked === true ? theme.white : theme.dark3}
@@ -30,7 +54,7 @@ const LikeCourseToggle = ({
         left={false}
         noneSelected={liked === null}
         selected={liked === false}
-        onClick={() => onClick(false)}
+        onClick={() => toggleOnClick(false)}
       >
         <ThumbsDown
           color={liked === false ? theme.white : theme.dark3}
@@ -42,10 +66,4 @@ const LikeCourseToggle = ({
   );
 };
 
-LikeCourseToggle.propTypes = {
-  theme: PropTypes.object.isRequired,
-  liked: PropTypes.bool,
-  onClick: PropTypes.func,
-};
-
-export default withTheme(LikeCourseToggle);
+export default withTheme(connect(mapStateToProps)(LikeCourseToggle));

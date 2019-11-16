@@ -1,5 +1,5 @@
 {
-  "name": "flow_frontend_backbone",
+  "name": "flow_frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

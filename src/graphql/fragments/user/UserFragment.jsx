@@ -11,7 +11,7 @@ const UserFragment = {
   `,
   userShortlist: gql`
     fragment UserShortlistFragment on user {
-      shortlist {
+    shortlist {
         course {
           id
           code

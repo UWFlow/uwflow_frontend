@@ -47,11 +47,11 @@ const link = ApolloLink.from([
   httpLink // terminating link must be added last
 ]);
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({});
 
 const client = new ApolloClient({
   link,
-  cache
+  cache,
 });
 
 export default client;

@@ -71,7 +71,7 @@ const CoursePageContent = ({
                   <CourseReviewQuestionText>
                     What do you think of {splitCourseCode(course.code)}?
                   </CourseReviewQuestionText>
-                  <LikeCourseToggle liked={true} />
+                  <LikeCourseToggle courseID={course.id} initialState={true} />
                 </CourseQuestionTextAndToggle>
                 <Button
                   width={200}
