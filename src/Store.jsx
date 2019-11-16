@@ -7,7 +7,6 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
 /* Reducers */
-import DesktopReducer from './data/reducers/DesktopReducer';
 import DataReducer from './data/reducers/DataReducer';
 
 /* Actions */
@@ -15,7 +14,6 @@ import { BrowserWindowResized } from './data/actions/BrowserActions';
 
 const rootReducer = combineReducers({
   data: DataReducer,
-  desktop: DesktopReducer,
 });
 
 const loggerMiddleware = createLogger({

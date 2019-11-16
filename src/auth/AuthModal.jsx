@@ -1,19 +1,33 @@
 import React from 'react';
+import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* Child Components */
 import ModalHOC from '../components/modal/ModalHOC';
 import AuthForm from './AuthForm';
 
-const AuthModal = ({ isModalOpen, onCloseModal, width }) => (
-  <ModalHOC isModalOpen={isModalOpen} onCloseModal={onCloseModal}>
-    <AuthForm onAuthComplete={onCloseModal} width={width} />
-  </ModalHOC>
-);
+/* Selectors */
+import { getIsAuthModalOpen } from '../data/reducers/AuthReducer';
+import { authModalClose } from '../data/actions/AuthActions';
+
+const mapStateToProps = state => ({
+  isAuthModalOpen: getIsAuthModalOpen(state),
+});
+
+const AuthModal = ({ isAuthModalOpen }) => {
+  const dispatch = useDispatch();
+  return (
+    <ModalHOC
+      isModalOpen={isAuthModalOpen}
+      onCloseModal={() => dispatch(authModalClose())}
+    >
+      <AuthForm onAuthComplete={() => dispatch(authModalClose())} />
+    </ModalHOC>
+  );
+}
 
 AuthModal.propTypes = {
-  isModalOpen: PropTypes.bool.isRequired,
-  onCloseModal: PropTypes.func.isRequired,
+  isAuthModalOpen: PropTypes.bool.isRequired,
 };
 
-export default AuthModal;
+export default connect(mapStateToProps)(AuthModal);

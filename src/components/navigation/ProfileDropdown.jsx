@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -25,6 +25,7 @@ import { GET_USER } from '../../graphql/queries/profile/User';
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+import { authModalOpen } from '../../data/actions/AuthActions';
 
 import { logOut } from '../../utils/Auth';
 
@@ -50,12 +51,11 @@ const renderProfilePicture = (data, dispatch) => {
   return <ProfilePicture src={user.picture_url || placeholderImage} />;
 };
 
-const ProfileDropdown = ({ history, theme, isLoggedIn, isBrowserDesktop }) => {
+const ProfileDropdown = ({ history, theme, isLoggedIn }) => {
   const dispatch = useDispatch();
-  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const handleProfileButtonClick = () => {
-    isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : setAuthModalOpen(true);
+    isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : dispatch(authModalOpen());
   };
 
   return (
@@ -94,11 +94,6 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, isBrowserDesktop }) => {
           Log in
         </ProfileText>
       )}
-      <AuthModal
-        isModalOpen={authModalOpen}
-        onCloseModal={() => setAuthModalOpen(false)}
-        width={isBrowserDesktop ? '400px': '95vw'}
-      />
     </ProfileDropdownWrapper>
   );
 }

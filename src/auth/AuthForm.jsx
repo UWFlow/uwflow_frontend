@@ -24,7 +24,7 @@ import { PRIVACY_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN } from '../data/actions/AuthActions';
 
-export const AuthForm = ({ onAuthComplete = () => {}, width }) => {
+export const AuthForm = ({ onAuthComplete = () => {} }) => {
   const dispatch = useDispatch();
 
   const [showLoginForm, setShowLoginForm] = useState(true);
@@ -74,7 +74,7 @@ export const AuthForm = ({ onAuthComplete = () => {}, width }) => {
 
   return (
     <>
-      <Wrapper width={width}>
+      <Wrapper>
         <ContentWrapper>
           {showLoginForm ? (
             <LoginContent

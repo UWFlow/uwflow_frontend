@@ -28,6 +28,7 @@ import {
 import ModalRoot from './components/modal/ModalRoot';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
+import AuthModal from './auth/AuthModal';
 
 const App = () => {
   return (
@@ -78,6 +79,7 @@ const App = () => {
       </Switch>
       <Footer />
       <ModalRoot />
+      <AuthModal />
     </>
   );
 };

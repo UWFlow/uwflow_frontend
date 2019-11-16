@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -13,7 +13,6 @@ import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox
 import Button from '../../components/input/Button';
 import ModalHOC from '../../components/modal/ModalHOC';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
-import AuthModal from '../../auth/AuthModal';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
 
@@ -38,6 +37,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 import { splitCourseCode } from '../../utils/Misc';
+import { authModalOpen } from '../../data/actions/AuthActions';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -50,22 +50,17 @@ const CoursePageContent = ({
   isLoggedIn,
   isBrowserDesktop,
 }) => {
-  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   const handleReviewClick = () => {
-    isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
+    isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
-  console.log(isBrowserDesktop, isLoggedIn);
   const userReview = false; // TODO finish fetching user review
 
   return (
     <>
-      <CourseInfoHeader
-        course={course}
-        shortlisted={shortlisted}
-        setAuthModalOpen={setAuthModalOpen}
-      />
+      <CourseInfoHeader course={course} shortlisted={shortlisted} />
       <ColumnWrapper>
         <Column1>
           {isBrowserDesktop && (
@@ -107,11 +102,6 @@ const CoursePageContent = ({
           />
         </Column2>
       </ColumnWrapper>
-      <AuthModal
-        isModalOpen={authModalOpen}
-        onCloseModal={() => setAuthModalOpen(false)}
-        width={isBrowserDesktop ? '400px': '95vw'}
-      />
     </>
   );
 };

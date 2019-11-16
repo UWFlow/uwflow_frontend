@@ -28,24 +28,11 @@ const mapStateToProps = state => ({
 });
 
 const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
-  const [shortlisted, setShortedlisted] =  useState(Array(shortlistCourses.length).fill(true));
-
-  const toggleShortlisted = (idx) => {
-    setShortedlisted([
-      ...shortlisted.slice(0, idx),
-      !shortlisted[idx],
-      ...shortlisted.slice(idx + 1),
-    ]);
-  }
-  
   const shorlistContent = (
     <>
       {shortlistCourses.map((course, idx) => (
         <ShortlistCourse key={idx}>
-          <ShortlistStar
-            checked={shortlisted[idx]}
-            onClick={() => toggleShortlisted(idx)}
-          />
+          <ShortlistStar initialState={true} courseID={course.course.id} />
           <ShortListCourseText>
             <ShortlistCourseCode to={getCoursePageRoute(course.course.code)}>
               {splitCourseCode(course.course.code)}
@@ -79,9 +66,10 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
 ShortlistBox.propTypes = {
   shortlistCourses: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.number,
       code: PropTypes.string,
       name: PropTypes.string,
-    }),
+    }).isRequired,
   ).isRequired,
 };
 

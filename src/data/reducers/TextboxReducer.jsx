@@ -1,4 +1,4 @@
-import { getDesktopState } from './DesktopReducer';
+import { getDataState } from './DataReducer';
 
 import {
   REGISTER_TEXTBOX,
@@ -54,7 +54,7 @@ export default (
 };
 
 export const getTextboxState = state => {
-  return getDesktopState(state).textbox;
+  return getDataState(state).textbox;
 };
 
 export const getTextboxIDMapping = state => {
