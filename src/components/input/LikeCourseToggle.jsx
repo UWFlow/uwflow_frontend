@@ -19,7 +19,6 @@ const mapStateToProps = state => ({
 
 const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) => {
   const userID = localStorage.getItem('user_id');
-
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
 
@@ -41,11 +40,11 @@ const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) =>
       <LikeCourseToggleButton
         left
         noneSelected={liked === null}
-        selected={liked === true}
-        onClick={() => toggleOnClick(true)}
+        selected={liked === 1}
+        onClick={() => toggleOnClick(1)}
       >
         <ThumbsUp
-          color={liked === true ? theme.white : theme.dark3}
+          color={liked === 1 ? theme.white : theme.dark3}
           size={16}
           strokeWidth={3}
         />
@@ -53,11 +52,11 @@ const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) =>
       <LikeCourseToggleButton
         left={false}
         noneSelected={liked === null}
-        selected={liked === false}
-        onClick={() => toggleOnClick(false)}
+        selected={liked === 0}
+        onClick={() => toggleOnClick(0)}
       >
         <ThumbsDown
-          color={liked === false ? theme.white : theme.dark3}
+          color={liked === 0 ? theme.white : theme.dark3}
           size={16}
           strokeWidth={3}
         />

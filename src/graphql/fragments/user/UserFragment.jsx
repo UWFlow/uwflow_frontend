@@ -35,6 +35,12 @@ const UserFragment = {
               }
             }
           }
+          profs_teaching {
+            prof {
+              id,
+              name
+            }
+          }
           sections {
             id
             term
@@ -56,20 +62,26 @@ const UserFragment = {
     fragment UserReviewsFragment on user {
       course_reviews {
         id
-        course_id
-        prof_id
         easy
         liked
         useful
-        text  
+        text
+        public
+        course_id
+        prof_id
       }
       prof_reviews {
         id
-        course_id
-        prof_id
         clear
         engaging
         text
+        public
+        course_id
+        prof_id
+        prof {
+          id
+          name
+        }
       }
     }
   `,

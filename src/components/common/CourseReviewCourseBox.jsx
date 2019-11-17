@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Trash2 } from 'react-feather';
+import PropTypes from 'prop-types';
+import { withTheme } from 'styled-components';
+
 import {
   CourseReviewCourseBoxWrapper,
   QuestionText,
@@ -13,14 +16,14 @@ import {
   FooterQuestionWrapper,
   SliderOptionText,
 } from './styles/CourseReviewCourseBox';
-import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
 
 /* Child Components */
 import RadioButton from '../input/RadioButton';
 import DropdownList from '../input/DropdownList';
 import Button from '../input/Button';
 import DiscreteSlider from '../input/DiscreteSlider';
+
+import { splitCourseCode } from '../../utils/Misc';
 
 const easyOptions = [
   'Very difficult',
@@ -60,32 +63,49 @@ const engagingOptions = [
 
 const CourseReviewCourseBox = ({
   theme,
-  courseIDList,
+  courseList,
   selectedCourseIndex = 0,
-  setSelectedCourseIndex = () => {},
   showCourseDropdown = false,
   cancelButton = true,
+  setSelectedCourseIndex = () => {},
   onCancel = () => {},
 }) => {
-  const [useful, setUseful] = useState(0);
-  const [easy, setEasy] = useState(0);
-  const [liked, setLiked] = useState(-1);
+  const { course, courseReview, profReview, } = courseList[selectedCourseIndex];
+  let profsTeaching = course.profs_teaching;
+  profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
 
-  const [clear, setClear] = useState(0);
-  const [engaging, setEngaging] = useState(0);
+  // add prof to dropdown if not fetched from backend
+  if (profReview) {
+    let idx = profsTeaching.findIndex(prof => prof.prof && prof.prof.id === profReview.prof.id);
+    if (idx === -1) {
+      profsTeaching.push({ prof: profReview.prof });
+    }
+  }
 
-  const [selectedProf, setSelectedProf] = useState(-1);
-  const [selectedAnonymous, setSelectedAnonymous] = useState(0);
+  const profIndex = profReview ? 
+    profsTeaching.findIndex(prof => prof.prof && prof.prof.id === profReview.prof.id) : -1;
+
+  const [useful, setUseful] = useState((courseReview && courseReview.useful) || 0);
+  const [easy, setEasy] = useState((courseReview && courseReview.easy) || 0);
+  const [liked, setLiked] = useState(courseReview ? 1 - courseReview.liked : -1);
+  const [courseReviewText, setCourseReviewText] = useState((courseReview && courseReview.text) || '');
+
+  const [clear, setClear] = useState((profReview && profReview.clear) || 0);
+  const [engaging, setEngaging] = useState((profReview && profReview.engaging) || 0);
+  const [profReviewText, setProfReviewText] = useState((profReview && profReview.text) || '');
+
+  const [selectedProf, setSelectedProf] = useState(profIndex);
+  const [selectedAnonymous, setSelectedAnonymous] = useState(courseReview && courseReview.public ? 1 : 0);
 
   return (
     <CourseReviewCourseBoxWrapper>
-      {(courseIDList.length > 1 || showCourseDropdown) && (
+      {(courseList.length > 1 || showCourseDropdown) && (
         <QuestionWrapper>
           <QuestionText>Review a course: </QuestionText>
           <DropdownList
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
-            options={courseIDList} // TODO set to course names
+            options={courseList.map(courseObject => splitCourseCode(courseObject.course.code))}
             color={theme.courses}
             onChange={value => setSelectedCourseIndex(value)}
           />
@@ -127,14 +147,19 @@ const CourseReviewCourseBox = ({
         />
       </MetricQuestionWrapper>
 
-      <ReviewTextArea rows={5} placeholder="Add any comments or tips..." />
+      <ReviewTextArea
+        rows={5}
+        value={courseReviewText}
+        onChange={(value) => setCourseReviewText(value)}
+        placeholder="Add any comments or tips..."
+      />
 
       <QuestionWrapper>
         <QuestionText>Rate your professor: </QuestionText>
         <DropdownList
           selectedIndex={selectedProf}
           placeholder="select your professor"
-          options={['Andrew Kennings']} // TODO fetch professors
+          options={profsTeaching.map(prof => prof.prof.name)}
           color={theme.professors}
           onChange={value => setSelectedProf(value)}
         />
@@ -162,7 +187,12 @@ const CourseReviewCourseBox = ({
         <SliderOptionText>{engagingOptions[engaging]}</SliderOptionText>
       </MetricQuestionWrapper>
 
-      <ReviewTextArea rows={5} placeholder="Add any comments or tips..." />
+      <ReviewTextArea
+        rows={5}
+        value={profReviewText}
+        onChange={(value) => setProfReviewText(value)}
+        placeholder="Add any comments or tips..."
+      />
 
       <Footer>
         <DeleteIconWrapper>
@@ -172,7 +202,7 @@ const CourseReviewCourseBox = ({
           <QuestionText>Post: </QuestionText>
           <DropdownList
             selectedIndex={selectedAnonymous}
-            options={['anonymously', 'as Derrek Chow']} // TODO use user name
+            options={['anonymously', 'as yourself']}
             color={theme.primary}
             onChange={value => setSelectedAnonymous(value)}
             margin="auto 16px auto auto"
@@ -195,7 +225,11 @@ const CourseReviewCourseBox = ({
 };
 
 CourseReviewCourseBox.propTypes = {
-  courseIDList: PropTypes.array.isRequired,
+  courseList: PropTypes.arrayOf(PropTypes.shape({
+    course: PropTypes.object.isRequired,
+    courseReview: PropTypes.object,
+    profReview: PropTypes.object,
+  })).isRequired,
   theme: PropTypes.object.isRequired,
   selectedCourseIndex: PropTypes.number,
   setSelectedCourseIndex: PropTypes.func,

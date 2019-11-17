@@ -37,6 +37,7 @@ const convertInputToState = data => {
       review: current.text,
       author: current.author,
       user: current.user,
+      updated_at: current.updated_at,
       metrics: {
         clear: current.clear,
         engaging: current.engaging,

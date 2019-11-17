@@ -47,6 +47,8 @@ const mapStateToProps = state => ({
 const CoursePageContent = ({
   course,
   shortlisted,
+  userCourseReview,
+  userProfReview,
   isLoggedIn,
   isBrowserDesktop,
 }) => {
@@ -56,42 +58,33 @@ const CoursePageContent = ({
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
-  const userReview = false; // TODO finish fetching user review
 
   return (
     <>
       <CourseInfoHeader course={course} shortlisted={shortlisted} />
       <ColumnWrapper>
         <Column1>
-          {isBrowserDesktop && (
-            <ScheduleAndReviewWrapper>
-              <CourseSchedule sections={course.sections} />
-              <CourseReviewQuestionBox>
-                <CourseQuestionTextAndToggle>
-                  <CourseReviewQuestionText>
-                    What do you think of {splitCourseCode(course.code)}?
-                  </CourseReviewQuestionText>
-                  <LikeCourseToggle courseID={course.id} initialState={true} />
-                </CourseQuestionTextAndToggle>
-                <Button
-                  width={200}
-                  padding="16px 24px"
-                  handleClick={handleReviewClick}
-                >
-                  {userReview ? 'Edit your review' : 'Add your review'}
-                </Button>
-              </CourseReviewQuestionBox>
-              <ModalHOC
-                isModalOpen={reviewModalOpen}
-                onCloseModal={() => setReviewModalOpen(false)}
+          <ScheduleAndReviewWrapper>
+            <CourseSchedule sections={course.sections} />
+            <CourseReviewQuestionBox>
+              <CourseQuestionTextAndToggle>
+                <CourseReviewQuestionText>
+                  What do you think of {splitCourseCode(course.code)}?
+                </CourseReviewQuestionText>
+                {isBrowserDesktop && <LikeCourseToggle
+                  courseID={course.id}
+                  initialState={userCourseReview ? userCourseReview.liked : null}
+                />}
+              </CourseQuestionTextAndToggle>
+              <Button
+                width={200}
+                padding="16px 24px"
+                handleClick={handleReviewClick}
               >
-                <CourseReviewCourseBox
-                  courseIDList={[course.id]}
-                  onCancel={() => setReviewModalOpen(false)}
-                />
-              </ModalHOC>
-            </ScheduleAndReviewWrapper>
-          )}
+                {userCourseReview || userProfReview ? 'Edit your review' : 'Add your review'}
+              </Button>
+            </CourseReviewQuestionBox>
+          </ScheduleAndReviewWrapper>
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
@@ -102,6 +95,15 @@ const CoursePageContent = ({
           />
         </Column2>
       </ColumnWrapper>
+      <ModalHOC
+        isModalOpen={reviewModalOpen}
+        onCloseModal={() => setReviewModalOpen(false)}
+      >
+        <CourseReviewCourseBox
+          courseList={[{ course: course, courseReview: userCourseReview, profReview: userProfReview }]}
+          onCancel={() => setReviewModalOpen(false)}
+        />
+      </ModalHOC>
     </>
   );
 };
@@ -122,6 +124,8 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <CoursePageContent
         course={data.course[0]}
+        userCourseReview={data.course_review.length > 0 ? data.course_review[0] : null}
+        userProfReview={data.prof_review.length > 0 ? data.prof_review[0] : null}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}

@@ -43,9 +43,19 @@ const mapStateToProps = state => ({
 const ProfilePageContent = ({ user, isBrowserDesktop }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
-  const courseCodes = user.courses_taken.map(
-    course_taken => course_taken.course.code,
-  );
+
+  let {
+    courses_taken: courses,
+    course_reviews: courseReviews,
+    prof_reviews: profReviews,
+    shortlist
+  } = user;
+
+  const reviewModalCourseList = courses.map(course => {
+    const courseReview = courseReviews.find(review => review.course_id === course.course.id);
+    const profReview = profReviews.find(review => review.course_id === course.course.id);
+    return { course: course.course, courseReview, profReview };
+  });
 
   return (
     <>
@@ -54,11 +64,12 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
         <Column1>
           <ProfileCalendar />
           <ProfileCourses
-            courses={user.courses_taken}
+            courses={courses}
+            courseReviews={courseReviews}
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
           />
-          <ProfileFinalExams courses={user.courses_taken} />
+          <ProfileFinalExams courses={courses} />
         </Column1>
         <Column2>
           {isBrowserDesktop && (
@@ -66,7 +77,7 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
               <CompleteProfileContent user={user} />
             </CompleteProfileWrapper>
           )}
-          <ShortlistBox shortlistCourses={user.shortlist} />
+          <ShortlistBox shortlistCourses={shortlist} />
         </Column2>
       </ColumnWrapper>
       <ModalHOC
@@ -75,7 +86,7 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
       >
         <CourseReviewCourseBox
           showCourseDropdown
-          courseIDList={courseCodes}
+          courseList={reviewModalCourseList}
           selectedCourseIndex={selectedCourseIndex}
           setSelectedCourseIndex={setSelectedCourseIndex}
           onCancel={() => setReviewModalOpen(false)}

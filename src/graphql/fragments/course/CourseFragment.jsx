@@ -18,6 +18,12 @@ const CourseFragment = {
           text_count: count(columns: text)
         }
       }
+      profs_teaching {
+        prof {
+          id,
+          name
+        }
+      }
     }
   `,
   courseTerm: gql`

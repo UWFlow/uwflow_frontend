@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export const UPDATE_REVIEW_DATA = 'update review data';
-export const SORT_COURSE_REVIEWS_BY_PROF = 'sort by prof';
+export const UPDATE_REVIEW_DATA = 'update_review_data';
+export const SORT_COURSE_REVIEWS_BY_PROF = 'sort_by_prof';
 
 const convertInputToState = data => {
   if (!data) {
@@ -18,6 +18,7 @@ const convertInputToState = data => {
     review: r.text,
     author: r.author,
     user: r.user,
+    updated_at: r.updated_at,
     metrics: {
       useful: r.useful,
       easy: r.easy,
@@ -53,6 +54,7 @@ const convertInputToState = data => {
       review: current.text,
       author: current.author,
       user: current.user,
+      updated_at: current.updated_at,
       metrics: {
         clear: current.clear,
         engaging: current.engaging,
