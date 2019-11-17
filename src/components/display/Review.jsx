@@ -67,12 +67,13 @@ const Review = ({
   isBrowserDesktop,
 }) => {
   const { upvotes, review: reviewText, author, metrics } = review;
+  const authorNameText = author.full_name ? `-${author.full_name}` : '-Anonymous';
 
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        -{author.full_name}, a {author.program} student
+        {authorNameText}{author.program ? `, a ${author.program} student` : ''}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
