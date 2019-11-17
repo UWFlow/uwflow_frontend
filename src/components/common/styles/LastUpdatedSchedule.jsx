@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import breakpoint from 'styled-components-breakpoint';
 import { Body, Link } from '../../../constants/Mixins';
 
 export const LastUpdatedText = styled.div`

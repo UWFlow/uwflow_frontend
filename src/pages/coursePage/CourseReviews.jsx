@@ -10,8 +10,7 @@ import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 /* Custom Hooks */
 import useCourseReviewsReducer, {
   UPDATE_REVIEW_DATA,
-  SORT_COURSE_REVIEWS_BY_PROF,
-} from '../../data/custom_hooks/UseCourseReviewsReducer';
+} from '../../data/hooks/UseCourseReviewsReducer';
 
 /* Styled Components */
 import {
@@ -86,11 +85,11 @@ const CourseCourseReviews = ({
             />
           </DropdownPanelWrapper>
         </ReviewsOptionsWrapper>
-        {reviews.map((review, i) => {
-          if (i < MIN_REVIEWS_SHOWN || showingAllReviews) {
-            return <Review key={i} review={review} />;
-          }
-        })}
+        {reviews.filter((_, i) => {
+          return i < MIN_REVIEWS_SHOWN || showingAllReviews;
+        }).map((review, i) => (
+          <Review key={i} review={review} />
+        ))}
       </ReviewListWrapper>
       {reviews.length > MIN_REVIEWS_SHOWN && (
         <ShowMoreReviewsSection
@@ -150,11 +149,11 @@ const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
                 </ProfLikedPercentLabel>
               </ProfLikedMetric>
             </ProfHeader>
-            {prof.reviews.map((review, i) => {
-              if (i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name]) {
-                return <Review key={i} review={review} />;
-              }
-            })}
+            {prof.reviews.filter((_, i) => {
+              return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
+            }).map((review, i) => (
+              <Review key={i} review={review} />
+            ))}
           </ReviewListWrapper>
           {prof.reviews.length > MIN_REVIEWS_SHOWN && (
             <ShowMoreReviewsSection
@@ -217,15 +216,16 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop }) => {
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);
   const [showingProfReviews, setShowingProfReviews] = useState(false);
-  const [reviewDataState, dispatch] = useCourseReviewsReducer(data);
+  const [reviewDataState, dispatchReviews] = useCourseReviewsReducer(data);
 
   useEffect(() => {
     if (data) {
-      dispatch({
+      dispatchReviews({
         type: UPDATE_REVIEW_DATA,
         payload: data,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) {

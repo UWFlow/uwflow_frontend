@@ -7,7 +7,6 @@ import {
   Heading4,
   Body,
 } from '../../../../constants/Mixins';
-import { ArrowRight, Clipboard, Upload } from 'react-feather';
 
 export const ContentWrapper = styled.div`
   display: flex;

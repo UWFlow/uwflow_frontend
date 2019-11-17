@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 /* Styled Components */
@@ -44,7 +44,7 @@ const LandingPage = ({ isLoggedIn, isDesktop }) => {
       <Column1 loggedIn={isLoggedIn}>
         <Column1TextWrapper>
           <ProfileWrapper>
-            {isLoggedIn || !isDesktop && <ProfileDropdown /> }
+            {(isLoggedIn || !isDesktop) && <ProfileDropdown /> }
           </ProfileWrapper>
           <TitleText>
             UW Flow

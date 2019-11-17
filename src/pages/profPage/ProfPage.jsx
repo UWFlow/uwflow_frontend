@@ -20,7 +20,6 @@ import ProfReviews from './ProfReviews';
 import { GET_PROF } from '../../graphql/queries/prof/Prof';
 
 const ProfPageContent = ({ prof }) => {
-  console.log(prof);
   return (
     <>
       <ProfInfoHeader prof={prof} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ModalHOC from '../../../components/modal/ModalHOC';
+import Modal from '../../../components/display/Modal';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';
@@ -35,16 +35,16 @@ import {
 } from '../../../constants/DataUploadStates';
 
 const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
-  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+  const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleSchedulePaste = async event => {
     /* TODO: handle schedule paste */
     console.log(event.currentTarget.value);
     setUploadState(UPLOAD_PENDING);
-    const [response, status] = await makePOSTRequest(SCHEDULE_PARSE_ENDPOINT, {
+    const [, status] = await makePOSTRequest(SCHEDULE_PARSE_ENDPOINT, {
       text: event.currentTarget.value,
     });
-    if (status == 200) {
+    if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
     } else {
       setUploadState(UPLOAD_FAILED);
@@ -52,7 +52,7 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   };
 
   return (
-    <ModalHOC onCloseModal={onCloseModal} isModalOpen={isModalOpen}>
+    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
       <ContentWrapper>
         <Header>Import your schedule from Quest</Header>
         <table>
@@ -121,7 +121,7 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
         </table>
         <SkipStepWrapper>skip this step ></SkipStepWrapper>
       </ContentWrapper>
-    </ModalHOC>
+    </Modal>
   );
 };
 

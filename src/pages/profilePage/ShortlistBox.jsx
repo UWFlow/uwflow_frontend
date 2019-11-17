@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -28,29 +28,19 @@ const mapStateToProps = state => ({
 });
 
 const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
-  const [shortlisted, setShortedlisted] =  useState(Array(shortlistCourses.length).fill(true));
+  const sortedShortlist = shortlistCourses.sort((a, b) =>
+    (a.course.code > b.course.code) - (a.course.code < b.course.code));
 
-  const toggleShortlisted = (idx) => {
-    setShortedlisted([
-      ...shortlisted.slice(0, idx),
-      !shortlisted[idx],
-      ...shortlisted.slice(idx + 1),
-    ]);
-  }
-  
   const shorlistContent = (
     <>
-      {shortlistCourses.map((course, idx) => (
+      {sortedShortlist.map((entry, idx) => (
         <ShortlistCourse key={idx}>
-          <ShortlistStar
-            checked={shortlisted[idx]}
-            onClick={() => toggleShortlisted(idx)}
-          />
+          <ShortlistStar key={entry.course.id} initialState={true} courseID={entry.course.id} />
           <ShortListCourseText>
-            <ShortlistCourseCode to={getCoursePageRoute(course.course.code)}>
-              {splitCourseCode(course.course.code)}
+            <ShortlistCourseCode to={getCoursePageRoute(entry.course.code)}>
+              {splitCourseCode(entry.course.code)}
             </ShortlistCourseCode>
-            <ShortlistCourseName>{course.course.name}</ShortlistCourseName>
+            <ShortlistCourseName>{entry.course.name}</ShortlistCourseName>
           </ShortListCourseText>
         </ShortlistCourse>
       ))}
@@ -79,9 +69,10 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
 ShortlistBox.propTypes = {
   shortlistCourses: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.number,
       code: PropTypes.string,
       name: PropTypes.string,
-    }),
+    }).isRequired,
   ).isRequired,
 };
 

@@ -18,17 +18,26 @@ const CourseFragment = {
           text_count: count(columns: text)
         }
       }
+      profs_teaching {
+        prof {
+          id
+          name
+        }
+      }
     }
   `,
   courseTerm: gql`
     fragment CourseTermFragment on course {
+      id
       sections {
+        id
         term
       }
     }
   `,
   courseSchedule: gql`
     fragment CourseScheduleFragment on course {
+      id
       sections {
         id
         enrollment_capacity
@@ -65,6 +74,7 @@ const CourseFragment = {
   `,
   courseRequirements: gql`
   fragment CourseRequirementsFragment on course {
+    id
     antireqs
     coreqs
     prereqs

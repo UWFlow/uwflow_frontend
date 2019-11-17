@@ -44,7 +44,6 @@ export const ExploreHeaderText = styled.div`
 
 export const ColumnWrapper = styled.div`
   ${PageContent}
-  margin: auto;
   display: flex;
   flex-flow: row wrap;
 `;

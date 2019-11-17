@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 /* Child Components */
-import ModalHOC from '../components/modal/ModalHOC';
+import Modal from '../components/display/Modal';
 import Textbox from '../components/input/Textbox';
 import Button from '../components/input/Button';
 import LoadingSpinner from '../components/display/LoadingSpinner';
@@ -168,7 +168,7 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
       // SUCCESS
       setEmail(email);
       setSuccessMessage('Successfully sent reset code!');
-      if (showingForm != ENTER_RESET_CODE_FORM) {
+      if (showingForm !== ENTER_RESET_CODE_FORM) {
         setTimeout(() => {
           setSuccessMessage('');
           setShowingForm(ENTER_RESET_CODE_FORM);
@@ -227,7 +227,7 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
   };
 
   return (
-    <ModalHOC isModalOpen={isOpen} onCloseModal={handleClose}>
+    <Modal isOpen={isOpen} onRequestClose={handleClose}>
       {showingForm === RESET_PASSWORD_FORM && (
         <ResetPasswordForm
           onSubmit={handleSendResetEmail}
@@ -253,7 +253,7 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
           success={successMessage}
         />
       )}
-    </ModalHOC>
+    </Modal>
   );
 };
 

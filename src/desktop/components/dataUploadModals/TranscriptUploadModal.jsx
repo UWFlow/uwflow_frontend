@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ModalHOC from '../../../components/modal/ModalHOC';
+import Modal from '../../../components/display/Modal';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
@@ -44,7 +44,7 @@ const onDragOver = event => {
 };
 
 const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
-  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+  const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleTranscriptDrop = async event => {
     /* TODO: handle schedule paste */
@@ -52,13 +52,13 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
     event.preventDefault();
     event.stopPropagation();
     setUploadState(UPLOAD_PENDING);
-    const [response, status] = await makePOSTRequest(
+    const [, status] = await makePOSTRequest(
       TRANSCRIPT_PARSE_ENDPOINT,
       {
         file: event.dataTransfer.files,
       },
     );
-    if (status == 200) {
+    if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
     } else {
       setUploadState(UPLOAD_FAILED);
@@ -76,7 +76,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   }, []);
 
   return (
-    <ModalHOC onCloseModal={onCloseModal} isModalOpen={isModalOpen}>
+    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
       <ContentWrapper>
         <Header>Upload your transcript</Header>
         <table>
@@ -140,7 +140,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
         </table>
         <SkipStepWrapper>skip this step ></SkipStepWrapper>
       </ContentWrapper>
-    </ModalHOC>
+    </Modal>
   );
 };
 

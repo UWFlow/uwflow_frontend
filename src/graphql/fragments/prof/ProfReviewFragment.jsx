@@ -3,7 +3,11 @@ import gql from 'graphql-tag';
 const ProfReviewFragment = {
   profCoursesReviewInfo: gql`
     fragment ProfReviewInfoFragment on prof_review {
+      id
+      engaging
+      clear
       text
+      updated_at
       course {
         id
         name
@@ -16,8 +20,6 @@ const ProfReviewFragment = {
           }
         }
       }
-      engaging
-      clear
       author {
         full_name
         program

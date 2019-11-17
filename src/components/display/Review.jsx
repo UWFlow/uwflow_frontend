@@ -66,17 +66,20 @@ const Review = ({
   theme,
   isBrowserDesktop,
 }) => {
-  const { upvotes, review: reviewText, author, user, metrics } = review;
+  const { upvotes, review: reviewText, author, updated_at, metrics } = review;
+  const authorNameText = author.full_name ? `-${author.full_name}` : '-Anonymous';
 
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        -{author.full_name}, a {author.program} student
+        {authorNameText}{author.program ? `, a ${author.program} student` : ''}
+        , {updated_at}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
-
+  
+  // TODO(Edwin)
   const userUpvoted = true;
   return (
     <ReviewWrapper>

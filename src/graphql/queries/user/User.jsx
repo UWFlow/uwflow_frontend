@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import UserFragment from "../../fragments/profile/UserFragment.jsx";
+import UserFragment from "../../fragments/user/UserFragment.jsx";
 
 export const GET_USER = gql`
   query GET_USER($id: Int) {
@@ -17,4 +17,14 @@ export const GET_USER = gql`
   ${UserFragment.userCoursesTaken}
   ${UserFragment.userReviews}
   ${UserFragment.userSchedule}
+`;
+
+export const USER_SHORTLIST_REFETCH_QUERY = gql`
+  query GET_USER_SHORTLIST($id: Int) {
+    user(where: {id: {_eq: $id}}) {
+      id
+      ...UserShortlistFragment
+    }
+  }
+  ${UserFragment.userShortlist}
 `;

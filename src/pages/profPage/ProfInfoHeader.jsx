@@ -25,7 +25,7 @@ const ProfInfoHeader = ({ prof }) => {
   const percentEngaging =
     prof.prof_reviews_aggregate.aggregate.avg.engaging / 5;
   const profCourses = prof.prof_courses.map(course =>
-    splitCourseCode(course.code),
+    splitCourseCode(course.course.code),
   );
 
   return (

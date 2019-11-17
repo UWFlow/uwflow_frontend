@@ -10,6 +10,7 @@ const ProfFragment = {
   `,
   profProfReviewsAggregate: gql`
     fragment ProfProfReviewsAggregateFragment on prof {
+      id
       prof_reviews_aggregate {
         aggregate {
           avg {
@@ -24,6 +25,7 @@ const ProfFragment = {
   `,
   profCourseReviewsAggregate: gql`
     fragment ProfCourseReviewsAggregateFragment on prof {
+      id
       course_reviews_aggregate {
         aggregate {
           avg {
@@ -35,8 +37,10 @@ const ProfFragment = {
   `,
   profCoursesTaught: gql`
     fragment ProfCoursesTaughtFragment on prof {
+      id
       prof_courses {
         course {
+          id
           code
         }
       }

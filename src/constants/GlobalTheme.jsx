@@ -29,6 +29,7 @@ export default {
 
   breakpoints: {
     mobile: 0,
+    mobileLarge: 600,
     tablet: BREAKPOINT_WIDTH,
     desktop: PAGE_CONTENT_WIDTH
   }

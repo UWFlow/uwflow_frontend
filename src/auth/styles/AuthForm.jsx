@@ -1,4 +1,4 @@
- import styled from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Heading2, Heading4, Body, BoxShadow } from '../../constants/Mixins';
 
@@ -9,9 +9,13 @@ export const Wrapper = styled.div`
   flex-direction: column;
   margin-top: 32px;
   margin-bottom: 32px;
-  width: ${({ width }) => width ? width : '400px'};
+  width: 400px;
   border-radius: 4px; 
   height: fit-content;
+
+  @media only screen and (max-width: 420px) {
+    width: 95vw;
+  }
 `;
 
 export const ContentWrapper = styled.div`

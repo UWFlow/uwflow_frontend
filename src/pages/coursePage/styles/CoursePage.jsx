@@ -9,7 +9,6 @@ import {
   ThinColumn,
   BoxShadow,
   Heading3,
-  Heading4,
   PageWrapper
 } from '../../../constants/Mixins';
 
@@ -19,7 +18,6 @@ export const CoursePageWrapper = styled.div`
 
 export const ColumnWrapper = styled.div`
   ${PageContent}
-  margin: auto;
   display: flex;
   flex-flow: row wrap;
 `;
@@ -43,13 +41,6 @@ export const Column2 = styled.div`
   `}
 `;
 
-export const ExtraInfoBoxWrapper = styled.div`
-  ${Card('32px 24px')}
-  ${BoxShadow}
-  ${Heading4}
-  margin-bottom: 32px;
-`;
-
 export const ScheduleAndReviewWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -63,22 +54,30 @@ export const CourseReviewQuestionBox = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    flex-direction: column;
+  `}
 `;
 
 export const CourseQuestionTextAndToggle = styled.div`
   display: flex;
   align-items: center;
   margin-right: 24px;
+
+  ${breakpoint('mobile', 'tablet')`
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 16px;
+    justify-content: space-between;
+  `}
 `;
 
 export const CourseReviewQuestionText = styled.div`
   ${Heading3}
   margin-right: 24px;
-`;
 
-export const AddReviewButton = styled.div`
-  background-color: ${({ theme }) => theme.accent} ${Heading3};
-  padding: 8px 24px 8px 24px;
-  border-radius: 5px;
-  cursor: pointer;
+  ${breakpoint('mobile', 'tablet')`
+    max-width: 60%;
+  `}
 `;

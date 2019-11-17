@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from 'react-modal';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 /* Routes */
@@ -25,9 +26,11 @@ import {
   LoadableNotFoundPage,
   LoadablePrivacyPage,
 } from './LoadableComponents';
-import ModalRoot from './components/modal/ModalRoot';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
+import AuthModal from './auth/AuthModal';
+
+Modal.setAppElement('#root');
 
 const App = () => {
   return (
@@ -77,7 +80,7 @@ const App = () => {
         <Route path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
       <Footer />
-      <ModalRoot />
+      <AuthModal />
     </>
   );
 };

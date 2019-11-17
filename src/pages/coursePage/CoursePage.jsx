@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -9,11 +9,10 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../components/coursePage/CourseReviewCourseBox';
+import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
-import ModalHOC from '../../components/modal/ModalHOC';
+import Modal from '../../components/display/Modal';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
-import AuthModal from '../../auth/AuthModal';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
 
@@ -38,65 +37,54 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 import { splitCourseCode } from '../../utils/Misc';
+import { authModalOpen } from '../../data/actions/AuthActions';
 
 const mapStateToProps = state => ({
-  isLoggedIn: getIsLoggedIn(state),
   isBrowserDesktop: getIsBrowserDesktop(state),
+  isLoggedIn: getIsLoggedIn(state)
 });
 
 const CoursePageContent = ({
   course,
   shortlisted,
+  userCourseReview,
+  userProfReview,
   isLoggedIn,
   isBrowserDesktop,
 }) => {
-  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
   const handleReviewClick = () => {
-    isLoggedIn ? setReviewModalOpen(true) : setAuthModalOpen(true);
+    isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
-  console.log(course);
-  const userReview = false; // TODO finish fetching user review
 
   return (
     <>
-      <CourseInfoHeader
-        course={course}
-        shortlisted={shortlisted}
-        setAuthModalOpen={setAuthModalOpen}
-      />
+      <CourseInfoHeader course={course} shortlisted={shortlisted} />
       <ColumnWrapper>
         <Column1>
-          {isBrowserDesktop && (
-            <ScheduleAndReviewWrapper>
-              <CourseSchedule sections={course.sections} />
-              <CourseReviewQuestionBox>
-                <CourseQuestionTextAndToggle>
-                  <CourseReviewQuestionText>
-                    What do you think of {splitCourseCode(course.code)}?
-                  </CourseReviewQuestionText>
-                  <LikeCourseToggle liked={true} />
-                </CourseQuestionTextAndToggle>
-                <Button
-                  width={200}
-                  padding="16px 24px"
-                  handleClick={handleReviewClick}
-                >
-                  {userReview ? 'Edit your review' : 'Add your review'}
-                </Button>
-              </CourseReviewQuestionBox>
-              <ModalHOC
-                isModalOpen={reviewModalOpen}
-                onCloseModal={() => setReviewModalOpen(false)}
-              >
-                <CourseReviewCourseBox
-                  courseIDList={[course.id]}
-                  onCancel={() => setReviewModalOpen(false)}
+          <ScheduleAndReviewWrapper>
+            <CourseSchedule sections={course.sections} />
+            <CourseReviewQuestionBox>
+              <CourseQuestionTextAndToggle>
+                <CourseReviewQuestionText>
+                  What do you think of {splitCourseCode(course.code)}?
+                </CourseReviewQuestionText>
+                <LikeCourseToggle
+                  courseID={course.id}
+                  initialState={userCourseReview ? userCourseReview.liked : null}
                 />
-              </ModalHOC>
-            </ScheduleAndReviewWrapper>
-          )}
+              </CourseQuestionTextAndToggle>
+              <Button
+                width={isBrowserDesktop ? 'max-content' : '100%'}
+                padding="16px 24px"
+                handleClick={handleReviewClick}
+              >
+                {userCourseReview || userProfReview ? 'Edit your review' : 'Add your review'}
+              </Button>
+            </CourseReviewQuestionBox>
+          </ScheduleAndReviewWrapper>
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
@@ -107,22 +95,28 @@ const CoursePageContent = ({
           />
         </Column2>
       </ColumnWrapper>
-      <AuthModal
-        isModalOpen={authModalOpen}
-        onCloseModal={() => setAuthModalOpen(false)}
-        width={400}
-      />
+      <Modal
+        isOpen={reviewModalOpen}
+        onRequestClose={() => setReviewModalOpen(false)}
+      >
+        <CourseReviewCourseBox
+          courseList={[{ course: course, courseReview: userCourseReview, profReview: userProfReview }]}
+          onCancel={() => setReviewModalOpen(false)}
+        />
+      </Modal>
     </>
   );
 };
 
-const CoursePage = ({ match, isLoggedIn }) => {
+const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn, getUserId());
 
   const { loading, error, data } = useQuery(query, {
     variables: { code: courseCode },
   });
+
+  console.log(error, data);
 
   return loading ? (
     <LoadingSpinner />
@@ -132,8 +126,13 @@ const CoursePage = ({ match, isLoggedIn }) => {
     <CoursePageWrapper>
       <CoursePageContent
         course={data.course[0]}
+        userCourseReview={isLoggedIn && data.course_review.length > 0 ?
+          data.course_review[0] : null}
+        userProfReview={isLoggedIn &&
+          data.prof_review.length > 0 ? data.prof_review[0] : null}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}
+        isBrowserDesktop={isBrowserDesktop}
       />
     </CoursePageWrapper>
   );

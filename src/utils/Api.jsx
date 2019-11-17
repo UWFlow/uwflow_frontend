@@ -11,7 +11,7 @@ export const makePOSTRequest = async (endpoint, data, options = {}) => {
   });
   const text = await res.text();
   const status = await res.status;
-  var respJSON;
+  let respJSON;
   try {
     respJSON = JSON.parse(text);
   } catch (err) {
