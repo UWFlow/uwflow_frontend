@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ModalHOC from '../../../components/modal/ModalHOC';
+import Modal from '../../../components/display/Modal';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';
@@ -52,7 +52,7 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   };
 
   return (
-    <ModalHOC onCloseModal={onCloseModal} isModalOpen={isModalOpen}>
+    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
       <ContentWrapper>
         <Header>Import your schedule from Quest</Header>
         <table>
@@ -121,7 +121,7 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
         </table>
         <SkipStepWrapper>skip this step ></SkipStepWrapper>
       </ContentWrapper>
-    </ModalHOC>
+    </Modal>
   );
 };
 

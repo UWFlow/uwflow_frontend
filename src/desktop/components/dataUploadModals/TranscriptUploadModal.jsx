@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ModalHOC from '../../../components/modal/ModalHOC';
+import Modal from '../../../components/display/Modal';
 import { withTheme } from 'styled-components';
 import { makePOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
@@ -76,7 +76,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   }, []);
 
   return (
-    <ModalHOC onCloseModal={onCloseModal} isModalOpen={isModalOpen}>
+    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
       <ContentWrapper>
         <Header>Upload your transcript</Header>
         <table>
@@ -140,7 +140,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
         </table>
         <SkipStepWrapper>skip this step ></SkipStepWrapper>
       </ContentWrapper>
-    </ModalHOC>
+    </Modal>
   );
 };
 

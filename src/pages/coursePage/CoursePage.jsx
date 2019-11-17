@@ -11,7 +11,7 @@ import ExtraInfoBox from './ExtraInfoBox';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
-import ModalHOC from '../../components/modal/ModalHOC';
+import Modal from '../../components/display/Modal';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
@@ -95,15 +95,15 @@ const CoursePageContent = ({
           />
         </Column2>
       </ColumnWrapper>
-      <ModalHOC
-        isModalOpen={reviewModalOpen}
-        onCloseModal={() => setReviewModalOpen(false)}
+      <Modal
+        isOpen={reviewModalOpen}
+        onRequestClose={() => setReviewModalOpen(false)}
       >
         <CourseReviewCourseBox
           courseList={[{ course: course, courseReview: userCourseReview, profReview: userProfReview }]}
           onCancel={() => setReviewModalOpen(false)}
         />
-      </ModalHOC>
+      </Modal>
     </>
   );
 };

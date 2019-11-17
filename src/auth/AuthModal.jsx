@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* Child Components */
-import ModalHOC from '../components/modal/ModalHOC';
+import Modal from '../components/display/Modal';
 import AuthForm from './AuthForm';
 
 /* Selectors */
@@ -17,12 +17,12 @@ const mapStateToProps = state => ({
 const AuthModal = ({ isAuthModalOpen }) => {
   const dispatch = useDispatch();
   return (
-    <ModalHOC
-      isModalOpen={isAuthModalOpen}
-      onCloseModal={() => dispatch(authModalClose())}
+    <Modal
+      isOpen={isAuthModalOpen}
+      onRequestClose={() => dispatch(authModalClose())}
     >
       <AuthForm onAuthComplete={() => dispatch(authModalClose())} />
-    </ModalHOC>
+    </Modal>
   );
 }
 

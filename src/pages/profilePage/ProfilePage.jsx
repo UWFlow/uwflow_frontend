@@ -9,7 +9,7 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
-import ModalHOC from '../../components/modal/ModalHOC';
+import Modal from '../../components/display/Modal';
 import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import CompleteProfileContent from './CompleteProfileContent';
@@ -80,9 +80,9 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
           <ShortlistBox shortlistCourses={shortlist} />
         </Column2>
       </ColumnWrapper>
-      <ModalHOC
-        isModalOpen={reviewModalOpen}
-        onCloseModal={() => setReviewModalOpen(false)}
+      <Modal
+        isOpen={reviewModalOpen}
+        onRequestClose={() => setReviewModalOpen(false)}
       >
         <CourseReviewCourseBox
           showCourseDropdown
@@ -91,7 +91,7 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
           setSelectedCourseIndex={setSelectedCourseIndex}
           onCancel={() => setReviewModalOpen(false)}
         />
-      </ModalHOC>
+      </Modal>
     </>
   );
 };
