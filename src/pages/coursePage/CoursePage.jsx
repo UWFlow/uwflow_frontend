@@ -126,8 +126,10 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <CoursePageContent
         course={data.course[0]}
-        userCourseReview={data.course_review.length > 0 ? data.course_review[0] : null}
-        userProfReview={data.prof_review.length > 0 ? data.prof_review[0] : null}
+        userCourseReview={isLoggedIn && data.course_review.length > 0 ?
+          data.course_review[0] : null}
+        userProfReview={isLoggedIn &&
+          data.prof_review.length > 0 ? data.prof_review[0] : null}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
