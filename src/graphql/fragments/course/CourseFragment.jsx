@@ -20,7 +20,7 @@ const CourseFragment = {
       }
       profs_teaching {
         prof {
-          id,
+          id
           name
         }
       }
@@ -28,13 +28,16 @@ const CourseFragment = {
   `,
   courseTerm: gql`
     fragment CourseTermFragment on course {
+      id
       sections {
+        id
         term
       }
     }
   `,
   courseSchedule: gql`
     fragment CourseScheduleFragment on course {
+      id
       sections {
         id
         enrollment_capacity
@@ -71,6 +74,7 @@ const CourseFragment = {
   `,
   courseRequirements: gql`
   fragment CourseRequirementsFragment on course {
+    id
     antireqs
     coreqs
     prereqs

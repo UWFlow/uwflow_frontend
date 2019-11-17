@@ -71,13 +71,13 @@ const CoursePageContent = ({
                 <CourseReviewQuestionText>
                   What do you think of {splitCourseCode(course.code)}?
                 </CourseReviewQuestionText>
-                {isBrowserDesktop && <LikeCourseToggle
+                <LikeCourseToggle
                   courseID={course.id}
                   initialState={userCourseReview ? userCourseReview.liked : null}
-                />}
+                />
               </CourseQuestionTextAndToggle>
               <Button
-                width={200}
+                width={isBrowserDesktop ? 'max-content' : '100%'}
                 padding="16px 24px"
                 handleClick={handleReviewClick}
               >
@@ -115,6 +115,8 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
   const { loading, error, data } = useQuery(query, {
     variables: { code: courseCode },
   });
+
+  console.log(error, data);
 
   return loading ? (
     <LoadingSpinner />

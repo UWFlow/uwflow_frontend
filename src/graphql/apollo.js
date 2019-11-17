@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
@@ -47,7 +47,14 @@ const link = ApolloLink.from([
   httpLink // terminating link must be added last
 ]);
 
-const cache = new InMemoryCache({});
+const cache = new InMemoryCache({
+  dataIdFromObject: object => {
+    switch (object.__typename) {
+      case 'user_shortlist': return `${object.course_id}:${object.user_id}`;
+      default: return defaultDataIdFromObject(object);
+    }
+  }
+});
 
 const client = new ApolloClient({
   link,

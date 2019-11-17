@@ -19,13 +19,12 @@ export const GET_USER = gql`
   ${UserFragment.userSchedule}
 `;
 
-export const GET_USER_SHORTLIST = gql`
+export const USER_SHORTLIST_REFETCH_QUERY = gql`
   query GET_USER_SHORTLIST($id: Int) {
     user(where: {id: {_eq: $id}}) {
-      id,
+      id
       ...UserShortlistFragment
     }
   }
   ${UserFragment.userShortlist}
 `;
-

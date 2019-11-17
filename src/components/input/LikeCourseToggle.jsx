@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { ThumbsUp, ThumbsDown } from 'react-feather';
 import { withTheme } from 'styled-components';
+// import { useMutation } from 'react-apollo';
 
 /* Styled Components */
 import {
@@ -18,7 +19,7 @@ const mapStateToProps = state => ({
 });
 
 const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) => {
-  const userID = localStorage.getItem('user_id');
+  // const userID = localStorage.getItem('user_id');
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
 

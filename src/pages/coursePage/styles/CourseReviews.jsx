@@ -28,6 +28,8 @@ export const ReviewListWrapper = styled.div`
 
 export const ReviewsOptionsWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
 
   ${breakpoint('mobile', 'tablet')`
     flex-direction: column;
@@ -37,14 +39,11 @@ export const ReviewsOptionsWrapper = styled.div`
 
 export const DropdownPanelWrapper = styled.div`
   display: flex;
-  margin: 0 32px 32px 0;
+  margin-right: 32px;
+  margin-bottom: 8px;
   align-items: center;
 
   ${breakpoint('mobile', 'tablet')`
-    :not(first-child) {
-      margin: 0 32px 24px 0;
-    }
-
     :last-child{
       margin-bottom: 16px;
     }

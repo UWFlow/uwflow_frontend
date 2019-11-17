@@ -11,7 +11,10 @@ const UserFragment = {
   `,
   userShortlist: gql`
     fragment UserShortlistFragment on user {
-    shortlist {
+      id
+      shortlist {
+        course_id
+        user_id
         course {
           id
           code
@@ -22,6 +25,7 @@ const UserFragment = {
   `,
   userCoursesTaken: gql`
     fragment UserCoursesTakenFragment on user {
+      id
       courses_taken {
         term
         course {
@@ -60,6 +64,7 @@ const UserFragment = {
   `,
   userReviews: gql`
     fragment UserReviewsFragment on user {
+      id
       course_reviews {
         id
         easy
@@ -87,11 +92,12 @@ const UserFragment = {
   `,
   userSchedule: gql`
     fragment UserScheduleFragment on user {
+      id
       schedule {
-        user_id,
-        section_id,
+        user_id
+        section_id
         section {
-          id,
+          id
           campus
         }
       }
