@@ -27,18 +27,19 @@ import {
 import { termCodeToDate, splitCourseCode, processLiked } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
-const groupByTerm = courses => {
-  return courses.reduce((groups, course, idx) => {
-    groups[course.term] = groups[course.term] || [];
-    groups[course.term].push({...course, index: idx});
-    return groups;
-  }, {});
-};
-
 const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openModal }) => {
+  const groupByTerm = courses => {
+    return courses.reduce((groups, course, idx) => {
+      groups[course.term] = groups[course.term] || [];
+      groups[course.term].push({...course, index: idx});
+      return groups;
+    }, {});
+  };  
+  
   const unorderedGroups = groupByTerm(courses);
   const courseGroups = {};
 
+  // sort terms by date
   Object.keys(unorderedGroups).sort().reverse().forEach(term => {
     courseGroups[termCodeToDate(term)] = unorderedGroups[term];
   });
@@ -65,6 +66,7 @@ const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openMo
         </LikedCourseWrapper>
         <LikeToggleWrapper>
           <LikeCourseToggle
+            key={course_taken.index}
             courseID={course_taken.course.id}
             initialState={review ? review.liked : null}
           />
