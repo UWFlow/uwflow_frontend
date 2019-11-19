@@ -73,6 +73,7 @@ const CoursePageContent = ({
                 </CourseReviewQuestionText>
                 <LikeCourseToggle
                   courseID={course.id}
+                  reviewID={userCourseReview && userCourseReview.id}
                   initialState={userCourseReview ? userCourseReview.liked : null}
                 />
               </CourseQuestionTextAndToggle>
@@ -115,8 +116,6 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
   const { loading, error, data } = useQuery(query, {
     variables: { code: courseCode },
   });
-
-  console.log(error, data);
 
   return loading ? (
     <LoadingSpinner />

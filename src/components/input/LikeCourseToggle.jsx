@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { ThumbsUp, ThumbsDown } from 'react-feather';
 import { withTheme } from 'styled-components';
-// import { useMutation } from 'react-apollo';
+import { useMutation } from 'react-apollo';
 
 /* Styled Components */
 import {
@@ -14,14 +14,30 @@ import {
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
+/* GraphQL */
+import { UPDATE_LIKED, INSERT_LIKED_REVIEW } from '../../graphql/mutations/user/Review';
+import { COURSE_REVIEW_REFETCH_QUERY } from '../../graphql/queries/course/Course';
+
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
-const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) => {
-  // const userID = localStorage.getItem('user_id');
+const LikeCourseToggle = ({
+  theme,
+  isLoggedIn,
+  courseID,
+  reviewID = null,
+  initialState = null
+}) => {
+  const userID = localStorage.getItem('user_id');
+  const refetchQueries = [
+    { query: COURSE_REVIEW_REFETCH_QUERY, variables: { course_id: courseID } },
+  ];
+
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
+  const [updateLiked] = useMutation(UPDATE_LIKED, { refetchQueries });
+  const [insertLiked] = useMutation(INSERT_LIKED_REVIEW, { refetchQueries });
 
   const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
@@ -31,8 +47,21 @@ const LikeCourseToggle = ({theme, courseID, isLoggedIn, initialState = null}) =>
 
     if (liked === targetState) {
       setLiked(null);
+      if (reviewID) {
+        updateLiked({variables: { review_id: reviewID, liked: null }});
+      }
     } else {
-      setLiked(targetState)
+      setLiked(targetState);
+      if (reviewID) {
+        updateLiked({variables: { review_id: reviewID, liked: targetState }});
+      } else {
+        insertLiked({variables: {
+          user_id: userID,
+          course_id: courseID,
+          liked: targetState,
+          public: false
+        }});
+      }
     }
   }
 

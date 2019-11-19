@@ -17,10 +17,6 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
         }) {
           course_id
           user_id
-          course {
-            id
-            code
-          }
         }
         course_review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
           id
@@ -68,10 +64,21 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
     }) {
       course_id
       user_id
-      course {
-        id
-        code
-      }
+    }
+  }
+`;
+
+export const COURSE_REVIEW_REFETCH_QUERY = gql`
+  query COURSE_REVIEW_REFETCH_QUERY($course_id: Int) {
+    course_review(where: {
+      course_id: {_eq: $course_id}
+    }) {
+      id
+      easy
+      liked
+      useful
+      text
+      public
     }
   }
 `;

@@ -87,7 +87,8 @@ const CourseReviewCourseBox = ({
 
   const [useful, setUseful] = useState((courseReview && courseReview.useful) || 0);
   const [easy, setEasy] = useState((courseReview && courseReview.easy) || 0);
-  const [liked, setLiked] = useState(courseReview ? 1 - courseReview.liked : -1);
+  const [liked, setLiked] = useState(courseReview ?
+    (courseReview.liked !== null ? 1 - courseReview.liked : -1) : -1);
   const [courseReviewText, setCourseReviewText] = useState((courseReview && courseReview.text) || '');
 
   const [clear, setClear] = useState((profReview && profReview.clear) || 0);

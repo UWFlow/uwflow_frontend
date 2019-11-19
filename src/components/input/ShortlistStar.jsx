@@ -24,7 +24,7 @@ const ShortlistStar = ({ theme, courseID, isLoggedIn, initialState = false, size
   const refetchQueries = [
     { query: COURSE_SHORTLIST_REFETCH_QUERY, variables: { user_id: userID, course_id: courseID } },
     { query: USER_SHORTLIST_REFETCH_QUERY, variables: { id: userID } },
-  ]
+  ];
 
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(initialState);
