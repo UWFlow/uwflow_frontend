@@ -1,7 +1,7 @@
 import MiniSearch from 'minisearch/src/MiniSearch';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
-import { SPLIT_COURSE_CODE_REGEX, splitCourseCode } from '../utils/Misc';
+import { splitCourseCode } from '../utils/Misc';
 
 const MAX_AUTOCOMPLETE_LENGTH = 50;
 
@@ -89,7 +89,7 @@ class SearchClient {
     let courseCodeSet = new Set([]);
 
     const courses = parsedSearchData.courses.map(course => {
-      const courseLetters = course.code.match(SPLIT_COURSE_CODE_REGEX)[0];
+      const courseLetters = splitCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
       return {
         ...course,

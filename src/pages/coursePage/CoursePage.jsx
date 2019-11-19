@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /* Child Components */
 import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
-import ExtraInfoBox from './ExtraInfoBox';
+import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
@@ -88,9 +88,9 @@ const CoursePageContent = ({
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
-          <ExtraInfoBox
+          <CourseRequisites
             courseCode={course.code}
-            prereqs={course.prerequisites}
+            prereqs={course.prereqs}
             postreqs={course.postrequisites}
           />
         </Column2>

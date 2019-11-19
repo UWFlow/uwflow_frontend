@@ -33,3 +33,8 @@ export const GreyText = styled.div`
   color: ${({ theme }) => theme.light4};
 `;
 
+export const PrereqText = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.dark3};
+`;
+

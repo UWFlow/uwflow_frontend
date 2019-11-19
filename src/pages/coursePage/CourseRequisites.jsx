@@ -6,24 +6,48 @@ import {
   LineOfText,
   CourseText,
   GreyText,
+  PrereqText,
   ExtraInfoBoxWrapper
-} from './styles/ExtraInfoBox';
+} from './styles/CourseRequisites';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { splitCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
 const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
+  const parsedPrereqs = () => {
+    if (!prereqs) {
+      return '';
+    }
+
+    prereqs = prereqs.replace(/\s{2,}/gi, ' ');
+    prereqs = prereqs.replace(/\(\s*/gi, '(');
+    prereqs = prereqs.replace(/\s*\)/gi, ')');
+    prereqs = prereqs.replace(/\s*\\\s*/gi, '\\');
+    prereqs = prereqs.replace(/\s*\/\s*/gi, '/');
+
+    const splitText = prereqs.split(COURSE_CODE_REGEX);
+    const matches = prereqs.match(COURSE_CODE_REGEX);
+    if (splitText.length <= 1) {
+      return prereqs;
+    }
+
+    return splitText.reduce((arr, element, index) => (matches[index] ? [
+      ...arr,
+      element,
+      <CourseText to={getCoursePageRoute(matches[index])} key={index}>
+        {`${splitCourseCode(matches[index])}`}
+      </CourseText>,
+    ] : [...arr, element]), []);
+  }
+
   return (
     <ExtraInfoBoxWrapper>
       <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
-        {prereqs.map((prereq, idx) => (
-          <LineOfText key={idx}>
-            <CourseText to={getCoursePageRoute(prereq.prerequisite.code)}>
-              {`${splitCourseCode(prereq.prerequisite.code)} - ${prereq.prerequisite.name}`}
-            </CourseText>
-          </LineOfText>
-        ))}
-        {prereqs.length === 0 && (
+        {prereqs ? (
+          <PrereqText>
+            {parsedPrereqs()}
+          </PrereqText>
+        ) : (
           <LineOfText>
             <GreyText>No prerequisites</GreyText>
           </LineOfText>
