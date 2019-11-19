@@ -72,6 +72,7 @@ const CoursePageContent = ({
                   What do you think of {splitCourseCode(course.code)}?
                 </CourseReviewQuestionText>
                 <LikeCourseToggle
+                  courseCode={course.code}
                   courseID={course.id}
                   reviewID={userCourseReview && userCourseReview.id}
                   initialState={userCourseReview ? userCourseReview.liked : null}

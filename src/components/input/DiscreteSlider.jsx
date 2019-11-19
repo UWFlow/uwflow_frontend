@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { withTheme } from 'styled-components';
@@ -13,7 +13,7 @@ import {
 } from './styles/DiscreteSlider';
 
 const Handle = ({
-  handle: { id, percent }, 
+  handle: { id, percent },
   getHandleProps,
   color
 }) => (
@@ -23,7 +23,7 @@ const Handle = ({
 const Track = ({ source, target, color, getTrackProps }) => (
   <SliderTrack target={target} source={source} color={color} {...getTrackProps()} />
 );
- 
+
 const DiscreteSlider = ({
   theme,
   numNodes,
@@ -33,8 +33,8 @@ const DiscreteSlider = ({
   margin="0 0 40px 0",
   showTicks=true
 }) => {
+  const [selected, setSelected] = useState(currentNode !== -1);
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
-
   let percentages = [];
   for (let i = 0; i < 100; i += percentGap) {
     percentages.push(i);
@@ -48,7 +48,12 @@ const DiscreteSlider = ({
           step={1}
           mode={2}
           domain={[0, numNodes - 1]}
-          onUpdate={onUpdate}
+          onUpdate={(value) => {
+            if (currentNode > 0) {
+              setSelected(true);
+            }
+            onUpdate(value);
+          }}
           values={[currentNode]}
           rootStyle={{
             position: 'relative',
@@ -59,7 +64,7 @@ const DiscreteSlider = ({
           <Rail>
             {({ getRailProps }) => (
               <>
-                <SliderRail {...getRailProps()} /> 
+                <SliderRail {...getRailProps()} />
                 {showTicks && percentages.map((percent, idx) => (
                   <SliderTick
                     key={percent}
@@ -73,13 +78,16 @@ const DiscreteSlider = ({
           </Rail>
           <Handles>
             {({ handles, getHandleProps }) => (
-              <div className="slider-handles">
+              <div
+                className="slider-handles"
+                onClick={() => setSelected(true)}
+              >
                 {handles.map(handle => (
                   <Handle
                     key={handle.id}
                     handle={handle}
                     getHandleProps={getHandleProps}
-                    color={color}
+                    color={selected ? color : theme.light3}
                   />
                 ))}
               </div>

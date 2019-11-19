@@ -9,7 +9,7 @@ export const INSERT_COURSE_REVIEW = gql`
     $liked: smallint,
     $useful: smallint,
     $text: String,
-    $public: Bool
+    $public: Boolean
   ) {
     insert_course_review(
       objects: {
@@ -36,7 +36,7 @@ export const INSERT_PROF_REVIEW = gql`
     $clear: smallint,
     $engaging: smallint,
     $text: String,
-    $public: Bool
+    $public: Boolean
   ) {
     update_prof_review(
       objects: {
@@ -62,7 +62,7 @@ export const UPDATE_COURSE_REVIEW = gql`
     $liked: Int,
     $text: String,
     $useful: Int,
-    $public: Bool
+    $public: Boolean
   ) {
     update_course_review(
       where: {id: {_eq: $review_id}},
@@ -88,7 +88,7 @@ export const UPDATE_PROF_REVIEW = gql`
     $clear: smallint,
     $engaging: smallint,
     $text: String,
-    $public: Bool
+    $public: Boolean
   ) {
     update_prof_review(
       where: {id: {_eq: $review_id}},
@@ -119,10 +119,10 @@ export const DELETE_REVIEW = gql`
 
 export const INSERT_LIKED_REVIEW = gql`
   mutation INSERT_LIKED_REVIEW(
-    $user_id: smallint,
-    $course_id: smallint,
+    $user_id: Int,
+    $course_id: Int,
     $liked: smallint,
-    $public: Bool
+    $public: Boolean
   ) {
     insert_course_review(
       objects: {

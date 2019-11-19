@@ -70,7 +70,7 @@ const CourseReviewCourseBox = ({
   setSelectedCourseIndex = () => {},
   onCancel = () => {},
 }) => {
-  const { course, courseReview, profReview, } = courseList[selectedCourseIndex];
+  const { course, courseReview, profReview } = courseList[selectedCourseIndex];
   let profsTeaching = course.profs_teaching;
   profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
 
@@ -85,19 +85,19 @@ const CourseReviewCourseBox = ({
   const profIndex = profReview ? 
     profsTeaching.findIndex(prof => prof.prof && prof.prof.id === profReview.prof.id) : -1;
 
-  const [useful, setUseful] = useState((courseReview && courseReview.useful) || 0);
-  const [easy, setEasy] = useState((courseReview && courseReview.easy) || 0);
+  const [useful, setUseful] = useState((courseReview && courseReview.useful) || -1);
+  const [easy, setEasy] = useState((courseReview && courseReview.easy) || -1);
   const [liked, setLiked] = useState(courseReview ?
     (courseReview.liked !== null ? 1 - courseReview.liked : -1) : -1);
   const [courseReviewText, setCourseReviewText] = useState((courseReview && courseReview.text) || '');
 
-  const [clear, setClear] = useState((profReview && profReview.clear) || 0);
-  const [engaging, setEngaging] = useState((profReview && profReview.engaging) || 0);
+  const [clear, setClear] = useState((profReview && profReview.clear) || -1);
+  const [engaging, setEngaging] = useState((profReview && profReview.engaging) || -1);
   const [profReviewText, setProfReviewText] = useState((profReview && profReview.text) || '');
 
   const [selectedProf, setSelectedProf] = useState(profIndex);
   const [selectedAnonymous, setSelectedAnonymous] = useState(courseReview && courseReview.public ? 1 : 0);
-
+  console.log(easy, useful);
   return (
     <CourseReviewCourseBoxWrapper>
       {(courseList.length > 1 || showCourseDropdown) && (

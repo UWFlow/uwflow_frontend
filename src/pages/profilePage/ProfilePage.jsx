@@ -50,7 +50,7 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
     prof_reviews: profReviews,
     shortlist
   } = user;
-
+  
   const reviewModalCourseList = courses.map(course => {
     const courseReview = courseReviews.find(review => review.course_id === course.course.id);
     const profReview = profReviews.find(review => review.course_id === course.course.id);

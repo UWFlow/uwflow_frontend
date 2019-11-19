@@ -44,7 +44,7 @@ const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openMo
     courseGroups[termCodeToDate(term)] = unorderedGroups[term];
   });
 
-   const tabContent = (termName) => courseGroups[termName].map((course_taken, idx) => {
+  const tabContent = (termName) => courseGroups[termName].map((course_taken, idx) => {
     const review = courseReviews.find(review => review.course_id === course_taken.course.id);
     return (
       <ProfileCoursesCourse key={idx}>

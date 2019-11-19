@@ -16,7 +16,7 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import { UPDATE_LIKED, INSERT_LIKED_REVIEW } from '../../graphql/mutations/user/Review';
-import { COURSE_REVIEW_REFETCH_QUERY } from '../../graphql/queries/course/Course';
+import { COURSE_LIKED_REFETCH_QUERY } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -25,19 +25,26 @@ const mapStateToProps = state => ({
 const LikeCourseToggle = ({
   theme,
   isLoggedIn,
+  courseCode,
   courseID,
   reviewID = null,
   initialState = null
 }) => {
+  const [reviewed, setReviewed] = useState(reviewID === null);
   const userID = localStorage.getItem('user_id');
-  const refetchQueries = [
-    { query: COURSE_REVIEW_REFETCH_QUERY, variables: { course_id: courseID } },
-  ];
 
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
-  const [updateLiked] = useMutation(UPDATE_LIKED, { refetchQueries });
-  const [insertLiked] = useMutation(INSERT_LIKED_REVIEW, { refetchQueries });
+  const [updateLiked] = useMutation(UPDATE_LIKED, {
+    refetchQueries: [
+      { query: COURSE_LIKED_REFETCH_QUERY, variables: { code: courseCode, course_id: courseID } },
+    ]
+  });
+  const [insertLiked] = useMutation(INSERT_LIKED_REVIEW, {
+    refetchQueries: [
+      { query: COURSE_LIKED_REFETCH_QUERY, variables: { code: courseCode, course_id: courseID } },
+    ]
+  });
 
   const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
@@ -47,14 +54,15 @@ const LikeCourseToggle = ({
 
     if (liked === targetState) {
       setLiked(null);
-      if (reviewID) {
+      if (reviewed) {
         updateLiked({variables: { review_id: reviewID, liked: null }});
       }
     } else {
       setLiked(targetState);
-      if (reviewID) {
+      if (reviewed) {
         updateLiked({variables: { review_id: reviewID, liked: targetState }});
       } else {
+        setReviewed(true);
         insertLiked({variables: {
           user_id: userID,
           course_id: courseID,

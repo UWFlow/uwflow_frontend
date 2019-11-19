@@ -8,7 +8,7 @@ const CourseReviewFragment = {
       liked
       text
       useful
-      updated_at
+      created_at
       course {
         id
         code
@@ -38,7 +38,7 @@ const CourseReviewFragment = {
       clear
       engaging
       text
-      updated_at
+      created_at
       prof {
         id
         code

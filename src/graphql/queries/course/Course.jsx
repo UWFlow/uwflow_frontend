@@ -25,6 +25,8 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           useful
           text
           public
+          course_id
+          prof_id
           course {
             id
             profs_teaching {
@@ -42,6 +44,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           engaging
           public
           course_id
+          prof_id
           prof {
             id
             name
@@ -68,17 +71,28 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
   }
 `;
 
-export const COURSE_REVIEW_REFETCH_QUERY = gql`
-  query COURSE_REVIEW_REFETCH_QUERY($course_id: Int) {
-    course_review(where: {
-      course_id: {_eq: $course_id}
-    }) {
+export const COURSE_LIKED_REFETCH_QUERY = gql`
+  query COURSE_LIKED_REFETCH_QUERY($code: String, $course_id: Int) {
+    course(where: { code: { _eq: $code } }) {
       id
-      easy
+      course_reviews_aggregate {
+        aggregate {
+          avg {
+            liked
+          }
+          count(columns: liked)
+          text_count: count(columns: text)
+        }
+      }
+    }
+    course_review(where: {course: {code: {_eq: $code}}}) {
+      id
       liked
-      useful
-      text
-      public
+    }
+    course_review_aggregate(where: { course_id: { _eq: $course_id } }) {
+      aggregate {
+        count(columns: text)
+      }
     }
   }
 `;
