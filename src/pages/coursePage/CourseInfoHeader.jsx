@@ -23,9 +23,9 @@ import ShortlistStar from '../../components/input/ShortlistStar';
 
 import { splitCourseCode } from '../../utils/Misc';
 
-const CourseInfoHeader = ({ course, shortlisted }) => {
-  const { liked, easy, useful } = course.course_reviews_aggregate.aggregate.avg;
-  const { count, text_count } = course.course_reviews_aggregate.aggregate;
+const CourseInfoHeader = ({ course, courseReviewsAggregate, shortlisted }) => {
+  const { liked, easy, useful } = courseReviewsAggregate.aggregate.avg;
+  const { count, text_count } = courseReviewsAggregate.aggregate;
 
   return (
     <CourseInfoHeaderWrapper>

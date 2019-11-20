@@ -5,10 +5,13 @@ import CourseFragment from '../../fragments/course/CourseFragment.jsx';
 export const buildCourseQuery = (fetchUserData = false, userId = null) => {
   return gql`
     query GET_COURSE($code: String) {
-      course(where: { code: { _eq: $code } }) {
+      course(where: {code: {_eq: $code}}) {
         ...CourseInfoFragment
         ...CourseScheduleFragment
         ...CourseRequirementsFragment
+      }
+      course_review_aggregate(where: {course: {code: {_eq: $code}}}) {
+        ...CourseReviewAggregateFragment
       }
       ${fetchUserData ?
         `user_shortlist(where: {
@@ -56,6 +59,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
     ${CourseFragment.courseInfo}
     ${CourseFragment.courseSchedule}
     ${CourseFragment.courseRequirements}
+    ${CourseFragment.courseReviewAggregate}
   `;
 }
 
@@ -72,26 +76,16 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
 `;
 
 export const COURSE_LIKED_REFETCH_QUERY = gql`
-  query COURSE_LIKED_REFETCH_QUERY($code: String, $course_id: Int) {
-    course(where: { code: { _eq: $code } }) {
-      id
-      course_reviews_aggregate {
-        aggregate {
-          avg {
-            liked
-          }
-          count(columns: liked)
-          text_count: count(columns: text)
-        }
-      }
-    }
-    course_review(where: {course: {code: {_eq: $code}}}) {
+  query COURSE_LIKED_REFETCH_QUERY($course_id: Int) {
+    course_review(where: {course_id: {_eq: $course_id}}) {
       id
       liked
     }
     course_review_aggregate(where: { course_id: { _eq: $course_id } }) {
       aggregate {
-        count(columns: text)
+        avg {
+          liked
+        }
       }
     }
   }

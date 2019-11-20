@@ -7,17 +7,6 @@ const CourseFragment = {
       code
       name
       description
-      course_reviews_aggregate {
-        aggregate {
-          avg {
-            easy
-            liked
-            useful
-          }
-          count(columns: liked)
-          text_count: count(columns: text)
-        }
-      }
       profs_teaching {
         prof {
           id
@@ -91,6 +80,19 @@ const CourseFragment = {
         code
         name
       }
+    }
+  }
+  `,
+  courseReviewAggregate: gql`
+  fragment CourseReviewAggregateFragment on course_review_aggregate {
+    aggregate {
+      avg {
+        easy
+        liked
+        useful
+      }
+      count(columns: liked)
+      text_count: count(columns: text)
     }
   }
   `

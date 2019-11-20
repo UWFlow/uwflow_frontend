@@ -51,6 +51,8 @@ const cache = new InMemoryCache({
   dataIdFromObject: object => {
     switch (object.__typename) {
       case 'user_shortlist': return `${object.course_id}:${object.user_id}`;
+      case 'user_schedule': return `${object.user_id}:${object.section_id}`;
+      case 'user_course_taken': return `${object.term}:${object.course_id}`;
       default: return defaultDataIdFromObject(object);
     }
   }

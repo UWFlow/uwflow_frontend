@@ -46,6 +46,7 @@ const mapStateToProps = state => ({
 
 const CoursePageContent = ({
   course,
+  courseReviewsAggregate,
   shortlisted,
   userCourseReview,
   userProfReview,
@@ -61,7 +62,11 @@ const CoursePageContent = ({
 
   return (
     <>
-      <CourseInfoHeader course={course} shortlisted={shortlisted} />
+      <CourseInfoHeader
+        course={course}
+        courseReviewsAggregate={courseReviewsAggregate}
+        shortlisted={shortlisted}
+      />
       <ColumnWrapper>
         <Column1>
           <ScheduleAndReviewWrapper>
@@ -126,6 +131,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <CoursePageContent
         course={data.course[0]}
+        courseReviewsAggregate={data.course_review_aggregate}
         userCourseReview={isLoggedIn && data.course_review.length > 0 ?
           data.course_review[0] : null}
         userProfReview={isLoggedIn &&

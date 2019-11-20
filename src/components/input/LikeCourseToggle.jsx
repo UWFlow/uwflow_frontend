@@ -37,12 +37,12 @@ const LikeCourseToggle = ({
   const [liked, setLiked] = useState(initialState);
   const [updateLiked] = useMutation(UPDATE_LIKED, {
     refetchQueries: [
-      { query: COURSE_LIKED_REFETCH_QUERY, variables: { code: courseCode, course_id: courseID } },
+      { query: COURSE_LIKED_REFETCH_QUERY, variables: { course_id: courseID } },
     ]
   });
   const [insertLiked] = useMutation(INSERT_LIKED_REVIEW, {
     refetchQueries: [
-      { query: COURSE_LIKED_REFETCH_QUERY, variables: { code: courseCode, course_id: courseID } },
+      { query: COURSE_LIKED_REFETCH_QUERY, variables: { course_id: courseID } },
     ]
   });
 
