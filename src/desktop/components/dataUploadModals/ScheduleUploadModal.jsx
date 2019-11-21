@@ -42,7 +42,6 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
 
   const handleSchedulePaste = async event => {
     /* TODO: handle schedule paste */
-    console.log(event.currentTarget.value);
     setUploadState(UPLOAD_PENDING);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${SCHEDULE_PARSE_ENDPOINT}?user_id=${localStorage.getItem(
@@ -57,6 +56,7 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
     } else {
       setUploadState(UPLOAD_FAILED);
     }
+    console.log(status);
   };
 
   return (

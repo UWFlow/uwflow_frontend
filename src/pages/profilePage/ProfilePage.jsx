@@ -480,6 +480,8 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
     variables: { id: localStorage.getItem('user_id') },
   });
 
+  console.log(data);
+
   if (data && data.user.length === 0) {
     logOut(dispatch);
   }
@@ -497,9 +499,13 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   ) : (
     <ProfilePageWrapper>
       <ProfilePageContent
+<<<<<<< HEAD
         user={data.user[0]}
         reviews={data.review}
         coursesTaken={data.user_course_taken}
+=======
+        user={{ ...data.user[0] }}
+>>>>>>> Start
         isBrowserDesktop={isBrowserDesktop}
       />
     </ProfilePageWrapper>
