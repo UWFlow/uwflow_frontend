@@ -29,7 +29,6 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           text
           public
           course_id
-          prof_id
           course {
             id
             profs_teaching {
@@ -52,7 +51,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
             id
             name
           }
-        }            
+        }
         ` : ''
       }
     }
@@ -75,9 +74,41 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
   }
 `;
 
+export const COURSE_REVIEW_REFETCH_QUERY = gql`
+  query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+    course_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
+      id
+      easy
+      liked
+      useful
+      text
+      public
+      course_id
+    }
+    course_review_aggregate(where: { course_id: { _eq: $course_id } }) {
+      ...CourseReviewAggregateFragment
+    }
+  }
+  ${CourseFragment.courseReviewAggregate}
+`;
+
+export const PROF_REVIEW_REFETCH_QUERY = gql`
+  query PROF_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+    prof_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
+      id
+      text
+      clear
+      engaging
+      public
+      course_id
+      prof_id
+    }
+  }
+`;
+
 export const COURSE_LIKED_REFETCH_QUERY = gql`
-  query COURSE_LIKED_REFETCH_QUERY($course_id: Int) {
-    course_review(where: {course_id: {_eq: $course_id}}) {
+  query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+    course_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
       id
       liked
     }

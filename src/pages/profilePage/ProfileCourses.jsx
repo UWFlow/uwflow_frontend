@@ -68,6 +68,7 @@ const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openMo
           <LikeCourseToggle
             key={course_taken.index}
             courseID={course_taken.course.id}
+            reviewID={review ? review.id : null}
             initialState={review ? review.liked : null}
           />
         </LikeToggleWrapper>

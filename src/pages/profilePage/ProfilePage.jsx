@@ -50,7 +50,6 @@ const ProfilePageContent = ({ user, courseReviews, profReviews, coursesTaken, is
     const profReview = profReviews.find(review => review.course_id === course.course.id);
     return { course: course.course, courseReview, profReview };
   });
-  console.log(reviewModalCourseList)
 
   return (
     <>

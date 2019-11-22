@@ -81,7 +81,6 @@ const UserFragment = {
       text
       public
       course_id
-      prof_id
     }
   `,
   userProfReview: gql`

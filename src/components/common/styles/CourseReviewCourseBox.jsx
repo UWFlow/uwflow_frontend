@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, BoxShadow, Heading4, Body } from '../../../constants/Mixins';
+import { Card, BoxShadow, Heading3, Heading4, Body } from '../../../constants/Mixins';
 
 export const CourseReviewCourseBoxWrapper = styled.div`
   ${Card('24px', '32px 0')}
@@ -72,8 +72,19 @@ export const FooterQuestionWrapper = styled.div`
   align-items: center;
 `;
 
-export const CancelButtonText = styled.div`
+export const LightText = styled.div`
   color: ${({ theme }) => theme.white};
   ${Heading4}
   font-weight: 400;
+`;
+
+export const DeleteReviewModalWrapper = styled.div`
+  ${Card()}
+  color: ${({ theme }) => theme.dark1};
+  ${Heading3}
+`;
+
+export const DeleteConfirmButtons = styled.div`
+  display: flex;
+  margin-top: 16px;
 `;
