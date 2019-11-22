@@ -50,6 +50,7 @@ const CoursePageContent = ({
   shortlisted,
   userCourseReview,
   userProfReview,
+  userCourseTaken,
   isLoggedIn,
   isBrowserDesktop,
 }) => {
@@ -71,7 +72,7 @@ const CoursePageContent = ({
         <Column1>
           <ScheduleAndReviewWrapper>
             <CourseSchedule sections={course.sections} />
-            <CourseReviewQuestionBox>
+            {(!isLoggedIn || userCourseTaken) && <CourseReviewQuestionBox>
               <CourseQuestionTextAndToggle>
                 <CourseReviewQuestionText>
                   What do you think of {splitCourseCode(course.code)}?
@@ -90,7 +91,7 @@ const CoursePageContent = ({
               >
                 {userCourseReview || userProfReview ? 'Edit your review' : 'Add your review'}
               </Button>
-            </CourseReviewQuestionBox>
+            </CourseReviewQuestionBox>}
           </ScheduleAndReviewWrapper>
           <CourseReviews courseID={course.id} />
         </Column1>
@@ -136,6 +137,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
           data.course_review[0] : null}
         userProfReview={isLoggedIn &&
           data.prof_review.length > 0 ? data.prof_review[0] : null}
+        userCourseTaken={isLoggedIn && data.user_course_taken.length > 0 ? true : false}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}

@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
 import CourseFragment from '../../fragments/course/CourseFragment.jsx';
+import UserFragment from '../../fragments/user/UserFragment.jsx';
 
 export const buildCourseQuery = (fetchUserData = false, userId = null) => {
   return gql`
@@ -22,35 +23,14 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           user_id
         }
         course_review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
-          id
-          easy
-          liked
-          useful
-          text
-          public
-          course_id
-          course {
-            id
-            profs_teaching {
-              prof {
-                id
-                name
-              }
-            }
-          }
+          ...UserCourseReviewFragment
         }
         prof_review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
-          id
-          text
-          clear
-          engaging
-          public
+          ...UserProfReviewFragment
+        }
+        user_course_taken(where: {course: {code: {_eq: $code}}, user_id: {_eq: ${userId}}}) {
+          term
           course_id
-          prof_id
-          prof {
-            id
-            name
-          }
         }
         ` : ''
       }
@@ -59,6 +39,8 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
     ${CourseFragment.courseSchedule}
     ${CourseFragment.courseRequirements}
     ${CourseFragment.courseReviewAggregate}
+    ${UserFragment.userCourseReview}
+    ${UserFragment.userProfReview}
   `;
 }
 

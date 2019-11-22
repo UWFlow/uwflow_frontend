@@ -106,6 +106,8 @@ const CourseReviewCourseBox = ({
 
   /* State */
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
+  const [reviewUpdating, setReviewUpdating] = useState(false);
+  const [reviewDeleting, setReviewDeleting] = useState(false);
 
   const [useful, setUseful] = useState((courseReview && courseReview.useful) || -1);
   const [easy, setEasy] = useState((courseReview && courseReview.easy) || -1);
@@ -266,6 +268,7 @@ const CourseReviewCourseBox = ({
               color={theme.dark3}
               hoverColor={theme.dark2}
               margin="auto 16px auto 0"
+              width="120px"
               handleClick={() => setDeleteReviewModalOpen(false)}
             >
               <LightText>Cancel</LightText>
@@ -273,21 +276,20 @@ const CourseReviewCourseBox = ({
             <Button
               color={theme.red}
               hoverColor={theme.darkRed}
+              loading={reviewDeleting}
+              width="120px"
+              handleClick={() => {
+                setReviewDeleting(true);
+                deleteReview({variables: {
+                  course_review_id: courseReview ? courseReview.id : null,
+                  prof_review_id: profReview ? profReview.id : null
+                }}).then(() => {
+                  onCancel();
+                  setReviewDeleting(false);
+                });
+              }}
             >
-              <LightText
-                onClick={() => {
-                  deleteReview({variables: {
-                    course_review_id: courseReview ? courseReview.id : null,
-                    prof_review_id: profReview ? profReview.id : null
-                  }}).then(() => {
-                    onCancel();
-                  }).catch(() => {
-                    onCancel();
-                  });
-                }}
-              >
-                Delete
-              </LightText>
+              <LightText>Delete</LightText>
             </Button>
           </DeleteConfirmButtons>
         </DeleteReviewModalWrapper>
