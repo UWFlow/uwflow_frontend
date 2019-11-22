@@ -101,7 +101,7 @@ const CourseReviewCourseBox = ({
     }
   }
 
-  const profIndex = profReview ? 
+  const profIndex = profReview ?
     profsTeaching.findIndex(prof => prof.prof && prof.prof.id === profReview.prof.id) : -1;
 
   /* State */
@@ -110,15 +110,20 @@ const CourseReviewCourseBox = ({
   const [reviewDeleting, setReviewDeleting] = useState(false);
 
   const [useful, setUseful] = useState((courseReview && courseReview.useful) || -1);
+  const [usefulSelected, setUsefulSelected] = useState(courseReview && courseReview.useful);
   const [easy, setEasy] = useState((courseReview && courseReview.easy) || -1);
+  const [easySelected, setEasySelected] = useState(courseReview && courseReview.easy);
+
   const [liked, setLiked] = useState(courseReview ?
     (courseReview.liked !== null ? 1 - courseReview.liked : -1) : -1);
   const [courseReviewText, setCourseReviewText] = useState((courseReview && courseReview.text) || '');
 
   const [clear, setClear] = useState((profReview && profReview.clear) || -1);
+  const [clearSelected, setClearSelected] = useState(profReview && profReview.clear);
   const [engaging, setEngaging] = useState((profReview && profReview.engaging) || -1);
-  const [profReviewText, setProfReviewText] = useState((profReview && profReview.text) || '');
+  const [engagingSelected, setEngagingSelected] = useState(profReview && profReview.engaging);
 
+  const [profReviewText, setProfReviewText] = useState((profReview && profReview.text) || '');
   const [selectedProf, setSelectedProf] = useState(profIndex);
   const [selectedAnonymous, setSelectedAnonymous] = useState(courseReview && courseReview.public ? 1 : 0);
 
@@ -138,6 +143,65 @@ const CourseReviewCourseBox = ({
   const [insertProfReview] = useMutation(INSERT_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
   const [updateCourseReview] = useMutation(UPDATE_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
   const [updateProfReview] = useMutation(UPDATE_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
+
+  const handlePost = () => {
+    setReviewUpdating(true);
+
+    const courseReviewData = {
+      liked: 1 - liked,
+      easy,
+      useful,
+      text: courseReviewText,
+      public: selectedAnonymous === 0 ? true : false
+    };
+
+    const profReviewData = {
+      prof_id: selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id,
+      clear,
+      engaging,
+      text: profReviewText,
+      public: selectedAnonymous === 0 ? true : false
+    };
+
+    const courseReviewPromise = courseReview ?
+      updateCourseReview({ variables: {
+        review_id: courseReview.id,
+        ...courseReviewData
+      }}) : insertCourseReview({ variables: {
+        user_id: userID,
+        course_id: course.id,
+        ...courseReviewData
+      }});
+
+    let profReviewPromise = null;
+    if (selectedProf !== -1) {
+      profReviewPromise = profReview ?
+      updateProfReview({ variables: {
+        review_id: profReview.id,
+        ...profReviewData
+      }}) : insertProfReview({ variables: {
+        user_id: userID,
+        course_id: course.id,
+        ...profReviewData
+      }});
+    }
+
+    Promise.all([courseReviewPromise, profReviewPromise]).then(() => {
+      onCancel();
+      setReviewUpdating(false);
+    });
+  };
+
+  const handleDelete = () => {
+    setReviewDeleting(true);
+    deleteReview({variables: {
+      course_review_id: courseReview ? courseReview.id : null,
+      prof_review_id: profReview ? profReview.id : null
+    }}).then(() => {
+      onCancel();
+      setReviewDeleting(false);
+    });
+  };
 
   return (
     <CourseReviewCourseBoxWrapper>
@@ -164,6 +228,8 @@ const CourseReviewCourseBox = ({
           currentNode={useful}
           color={theme.courses}
           onUpdate={value => setUseful(value[0])}
+          selected={usefulSelected}
+          setSelected={setUsefulSelected}
         />
         <SliderOptionText>{usefulOptions[useful]}</SliderOptionText>
       </MetricQuestionWrapper>
@@ -175,6 +241,8 @@ const CourseReviewCourseBox = ({
           currentNode={easy}
           color={theme.courses}
           onUpdate={value => setEasy(value[0])}
+          selected={easySelected}
+          setSelected={setEasySelected}
         />
         <SliderOptionText>{easyOptions[easy]}</SliderOptionText>
       </MetricQuestionWrapper>
@@ -192,7 +260,7 @@ const CourseReviewCourseBox = ({
       <ReviewTextArea
         rows={5}
         value={courseReviewText}
-        onChange={(value) => setCourseReviewText(value)}
+        onChange={(event) => setCourseReviewText(event.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -214,6 +282,8 @@ const CourseReviewCourseBox = ({
           currentNode={clear}
           color={theme.professors}
           onUpdate={value => setClear(value[0])}
+          selected={clearSelected}
+          setSelected={setClearSelected}
         />
         <SliderOptionText>{clearOptions[clear]}</SliderOptionText>
       </MetricQuestionWrapper>
@@ -225,15 +295,19 @@ const CourseReviewCourseBox = ({
           currentNode={engaging}
           color={theme.professors}
           onUpdate={value => setEngaging(value[0])}
+          selected={engagingSelected}
+          setSelected={setEngagingSelected}
         />
         <SliderOptionText>{engagingOptions[engaging]}</SliderOptionText>
       </MetricQuestionWrapper>
+
       <ReviewTextArea
         rows={5}
         value={profReviewText}
-        onChange={(value) => setProfReviewText(value)}
+        onChange={(event) => setProfReviewText(event.value)}
         placeholder="Add any comments or tips..."
       />
+
       <Footer>
         <DeleteIconWrapper>
           <Trash2 onClick={() => setDeleteReviewModalOpen(true)} color={theme.red} />
@@ -257,9 +331,16 @@ const CourseReviewCourseBox = ({
               <LightText>Cancel</LightText>
             </Button>
           )}
-          <Button children="Post" />
+          <Button
+            handleClick={handlePost}
+            loading={reviewUpdating}
+            disabled={!usefulSelected || !easySelected || liked === -1}
+          >
+            Post
+          </Button>
         </FooterQuestionWrapper>
       </Footer>
+
       <Modal isOpen={deleteReviewModalOpen} onRequestClose={() => setDeleteReviewModalOpen(false)}>
         <DeleteReviewModalWrapper>
           Are you sure you want to delete this review?
@@ -278,16 +359,7 @@ const CourseReviewCourseBox = ({
               hoverColor={theme.darkRed}
               loading={reviewDeleting}
               width="120px"
-              handleClick={() => {
-                setReviewDeleting(true);
-                deleteReview({variables: {
-                  course_review_id: courseReview ? courseReview.id : null,
-                  prof_review_id: profReview ? profReview.id : null
-                }}).then(() => {
-                  onCancel();
-                  setReviewDeleting(false);
-                });
-              }}
+              handleClick={handleDelete}
             >
               <LightText>Delete</LightText>
             </Button>

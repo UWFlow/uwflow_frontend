@@ -37,8 +37,12 @@ const ShortlistStar = ({ theme, courseID, isLoggedIn, initialState = false, size
       return;
     } 
 
+    if (!courseID) {
+      return;
+    }
+
     if (checked) {
-      deleteShortlist({variables: { course_id: courseID }});
+      deleteShortlist({ variables: { course_id: courseID }});
     } else {
       insertShortlist({ variables: { user_id: userID, course_id: courseID }});
     }

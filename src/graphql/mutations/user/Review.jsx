@@ -4,7 +4,6 @@ export const INSERT_COURSE_REVIEW = gql`
   mutation INSERT_COURSE_REVIEW(
     $user_id: Int,
     $course_id: Int,
-    $prof_id: Int,
     $easy: smallint,
     $liked: smallint,
     $useful: smallint,
@@ -15,7 +14,30 @@ export const INSERT_COURSE_REVIEW = gql`
       objects: {
         user_id: $user_id,
         course_id: $course_id,
-        prof_id: $prof_id,
+        easy: $easy,
+        liked: $liked,
+        useful: $useful,
+        text: $text,
+        public: $public
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+export const UPDATE_COURSE_REVIEW = gql`
+  mutation UPDATE_COURSE_REVIEW(
+    $review_id: Int,
+    $liked: smallint,
+    $easy: smallint,
+    $useful: smallint,
+    $text: String,
+    $public: Boolean
+  ) {
+    update_course_review(
+      where: {id: {_eq: $review_id}},
+      _set: {
         easy: $easy,
         liked: $liked,
         useful: $useful,
@@ -45,32 +67,6 @@ export const INSERT_PROF_REVIEW = gql`
         prof_id: $prof_id,
         clear: $clear,
         engaging: $engaging,
-        text: $text,
-        public: $public
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-export const UPDATE_COURSE_REVIEW = gql`
-  mutation UPDATE_COURSE_REVIEW(
-    $review_id: Int,
-    $prof_id: Int,
-    $easy: Int,
-    $liked: Int,
-    $text: String,
-    $useful: Int,
-    $public: Boolean
-  ) {
-    update_course_review(
-      where: {id: {_eq: $review_id}},
-      _set: {
-        prof_id: $prof_id,
-        easy: $smallint,
-        liked: $smallint,
-        useful: $smallint,
         text: $text,
         public: $public
       }

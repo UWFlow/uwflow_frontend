@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { withTheme } from 'styled-components';
@@ -31,9 +31,10 @@ const DiscreteSlider = ({
   color,
   onUpdate,
   margin="0 0 40px 0",
-  showTicks=true
+  showTicks=true,
+  selected=true,
+  setSelected=() => null
 }) => {
-  const [selected, setSelected] = useState(currentNode !== -1);
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
   let percentages = [];
   for (let i = 0; i < 100; i += percentGap) {
@@ -49,10 +50,10 @@ const DiscreteSlider = ({
           mode={2}
           domain={[0, numNodes - 1]}
           onUpdate={(value) => {
-            if (currentNode > 0) {
+            onUpdate(value);
+            if (value > 0) {
               setSelected(true);
             }
-            onUpdate(value);
           }}
           values={[currentNode]}
           rootStyle={{

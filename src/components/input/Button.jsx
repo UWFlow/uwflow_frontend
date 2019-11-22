@@ -18,12 +18,14 @@ const Button = ({
   height = 48,
   maxHeight = '100%',
   hasShadow = true,
-  loading = false
+  loading = false,
+  disabled = false,
 }) => {
   return (
     <ButtonWrapper
       height={height}
-      onClick={handleClick}
+      onClick={disabled ? null : handleClick}
+      disabled={disabled}
       color={color}
       hoverColor={hoverColor}
       borderColor={borderColor}
@@ -58,6 +60,7 @@ Button.propTypes = {
   padding: PropTypes.string,
   hasShadow: PropTypes.bool,
   loading: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 export default withTheme(Button);

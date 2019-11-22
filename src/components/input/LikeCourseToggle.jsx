@@ -50,6 +50,10 @@ const LikeCourseToggle = ({
       return
     }
 
+    if (!courseID) {
+      return;
+    }
+
     if (liked === targetState) {
       if (reviewed) {
         updateLiked({variables: { review_id: reviewID, liked: null }});

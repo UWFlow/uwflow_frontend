@@ -16,6 +16,7 @@ const UserFragment = {
         course_id
         user_id
         course {
+          id
           code
           name
         }
