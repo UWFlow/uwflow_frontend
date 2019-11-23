@@ -37,7 +37,7 @@ import {
   INSERT_PROF_REVIEW,
   UPDATE_COURSE_REVIEW,
   UPDATE_PROF_REVIEW
-} from '../../graphql/mutations/user/Review';
+} from '../../graphql/mutations/Review';
 import {
   COURSE_REVIEW_REFETCH_QUERY,
   PROF_REVIEW_REFETCH_QUERY
@@ -144,6 +144,8 @@ const CourseReviewCourseBox = ({
   const [updateCourseReview] = useMutation(UPDATE_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
   const [updateProfReview] = useMutation(UPDATE_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
 
+  console.log(selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id)
+
   const handlePost = () => {
     setReviewUpdating(true);
 
@@ -152,7 +154,7 @@ const CourseReviewCourseBox = ({
       easy,
       useful,
       text: courseReviewText,
-      public: selectedAnonymous === 0 ? true : false
+      public: selectedAnonymous === 0 ? false : true
     };
 
     const profReviewData = {
@@ -160,7 +162,7 @@ const CourseReviewCourseBox = ({
       clear,
       engaging,
       text: profReviewText,
-      public: selectedAnonymous === 0 ? true : false
+      public: selectedAnonymous === 0 ? false : true
     };
 
     const courseReviewPromise = courseReview ?
@@ -176,14 +178,14 @@ const CourseReviewCourseBox = ({
     let profReviewPromise = null;
     if (selectedProf !== -1) {
       profReviewPromise = profReview ?
-      updateProfReview({ variables: {
-        review_id: profReview.id,
-        ...profReviewData
-      }}) : insertProfReview({ variables: {
-        user_id: userID,
-        course_id: course.id,
-        ...profReviewData
-      }});
+        updateProfReview({ variables: {
+          review_id: profReview.id,
+          ...profReviewData
+        }}) : insertProfReview({ variables: {
+          user_id: userID,
+          course_id: course.id,
+          ...profReviewData
+        }});
     }
 
     Promise.all([courseReviewPromise, profReviewPromise]).then(() => {
@@ -260,7 +262,8 @@ const CourseReviewCourseBox = ({
       <ReviewTextArea
         rows={5}
         value={courseReviewText}
-        onChange={(event) => setCourseReviewText(event.value)}
+        maxLength={8192}
+        onChange={(event) => setCourseReviewText(event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -272,6 +275,7 @@ const CourseReviewCourseBox = ({
           options={profsTeaching.map(prof => prof.prof.name)}
           color={theme.professors}
           onChange={value => setSelectedProf(value)}
+          zIndex={5}
         />
       </QuestionWrapper>
 
@@ -304,7 +308,8 @@ const CourseReviewCourseBox = ({
       <ReviewTextArea
         rows={5}
         value={profReviewText}
-        onChange={(event) => setProfReviewText(event.value)}
+        maxLength={8192}
+        onChange={(event) => setProfReviewText(event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -320,6 +325,7 @@ const CourseReviewCourseBox = ({
             color={theme.primary}
             onChange={value => setSelectedAnonymous(value)}
             margin="auto 16px auto auto"
+            zIndex={2}
           />
           {cancelButton && (
             <Button

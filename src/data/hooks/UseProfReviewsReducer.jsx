@@ -33,7 +33,7 @@ const convertInputToState = data => {
       allCourses.push(courseObject);
     }
     courseObject.reviews.push({
-      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
+      upvotes: current.prof_review_votes_aggregate.aggregate.count,
       review: current.text,
       author: current.author,
       user: current.user,

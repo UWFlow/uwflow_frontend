@@ -60,7 +60,7 @@ export const INSERT_PROF_REVIEW = gql`
     $text: String,
     $public: Boolean
   ) {
-    update_prof_review(
+    insert_prof_review(
       objects: {
         user_id: $user_id,
         course_id: $course_id,

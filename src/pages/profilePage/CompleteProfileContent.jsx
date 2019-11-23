@@ -14,12 +14,15 @@ import {
 
 const CompleteProfileContent = ({
   theme,
-  user
+  user,
+  coursesTaken,
+  courseReviews,
+  profReviews
 }) => {
   const hasScheduleUploaded = user.schedule && user.schedule.length > 0;
-  const hasCourseInfo = user.courses_taken && user.courses_taken.length > 0;
-  const hasCoursesReviewed = user.course_reviews && user.course_reviews.length > 0;
-  const hasProfsReviewed = user.prof_reviews && user.prof_reviews.length > 0;
+  const hasCourseInfo = coursesTaken && coursesTaken.length > 0;
+  const hasCoursesReviewed = courseReviews && courseReviews.length > 0;
+  const hasProfsReviewed = profReviews && profReviews.length > 0;
 
   return (
     <>

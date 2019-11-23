@@ -61,6 +61,22 @@ const CourseFragment = {
       }
     }
   `,
+  courseReviewAggregate: gql`
+  fragment CourseReviewAggregateFragment on course {
+    id
+    course_reviews_aggregate {
+      aggregate {
+        avg {
+          easy
+          liked
+          useful
+        }
+        count(columns: liked)
+        text_count: count(columns: text)
+      }
+    }
+  }
+  `,
   courseRequirements: gql`
   fragment CourseRequirementsFragment on course {
     id
@@ -80,19 +96,6 @@ const CourseFragment = {
         code
         name
       }
-    }
-  }
-  `,
-  courseReviewAggregate: gql`
-  fragment CourseReviewAggregateFragment on course_review_aggregate {
-    aggregate {
-      avg {
-        easy
-        liked
-        useful
-      }
-      count(columns: liked)
-      text_count: count(columns: text)
     }
   }
   `

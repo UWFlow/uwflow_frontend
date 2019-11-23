@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
+import moment from 'moment';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
@@ -74,7 +75,7 @@ const Review = ({
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
         {authorNameText}{author.program ? `, a ${author.program} student` : ''}
-        , {created_at}
+        , {moment(created_at).fromNow()}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );

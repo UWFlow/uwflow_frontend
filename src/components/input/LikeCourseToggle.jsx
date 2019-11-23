@@ -15,7 +15,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
-import { UPDATE_LIKED, INSERT_LIKED_REVIEW } from '../../graphql/mutations/user/Review';
+import { UPDATE_LIKED, INSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
 import { COURSE_LIKED_REFETCH_QUERY } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({

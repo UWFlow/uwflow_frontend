@@ -11,7 +11,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
-import { DELETE_USER_SHORTLIST, INSERT_USER_SHORTLIST } from '../../graphql/mutations/user/Shortlist';
+import { DELETE_USER_SHORTLIST, INSERT_USER_SHORTLIST } from '../../graphql/mutations/Shortlist';
 import { COURSE_SHORTLIST_REFETCH_QUERY } from '../../graphql/queries/course/Course';
 import { USER_SHORTLIST_REFETCH_QUERY } from '../../graphql/queries/user/User';
 

@@ -67,7 +67,7 @@ const getInfoGroupings = meetings => {
   });
 
   // Merge and sort days of week for timeRanges that occur in the same date range
-  const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not to0 sure about saturday and sunday
+  const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not too sure about saturday and sunday
   answer.forEach(entry => {
     let newTimeRanges = [];
     let newDays = [];

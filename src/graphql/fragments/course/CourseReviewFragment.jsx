@@ -25,9 +25,7 @@ const CourseReviewFragment = {
       }
       course_review_votes_aggregate {
         aggregate {
-          sum {
-            vote
-          }
+          count
         }
       }
     }
@@ -58,9 +56,7 @@ const CourseReviewFragment = {
       }
       prof_review_votes_aggregate {
         aggregate {
-          sum {
-            vote
-          }
+          count
         }
       }
     }

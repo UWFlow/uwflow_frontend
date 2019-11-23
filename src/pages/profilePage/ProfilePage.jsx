@@ -68,7 +68,12 @@ const ProfilePageContent = ({ user, courseReviews, profReviews, coursesTaken, is
         <Column2>
           {isBrowserDesktop && (
             <CompleteProfileWrapper>
-              <CompleteProfileContent user={user} />
+              <CompleteProfileContent
+                user={user}
+                coursesTaken={coursesTaken}
+                courseReviews={courseReviews}
+                profReviews={profReviews}
+              />
             </CompleteProfileWrapper>
           )}
           <ShortlistBox shortlistCourses={shortlist} />
