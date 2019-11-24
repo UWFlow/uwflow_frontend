@@ -44,6 +44,7 @@ const CourseFragment = {
           location
           prof {
             id
+            code
             name
           }
           is_closed

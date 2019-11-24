@@ -3,20 +3,26 @@ import PropTypes from 'prop-types';
 
 /* Child Components */
 import TabContainer from '../../components/display/TabContainer';
-// import Table from '../../components/display/Table';
-// import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
+import Table from '../../components/display/Table';
+import FinalExamTable from '../../components/common/FinalExamTable';
+import LastUpdatedSchedule from '../../components/common/LastUpdatedSchedule';
+import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 /* Styled Components */
-import { CourseScheduleWrapper } from './styles/CourseSchedule';
+import {
+  CourseScheduleWrapper,
+  TableWrapper,
+  FinalExamsText
+} from './styles/CourseSchedule';
 
-/* GraphQL Queries */
-import { termCodeToDate } from '../../utils/Misc';
+/* Utils */
+import { termCodeToDate, secsToTime } from '../../utils/Misc';
+import { processSectionExams } from '../../utils/FinalExams';
 
-const secsToTime = secs => {
-  const t = Math.floor(secs / 3600) % 12;
-  const h = t === 0 ? 12 : t;
-  const m = Math.floor((secs % 3600) / 60) % 60;
-  return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
+const sectionOrder = {
+  'LEC': 0,
+  'LAB': 1,
+  'TUT': 2
 };
 
 /*
@@ -33,24 +39,22 @@ const secsToTime = secs => {
 const getInfoGroupings = meetings => {
   let groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
     const key = `${curr.start_seconds} ${curr.end_seconds}`;
-  
+
     if (!groupings[key]) {
       groupings[key] = {
-        startSeconds: curr.start_seconds,
-        endSeconds: curr.end_seconds,
-        startTime: secsToTime(curr.start_seconds),
-        endTime: secsToTime(curr.end_seconds),
+        time: `${secsToTime(curr.start_seconds)} - ${secsToTime(curr.end_seconds)}`,
         location: curr.location,
         prof: curr.prof
           ? {
               id: curr.prof.id,
+              code: curr.prof.code,
               name: curr.prof.name,
             }
-          : null,
+          : {},
         timeRanges: [],
       };
     }
-  
+
     groupings[key].timeRanges.push({
       days: curr.days,
       startDate: curr.start_date,
@@ -88,7 +92,7 @@ const getInfoGroupings = meetings => {
       }
 
       for (let day of currRange.days) {
-        if (!newDays.includes(day)) {
+        if (!newDays.includes(day) && daysOfWeek.includes(day)) {
           newDays.push(day);
         }
       }
@@ -107,7 +111,7 @@ const getInfoGroupings = meetings => {
   return answer;
 };
 
-const CourseSchedule = ({ sections }) => {
+const CourseSchedule = ({ sections, courseCode }) => {
   if (!sections || sections.length === 0) {
     return null;
   }
@@ -123,40 +127,55 @@ const CourseSchedule = ({ sections }) => {
     class: s.class_number,
     term: s.term,
     enrolled: {
-      section: s.section,
-      class: s.class_number,
       filled: s.enrollment_total,
       capacity: s.enrollment_capacity,
     },
     // Every grouping contains a single time of day, location, and instructor
     // and the classes that occur with those parameters.
     infoGroupings: getInfoGroupings(s.meetings),
-  }));
+  })).sort((a, b) => {
+    const sectionTypeA = a.section.split(' ')[0];
+    const sectionTypeB = b.section.split(' ')[0];
+    if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
+      return a.section.localeCompare(b.section);
+    } else {
+      return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
+    }
+  });
 
-  console.log(sectionsCleanedData);
+  const courseExams = processSectionExams(sections, courseCode);
 
   const tabList = termsOffered.map(term => {
     return {
       title: termCodeToDate(term),
-      render: () =>
-        /*
-        <Table
-          columns={courseScheduleTableColumns}
-          data={sectionsCleanedData.filter(c => c.term === term)}
-        />
-        */
-        null,
+      render: () => (
+        <>
+          <TableWrapper>
+            <Table
+              columns={courseScheduleTableColumns}
+              data={sectionsCleanedData.filter(c => c.term === term)}
+            />
+          </TableWrapper>
+          <TableWrapper>
+            <FinalExamsText>Final Exams</FinalExamsText>
+            <FinalExamTable courses={courseExams} />
+          </TableWrapper>
+        </>
+      )
     };
   });
 
   return (
-    <CourseScheduleWrapper>
-      <TabContainer
-        initialSelectedTab={0}
-        tabList={tabList}
-        contentPadding={'0'}
-      />
-    </CourseScheduleWrapper>
+    <>
+      <CourseScheduleWrapper>
+        <TabContainer
+          initialSelectedTab={0}
+          tabList={tabList}
+          contentPadding={'0'}
+        />
+      </CourseScheduleWrapper>
+      {tabList.length > 0 && <LastUpdatedSchedule />}
+    </>
   );
 };
 

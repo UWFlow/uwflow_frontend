@@ -82,6 +82,7 @@ export const Cell = styled.td`
   padding-bottom: 16px;
   text-align: ${({ align }) => (align ? align : 'left')};
   vertical-align: top;
+  height: 0;
 
   &:first-child {
     padding-left: 32px;

@@ -22,31 +22,30 @@ const examColumns = [
   {
     Header: 'Section(s)',
     accessor: 'sections',
-    maxWidth: 120,
-    Cell: ({cell}) => {cell.value.join(', ')},
+    maxWidth: 160,
   },
   {
     Header: 'Time',
     accessor: 'time',
-    maxWidth: 160,
+    maxWidth: 136,
   },
   {
     Header: 'Date',
     accessor: 'date',
-    maxWidth: 160,
+    maxWidth: 120,
   },
   {
     Header: 'Location',
     accessor: 'location',
-    maxWidth: 120,
+    maxWidth: 160,
   },
 ]
 
 const FinalExamTable = ({ courses }) => {
   return (
     <Table
-        columns={examColumns}
-        data={courses}
+      columns={examColumns}
+      data={courses}
     />
   );
 };
