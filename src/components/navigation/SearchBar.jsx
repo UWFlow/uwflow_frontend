@@ -56,7 +56,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
       const length = searchResults.courseResults.length + searchResults.profResults.length;
       setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
     }
-  }, [selectedResultIndex]);
+  }, [selectedResultIndex, searchResults]);
   
   const performSearch = event => {
     const { type } = event.data;

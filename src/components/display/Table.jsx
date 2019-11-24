@@ -24,27 +24,25 @@ const Table = ({
   sortable = false,
   loading = false,
   doneFetching = false,
-  fetchMore = () => {}
+  fetchMore = null
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    if (!shouldFetchMore || fetchMore === null || loading) {
-      return;
-    }
-
-    const fetchPromise = fetchMore();
-
-    if (!fetchPromise) {
-      setFetchMore(false);
+    if (!shouldFetchMore || !fetchMore || loading) {
       return;
     }
 
     if (shouldFetchMore) {
-      fetchPromise.then(() => {
+      const fetchMorePromise = fetchMore();
+      if (!fetchMorePromise) {
         setShouldFetchMore(false);
-      });
+      } else {
+        fetchMorePromise.then(() => {
+          setShouldFetchMore(false);
+        });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldFetchMore]);
@@ -116,7 +114,7 @@ const Table = ({
               </Row>
             ),
         )}
-        {((loading || shouldFetchMore) && !doneFetching) && (
+        {((loading || shouldFetchMore) && !doneFetching && fetchMore !== null) && (
           <Row>
             <Cell colSpan={columns.length} style={{padding: 0, overflow: 'hidden'}}>
               <LoadingSpinner margin={"4px auto"} />
