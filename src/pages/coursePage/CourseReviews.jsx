@@ -66,7 +66,7 @@ const CourseCourseReviews = ({
     return showingAllReviews || i < MIN_REVIEWS_SHOWN;
   }).map((review, i) => (
     <Review key={i} review={review} />
-  )), [reviews, showingAllReviews, courseSort, courseProfFilter]);
+  )), [reviews, showingAllReviews, courseSort]);
 
   return (
     <CourseCourseReviewsWrapper>

@@ -144,12 +144,12 @@ const CourseReviewCourseBox = ({
   const [updateCourseReview] = useMutation(UPDATE_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
   const [updateProfReview] = useMutation(UPDATE_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
 
-  console.log(selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id)
-
   const handlePost = () => {
     setReviewUpdating(true);
+    const profID = selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
 
     const courseReviewData = {
+      prof_id: profID,
       liked: 1 - liked,
       easy,
       useful,
@@ -158,7 +158,7 @@ const CourseReviewCourseBox = ({
     };
 
     const profReviewData = {
-      prof_id: selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id,
+      prof_id: profID,
       clear,
       engaging,
       text: profReviewText,

@@ -31,7 +31,7 @@ import {
 
 const ResetPasswordForm = ({ onSubmit, loading, error, success }) => {
   const [email, setEmail] = useState('');
-  console.log(loading);
+
   return (
     <Wrapper>
       <Header>Reset Password</Header>

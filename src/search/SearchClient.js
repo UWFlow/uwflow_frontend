@@ -6,14 +6,14 @@ import { splitCourseCode } from '../utils/Misc';
 const MAX_AUTOCOMPLETE_LENGTH = 50;
 
 const searchOptions = {
-  fuzzy: 0.1,
+  fuzzy: 0,
   prefix: true,
 };
 
 const courseIndexOptions = {
   searchOptions: {
     ...searchOptions,
-    boost: { code: 3 },
+    boost: { code: 100 },
   },
   fields: ['code', 'name', 'profs'],
   storeFields: ['code', 'name', 'profs'],
@@ -22,7 +22,7 @@ const courseIndexOptions = {
 const profIndexOptions = {
   searchOptions: {
     ...searchOptions,
-    boost: { name: 3 },
+    boost: { name: 100 },
   },
   fields: ['name', 'courses'],
   storeFields: ['code', 'name', 'courses'],

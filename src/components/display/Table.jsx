@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
+import { throttle } from 'lodash';
 
 import {
   TableWrapper,
@@ -17,32 +18,54 @@ import {
 
 import LoadingSpinner from '../display/LoadingSpinner';
 
-const Table = ({ columns, data, sortable = false, loading = false, fetchMore = () => {} }) => {
+const Table = ({
+  columns,
+  data,
+  sortable = false,
+  loading = false,
+  doneFetching = false,
+  fetchMore = () => {}
+}) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
 
-  const setFetchMore = () => {
-    if (bottomRef.current) {
-      const distanceFromBottom = bottomRef.current.offsetTop - window.scrollY;
-      if (distanceFromBottom < 1000 && !loading) {
-        setShouldFetchMore(true);
-      }
+  useEffect(() => {
+    if (!shouldFetchMore || fetchMore === null || loading) {
+      return;
     }
+
+    const fetchPromise = fetchMore();
+
+    if (!fetchPromise) {
+      setFetchMore(false);
+      return;
+    }
+
+    if (shouldFetchMore) {
+      fetchPromise.then(() => {
+        setShouldFetchMore(false);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldFetchMore]);
+
+  const setFetchMore = () => {
+    if (loading || shouldFetchMore || !bottomRef.current || !fetchMore) {
+      return;
+    }
+    const offset = 500;
+    const top = bottomRef.current.getBoundingClientRect().top;
+    const inView = (top + offset) >= 0 && (top - offset) <= window.innerHeight;
+    setShouldFetchMore(inView);
   }
 
-  useEffect(() => {
-    if (shouldFetchMore) {
-      fetchMore();
-      setShouldFetchMore(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldFetchMore, fetchMore]);
+  const throttledSetFetchMore = throttle(setFetchMore, 100);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => setFetchMore());
-    return window.removeEventListener('scroll', () => setFetchMore());
+    window.addEventListener('scroll', () => throttledSetFetchMore());
+    return window.removeEventListener('scroll', () => throttledSetFetchMore());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bottomRef, loading]);
+  }, [loading]);
 
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(
     {
@@ -93,7 +116,7 @@ const Table = ({ columns, data, sortable = false, loading = false, fetchMore = (
               </Row>
             ),
         )}
-        {loading && (
+        {((loading || shouldFetchMore) && !doneFetching) && (
           <Row>
             <Cell colSpan={columns.length} style={{padding: 0}}>
               <LoadingSpinner margin={"4px auto"} />

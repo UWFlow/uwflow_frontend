@@ -91,6 +91,12 @@ const UserFragment = {
           }
         }
       }
+      prof_id
+      prof {
+        id
+        code
+        name
+      }
     }
   `,
   userProfReview: gql`

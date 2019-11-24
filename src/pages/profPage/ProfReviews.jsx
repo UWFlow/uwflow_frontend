@@ -152,7 +152,7 @@ const ProfReviews = ({ profID, theme }) => {
                 }
               >
                 <ShowMoreReviewsText>
-                  {showingReviewsMap[idx]
+                  {showingReviewsMap[course.code]
                     ? `Show less reviews`
                     : `Show all ${course.reviews.length} reviews`}
                 </ShowMoreReviewsText>

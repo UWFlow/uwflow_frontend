@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { Router, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 
@@ -19,6 +19,16 @@ import SearchProvider from './search/SearchProvider';
 /* Util */
 import createHistory, { syncReduxHistory } from './utils/History';
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 const StartApp = (store, history) => {
   syncReduxHistory(store, history);
 
@@ -27,6 +37,7 @@ const StartApp = (store, history) => {
       <SearchProvider searchWorker={new SearchWorker()}>
         <Provider store={store}>
           <Router history={history}>
+            <ScrollToTop />
             <ThemeProvider theme={Theme}>
               <App />
             </ThemeProvider>

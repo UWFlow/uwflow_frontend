@@ -45,4 +45,5 @@ export const ContentContainer = styled.div`
   background: white;
   padding: ${({ padding }) => padding};
   border-radius: 0 0 4px 4px;
+  overflow: hidden;
 `;
