@@ -69,7 +69,7 @@ const CoursePageContent = ({
       <ColumnWrapper>
         <Column1>
           <ScheduleAndReviewWrapper>
-            <CourseSchedule sections={course.sections} />
+            <CourseSchedule sections={course.sections} courseCode={course.code} />
             {(!isLoggedIn || userCourseTaken) && <CourseReviewQuestionBox>
               <CourseQuestionTextAndToggle>
                 <CourseReviewQuestionText>

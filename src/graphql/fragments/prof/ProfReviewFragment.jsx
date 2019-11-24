@@ -25,6 +25,9 @@ const ProfReviewFragment = {
         program
         picture_url
       } 
+      prof_review_votes {
+        user_id
+      }
       prof_review_votes_aggregate {
         aggregate {
           sum {

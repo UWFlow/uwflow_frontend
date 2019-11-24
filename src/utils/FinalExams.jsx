@@ -1,4 +1,4 @@
-import { isCurrentTerm, secondsToExamTime, processDateString } from './Misc';
+import { isCurrentTerm, secsToTime, processDateString } from './Misc';
 
 export const processSectionExams = (sections, courseCode) => {
   const groupedExams = sections.reduce((groups, section) => {
@@ -13,7 +13,7 @@ export const processSectionExams = (sections, courseCode) => {
         groups[examKey] = {
           code: courseCode,
           sections: [section.section],
-          time: `${secondsToExamTime(exam.start_seconds)} - ${secondsToExamTime(exam.end_seconds)}`,
+          time: `${secsToTime(exam.start_seconds)} - ${secsToTime(exam.end_seconds)}`,
           date: `${processDateString(exam.date)}`,
           location: exam.location,
         }
@@ -31,4 +31,3 @@ export const processMultipleCourseExams = courses => courses.reduce((allExams, c
   }
   return allExams;
 }, []);
-  

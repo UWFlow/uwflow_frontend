@@ -6,8 +6,10 @@ import {
   ContentWrapper,
   InstructorLink,
   ColorBar,
+  EnrollmentText
 } from './styles/CourseSchedule';
 import { getProfPageRoute } from '../../Routes';
+import { processDateString } from '../../utils/Misc';
 
 export const LEC = 'LEC';
 export const LAB = 'LAB';
@@ -17,68 +19,78 @@ const SectionCell = ({ cell }) => (
   <SectionCellWrapper numRows={cell.value.numRows}>
     <ColorBar
       color={
-        cell.value.section.includes(LEC)
+        cell.value.includes(LEC)
           ? LEC
-          : cell.value.section.includes(LAB)
+          : cell.value.includes(LAB)
           ? LAB
           : TUT
       }
     />
-    <SectionContentWrapper>{cell.value.section}</SectionContentWrapper>
+    <SectionContentWrapper>{cell.value}</SectionContentWrapper>
   </SectionCellWrapper>
 );
 
 const ClassCell = ({ cell }) => (
   <NormalCellWrapper>{cell.value}</NormalCellWrapper>
 );
-const EnrolledCell = ({ cell }) => (
-  <NormalCellWrapper>
-    {cell.value.filled}/{cell.value.capacity}
-  </NormalCellWrapper>
-);
+
+const EnrolledCell = ({ cell }) => {
+  return (
+    <NormalCellWrapper>
+      <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
+        {cell.value.filled}/{cell.value.capacity}
+      </EnrollmentText>
+    </NormalCellWrapper>
+  );
+}
+
 const TimeCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
+    {cell.value.map((cl, idx) => {
       return (
-        <ContentWrapper key={ind}>
-          {cl.time.start} - {cl.time.end}
+        <ContentWrapper key={idx}>
+          {cl.time}
         </ContentWrapper>
       );
     })}
   </NormalCellWrapper>
 );
+
 const DateCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
-      return (
-        <ContentWrapper key={ind}>
-          {cl.date.reduce((acc, curr, ind) => {
-            return `${acc}${ind === 0 ? curr : ` ${curr}`}`;
-          }, '')}
+    {cell.value.map((cl) => {
+      return cl.timeRanges.map((timeRange, idx) => {
+        const date = timeRange.startDate === timeRange.endDate ?
+          processDateString(timeRange.startDate).split(', ')[1] : '';
+        return (
+        <ContentWrapper key={idx}>
+          {timeRange.days.join(' ')} {date}
         </ContentWrapper>
-      );
+        );
+      })
     })}
   </NormalCellWrapper>
 );
+
 const LocationCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
-      return <ContentWrapper key={ind}>{cl.location}</ContentWrapper>;
+    {cell.value.map((cl, idx) => {
+      return <ContentWrapper key={idx}>{cl.location}</ContentWrapper>;
     })}
   </NormalCellWrapper>
 );
+
 const InstructorCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, ind) => {
-      if (!cl.instructor) return <ContentWrapper key={ind} />;
-      return (
+    {cell.value.map((cl, idx) => {
+      return cl.prof.code ? (
         <InstructorLink
-          to={getProfPageRoute(cl.instructor.toString())}
-          key={ind}
+          to={getProfPageRoute(cl.prof.code)}
+          key={idx}
         >
-          {cl.instructor}
+          {cl.prof.name}
         </InstructorLink>
-      );
+      ) : null;
     })}
   </NormalCellWrapper>
 );
@@ -88,6 +100,7 @@ export const courseScheduleTableColumns = [
     Header: 'Section',
     Cell: SectionCell,
     accessor: 'section',
+    maxWidth: 96,
     style: {
       padding: 0,
     },
@@ -95,7 +108,8 @@ export const courseScheduleTableColumns = [
   {
     Header: 'Class',
     Cell: ClassCell,
-    accessor: 'class_number',
+    accessor: 'class',
+    maxWidth: 48,
     style: {
       'vertical-align': 'top',
     },
@@ -104,6 +118,7 @@ export const courseScheduleTableColumns = [
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
+    maxWidth: 96,
     style: {
       'vertical-align': 'top',
     },
@@ -111,21 +126,25 @@ export const courseScheduleTableColumns = [
   {
     Header: 'Time',
     Cell: TimeCell,
-    accessor: 'classes',
+    accessor: 'infoGroupings',
+    maxWidth: 136,
   },
   {
     Header: 'Date',
     Cell: DateCell,
-    accessor: 'classes',
+    accessor: 'infoGroupings',
+    maxWidth: 112,
   },
   {
     Header: 'Location',
     Cell: LocationCell,
-    accessor: 'classes',
+    accessor: 'infoGroupings',
+    maxWidth: 72,
   },
   {
     Header: 'Instructor',
     Cell: InstructorCell,
-    accessor: 'classes',
+    accessor: 'infoGroupings',
+    maxWidth: 160
   },
 ];
