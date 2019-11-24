@@ -25,7 +25,7 @@ export const ButtonWrapper = styled.div`
     margin-right: 0;
   }
 
-  &:hover {
+  &:hover, &:focus {
     background-color: ${({theme, selected}) => selected ? theme.primaryDark : theme.light1};
   }
 `;

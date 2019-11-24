@@ -4,16 +4,36 @@ import React from 'react';
 import {
   LoadingSpinnerWrapper,
   CircularSvg,
-  CircleSvgPath,
-  CircleSvgGrey,
+  CircleSvgBackground,
+  CircleSvgSpinner,
 } from './styles/LoadingSpinner';
 
-const LoadingSpinner = ({ margin = '32px auto' }) => {
+const LoadingSpinner = ({
+  margin = '32px auto',
+  size = 48,
+  strokeWidth = 4,
+  spinnerColor = null,
+  backgroundColor = null
+}) => {
   return (
-    <LoadingSpinnerWrapper margin={margin}>
-      <CircularSvg viewBox="24 24 48 48">
-        <CircleSvgGrey cx="48" cy="48" r="16" fill="none" />
-        <CircleSvgPath cx="48" cy="48" r="16" fill="none" />
+    <LoadingSpinnerWrapper margin={margin} size={size}>
+      <CircularSvg viewBox={`${size/2} ${size/2} ${size} ${size}`}>
+        <CircleSvgBackground
+          cx={size}
+          cy={size}
+          r={size/4}
+          fill="none"
+          strokeWidth={strokeWidth}
+          color={backgroundColor}
+        />
+        <CircleSvgSpinner
+          cx={size}
+          cy={size}
+          r={size/4}
+          fill="none"
+          strokeWidth={strokeWidth}
+          color={spinnerColor}
+        />
       </CircularSvg>
     </LoadingSpinnerWrapper>
   );

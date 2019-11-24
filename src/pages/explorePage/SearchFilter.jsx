@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
+import { X } from 'react-feather';
 
 import RadioButton from '../../components/input/RadioButton';
 import MultiSelectButton from '../../components/input/MultiSelectButton';
@@ -20,6 +21,7 @@ import {
   BoldText,
   ResetButton,
   HeaderButtonWrapper,
+  XWrapper
 } from './styles/SearchFilter';
 import { termCodeToDate, getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
 
@@ -76,7 +78,6 @@ const SearchFilter = ({
     <SearchFilterWrapper>
       <HeaderButtonWrapper>
         <SearchFilterHeader>Filter your results</SearchFilterHeader>
-        <ResetButton onClick={resetFilters}>Reset</ResetButton>
       </HeaderButtonWrapper>
       {courseSearch ? (
         <>
@@ -137,6 +138,10 @@ const SearchFilter = ({
           </SearchFilterSection>
         </>
       )}
+      <ResetButton onClick={resetFilters}>
+        <XWrapper><X size={16} /></XWrapper>
+        Clear filter
+      </ResetButton>
     </SearchFilterWrapper>
   );
 };

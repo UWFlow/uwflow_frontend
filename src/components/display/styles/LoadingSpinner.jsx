@@ -24,15 +24,15 @@ const DashAnimation = keyframes`
 export const LoadingSpinnerWrapper = styled.div`
   position: relative;
   margin: ${({ margin }) => margin};
-  width: 48px;
-  height: 48px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
   content: '';
 `;
 
 export const CircularSvg = styled.svg`
   animation: ${RotateAnimation} 2s linear infinite;
-  height: 48px;
-  width: 48px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
   transform-origin: center center;
   position: absolute;
   top: 0;
@@ -42,19 +42,19 @@ export const CircularSvg = styled.svg`
   margin: auto;
 `;
 
-export const CircleSvgPath = styled.circle`
+export const CircleSvgSpinner = styled.circle`
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
   animation: ${DashAnimation} 2.5s ease-in-out infinite;
   stroke-linecap: square;
-  stroke-width: 4px;
-  stroke: ${({ theme }) => theme.primary};
+  stroke-width: ${({ strokeWidth }) => strokeWidth}px;
+  stroke: ${({ theme, color }) => color ? color : theme.primary};
   z-index: 5
 `;
 
 
-export const CircleSvgGrey = styled.circle`
-  stroke-width: 4px;
-  stroke: ${({ theme }) => theme.light4};
+export const CircleSvgBackground = styled.circle`
+  stroke-width: ${({ strokeWidth }) => strokeWidth}px;
+  stroke: ${({ theme, color }) => color ? color : theme.light4};
   z-index: 2;
 `;

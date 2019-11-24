@@ -30,52 +30,81 @@ import { useSearchContext } from '../../search/SearchProvider';
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
 const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false }) => {
-  const ref = useRef();
+  const searchBarRef = useRef();
+  const selectedResultRef = useRef();
+  const inputRef = useRef();
+
+  const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState({});
+  const [searchResults, setSearchResults] = useState({
+    courseCodeResults: [],
+    courseResults: [],
+    profResults: []
+  });
   const { searchWorker } = useSearchContext();
 
   const handleUserKeyPress = useCallback(event => {
     const { keyCode } = event;
     if (keyCode === KeycodeConstants.ESCAPE) {
       setOpen(false);
+    } else if (keyCode === KeycodeConstants.UP) {
+      event.preventDefault();
+      setSelectedResultIndex(Math.max(-1, selectedResultIndex - 1));
+    } else if (keyCode === KeycodeConstants.DOWN) {
+      event.preventDefault();
+      const length = searchResults.courseResults.length + searchResults.profResults.length;
+      setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
     }
-  }, []);
+  }, [selectedResultIndex, searchResults]);
+  
+  const performSearch = event => {
+    const { type } = event.data;
+    if (type === 'autocomplete') {
+      const results = event.data.results;
+      setSearchResults(results);
+      setSelectedResultIndex(-1);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  };
 
   useEffect(() => {
-    searchWorker.addEventListener('message', event => {
-      const { type } = event.data;
-      if (type === 'autocomplete') {
-        const results = event.data.results;
-        setSearchResults(results);
-      }
-    });
-
+    searchWorker.addEventListener('message', event => performSearch(event));
     window.addEventListener('keydown', handleUserKeyPress);
 
     return () => {
+      searchWorker.removeEventListener('message', event => performSearch(event));
       window.removeEventListener('keydown', handleUserKeyPress);
     };
   }, [handleUserKeyPress, searchWorker]);
 
-  useOnClickOutside(ref, () => setOpen(false));
+  useEffect(() => {
+    if (selectedResultIndex === -1 && inputRef.current) {
+      inputRef.current.focus();
+    } else if (selectedResultRef.current) {
+      selectedResultRef.current.focus();
+    }
+  }, [selectedResultIndex, selectedResultRef, inputRef]);
+
+  useOnClickOutside(searchBarRef, () => setOpen(false));
 
   const queryExploreCourses = (query, codeSearch = false, profSearch = false) => {
     const codeTerm = codeSearch ? '&c=t' : '';
     const profTerm = profSearch ? '&t=p' : '';
-    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}${profTerm}`);
     setOpen(false);
+    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}${profTerm}`);
   };
 
   const goToCourse = code => {
-    history.push(getCoursePageRoute(code));
     setOpen(false);
+    history.push(getCoursePageRoute(code));
   };
 
   const goToProf = code => {
-    history.push(getProfPageRoute(code));
     setOpen(false);
+    history.push(getProfPageRoute(code));
   };
 
   const handleSearch = (event, text) => {
@@ -90,8 +119,8 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
     searchWorker.postMessage({ type: 'autocomplete', query: value });
   };
 
-  const exploreResult = (code = '') => (
-    <SearchResult onClick={() => queryExploreCourses(code, true)} key={code}>
+  const exploreResult = (code = '', ref = null) => (
+    <SearchResult onClick={() => queryExploreCourses(code, true)} key={code} ref={ref}>
       <ExploreText>
         <Layers />
         Explore all {code.toUpperCase()} courses and professors
@@ -99,7 +128,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
     </SearchResult>
   );
 
-  const courseResult = course => (
+  const courseResult = (course, ref = null) => (
     <SearchResult
       onClick={() =>
         goToCourse(
@@ -110,6 +139,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
         )
       } // convert back to raw code
       key={course.id}
+      ref={ref}
     >
       <ResultLeft>
         <CourseText>
@@ -130,8 +160,8 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
     </SearchResult>
   );
 
-  const profResult = prof => (
-    <SearchResult onClick={() => goToProf(prof.code)} key={prof.id}>
+  const profResult = (prof, ref = null) => (
+    <SearchResult onClick={() => goToProf(prof.code)} key={prof.id} ref={ref}>
       <ResultLeft>
         <ProfText>
           <User />
@@ -160,27 +190,27 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
       return exploreResult();
     }
 
-    const courseCodeResults =
-      searchResults.courseCodeResults &&
-      searchResults.courseCodeResults.length > 0
-        ? searchResults.courseCodeResults.map(result =>
-            exploreResult(result.code),
-          )
-        : exploreResult();
+    const courseCodeResults = searchResults.courseCodeResults.length > 0
+      ? searchResults.courseCodeResults.map(result =>
+          exploreResult(result.code, selectedResultIndex  === 0 ? selectedResultRef : null),
+        )
+      : [exploreResult('', selectedResultIndex  === 0 ? selectedResultRef : null)];
 
-    const courseResults = searchResults.courseResults
-      ? searchResults.courseResults.map(result => courseResult(result))
-      : null;
+    const courseResults = searchResults.courseResults.map((result, i) => {
+        return courseResult(result, selectedResultIndex === i + 1 ? selectedResultRef : null)
+      });
 
-    const profResults = searchResults.profResults
-      ? searchResults.profResults.map(result => profResult(result))
-      : null;
+    const profResults = searchResults.profResults.map((result, i) => {
+      return profResult(result,
+        selectedResultIndex === i + 1 + searchResults.courseResults.length ?
+        selectedResultRef : null);
+    });
+
+    const allResults = [...courseCodeResults, ...courseResults, ...profResults];
 
     return (
       <SearchResultsWrapper maximizeWidth={maximizeWidth}>
-        {courseCodeResults}
-        {courseResults}
-        {profResults}
+        {allResults}
       </SearchResultsWrapper>
     );
   };
@@ -197,7 +227,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   } : { width: '100%' }
 
   return (
-    <SearchBarWrapper ref={ref} isLanding={isLanding}>
+    <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>
       <Textbox
         icon={<Search color={isLanding ? theme.primary : theme.dark3} />}
         text={searchText}
@@ -207,6 +237,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
         options={options}
         maxLength={100}
         autocompletePlaceholder={autocompleteResult()}
+        forwardRef={inputRef}
       />
       {open && renderSearchResults()}
     </SearchBarWrapper>

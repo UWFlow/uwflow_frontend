@@ -1,19 +1,19 @@
 import MiniSearch from 'minisearch/src/MiniSearch';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
-import { SPLIT_COURSE_CODE_REGEX, splitCourseCode } from '../utils/Misc';
+import { splitCourseCode } from '../utils/Misc';
 
 const MAX_AUTOCOMPLETE_LENGTH = 50;
 
 const searchOptions = {
-  fuzzy: 0.1,
+  fuzzy: 0,
   prefix: true,
 };
 
 const courseIndexOptions = {
   searchOptions: {
     ...searchOptions,
-    boost: { code: 3 },
+    boost: { code: 100 },
   },
   fields: ['code', 'name', 'profs'],
   storeFields: ['code', 'name', 'profs'],
@@ -22,7 +22,7 @@ const courseIndexOptions = {
 const profIndexOptions = {
   searchOptions: {
     ...searchOptions,
-    boost: { name: 3 },
+    boost: { name: 100 },
   },
   fields: ['name', 'courses'],
   storeFields: ['code', 'name', 'courses'],
@@ -89,7 +89,7 @@ class SearchClient {
     let courseCodeSet = new Set([]);
 
     const courses = parsedSearchData.courses.map(course => {
-      const courseLetters = course.code.match(SPLIT_COURSE_CODE_REGEX)[0];
+      const courseLetters = splitCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
       return {
         ...course,

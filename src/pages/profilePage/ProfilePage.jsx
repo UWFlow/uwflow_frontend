@@ -40,18 +40,12 @@ const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state)
 });
 
-const ProfilePageContent = ({ user, isBrowserDesktop }) => {
+const ProfilePageContent = ({ user, courseReviews, profReviews, coursesTaken, isBrowserDesktop }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
-  let {
-    courses_taken: courses,
-    course_reviews: courseReviews,
-    prof_reviews: profReviews,
-    shortlist
-  } = user;
-
-  const reviewModalCourseList = courses.map(course => {
+  const shortlist = user.shortlist;
+  const reviewModalCourseList = coursesTaken.map(course => {
     const courseReview = courseReviews.find(review => review.course_id === course.course.id);
     const profReview = profReviews.find(review => review.course_id === course.course.id);
     return { course: course.course, courseReview, profReview };
@@ -64,17 +58,22 @@ const ProfilePageContent = ({ user, isBrowserDesktop }) => {
         <Column1>
           <ProfileCalendar />
           <ProfileCourses
-            courses={courses}
+            courses={coursesTaken}
             courseReviews={courseReviews}
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
           />
-          <ProfileFinalExams courses={courses} />
+          <ProfileFinalExams courses={coursesTaken} />
         </Column1>
         <Column2>
           {isBrowserDesktop && (
             <CompleteProfileWrapper>
-              <CompleteProfileContent user={user} />
+              <CompleteProfileContent
+                user={user}
+                coursesTaken={coursesTaken}
+                courseReviews={courseReviews}
+                profReviews={profReviews}
+              />
             </CompleteProfileWrapper>
           )}
           <ShortlistBox shortlistCourses={shortlist} />
@@ -117,7 +116,13 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
     <NotFoundPage />
   ) : (
     <ProfilePageWrapper>
-      <ProfilePageContent user={{ ...data.user[0] }} isBrowserDesktop={isBrowserDesktop} />
+      <ProfilePageContent
+        user={data.user[0]}
+        courseReviews={data.course_review}
+        profReviews={data.prof_review}
+        coursesTaken={data.user_course_taken}
+        isBrowserDesktop={isBrowserDesktop}
+      />
     </ProfilePageWrapper>
   );
 };

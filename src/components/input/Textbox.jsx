@@ -18,7 +18,8 @@ const Textbox = ({
   error = false,
   handleKeyDown = () => {},
   options = {},
-  maxLength = 524288, // default browser maxLength
+  maxLength = 524288, // default browser maxLength,
+  forwardRef = null
 }) => {
   const onKeyDown = event => {
     handleKeyDown(event, text);
@@ -50,6 +51,7 @@ const Textbox = ({
         error={error}
         hasIcon={!!icon}
         autocompleteActive={!!autocompletePlaceholder}
+        ref={forwardRef}
       />
     </SearchInputWrapper>
   );

@@ -24,7 +24,7 @@ export const LikeCourseToggleButton = styled.button`
   border-left-width: ${({left, noneSelected}) => !left && noneSelected ? '1px' : '2px'};
   background-color: ${({selected, theme}) => selected ? theme.primary : theme.light1};
 
-  &:hover {
+  &:hover, &:focus {
     border-color: ${({selected, theme}) => selected ? theme.primaryDark : theme.light4};
     background-color: ${({selected, theme}) => selected ? theme.primaryDark : theme.light2};
   }

@@ -8,7 +8,7 @@ const CourseReviewFragment = {
       liked
       text
       useful
-      updated_at
+      created_at
       course {
         id
         code
@@ -22,6 +22,9 @@ const CourseReviewFragment = {
         full_name
         program
         picture_url
+      }
+      course_review_votes {
+        user_id
       }
       course_review_votes_aggregate {
         aggregate {
@@ -38,7 +41,7 @@ const CourseReviewFragment = {
       clear
       engaging
       text
-      updated_at
+      created_at
       prof {
         id
         code
@@ -55,6 +58,9 @@ const CourseReviewFragment = {
         full_name
         program
         picture_url
+      }
+      prof_review_votes {
+        user_id
       }
       prof_review_votes_aggregate {
         aggregate {

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 /* Child Components */
 import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
-import ExtraInfoBox from './ExtraInfoBox';
+import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
 import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
@@ -49,6 +49,7 @@ const CoursePageContent = ({
   shortlisted,
   userCourseReview,
   userProfReview,
+  userCourseTaken,
   isLoggedIn,
   isBrowserDesktop,
 }) => {
@@ -61,18 +62,23 @@ const CoursePageContent = ({
 
   return (
     <>
-      <CourseInfoHeader course={course} shortlisted={shortlisted} />
+      <CourseInfoHeader
+        course={course}
+        shortlisted={shortlisted}
+      />
       <ColumnWrapper>
         <Column1>
           <ScheduleAndReviewWrapper>
             <CourseSchedule sections={course.sections} />
-            <CourseReviewQuestionBox>
+            {(!isLoggedIn || userCourseTaken) && <CourseReviewQuestionBox>
               <CourseQuestionTextAndToggle>
                 <CourseReviewQuestionText>
                   What do you think of {splitCourseCode(course.code)}?
                 </CourseReviewQuestionText>
                 <LikeCourseToggle
+                  courseCode={course.code}
                   courseID={course.id}
+                  reviewID={userCourseReview && userCourseReview.id}
                   initialState={userCourseReview ? userCourseReview.liked : null}
                 />
               </CourseQuestionTextAndToggle>
@@ -83,14 +89,14 @@ const CoursePageContent = ({
               >
                 {userCourseReview || userProfReview ? 'Edit your review' : 'Add your review'}
               </Button>
-            </CourseReviewQuestionBox>
+            </CourseReviewQuestionBox>}
           </ScheduleAndReviewWrapper>
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>
-          <ExtraInfoBox
+          <CourseRequisites
             courseCode={course.code}
-            prereqs={course.prerequisites}
+            prereqs={course.prereqs}
             postreqs={course.postrequisites}
           />
         </Column2>
@@ -116,8 +122,6 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     variables: { code: courseCode },
   });
 
-  console.log(error, data);
-
   return loading ? (
     <LoadingSpinner />
   ) : error || !data || !data.course || data.course.length === 0 ? (
@@ -130,6 +134,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
           data.course_review[0] : null}
         userProfReview={isLoggedIn &&
           data.prof_review.length > 0 ? data.prof_review[0] : null}
+        userCourseTaken={isLoggedIn && data.user_course_taken.length > 0 ? true : false}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}

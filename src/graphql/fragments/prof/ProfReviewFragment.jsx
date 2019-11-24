@@ -7,7 +7,7 @@ const ProfReviewFragment = {
       engaging
       clear
       text
-      updated_at
+      created_at
       course {
         id
         name

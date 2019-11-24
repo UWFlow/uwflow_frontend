@@ -21,6 +21,7 @@ export default {
 
   white: '#ffffff',
   red: '#ff5630',
+  darkRed: '#de350b',
 
   google: '#4285f4',
   facebook: '#3c5a99',

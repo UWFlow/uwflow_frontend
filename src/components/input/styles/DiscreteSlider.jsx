@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { BoxShadow } from '../../../constants/Mixins';
 
 export const DiscreteSliderWrapper = styled.div`
@@ -11,6 +12,10 @@ export const DiscreteSliderWrapper = styled.div`
 export const SliderBarWrapper = styled.div`
   width: 300px;
   margin: auto 0;
+
+  ${breakpoint('mobile', 'tablet')`
+    width: 100%;
+  `}
 `;
 
 export const SliderRail = styled.div`

@@ -20,7 +20,7 @@ const SearchResults = ({
   ratingFilters,
   profCourses,
   loading,
-  fecthMore
+  fetchMore
 }) => {
   const courses = data ? data.course.map(course => Object({
     id: course.id,
@@ -73,6 +73,9 @@ const SearchResults = ({
   );
 
   const courseSearch = exploreTab === 0;
+  const doneFetching = (courseSearch && data && courses.length >= data.course_aggregate.aggregate.count) ||
+    (!courseSearch && data && profs.length >= data.prof_aggregate.aggregate.count);
+
   const results = () => (
     <SearchResultsContent>
       <Table
@@ -81,6 +84,23 @@ const SearchResults = ({
         rightAlignIndex={courseSearch ? 2 : 1}
         sortable
         loading={loading}
+        doneFetching={doneFetching}
+        fetchMore={() => {
+          if (loading || (courses.length === 0 && profs.length === 0) || doneFetching) {
+            return;
+          }
+
+          fetchMore({
+            variables: { course_offset: courses.length, prof_offset: profs.length },
+            updateQuery: (prev, { fetchMoreResult }) => {
+              if (!fetchMoreResult) return prev;
+              return Object.assign({}, prev, {
+                course: [...prev.course, ...fetchMoreResult.course],
+                prof: [...prev.prof, ...fetchMoreResult.prof]
+              });
+            }
+          })
+        }}
       />
     </SearchResultsContent>
   );

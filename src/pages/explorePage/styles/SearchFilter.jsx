@@ -55,20 +55,20 @@ export const BoldText = styled.span`
 `;
 
 export const ResetButton = styled.button`
-  height: 28px;
   display: inline-block;
-  padding: 4px 12px;
+  padding: 8px 12px;
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: ${({theme}) => theme.dark3};
+  background-color: ${({theme}) => theme.primary};
   ${BoxShadow}
   ${Body}
   color: ${({theme}) => theme.light1};
   border-radius: 4px;
+  margin-top: 32px;
 
   &:hover {
-    background-color: ${({theme}) => theme.dark2};
+    background-color: ${({theme}) => theme.primaryDark};
   }
 `;
 
@@ -76,4 +76,11 @@ export const HeaderButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+`;
+
+export const XWrapper = styled.span`
+  margin: auto;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-right: 4px;
 `;

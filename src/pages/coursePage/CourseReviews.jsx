@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
+import moment from 'moment';
 
 /* Constants */
 import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
@@ -57,6 +58,16 @@ const CourseCourseReviews = ({
 }) => {
   const [showingAllReviews, setShowingAllReviews] = useState(false);
 
+  const renderReviews = useMemo(() => reviews.sort((a, b) => {
+    const timeSort = moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
+    return courseSort === 0 ?
+      timeSort : timeSort || a.upvotes - b.upvotes;
+  }).filter((_, i) => {
+    return showingAllReviews || i < MIN_REVIEWS_SHOWN;
+  }).map((review, i) => (
+    <Review key={i} review={review} />
+  )), [reviews, showingAllReviews, courseSort]);
+
   return (
     <CourseCourseReviewsWrapper>
       <ReviewListWrapper>
@@ -66,12 +77,7 @@ const CourseCourseReviews = ({
             <DropdownList
               color={theme.primary}
               selectedIndex={courseSort}
-              options={[
-                'least recent',
-                'least helpful',
-                'most helpful',
-                'most recent',
-              ]}
+              options={['most recent', 'most helpful']}
               onChange={value => setCourseSort(value)}
             />
           </DropdownPanelWrapper>
@@ -85,11 +91,7 @@ const CourseCourseReviews = ({
             />
           </DropdownPanelWrapper>
         </ReviewsOptionsWrapper>
-        {reviews.filter((_, i) => {
-          return i < MIN_REVIEWS_SHOWN || showingAllReviews;
-        }).map((review, i) => (
-          <Review key={i} review={review} />
-        ))}
+        {renderReviews}
       </ReviewListWrapper>
       {reviews.length > MIN_REVIEWS_SHOWN && (
         <ShowMoreReviewsSection
@@ -132,47 +134,51 @@ CourseCourseReviews.propTypes = {
 const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
   const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
+  const reviewList = useMemo(() => reviewsByProf.map((prof, idx) => (
+    <ReviewsForSingleProfWrapper key={idx}>
+      <ReviewListWrapper>
+        <ProfHeader>
+          <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
+          <ProfLikedMetric>
+            <ProfLikedPercent>
+              {Math.round(prof.liked * 100)}%
+            </ProfLikedPercent>
+            <ProfLikedPercentLabel>
+              liked this professor
+            </ProfLikedPercentLabel>
+          </ProfLikedMetric>
+        </ProfHeader>
+        {prof.reviews.sort((a, b) => {
+          return moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
+        }).filter((_, i) => {
+          return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
+        }).map((review, i) => (
+          <Review key={i} review={review} />
+        ))}
+      </ReviewListWrapper>
+      {prof.reviews.length > MIN_REVIEWS_SHOWN && (
+        <ShowMoreReviewsSection
+          onClick={() =>
+            setShowingReviewsMap({
+              ...showingReviewsMap,
+              [prof.name]: !showingReviewsMap[prof.name],
+            })
+          }
+        >
+          <ShowMoreReviewsText>
+            {showingReviewsMap[prof.name]
+              ? `Show less reviews`
+              : `Show all ${prof.reviews.length} reviews`}
+          </ShowMoreReviewsText>
+        </ShowMoreReviewsSection>
+      )}
+    </ReviewsForSingleProfWrapper>
+  )), [reviewsByProf, showingReviewsMap]);
+
   return (
     <CourseProfReviewsWrapper>
       {ProfFilterDropdown}
-      {reviewsByProf.map((prof, idx) => (
-        <ReviewsForSingleProfWrapper key={idx}>
-          <ReviewListWrapper>
-            <ProfHeader>
-              <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
-              <ProfLikedMetric>
-                <ProfLikedPercent>
-                  {Math.round(prof.liked * 100)}%
-                </ProfLikedPercent>
-                <ProfLikedPercentLabel>
-                  liked this professor
-                </ProfLikedPercentLabel>
-              </ProfLikedMetric>
-            </ProfHeader>
-            {prof.reviews.filter((_, i) => {
-              return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
-            }).map((review, i) => (
-              <Review key={i} review={review} />
-            ))}
-          </ReviewListWrapper>
-          {prof.reviews.length > MIN_REVIEWS_SHOWN && (
-            <ShowMoreReviewsSection
-              onClick={() =>
-                setShowingReviewsMap({
-                  ...showingReviewsMap,
-                  [prof.name]: !showingReviewsMap[prof.name],
-                })
-              }
-            >
-              <ShowMoreReviewsText>
-                {showingReviewsMap[prof.name]
-                  ? `Show less reviews`
-                  : `Show all ${prof.reviews.length} reviews`}
-              </ShowMoreReviewsText>
-            </ShowMoreReviewsSection>
-          )}
-        </ReviewsForSingleProfWrapper>
-      ))}
+      {reviewList}
     </CourseProfReviewsWrapper>
   );
 };

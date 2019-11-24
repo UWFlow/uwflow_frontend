@@ -1,25 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withTheme } from 'styled-components';
 
 import { ButtonWrapper, ButtonText } from './styles/Button';
+import LoadingSpinner from '../display/LoadingSpinner';
 
 const Button = ({
+  theme,
   children,
   color,
   hoverColor,
   borderColor,
+  width = 'auto',
   margin = '0',
   padding = '8px 32px',
   handleClick = () => {},
   height = 48,
   maxHeight = '100%',
   hasShadow = true,
-  width,
+  loading = false,
+  disabled = false,
 }) => {
   return (
     <ButtonWrapper
       height={height}
-      onClick={handleClick}
+      onClick={disabled ? null : handleClick}
+      disabled={disabled}
       color={color}
       hoverColor={hoverColor}
       borderColor={borderColor}
@@ -29,7 +35,15 @@ const Button = ({
       width={width}
       maxHeight={maxHeight}
     >
-      <ButtonText>{children}</ButtonText>
+      {loading ? (
+        <LoadingSpinner
+          margin={'auto'}
+          size={28}
+          strokeWidth={2}
+          spinnerColor={theme.dark2}
+          backgroundColor={theme.white}
+        />
+      ) : <ButtonText>{children}</ButtonText>}
     </ButtonWrapper>
   );
 };
@@ -45,6 +59,8 @@ Button.propTypes = {
   margin: PropTypes.string,
   padding: PropTypes.string,
   hasShadow: PropTypes.bool,
+  loading: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
-export default Button;
+export default withTheme(Button);

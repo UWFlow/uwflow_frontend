@@ -115,7 +115,10 @@ const ExplorePage = ({ location }) => {
 
   const { data, fetchMore, loading } = useQuery(
     exploreQuery('{course_reviews_aggregate: {count: desc}}', query),
-    {variables: { course_offset: 0, prof_offset: 0 }}
+    {
+      variables: { course_offset: 0, prof_offset: 0 },
+      notifyOnNetworkStatusChange: true
+    }
   );
   
   return (

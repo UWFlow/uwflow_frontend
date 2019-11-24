@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
+import moment from 'moment';
 
 /* Custom Reducers */
 import useProfReviewsReducer, {
@@ -42,7 +43,7 @@ import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedFilter, setSelectedFilter] = useState(0);
-  const [selectedSort, setSelectedSort] = useState(0);
+  const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
   });
@@ -78,6 +79,10 @@ const ProfReviews = ({ profID, theme }) => {
       selectedFilter === 0 ||
       reviews.code === courseFilterOptions[selectedFilter],
   );
+
+  const curSelectedSort = selectedSort.length >= reviewsByCourseToShow.length ?
+    selectedSort.slice() :
+    [...selectedSort, ...Array(reviewsByCourseToShow.length - selectedSort.length).fill(0)];
 
   if (reviewDataState.courses.length === 0) {
     return <NoReviewsBox>No Reviews</NoReviewsBox>;
@@ -121,12 +126,19 @@ const ProfReviews = ({ profID, theme }) => {
                 <DropdownTableText>Sort by: </DropdownTableText>
                 <DropdownList
                   color={theme.primary}
-                  selectedIndex={selectedSort}
-                  options={['most helpful', 'most recent']}
-                  onChange={value => setSelectedSort(value)}
+                  selectedIndex={curSelectedSort[idx]}
+                  options={['most recent', 'most helpful']}
+                  onChange={value => {
+                    curSelectedSort[idx] = value;
+                    setSelectedSort(curSelectedSort);
+                  }}
                 />
               </DropdownPanelWrapper>
-              {course.reviews.filter((_, i) => {
+              {course.reviews.sort((a, b) => {
+                const timeSort = moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
+                return selectedSort[idx] === 0 ?
+                  timeSort : timeSort || a.upvotes - b.upvotes;
+              }).filter((_, i) => {
                 return i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code];
               }).map((review, i) => (
                 <Review key={i} review={review} />
@@ -142,7 +154,7 @@ const ProfReviews = ({ profID, theme }) => {
                 }
               >
                 <ShowMoreReviewsText>
-                  {showingReviewsMap[idx]
+                  {showingReviewsMap[course.code]
                     ? `Show less reviews`
                     : `Show all ${course.reviews.length} reviews`}
                 </ShowMoreReviewsText>

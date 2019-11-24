@@ -1,11 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
+import moment from 'moment';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* Styled Components */
 import {
@@ -30,6 +33,7 @@ import BubbleRatings from '../input/BubbleRatings';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
+  isLoggedIn: getIsLoggedIn(state),
 });
 
 const MetricIfExists = (metrics, metric) => {
@@ -65,28 +69,43 @@ const Review = ({
   review,
   theme,
   isBrowserDesktop,
+  isLoggedIn
 }) => {
-  const { upvotes, review: reviewText, author, updated_at, metrics } = review;
-  const authorNameText = author.full_name ? `-${author.full_name}` : '-Anonymous';
+  const { upvotes, upvote_users, review: reviewText, author, created_at, metrics } = review;
+  const userID = localStorage.getItem('user_id');
 
+  const dispatch = useDispatch();
+  const [userUpvoted, setUserUpvoted] = useState(upvote_users.includes(userID));
+
+  const onClickUpvote = () => {
+    if (!isLoggedIn) {
+      dispatch(authModalOpen());
+      return;
+    }
+
+    if (userUpvoted) {
+    } else {
+    }
+    setUserUpvoted(!userUpvoted);
+  }
+
+  const authorNameText = author.full_name ? `-${author.full_name}` : '-Anonymous';
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
         {authorNameText}{author.program ? `, a ${author.program} student` : ''}
-        , {updated_at}
+        , {moment(created_at).fromNow()}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
-  
-  // TODO(Edwin)
-  const userUpvoted = true;
+
   return (
     <ReviewWrapper>
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
           <ReviewPicture />
-          <ReviewUpvotes selected={userUpvoted}>
+          <ReviewUpvotes selected={userUpvoted} onClick={onClickUpvote}>
             <ThumbsUp
               color={userUpvoted ? 'white' : theme.dark3}
               size={16}

@@ -1,16 +1,16 @@
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk UltraBold'), url(fonts/AndersonGrotesk-Ultraold.otf) format('otf');
+  src: local('Anderson Grotesk UltraBold'), url(fonts/AndersonGrotesk-Ultrabold.otf) format('opentype');
   font-weight: 800;
 }
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk Bold'), url(fonts/AndersonGrotesk-Bold.otf) format('otf');
+  src: local('Anderson Grotesk Bold'), url(fonts/AndersonGrotesk-Bold.otf) format('opentype');
   font-weight: 600;
 }
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('otf');
+  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('opentype');
   font-weight: 400;
 }
 
@@ -63,11 +63,35 @@ a {
   color: #006ed8;
 }
 
-body.no-scroll {
-  height: 100vh;
-  overflow: hidden;
+/* React Modal */
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
 }
 
-body.modal-padding {
-  padding-right: 17px;
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.Modal {
+  margin: auto;
+  width: max-content;
+  height: max-content;
+}
+
+.ModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  overflow: auto;
+  display: inline-flex;
+  align-items: center;
 }

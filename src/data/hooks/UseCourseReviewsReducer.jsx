@@ -14,11 +14,13 @@ const convertInputToState = data => {
     };
   }
   const courseReviews = data.course_review.map(r => ({
+    id: r.id,
     upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
+    upvote_users: r.course_review_votes.map(voteObj => voteObj.user_id),
     review: r.text,
     author: r.author,
     user: r.user,
-    updated_at: r.updated_at,
+    created_at: r.created_at,
     metrics: {
       useful: r.useful,
       easy: r.easy,
@@ -50,11 +52,13 @@ const convertInputToState = data => {
       allProfs.push(profObject);
     }
     profObject.reviews.push({
+      id: current.id,
       upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
+      upvote_users: current.prof_review_votes.map(voteObj => voteObj.user_id),
       review: current.text,
       author: current.author,
       user: current.user,
-      updated_at: current.updated_at,
+      created_at: current.created_at,
       metrics: {
         clear: current.clear,
         engaging: current.engaging,
