@@ -123,7 +123,9 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
   });
 
   return loading ? (
-    <LoadingSpinner />
+    <CoursePageWrapper>
+      <LoadingSpinner />
+    </CoursePageWrapper>
   ) : error || !data || !data.course || data.course.length === 0 ? (
     <NotFoundPage text="Sorry, we couldn't find that course!" />
   ) : (

@@ -108,6 +108,7 @@ const getInfoGroupings = meetings => {
   });
 
   answer.sort((a, b) => a.startSeconds - b.startSeconds);
+  console.log(answer)
   return answer;
 };
 
@@ -158,7 +159,7 @@ const CourseSchedule = ({ sections, courseCode }) => {
           </TableWrapper>
           <TableWrapper>
             <FinalExamsText>Final Exams</FinalExamsText>
-            <FinalExamTable courses={courseExams} />
+            <FinalExamTable courses={courseExams} includeCode={false} />
           </TableWrapper>
         </>
       )

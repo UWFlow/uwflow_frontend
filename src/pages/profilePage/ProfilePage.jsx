@@ -111,7 +111,9 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   }
 
   return loading ? (
-    <LoadingSpinner />
+    <ProfilePageWrapper>
+      <LoadingSpinner />
+    </ProfilePageWrapper>
   ) : error || !data ? (
     <NotFoundPage />
   ) : (

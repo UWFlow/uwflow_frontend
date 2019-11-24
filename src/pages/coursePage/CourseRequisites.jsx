@@ -27,6 +27,7 @@ const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
 
     const splitText = prereqs.split(COURSE_CODE_REGEX);
     const matches = prereqs.match(COURSE_CODE_REGEX);
+
     if (splitText.length <= 1) {
       return prereqs;
     }

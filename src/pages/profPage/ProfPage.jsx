@@ -40,7 +40,9 @@ export const ProfPage = ({ match }) => {
   });
 
   return loading ? (
-    <LoadingSpinner />
+    <ProfPageWrapper>
+      <LoadingSpinner />
+    </ProfPageWrapper>
   ) : error || !data || data.prof.length === 0 ? (
     <NotFoundPage text="Sorry, we couldn't find that professor!" />
   ) : (
