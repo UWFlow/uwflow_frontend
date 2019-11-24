@@ -2,7 +2,8 @@ import SearchClient from './SearchClient.js';
 
 const client = new SearchClient();
 
-self.onmessage = async event => {
+  // eslint-disable-next-line no-restricted-globals
+  self.onmessage = async event => {
   const { type } = event.data;
   switch (type) {
     case 'autocomplete':

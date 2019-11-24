@@ -51,6 +51,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "lint": "eslint src",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },

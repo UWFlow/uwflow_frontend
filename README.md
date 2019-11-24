@@ -6,6 +6,11 @@
 2. `npm install` to install dependencies
 3. `npm start` to run the server locally at [localhost:3000](localhost:3000)
 
+## Building for Production
+
+1. `npm run lint` to check that there are no linter errors, otherwise the site will not compile
+2. `npm run build` to create a new production build in the `build` folder
+
 ## Interacting with the Backend
 
 * In general, make sure the backend docker containers are running locally

@@ -72,11 +72,10 @@ const Review = ({
   isLoggedIn
 }) => {
   const { upvotes, upvote_users, review: reviewText, author, created_at, metrics } = review;
+  const userID = localStorage.getItem('user_id');
 
   const dispatch = useDispatch();
   const [userUpvoted, setUserUpvoted] = useState(upvote_users.includes(userID));
-
-  const userID = localStorage.getItem('user_id');
 
   const onClickUpvote = () => {
     if (!isLoggedIn) {
