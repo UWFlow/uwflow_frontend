@@ -51,7 +51,7 @@ export const HeaderText = styled.span`
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'inherit')};
   color: ${({ theme, sortable }) => (sortable ? theme.primary : theme.dark1)};
 
-  &:hover {
+  &:hover, &:focus {
     color: ${({ theme, sortable }) =>
       sortable ? theme.primaryDark : theme.dark1};
   }

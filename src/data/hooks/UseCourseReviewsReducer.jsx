@@ -14,7 +14,9 @@ const convertInputToState = data => {
     };
   }
   const courseReviews = data.course_review.map(r => ({
-    upvotes: r.course_review_votes_aggregate.aggregate.count,
+    id: r.id,
+    upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
+    upvote_users: r.course_review_votes.map(voteObj => voteObj.user_id),
     review: r.text,
     author: r.author,
     user: r.user,
@@ -50,7 +52,9 @@ const convertInputToState = data => {
       allProfs.push(profObject);
     }
     profObject.reviews.push({
-      upvotes: current.prof_review_votes_aggregate.aggregate.count,
+      id: current.id,
+      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
+      upvote_users: current.prof_review_votes.map(voteObj => voteObj.user_id),
       review: current.text,
       author: current.author,
       user: current.user,

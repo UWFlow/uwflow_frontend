@@ -43,8 +43,7 @@ import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
 const ProfReviews = ({ profID, theme }) => {
   const [selectedFilter, setSelectedFilter] = useState(0);
-  // TODO(Edwin): figure out how to get the actual length of courses
-  const [selectedSort, setSelectedSort] = useState(Array(150).fill(0));
+  const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
   const { loading, data } = useQuery(GET_PROF_REVIEW, {
     variables: { id: profID },
   });
@@ -80,6 +79,10 @@ const ProfReviews = ({ profID, theme }) => {
       selectedFilter === 0 ||
       reviews.code === courseFilterOptions[selectedFilter],
   );
+
+  const curSelectedSort = selectedSort.length >= reviewsByCourseToShow.length ?
+    selectedSort.slice() :
+    [...selectedSort, ...Array(reviewsByCourseToShow.length - selectedSort.length).fill(0)];
 
   if (reviewDataState.courses.length === 0) {
     return <NoReviewsBox>No Reviews</NoReviewsBox>;
@@ -123,12 +126,11 @@ const ProfReviews = ({ profID, theme }) => {
                 <DropdownTableText>Sort by: </DropdownTableText>
                 <DropdownList
                   color={theme.primary}
-                  selectedIndex={selectedSort[idx]}
+                  selectedIndex={curSelectedSort[idx]}
                   options={['most recent', 'most helpful']}
                   onChange={value => {
-                    const selectedSortSlice = selectedSort.slice();
-                    selectedSortSlice[idx] = value;
-                    setSelectedSort(selectedSortSlice)
+                    curSelectedSort[idx] = value;
+                    setSelectedSort(curSelectedSort);
                   }}
                 />
               </DropdownPanelWrapper>

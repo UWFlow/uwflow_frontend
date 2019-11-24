@@ -32,7 +32,7 @@ export const ProfileText = styled.div`
   align-items: center;
   width: max-content;
 
-  &:hover {
+  &:hover, &:focus {
     color: ${({ theme }) => theme.primary};
   }
 `;

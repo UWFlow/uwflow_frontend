@@ -53,7 +53,7 @@ const Table = ({
     if (loading || shouldFetchMore || !bottomRef.current || !fetchMore) {
       return;
     }
-    const offset = 500;
+    const offset = 800;
     const top = bottomRef.current.getBoundingClientRect().top;
     const inView = (top + offset) >= 0 && (top - offset) <= window.innerHeight;
     setShouldFetchMore(inView);
@@ -118,7 +118,7 @@ const Table = ({
         )}
         {((loading || shouldFetchMore) && !doneFetching) && (
           <Row>
-            <Cell colSpan={columns.length} style={{padding: 0}}>
+            <Cell colSpan={columns.length} style={{padding: 0, overflow: 'hidden'}}>
               <LoadingSpinner margin={"4px auto"} />
             </Cell>
           </Row>

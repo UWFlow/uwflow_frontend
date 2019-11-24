@@ -67,7 +67,7 @@ export const ResetButton = styled.button`
   color: ${({theme}) => theme.light1};
   border-radius: 4px;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: ${({theme}) => theme.dark2};
   }
 `;

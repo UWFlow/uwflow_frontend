@@ -51,11 +51,12 @@ export const ReviewPicture = styled.div`
   `}
 `;
 
-export const ReviewUpvotes = styled.div`
+export const ReviewUpvotes = styled.button`
+  padding: 0;
   width: 40px;
   height: 40px;
-  ${({ selected, theme }) =>
-    selected ? `background-color:${theme.primary};` : ''}
+  background-color: ${({ selected, theme }) => selected ?
+    theme.primary : theme.light1};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,9 +65,9 @@ export const ReviewUpvotes = styled.div`
   border: 2px solid ${({ theme }) => theme.light3};
   cursor: pointer;
 
-  &:hover {
+  &:hover, &:focus {
     ${({ selected, theme }) =>
-      `background-color:${selected ? theme.primaryDark : theme.light3};`}
+      `background-color:${selected ? theme.primaryDark : theme.light2};`}
   }
 
   ${breakpoint('tablet')`

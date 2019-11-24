@@ -47,7 +47,7 @@ const LikeCourseToggle = ({
   const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
       dispatch(authModalOpen());
-      return
+      return;
     }
 
     if (!courseID) {
