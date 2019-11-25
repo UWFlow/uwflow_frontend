@@ -9,8 +9,8 @@ export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
+  background-image: url(${ProfileHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
-  background: url(${ProfileHeader});
   background-size: cover;
   flex-direction: column;
   position: relative;

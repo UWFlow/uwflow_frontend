@@ -65,7 +65,7 @@ const TimeCell = ({ cell }) => (
             {cl.time}
           </ContentWrapper>
           {contentSpace(cl.spaces)}
-          <SpaceMargin />
+          {idx < cell.value.length - 1 && <SpaceMargin />}
         </>
     ))}
   </NormalCellWrapper>
@@ -73,7 +73,7 @@ const TimeCell = ({ cell }) => (
 
 const DateCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((timeRanges) => {
+    {cell.value.map((timeRanges, timeRangeIdx) => {
       let timeRangeContent = timeRanges.map((date, idx) => {
         const processedDate = date.startDate === date.endDate ?
           processDateString(date.startDate).split(', ')[1] : '';
@@ -83,7 +83,9 @@ const DateCell = ({ cell }) => (
           </ContentWrapper>
         );
       });
-      timeRangeContent.push(<SpaceMargin />);
+      if (timeRangeIdx < cell.value.length - 1) {
+        timeRangeContent.push(<SpaceMargin />);
+      }
       return timeRangeContent;
     })}
   </NormalCellWrapper>
@@ -97,7 +99,7 @@ const LocationCell = ({ cell }) => (
           {cl.location}
         </ContentWrapper>
         {contentSpace(cl.spaces)}
-        <SpaceMargin />
+        {idx < cell.value.length - 1 && <SpaceMargin />}
       </>
     ))}
   </NormalCellWrapper>
@@ -115,12 +117,12 @@ const InstructorCell = ({ cell }) => (
             {cl.prof.name}
           </InstructorLink>
           {contentSpace(cl.spaces)}
-          <SpaceMargin />
+          {idx < cell.value.length - 1 && <SpaceMargin />}
         </>
       ) : (
         <>
           {contentSpace(cl.spaces + 1)}
-          <SpaceMargin />
+          {idx < cell.value.length - 1 && <SpaceMargin />}
         </>
       )
     )}

@@ -24,8 +24,8 @@ export const CourseCodeAndNameSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  background-image: url(${CourseHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
-  background: url(${CourseHeader});
   background-size: cover;
   position: relative;
   min-height: 160px;
