@@ -5,19 +5,17 @@ import { connect } from 'react-redux';
 import {
   ProfileWrapper,
   LandingPageWrapper,
-  Column1TextWrapper,
   Column1,
   Column2,
   TitleText,
   Subheading,
   BackgroundImage,
-  BlueBackground,
+  LogoText,
   AuthContent
 } from './styles/LandingPage';
 
 /* Child Components */
 import AuthForm from '../../auth/AuthForm';
-import Background from '../../img/background.png';
 
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import SearchBar from '../../components/navigation/SearchBar';
@@ -32,22 +30,16 @@ const mapStateToProps = state => ({
 const LandingPage = ({ isLoggedIn, isDesktop }) => {
   return (
     <LandingPageWrapper>
-      {isDesktop && <Column2 loggedIn={isLoggedIn}>
-        <BlueBackground />
-        <BackgroundImage image={Background} />
-        {!isLoggedIn && (
-          <AuthContent>
-            <AuthForm />
-          </AuthContent>
-        )}
-      </Column2>}
-      <Column1 loggedIn={isLoggedIn}>
-        <Column1TextWrapper>
-          <ProfileWrapper>
-            {(isLoggedIn || !isDesktop) && <ProfileDropdown /> }
-          </ProfileWrapper>
+      <BackgroundImage>
+        <ProfileWrapper>
+          {(isLoggedIn || !isDesktop) && <ProfileDropdown /> }
+        </ProfileWrapper>
+        <LogoText>
+          UW Flow
+        </LogoText>
+        <Column1 loggedIn={isLoggedIn}>
           <TitleText>
-            UW Flow
+            Explore over 20,000 course and professor reviews from UW students
           </TitleText>
           <SearchBar isLanding />
           <Subheading>
@@ -57,8 +49,15 @@ const LandingPage = ({ isLoggedIn, isDesktop }) => {
             <br /><br />
             Export your schedule
           </Subheading>
-        </Column1TextWrapper>
-      </Column1>
+        </Column1>
+        {isDesktop && <Column2 loggedIn={isLoggedIn}>
+          {!isLoggedIn && (
+            <AuthContent>
+              <AuthForm />
+            </AuthContent>
+          )}
+        </Column2>}
+      </BackgroundImage>
     </LandingPageWrapper>
   );
 };

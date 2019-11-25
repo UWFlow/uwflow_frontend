@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Heading4, BoxShadow } from '../../../constants/Mixins';
+import { Heading4, BoxShadow, DarkBoxShadow } from '../../../constants/Mixins';
 
 export const ProfileDropdownWrapper = styled.div`
   display: flex;
@@ -21,16 +21,19 @@ export const ProfilePicture = styled.img`
   border-radius: 50%;
   border: 2px solid ${({ theme }) => theme.primaryDark};
   object-fit: cover;
-  ${BoxShadow}
+  ${({ isLanding }) => isLanding ? DarkBoxShadow : BoxShadow}
+  
 `;
 
 export const ProfileText = styled.div`
   ${Heading4}
-  color: ${({ theme }) => theme.dark1};
+  color: white;
+  color: ${({ theme, isLanding }) => isLanding ? theme.white : theme.dark1};
   text-decoration: none;
   display: flex;
   align-items: center;
   width: max-content;
+  z-index: 1;
 
   &:hover, &:focus {
     color: ${({ theme }) => theme.primary};

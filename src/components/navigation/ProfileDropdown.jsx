@@ -17,6 +17,7 @@ import DropdownList from '../input/DropdownList';
 
 /* Routes */
 import { PROFILE_PAGE_ROUTE } from '../../Routes';
+import { isOnLandingPageRoute } from '../../Routes';
 
 /* GraphQL Queries */
 import { GET_USER } from '../../graphql/queries/user/User';
@@ -37,7 +38,7 @@ const mapStateToProps = state => ({
 const placeholderImage =
   'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
 
-const renderProfilePicture = (data, dispatch) => {
+const renderProfilePicture = (data, dispatch, isLanding) => {
   let user = { picture_url: null };
   if (data && data.user) {
     if (data.user.length > 0) {
@@ -47,11 +48,12 @@ const renderProfilePicture = (data, dispatch) => {
     }
   }
 
-  return <ProfilePicture src={user.picture_url || placeholderImage} />;
+  return <ProfilePicture src={user.picture_url || placeholderImage} isLanding={isLanding} />;
 };
 
-const ProfileDropdown = ({ history, theme, isLoggedIn }) => {
+const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
   const dispatch = useDispatch();
+  const isLanding = isOnLandingPageRoute(location);
 
   const handleProfileButtonClick = () => {
     isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : dispatch(authModalOpen());
@@ -66,8 +68,8 @@ const ProfileDropdown = ({ history, theme, isLoggedIn }) => {
             variables={{ id: Number(localStorage.getItem('user_id')) }}
           >
             {({ data }) => (
-              <ProfileText onClick={handleProfileButtonClick}>
-                {renderProfilePicture(data, dispatch)}
+              <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
+                {renderProfilePicture(data, dispatch, isLanding)}
               </ProfileText>
             )}
           </Query>
@@ -89,7 +91,7 @@ const ProfileDropdown = ({ history, theme, isLoggedIn }) => {
           />
         </>
       ) : (
-        <ProfileText onClick={handleProfileButtonClick}>
+        <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
           Log in
         </ProfileText>
       )}
