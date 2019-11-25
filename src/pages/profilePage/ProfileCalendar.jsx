@@ -33,7 +33,7 @@ export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
   while (currentMoment.isSameOrBefore(end)) {
     // console.log(`  ${currentMoment} is ${legalDays[currentMoment.weekday()]}`);
     if (legalDays[currentMoment.weekday()] == dayOfWeek) {
-      daysToReturn.push(currentMoment.clone());
+      daysToReturn.push(currentMoment.clone().startOf('day'));
     }
     currentMoment.add(1, 'day');
   }
@@ -115,9 +115,6 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
 
 const ProfileCalendar = ({ schedule, theme }) => {
   console.log(schedule);
-  console.log(
-    `Time: ${moment().isAfter(moment().subtract(1, 'hour'), 'hour')}`,
-  );
   const intv = getIntervalsForWeek(moment(), 5, schedule);
   // const intv = [];
   console.log(intv);
@@ -128,6 +125,9 @@ const ProfileCalendar = ({ schedule, theme }) => {
         numberOfDays={5}
         selectedIntervals={intv}
         eventComponent={EventSection}
+        startTime={moment()
+          .startOf('day')
+          .add(6, 'hours')}
       />
     );
   }

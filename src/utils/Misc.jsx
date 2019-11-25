@@ -138,7 +138,9 @@ export const secsToTime = secs => {
 };
 
 export const getMomentFromDateAndSecs = (date, secs) => {
-  return moment(`${date}`, 'YYYY-MM-DD').add(secs, 'seconds');
+  return moment(`${date}`, 'YYYY-MM-DD')
+    .startOf('day')
+    .add(secs, 'seconds');
 };
 
 export const isValidDayOfWeek = day => {
