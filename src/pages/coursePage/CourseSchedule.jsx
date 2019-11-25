@@ -63,16 +63,17 @@ const getInfoGroupings = meetings => {
     return groupings;
   }, {});
 
-  let answer = [];
+  let infoGroups = [];
+
   // Sort timeRanges for each group
   Object.entries(groupedByTimeOfDay).forEach(entry => {
     entry[1].timeRanges.sort((a, b) => a.startDate > b.startDate);
-    answer.push(entry[1]);
+    infoGroups.push(entry[1]);
   });
 
   // Merge and sort days of week for timeRanges that occur in the same date range
   const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not too sure about saturday and sunday
-  answer.forEach(entry => {
+  infoGroups.forEach(entry => {
     let newTimeRanges = [];
     let newDays = [];
     entry.timeRanges.forEach((currRange, i) => {
@@ -107,9 +108,15 @@ const getInfoGroupings = meetings => {
     entry.timeRanges = newTimeRanges;
   });
 
-  answer.sort((a, b) => a.startSeconds - b.startSeconds);
-  console.log(answer)
-  return answer;
+  infoGroups = infoGroups.sort((a, b) => a.startSeconds - b.startSeconds);
+  const numDates = infoGroups.map(group => group.timeRanges.length);
+
+  return {
+    times: infoGroups.map((group, i) => Object({ time: group.time, spaces: numDates[i] - 1})),
+    locations: infoGroups.map((group, i) => Object({ location: group.location, spaces: numDates[i] - 1})),
+    profs: infoGroups.map((group, i) => Object({ prof: group.prof, spaces: numDates[i] - 1})),
+    dates: infoGroups.map((group) => group.timeRanges),
+  };
 };
 
 const CourseSchedule = ({ sections, courseCode }) => {
@@ -125,6 +132,7 @@ const CourseSchedule = ({ sections, courseCode }) => {
 
   const sectionsCleanedData = sections.map(s => ({
     section: s.section,
+    campus: s.campus,
     class: s.class_number,
     term: s.term,
     enrolled: {
@@ -133,7 +141,7 @@ const CourseSchedule = ({ sections, courseCode }) => {
     },
     // Every grouping contains a single time of day, location, and instructor
     // and the classes that occur with those parameters.
-    infoGroupings: getInfoGroupings(s.meetings),
+    ...getInfoGroupings(s.meetings),
   })).sort((a, b) => {
     const sectionTypeA = a.section.split(' ')[0];
     const sectionTypeB = b.section.split(' ')[0];
