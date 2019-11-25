@@ -77,6 +77,7 @@ const CoursePageContent = ({
                 <LikeCourseToggle
                   courseCode={course.code}
                   courseID={course.id}
+                  profID={userReview ? userReview.prof_id : null}
                   initialState={userReview ? userReview.liked : null}
                 />
               </CourseQuestionTextAndToggle>

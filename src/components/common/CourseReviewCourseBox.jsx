@@ -124,7 +124,7 @@ const CourseReviewCourseBox = ({
   /* Mutations */
   const refetchQueries = [{
     query: REFETCH_REVIEW,
-    variables: { course_id: course.id, user_id: userID }
+    variables: { course_id: course.id, user_id: userID, prof_id: review ? review.prof_id : null }
   }];
 
   const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });

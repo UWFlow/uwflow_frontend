@@ -51,7 +51,7 @@ export const REFETCH_COURSE_SHORTLIST = gql`
 `;
 
 export const REFETCH_REVIEW = gql`
-  query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+  query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int, $prof_id: Int) {
     course(where: {id: {_eq: $course_id}}) {
       ...CourseReviewAggregateFragment
     }
@@ -68,7 +68,7 @@ export const REFETCH_REVIEW = gql`
 `;
 
 export const REFETCH_LIKED = gql`
-  query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+  query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int, $prof_id: Int) {
     course(where: {id: {_eq: $course_id}}) {
       ...CourseReviewAggregateFragment
     }

@@ -26,13 +26,14 @@ const LikeCourseToggle = ({
   theme,
   isLoggedIn,
   courseID,
+  profID,
   initialState = null
 }) => {
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [{
     query: REFETCH_LIKED,
-    variables: { course_id: courseID, user_id: userID }
+    variables: { course_id: courseID, user_id: userID, prof_id: profID === null ? -1 : profID }
   }];
 
   const dispatch = useDispatch();
