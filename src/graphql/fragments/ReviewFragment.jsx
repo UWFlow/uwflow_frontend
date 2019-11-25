@@ -60,14 +60,12 @@ const ReviewFragment = {
   courseReviewVotes: gql`
     fragment CourseReviewVotesFragment on review {
       id
-      course_review_votes {
+      course_review_upvotes {
         user_id
       }
-      course_review_votes_aggregate {
+      course_review_upvotes_aggregate {
         aggregate {
-          sum {
-            vote
-          }
+          count
         }
       }
     }
@@ -75,14 +73,12 @@ const ReviewFragment = {
   profReviewVotes: gql`
     fragment ProfReviewVotesFragment on review {
       id
-      prof_review_votes {
+      prof_review_upvotes {
         user_id
       }
-      prof_review_votes_aggregate {
+      prof_review_upvotes_aggregate {
         aggregate {
-          sum {
-            vote
-          }
+          count
         }
       }
     }

@@ -27,8 +27,8 @@ export const GET_USER = gql`
   ${ReviewFragment.reviewInfo}
 `;
 
-export const USER_SHORTLIST_REFETCH_QUERY = gql`
-  query GET_USER_SHORTLIST($id: Int) {
+export const REFETCH_USER_SHORTLIST = gql`
+  query REFETCH_USER_SHORTLIST($id: Int) {
     user(where: {id: {_eq: $id}}) {
       id
       ...UserShortlistFragment

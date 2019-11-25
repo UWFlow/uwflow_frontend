@@ -12,3 +12,12 @@ export const GET_PROF_REVIEW = gql`
   ${ReviewFragment.reviewInfo}
   ${ReviewFragment.profReviewVotes}
 `;
+
+export const REFETCH_PROF_REVIEW_UPVOTE = gql`
+  query REFETCH_PROF_REVIEW_UPVOTE($review_id: Int) {
+    review(where: {id: {_eq: $review_id}}) {
+      ...ProfReviewVotesFragment
+    }
+  }
+  ${ReviewFragment.profReviewVotes}
+`;

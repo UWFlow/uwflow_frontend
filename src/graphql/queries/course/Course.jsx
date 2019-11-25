@@ -38,8 +38,8 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
   `;
 }
 
-export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
-  query SHORTLIST_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+export const REFETCH_COURSE_SHORTLIST = gql`
+  query REFETCH_COURSE_SHORTLIST($course_id: Int, $user_id: Int) {
     user_shortlist(where: {
       user_id: {_eq: $user_id},
       course_id: {_eq: $course_id}
@@ -50,28 +50,36 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
   }
 `;
 
-export const COURSE_REVIEW_REFETCH_QUERY = gql`
+export const REFETCH_REVIEW = gql`
   query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
-    review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
-      ...ReviewInfoFragment
-    }
     course(where: {id: {_eq: $course_id}}) {
       ...CourseReviewAggregateFragment
     }
+    prof(where: {id: {_eq: $prof_id}}) {
+      ...ProfReviewAggregateFragment
+    }
+    review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
+      ...ReviewInfoFragment
+    }
   }
   ${ReviewFragment.courseReviewAggregate}
+  ${ReviewFragment.profReviewAggregate}
   ${ReviewFragment.reviewInfo}
 `;
 
-export const COURSE_LIKED_REFETCH_QUERY = gql`
+export const REFETCH_LIKED = gql`
   query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int) {
+    course(where: {id: {_eq: $course_id}}) {
+      ...CourseReviewAggregateFragment
+    }
+    prof(where: {id: {_eq: $prof_id}}) {
+      ...ProfReviewAggregateFragment
+    }
     review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
       id
       liked
     }
-    course(where: {id: {_eq: $course_id}}) {
-      ...CourseReviewAggregateFragment
-    }
   }
   ${ReviewFragment.courseReviewAggregate}
+  ${ReviewFragment.profReviewAggregate}
 `;

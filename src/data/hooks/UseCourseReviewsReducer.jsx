@@ -15,8 +15,8 @@ const convertInputToState = data => {
 
   const courseReviews = data.review.map(r => ({
     id: r.id,
-    upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
-    upvote_users: r.course_review_votes.map(voteObj => voteObj.user_id),
+    upvotes: r.course_review_upvotes_aggregate.aggregate.count,
+    upvote_users: r.course_review_upvotes.map(vote => Number(vote.user_id)),
     review: r.course_comment,
     author: r.author,
     user: r.user,
@@ -59,8 +59,8 @@ const convertInputToState = data => {
     }
     profObject.reviews.push({
       id: current.id,
-      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
-      upvote_users: current.prof_review_votes.map(voteObj => voteObj.user_id),
+      upvotes: current.prof_review_upvotes_aggregate.aggregate.count,
+      upvote_users: current.prof_review_upvotes.map(vote => Number(vote.user_id)),
       review: current.prof_comment,
       author: current.author,
       user: current.user,

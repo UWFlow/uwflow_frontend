@@ -12,8 +12,8 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import { DELETE_USER_SHORTLIST, INSERT_USER_SHORTLIST } from '../../graphql/mutations/Shortlist';
-import { COURSE_SHORTLIST_REFETCH_QUERY } from '../../graphql/queries/course/Course';
-import { USER_SHORTLIST_REFETCH_QUERY } from '../../graphql/queries/user/User';
+import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
+import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -22,8 +22,8 @@ const mapStateToProps = state => ({
 const ShortlistStar = ({ theme, courseID, isLoggedIn, initialState = false, size = 32 }) => {
   const userID = localStorage.getItem('user_id');
   const refetchQueries = [
-    { query: COURSE_SHORTLIST_REFETCH_QUERY, variables: { user_id: userID, course_id: courseID } },
-    { query: USER_SHORTLIST_REFETCH_QUERY, variables: { id: userID } },
+    { query: REFETCH_COURSE_SHORTLIST, variables: { user_id: userID, course_id: courseID } },
+    { query: REFETCH_USER_SHORTLIST, variables: { id: userID } },
   ];
 
   const dispatch = useDispatch();

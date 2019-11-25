@@ -6,7 +6,7 @@ export const GET_COURSE_REVIEW = gql`
   query GET_COURSE_REVIEW($id: Int) {
     review(where: {
       course_id: { _eq: $id },
-      _or: { course_comment: { _is_null: false } }
+      course_comment: { _is_null: false }
     }) {
       ...ReviewInfoFragment
       ...CourseReviewVotesFragment
@@ -20,4 +20,13 @@ export const GET_COURSE_REVIEW = gql`
   ${ReviewFragment.courseReviewVotes}
   ${ReviewFragment.profReviewVotes}
   ${ReviewFragment.reviewAggregate}
+`;
+
+export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
+  query REFETCH_COURSE_REVIEW_UPVOTE($review_id: Int) {
+    review(where: {id: {_eq: $review_id}}) {
+      ...CourseReviewVotesFragment
+    }
+  }
+  ${ReviewFragment.courseReviewVotes}
 `;

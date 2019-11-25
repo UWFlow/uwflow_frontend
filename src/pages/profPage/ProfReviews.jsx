@@ -137,11 +137,11 @@ const ProfReviews = ({ profID, theme }) => {
               {course.reviews.sort((a, b) => {
                 const timeSort = moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
                 return selectedSort[idx] === 0 ?
-                  timeSort : timeSort || a.upvotes - b.upvotes;
+                  timeSort : b.upvotes === a.upvotes ? timeSort : b.upvotes - a.upvotes;
               }).filter((_, i) => {
                 return i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code];
               }).map((review, i) => (
-                <Review key={i} review={review} />
+                <Review key={i} review={review} isCourseReview={false} />
               ))}
             </ReviewListWrapper>
             {course.reviews.length > MIN_REVIEWS_SHOWN && (

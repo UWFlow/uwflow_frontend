@@ -36,7 +36,7 @@ import {
   UPSERT_REVIEW,
 } from '../../graphql/mutations/Review';
 import {
-  COURSE_REVIEW_REFETCH_QUERY
+  REFETCH_REVIEW
 } from '../../graphql/queries/course/Course';
 
 const easyOptions = [
@@ -122,13 +122,13 @@ const CourseReviewCourseBox = ({
   const [profComment, setProfComment] = useState((review && review.prof_comment) || '');
 
   /* Mutations */
-  const refetchCourseReview = {
-    query: COURSE_REVIEW_REFETCH_QUERY,
+  const refetchQueries = [{
+    query: REFETCH_REVIEW,
     variables: { course_id: course.id, user_id: userID }
-  };
+  }];
 
-  const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries: [refetchCourseReview] });
-  const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries: [refetchCourseReview] });
+  const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });
+  const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries });
 
   const handlePost = () => {
     setReviewUpdating(true);
@@ -155,11 +155,15 @@ const CourseReviewCourseBox = ({
   };
 
   const handleDelete = () => {
-    setReviewDeleting(true);
-    deleteReview({variables: { review_id: review ? review.id : null }}).then(() => {
+    if (review) {
+      setReviewDeleting(true);
+      deleteReview({variables: { review_id: review ? review.id : null }}).then(() => {
+        onCancel();
+        setReviewDeleting(false);
+      });
+    } else {
       onCancel();
-      setReviewDeleting(false);
-    });
+    }
   };
 
   return (
