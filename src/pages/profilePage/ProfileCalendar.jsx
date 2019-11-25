@@ -127,7 +127,8 @@ const ProfileCalendar = ({ schedule, theme }) => {
         eventComponent={EventSection}
         startTime={moment()
           .startOf('day')
-          .add(6, 'hours')}
+          .add(7, 'hours')}
+        dayFormat="dd. DD/MM"
       />
     );
   }
