@@ -15,7 +15,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
-import { UPDATE_LIKED, INSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
+import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
 import { COURSE_LIKED_REFETCH_QUERY } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({
@@ -26,10 +26,8 @@ const LikeCourseToggle = ({
   theme,
   isLoggedIn,
   courseID,
-  reviewID = null,
   initialState = null
 }) => {
-  const [reviewed, setReviewed] = useState(reviewID !== null);
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [
@@ -41,8 +39,7 @@ const LikeCourseToggle = ({
 
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
-  const [updateLiked] = useMutation(UPDATE_LIKED, { refetchQueries });
-  const [insertLiked] = useMutation(INSERT_LIKED_REVIEW, { refetchQueries });
+  const [upsertLiked] = useMutation(UPSERT_LIKED_REVIEW, { refetchQueries });
 
   const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
@@ -54,25 +51,9 @@ const LikeCourseToggle = ({
       return;
     }
 
-    if (liked === targetState) {
-      if (reviewed) {
-        updateLiked({variables: { review_id: reviewID, liked: null }});
-      }
-      setLiked(null);
-    } else {
-      setLiked(targetState);
-      if (reviewed) {
-        updateLiked({variables: { review_id: reviewID, liked: targetState }});
-      } else {
-        insertLiked({variables: {
-          user_id: userID,
-          course_id: courseID,
-          liked: targetState,
-          public: false
-        }});
-        setReviewed(true);
-      }
-    }
+    let likedValue = liked === targetState ? null : targetState;
+    upsertLiked({ variables: { user_id: userID, course_id: courseID, liked: likedValue }});
+    setLiked(likedValue);
   }
 
   return (

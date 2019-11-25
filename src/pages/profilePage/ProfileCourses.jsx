@@ -45,7 +45,7 @@ const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal })
   });
 
   const tabContent = (termName) => courseGroups[termName].map((course_taken, idx) => {
-    const review = reviews.find(review => review.course_id === course_taken.course.id);
+    const review = reviews.find(r => r.course_id === course_taken.course_id);
     return (
       <ProfileCoursesCourse key={idx}>
         <ProfileCourseText>
@@ -68,7 +68,6 @@ const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal })
           <LikeCourseToggle
             key={course_taken.index}
             courseID={course_taken.course.id}
-            reviewID={review ? review.id : null}
             initialState={review ? review.liked : null}
           />
         </LikeToggleWrapper>

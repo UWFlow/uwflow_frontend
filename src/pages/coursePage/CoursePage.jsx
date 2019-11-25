@@ -77,7 +77,6 @@ const CoursePageContent = ({
                 <LikeCourseToggle
                   courseCode={course.code}
                   courseID={course.id}
-                  reviewID={userReview && userReview.id}
                   initialState={userReview ? userReview.liked : null}
                 />
               </CourseQuestionTextAndToggle>
@@ -105,7 +104,7 @@ const CoursePageContent = ({
         onRequestClose={() => setReviewModalOpen(false)}
       >
         <CourseReviewCourseBox
-          courseList={[{ course: course, userReview }]}
+          courseList={[{ course: course, review: userReview }]}
           onCancel={() => setReviewModalOpen(false)}
         />
       </Modal>

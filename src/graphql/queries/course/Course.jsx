@@ -52,7 +52,7 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
 
 export const COURSE_REVIEW_REFETCH_QUERY = gql`
   query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
-    course_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
+    review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
       ...ReviewInfoFragment
     }
     course(where: {id: {_eq: $course_id}}) {
@@ -60,15 +60,6 @@ export const COURSE_REVIEW_REFETCH_QUERY = gql`
     }
   }
   ${ReviewFragment.courseReviewAggregate}
-  ${ReviewFragment.reviewInfo}
-`;
-
-export const PROF_REVIEW_REFETCH_QUERY = gql`
-  query PROF_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
-    prof_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
-      ...ReviewInfoFragment
-    }
-  }
   ${ReviewFragment.reviewInfo}
 `;
 
