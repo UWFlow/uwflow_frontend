@@ -41,7 +41,6 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleSchedulePaste = async event => {
-    /* TODO: handle schedule paste */
     setUploadState(UPLOAD_PENDING);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${SCHEDULE_PARSE_ENDPOINT}?user_id=${localStorage.getItem(

@@ -50,15 +50,16 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleTranscriptDrop = async event => {
-    /* TODO: handle schedule paste */
-    console.log(event.dataTransfer.files);
+    console.log(event.dataTransfer.files[0]);
     event.preventDefault();
     event.stopPropagation();
     setUploadState(UPLOAD_PENDING);
+    var file = new FormData();
+    file.append('file', event.dataTransfer.files);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${TRANSCRIPT_PARSE_ENDPOINT}`,
       {
-        file: event.dataTransfer.files[0],
+        file: file,
       },
       {
         'Content-Type': 'multipart/form-data',

@@ -1,6 +1,7 @@
 // makes POST request to endpoint
 // returns response body and status as array
 export const makePOSTRequest = async (endpoint, data, options = {}) => {
+  console.log(JSON.stringify(data));
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
