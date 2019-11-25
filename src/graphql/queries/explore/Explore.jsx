@@ -31,7 +31,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
     ) {
       ...ProfInfoFragment
       ...ProfCoursesTaughtFragment
-      ...ProfReviewsAggregateFragment
+      ...ProfReviewAggregateFragment
     }
     prof_aggregate(where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}) {
       aggregate {
@@ -99,10 +99,9 @@ export const buildExploreQuery = (sort, query) => {
         where: ${parsedProfQuery}
       ) {
         ...ProfInfoFragment
-        ...ProfProfReviewsAggregateFragment
-        ...ProfCourseReviewsAggregateFragment
         ...ProfCoursesTaughtFragment
-      }
+        ...ProfReviewAggregateFragment
+        }
       prof_aggregate(where: ${parsedProfQuery}) {
         aggregate {
           count

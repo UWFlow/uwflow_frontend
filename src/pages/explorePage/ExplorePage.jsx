@@ -114,7 +114,7 @@ const ExplorePage = ({ location }) => {
   const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
 
   const { data, fetchMore, loading } = useQuery(
-    exploreQuery('{course_reviews_aggregate: {count: desc}}', query),
+    exploreQuery('{reviews_aggregate: {count: desc}}', query),
     {
       variables: { course_offset: 0, prof_offset: 0 },
       notifyOnNetworkStatusChange: true
