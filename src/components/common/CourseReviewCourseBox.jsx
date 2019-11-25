@@ -33,10 +33,7 @@ import { splitCourseCode } from '../../utils/Misc';
 /* GraphQL */
 import {
   DELETE_REVIEW,
-  INSERT_COURSE_REVIEW,
-  INSERT_PROF_REVIEW,
-  UPDATE_COURSE_REVIEW,
-  UPDATE_PROF_REVIEW
+  UPSERT_REVIEW,
 } from '../../graphql/mutations/Review';
 import {
   COURSE_REVIEW_REFETCH_QUERY,
@@ -139,10 +136,10 @@ const CourseReviewCourseBox = ({
   };
 
   const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries: [refetchCourseReview, refetchProfReview] });
-  const [insertCourseReview] = useMutation(INSERT_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
-  const [insertProfReview] = useMutation(INSERT_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
-  const [updateCourseReview] = useMutation(UPDATE_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
-  const [updateProfReview] = useMutation(UPDATE_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
+  const [insertCourseReview] = useMutation(UPSERT_REVIEW, { refetchQueries: [refetchCourseReview] });
+  const [insertProfReview] = useMutation(UPSERT_REVIEW, { refetchQueries: [refetchProfReview] });
+  const [updateCourseReview] = useMutation(UPSERT_REVIEW, { refetchQueries: [refetchCourseReview] });
+  const [updateProfReview] = useMutation(UPSERT_REVIEW, { refetchQueries: [refetchProfReview] });
 
   const handlePost = () => {
     setReviewUpdating(true);

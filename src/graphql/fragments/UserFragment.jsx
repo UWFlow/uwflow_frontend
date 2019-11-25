@@ -44,7 +44,7 @@ const UserFragment = {
         id
         code
         name
-        course_reviews_aggregate {
+        reviews_aggregate {
           aggregate {
             avg {
               liked
@@ -54,6 +54,7 @@ const UserFragment = {
         profs_teaching {
           prof {
             id
+            code
             name
           }
         }
@@ -73,47 +74,6 @@ const UserFragment = {
       }
     }
   `,
-  userCourseReview: gql`
-    fragment UserCourseReviewFragment on course_review {
-      id
-      easy
-      liked
-      useful
-      text
-      public
-      course_id
-      course {
-        id
-        profs_teaching {
-          prof {
-            id
-            name
-          }
-        }
-      }
-      prof_id
-      prof {
-        id
-        code
-        name
-      }
-    }
-  `,
-  userProfReview: gql`
-  fragment UserProfReviewFragment on prof_review {
-    id
-    clear
-    engaging
-    text
-    public
-    course_id
-    prof_id
-    prof {
-      id
-      name
-    }
-  }
-  `
 };
 
 export default UserFragment;

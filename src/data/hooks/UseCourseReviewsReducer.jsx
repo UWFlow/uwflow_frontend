@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 export const UPDATE_REVIEW_DATA = 'update_review_data';
 export const SORT_COURSE_REVIEWS_BY_PROF = 'sort_by_prof';
@@ -13,25 +12,32 @@ const convertInputToState = data => {
       profReviewProfs: [],
     };
   }
-  const courseReviews = data.course_review.map(r => ({
+
+  const courseReviews = data.review.map(r => ({
     id: r.id,
     upvotes: r.course_review_votes_aggregate.aggregate.sum.vote,
     upvote_users: r.course_review_votes.map(voteObj => voteObj.user_id),
-    review: r.text,
+    review: r.course_comment,
     author: r.author,
     user: r.user,
     created_at: r.created_at,
+    updated_at: r.updated_at,
     metrics: {
-      useful: r.useful,
-      easy: r.easy,
+      useful: r.course_useful,
+      easy: r.course_easy,
       liked: r.liked != null,
     },
     prof: r.prof ? r.prof.name : '',
   }));
 
-  const reviewsByProf = data.prof_review.reduce((allProfs, current) => {
+  const reviewsByProf = data.review.reduce((allProfs, current) => {
     let profObject;
     let foundProfObject = false;
+
+    if (!current.prof || !current.prof_comment) {
+      return allProfs;
+    }
+
     for (let i of allProfs) {
       if (current.prof && current.prof.name === i.name) {
         profObject = i;
@@ -45,7 +51,7 @@ const convertInputToState = data => {
         code: current.prof ? current.prof.code : '',
         name: current.prof ? current.prof.name : '',
         liked: current.prof
-          ? current.prof.course_reviews_aggregate.aggregate.avg.liked
+          ? current.prof.reviews_aggregate.aggregate.avg.liked
           : 0,
         reviews: [],
       };
@@ -55,19 +61,20 @@ const convertInputToState = data => {
       id: current.id,
       upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
       upvote_users: current.prof_review_votes.map(voteObj => voteObj.user_id),
-      review: current.text,
+      review: current.prof_comment,
       author: current.author,
       user: current.user,
       created_at: current.created_at,
+      updated_at: current.updated_at,
       metrics: {
-        clear: current.clear,
-        engaging: current.engaging,
+        clear: current.prof_clear,
+        engaging: current.prof_engaging,
       },
     });
     return allProfs;
   }, []);
 
-  const courseReviewProfs = data.course_review.reduce((allProfs, review) => {
+  const courseReviewProfs = data.review.reduce((allProfs, review) => {
     if (review.prof && !allProfs.includes(review.prof.name)) {
       allProfs.push(review.prof.name);
     }
@@ -102,77 +109,6 @@ const useCourseReviewsReducer = initialState => {
   };
 
   return [state, dispatch];
-};
-
-useCourseReviewsReducer.propTypes = {
-  initialState: PropTypes.shape({
-    course_review: PropTypes.arrayOf(
-      PropTypes.shape({
-        course: PropTypes.shape({
-          code: PropTypes.string,
-          id: PropTypes.number,
-        }),
-        course_review_votes_aggregate: PropTypes.shape({
-          aggregate: PropTypes.shape({
-            sum: PropTypes.shape({
-              vote: PropTypes.number,
-            }),
-          }),
-        }),
-        easy: PropTypes.number,
-        id: PropTypes.number,
-        liked: PropTypes.number,
-        prof: PropTypes.shape({
-          id: PropTypes.number,
-          name: PropTypes.string,
-        }),
-        text: PropTypes.string,
-        useful: PropTypes.number,
-        author: PropTypes.shape({
-          full_name: PropTypes.string,
-          program: PropTypes.string,
-          picture_url: PropTypes.string,
-        }),
-        user: PropTypes.shape({
-          user_id: PropTypes.number
-        })
-      }),
-    ),
-    prof_review: PropTypes.arrayOf(
-      PropTypes.shape({
-        clear: PropTypes.number,
-        engaging: PropTypes.number,
-        id: PropTypes.number,
-        prof: PropTypes.shape({
-          course_reviews_aggregate: PropTypes.shape({
-            aggregate: PropTypes.shape({
-              avg: PropTypes.shape({
-                liked: PropTypes.number,
-              }),
-            }),
-          }),
-          id: PropTypes.number,
-          name: PropTypes.string,
-        }),
-        prof_review_votes_aggregate: PropTypes.shape({
-          aggregate: PropTypes.shape({
-            sum: PropTypes.shape({
-              vote: PropTypes.number,
-            }),
-          }),
-        }),
-        text: PropTypes.string,
-        author: PropTypes.shape({
-          full_name: PropTypes.string,
-          program: PropTypes.string,
-          picture_url: PropTypes.string,
-        }),
-        user: PropTypes.shape({
-          user_id: PropTypes.number
-        })
-      }),
-    ),
-  }),
 };
 
 export default useCourseReviewsReducer;

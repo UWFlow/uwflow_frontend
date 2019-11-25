@@ -21,12 +21,9 @@ import RatingBox, {
 import { splitCourseCode } from '../../utils/Misc';
 
 const ProfInfoHeader = ({ prof }) => {
-  const percentClear = prof.prof_reviews_aggregate.aggregate.avg.clear / 5;
-  const percentEngaging =
-    prof.prof_reviews_aggregate.aggregate.avg.engaging / 5;
-  const profCourses = prof.prof_courses.map(course =>
-    splitCourseCode(course.course.code),
-  );
+  const { liked, prof_clear, prof_engaging } = prof.reviews_aggregate.aggregate.avg;
+  const { count, prof_comment_count } = prof.reviews_aggregate.aggregate;
+  const profCourses = prof.prof_courses.map(course => splitCourseCode(course.course.code));
 
   return (
     <ProfInfoHeaderWrapper>
@@ -38,20 +35,20 @@ const ProfInfoHeader = ({ prof }) => {
       <ProfDescriptionSection>
         <RatingsSection ratingBoxHeight={RATING_BOX_HEIGHT}>
           <RatingBox
-            numRatings={prof.prof_reviews_aggregate.aggregate.count}
-            numComments={prof.prof_reviews_aggregate.aggregate.text_count}
+            numRatings={count}
+            numComments={prof_comment_count}
             percentages={[
               {
                 displayName: 'Likes',
-                percent: prof.course_reviews_aggregate.aggregate.avg.liked,
+                percent: liked,
               },
               {
                 displayName: 'Clear',
-                percent: percentClear,
+                percent: prof_clear / 5,
               },
               {
                 displayName: 'Engaging',
-                percent: percentEngaging,
+                percent: prof_engaging / 5,
               },
             ]}
           />

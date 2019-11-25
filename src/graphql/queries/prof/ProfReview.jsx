@@ -1,12 +1,14 @@
 import gql from 'graphql-tag';
 
-import ProfReviewFragment from '../../fragments/prof/ProfReviewFragment.jsx';
+import ReviewFragment from '../../fragments/ReviewFragment';
 
 export const GET_PROF_REVIEW = gql`
   query GET_PROF_REVIEW($id: Int) {
-    prof_review(where: { prof_id: { _eq: $id }, text: { _is_null: false } }) {
-      ...ProfReviewInfoFragment
+    review(where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }) {
+      ...ReviewInfoFragment
+      ...ProfReviewVotesFragment
     }
   }
-  ${ProfReviewFragment.profCoursesReviewInfo}
+  ${ReviewFragment.reviewInfo}
+  ${ReviewFragment.profReviewVotes}
 `;

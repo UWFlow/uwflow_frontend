@@ -1,7 +1,8 @@
 import gql from 'graphql-tag';
 
-import CourseFragment from '../../fragments/course/CourseFragment.jsx';
-import ProfFragment from '../../fragments/prof/ProfFragment.jsx';
+import CourseFragment from '../../fragments/CourseFragment.jsx';
+import ProfFragment from '../../fragments/ProfFragment.jsx';
+import ReviewFragment from '../../fragments/ReviewFragment.jsx';
 
 import { SEARCH_RESULTS_PER_PAGE, MAX_SEARCH_TERMS } from '../../../constants/Search.jsx';
 import { splitCourseCode } from '../../../utils/Misc.jsx';
@@ -29,23 +30,21 @@ export const buildExploreCodeQuery = (sort, query) => gql`
       where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}
     ) {
       ...ProfInfoFragment
-      ...ProfProfReviewsAggregateFragment
-      ...ProfCourseReviewsAggregateFragment
       ...ProfCoursesTaughtFragment
+      ...ProfReviewsAggregateFragment
     }
     prof_aggregate(where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}) {
       aggregate {
         count
       }
-    }  
+    }
   }
   ${CourseFragment.courseInfo}
   ${CourseFragment.courseTerm}
-  ${CourseFragment.courseReviewAggregate}
   ${ProfFragment.profInfo}
-  ${ProfFragment.profProfReviewsAggregate}  
-  ${ProfFragment.profCourseReviewsAggregate}  
   ${ProfFragment.profCoursesTaught}
+  ${ReviewFragment.courseReviewAggregate}
+  ${ReviewFragment.profReviewAggregate}
 `;
 
 export const buildExploreQuery = (sort, query) => {
@@ -112,10 +111,9 @@ export const buildExploreQuery = (sort, query) => {
     }
     ${CourseFragment.courseInfo}
     ${CourseFragment.courseTerm}
-    ${CourseFragment.courseReviewAggregate}
     ${ProfFragment.profInfo}
-    ${ProfFragment.profProfReviewsAggregate}  
-    ${ProfFragment.profCourseReviewsAggregate}
     ${ProfFragment.profCoursesTaught}
+    ${ReviewFragment.courseReviewAggregate}
+    ${ReviewFragment.profReviewAggregate}
   `
 };

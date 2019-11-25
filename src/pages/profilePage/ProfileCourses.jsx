@@ -27,7 +27,7 @@ import {
 import { termCodeToDate, splitCourseCode, processLiked } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
-const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openModal }) => {
+const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal }) => {
   const groupByTerm = courses => {
     return courses.reduce((groups, course, idx) => {
       groups[course.term] = groups[course.term] || [];
@@ -45,7 +45,7 @@ const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openMo
   });
 
   const tabContent = (termName) => courseGroups[termName].map((course_taken, idx) => {
-    const review = courseReviews.find(review => review.course_id === course_taken.course.id);
+    const review = reviews.find(review => review.course_id === course_taken.course.id);
     return (
       <ProfileCoursesCourse key={idx}>
         <ProfileCourseText>
@@ -56,7 +56,7 @@ const ProfileCourses = ({ theme, courses, courseReviews, setReviewCourse, openMo
         </ProfileCourseText>
         <LikedCourseWrapper>
           <ProfileCourseLiked>
-            {processLiked(course_taken.course.course_reviews_aggregate.aggregate.avg.liked)}
+            {processLiked(course_taken.course.reviews_aggregate.aggregate.avg.liked)}
           </ProfileCourseLiked>
           <LikedThisCourseText>
             liked this

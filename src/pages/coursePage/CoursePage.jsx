@@ -47,8 +47,7 @@ const mapStateToProps = state => ({
 const CoursePageContent = ({
   course,
   shortlisted,
-  userCourseReview,
-  userProfReview,
+  userReview,
   userCourseTaken,
   isLoggedIn,
   isBrowserDesktop,
@@ -78,8 +77,8 @@ const CoursePageContent = ({
                 <LikeCourseToggle
                   courseCode={course.code}
                   courseID={course.id}
-                  reviewID={userCourseReview && userCourseReview.id}
-                  initialState={userCourseReview ? userCourseReview.liked : null}
+                  reviewID={userReview && userReview.id}
+                  initialState={userReview ? userReview.liked : null}
                 />
               </CourseQuestionTextAndToggle>
               <Button
@@ -87,7 +86,7 @@ const CoursePageContent = ({
                 padding="16px 24px"
                 handleClick={handleReviewClick}
               >
-                {userCourseReview || userProfReview ? 'Edit your review' : 'Add your review'}
+                {userReview ? 'Edit your review' : 'Add your review'}
               </Button>
             </CourseReviewQuestionBox>}
           </ScheduleAndReviewWrapper>
@@ -106,7 +105,7 @@ const CoursePageContent = ({
         onRequestClose={() => setReviewModalOpen(false)}
       >
         <CourseReviewCourseBox
-          courseList={[{ course: course, courseReview: userCourseReview, profReview: userProfReview }]}
+          courseList={[{ course: course, userReview }]}
           onCancel={() => setReviewModalOpen(false)}
         />
       </Modal>
@@ -132,10 +131,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <CoursePageContent
         course={data.course[0]}
-        userCourseReview={isLoggedIn && data.course_review.length > 0 ?
-          data.course_review[0] : null}
-        userProfReview={isLoggedIn &&
-          data.prof_review.length > 0 ? data.prof_review[0] : null}
+        userReview={isLoggedIn && data.review.length > 0 ? data.review[0] : null}
         userCourseTaken={isLoggedIn && data.user_course_taken.length > 0 ? true : false}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         isLoggedIn={isLoggedIn}

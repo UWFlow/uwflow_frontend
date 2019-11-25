@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-import CourseFragment from '../../fragments/course/CourseFragment.jsx';
-import UserFragment from '../../fragments/user/UserFragment.jsx';
+import CourseFragment from '../../fragments/CourseFragment.jsx';
+import ReviewFragment from '../../fragments/ReviewFragment.jsx';
 
 export const buildCourseQuery = (fetchUserData = false, userId = null) => {
   return gql`
@@ -20,15 +20,12 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           course_id
           user_id
         }
-        course_review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
-          ...UserCourseReviewFragment
-        }
-        prof_review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
-          ...UserProfReviewFragment
-        }
         user_course_taken(where: {course: {code: {_eq: $code}}, user_id: {_eq: ${userId}}}) {
           term
           course_id
+        }
+        review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
+          ...ReviewInfoFragment
         }
         ` : ''
       }
@@ -36,9 +33,8 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
     ${CourseFragment.courseInfo}
     ${CourseFragment.courseSchedule}
     ${CourseFragment.courseRequirements}
-    ${CourseFragment.courseReviewAggregate}
-    ${UserFragment.userCourseReview}
-    ${UserFragment.userProfReview}
+    ${ReviewFragment.courseReviewAggregate}
+    ${ReviewFragment.reviewInfo}
   `;
 }
 
@@ -57,35 +53,34 @@ export const COURSE_SHORTLIST_REFETCH_QUERY = gql`
 export const COURSE_REVIEW_REFETCH_QUERY = gql`
   query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
     course_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
-      ...UserCourseReviewFragment
+      ...ReviewInfoFragment
     }
     course(where: {id: {_eq: $course_id}}) {
       ...CourseReviewAggregateFragment
     }
   }
-  ${CourseFragment.courseReviewAggregate}
-  ${UserFragment.userCourseReview}
+  ${ReviewFragment.courseReviewAggregate}
+  ${ReviewFragment.reviewInfo}
 `;
 
 export const PROF_REVIEW_REFETCH_QUERY = gql`
   query PROF_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int) {
     prof_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
-      ...UserProfReviewFragment
+      ...ReviewInfoFragment
     }
   }
-  ${UserFragment.userProfReview}
+  ${ReviewFragment.reviewInfo}
 `;
 
 export const COURSE_LIKED_REFETCH_QUERY = gql`
   query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int) {
-    course_review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
+    review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
       id
       liked
     }
     course(where: {id: {_eq: $course_id}}) {
-      id
       ...CourseReviewAggregateFragment
     }
   }
-  ${CourseFragment.courseReviewAggregate}
+  ${ReviewFragment.courseReviewAggregate}
 `;

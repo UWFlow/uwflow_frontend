@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-import UserFragment from "../../fragments/user/UserFragment.jsx";
+import UserFragment from "../../fragments/UserFragment.jsx";
+import ReviewFragment from '../../fragments/ReviewFragment.jsx';
 
 // review and course taken were split up to improve Apollo cache performance
 // this way when refetching reviews when a review is updated, the data structure
@@ -12,22 +13,18 @@ export const GET_USER = gql`
       ...UserShortlistFragment
       ...UserScheduleFragment
     }
-    course_review(where: {user: {user_id: {_eq: $id}}}) {
-      ...UserCourseReviewFragment
-    }
-    prof_review(where: {user: {user_id: {_eq: $id}}}) {
-      ...UserProfReviewFragment
-    }
     user_course_taken(where: {user_id: {_eq: $id}}) {
       ...UserCoursesTakenFragment
+    }
+    review(where: {user: {user_id: {_eq: $id}}}) {
+      ...ReviewInfoFragment
     }
   }
   ${UserFragment.userInfo}
   ${UserFragment.userShortlist}
   ${UserFragment.userSchedule}
   ${UserFragment.userCoursesTaken}
-  ${UserFragment.userCourseReview}
-  ${UserFragment.userProfReview}
+  ${ReviewFragment.reviewInfo}
 `;
 
 export const USER_SHORTLIST_REFETCH_QUERY = gql`

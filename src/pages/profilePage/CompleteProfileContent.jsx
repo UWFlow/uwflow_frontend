@@ -16,13 +16,14 @@ const CompleteProfileContent = ({
   theme,
   user,
   coursesTaken,
-  courseReviews,
-  profReviews
+  reviews
 }) => {
   const hasScheduleUploaded = user.schedule && user.schedule.length > 0;
   const hasCourseInfo = coursesTaken && coursesTaken.length > 0;
-  const hasCoursesReviewed = courseReviews && courseReviews.length > 0;
-  const hasProfsReviewed = profReviews && profReviews.length > 0;
+  const hasCoursesReviewed =  reviews && reviews.length > 0
+    && !!reviews.find(r => r.liked || r.course_comment);
+  const hasProfsReviewed = reviews && reviews.length > 0
+    && !!reviews.find(r => r.prof_id && (r.prof_clear || r.prof_engaging || r.prof_comment));
 
   return (
     <>
