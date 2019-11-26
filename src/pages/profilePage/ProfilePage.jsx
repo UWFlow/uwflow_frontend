@@ -420,14 +420,17 @@ const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const ProfilePageContent = ({ user, courseReviews, profReviews, coursesTaken, isBrowserDesktop }) => {
+const ProfilePageContent = ({
+  user,
+  courseReviews,
+  profReviews,
+  coursesTaken,
+  isBrowserDesktop,
+}) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
-  let {
-    courses_taken: courses,
-    shortlist,
-  } = user;
+  let { courses_taken: courses, shortlist } = user;
 
   let schedule = testSchedule.schedule;
 
@@ -507,14 +510,10 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   ) : (
     <ProfilePageWrapper>
       <ProfilePageContent
-<<<<<<< HEAD
         user={data.user[0]}
         courseReviews={data.course_review}
         profReviews={data.prof_review}
         coursesTaken={data.user_course_taken}
-=======
-        user={{ ...data.user[0] }}
->>>>>>> Rough calendar working
         isBrowserDesktop={isBrowserDesktop}
       />
     </ProfilePageWrapper>
