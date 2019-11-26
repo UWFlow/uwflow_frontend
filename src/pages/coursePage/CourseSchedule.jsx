@@ -12,7 +12,7 @@ import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 import {
   CourseScheduleWrapper,
   TableWrapper,
-  FinalExamsText
+  FinalExamsText,
 } from './styles/CourseSchedule';
 
 /* Utils */
@@ -20,21 +20,21 @@ import { termCodeToDate, secsToTime } from '../../utils/Misc';
 import { processSectionExams } from '../../utils/FinalExams';
 
 const sectionOrder = {
-  'LEC': 0,
-  'LAB': 1,
-  'TUT': 2
+  LEC: 0,
+  LAB: 1,
+  TUT: 2,
 };
 
 /*
-* We first group the data by time of day range (start and end time) Now, each group should have
-* a time of day range, location, instructor, and all the more specific 'timeranges' the classes occur in.
-* Each timerange contains days of the week the class occurs as well as the start and end dates
-* of the weeks that timerange applies. We assume that, if the start and end dates are the same,
-* the time range is valid for the week beginning on that date and otherwise, the time range is
-* valid for the whole term. We order the timeranges for each grouping as follows:
-* the time range valid for the whole term, if it exists, comes first and everything else
-* is sorted by date.
-*/
+ * We first group the data by time of day range (start and end time) Now, each group should have
+ * a time of day range, location, instructor, and all the more specific 'timeranges' the classes occur in.
+ * Each timerange contains days of the week the class occurs as well as the start and end dates
+ * of the weeks that timerange applies. We assume that, if the start and end dates are the same,
+ * the time range is valid for the week beginning on that date and otherwise, the time range is
+ * valid for the whole term. We order the timeranges for each grouping as follows:
+ * the time range valid for the whole term, if it exists, comes first and everything else
+ * is sorted by date.
+ */
 
 const getInfoGroupings = meetings => {
   let groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
@@ -42,7 +42,9 @@ const getInfoGroupings = meetings => {
 
     if (!groupings[key]) {
       groupings[key] = {
-        time: `${secsToTime(curr.start_seconds)} - ${secsToTime(curr.end_seconds)}`,
+        time: `${secsToTime(curr.start_seconds)} - ${secsToTime(
+          curr.end_seconds,
+        )}`,
         location: curr.location,
         prof: curr.prof
           ? {
@@ -170,7 +172,7 @@ const CourseSchedule = ({ sections, courseCode }) => {
             <FinalExamTable courses={courseExams} includeCode={false} />
           </TableWrapper>
         </>
-      )
+      ),
     };
   });
 
