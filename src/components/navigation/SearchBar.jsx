@@ -222,8 +222,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   const options = isLanding ? {
     width: '100%',
     backgroundColor: 'white',
-    color: theme.primary,
-    border: `2px solid ${theme.primary}`
+    color: theme.primary
   } : { width: '100%' }
 
   return (

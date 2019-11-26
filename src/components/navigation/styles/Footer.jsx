@@ -16,6 +16,7 @@ export const FooterWrapper = styled.div`
 
 export const FooterContent = styled.div`
   ${PageContent}
+  max-width: 100%;
   margin: auto;
   display: flex;
   justify-content: space-between;
