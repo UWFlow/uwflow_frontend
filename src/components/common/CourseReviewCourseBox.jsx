@@ -33,14 +33,10 @@ import { splitCourseCode } from '../../utils/Misc';
 /* GraphQL */
 import {
   DELETE_REVIEW,
-  INSERT_COURSE_REVIEW,
-  INSERT_PROF_REVIEW,
-  UPDATE_COURSE_REVIEW,
-  UPDATE_PROF_REVIEW
+  UPSERT_REVIEW,
 } from '../../graphql/mutations/Review';
 import {
-  COURSE_REVIEW_REFETCH_QUERY,
-  PROF_REVIEW_REFETCH_QUERY
+  REFETCH_REVIEW_AGGREGATE
 } from '../../graphql/queries/course/Course';
 
 const easyOptions = [
@@ -89,120 +85,100 @@ const CourseReviewCourseBox = ({
   onCancel = () => {},
 }) => {
   const userID = localStorage.getItem('user_id');
-  const { course, courseReview, profReview } = courseList[selectedCourseIndex];
+  const { course, review } = courseList[selectedCourseIndex];
   let profsTeaching = course.profs_teaching;
   profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
 
   // add prof to dropdown if not fetched from backend
-  if (profReview) {
-    let idx = profsTeaching.findIndex(prof => prof.prof && prof.prof.id === profReview.prof.id);
-    if (idx === -1) {
-      profsTeaching.push({ prof: profReview.prof });
+  if (review) {
+    let idx = profsTeaching.findIndex(prof => prof.prof && prof.prof.id === review.prof_id);
+    if (idx === -1 && review.prof_id !== null) {
+      profsTeaching.push({ prof: review.prof });
     }
   }
 
-  const profIndex = profReview ?
-    profsTeaching.findIndex(prof => prof.prof && prof.prof.id === profReview.prof.id) : -1;
+  const profIndex = review ?
+    profsTeaching.findIndex(prof => prof.prof && prof.prof.id === review.prof_id) : -1;
 
-  /* State */
+    /* State */
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
   const [reviewUpdating, setReviewUpdating] = useState(false);
   const [reviewDeleting, setReviewDeleting] = useState(false);
 
-  const [useful, setUseful] = useState((courseReview && courseReview.useful) || -1);
-  const [usefulSelected, setUsefulSelected] = useState(courseReview && courseReview.useful);
-  const [easy, setEasy] = useState((courseReview && courseReview.easy) || -1);
-  const [easySelected, setEasySelected] = useState(courseReview && courseReview.easy);
+  const [liked, setLiked] = useState(review ? (review.liked !== null ? 1 - review.liked : -1) : -1);
+  const [selectedAnonymous, setSelectedAnonymous] = useState(review && review.public ? 1 : 0);
 
-  const [liked, setLiked] = useState(courseReview ?
-    (courseReview.liked !== null ? 1 - courseReview.liked : -1) : -1);
-  const [courseReviewText, setCourseReviewText] = useState((courseReview && courseReview.text) || '');
+  const [useful, setUseful] = useState((review && review.course_useful) || -1);
+  const [usefulSelected, setUsefulSelected] = useState(review ? review.course_useful !== null : false);
+  const [easy, setEasy] = useState((review && review.course_easy) || -1);
+  const [easySelected, setEasySelected] = useState(review ? review.course_easy !== null : false);
+  const [courseComment, setCourseComment] = useState((review && review.course_comment) || '');
 
-  const [clear, setClear] = useState((profReview && profReview.clear) || -1);
-  const [clearSelected, setClearSelected] = useState(profReview && profReview.clear);
-  const [engaging, setEngaging] = useState((profReview && profReview.engaging) || -1);
-  const [engagingSelected, setEngagingSelected] = useState(profReview && profReview.engaging);
-
-  const [profReviewText, setProfReviewText] = useState((profReview && profReview.text) || '');
   const [selectedProf, setSelectedProf] = useState(profIndex);
-  const [selectedAnonymous, setSelectedAnonymous] = useState(courseReview && courseReview.public ? 1 : 0);
+  const [clear, setClear] = useState((review && review.prof_clear) || -1);
+  const [clearSelected, setClearSelected] = useState(review ? review.prof_clear !== null : false);
+  const [engaging, setEngaging] = useState((review && review.prof_engaging) || -1);
+  const [engagingSelected, setEngagingSelected] = useState(review ? review.prof_engaging !== null : false);
+  const [profComment, setProfComment] = useState((review && review.prof_comment) || '');
 
   /* Mutations */
-  const refetchCourseReview = {
-    query: COURSE_REVIEW_REFETCH_QUERY,
-    variables: { course_id: course.id, user_id: userID }
-  };
+  const refetchQueries = [{
+    query: REFETCH_REVIEW_AGGREGATE,
+    variables: { course_id: course.id, user_id: userID, prof_id: review ? review.prof_id : null }
+  }];
 
-  const refetchProfReview = {
-    query: PROF_REVIEW_REFETCH_QUERY,
-    variables: { course_id: course.id, user_id: userID }
-  };
-
-  const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries: [refetchCourseReview, refetchProfReview] });
-  const [insertCourseReview] = useMutation(INSERT_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
-  const [insertProfReview] = useMutation(INSERT_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
-  const [updateCourseReview] = useMutation(UPDATE_COURSE_REVIEW, { refetchQueries: [refetchCourseReview] });
-  const [updateProfReview] = useMutation(UPDATE_PROF_REVIEW, { refetchQueries: [refetchProfReview] });
+  const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });
+  const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries });
 
   const handlePost = () => {
     setReviewUpdating(true);
     const profID = selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
 
-    const courseReviewData = {
+    const reviewData = {
+      user_id: userID,
+      course_id: course.id,
       prof_id: profID,
       liked: 1 - liked,
-      easy,
-      useful,
-      text: courseReviewText,
-      public: selectedAnonymous === 0 ? false : true
+      public: selectedAnonymous === 0 ? false : true,
+      course_easy: easy,
+      course_useful: useful,
+      course_comment: courseComment,
+      prof_clear: clear === -1 ? null : clear,
+      prof_engaging: engaging === -1 ? null : engaging,
+      prof_comment: profComment
     };
 
-    const profReviewData = {
-      prof_id: profID,
-      clear,
-      engaging,
-      text: profReviewText,
-      public: selectedAnonymous === 0 ? false : true
-    };
-
-    const courseReviewPromise = courseReview ?
-      updateCourseReview({ variables: {
-        review_id: courseReview.id,
-        ...courseReviewData
-      }}) : insertCourseReview({ variables: {
-        user_id: userID,
-        course_id: course.id,
-        ...courseReviewData
-      }});
-
-    let profReviewPromise = null;
-    if (selectedProf !== -1) {
-      profReviewPromise = profReview ?
-        updateProfReview({ variables: {
-          review_id: profReview.id,
-          ...profReviewData
-        }}) : insertProfReview({ variables: {
-          user_id: userID,
-          course_id: course.id,
-          ...profReviewData
-        }});
-    }
-
-    Promise.all([courseReviewPromise, profReviewPromise]).then(() => {
+    upsertReview({
+      variables: reviewData,
+      optimisticResponse: {
+        __typename: "mutation_root",
+        insert_review: {
+          __typename: "review_mutation_response",
+          returning: {
+            __typename: "review",
+            id: review ? review.id : null,
+            ...reviewData,
+            created_at: new Date(),
+            updated_at: new Date()
+          }
+        }
+      }
+    }).then(() => {
       onCancel();
       setReviewUpdating(false);
     });
   };
 
   const handleDelete = () => {
-    setReviewDeleting(true);
-    deleteReview({variables: {
-      course_review_id: courseReview ? courseReview.id : null,
-      prof_review_id: profReview ? profReview.id : null
-    }}).then(() => {
+    if (review) {
+      setReviewDeleting(true);
+      deleteReview({ variables: { review_id: review ? review.id : null }}).then(() => {
+        onCancel();
+        setReviewDeleting(false);
+      });
+    } else {
       onCancel();
-      setReviewDeleting(false);
-    });
+    }
   };
 
   return (
@@ -261,9 +237,9 @@ const CourseReviewCourseBox = ({
 
       <ReviewTextArea
         rows={5}
-        value={courseReviewText}
+        value={courseComment}
         maxLength={8192}
-        onChange={(event) => setCourseReviewText(event.target.value)}
+        onChange={(event) => setCourseComment(event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -307,9 +283,9 @@ const CourseReviewCourseBox = ({
 
       <ReviewTextArea
         rows={5}
-        value={profReviewText}
+        value={profComment}
         maxLength={8192}
-        onChange={(event) => setProfReviewText(event.target.value)}
+        onChange={(event) => setProfComment(event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -340,7 +316,7 @@ const CourseReviewCourseBox = ({
           <Button
             handleClick={handlePost}
             loading={reviewUpdating}
-            disabled={!usefulSelected || !easySelected || liked === -1}
+            disabled={!usefulSelected || !easySelected || liked === -1 || selectedProf === -1}
           >
             Post
           </Button>
@@ -379,8 +355,7 @@ const CourseReviewCourseBox = ({
 CourseReviewCourseBox.propTypes = {
   courseList: PropTypes.arrayOf(PropTypes.shape({
     course: PropTypes.object.isRequired,
-    courseReview: PropTypes.object,
-    profReview: PropTypes.object,
+    review: PropTypes.object,
   })).isRequired,
   theme: PropTypes.object.isRequired,
   selectedCourseIndex: PropTypes.number,

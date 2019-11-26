@@ -32,7 +32,7 @@ export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
   // console.log(`Finding: ${dayOfWeek} between ${start} and ${end}`);
   while (currentMoment.isSameOrBefore(end)) {
     // console.log(`  ${currentMoment} is ${legalDays[currentMoment.weekday()]}`);
-    if (legalDays[currentMoment.weekday()] == dayOfWeek) {
+    if (legalDays[currentMoment.weekday()] === dayOfWeek) {
       daysToReturn.push(currentMoment.clone().startOf('day'));
     }
     currentMoment.add(1, 'day');
@@ -118,7 +118,7 @@ const ProfileCalendar = ({ schedule, theme }) => {
   const intv = getIntervalsForWeek(moment(), 5, schedule);
   // const intv = [];
   console.log(intv);
-  if (schedule.length == 0) {
+  if (schedule.length === 0) {
   } else {
     return (
       <WeekCalendar

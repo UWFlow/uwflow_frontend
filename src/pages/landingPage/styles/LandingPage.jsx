@@ -44,6 +44,7 @@ export const Subheading = styled.div`
   font-size: 24px;
   font-weight: 300;
   z-index: -1;
+
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     left: 32px;
   }
@@ -53,9 +54,9 @@ export const Column1 = styled.div`
   position: relative;
   display: flex;
   justify-content: flex-end;
-  height: 65vh;
   padding: 64px;
   flex-direction: column;
+
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     padding: 32px;
   }
@@ -82,6 +83,7 @@ export const BackgroundImage = styled.div`
   background-size: cover;
   background-position: center left;
   height: 65vh;
+  max-height: 800px;
 `;
 
 export const AuthContent = styled.div`

@@ -15,8 +15,8 @@ export const ExploreHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
+  background-image: url(${ExploreHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
-  background: url(${ExploreHeader});
   background-size: cover;
   flex-direction: column;
   position: relative;

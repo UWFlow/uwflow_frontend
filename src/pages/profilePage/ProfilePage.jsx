@@ -420,28 +420,14 @@ const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const ProfilePageContent = ({
-  user,
-  courseReviews,
-  profReviews,
-  coursesTaken,
-  isBrowserDesktop,
-}) => {
+const ProfilePageContent = ({ user, reviews, coursesTaken, isBrowserDesktop }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
-  let { courses_taken: courses, shortlist } = user;
-
-  let schedule = testSchedule.schedule;
-
-  const reviewModalCourseList = courses.map(course => {
-    const courseReview = courseReviews.find(
-      review => review.course_id === course.course.id,
-    );
-    const profReview = profReviews.find(
-      review => review.course_id === course.course.id,
-    );
-    return { course: course.course, courseReview, profReview };
+  const shortlist = user.shortlist;
+  const reviewModalCourseList = coursesTaken.map(course => {
+    const curReview = reviews.find(review => review.course_id === course.course.id);
+    return { course: course.course, review: curReview };
   });
 
   return (
@@ -449,10 +435,10 @@ const ProfilePageContent = ({
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar schedule={schedule} />
+          <ProfileCalendar schedule={testSchedule.schedule} />
           <ProfileCourses
             courses={coursesTaken}
-            courseReviews={courseReviews}
+            reviews={reviews}
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
           />
@@ -464,8 +450,7 @@ const ProfilePageContent = ({
               <CompleteProfileContent
                 user={user}
                 coursesTaken={coursesTaken}
-                courseReviews={courseReviews}
-                profReviews={profReviews}
+                reviews={reviews}
               />
             </CompleteProfileWrapper>
           )}
@@ -504,15 +489,16 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   }
 
   return loading ? (
-    <LoadingSpinner />
+    <ProfilePageWrapper>
+      <LoadingSpinner />
+    </ProfilePageWrapper>
   ) : error || !data ? (
     <NotFoundPage />
   ) : (
     <ProfilePageWrapper>
       <ProfilePageContent
         user={data.user[0]}
-        courseReviews={data.course_review}
-        profReviews={data.prof_review}
+        reviews={data.review}
         coursesTaken={data.user_course_taken}
         isBrowserDesktop={isBrowserDesktop}
       />

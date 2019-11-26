@@ -22,7 +22,8 @@ const examColumns = [
   {
     Header: 'Section(s)',
     accessor: 'sections',
-    maxWidth: 160,
+    maxWidth: 174,
+    Cell: ({cell}) => cell.value.join(', ')
   },
   {
     Header: 'Time',
@@ -41,10 +42,10 @@ const examColumns = [
   },
 ]
 
-const FinalExamTable = ({ courses }) => {
+const FinalExamTable = ({ courses, includeCode = true }) => {
   return (
     <Table
-      columns={examColumns}
+      columns={includeCode ? examColumns : examColumns.slice(1)}
       data={courses}
     />
   );

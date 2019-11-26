@@ -1,150 +1,91 @@
 import gql from 'graphql-tag';
 
-export const INSERT_COURSE_REVIEW = gql`
-  mutation INSERT_COURSE_REVIEW(
+import ReviewFragment from '../fragments/ReviewFragment';
+
+export const UPSERT_REVIEW = gql`
+  mutation UPSERT_REVIEW(
     $user_id: Int,
     $course_id: Int,
     $prof_id: Int,
-    $easy: smallint,
     $liked: smallint,
-    $useful: smallint,
-    $text: String,
-    $public: Boolean
+    $public: Boolean,
+    $course_easy: smallint,
+    $course_useful: smallint,
+    $course_comment: String,
+    $prof_clear: smallint,
+    $prof_engaging: smallint,
+    $prof_comment: String
   ) {
-    insert_course_review(
+    insert_review(
       objects: {
         user_id: $user_id,
         course_id: $course_id,
         prof_id: $prof_id
-        easy: $easy,
         liked: $liked,
-        useful: $useful,
-        text: $text,
-        public: $public
+        public: $public,
+        course_easy: $course_easy,
+        course_useful: $course_useful,
+        course_comment: $course_comment,
+        prof_clear: $prof_clear,
+        prof_engaging: $prof_engaging,
+        prof_comment: $prof_comment,
+      },
+      on_conflict: {
+        constraint: course_uniquely_reviewed,
+        update_columns: [
+          prof_id,
+          liked,
+          course_easy,
+          course_useful, 
+          course_comment,
+          prof_clear,
+          prof_engaging,
+          prof_comment,
+          public
+        ]
       }
     ) {
-      affected_rows
-    }
-  }
-`;
-
-export const UPDATE_COURSE_REVIEW = gql`
-  mutation UPDATE_COURSE_REVIEW(
-    $review_id: Int,
-    $prof_id: Int,
-    $liked: smallint,
-    $easy: smallint,
-    $useful: smallint,
-    $text: String,
-    $public: Boolean
-  ) {
-    update_course_review(
-      where: {id: {_eq: $review_id}},
-      _set: {
-        prof_id: $prof_id,
-        easy: $easy,
-        liked: $liked,
-        useful: $useful,
-        text: $text,
-        public: $public
+      returning {
+        ...ReviewUpdateInfoFragment
       }
-    ) {
-      affected_rows
     }
   }
-`;
-
-export const INSERT_PROF_REVIEW = gql`
-  mutation INSERT_PROF_REVIEW(
-    $user_id: Int,
-    $course_id: Int,
-    $prof_id: Int,
-    $clear: smallint,
-    $engaging: smallint,
-    $text: String,
-    $public: Boolean
-  ) {
-    insert_prof_review(
-      objects: {
-        user_id: $user_id,
-        course_id: $course_id,
-        prof_id: $prof_id,
-        clear: $clear,
-        engaging: $engaging,
-        text: $text,
-        public: $public
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-export const UPDATE_PROF_REVIEW = gql`
-  mutation UPDATE_PROF_REVIEW(
-    $review_id: Int,
-    $course_id: Int,
-    $prof_id: Int,
-    $clear: smallint,
-    $engaging: smallint,
-    $text: String,
-    $public: Boolean
-  ) {
-    update_prof_review(
-      where: {id: {_eq: $review_id}},
-      _set: {
-        course_id: $course_id,
-        prof_id: $prof_id,
-        clear: $clear,
-        engaging: $engaging,
-        text: $text,
-        public: $public
-      }
-    ) {
-      affected_rows
-    }
-  }
+  ${ReviewFragment.reviewUpdateInfo}
 `;
 
 export const DELETE_REVIEW = gql`
-  mutation DELETE_REVIEW($course_review_id: Int, $prof_review_id: Int) {
-    delete_course_review(where: {id: {_eq: $course_review_id}}) {
-      affected_rows
-    }
-    delete_prof_review(where: {id: {_eq: $prof_review_id}}) {
-      affected_rows
+  mutation DELETE_REVIEW($review_id: Int) {
+    delete_review(where: {id: {_eq: $review_id}}) {
+      returning {
+        ...ReviewUpdateInfoFragment
+      }
     }
   }
+  ${ReviewFragment.reviewUpdateInfo}
 `;
 
-export const INSERT_LIKED_REVIEW = gql`
-  mutation INSERT_LIKED_REVIEW(
+export const UPSERT_LIKED_REVIEW = gql`
+  mutation UPSERT_LIKED_REVIEW(
     $user_id: Int,
     $course_id: Int,
-    $liked: smallint,
-    $public: Boolean
+    $liked: smallint
   ) {
-    insert_course_review(
+    insert_review(
       objects: {
         user_id: $user_id,
         course_id: $course_id,
-        prof_id: null,
-        easy: null,
         liked: $liked,
-        useful: null,
-        text: null,
-        public: $public
+        public: false
+      },
+      on_conflict: {
+        constraint: course_uniquely_reviewed,
+        update_columns: [liked]
       }
     ) {
-      affected_rows
-    }
-  }
-`;
-
-export const UPDATE_LIKED = gql`
-  mutation UPDATE_LIKED($review_id: Int, $liked: smallint) {
-    update_course_review(_set: { liked: $liked }, where: {id: {_eq: $review_id}}) {
-      affected_rows
+      returning {
+        id
+        liked
+      }
     }
   }
 `;

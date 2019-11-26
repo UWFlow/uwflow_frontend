@@ -61,11 +61,11 @@ const CourseCourseReviews = ({
   const renderReviews = useMemo(() => reviews.sort((a, b) => {
     const timeSort = moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
     return courseSort === 0 ?
-      timeSort : timeSort || a.upvotes - b.upvotes;
+      timeSort : b.upvotes === a.upvotes ? timeSort : b.upvotes - a.upvotes;
   }).filter((_, i) => {
     return showingAllReviews || i < MIN_REVIEWS_SHOWN;
-  }).map((review, i) => (
-    <Review key={i} review={review} />
+  }).map((review) => (
+    <Review key={review.id} review={review} isCourseReview />
   )), [reviews, showingAllReviews, courseSort]);
 
   return (
@@ -152,8 +152,8 @@ const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
           return moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
         }).filter((_, i) => {
           return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
-        }).map((review, i) => (
-          <Review key={i} review={review} />
+        }).map((review) => (
+          <Review key={review.id} review={review} isCourseReview={false} />
         ))}
       </ReviewListWrapper>
       {prof.reviews.length > MIN_REVIEWS_SHOWN && (

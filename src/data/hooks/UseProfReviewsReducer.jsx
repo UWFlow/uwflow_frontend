@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 export const UPDATE_REVIEW_DATA = 'update review data';
 
@@ -10,7 +9,7 @@ const convertInputToState = data => {
       courses: [],
     };
   }
-  const reviewsByCourse = data.prof_review.reduce((allCourses, current) => {
+  const reviewsByCourse = data.review.reduce((allCourses, current) => {
     let courseObject;
     let foundCourseObject = false;
     for (let i of allCourses) {
@@ -26,7 +25,7 @@ const convertInputToState = data => {
         name: current.course ? current.course.name : '',
         code: current.course ? current.course.code : '',
         liked: current.course
-          ? current.course.course_reviews_aggregate.aggregate.avg.liked
+          ? current.course.reviews_aggregate.aggregate.avg.liked
           : 0,
         reviews: [],
       };
@@ -34,15 +33,16 @@ const convertInputToState = data => {
     }
     courseObject.reviews.push({
       id: current.id,
-      upvotes: current.prof_review_votes_aggregate.aggregate.sum.vote,
-      upvote_users: current.prof_review_votes.map(voteObj => voteObj.user_id),
-      review: current.text,
+      upvotes: current.prof_review_upvotes_aggregate.aggregate.count,
+      upvote_users: current.prof_review_upvotes.map(vote => Number(vote.user_id)),
+      review: current.prof_comment,
       author: current.author,
       user: current.user,
       created_at: current.created_at,
+      updated_at: current.updated_at,
       metrics: {
-        clear: current.clear,
-        engaging: current.engaging,
+        clear: current.prof_clear,
+        engaging: current.prof_engaging,
       },
     });
     return allCourses;
@@ -74,42 +74,6 @@ const useProfReviewsReducer = initialState => {
   };
 
   return [state, dispatch];
-};
-
-useProfReviewsReducer.propTypes = {
-  prof_review: PropTypes.arrayOf(
-    PropTypes.shape({
-      clear: PropTypes.number,
-      course: PropTypes.shape({
-        code: PropTypes.string,
-        course_reviews_aggregate: PropTypes.shape({
-          aggregate: PropTypes.shape({
-            avg: PropTypes.shape({
-              liked: PropTypes.number,
-            }),
-          }),
-        }),
-        id: PropTypes.number,
-        name: PropTypes.string,
-      }),
-      prof_review_votes_aggregate: PropTypes.shape({
-        aggregate: PropTypes.shape({
-          sum: PropTypes.shape({
-            vote: PropTypes.number,
-          }),
-        }),
-      }),
-      text: PropTypes.string,
-      author: PropTypes.shape({
-        full_name: PropTypes.string,
-        program: PropTypes.string,
-        picture_url: PropTypes.string,
-      }),
-      user: PropTypes.shape({
-        user_id: PropTypes.number
-      })
-    }),
-  ),
 };
 
 export default useProfReviewsReducer;

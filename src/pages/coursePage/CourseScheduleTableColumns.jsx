@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   SectionCellWrapper,
   SectionContentWrapper,
@@ -6,7 +6,8 @@ import {
   ContentWrapper,
   InstructorLink,
   ColorBar,
-  EnrollmentText
+  EnrollmentText,
+  SpaceMargin
 } from './styles/CourseSchedule';
 import { getProfPageRoute } from '../../Routes';
 import { processDateString } from '../../utils/Misc';
@@ -14,6 +15,14 @@ import { processDateString } from '../../utils/Misc';
 export const LEC = 'LEC';
 export const LAB = 'LAB';
 export const TUT = 'TUT';
+
+const contentSpace = (spaces) => {
+  let content = [];
+  for (let i = 0; i < spaces; i++) {
+    content.push(<ContentWrapper key={i}></ContentWrapper>);
+  }
+  return content;
+}
 
 const SectionCell = ({ cell }) => (
   <SectionCellWrapper numRows={cell.value.numRows}>
@@ -34,64 +43,86 @@ const ClassCell = ({ cell }) => (
   <NormalCellWrapper>{cell.value}</NormalCellWrapper>
 );
 
-const EnrolledCell = ({ cell }) => {
-  return (
-    <NormalCellWrapper>
-      <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
-        {cell.value.filled}/{cell.value.capacity}
-      </EnrollmentText>
-    </NormalCellWrapper>
-  );
-}
+const EnrolledCell = ({ cell }) => (
+  <NormalCellWrapper>
+    <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
+      {cell.value.filled}/{cell.value.capacity}
+    </EnrollmentText>
+  </NormalCellWrapper>
+);
+
+const CampusCell = ({ cell }) => (
+  <NormalCellWrapper>{cell.value}</NormalCellWrapper>
+);
 
 const TimeCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, idx) => {
-      return (
-        <ContentWrapper key={idx}>
+    {cell.value.map((cl, idx) => (
+      <Fragment key={idx}>
+        <ContentWrapper>
           {cl.time}
         </ContentWrapper>
-      );
-    })}
+        {contentSpace(cl.spaces)}
+        {idx < cell.value.length - 1 && <SpaceMargin />}
+      </Fragment>
+    ))}
   </NormalCellWrapper>
 );
 
 const DateCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl) => {
-      return cl.timeRanges.map((timeRange, idx) => {
-        const date = timeRange.startDate === timeRange.endDate ?
-          processDateString(timeRange.startDate).split(', ')[1] : '';
-        return (
-        <ContentWrapper key={idx}>
-          {timeRange.days.join(' ')} {date}
-        </ContentWrapper>
-        );
-      })
-    })}
+    {cell.value.map((timeRanges, timeRangeIdx) => (
+      <Fragment key={timeRangeIdx}>
+        {timeRanges.map((date, idx) => {
+          const processedDate = date.startDate === date.endDate ?
+            processDateString(date.startDate).split(', ')[1] : '';
+          return (
+            <ContentWrapper key={idx}>
+              {date.days.join(' ')} {processedDate}
+            </ContentWrapper>
+          );
+        })}
+        {timeRangeIdx < cell.value.length - 1 && <SpaceMargin />}
+      </Fragment>
+    ))}
   </NormalCellWrapper>
 );
 
 const LocationCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, idx) => {
-      return <ContentWrapper key={idx}>{cl.location}</ContentWrapper>;
-    })}
+    {cell.value.map((cl, idx) => (
+      <Fragment key={idx}>
+        <ContentWrapper>
+          {cl.location}
+        </ContentWrapper>
+        {contentSpace(cl.spaces)}
+        {idx < cell.value.length - 1 && <SpaceMargin />}
+      </Fragment>
+    ))}
   </NormalCellWrapper>
 );
 
 const InstructorCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, idx) => {
-      return cl.prof.code ? (
-        <InstructorLink
-          to={getProfPageRoute(cl.prof.code)}
-          key={idx}
-        >
-          {cl.prof.name}
-        </InstructorLink>
-      ) : null;
-    })}
+    {cell.value.map((cl, idx) => cl.prof.code ?
+      (
+        <Fragment key={idx}>
+          <InstructorLink
+            to={getProfPageRoute(cl.prof.code)}
+            key={idx}
+          >
+            {cl.prof.name}
+          </InstructorLink>
+          {contentSpace(cl.spaces)}
+          {idx < cell.value.length - 1 && <SpaceMargin />}
+        </Fragment>
+      ) : (
+        <Fragment key={idx}>
+          {contentSpace(cl.spaces + 1)}
+          {idx < cell.value.length - 1 && <SpaceMargin />}
+        </Fragment>
+      )
+    )}
   </NormalCellWrapper>
 );
 
@@ -111,7 +142,7 @@ export const courseScheduleTableColumns = [
     accessor: 'class',
     maxWidth: 48,
     style: {
-      'vertical-align': 'top',
+      'verticalAlign': 'top',
     },
   },
   {
@@ -120,31 +151,37 @@ export const courseScheduleTableColumns = [
     accessor: 'enrolled',
     maxWidth: 96,
     style: {
-      'vertical-align': 'top',
+      'verticalAlign': 'top',
     },
   },
   {
     Header: 'Time',
     Cell: TimeCell,
-    accessor: 'infoGroupings',
+    accessor: 'times',
     maxWidth: 136,
   },
   {
     Header: 'Date',
     Cell: DateCell,
-    accessor: 'infoGroupings',
-    maxWidth: 112,
+    accessor: 'dates',
+    maxWidth: 104,
   },
   {
     Header: 'Location',
     Cell: LocationCell,
-    accessor: 'infoGroupings',
+    accessor: 'locations',
     maxWidth: 72,
   },
   {
     Header: 'Instructor',
     Cell: InstructorCell,
-    accessor: 'infoGroupings',
+    accessor: 'profs',
     maxWidth: 160
+  },
+  {
+    Header: 'Campus',
+    Cell: CampusCell,
+    accessor: 'campus',
+    maxWidth: 80
   },
 ];

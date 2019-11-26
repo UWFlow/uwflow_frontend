@@ -15,8 +15,8 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
-import { UPDATE_LIKED, INSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import { COURSE_LIKED_REFETCH_QUERY } from '../../graphql/queries/course/Course';
+import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
+import { REFETCH_REVIEW_AGGREGATE } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -26,23 +26,20 @@ const LikeCourseToggle = ({
   theme,
   isLoggedIn,
   courseID,
+  profID,
   reviewID = null,
   initialState = null
 }) => {
-  const [reviewed, setReviewed] = useState(reviewID !== null);
   const userID = localStorage.getItem('user_id');
 
-  const refetchQueries = [
-    {
-      query: COURSE_LIKED_REFETCH_QUERY,
-      variables: { course_id: courseID, user_id: userID }
-    }
-  ];
+  const refetchQueries = [{
+    query: REFETCH_REVIEW_AGGREGATE,
+    variables: { course_id: courseID, user_id: userID, prof_id: profID === null ? -1 : profID }
+  }];
 
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
-  const [updateLiked] = useMutation(UPDATE_LIKED, { refetchQueries });
-  const [insertLiked] = useMutation(INSERT_LIKED_REVIEW, { refetchQueries });
+  const [upsertLiked] = useMutation(UPSERT_LIKED_REVIEW, { refetchQueries });
 
   const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
@@ -54,25 +51,22 @@ const LikeCourseToggle = ({
       return;
     }
 
-    if (liked === targetState) {
-      if (reviewed) {
-        updateLiked({variables: { review_id: reviewID, liked: null }});
+    let likedValue = liked === targetState ? null : targetState;
+    upsertLiked({
+      variables: { user_id: userID, course_id: courseID, liked: likedValue },
+      optimisticResponse: {
+        __typename: "mutation_root",
+        insert_review: {
+          __typename: "review_mutation_response",
+          returning: {
+            __typename: "review",
+            id: reviewID,
+            liked: likedValue
+          }
+        }
       }
-      setLiked(null);
-    } else {
-      setLiked(targetState);
-      if (reviewed) {
-        updateLiked({variables: { review_id: reviewID, liked: targetState }});
-      } else {
-        insertLiked({variables: {
-          user_id: userID,
-          course_id: courseID,
-          liked: targetState,
-          public: false
-        }});
-        setReviewed(true);
-      }
-    }
+    });
+    setLiked(likedValue);
   }
 
   return (

@@ -76,3 +76,8 @@ export const FinalExamsText = styled.div`
     padding: 16px;
   `}
 `;
+
+export const SpaceMargin = styled.div`
+  margin-bottom: 8px;
+  content: '';
+`;

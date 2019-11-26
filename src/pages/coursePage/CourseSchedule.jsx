@@ -65,16 +65,17 @@ const getInfoGroupings = meetings => {
     return groupings;
   }, {});
 
-  let answer = [];
+  let infoGroups = [];
+
   // Sort timeRanges for each group
   Object.entries(groupedByTimeOfDay).forEach(entry => {
     entry[1].timeRanges.sort((a, b) => a.startDate > b.startDate);
-    answer.push(entry[1]);
+    infoGroups.push(entry[1]);
   });
 
   // Merge and sort days of week for timeRanges that occur in the same date range
   const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not too sure about saturday and sunday
-  answer.forEach(entry => {
+  infoGroups.forEach(entry => {
     let newTimeRanges = [];
     let newDays = [];
     entry.timeRanges.forEach((currRange, i) => {
@@ -109,8 +110,15 @@ const getInfoGroupings = meetings => {
     entry.timeRanges = newTimeRanges;
   });
 
-  answer.sort((a, b) => a.startSeconds - b.startSeconds);
-  return answer;
+  infoGroups = infoGroups.sort((a, b) => a.startSeconds - b.startSeconds);
+  const numDates = infoGroups.map(group => group.timeRanges.length);
+
+  return {
+    times: infoGroups.map((group, i) => Object({ time: group.time, spaces: numDates[i] - 1})),
+    locations: infoGroups.map((group, i) => Object({ location: group.location, spaces: numDates[i] - 1})),
+    profs: infoGroups.map((group, i) => Object({ prof: group.prof, spaces: numDates[i] - 1})),
+    dates: infoGroups.map((group) => group.timeRanges),
+  };
 };
 
 const CourseSchedule = ({ sections, courseCode }) => {
@@ -124,28 +132,27 @@ const CourseSchedule = ({ sections, courseCode }) => {
     return allTerms;
   }, []);
 
-  const sectionsCleanedData = sections
-    .map(s => ({
-      section: s.section,
-      class: s.class_number,
-      term: s.term,
-      enrolled: {
-        filled: s.enrollment_total,
-        capacity: s.enrollment_capacity,
-      },
-      // Every grouping contains a single time of day, location, and instructor
-      // and the classes that occur with those parameters.
-      infoGroupings: getInfoGroupings(s.meetings),
-    }))
-    .sort((a, b) => {
-      const sectionTypeA = a.section.split(' ')[0];
-      const sectionTypeB = b.section.split(' ')[0];
-      if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
-        return a.section.localeCompare(b.section);
-      } else {
-        return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
-      }
-    });
+  const sectionsCleanedData = sections.map(s => ({
+    section: s.section,
+    campus: s.campus,
+    class: s.class_number,
+    term: s.term,
+    enrolled: {
+      filled: s.enrollment_total,
+      capacity: s.enrollment_capacity,
+    },
+    // Every grouping contains a single time of day, location, and instructor
+    // and the classes that occur with those parameters.
+    ...getInfoGroupings(s.meetings),
+  })).sort((a, b) => {
+    const sectionTypeA = a.section.split(' ')[0];
+    const sectionTypeB = b.section.split(' ')[0];
+    if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
+      return a.section.localeCompare(b.section);
+    } else {
+      return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
+    }
+  });
 
   const courseExams = processSectionExams(sections, courseCode);
 
@@ -162,7 +169,7 @@ const CourseSchedule = ({ sections, courseCode }) => {
           </TableWrapper>
           <TableWrapper>
             <FinalExamsText>Final Exams</FinalExamsText>
-            <FinalExamTable courses={courseExams} />
+            <FinalExamTable courses={courseExams} includeCode={false} />
           </TableWrapper>
         </>
       ),

@@ -1,28 +1,32 @@
 import gql from 'graphql-tag';
 
-import CourseReviewFragment from '../../fragments/course/CourseReviewFragment.jsx';
+import ReviewFragment from '../../fragments/ReviewFragment';
 
 export const GET_COURSE_REVIEW = gql`
   query GET_COURSE_REVIEW($id: Int) {
-    course_review(
-      where: { course_id: { _eq: $id }, text: { _is_null: false } }
-    ) {
-      ...CourseReviewInfoFragment
+    review(where: {
+      course_id: { _eq: $id },
+      course_comment: { _is_null: false }
+    }) {
+      ...ReviewInfoFragment
+      ...CourseReviewVotesFragment
+      ...ProfReviewVotesFragment
     }
-    course_review_aggregate(where: { course_id: { _eq: $id } }) {
-      aggregate {
-        count(columns: text)
-      }
-    }
-    prof_review(where: { course_id: { _eq: $id }, text: { _is_null: false } }) {
-      ...ProfReviewInfoFragment
-    }
-    prof_review_aggregate(where: { course_id: { _eq: $id } }) {
-      aggregate {
-        count(columns: text)
-      }
+    review_aggregate(where: { course_id: { _eq: $id } }) {
+      ...ReviewAggregateFragment
     }
   }
-  ${CourseReviewFragment.courseReviewInfo}
-  ${CourseReviewFragment.profReviewInfo}
+  ${ReviewFragment.reviewInfo}
+  ${ReviewFragment.courseReviewVotes}
+  ${ReviewFragment.profReviewVotes}
+  ${ReviewFragment.reviewAggregate}
+`;
+
+export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
+  query REFETCH_COURSE_REVIEW_UPVOTE($review_id: Int) {
+    review(where: {id: {_eq: $review_id}}) {
+      ...CourseReviewVotesFragment
+    }
+  }
+  ${ReviewFragment.courseReviewVotes}
 `;

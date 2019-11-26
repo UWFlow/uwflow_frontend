@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
 import moment from 'moment';
+import { useMutation } from 'react-apollo';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
@@ -30,6 +31,16 @@ import {
 
 /* Child Components */
 import BubbleRatings from '../input/BubbleRatings';
+
+/* GraphQL */
+import {
+  DELETE_COURSE_REVIEW_VOTE,
+  DELETE_PROF_REVIEW_VOTE,
+  INSERT_COURSE_REVIEW_VOTE,
+  INSERT_PROF_REVIEW_VOTE
+} from '../../graphql/mutations/Upvote';
+import { REFETCH_COURSE_REVIEW_UPVOTE } from '../../graphql/queries/course/CourseReview';
+import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfReview';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -69,13 +80,27 @@ const Review = ({
   review,
   theme,
   isBrowserDesktop,
-  isLoggedIn
+  isLoggedIn,
+  isCourseReview
 }) => {
   const { upvotes, upvote_users, review: reviewText, author, created_at, metrics } = review;
   const userID = localStorage.getItem('user_id');
 
+  const refetchQueries = [{
+    query: isCourseReview ? REFETCH_COURSE_REVIEW_UPVOTE : REFETCH_PROF_REVIEW_UPVOTE,
+    variables: { review_id: review.id }
+  }]
+
   const dispatch = useDispatch();
-  const [userUpvoted, setUserUpvoted] = useState(upvote_users.includes(userID));
+  const [userUpvoted, setUserUpvoted] = useState(upvote_users.includes(Number(userID)));
+  const [insertReviewVote] = useMutation(
+    isCourseReview ? INSERT_COURSE_REVIEW_VOTE : INSERT_PROF_REVIEW_VOTE,
+    { refetchQueries }
+  );
+  const [deleteReviewVote] = useMutation(
+    isCourseReview ? DELETE_COURSE_REVIEW_VOTE : DELETE_PROF_REVIEW_VOTE,
+    { refetchQueries }
+  );
 
   const onClickUpvote = () => {
     if (!isLoggedIn) {
@@ -84,7 +109,9 @@ const Review = ({
     }
 
     if (userUpvoted) {
+      deleteReviewVote({variables: {review_id: review.id, user_id: userID} });
     } else {
+      insertReviewVote({variables: {review_id: review.id, user_id: userID} });
     }
     setUserUpvoted(!userUpvoted);
   }

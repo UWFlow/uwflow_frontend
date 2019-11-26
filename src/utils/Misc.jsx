@@ -97,13 +97,6 @@ export const getNextTermCode = () => {
     : currentTerm + 2;
 };
 
-export const secsToTime = secs => {
-  const t = Math.floor(secs / 3600) % 12;
-  const h = t === 0 ? 12 : t;
-  const m = Math.floor((secs % 3600) / 60) % 60;
-  return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
-};
-
 export const monthDayToText = day => {
   let postfix;
   switch (day % 10) {

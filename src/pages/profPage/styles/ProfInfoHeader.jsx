@@ -19,8 +19,8 @@ export const ProfNameSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  background-image: url(${ProfHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
-  background: url(${ProfHeader});
   background-size: cover;
   position: relative;
   min-height: 120px;
