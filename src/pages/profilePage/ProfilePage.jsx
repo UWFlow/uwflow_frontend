@@ -35,19 +35,412 @@ import { LANDING_PAGE_ROUTE } from '../../Routes';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 import { logOut } from '../../utils/Auth';
 
+const testSchedule = {
+  schedule: [
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6544,
+        id: 161,
+        term: 1199,
+        exams: [
+          {
+            date: '2019-12-19',
+            day: 'Th',
+            location: 'PAC 8',
+            start_seconds: 32400,
+            end_seconds: 41400,
+          },
+        ],
+        meetings: [
+          {
+            days: ['T', 'Th', 'h'],
+            end_date: '2019-12-03',
+            end_seconds: 46200,
+            is_cancelled: false,
+            location: 'E2 1732',
+            prof: {
+              id: 5548,
+              name: 'Ondrej Lhotak',
+            },
+            section_id: 161,
+            start_date: '2019-09-04',
+            start_seconds: 41400,
+          },
+        ],
+        section: 'LEC 001',
+        course: {
+          name: 'Foundations of Sequential Programs (Enriched)',
+          id: 1414,
+          code: 'cs241e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6545,
+        id: 162,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['W'],
+            end_date: '2019-12-03',
+            end_seconds: 62400,
+            is_cancelled: false,
+            location: 'PHY 313',
+            prof: null,
+            section_id: 162,
+            start_date: '2019-09-04',
+            start_seconds: 59400,
+          },
+        ],
+        section: 'TUT 101',
+        course: {
+          name: 'Foundations of Sequential Programs (Enriched)',
+          id: 1414,
+          code: 'cs241e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6546,
+        id: 163,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['W'],
+            end_date: '2019-10-30',
+            end_seconds: 75000,
+            is_cancelled: false,
+            location: null,
+            prof: {
+              id: 2656,
+              name: 'Gang LU',
+            },
+            section_id: 163,
+            start_date: '2019-10-30',
+            start_seconds: 68400,
+          },
+        ],
+        section: 'TST 201',
+        course: {
+          name: 'Foundations of Sequential Programs (Enriched)',
+          id: 1414,
+          code: 'cs241e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 8880,
+        id: 178,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['F'],
+            end_date: '2019-12-03',
+            end_seconds: 40800,
+            is_cancelled: false,
+            location: 'RCH 308',
+            prof: null,
+            section_id: 178,
+            start_date: '2019-09-04',
+            start_seconds: 37800,
+          },
+        ],
+        section: 'TUT 101',
+        course: {
+          name: 'Logic and Computation (Enriched)',
+          id: 1416,
+          code: 'cs245e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 8881,
+        id: 179,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['Th', 'h'],
+            end_date: '2019-11-07',
+            end_seconds: 66000,
+            is_cancelled: false,
+            location: null,
+            prof: {
+              id: 1782,
+              name: 'Dalibor Dvorski',
+            },
+            section_id: 179,
+            start_date: '2019-11-07',
+            start_seconds: 59400,
+          },
+        ],
+        section: 'TST 201',
+        course: {
+          name: 'Logic and Computation (Enriched)',
+          id: 1416,
+          code: 'cs245e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 8879,
+        id: 177,
+        term: 1199,
+        exams: [
+          {
+            date: '2019-12-17',
+            day: 'T',
+            location: 'MC 1056',
+            start_seconds: 45000,
+            end_seconds: 54000,
+          },
+        ],
+        meetings: [
+          {
+            days: ['T', 'Th', 'h'],
+            end_date: '2019-12-03',
+            end_seconds: 51600,
+            is_cancelled: false,
+            location: 'ML 349',
+            prof: {
+              id: 3743,
+              name: 'Jonathan Buss',
+            },
+            section_id: 177,
+            start_date: '2019-09-04',
+            start_seconds: 46800,
+          },
+        ],
+        section: 'LEC 001',
+        course: {
+          name: 'Logic and Computation (Enriched)',
+          id: 1416,
+          code: 'cs245e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6547,
+        id: 193,
+        term: 1199,
+        exams: [
+          {
+            date: '2019-12-11',
+            day: 'W',
+            location: 'MC 1085',
+            start_seconds: 70200,
+            end_seconds: 79200,
+          },
+        ],
+        meetings: [
+          {
+            days: ['T', 'Th', 'h'],
+            end_date: '2019-12-03',
+            end_seconds: 40800,
+            is_cancelled: false,
+            location: 'MC 4041',
+            prof: {
+              id: 1149,
+              name: 'Bradley Michael Lushman',
+            },
+            section_id: 193,
+            start_date: '2019-09-04',
+            start_seconds: 36000,
+          },
+        ],
+        section: 'LEC 001',
+        course: {
+          name: 'Object-Oriented Software Development (Enriched)',
+          id: 1418,
+          code: 'cs246e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6548,
+        id: 194,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['W'],
+            end_date: '2019-12-03',
+            end_seconds: 48000,
+            is_cancelled: false,
+            location: 'MC 4060',
+            prof: null,
+            section_id: 194,
+            start_date: '2019-09-04',
+            start_seconds: 45000,
+          },
+        ],
+        section: 'TUT 101',
+        course: {
+          name: 'Object-Oriented Software Development (Enriched)',
+          id: 1418,
+          code: 'cs246e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6549,
+        id: 195,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['Th', 'h'],
+            end_date: '2019-10-31',
+            end_seconds: 66000,
+            is_cancelled: false,
+            location: null,
+            prof: {
+              id: 5522,
+              name: 'Olga Zorin',
+            },
+            section_id: 195,
+            start_date: '2019-10-31',
+            start_seconds: 59400,
+          },
+        ],
+        section: 'TST 201',
+        course: {
+          name: 'Object-Oriented Software Development (Enriched)',
+          id: 1418,
+          code: 'cs246e',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6170,
+        id: 784,
+        term: 1199,
+        exams: [
+          {
+            date: '2019-12-20',
+            day: 'F',
+            location: 'MC 4021',
+            start_seconds: 57600,
+            end_seconds: 66600,
+          },
+        ],
+        meetings: [
+          {
+            days: ['T', 'Th', 'h'],
+            end_date: '2019-12-03',
+            end_seconds: 57000,
+            is_cancelled: false,
+            location: 'DWE 2527',
+            prof: {
+              id: 933,
+              name: 'Aukosh Jagannath',
+            },
+            section_id: 784,
+            start_date: '2019-09-04',
+            start_seconds: 52200,
+          },
+        ],
+        section: 'LEC 001',
+        course: {
+          name: 'Probability (Advanced Level)',
+          id: 7112,
+          code: 'stat240',
+        },
+      },
+    },
+    {
+      section: {
+        campus: 'UW U',
+        class_number: 6171,
+        id: 785,
+        term: 1199,
+        exams: [],
+        meetings: [
+          {
+            days: ['Th', 'h'],
+            end_date: '2019-10-03',
+            end_seconds: 66000,
+            is_cancelled: false,
+            location: null,
+            prof: {
+              id: 933,
+              name: 'Aukosh Jagannath',
+            },
+            section_id: 785,
+            start_date: '2019-10-03',
+            start_seconds: 59400,
+          },
+          {
+            days: ['Th', 'h'],
+            end_date: '2019-11-14',
+            end_seconds: 66000,
+            is_cancelled: false,
+            location: null,
+            prof: null,
+            section_id: 785,
+            start_date: '2019-11-14',
+            start_seconds: 59400,
+          },
+        ],
+        section: 'TST 101',
+        course: {
+          name: 'Probability (Advanced Level)',
+          id: 7112,
+          code: 'stat240',
+        },
+      },
+    },
+  ],
+};
+
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
-  isBrowserDesktop: getIsBrowserDesktop(state)
+  isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const ProfilePageContent = ({ user, courseReviews, profReviews, coursesTaken, isBrowserDesktop }) => {
+const ProfilePageContent = ({
+  user,
+  courseReviews,
+  profReviews,
+  coursesTaken,
+  isBrowserDesktop,
+}) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
-  const shortlist = user.shortlist;
-  const reviewModalCourseList = coursesTaken.map(course => {
-    const courseReview = courseReviews.find(review => review.course_id === course.course.id);
-    const profReview = profReviews.find(review => review.course_id === course.course.id);
+  let { courses_taken: courses, shortlist } = user;
+
+  let schedule = testSchedule.schedule;
+
+  const reviewModalCourseList = courses.map(course => {
+    const courseReview = courseReviews.find(
+      review => review.course_id === course.course.id,
+    );
+    const profReview = profReviews.find(
+      review => review.course_id === course.course.id,
+    );
     return { course: course.course, courseReview, profReview };
   });
 
@@ -56,7 +449,7 @@ const ProfilePageContent = ({ user, courseReviews, profReviews, coursesTaken, is
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar />
+          <ProfileCalendar schedule={schedule} />
           <ProfileCourses
             courses={coursesTaken}
             courseReviews={courseReviews}
