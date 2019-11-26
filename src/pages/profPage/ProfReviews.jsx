@@ -140,8 +140,8 @@ const ProfReviews = ({ profID, theme }) => {
                   timeSort : b.upvotes === a.upvotes ? timeSort : b.upvotes - a.upvotes;
               }).filter((_, i) => {
                 return i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code];
-              }).map((review, i) => (
-                <Review key={i} review={review} isCourseReview={false} />
+              }).map((review) => (
+                <Review key={review.id} review={review} isCourseReview={false} />
               ))}
             </ReviewListWrapper>
             {course.reviews.length > MIN_REVIEWS_SHOWN && (

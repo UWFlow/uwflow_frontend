@@ -152,8 +152,8 @@ const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
           return moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
         }).filter((_, i) => {
           return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
-        }).map((review, i) => (
-          <Review key={i} review={review} isCourseReview={false} />
+        }).map((review) => (
+          <Review key={review.id} review={review} isCourseReview={false} />
         ))}
       </ReviewListWrapper>
       {prof.reviews.length > MIN_REVIEWS_SHOWN && (

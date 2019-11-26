@@ -16,7 +16,7 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import { REFETCH_LIKED } from '../../graphql/queries/course/Course';
+import { REFETCH_REVIEW_AGGREGATE } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -27,12 +27,13 @@ const LikeCourseToggle = ({
   isLoggedIn,
   courseID,
   profID,
+  reviewID = null,
   initialState = null
 }) => {
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [{
-    query: REFETCH_LIKED,
+    query: REFETCH_REVIEW_AGGREGATE,
     variables: { course_id: courseID, user_id: userID, prof_id: profID === null ? -1 : profID }
   }];
 
@@ -51,7 +52,20 @@ const LikeCourseToggle = ({
     }
 
     let likedValue = liked === targetState ? null : targetState;
-    upsertLiked({ variables: { user_id: userID, course_id: courseID, liked: likedValue }});
+    upsertLiked({
+      variables: { user_id: userID, course_id: courseID, liked: likedValue },
+      optimisticResponse: {
+        __typename: "mutation_root",
+        insert_review: {
+          __typename: "review_mutation_response",
+          returning: {
+            __typename: "review",
+            id: reviewID,
+            liked: likedValue
+          }
+        }
+      }
+    });
     setLiked(likedValue);
   }
 

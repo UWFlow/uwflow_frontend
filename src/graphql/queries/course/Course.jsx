@@ -50,34 +50,13 @@ export const REFETCH_COURSE_SHORTLIST = gql`
   }
 `;
 
-export const REFETCH_REVIEW = gql`
-  query COURSE_REVIEW_REFETCH_QUERY($course_id: Int, $user_id: Int, $prof_id: Int) {
-    course(where: {id: {_eq: $course_id}}) {
-      ...CourseReviewAggregateFragment
-    }
-    prof(where: {id: {_eq: $prof_id}}) {
-      ...ProfReviewAggregateFragment
-    }
-    review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
-      ...ReviewInfoFragment
-    }
-  }
-  ${ReviewFragment.courseReviewAggregate}
-  ${ReviewFragment.profReviewAggregate}
-  ${ReviewFragment.reviewInfo}
-`;
-
-export const REFETCH_LIKED = gql`
+export const REFETCH_REVIEW_AGGREGATE = gql`
   query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int, $prof_id: Int) {
     course(where: {id: {_eq: $course_id}}) {
       ...CourseReviewAggregateFragment
     }
     prof(where: {id: {_eq: $prof_id}}) {
       ...ProfReviewAggregateFragment
-    }
-    review(where: {course_id: {_eq: $course_id}, user: {user_id: {_eq: $user_id}}}) {
-      id
-      liked
     }
   }
   ${ReviewFragment.courseReviewAggregate}

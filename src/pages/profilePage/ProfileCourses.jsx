@@ -69,6 +69,7 @@ const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal })
             key={course_taken.index}
             courseID={course_taken.course.id}
             profID={review ? review.prof_id : null}
+            reviewID={review ? review.id : null}
             initialState={review ? review.liked : null}
           />
         </LikeToggleWrapper>

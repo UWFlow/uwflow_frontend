@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   SectionCellWrapper,
   SectionContentWrapper,
@@ -43,15 +43,13 @@ const ClassCell = ({ cell }) => (
   <NormalCellWrapper>{cell.value}</NormalCellWrapper>
 );
 
-const EnrolledCell = ({ cell }) => {
-  return (
-    <NormalCellWrapper>
-      <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
-        {cell.value.filled}/{cell.value.capacity}
-      </EnrollmentText>
-    </NormalCellWrapper>
-  );
-}
+const EnrolledCell = ({ cell }) => (
+  <NormalCellWrapper>
+    <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
+      {cell.value.filled}/{cell.value.capacity}
+    </EnrollmentText>
+  </NormalCellWrapper>
+);
 
 const CampusCell = ({ cell }) => (
   <NormalCellWrapper>{cell.value}</NormalCellWrapper>
@@ -60,47 +58,46 @@ const CampusCell = ({ cell }) => (
 const TimeCell = ({ cell }) => (
   <NormalCellWrapper>
     {cell.value.map((cl, idx) => (
-        <>
-          <ContentWrapper key={idx}>
-            {cl.time}
-          </ContentWrapper>
-          {contentSpace(cl.spaces)}
-          {idx < cell.value.length - 1 && <SpaceMargin />}
-        </>
+      <Fragment key={idx}>
+        <ContentWrapper>
+          {cl.time}
+        </ContentWrapper>
+        {contentSpace(cl.spaces)}
+        {idx < cell.value.length - 1 && <SpaceMargin />}
+      </Fragment>
     ))}
   </NormalCellWrapper>
 );
 
 const DateCell = ({ cell }) => (
   <NormalCellWrapper>
-    {cell.value.map((timeRanges, timeRangeIdx) => {
-      let timeRangeContent = timeRanges.map((date, idx) => {
-        const processedDate = date.startDate === date.endDate ?
-          processDateString(date.startDate).split(', ')[1] : '';
-        return (
-          <ContentWrapper key={idx}>
-            {date.days.join(' ')} {processedDate}
-          </ContentWrapper>
-        );
-      });
-      if (timeRangeIdx < cell.value.length - 1) {
-        timeRangeContent.push(<SpaceMargin />);
-      }
-      return timeRangeContent;
-    })}
+    {cell.value.map((timeRanges, timeRangeIdx) => (
+      <Fragment key={timeRangeIdx}>
+        {timeRanges.map((date, idx) => {
+          const processedDate = date.startDate === date.endDate ?
+            processDateString(date.startDate).split(', ')[1] : '';
+          return (
+            <ContentWrapper key={idx}>
+              {date.days.join(' ')} {processedDate}
+            </ContentWrapper>
+          );
+        })}
+        {timeRangeIdx < cell.value.length - 1 && <SpaceMargin />}
+      </Fragment>
+    ))}
   </NormalCellWrapper>
 );
 
 const LocationCell = ({ cell }) => (
   <NormalCellWrapper>
     {cell.value.map((cl, idx) => (
-      <>
-        <ContentWrapper key={idx}>
+      <Fragment key={idx}>
+        <ContentWrapper>
           {cl.location}
         </ContentWrapper>
         {contentSpace(cl.spaces)}
         {idx < cell.value.length - 1 && <SpaceMargin />}
-      </>
+      </Fragment>
     ))}
   </NormalCellWrapper>
 );
@@ -109,7 +106,7 @@ const InstructorCell = ({ cell }) => (
   <NormalCellWrapper>
     {cell.value.map((cl, idx) => cl.prof.code ?
       (
-        <>
+        <Fragment key={idx}>
           <InstructorLink
             to={getProfPageRoute(cl.prof.code)}
             key={idx}
@@ -118,12 +115,12 @@ const InstructorCell = ({ cell }) => (
           </InstructorLink>
           {contentSpace(cl.spaces)}
           {idx < cell.value.length - 1 && <SpaceMargin />}
-        </>
+        </Fragment>
       ) : (
-        <>
+        <Fragment key={idx}>
           {contentSpace(cl.spaces + 1)}
           {idx < cell.value.length - 1 && <SpaceMargin />}
-        </>
+        </Fragment>
       )
     )}
   </NormalCellWrapper>

@@ -78,6 +78,7 @@ const CoursePageContent = ({
                   courseCode={course.code}
                   courseID={course.id}
                   profID={userReview ? userReview.prof_id : null}
+                  reviewID={userReview ? userReview.id : null}
                   initialState={userReview ? userReview.liked : null}
                 />
               </CourseQuestionTextAndToggle>

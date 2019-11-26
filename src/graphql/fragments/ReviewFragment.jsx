@@ -57,6 +57,23 @@ const ReviewFragment = {
       }
     }
   `,
+  reviewUpdateInfo: gql`
+    fragment ReviewUpdateInfoFragment on review {
+      id
+      created_at
+      updated_at
+      public
+      liked
+      course_comment
+      course_easy
+      course_useful
+      prof_engaging
+      prof_comment
+      prof_clear
+      course_id
+      prof_id
+    }
+  `,
   courseReviewVotes: gql`
     fragment CourseReviewVotesFragment on review {
       id
