@@ -11,7 +11,7 @@ export const buildProfReviewQuery = (loggedIn) => gql`
     }
   }
   ${ReviewFragment.reviewInfo}
-  ${ReviewFragment.ReviewVoteCounts}
+  ${ReviewFragment.reviewVoteCounts}
   ${ReviewFragment.userReviewFields}
 `;
 

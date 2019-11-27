@@ -34,7 +34,7 @@ const CircularPercentage = ({
       </Pie>
     </PieChart>
     <NumbersInCircle height={height}>
-      <LargePercentage>{percent}%</LargePercentage>
+      <LargePercentage>{percent ? percent : '-'}%</LargePercentage>
       <GreyText>{label}</GreyText>
     </NumbersInCircle>
   </CircleWrapper>

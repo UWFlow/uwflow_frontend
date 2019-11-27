@@ -30,12 +30,8 @@ const ReviewFragment = {
             name
           }
         }
-        reviews_aggregate {
-          aggregate {
-            avg {
-              liked
-            }
-          }
+        rating {
+          liked
         }
       }
       prof_id
@@ -93,54 +89,6 @@ const ReviewFragment = {
       }
       user {
         user_id
-      }
-    }
-  `,
-  reviewAggregate: gql`
-    fragment ReviewAggregateFragment on review_aggregate {
-      aggregate {
-        avg {
-          liked
-          course_easy
-          course_useful
-          prof_clear
-          prof_engaging
-        }
-        count: count(columns: liked)
-        course_comment_count: count(columns: course_comment)
-        prof_comment_count: count(columns: prof_comment)
-      }
-    }
-  `,
-  profReviewAggregate: gql`
-    fragment ProfReviewAggregateFragment on prof {
-      id
-      reviews_aggregate {
-        aggregate {
-          avg {
-            liked
-            prof_clear
-            prof_engaging
-          }
-          count: count(columns: liked)
-          prof_comment_count: count(columns: prof_comment)
-        }
-      }
-    }
-  `,
-  courseReviewAggregate: gql`
-    fragment CourseReviewAggregateFragment on course {
-      id
-      reviews_aggregate {
-        aggregate {
-          avg {
-            liked
-            course_easy
-            course_useful
-          }
-          count: count(columns: liked)
-          course_comment_count: count(columns: course_comment)
-        }
       }
     }
   `

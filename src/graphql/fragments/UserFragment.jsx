@@ -44,12 +44,8 @@ const UserFragment = {
         id
         code
         name
-        reviews_aggregate {
-          aggregate {
-            avg {
-              liked
-            }
-          }
+        rating {
+          liked
         }
         profs_teaching {
           prof {

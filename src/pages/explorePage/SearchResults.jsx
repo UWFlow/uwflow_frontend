@@ -27,10 +27,10 @@ const SearchResults = ({
     code: course.code,
     name: course.name,
     description: course.description,
-    ratings: course.reviews_aggregate.aggregate.count,
-    liked: course.reviews_aggregate.aggregate.avg.liked,
-    easy: course.reviews_aggregate.aggregate.avg.course_easy / 5,
-    useful: course.reviews_aggregate.aggregate.avg.course_useful / 5,
+    ratings: course.rating[0] ? course.rating[0].filled_count : 0,
+    liked: course.rating[0] ? course.rating[0].liked : null,
+    easy: course.rating[0] ? course.rating[0].easy : null,
+    useful: course.rating[0] ? course.rating[0].useful : null,
     sections: course.sections, 
   })) : [];
 
@@ -39,10 +39,10 @@ const SearchResults = ({
       code: prof.code,
       name: prof.name,
     },
-    ratings: prof.reviews_aggregate.aggregate.count,
+    ratings: prof.rating[0] ? prof.rating[0].filled_count : 0,
     liked: prof.reviews_aggregate.aggregate.avg.liked,
-    clear: prof.reviews_aggregate.aggregate.avg.prof_clear / 5,
-    engaging: prof.reviews_aggregate.aggregate.avg.prof_engaging / 5,
+    clear: prof.rating[0] ? prof.rating[0].clear : null,
+    engaging: prof.rating[0] ? prof.rating[0].engaging : null,
     courses: prof.prof_courses.map(course => course.code)
   })) : [];
 

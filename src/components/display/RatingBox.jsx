@@ -26,6 +26,7 @@ import {
 /* Child Components */
 import ProgressBar from './ProgressBar';
 import CircularPercentage from '../statistics/CircularPercentage';
+import { processRating } from '../../utils/Misc';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
@@ -45,7 +46,8 @@ const RatingBox = ({
   width,
   isBrowserDesktop,
 }) => {
-  const likedPercent = Math.round(percentages[0].percent * 100);
+  const likedPercent = percentages[0].percent ?
+    Math.round(percentages[0].percent * 100) : null;
 
   return (
     <RatingBoxWrapper
@@ -72,7 +74,7 @@ const RatingBox = ({
               <ProgressBarWrapper>
                 <ProgressBar percentComplete={metric.percent} width="100%" />
                 <ProgressNumberLabel>
-                  {Math.round(metric.percent * 100)}%
+                  {metric.percent ? Math.round(metric.percent * 100) : '-'}%
                 </ProgressNumberLabel>
               </ProgressBarWrapper>
             </ProgressWrapper>
@@ -81,10 +83,10 @@ const RatingBox = ({
         <ReviewsAndGraphButtonWrapper>
           <NumCommentsAndRatingsWrapper>
             <NumCommentsWrapper>
-              {numComments} {numComments === 1 ? 'comment' : 'comments'}
+              {numComments ? numComments : 0} {numComments === 1 ? 'comment' : 'comments'}
             </NumCommentsWrapper>
             <NumRatingsWrapper>
-              {numRatings} {numRatings === 1 ? 'rating' : 'ratings'}
+              {numRatings ? numRatings : 0} {numRatings === 1 ? 'rating' : 'ratings'}
             </NumRatingsWrapper>
           </NumCommentsAndRatingsWrapper>
           {/* Graph button goes here */}

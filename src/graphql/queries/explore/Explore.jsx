@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 
 import CourseFragment from '../../fragments/CourseFragment.jsx';
 import ProfFragment from '../../fragments/ProfFragment.jsx';
-import ReviewFragment from '../../fragments/ReviewFragment.jsx';
 
 import { SEARCH_RESULTS_PER_PAGE, MAX_SEARCH_TERMS } from '../../../constants/Search.jsx';
 import { splitCourseCode } from '../../../utils/Misc.jsx';
@@ -17,7 +16,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
     ) {
       ...CourseInfoFragment
       ...CourseTermFragment
-      ...CourseReviewAggregateFragment
+      ...CourseRatingFragment
     }
     course_aggregate(where: {code: {_ilike: "${query}%"}}) {
       aggregate {
@@ -31,7 +30,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
     ) {
       ...ProfInfoFragment
       ...ProfCoursesTaughtFragment
-      ...ProfReviewAggregateFragment
+      ...ProfRatingFragment
     }
     prof_aggregate(where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}) {
       aggregate {
@@ -41,10 +40,10 @@ export const buildExploreCodeQuery = (sort, query) => gql`
   }
   ${CourseFragment.courseInfo}
   ${CourseFragment.courseTerm}
+  ${CourseFragment.courseRating}
   ${ProfFragment.profInfo}
   ${ProfFragment.profCoursesTaught}
-  ${ReviewFragment.courseReviewAggregate}
-  ${ReviewFragment.profReviewAggregate}
+  ${ProfFragment.profRating}
 `;
 
 export const buildExploreQuery = (sort, query) => {
@@ -86,7 +85,7 @@ export const buildExploreQuery = (sort, query) => {
       ) {
         ...CourseInfoFragment
         ...CourseTermFragment
-        ...CourseReviewAggregateFragment
+        ...CourseRatingFragment
       }
       course_aggregate(where: ${parsedCourseQuery}) {
         aggregate {
@@ -100,7 +99,7 @@ export const buildExploreQuery = (sort, query) => {
       ) {
         ...ProfInfoFragment
         ...ProfCoursesTaughtFragment
-        ...ProfReviewAggregateFragment
+        ...ProfRatingFragment
         }
       prof_aggregate(where: ${parsedProfQuery}) {
         aggregate {
@@ -110,9 +109,9 @@ export const buildExploreQuery = (sort, query) => {
     }
     ${CourseFragment.courseInfo}
     ${CourseFragment.courseTerm}
+    ${CourseFragment.courseRating}
     ${ProfFragment.profInfo}
     ${ProfFragment.profCoursesTaught}
-    ${ReviewFragment.courseReviewAggregate}
-    ${ReviewFragment.profReviewAggregate}
+    ${ProfFragment.profRating}
   `
 };

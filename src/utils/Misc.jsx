@@ -53,8 +53,8 @@ export const splitCourseCode = code => {
   return [codeLetters, code.slice(i)].join(' ').toUpperCase();
 };
 
-export const processLiked = rating => {
-  return rating !== null ? `${Math.round(rating * 100)}%` : 'N/A';
+export const processRating = rating => {
+  return rating ? `${Math.round(rating * 100)}%` : '-%';
 };
 
 export const isCurrentTerm = code => {

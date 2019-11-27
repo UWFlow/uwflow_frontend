@@ -82,6 +82,18 @@ const CourseFragment = {
       }
     }
   }
+  `,
+  courseRating: gql`
+    fragment CourseRatingFragment on course {
+      id
+      rating {
+        liked
+        easy
+        useful
+        filled_count
+        comment_count  
+      }
+    }
   `
 };
 

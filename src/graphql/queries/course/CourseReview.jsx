@@ -12,13 +12,9 @@ export const buildCourseReviewQuery = (loggedIn) => gql`
       ...ReviewVoteCountsFragment
       ${loggedIn ? `...UserReviewFieldsFragment` : ''}
     }
-    review_aggregate(where: { course_id: { _eq: $id } }) {
-      ...ReviewAggregateFragment
-    }
   }
   ${ReviewFragment.reviewInfo}
   ${ReviewFragment.reviewVoteCounts}
-  ${ReviewFragment.reviewAggregate}
   ${ReviewFragment.userReviewFields}
 `;
 

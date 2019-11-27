@@ -24,8 +24,8 @@ import ShortlistStar from '../../components/input/ShortlistStar';
 import { splitCourseCode } from '../../utils/Misc';
 
 const CourseInfoHeader = ({ course, shortlisted }) => {
-  const { liked, course_easy, course_useful } = course.reviews_aggregate.aggregate.avg;
-  const { count, course_comment_count } = course.reviews_aggregate.aggregate;
+  const rating = course.rating[0] || {};
+  const { liked, easy, useful, filled_count, comment_count } = rating;
 
   return (
     <CourseInfoHeaderWrapper>
@@ -51,20 +51,20 @@ const CourseInfoHeader = ({ course, shortlisted }) => {
       <CourseDescriptionSection>
         <RatingsSection>
           <RatingBox
-            numRatings={count}
-            numComments={course_comment_count}
+            numRatings={filled_count}
+            numComments={comment_count}
             percentages={[
               {
                 displayName: 'Likes',
                 percent: liked,
               },
               {
-                displayName: 'Useful',
-                percent: course_useful / 5,
+                displayName: 'Easy',
+                percent: easy,
               },
               {
-                displayName: 'Easy',
-                percent: course_easy / 5,
+                displayName: 'Useful',
+                percent: useful,
               },
             ]}
           />

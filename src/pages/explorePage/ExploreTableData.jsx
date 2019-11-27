@@ -1,7 +1,7 @@
 import React from 'react';
 import { CourseCode, ProfName } from './styles/ExplorePage';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { splitCourseCode, processRating } from '../../utils/Misc';
 import { getCoursePageRoute, getProfPageRoute } from '../../Routes';
 
 export const courseColumns = [
@@ -33,21 +33,21 @@ export const courseColumns = [
     accessor: 'useful',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`
+    Cell: ({ cell }) => processRating(cell.value)
   },
   {
     Header: 'Easy',
     accessor: 'easy',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`
+    Cell: ({ cell }) => processRating(cell.value)
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`
+    Cell: ({ cell }) => processRating(cell.value)
   },
 ];
 
@@ -74,20 +74,20 @@ export const profColumns = [
     accessor: 'clear',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`,
+    Cell: ({ cell }) => processRating(cell.value)
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`,
+    Cell: ({ cell }) => processRating(cell.value)
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => `${Math.round(cell.value * 100)}%`,
+    Cell: ({ cell }) => processRating(cell.value)
   },
 ];

@@ -16,7 +16,7 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import { REFETCH_REVIEW_AGGREGATE } from '../../graphql/queries/course/Course';
+import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -33,7 +33,7 @@ const LikeCourseToggle = ({
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [{
-    query: REFETCH_REVIEW_AGGREGATE,
+    query: REFETCH_RATINGS,
     variables: { course_id: courseID, user_id: userID, prof_id: profID === null ? -1 : profID }
   }];
 

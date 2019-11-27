@@ -18,6 +18,24 @@ const ProfFragment = {
         }
       }
     }
+  `,
+  profRating: gql`
+    fragment ProfRatingFragment on prof {
+      id
+      reviews_aggregate {
+        aggregate {
+          avg {
+            liked
+          }
+        }
+      }
+      rating {
+        clear
+        engaging
+        filled_count
+        comment_count
+      }
+    }
   `
 };
 

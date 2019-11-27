@@ -20,13 +20,12 @@ const convertInputToState = data => {
       }
     }
     if (!foundCourseObject) {
+      const rating = current.course ? current.course.rating[0] : null;
       courseObject = {
         id: current.course ? current.course.id : -1,
         name: current.course ? current.course.name : '',
         code: current.course ? current.course.code : '',
-        liked: current.course
-          ? current.course.reviews_aggregate.aggregate.avg.liked
-          : 0,
+        liked: rating ? rating.liked : null,
         reviews: [],
       };
       allCourses.push(courseObject);
