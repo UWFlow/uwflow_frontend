@@ -54,7 +54,7 @@ export const splitCourseCode = code => {
 };
 
 export const processRating = rating => {
-  return rating ? `${Math.round(rating * 100)}%` : '-%';
+  return rating ? `${Math.round(rating * 100)}%` : 'N/A';
 };
 
 export const isCurrentTerm = code => {
