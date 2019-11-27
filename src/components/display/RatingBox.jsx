@@ -74,7 +74,7 @@ const RatingBox = ({
               <ProgressBarWrapper>
                 <ProgressBar percentComplete={metric.percent} width="100%" />
                 <ProgressNumberLabel>
-                  {metric.percent ? Math.round(metric.percent * 100) : '-'}%
+                  {metric.percent ? `${Math.round(metric.percent * 100)}%` : 'N/A'}
                 </ProgressNumberLabel>
               </ProgressBarWrapper>
             </ProgressWrapper>
