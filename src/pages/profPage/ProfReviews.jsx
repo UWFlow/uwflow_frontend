@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
@@ -35,16 +36,23 @@ import DropdownList from '../../components/input/DropdownList';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 
 /* GraphQL Queries */
-import { GET_PROF_REVIEW } from '../../graphql/queries/prof/ProfReview.jsx';
+import { buildProfReviewQuery } from '../../graphql/queries/prof/ProfReview.jsx';
+
+/* Selectors */
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 import { splitCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
-const ProfReviews = ({ profID, theme }) => {
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
+
+const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   const [selectedFilter, setSelectedFilter] = useState(0);
   const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
-  const { loading, data } = useQuery(GET_PROF_REVIEW, {
+  const { loading, data } = useQuery(buildProfReviewQuery(isLoggedIn), {
     variables: { id: profID },
   });
   const [reviewDataState, dispatchReviews] = useProfReviewsReducer(data);
@@ -172,4 +180,4 @@ ProfReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withTheme(ProfReviews);
+export default connect(mapStateToProps)(withTheme(ProfReviews));

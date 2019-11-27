@@ -71,29 +71,28 @@ const ReviewFragment = {
       prof_id
     }
   `,
-  courseReviewVotes: gql`
-    fragment CourseReviewVotesFragment on review {
+  reviewVoteCounts: gql`
+    fragment ReviewVoteCountsFragment on review {
+      id
+      course_review_rating {
+        upvote_count
+      }
+      prof_review_rating {
+        upvote_count
+      }
+    }
+  `,
+  userReviewFields: gql`
+    fragment UserReviewFieldsFragment on review {
       id
       course_review_upvotes {
         user_id
       }
-      course_review_upvotes_aggregate {
-        aggregate {
-          count
-        }
-      }
-    }
-  `,
-  profReviewVotes: gql`
-    fragment ProfReviewVotesFragment on review {
-      id
       prof_review_upvotes {
         user_id
       }
-      prof_review_upvotes_aggregate {
-        aggregate {
-          count
-        }
+      user {
+        user_id
       }
     }
   `,

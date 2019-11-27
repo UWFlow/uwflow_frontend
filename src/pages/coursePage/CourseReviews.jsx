@@ -42,9 +42,10 @@ import CollapseableContainer from '../../components/display/CollapseableContaine
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 /* GraphQL Queries */
-import { GET_COURSE_REVIEW } from '../../graphql/queries/course/CourseReview.jsx';
+import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseReview.jsx';
 import { getProfPageRoute } from '../../Routes';
 
 const CourseCourseReviews = ({
@@ -79,6 +80,7 @@ const CourseCourseReviews = ({
               selectedIndex={courseSort}
               options={['most recent', 'most helpful']}
               onChange={value => setCourseSort(value)}
+              zIndex={6}
             />
           </DropdownPanelWrapper>
           <DropdownPanelWrapper>
@@ -212,10 +214,11 @@ CourseProfReviews.propTypes = {
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
+  isLoggedIn: getIsLoggedIn(state),
 });
 
-const CourseReviews = ({ courseID, theme, isBrowserDesktop }) => {
-  const { loading, data } = useQuery(GET_COURSE_REVIEW, {
+const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
+  const { loading, data } = useQuery(buildCourseReviewQuery(isLoggedIn), {
     variables: { id: courseID },
   });
   const [courseSort, setCourseSort] = useState(0);
