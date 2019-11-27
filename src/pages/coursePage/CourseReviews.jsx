@@ -322,7 +322,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop }) => {
       {!isBrowserDesktop && (
         <>
           <CollapseableContainer
-            title={`Course comments (${data.course_review_aggregate.aggregate.count})`}
+            title={`Course comments (${data.review_aggregate.aggregate.count})`}
           >
             <CourseCourseReviews
               reviews={courseReviewsToShow}
@@ -335,7 +335,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop }) => {
             />
           </CollapseableContainer>
           <CollapseableContainer
-            title={`Professor comments (${data.prof_review_aggregate.aggregate.count})`}
+            title={`Professor comments (${data.review_aggregate.aggregate.count})`}
           >
             <CourseProfReviews
               reviewsByProf={profReviewsToShow}

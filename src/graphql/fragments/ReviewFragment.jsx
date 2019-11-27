@@ -19,9 +19,6 @@ const ReviewFragment = {
         picture_url
         program
       }
-      user {
-        user_id
-      }
       course_id
       course {
         id
