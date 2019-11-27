@@ -33,8 +33,9 @@ const convertInputToState = data => {
     }
     courseObject.reviews.push({
       id: current.id,
-      upvotes: current.prof_review_upvotes_aggregate.aggregate.count,
-      upvote_users: current.prof_review_upvotes.map(vote => Number(vote.user_id)),
+      upvotes: current.prof_review_rating.upvote_count,
+      upvote_users: current.prof_review_upvotes ?
+        current.prof_review_upvotes.map(vote => Number(vote.user_id)) : [],
       review: current.prof_comment,
       author: current.author,
       user: current.user,
