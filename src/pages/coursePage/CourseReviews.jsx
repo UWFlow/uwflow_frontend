@@ -319,13 +319,13 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
       {showingProfReviews && isBrowserDesktop && (
         <CourseProfReviews
           reviewsByProf={profReviewsToShow}
-          ProfFilterDropdown={isBrowserDesktop ? null : ProfFilterDropdown}
+          ProfFilterDropdown={ProfFilterDropdown}
         />
       )}
       {!isBrowserDesktop && (
         <>
           <CollapseableContainer
-            title={`Course comments (${data.review_aggregate.aggregate.count})`}
+            title={`Course reviews (${courseReviewsToShow.length})`}
           >
             <CourseCourseReviews
               reviews={courseReviewsToShow}
@@ -338,7 +338,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
             />
           </CollapseableContainer>
           <CollapseableContainer
-            title={`Professor comments (${data.review_aggregate.aggregate.count})`}
+            title={`Professor reviews (${numProfReviews})`}
           >
             <CourseProfReviews
               reviewsByProf={profReviewsToShow}

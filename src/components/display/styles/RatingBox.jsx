@@ -58,6 +58,7 @@ export const ProgressBarWrapper = styled.div`
 export const ProgressNumberLabel = styled.div`
   ${Body};
   margin: 8px;
+  flex: none;
 `;
 
 export const ReviewsAndGraphButtonWrapper = styled.div`

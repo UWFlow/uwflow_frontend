@@ -35,9 +35,7 @@ import {
   DELETE_REVIEW,
   UPSERT_REVIEW,
 } from '../../graphql/mutations/Review';
-import {
-  REFETCH_REVIEW_AGGREGATE
-} from '../../graphql/queries/course/Course';
+import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 
 const easyOptions = [
   'Very difficult',
@@ -123,7 +121,7 @@ const CourseReviewCourseBox = ({
 
   /* Mutations */
   const refetchQueries = [{
-    query: REFETCH_REVIEW_AGGREGATE,
+    query: REFETCH_RATINGS,
     variables: { course_id: course.id, user_id: userID, prof_id: review ? review.prof_id : null }
   }];
 
@@ -192,6 +190,7 @@ const CourseReviewCourseBox = ({
             options={courseList.map(courseObject => splitCourseCode(courseObject.course.code))}
             color={theme.courses}
             onChange={value => setSelectedCourseIndex(value)}
+            zIndex={6}
           />
         </QuestionWrapper>
       )}

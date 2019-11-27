@@ -1,7 +1,8 @@
 import gql from 'graphql-tag';
 
-import CourseFragment from '../../fragments/CourseFragment.jsx';
-import ReviewFragment from '../../fragments/ReviewFragment.jsx';
+import CourseFragment from '../../fragments/CourseFragment';
+import ProfFragment from '../../fragments/ProfFragment';
+import ReviewFragment from '../../fragments/ReviewFragment';
 
 export const buildCourseQuery = (fetchUserData = false, userId = null) => {
   return gql`
@@ -10,7 +11,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
         ...CourseInfoFragment
         ...CourseScheduleFragment
         ...CourseRequirementsFragment
-        ...CourseReviewAggregateFragment
+        ...CourseRatingFragment
       }
       ${fetchUserData ?
         `user_shortlist(where: {
@@ -33,7 +34,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
     ${CourseFragment.courseInfo}
     ${CourseFragment.courseSchedule}
     ${CourseFragment.courseRequirements}
-    ${ReviewFragment.courseReviewAggregate}
+    ${CourseFragment.courseRating}
     ${ReviewFragment.reviewInfo}
   `;
 }
@@ -50,15 +51,15 @@ export const REFETCH_COURSE_SHORTLIST = gql`
   }
 `;
 
-export const REFETCH_REVIEW_AGGREGATE = gql`
-  query COURSE_LIKED_REFETCH_QUERY($course_id: Int, $user_id: Int, $prof_id: Int) {
+export const REFETCH_RATINGS = gql`
+  query REFETCH_RATINGS($course_id: Int, $user_id: Int, $prof_id: Int) {
     course(where: {id: {_eq: $course_id}}) {
-      ...CourseReviewAggregateFragment
+      ...CourseRatingFragment
     }
     prof(where: {id: {_eq: $prof_id}}) {
-      ...ProfReviewAggregateFragment
+      ...ProfRatingFragment
     }
   }
-  ${ReviewFragment.courseReviewAggregate}
-  ${ReviewFragment.profReviewAggregate}
+  ${CourseFragment.courseRating}
+  ${ProfFragment.profRating}
 `;

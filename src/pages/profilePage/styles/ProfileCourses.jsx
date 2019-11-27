@@ -59,6 +59,7 @@ export const ProfileCourseLiked = styled.div`
   margin-right: 16px;
   display: flex;
   align-items: center;
+  width: max-content;
 `;
 
 export const LikedThisCourseText = styled.div`
