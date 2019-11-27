@@ -61,9 +61,9 @@ const SearchResults = ({
     courseCodeRegex().test(course.code)
       && course.ratings >= ratingFilters[filterState.numCourseRatings]
       && (!filterState.currentTerm || (filterState.currentTerm && course.sections
-          && course.sections.some(section => Number(section.term) === currentTermCode)))
+          && course.sections.some(section => Number(section.term_id) === currentTermCode)))
       && (!filterState.nextTerm || (filterState.nextTerm && course.sections
-          && course.sections.some(section => Number(section.term) === nextTermCode)))
+          && course.sections.some(section => Number(section.term_id) === nextTermCode)))
   );
 
   const filteredProfs = profs.filter(prof =>

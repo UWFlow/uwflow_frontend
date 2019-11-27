@@ -2,17 +2,17 @@ import { isCurrentTerm, secsToTime, processDateString } from './Misc';
 
 export const processSectionExams = (sections, courseCode) => {
   const groupedExams = sections.reduce((groups, section) => {
-    if (!isCurrentTerm(section.term)) {
+    if (!isCurrentTerm(section.term_id)) {
       return groups;
     }
     section.exams.forEach(exam => {
       const examKey = `${courseCode}${exam.is_tba}${exam.location}${exam.date}${exam.start_seconds}${exam.end_seconds}`;
       if (examKey in groups) {
-        groups[examKey].sections.push(section.section);
+        groups[examKey].sections.push(section.section_name);
       } else {
         groups[examKey] = {
           code: courseCode,
-          sections: [section.section],
+          sections: [section.section_name],
           time: `${secsToTime(exam.start_seconds)} - ${secsToTime(exam.end_seconds)}`,
           date: `${processDateString(exam.date)}`,
           location: exam.location,
