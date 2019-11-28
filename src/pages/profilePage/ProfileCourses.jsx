@@ -46,7 +46,7 @@ const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal })
 
   const tabContent = (termName) => courseGroups[termName].map((course_taken, idx) => {
     const review = reviews.find(r => r.course_id === course_taken.course_id);
-    const rating = course_taken.course.rating[0];
+
     return (
       <ProfileCoursesCourse key={idx}>
         <ProfileCourseText>
@@ -57,7 +57,7 @@ const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal })
         </ProfileCourseText>
         <LikedCourseWrapper>
           <ProfileCourseLiked>
-            {processRating(rating ? rating.liked : null)}
+            {processRating(course_taken.course.rating.liked)}
           </ProfileCourseLiked>
           <LikedThisCourseText>
             liked this

@@ -24,8 +24,7 @@ import ShortlistStar from '../../components/input/ShortlistStar';
 import { splitCourseCode } from '../../utils/Misc';
 
 const CourseInfoHeader = ({ course, shortlisted }) => {
-  const rating = course.rating[0] || {};
-  const { liked, easy, useful, filled_count, comment_count } = rating;
+  const { liked, easy, useful, filled_count, comment_count } = course.rating;
 
   return (
     <CourseInfoHeaderWrapper>

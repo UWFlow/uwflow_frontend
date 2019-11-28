@@ -27,10 +27,10 @@ const SearchResults = ({
     code: course.code,
     name: course.name,
     description: course.description,
-    ratings: course.rating[0] ? course.rating[0].filled_count : 0,
-    liked: course.rating[0] ? course.rating[0].liked : null,
-    easy: course.rating[0] ? course.rating[0].easy : null,
-    useful: course.rating[0] ? course.rating[0].useful : null,
+    ratings: course.rating ? course.rating.filled_count : 0,
+    liked: course.rating ? course.rating.liked : null,
+    easy: course.rating ? course.rating.easy : null,
+    useful: course.rating ? course.rating.useful : null,
     sections: course.sections, 
   })) : [];
 
@@ -39,10 +39,10 @@ const SearchResults = ({
       code: prof.code,
       name: prof.name,
     },
-    ratings: prof.rating[0] ? prof.rating[0].filled_count : 0,
-    liked: prof.rating[0] ? prof.rating[0].liked : null,
-    clear: prof.rating[0] ? prof.rating[0].clear : null,
-    engaging: prof.rating[0] ? prof.rating[0].engaging : null,
+    ratings: prof.rating ? prof.rating.filled_count : 0,
+    liked: prof.rating ? prof.rating.liked : null,
+    clear: prof.rating ? prof.rating.clear : null,
+    engaging: prof.rating ? prof.rating.engaging : null,
     courses: prof.prof_courses.map(course => course.code)
   })) : [];
 

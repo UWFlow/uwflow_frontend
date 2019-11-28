@@ -47,12 +47,11 @@ const convertInputToState = data => {
       }
     }
     if (!foundProfObject) {
-      const rating = current.prof ? current.prof.rating[0] : null;
       profObject = {
         id: current.prof ? current.prof.id : 0,
         code: current.prof ? current.prof.code : '',
         name: current.prof ? current.prof.name : '',
-        liked: rating ? rating.liked : null,
+        liked: current.prof && current.prof.rating ? current.prof.rating.liked : null,
         reviews: [],
       };
       allProfs.push(profObject);

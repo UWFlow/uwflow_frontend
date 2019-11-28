@@ -25,7 +25,8 @@ export const buildExploreCodeQuery = (sort, query) => gql`
     }
     prof(
       offset: $prof_offset,
-      limit: ${SEARCH_RESULTS_PER_PAGE}
+      limit: ${SEARCH_RESULTS_PER_PAGE},
+      order_by: ${sort},
       where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}
     ) {
       ...ProfInfoFragment
@@ -94,7 +95,8 @@ export const buildExploreQuery = (sort, query) => {
       }
       prof(
         offset: $prof_offset,
-        limit: ${SEARCH_RESULTS_PER_PAGE}
+        limit: ${SEARCH_RESULTS_PER_PAGE},
+        order_by: ${sort},
         where: ${parsedProfQuery}
       ) {
         ...ProfInfoFragment

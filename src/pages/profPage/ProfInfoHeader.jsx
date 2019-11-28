@@ -21,8 +21,7 @@ import RatingBox, {
 import { splitCourseCode } from '../../utils/Misc';
 
 const ProfInfoHeader = ({ prof }) => {
-  const rating = prof.rating[0] || {};
-  const { liked, clear, engaging, filled_count, comment_count } = rating;
+  const { liked, clear, engaging, filled_count, comment_count } = prof.rating;
   const profCourses = prof.prof_courses.map(course => splitCourseCode(course.course.code));
 
   return (
