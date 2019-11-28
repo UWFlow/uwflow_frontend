@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
-import 'react-week-calendar/dist/style.css';
+import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import './styles/calendar.css';
 
 /* Child Components */
 import Button from '../../components/input/Button';
-import WeekCalendar from 'react-week-calendar';
 
 /* Styled Components */
 import {
@@ -15,23 +16,22 @@ import {
   ProfileCalendarText,
   ProfileCalendarImg,
   ProfileCalendarEventWrapper,
-  EventTimeWrapper,
-  EventLocationWrapper,
-  EventCourseWrapper,
-  EventSectionWrapper,
+  TimeText,
+  LocationText,
+  CourseText,
+  SectionText,
+  EventCourseSectionWrapper
 } from './styles/ProfileCalendar';
 
 /* Utils */
-import { getMomentFromDateAndSecs } from '../../utils/Misc';
+import { getMomentFromDateAndSecs, splitCourseCode } from '../../utils/Misc';
 
 // start and end inclusive
 export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
   const legalDays = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
   var currentMoment = start.clone();
   var daysToReturn = [];
-  // console.log(`Finding: ${dayOfWeek} between ${start} and ${end}`);
   while (currentMoment.isSameOrBefore(end)) {
-    // console.log(`  ${currentMoment} is ${legalDays[currentMoment.weekday()]}`);
     if (legalDays[currentMoment.weekday()] === dayOfWeek) {
       daysToReturn.push(currentMoment.clone().startOf('day'));
     }
@@ -42,12 +42,15 @@ export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
 
 const EventSection = ({ start, end, value }) => (
   <ProfileCalendarEventWrapper>
-    <EventCourseWrapper>{value.course.code}</EventCourseWrapper>
-    <EventSectionWrapper>{value.sectionName}</EventSectionWrapper>
-    <EventTimeWrapper>{`${start.format('LT')} - ${end.format(
-      'LT',
-    )}`}</EventTimeWrapper>
-    <EventLocationWrapper>{value.location}</EventLocationWrapper>
+    <EventCourseSectionWrapper>
+      <CourseText>{splitCourseCode(value.course.code)}</CourseText>
+      {' '}-{' '}
+      <SectionText>{value.section}</SectionText>
+    </EventCourseSectionWrapper>
+    <TimeText>
+      {`${start.format('LT')} - ${end.format('LT')}`}
+    </TimeText>
+    <LocationText>{value.location}</LocationText>
   </ProfileCalendarEventWrapper>
 );
 
@@ -70,8 +73,9 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
     const section = curr.section;
     section.exams.forEach(exam => {
       allIntv.push({
-        start: getMomentFromDateAndSecs(exam.date, exam.start_seconds),
-        end: getMomentFromDateAndSecs(exam.date, exam.end_seconds),
+        start: getMomentFromDateAndSecs(exam.date, exam.start_seconds).toDate(),
+        end: getMomentFromDateAndSecs(exam.date, exam.end_seconds).toDate(),
+        title: section.course.code,
         value: {
           location: exam.location,
           course: section.course,
@@ -96,10 +100,13 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
             allIntv.push({
               start: momentOfWeekForDay
                 .clone()
-                .add(meeting.start_seconds, 'seconds'),
+                .add(meeting.start_seconds, 'seconds')
+                .toDate(),
               end: momentOfWeekForDay
                 .clone()
-                .add(meeting.end_seconds, 'seconds'),
+                .add(meeting.end_seconds, 'seconds')
+                .toDate(),
+              title: section.course.code,
               value: {
                 location: meeting.location,
                 course: section.course,
@@ -114,22 +121,23 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
   }, []);
 
 const ProfileCalendar = ({ schedule, theme }) => {
-  console.log(schedule);
-  const intv = getIntervalsForWeek(moment(), 5, schedule);
-  // const intv = [];
-  console.log(intv);
+  // start of current week
+  const currentDay = moment(moment().startOf('isoWeek').toDate());
+
   if (schedule.length === 0) {
   } else {
     return (
-      <WeekCalendar
-        numberOfDays={5}
-        selectedIntervals={intv}
-        eventComponent={EventSection}
-        startTime={moment()
-          .startOf('day')
-          .add(7, 'hours')}
-        dayFormat="dd. DD/MM"
-      />
+      <ProfileCalendarWrapper>
+        <Calendar
+          views={[Views.WEEK]}
+          defaultView={Views.WEEK}
+          step={30}
+          min={new Date(0, 0, 0, 8)} // minimum hour displayed
+          max={new Date(0, 0, 0, 22)} // maximum hour displayed
+          events={getIntervalsForWeek(currentDay, 365, schedule)} // TODO build all events
+          localizer={momentLocalizer(moment)}
+        />
+      </ProfileCalendarWrapper>
     );
   }
   return (

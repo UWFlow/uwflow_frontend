@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Card, BoxShadow } from '../../../constants/Mixins';
-import 'react-week-calendar/dist/style.less';
+import { Card, BoxShadow, Body } from '../../../constants/Mixins';
 
 export const ProfileCalendarWrapper = styled.div`
   ${Card()}
   ${BoxShadow}
-  margin-bottom: 32px;
+  margin-bottom: 64px;
 
   ${breakpoint('mobile', 'tablet')`
     padding: 24px 16px;
@@ -39,15 +38,26 @@ export const ProfileCalendarImg = styled.div`
 `;
 
 export const ProfileCalendarEventWrapper = styled.div`
+  ${Body}
   display: flex;
   flex-direction: column;
-  background: ${({ color, theme }) => (color ? color : theme.light2)};
+  color: ${({ theme }) => (theme.white)};
+  background: ${({ color, theme }) => (color ? color : theme.primary)};
+  border-radius: 4px;
+  padding: 4px 8px;
 `;
 
-export const EventTimeWrapper = styled.div``;
+export const EventCourseSectionWrapper = styled.span`
+  display: block;
+`;
 
-export const EventLocationWrapper = styled.div``;
+export const CourseText = styled.span`
+  font-weight: 600;
+`;
 
-export const EventCourseWrapper = styled.div``;
+export const SectionText = styled.span`
+`;
 
-export const EventSectionWrapper = styled.div``;
+export const TimeText = styled.div``;
+
+export const LocationText = styled.div``;
