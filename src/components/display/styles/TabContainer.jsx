@@ -20,6 +20,7 @@ export const Tab = styled.div`
   align-items: center;
   height: 64px;
   cursor: pointer;
+  padding: 0 8px;
   border-radius: ${({ first, last, selected }) => {
     if (!selected) {
       return '0';

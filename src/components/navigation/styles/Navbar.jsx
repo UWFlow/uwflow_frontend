@@ -10,7 +10,7 @@ export const NavbarWrapper = styled.div`
   min-height: ${NAVBAR_HEIGHT}px;
   height: ${NAVBAR_HEIGHT}px;
   position: fixed;
-  z-index: 10;
+  z-index: 11;
   background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;

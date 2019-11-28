@@ -319,7 +319,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
       {showingProfReviews && isBrowserDesktop && (
         <CourseProfReviews
           reviewsByProf={profReviewsToShow}
-          ProfFilterDropdown={ProfFilterDropdown}
+          ProfFilterDropdown={!isBrowserDesktop && ProfFilterDropdown}
         />
       )}
       {!isBrowserDesktop && (
