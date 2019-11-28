@@ -130,10 +130,11 @@ export const secsToTime = secs => {
   return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
 };
 
-export const getMomentFromDateAndSecs = (date, secs) => {
+export const getDateWithSeconds = (date, secs) => {
   return moment(`${date}`, 'YYYY-MM-DD')
     .startOf('day')
-    .add(secs, 'seconds');
+    .add(secs, 'seconds')
+    .toDate();
 };
 
 export const isValidDayOfWeek = day => {

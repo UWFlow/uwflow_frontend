@@ -16,7 +16,6 @@ import {
   ProfileCalendarText,
   ProfileCalendarImg,
   ProfileCalendarEventWrapper,
-  TimeText,
   LocationText,
   CourseText,
   SectionText,
@@ -24,10 +23,56 @@ import {
 } from './styles/ProfileCalendar';
 
 /* Utils */
-import { getMomentFromDateAndSecs, splitCourseCode } from '../../utils/Misc';
+import { getDateWithSeconds, splitCourseCode } from '../../utils/Misc';
+
+const EventSection = ({ event }) => (
+  <ProfileCalendarEventWrapper>
+    <EventCourseSectionWrapper>
+      <CourseText>{splitCourseCode(event.courseCode)}</CourseText>
+      {' '}-{' '}
+      <SectionText>{event.section}</SectionText>
+    </EventCourseSectionWrapper>
+    <LocationText>{event.location}</LocationText>
+  </ProfileCalendarEventWrapper>
+);
+
+const getScheduleRange = (schedule) => {
+  let minTime = new Date();
+  let maxTime = new Date();
+
+  schedule.forEach(curr => {
+    const section = curr.section;
+    section.exams.forEach(exam => {
+      const examDate = new Date(exam.date);
+      if (examDate < minTime) {
+        minTime = examDate;
+      } else if (examDate > maxTime) {
+        maxTime = examDate;
+      }
+    });
+
+    section.meetings.forEach(meeting => {
+      const meetingDate = new Date(meeting.start_date);
+      if (meetingDate < minTime) {
+        minTime = meetingDate;
+      } else if (meetingDate > maxTime) {
+        maxTime = meetingDate;
+      }
+    });
+  });
+
+  // increase date range to be safe
+  minTime.setDate(minTime.getDate() - 1);
+  maxTime.setDate(maxTime.getDate() + 1);
+
+  // time for one day from milliseconds
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayRange = Math.round(maxTime.getTime() - minTime.getTime()) / (oneDay);  
+  return [minTime, dayRange];
+}
 
 // start and end inclusive
-export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
+const getMomentsWithinRange = (start, end, dayOfWeek) => {
   const legalDays = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
   var currentMoment = start.clone();
   var daysToReturn = [];
@@ -40,54 +85,23 @@ export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
   return daysToReturn;
 };
 
-const EventSection = ({ start, end, value }) => (
-  <ProfileCalendarEventWrapper>
-    <EventCourseSectionWrapper>
-      <CourseText>{splitCourseCode(value.course.code)}</CourseText>
-      {' '}-{' '}
-      <SectionText>{value.section}</SectionText>
-    </EventCourseSectionWrapper>
-    <TimeText>
-      {`${start.format('LT')} - ${end.format('LT')}`}
-    </TimeText>
-    <LocationText>{value.location}</LocationText>
-  </ProfileCalendarEventWrapper>
-);
-
-EventSection.propTypes = {
-  start: PropTypes.object.isRequired, //moment object
-  end: PropTypes.object, //moment object
-  value: PropTypes.shape({
-    location: PropTypes.string,
-    course: PropTypes.shape({
-      code: PropTypes.string,
-      id: PropTypes.number,
-      name: PropTypes.string,
-    }),
-    sectionName: PropTypes.string,
-  }),
-};
-
-const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
+const getEventIntervals = (startDate, calendarDayRange, schedule) =>
   schedule.reduce((allIntv, curr) => {
     const section = curr.section;
     section.exams.forEach(exam => {
       allIntv.push({
-        start: getMomentFromDateAndSecs(exam.date, exam.start_seconds).toDate(),
-        end: getMomentFromDateAndSecs(exam.date, exam.end_seconds).toDate(),
-        title: section.course.code,
-        value: {
-          location: exam.location,
-          course: section.course,
-          sectionName: `${section.section_name} exam`,
-        },
+        start: getDateWithSeconds(exam.date, exam.start_seconds),
+        end: getDateWithSeconds(exam.date, exam.end_seconds),
+        courseCode: splitCourseCode(section.course.code),
+        location: exam.location,
+        section: `${section.section} exam`,
       });
     });
     section.meetings.forEach(meeting => {
       const meetingStart = moment(meeting.start_date);
       const meetingEnd = moment(meeting.end_date);
       meeting.days.forEach(day => {
-        const momentsOfWeekForDay = getMomentsForWeekdaysWithinRange(
+        const momentsOfWeekForDay = getMomentsWithinRange(
           startDate.clone(),
           startDate.clone().add(calendarDayRange, 'days'),
           day,
@@ -106,12 +120,9 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
                 .clone()
                 .add(meeting.end_seconds, 'seconds')
                 .toDate(),
-              title: section.course.code,
-              value: {
-                location: meeting.location,
-                course: section.course,
-                sectionName: section.section_name,
-              },
+              courseCode: splitCourseCode(section.course.code),
+              location: meeting.location,
+              section: section.section,
             });
           }
         });
@@ -121,26 +132,9 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
   }, []);
 
 const ProfileCalendar = ({ schedule, theme }) => {
-  // start of current week
-  const currentDay = moment(moment().startOf('isoWeek').toDate());
+  const [minDate, dayRange] = getScheduleRange(schedule);
 
-  if (schedule.length === 0) {
-  } else {
-    return (
-      <ProfileCalendarWrapper>
-        <Calendar
-          views={[Views.WEEK]}
-          defaultView={Views.WEEK}
-          step={30}
-          min={new Date(0, 0, 0, 8)} // minimum hour displayed
-          max={new Date(0, 0, 0, 22)} // maximum hour displayed
-          events={getIntervalsForWeek(currentDay, 365, schedule)} // TODO build all events
-          localizer={momentLocalizer(moment)}
-        />
-      </ProfileCalendarWrapper>
-    );
-  }
-  return (
+  return (!schedule || schedule.length === 0) ? (
     <ProfileCalendarWrapper>
       <ProfileCalendarHeading>
         Import your class schedule
@@ -159,6 +153,21 @@ const ProfileCalendar = ({ schedule, theme }) => {
           Import your schedule from Quest
         </Button>
       </ProfileCalendarImg>
+    </ProfileCalendarWrapper>
+  ) : (
+    <ProfileCalendarWrapper>
+      <Calendar
+        views={[Views.WEEK]}
+        defaultView={Views.WEEK}
+        step={15}
+        min={new Date(0, 0, 0, 8)} // minimum hour displayed
+        max={new Date(0, 0, 0, 22)} // maximum hour displayed
+        events={getEventIntervals(moment(minDate), dayRange, schedule)}
+        localizer={momentLocalizer(moment)}
+        components={{
+          event: EventSection,
+        }}
+      />
     </ProfileCalendarWrapper>
   );
 };

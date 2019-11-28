@@ -1,3 +1,16 @@
 .rbc-timeslot-group {
     min-height: 40px;
 }
+
+.rbc-allday-cell {
+    display: none;
+}
+
+.rbc-time-content {
+    max-height: 600px;
+}
+
+.rbc-event {
+    border: none;
+    border-radius: 4px;
+}
