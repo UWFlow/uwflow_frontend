@@ -42,7 +42,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6544,
         id: 161,
-        term: 1199,
+        term_id: 1199,
         exams: [
           {
             date: '2019-12-19',
@@ -81,7 +81,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6545,
         id: 162,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {
@@ -109,7 +109,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6546,
         id: 163,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {
@@ -140,7 +140,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 8880,
         id: 178,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {
@@ -168,7 +168,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 8881,
         id: 179,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {
@@ -199,7 +199,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 8879,
         id: 177,
-        term: 1199,
+        term_id: 1199,
         exams: [
           {
             date: '2019-12-17',
@@ -238,7 +238,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6547,
         id: 193,
-        term: 1199,
+        term_id: 1199,
         exams: [
           {
             date: '2019-12-11',
@@ -277,7 +277,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6548,
         id: 194,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {
@@ -305,7 +305,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6549,
         id: 195,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {
@@ -336,7 +336,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6170,
         id: 784,
-        term: 1199,
+        term_id: 1199,
         exams: [
           {
             date: '2019-12-20',
@@ -375,7 +375,7 @@ const testSchedule = {
         campus: 'UW U',
         class_number: 6171,
         id: 785,
-        term: 1199,
+        term_id: 1199,
         exams: [],
         meetings: [
           {

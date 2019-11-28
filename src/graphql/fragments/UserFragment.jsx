@@ -38,7 +38,7 @@ const UserFragment = {
   `,
   userCoursesTaken: gql`
     fragment UserCoursesTakenFragment on user_course_taken {
-      term
+      term_id
       course_id
       course {
         id
@@ -60,7 +60,7 @@ const UserFragment = {
         }
         sections {
           id
-          term
+          term_id
           exams {
             date
             day

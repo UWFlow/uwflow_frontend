@@ -30,8 +30,8 @@ import { getCoursePageRoute } from '../../Routes';
 const ProfileCourses = ({ theme, courses, reviews, setReviewCourse, openModal }) => {
   const groupByTerm = courses => {
     return courses.reduce((groups, course, idx) => {
-      groups[course.term] = groups[course.term] || [];
-      groups[course.term].push({...course, index: idx});
+      groups[course.term_id] = groups[course.term_id] || [];
+      groups[course.term_id].push({...course, index: idx});
       return groups;
     }, {});
   };  

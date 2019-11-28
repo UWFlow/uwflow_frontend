@@ -126,17 +126,17 @@ const CourseSchedule = ({ sections, courseCode }) => {
     return null;
   }
   const termsOffered = sections.reduce((allTerms, curr) => {
-    if (!allTerms.includes(curr.term)) {
-      allTerms.push(curr.term);
+    if (!allTerms.includes(curr.term_id)) {
+      allTerms.push(curr.term_id);
     }
     return allTerms;
   }, []);
 
   const sectionsCleanedData = sections.map(s => ({
-    section: s.section,
+    section: s.section_name,
     campus: s.campus,
     class: s.class_number,
-    term: s.term,
+    term: s.term_id,
     enrolled: {
       filled: s.enrollment_total,
       capacity: s.enrollment_capacity,
@@ -213,8 +213,8 @@ CourseSchedule.propTypes = {
           start_seconds: PropTypes.number,
         }),
       ),
-      section: PropTypes.string,
-      term: PropTypes.number,
+      section_name: PropTypes.string,
+      term_id: PropTypes.number,
     }),
   ),
 };

@@ -21,7 +21,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           user_id
         }
         user_course_taken(where: {course: {code: {_eq: $code}}, user_id: {_eq: ${userId}}}) {
-          term
+          term_id
           course_id
         }
         review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {

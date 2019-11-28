@@ -20,7 +20,7 @@ const CourseFragment = {
       id
       sections {
         id
-        term
+        term_id
       }
     }
   `,
@@ -33,8 +33,8 @@ const CourseFragment = {
         enrollment_total
         class_number
         campus
-        section
-        term
+        section_name
+        term_id
         meetings {
           days
           start_date

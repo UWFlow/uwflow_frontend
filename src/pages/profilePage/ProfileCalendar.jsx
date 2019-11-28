@@ -43,7 +43,7 @@ export const getMomentsForWeekdaysWithinRange = (start, end, dayOfWeek) => {
 const EventSection = ({ start, end, value }) => (
   <ProfileCalendarEventWrapper>
     <EventCourseWrapper>{value.course.code}</EventCourseWrapper>
-    <EventSectionWrapper>{value.section}</EventSectionWrapper>
+    <EventSectionWrapper>{value.sectionName}</EventSectionWrapper>
     <EventTimeWrapper>{`${start.format('LT')} - ${end.format(
       'LT',
     )}`}</EventTimeWrapper>
@@ -61,7 +61,7 @@ EventSection.propTypes = {
       id: PropTypes.number,
       name: PropTypes.string,
     }),
-    section: PropTypes.string,
+    sectionName: PropTypes.string,
   }),
 };
 
@@ -75,7 +75,7 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
         value: {
           location: exam.location,
           course: section.course,
-          section: `${section.section} exam`,
+          sectionName: `${section.section_name} exam`,
         },
       });
     });
@@ -103,7 +103,7 @@ const getIntervalsForWeek = (startDate, calendarDayRange, schedule) =>
               value: {
                 location: meeting.location,
                 course: section.course,
-                section: section.section,
+                sectionName: section.section_name,
               },
             });
           }
