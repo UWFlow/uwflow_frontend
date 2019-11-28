@@ -40,12 +40,8 @@ const ReviewFragment = {
         name
         code
         picture_url
-        reviews_aggregate {
-          aggregate {
-            avg {
-              liked
-            }
-          }
+        rating {
+          liked
         }
       }
     }

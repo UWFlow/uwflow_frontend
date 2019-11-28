@@ -40,7 +40,7 @@ const SearchResults = ({
       name: prof.name,
     },
     ratings: prof.rating[0] ? prof.rating[0].filled_count : 0,
-    liked: prof.reviews_aggregate.aggregate.avg.liked,
+    liked: prof.rating[0] ? prof.rating[0].liked : null,
     clear: prof.rating[0] ? prof.rating[0].clear : null,
     engaging: prof.rating[0] ? prof.rating[0].engaging : null,
     courses: prof.prof_courses.map(course => course.code)
