@@ -15,7 +15,7 @@ const convertInputToState = data => {
 
   const courseReviews = data.review.map(r => ({
     id: r.id,
-    upvotes: r.course_review_rating.upvote_count,
+    upvotes: r.course_review_rating ? r.course_review_rating.upvote_count : 0,
     upvote_users: r.course_review_upvotes ?
       r.course_review_upvotes.map(vote => Number(vote.user_id)) : [],
     review: r.course_comment,
@@ -47,20 +47,20 @@ const convertInputToState = data => {
       }
     }
     if (!foundProfObject) {
+      const rating = current.prof ? current.prof.rating[0] : null;
       profObject = {
         id: current.prof ? current.prof.id : 0,
         code: current.prof ? current.prof.code : '',
         name: current.prof ? current.prof.name : '',
-        liked: current.prof
-          ? current.prof.reviews_aggregate.aggregate.avg.liked
-          : 0,
+        liked: rating ? rating.liked : null,
         reviews: [],
       };
       allProfs.push(profObject);
     }
     profObject.reviews.push({
       id: current.id,
-      upvotes: current.prof_review_rating.upvote_count,
+      upvotes: current.prof_review_rating ?
+        current.prof_review_rating.upvote_count : 0,
       upvote_users: current.prof_review_upvotes ? 
         current.prof_review_upvotes.map(vote => Number(vote.user_id)) : [],
       review: current.prof_comment,

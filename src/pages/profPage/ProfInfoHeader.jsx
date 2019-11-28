@@ -22,8 +22,7 @@ import { splitCourseCode } from '../../utils/Misc';
 
 const ProfInfoHeader = ({ prof }) => {
   const rating = prof.rating[0] || {};
-  const { clear, engaging, filled_count, comment_count } = rating;
-  const { liked } = prof.reviews_aggregate.aggregate.avg;
+  const { liked, clear, engaging, filled_count, comment_count } = rating;
   const profCourses = prof.prof_courses.map(course => splitCourseCode(course.course.code));
 
   return (

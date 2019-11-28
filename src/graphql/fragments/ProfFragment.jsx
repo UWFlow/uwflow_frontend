@@ -22,14 +22,8 @@ const ProfFragment = {
   profRating: gql`
     fragment ProfRatingFragment on prof {
       id
-      reviews_aggregate {
-        aggregate {
-          avg {
-            liked
-          }
-        }
-      }
       rating {
+        liked
         clear
         engaging
         filled_count

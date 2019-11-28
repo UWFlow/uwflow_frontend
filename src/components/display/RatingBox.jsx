@@ -26,7 +26,6 @@ import {
 /* Child Components */
 import ProgressBar from './ProgressBar';
 import CircularPercentage from '../statistics/CircularPercentage';
-import { processRating } from '../../utils/Misc';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
