@@ -41,8 +41,6 @@ export const ProfileCalendarEventWrapper = styled.div`
   ${Body}
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => (theme.white)};
-  background: ${({ color, theme }) => (color ? color : theme.primary)};
   border-radius: 4px;
   padding: 4px 8px;
 `;
@@ -55,9 +53,6 @@ export const CourseText = styled.span`
   font-weight: 600;
 `;
 
-export const SectionText = styled.span`
-`;
+export const SectionText = styled.span``;
 
-export const TimeText = styled.div``;
-
-export const LocationText = styled.div``;
+export const LocationText = styled.span``;
