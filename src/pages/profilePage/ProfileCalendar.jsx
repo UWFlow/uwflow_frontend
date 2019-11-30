@@ -25,6 +25,14 @@ import {
 /* Utils */
 import { getDateWithSeconds, splitCourseCode, millisecondsPerDay } from '../../utils/Misc';
 
+// set first day of week to Monday
+moment.locale('ko', {
+  week: {
+    dow: 1,
+    doy: 1,
+  },
+});
+
 const EventSection = ({ event }) => (
   <ProfileCalendarEventWrapper>
     <EventCourseSectionWrapper>
