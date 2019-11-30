@@ -1,45 +1,42 @@
-import MiniSearch from 'minisearch/src/MiniSearch';
+import fuzzysort from 'fuzzysort';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
 import { splitCourseCode } from '../utils/Misc';
 
 const MAX_AUTOCOMPLETE_LENGTH = 50;
+const RATING_MULTIPLIER = 5;
 
 const searchOptions = {
-  fuzzy: 0,
-  prefix: true,
+  limit: 100,
+  threshold: -500,
+  allowTypo: false,
 };
 
-const courseIndexOptions = {
-  searchOptions: {
-    ...searchOptions,
-    boost: { code: 100 },
-  },
-  fields: ['code', 'name', 'profs'],
-  storeFields: ['code', 'name', 'profs'],
+const courseOptions = {
+  ...searchOptions,
+  keys: ['fullText', 'code', 'profs'],
 }
 
-const profIndexOptions = {
-  searchOptions: {
-    ...searchOptions,
-    boost: { name: 100 },
-  },
-  fields: ['name', 'courses'],
-  storeFields: ['code', 'name', 'courses'],
+const profOptions = {
+  ...searchOptions,
+  keys: ['name', 'courses']
 };
 
-const courseCodeIndexOptions = {
-  searchOptions,
-  fields: ['code'],
-  storeFields: ['code'],
+const courseCodeOptions = {
+  ...searchOptions,
+  keys: ['code'],
 };
+
+const weightByRatings = results => results.sort((a, b) => {
+  return (b.score - a.score) +
+    (b.obj.rating_count - a.obj.rating_count) * RATING_MULTIPLIER;
+});
 
 class SearchClient {
   constructor() {
-    this.built = false;
-    this.courseIndex = new MiniSearch(courseIndexOptions);
-    this.profIndex = new MiniSearch(profIndexOptions);
-    this.courseCodeIndex = new MiniSearch(courseCodeIndexOptions);
+    this.courses = [];
+    this.profs = [];
+    this.courseCodes = [];
   }
 
   autocomplete(query = '') {
@@ -54,27 +51,24 @@ class SearchClient {
     const parsedQuery = query
       .split(' ')
       .map(term => splitCourseCode(term))
-      .join(' ');
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
 
-    const courseResults = this.courseIndex.search(parsedQuery).slice(0, 4);
-    const profResults = this.profIndex.search(parsedQuery).slice(0, 2);
-    const courseCodeResults = this.courseCodeIndex
-      .search(parsedQuery)
-      .slice(0, 2);
+    let courseResults = fuzzysort.go(parsedQuery, this.courses, courseOptions);
+    let profResults = fuzzysort.go(parsedQuery, this.profs, profOptions);
+    let courseCodeResults = fuzzysort.go(parsedQuery, this.courseCodes, courseCodeOptions);
 
     return {
-      courseResults,
-      profResults,
-      courseCodeResults,
+      courseResults: weightByRatings(courseResults).map(res => res.obj).slice(0, 4),
+      profResults: weightByRatings(profResults).map(res => res.obj).slice(0, 2),
+      courseCodeResults: weightByRatings(courseCodeResults).map(res => res.obj).slice(0, 2),
     };
   }
 
   async buildIndices(searchData, lastIndexedDate) {
     let parsedSearchData;
     let indexedDate = lastIndexedDate;
-    const newCourseIndex = new MiniSearch(courseIndexOptions);
-    const newProfIndex = new MiniSearch(profIndexOptions);
-    const newCourseCodeIndex = new MiniSearch(courseCodeIndexOptions);
 
     // fetch data if not passed in from localstorage
     if (searchData === null) {
@@ -89,13 +83,22 @@ class SearchClient {
 
     // parse data
     let courseCodeSet = new Set([]);
+    let courseCodeRatings = {};
 
     const courses = parsedSearchData.courses.map(course => {
       const courseLetters = splitCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
+
+      // total number of ratings for reranking during search
+      if (!courseCodeRatings.hasOwnProperty(courseLetters)) {
+        courseCodeRatings[courseLetters] = 0;
+      }
+      courseCodeRatings[courseLetters] += course.rating_count;
+
       return {
         ...course,
         code: splitCourseCode(course.code),
+        fullText: `${splitCourseCode(course.code)} — ${course.name}`,
         profs: course.profs === null ? '' : course.profs.join(' '),
       };
     });
@@ -110,20 +113,14 @@ class SearchClient {
       };
     });
 
-    const courseCodes = Array.from(courseCodeSet).map((code, idx) =>
-      Object({ id: idx, code }),
+    const courseCodes = Array.from(courseCodeSet).map(code =>
+      Object({ code, rating_count: courseCodeRatings[code] }),
     );
 
-    // build new indices
-    newCourseIndex.addAll(courses);
-    newProfIndex.addAll(profs);
-    newCourseCodeIndex.addAll(courseCodes);
-
     // swap old indices with new
-    this.courseIndex = newCourseIndex;
-    this.profIndex = newProfIndex;
-    this.courseCodeIndex = newCourseCodeIndex;
-    this.built = true;
+    this.courses = courses;
+    this.profs = profs;
+    this.courseCodes = courseCodes;
 
     // return compressed raw data for localstorage
     return [LZString.compressToUTF16(JSON.stringify(parsedSearchData)), indexedDate];

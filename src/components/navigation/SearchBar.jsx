@@ -131,14 +131,15 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   const courseResult = (course, ref = null) => (
     <SearchResult
       onClick={() =>
+        // convert back to raw code
         goToCourse(
           course.code
             .split(' ')
             .join('')
             .toLowerCase(),
         )
-      } // convert back to raw code
-      key={course.id}
+      }
+      key={course.code}
       ref={ref}
     >
       <ResultLeft>
@@ -161,7 +162,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   );
 
   const profResult = (prof, ref = null) => (
-    <SearchResult onClick={() => goToProf(prof.code)} key={prof.id} ref={ref}>
+    <SearchResult onClick={() => goToProf(prof.code)} key={prof.code} ref={ref}>
       <ResultLeft>
         <ProfText>
           <User />
