@@ -23,7 +23,7 @@ import {
 } from './styles/ProfileCalendar';
 
 /* Utils */
-import { getDateWithSeconds, splitCourseCode } from '../../utils/Misc';
+import { getDateWithSeconds, splitCourseCode, millisecondsPerDay } from '../../utils/Misc';
 
 const EventSection = ({ event }) => (
   <ProfileCalendarEventWrapper>
@@ -66,8 +66,7 @@ const getScheduleRange = (schedule) => {
   maxTime.setDate(maxTime.getDate() + 1);
 
   // time for one day from milliseconds
-  const oneDay = 1000 * 60 * 60 * 24;
-  const dayRange = Math.round(maxTime.getTime() - minTime.getTime()) / (oneDay);  
+  const dayRange = Math.round(maxTime.getTime() - minTime.getTime()) / millisecondsPerDay;  
   return [minTime, dayRange];
 }
 

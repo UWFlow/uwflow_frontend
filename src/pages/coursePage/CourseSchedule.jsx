@@ -37,7 +37,17 @@ const sectionOrder = {
  */
 
 const getInfoGroupings = meetings => {
-  let groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
+  const seenMeetings = new Set();
+  const dedupedMeetings = meetings.filter((meeting) => {
+    const meetingKey =`${meeting.start_date}${meeting.end_date}${meeting.location}${meeting.start_seconds}${meeting.end_seconds}`;
+    if (seenMeetings.has(meetingKey)) {
+      return false;
+    }
+    seenMeetings.add(meetingKey);
+    return true;
+  });
+
+  let groupedByTimeOfDay = dedupedMeetings.reduce((groupings, curr) => {
     const key = `${curr.start_seconds} ${curr.end_seconds}`;
 
     if (!groupings[key]) {

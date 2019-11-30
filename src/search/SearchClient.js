@@ -69,8 +69,9 @@ class SearchClient {
     };
   }
 
-  async buildIndices(searchData) {
+  async buildIndices(searchData, lastIndexedDate) {
     let parsedSearchData;
+    let indexedDate = lastIndexedDate;
     const newCourseIndex = new MiniSearch(courseIndexOptions);
     const newProfIndex = new MiniSearch(profIndexOptions);
     const newCourseCodeIndex = new MiniSearch(courseCodeIndexOptions);
@@ -81,6 +82,7 @@ class SearchClient {
         `${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`,
       );
       parsedSearchData = await response.json();
+      indexedDate = Date();
     } else {
       parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData));
     }
@@ -124,7 +126,7 @@ class SearchClient {
     this.built = true;
 
     // return compressed raw data for localstorage
-    return LZString.compressToUTF16(JSON.stringify(parsedSearchData));
+    return [LZString.compressToUTF16(JSON.stringify(parsedSearchData)), indexedDate];
   }
 }
 
