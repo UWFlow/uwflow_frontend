@@ -3,33 +3,40 @@ import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
 import { splitCourseCode } from '../utils/Misc';
 
+const RATING_MULTIPLIER = 0.1;
 const MAX_AUTOCOMPLETE_LENGTH = 50;
-const RATING_MULTIPLIER = 5;
 
 const searchOptions = {
-  limit: 100,
-  threshold: -500,
-  allowTypo: false,
+  threshold: -1000,
+  allowTypo: true,
 };
 
 const courseOptions = {
   ...searchOptions,
   keys: ['fullText', 'code', 'profs'],
+  scoreFn: (a) => Math.max(
+    a[0] ? a[0].score : -10000,
+    a[1] ? a[1].score : -10000,
+    a[2] ? a[2].score - 50 : -10000)
 }
 
 const profOptions = {
   ...searchOptions,
-  keys: ['name', 'courses']
+  keys: ['name', 'courses'],
+  scoreFn: (a) => Math.max(
+    a[0] ? a[0].score : -10000,
+    a[1] ? a[1].score - 50 : -10000)
 };
 
 const courseCodeOptions = {
   ...searchOptions,
-  keys: ['code'],
+  key: 'code',
 };
 
 const weightByRatings = results => results.sort((a, b) => {
-  return (b.score - a.score) +
-    (b.obj.rating_count - a.obj.rating_count) * RATING_MULTIPLIER;
+  const ratingDifference = b.obj.rating_count - a.obj.rating_count;
+  return a.score === b.score ?
+    ratingDifference : (b.score - a.score) + ratingDifference * RATING_MULTIPLIER;
 });
 
 class SearchClient {
@@ -59,10 +66,19 @@ class SearchClient {
     let profResults = fuzzysort.go(parsedQuery, this.profs, profOptions);
     let courseCodeResults = fuzzysort.go(parsedQuery, this.courseCodes, courseCodeOptions);
 
+    if (courseCodeResults.length === 0) {
+      courseCodeResults = fuzzysort.go(parsedQuery.split(' ')[0], this.courseCodes, courseCodeOptions);
+    }
+
+    // reranking by rating count
+    courseResults = weightByRatings(courseResults).slice(0, 4);
+    profResults = weightByRatings(profResults).slice(0, 2);
+    courseCodeResults = weightByRatings(courseCodeResults).slice(0, 2);
+
     return {
-      courseResults: weightByRatings(courseResults).map(res => res.obj).slice(0, 4),
-      profResults: weightByRatings(profResults).map(res => res.obj).slice(0, 2),
-      courseCodeResults: weightByRatings(courseCodeResults).map(res => res.obj).slice(0, 2),
+      courseResults: courseResults.map(res => res.obj),
+      profResults: profResults.map(res => res.obj),
+      courseCodeResults: courseCodeResults.map(res => res.obj),
     };
   }
 
