@@ -54,6 +54,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "lint": "eslint src",
+    "format": "prettier --config ./.prettierrc --write \"./src/**/**/*.{js,jsx}\"",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
@@ -68,6 +69,7 @@
   ],
   "devDependencies": {
     "babel-plugin-styled-components": "^1.10.6",
+    "prettier": "^1.19.1",
     "react-app-rewired": "^2.1.5",
     "worker-loader": "^2.0.0"
   }
