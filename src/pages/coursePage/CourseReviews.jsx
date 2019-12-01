@@ -246,7 +246,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
   }
 
   const courseProfFilterOptions = [
-    'show all professors',
+    'all professors',
     ...reviewDataState.courseReviewProfs,
   ];
 
@@ -257,7 +257,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
   );
 
   const profProfFilterOptions = [
-    'show all professors',
+    'all professors',
     ...reviewDataState.profReviewProfs,
   ];
 

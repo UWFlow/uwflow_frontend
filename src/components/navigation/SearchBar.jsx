@@ -53,7 +53,9 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
       setSelectedResultIndex(Math.max(-1, selectedResultIndex - 1));
     } else if (keyCode === KeycodeConstants.DOWN) {
       event.preventDefault();
-      const length = searchResults.courseResults.length + searchResults.profResults.length;
+      const length = searchResults.courseCodeResults.length +
+        searchResults.courseResults.length +
+        searchResults.profResults.length;
       setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
     }
   }, [selectedResultIndex, searchResults]);
@@ -131,14 +133,15 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   const courseResult = (course, ref = null) => (
     <SearchResult
       onClick={() =>
+        // convert back to raw code
         goToCourse(
           course.code
             .split(' ')
             .join('')
             .toLowerCase(),
         )
-      } // convert back to raw code
-      key={course.id}
+      }
+      key={course.code}
       ref={ref}
     >
       <ResultLeft>
@@ -161,7 +164,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   );
 
   const profResult = (prof, ref = null) => (
-    <SearchResult onClick={() => goToProf(prof.code)} key={prof.id} ref={ref}>
+    <SearchResult onClick={() => goToProf(prof.code)} key={prof.code} ref={ref}>
       <ResultLeft>
         <ProfText>
           <User />
@@ -191,19 +194,21 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
     }
 
     const courseCodeResults = searchResults.courseCodeResults.length > 0
-      ? searchResults.courseCodeResults.map(result =>
-          exploreResult(result.code, selectedResultIndex  === 0 ? selectedResultRef : null),
+      ? searchResults.courseCodeResults.map((result, i) =>
+          exploreResult(result.code, selectedResultIndex === i ? selectedResultRef : null),
         )
       : [exploreResult('', selectedResultIndex  === 0 ? selectedResultRef : null)];
 
+    let offset = courseCodeResults.length;
     const courseResults = searchResults.courseResults.map((result, i) => {
-        return courseResult(result, selectedResultIndex === i + 1 ? selectedResultRef : null)
+        return courseResult(result,
+          selectedResultIndex === i + offset ? selectedResultRef : null)
       });
 
+    offset += searchResults.courseResults.length;
     const profResults = searchResults.profResults.map((result, i) => {
       return profResult(result,
-        selectedResultIndex === i + 1 + searchResults.courseResults.length ?
-        selectedResultRef : null);
+        selectedResultIndex === i + offset ? selectedResultRef : null);
     });
 
     const allResults = [...courseCodeResults, ...courseResults, ...profResults];
