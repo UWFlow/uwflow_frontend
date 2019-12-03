@@ -16,10 +16,9 @@ export const ProfileDropdownWrapper = styled.div`
 `;
 
 export const ProfilePicture = styled.img`
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.primaryDark};
   object-fit: cover;
   ${({ isLanding }) => isLanding ? DarkBoxShadow : BoxShadow}
   

@@ -28,7 +28,6 @@ export const UnitCircle = styled.div`
       : 'white'};
   border: 2px solid ${({ filled, theme }) => (filled ? theme.primaryDark : theme.light4)};
   margin: 0 1px;
-  ${({ filled }) => (filled ? '' : BoxShadow)}
 `;
 
 export const ThumbsWrapper = styled.div`

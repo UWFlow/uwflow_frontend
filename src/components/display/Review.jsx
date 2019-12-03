@@ -56,7 +56,7 @@ const MetricIfExists = (metrics, metric) => {
             <BubbleRatings boolRating={metrics[metric]} />
           </SingleMetricSquares>
           <SingleMetricLabel>
-            {metric === 'liked' ? 'Liked' : metric}?
+            {metric === 'liked' ? 'Liked' : metric}
           </SingleMetricLabel>
         </SingleMetricWrapper>
       );
@@ -68,7 +68,7 @@ const MetricIfExists = (metrics, metric) => {
           </SingleMetricSquares>
           <SingleMetricLabel>
             {' '}
-            {metric.charAt(0).toUpperCase() + metric.slice(1)}?
+            {metric.charAt(0).toUpperCase() + metric.slice(1)}
           </SingleMetricLabel>
         </SingleMetricWrapper>
       );
@@ -116,13 +116,13 @@ const Review = ({
     setUserUpvoted(!userUpvoted);
   }
 
-  const authorNameText = author.full_name ? `-${author.full_name}` : '-Anonymous';
+  const authorNameText = author.full_name ? author.full_name + (author.program ? ' - ' : '') : '';
+  const authorText = authorNameText + (author.program ? author.program : '');
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        {authorNameText}{author.program ? `, a ${author.program} student` : ''}
-        , {moment(created_at).fromNow()}
+        {Boolean(authorText.length) && `— ${authorText}`}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );

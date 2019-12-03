@@ -44,7 +44,7 @@ export const ReviewPicture = styled.div`
   width: 64px;
   height: 64px;
   background-color: ${({ theme }) => theme.dark3};
-  border-radius: 32px 32px 32px 32px;
+  border-radius: 32px;
 
   ${breakpoint('mobile', 'tablet')`
     margin-right: 8px;
@@ -87,13 +87,15 @@ export const ReviewTextWrapper = styled.div`
 
 export const ReviewText = styled.div`
   word-break: break-word;
-  ${Body}
+  color: ${({ theme }) => theme.dark1};
+  font-size: 15px;
 `;
 
 export const ReviewAuthor = styled.div`
   ${Body}
+  font-style: italic;
+  color: ${({ theme }) => theme.dark2};
   margin-top: 16px;
-  color: ${({ theme }) => theme.dark1};
 `;
 
 export const ReviewMetricsWrapper = styled.table`
@@ -101,7 +103,10 @@ export const ReviewMetricsWrapper = styled.table`
   margin-left: 16px;
 `;
 
-export const ReviewMetricsBody = styled.tbody``;
+export const ReviewMetricsBody = styled.tbody`
+  font-weight: 600;
+  color: ${({ theme }) => theme.dark2};
+`;
 
 export const SingleMetricWrapper = styled.tr``;
 

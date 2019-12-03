@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Heading3, BoxShadow } from '../../../constants/Mixins';
+import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 
 export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};
@@ -11,6 +12,10 @@ export const ContainerWrapper = styled.div`
 export const TabsWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  position: sticky;
+  top: ${NAVBAR_HEIGHT}px;
+  z-index: 7;
+  ${BoxShadow}
 `;
 
 export const Tab = styled.div`

@@ -7,7 +7,7 @@ export const ButtonWrapper = styled.button`
   display: flex;
   align-items: center;
   text-align: center;
-  border: 2px solid ${({ theme, borderColor = theme.light2 }) => borderColor};
+  border: 2px solid ${({ borderColor = 'none'}) => borderColor};
   border-radius: 8px;
   padding: ${({ padding }) => padding};
   color: ${({ theme, disabled }) => disabled ? theme.light1 : theme.dark1};

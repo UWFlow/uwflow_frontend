@@ -32,7 +32,7 @@ export const LogoText = styled.div`
 
 export const TitleText = styled.div`
   color: white;
-  ${Heading1}
+  ${Heading2}
   margin-bottom: 32px;
 `;
 
@@ -55,6 +55,7 @@ export const Column1 = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 64px;
+  max-width: 1000px;
   flex-direction: column;
 
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
