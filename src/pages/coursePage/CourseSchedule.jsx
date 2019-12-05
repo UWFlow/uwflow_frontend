@@ -138,6 +138,7 @@ const CourseSchedule = ({ sections, courseCode }) => {
     class: s.class_number,
     term: s.term_id,
     enrolled: {
+      section_id: s.id,
       filled: s.enrollment_total,
       capacity: s.enrollment_capacity,
     },
