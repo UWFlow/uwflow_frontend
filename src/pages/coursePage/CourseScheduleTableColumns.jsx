@@ -54,10 +54,12 @@ const ClassCell = ({ cell }) => (
 const EnrolledCell = ({ cell }) => (
   <NormalCellWrapper>
     <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
-      {cell.value.filled >= cell.value.capacity &&  
+      {(cell.value.filled >= cell.value.capacity || cell.value.selected) &&  
         <ScheduleNotificationBell
           key={cell.value.section_id}
           sectionID={cell.value.section_id}
+          courseID={cell.value.course_id}
+          initialState={cell.value.selected}
         />
       }
       {cell.value.filled}/{cell.value.capacity}

@@ -49,12 +49,13 @@ const CoursePageContent = ({
   shortlisted,
   userReview,
   userCourseTaken,
+  sectionSubscriptions,
   isLoggedIn,
   isBrowserDesktop,
 }) => {
   const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-
+  console.log(sectionSubscriptions)
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
@@ -68,7 +69,12 @@ const CoursePageContent = ({
       <ColumnWrapper>
         <Column1>
           <ScheduleAndReviewWrapper>
-            <CourseSchedule sections={course.sections} courseCode={course.code} />
+            <CourseSchedule
+              sections={course.sections}
+              courseCode={course.code}
+              courseID={course.id}
+              sectionSubscriptions={sectionSubscriptions}
+            />
             {(!isLoggedIn || userCourseTaken) && <CourseReviewQuestionBox>
               <CourseQuestionTextAndToggle>
                 <CourseReviewQuestionText>
@@ -135,6 +141,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
         userReview={isLoggedIn && data.review.length > 0 ? data.review[0] : null}
         userCourseTaken={isLoggedIn && data.user_course_taken.length > 0 ? true : false}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
+        sectionSubscriptions={data.section_subscription || []}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
       />

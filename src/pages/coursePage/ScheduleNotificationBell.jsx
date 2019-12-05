@@ -11,8 +11,11 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
-import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
+import {
+  DELETE_SECTION_SUBSCRIPTION,
+  INSERT_SECTION_SUBSCRIPTION
+} from '../../graphql/mutations/SectionSubscription';
+import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -21,29 +24,37 @@ const mapStateToProps = state => ({
 const ScheduleNotificationBell = ({
   isLoggedIn,
   sectionID,
+  courseID,
   initialState = false
 }) => {
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [{
-    query: REFETCH_RATINGS,
-    variables: { section_id: sectionID, user_id: userID }
+    query: REFETCH_SECTION_SUBSCRIPTIONS,
+    variables: { course_id: courseID, user_id: userID }
   }];
 
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(initialState);
-  const [upsertLiked] = useMutation(UPSERT_LIKED_REVIEW, { refetchQueries });
+  const [insertSubscription] = useMutation(INSERT_SECTION_SUBSCRIPTION, { refetchQueries });
+  const [deleteSubscription] = useMutation(DELETE_SECTION_SUBSCRIPTION, { refetchQueries });
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
       dispatch(authModalOpen());
       return;
     }
-    setSelected(!selected);
 
     if (!sectionID) {
       return;
     }
+
+    if (selected) {
+      deleteSubscription({ variables: { section_id: sectionID }});
+    } else {
+      insertSubscription({ variables: { user_id: userID, section_id: sectionID }});
+    }
+    setSelected(!selected);
   }
 
   return (

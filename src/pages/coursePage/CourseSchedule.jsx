@@ -121,7 +121,7 @@ const getInfoGroupings = meetings => {
   };
 };
 
-const CourseSchedule = ({ sections, courseCode }) => {
+const CourseSchedule = ({ sections, courseCode, courseID, sectionSubscriptions }) => {
   if (!sections || sections.length === 0) {
     return null;
   }
@@ -132,15 +132,19 @@ const CourseSchedule = ({ sections, courseCode }) => {
     return allTerms;
   }, []);
 
+  const subscribedSectionIDs = sectionSubscriptions.map(subscription => subscription.section_id);
+
   const sectionsCleanedData = sections.map(s => ({
     section: s.section_name,
     campus: s.campus,
     class: s.class_number,
     term: s.term_id,
     enrolled: {
+      course_id: courseID,
       section_id: s.id,
       filled: s.enrollment_total,
       capacity: s.enrollment_capacity,
+      selected: subscribedSectionIDs.includes(s.id),
     },
     // Every grouping contains a single time of day, location, and instructor
     // and the classes that occur with those parameters.
