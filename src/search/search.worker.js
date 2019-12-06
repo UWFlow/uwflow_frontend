@@ -12,8 +12,9 @@ const client = new SearchClient();
       postMessage({ type: 'autocomplete', results });
       break;
     case 'build':
-      const searchData = await client.buildIndices(event.data.searchData);
-      postMessage({ type: 'data', searchData });
+      const [searchData, lastIndexedDate] = await client.buildIndices(
+        event.data.searchData, event.data.lastIndexedDate);
+      postMessage({ type: 'data', searchData, lastIndexedDate });
       break;
     default:
       break;

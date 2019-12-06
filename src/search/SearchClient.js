@@ -1,45 +1,49 @@
-import MiniSearch from 'minisearch/src/MiniSearch';
+import fuzzysort from 'fuzzysort';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
 import { splitCourseCode } from '../utils/Misc';
 
+const RATING_MULTIPLIER = 0.1;
 const MAX_AUTOCOMPLETE_LENGTH = 50;
 
 const searchOptions = {
-  fuzzy: 0,
-  prefix: true,
+  threshold: -1000,
+  allowTypo: true,
 };
 
-const courseIndexOptions = {
-  searchOptions: {
-    ...searchOptions,
-    boost: { code: 100 },
-  },
-  fields: ['code', 'name', 'profs'],
-  storeFields: ['code', 'name', 'profs'],
+const courseOptions = {
+  ...searchOptions,
+  keys: ['fullText', 'code', 'profs'],
+  scoreFn: (a) => Math.max(
+    a[0] ? a[0].score : -10000,
+    a[1] ? a[1].score : -10000,
+    a[2] ? a[2].score - 50 : -10000)
 }
 
-const profIndexOptions = {
-  searchOptions: {
-    ...searchOptions,
-    boost: { name: 100 },
-  },
-  fields: ['name', 'courses'],
-  storeFields: ['code', 'name', 'courses'],
+const profOptions = {
+  ...searchOptions,
+  keys: ['name', 'courses'],
+  scoreFn: (a) => Math.max(
+    a[0] ? a[0].score : -10000,
+    a[1] ? a[1].score - 50 : -10000)
 };
 
-const courseCodeIndexOptions = {
-  searchOptions,
-  fields: ['code'],
-  storeFields: ['code'],
+const courseCodeOptions = {
+  ...searchOptions,
+  key: 'code',
 };
+
+const weightByRatings = results => results.sort((a, b) => {
+  const ratingDifference = b.obj.rating_count - a.obj.rating_count;
+  return a.score === b.score ?
+    ratingDifference : (b.score - a.score) + ratingDifference * RATING_MULTIPLIER;
+});
 
 class SearchClient {
   constructor() {
-    this.built = false;
-    this.courseIndex = new MiniSearch(courseIndexOptions);
-    this.profIndex = new MiniSearch(profIndexOptions);
-    this.courseCodeIndex = new MiniSearch(courseCodeIndexOptions);
+    this.courses = [];
+    this.profs = [];
+    this.courseCodes = [];
   }
 
   autocomplete(query = '') {
@@ -54,26 +58,33 @@ class SearchClient {
     const parsedQuery = query
       .split(' ')
       .map(term => splitCourseCode(term))
-      .join(' ');
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
 
-    const courseResults = this.courseIndex.search(parsedQuery).slice(0, 4);
-    const profResults = this.profIndex.search(parsedQuery).slice(0, 2);
-    const courseCodeResults = this.courseCodeIndex
-      .search(parsedQuery)
-      .slice(0, 2);
+    let courseResults = fuzzysort.go(parsedQuery, this.courses, courseOptions);
+    let profResults = fuzzysort.go(parsedQuery, this.profs, profOptions);
+    let courseCodeResults = fuzzysort.go(parsedQuery, this.courseCodes, courseCodeOptions);
+
+    if (courseCodeResults.length === 0) {
+      courseCodeResults = fuzzysort.go(parsedQuery.split(' ')[0], this.courseCodes, courseCodeOptions);
+    }
+
+    // reranking by rating count
+    courseResults = weightByRatings(courseResults).slice(0, 4);
+    profResults = weightByRatings(profResults).slice(0, 2);
+    courseCodeResults = weightByRatings(courseCodeResults).slice(0, 2);
 
     return {
-      courseResults,
-      profResults,
-      courseCodeResults,
+      courseResults: courseResults.map(res => res.obj),
+      profResults: profResults.map(res => res.obj),
+      courseCodeResults: courseCodeResults.map(res => res.obj),
     };
   }
 
-  async buildIndices(searchData) {
+  async buildIndices(searchData, lastIndexedDate) {
     let parsedSearchData;
-    const newCourseIndex = new MiniSearch(courseIndexOptions);
-    const newProfIndex = new MiniSearch(profIndexOptions);
-    const newCourseCodeIndex = new MiniSearch(courseCodeIndexOptions);
+    let indexedDate = lastIndexedDate;
 
     // fetch data if not passed in from localstorage
     if (searchData === null) {
@@ -81,19 +92,29 @@ class SearchClient {
         `${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`,
       );
       parsedSearchData = await response.json();
+      indexedDate = Date();
     } else {
       parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData));
     }
 
     // parse data
     let courseCodeSet = new Set([]);
+    let courseCodeRatings = {};
 
     const courses = parsedSearchData.courses.map(course => {
       const courseLetters = splitCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
+
+      // total number of ratings for reranking during search
+      if (!courseCodeRatings.hasOwnProperty(courseLetters)) {
+        courseCodeRatings[courseLetters] = 0;
+      }
+      courseCodeRatings[courseLetters] += course.rating_count;
+
       return {
         ...course,
         code: splitCourseCode(course.code),
+        fullText: `${splitCourseCode(course.code)} — ${course.name}`,
         profs: course.profs === null ? '' : course.profs.join(' '),
       };
     });
@@ -108,23 +129,17 @@ class SearchClient {
       };
     });
 
-    const courseCodes = Array.from(courseCodeSet).map((code, idx) =>
-      Object({ id: idx, code }),
+    const courseCodes = Array.from(courseCodeSet).map(code =>
+      Object({ code, rating_count: courseCodeRatings[code] }),
     );
 
-    // build new indices
-    newCourseIndex.addAll(courses);
-    newProfIndex.addAll(profs);
-    newCourseCodeIndex.addAll(courseCodes);
-
     // swap old indices with new
-    this.courseIndex = newCourseIndex;
-    this.profIndex = newProfIndex;
-    this.courseCodeIndex = newCourseCodeIndex;
-    this.built = true;
+    this.courses = courses;
+    this.profs = profs;
+    this.courseCodes = courseCodes;
 
     // return compressed raw data for localstorage
-    return LZString.compressToUTF16(JSON.stringify(parsedSearchData));
+    return [LZString.compressToUTF16(JSON.stringify(parsedSearchData)), indexedDate];
   }
 }
 

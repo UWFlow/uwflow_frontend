@@ -25,6 +25,8 @@ const weekdays = [
   'Sunday',
 ];
 
+export const millisecondsPerDay = 1000 * 60 * 60 * 24;
+
 export const termCodeToDate = code => {
   const monthInt = code % 10;
   const year = 1900 + Math.floor(code / 10);

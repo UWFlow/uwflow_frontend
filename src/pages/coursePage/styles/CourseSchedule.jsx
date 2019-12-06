@@ -37,17 +37,19 @@ export const NormalCellWrapper = styled.div`
 `;
 
 export const SectionContentWrapper = styled.div`
-  margin: 18px 0 4px 0;
+  margin: 6px 0 2px 0;
   height: 1em;
   display: flex;
   align-items: center;
   width: 100%;
   font-weight: 600;
+  top: 16px;
+  position: relative;
 `;
 
 export const ContentWrapper = styled.div`
-  margin: 4px 0;
-  height: 1em;
+margin: 6px 0 2px 0;
+height: 1em;
   display: flex;
   align-items: center;
   width: 100%;
@@ -55,7 +57,7 @@ export const ContentWrapper = styled.div`
 
 export const InstructorLink = styled(Link)`
   color: ${({ theme }) => theme.professors};
-  margin: 4px 0 4px 0;
+  margin: 6px 0 2px 0;
   height: 1em;
 `;
 
@@ -64,6 +66,8 @@ export const TableWrapper = styled.div`
 `;
 
 export const EnrollmentText = styled.div`
+  display: flex;
+  align-items: center;
   color: ${({ theme, filled }) => filled ? theme.red : 'inherit'};
 `;
 

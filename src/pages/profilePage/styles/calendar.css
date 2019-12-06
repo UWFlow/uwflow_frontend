@@ -1,5 +1,5 @@
 .rbc-timeslot-group {
-    min-height: 40px;
+    min-height: 36px;
 }
 
 .rbc-allday-cell {
@@ -7,10 +7,24 @@
 }
 
 .rbc-time-content {
-    max-height: 600px;
+    max-height: 520px;
 }
 
 .rbc-event {
     border: none;
     border-radius: 4px;
+}
+
+.rbc-toolbar {
+    flex-wrap: nowrap;
+    position: sticky;
+    left: 0;
+}
+
+.rbc-time-view {
+    width: 1200px;
+}
+
+.rbc-calendar {
+    overflow: auto;
 }
