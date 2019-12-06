@@ -68,7 +68,7 @@ export const TableWrapper = styled.div`
 export const EnrollmentText = styled.div`
   display: flex;
   align-items: center;
-  color: ${({ theme, filled }) => filled ? theme.red : theme.dark2};
+  color: ${({ theme, filled }) => filled ? theme.red : 'inherit'};
 `;
 
 export const FinalExamsText = styled.div`

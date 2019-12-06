@@ -26,6 +26,8 @@ const CircularPercentage = ({
         data={[{ value: percent }, { value: 100 - percent }]}
         cx="50%"
         cy="50%"
+        startAngle={90}
+        endAngle={450}
         outerRadius={height / 2}
         innerRadius={height / 2 - barThickness}
       >

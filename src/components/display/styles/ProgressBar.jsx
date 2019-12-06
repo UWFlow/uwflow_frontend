@@ -12,6 +12,7 @@ export const ProgressBarWrapper = styled.div`
 `;
 
 export const Complete = styled.span`
+  transition: width 1s ease-in-out;
   border-radius: ${({ width }) => (width >= 100 ? '4px' : '4px 0 0 4px')};
   width: ${({ width }) => width}%;
   height: 100%;

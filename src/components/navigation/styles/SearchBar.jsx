@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { BoxShadow, Body, DarkBoxShadow } from '../../../constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
-  ${({ isLanding }) => isLanding ? DarkBoxShadow : 'max-width: 640px;'}
+  ${({ isLanding }) => isLanding && DarkBoxShadow}
   position: relative;
   width: 100%;
   z-index: 10;
