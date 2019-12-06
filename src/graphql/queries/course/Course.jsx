@@ -25,6 +25,10 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           term_id
           course_id
         }
+        section_subscription(where: {section: {course: {code: {_eq: $code}}}, user_id: {_eq: ${userId}}}) {
+          section_id
+          user_id
+        }
         review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
           ...ReviewInfoFragment
         }
@@ -62,4 +66,16 @@ export const REFETCH_RATINGS = gql`
   }
   ${CourseFragment.courseRating}
   ${ProfFragment.profRating}
+`;
+
+export const REFETCH_SECTION_SUBSCRIPTIONS = gql`
+  query REFETCH_SECTION_SUBSCRIPTIONS($course_id: Int, $user_id: Int) {
+    section_subscription(where: {
+      section: {course_id: {_eq: $course_id}},
+      user_id: {_eq: $user_id}
+    }) {
+      section_id
+      user_id
+    }
+  }
 `;

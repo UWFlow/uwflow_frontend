@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+
 import {
   SectionCellWrapper,
   SectionContentWrapper,
@@ -9,6 +10,9 @@ import {
   EnrollmentText,
   SpaceMargin
 } from './styles/CourseSchedule';
+
+import ScheduleNotificationBell from './ScheduleNotificationBell';
+
 import { getProfPageRoute } from '../../Routes';
 import { processDateString } from '../../utils/Misc';
 
@@ -40,12 +44,24 @@ const SectionCell = ({ cell }) => (
 );
 
 const ClassCell = ({ cell }) => (
-  <NormalCellWrapper>{cell.value}</NormalCellWrapper>
+  <NormalCellWrapper>
+    <ContentWrapper>
+      {cell.value}
+    </ContentWrapper>
+  </NormalCellWrapper>
 );
 
 const EnrolledCell = ({ cell }) => (
   <NormalCellWrapper>
     <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
+      {(cell.value.filled >= cell.value.capacity || cell.value.selected) &&  
+        <ScheduleNotificationBell
+          key={cell.value.section_id}
+          sectionID={cell.value.section_id}
+          courseID={cell.value.course_id}
+          initialState={cell.value.selected}
+        />
+      }
       {cell.value.filled}/{cell.value.capacity}
     </EnrollmentText>
   </NormalCellWrapper>
@@ -141,18 +157,12 @@ export const courseScheduleTableColumns = [
     Cell: ClassCell,
     accessor: 'class',
     maxWidth: 48,
-    style: {
-      'verticalAlign': 'top',
-    },
   },
   {
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
     maxWidth: 96,
-    style: {
-      'verticalAlign': 'top',
-    },
   },
   {
     Header: 'Time',

@@ -55,7 +55,7 @@
     "build": "react-app-rewired build",
     "lint": "eslint src",
     "format": "prettier --config ./.prettierrc --write \"./src/**/**/*.{js,jsx}\"",
-    "test": "react-app-rewired test",
+    "test": "CI=true react-app-rewired test --env=jsdom --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
