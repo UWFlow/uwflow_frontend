@@ -58,6 +58,8 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${TRANSCRIPT_PARSE_ENDPOINT}`,
       file,
+      {},
+      { noStringify: true },
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
