@@ -19,11 +19,15 @@ import {
   LocationText,
   CourseText,
   SectionText,
-  EventCourseSectionWrapper
+  EventCourseSectionWrapper,
 } from './styles/ProfileCalendar';
 
 /* Utils */
-import { getDateWithSeconds, splitCourseCode, millisecondsPerDay } from '../../utils/Misc';
+import {
+  getDateWithSeconds,
+  splitCourseCode,
+  millisecondsPerDay,
+} from '../../utils/Misc';
 
 // set first day of week to Monday
 moment.locale('ko', {
@@ -36,15 +40,14 @@ moment.locale('ko', {
 const EventSection = ({ event }) => (
   <ProfileCalendarEventWrapper>
     <EventCourseSectionWrapper>
-      <CourseText>{splitCourseCode(event.courseCode)}</CourseText>
-      {' '}-{' '}
+      <CourseText>{splitCourseCode(event.courseCode)}</CourseText> -{' '}
       <SectionText>{event.section}</SectionText>
     </EventCourseSectionWrapper>
     <LocationText>{event.location}</LocationText>
   </ProfileCalendarEventWrapper>
 );
 
-const getScheduleRange = (schedule) => {
+const getScheduleRange = schedule => {
   let minTime = new Date();
   let maxTime = new Date();
 
@@ -74,9 +77,10 @@ const getScheduleRange = (schedule) => {
   maxTime.setDate(maxTime.getDate() + 1);
 
   // time for one day from milliseconds
-  const dayRange = Math.round(maxTime.getTime() - minTime.getTime()) / millisecondsPerDay;  
+  const dayRange =
+    Math.round(maxTime.getTime() - minTime.getTime()) / millisecondsPerDay;
   return [minTime, dayRange];
-}
+};
 
 // start and end inclusive
 const getMomentsWithinRange = (start, end, dayOfWeek) => {
@@ -139,29 +143,31 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
   }, []);
 
 const ProfileCalendar = ({ schedule, theme }) => {
-  const [minDate, dayRange] = getScheduleRange(schedule);
+  if (!schedule || schedule.length === 0)
+    return (
+      <ProfileCalendarWrapper>
+        <ProfileCalendarHeading>
+          Import your class schedule
+        </ProfileCalendarHeading>
+        <ProfileCalendarText>
+          To print, share, or export it to Google Calendar, Calendar.app, etc...
+          It looks like:
+        </ProfileCalendarText>
+        <ProfileCalendarImg>
+          <Button
+            onClick={() => {}}
+            margin="auto"
+            borderColor={theme.dark3}
+            hasShadow={false}
+          >
+            Import your schedule from Quest
+          </Button>
+        </ProfileCalendarImg>
+      </ProfileCalendarWrapper>
+    );
 
-  return (!schedule || schedule.length === 0) ? (
-    <ProfileCalendarWrapper>
-      <ProfileCalendarHeading>
-        Import your class schedule
-      </ProfileCalendarHeading>
-      <ProfileCalendarText>
-        To print, share, or export it to Google Calendar, Calendar.app, etc...
-        It looks like:
-      </ProfileCalendarText>
-      <ProfileCalendarImg>
-        <Button
-          onClick={() => {}}
-          margin="auto"
-          borderColor={theme.dark3}
-          hasShadow={false}
-        >
-          Import your schedule from Quest
-        </Button>
-      </ProfileCalendarImg>
-    </ProfileCalendarWrapper>
-  ) : (
+  const [minDate, dayRange] = getScheduleRange(schedule);
+  return (
     <ProfileCalendarWrapper>
       <Calendar
         views={[Views.WEEK]}

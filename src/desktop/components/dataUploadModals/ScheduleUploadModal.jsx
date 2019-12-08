@@ -37,7 +37,12 @@ import {
   UPLOAD_SUCCESSFUL,
 } from '../../../constants/DataUploadStates';
 
-const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
+const ScheduleUploadModal = ({
+  onCloseModal,
+  isModalOpen,
+  onAfterClose = () => {},
+  theme,
+}) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleSchedulePaste = async event => {
@@ -59,7 +64,11 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   };
 
   return (
-    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
+    <Modal
+      isOpen={isModalOpen}
+      onRequestClose={onCloseModal}
+      onAfterClose={onAfterClose}
+    >
       <ContentWrapper>
         <Header>Import your schedule from Quest</Header>
         <table>
@@ -126,7 +135,9 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
             </tr>
           </tbody>
         </table>
-        <SkipStepWrapper>skip this step ></SkipStepWrapper>
+        <SkipStepWrapper onClick={onCloseModal}>
+          skip this step >
+        </SkipStepWrapper>
       </ContentWrapper>
     </Modal>
   );

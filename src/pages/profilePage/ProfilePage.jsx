@@ -34,6 +34,7 @@ import { GET_USER } from '../../graphql/queries/user/User';
 import { LANDING_PAGE_ROUTE } from '../../Routes';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 import { logOut } from '../../utils/Auth';
+import FirstTimeLoginFlow from './FirstTimeLoginFlow';
 
 const testSchedule = {
   schedule: [
@@ -442,7 +443,7 @@ const ProfilePageContent = ({
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar schedule={testSchedule.schedule} />
+          <ProfileCalendar schedule={undefined} />
           <ProfileCourses
             courses={coursesTaken}
             reviews={reviews}
@@ -482,6 +483,8 @@ const ProfilePageContent = ({
 
 export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   const dispatch = useDispatch();
+  const urlParams = new URLSearchParams(history.location.search);
+  const firstTimeLogin = urlParams.get('firstTimeLogin') === 'true';
 
   const { loading, error, data } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
@@ -503,6 +506,8 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
     </ProfilePageWrapper>
   ) : error || !data ? (
     <NotFoundPage />
+  ) : firstTimeLogin ? (
+    <FirstTimeLoginFlow />
   ) : (
     <ProfilePageWrapper>
       <ProfilePageContent
@@ -510,6 +515,7 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
         reviews={data.review}
         coursesTaken={data.user_course_taken}
         isBrowserDesktop={isBrowserDesktop}
+        firstTimeLogin={firstTimeLogin}
       />
     </ProfilePageWrapper>
   );
