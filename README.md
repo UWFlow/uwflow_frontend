@@ -1,4 +1,5 @@
 # UW Flow 2.0 Frontend
+CircleCI Master: [![CircleCI](https://circleci.com/gh/AyushK1/uwflow2.0_frontend.svg?style=svg&circle-token=f0c3958442810fd3a81b0a45af6b873fa1022a5f)](https://circleci.com/gh/AyushK1/uwflow2.0_frontend)
 
 ## Frontend Setup
 
