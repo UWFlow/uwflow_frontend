@@ -41,12 +41,6 @@ export const AuthForm = ({
   const setJWT = response => {
     localStorage.setItem('token', response.token);
     localStorage.setItem('user_id', response.user_id);
-    dispatch({ type: LOGGED_IN });
-    if (showLoginForm) {
-      onLoginComplete();
-    } else {
-      onSignupComplete();
-    }
   };
 
   const handleAuth = async (
@@ -68,6 +62,12 @@ export const AuthForm = ({
       setErrorMessage(response.error);
     } else {
       setJWT(response);
+      dispatch({ type: LOGGED_IN });
+      if (showLoginForm) {
+        onLoginComplete();
+      } else {
+        onSignupComplete();
+      }
     }
   };
 

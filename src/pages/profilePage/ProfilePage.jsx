@@ -499,7 +499,6 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   if (!isLoggedIn) {
     history.push(LANDING_PAGE_ROUTE);
   }
-
   return loading ? (
     <ProfilePageWrapper>
       <LoadingSpinner />

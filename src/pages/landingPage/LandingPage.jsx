@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
 import {
@@ -11,32 +12,34 @@ import {
   Subheading,
   BackgroundImage,
   LogoText,
-  AuthContent
+  AuthContent,
 } from './styles/LandingPage';
+
+/* Selectors */
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+
+/* Constants */
+import { PROFILE_PAGE_ROUTE } from '../../Routes';
 
 /* Child Components */
 import AuthForm from '../../auth/AuthForm';
-
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import SearchBar from '../../components/navigation/SearchBar';
 import ProfileDropdown from '../../components/navigation/ProfileDropdown';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
-  isDesktop: getIsBrowserDesktop(state)
+  isDesktop: getIsBrowserDesktop(state),
 });
 
-const LandingPage = ({ isLoggedIn, isDesktop }) => {
+const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
   return (
     <LandingPageWrapper>
       <BackgroundImage>
         <ProfileWrapper>
-          {(isLoggedIn || !isDesktop) && <ProfileDropdown /> }
+          {(isLoggedIn || !isDesktop) && <ProfileDropdown />}
         </ProfileWrapper>
-        <LogoText>
-          UW Flow
-        </LogoText>
+        <LogoText>UW Flow</LogoText>
         <Column1 loggedIn={isLoggedIn}>
           <TitleText>
             Explore over 20,000 course and professor reviews from UW students
@@ -44,22 +47,31 @@ const LandingPage = ({ isLoggedIn, isDesktop }) => {
           <SearchBar isLanding />
           <Subheading>
             Plan courses
-            <br /><br />
+            <br />
+            <br />
             Read course and professor reviews
-            <br /><br />
+            <br />
+            <br />
             Export your schedule
           </Subheading>
         </Column1>
-        {isDesktop && <Column2 loggedIn={isLoggedIn}>
-          {!isLoggedIn && (
-            <AuthContent>
-              <AuthForm />
-            </AuthContent>
-          )}
-        </Column2>}
+        {isDesktop && (
+          <Column2 loggedIn={isLoggedIn}>
+            {!isLoggedIn && (
+              <AuthContent>
+                <AuthForm
+                  onSignupComplete={() =>
+                    history.push(`${PROFILE_PAGE_ROUTE}?firstTimeLogin=true`)
+                  }
+                  onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
+                />
+              </AuthContent>
+            )}
+          </Column2>
+        )}
       </BackgroundImage>
     </LandingPageWrapper>
   );
 };
 
-export default connect(mapStateToProps)(LandingPage);
+export default connect(mapStateToProps)(withRouter(LandingPage));

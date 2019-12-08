@@ -14,6 +14,7 @@ import ScheduleUploadModal from '../../desktop/components/dataUploadModals/Sched
 const FirstTimeLoginFlow = ({ history }) => {
   const [isUploadingTranscript, setIsUploadingTranscript] = useState(true);
   const [isUploadingSchedule, setIsUploadingSchedule] = useState(false);
+  console.log('HEERE');
   return (
     <>
       <TranscriptUploadModal
