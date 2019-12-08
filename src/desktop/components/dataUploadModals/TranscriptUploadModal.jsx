@@ -50,20 +50,14 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleTranscriptDrop = async event => {
-    console.log(event.dataTransfer.files[0]);
     event.preventDefault();
     event.stopPropagation();
     setUploadState(UPLOAD_PENDING);
     var file = new FormData();
-    file.append('file', event.dataTransfer.files);
+    file.append('file', event.dataTransfer.files[0]);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${TRANSCRIPT_PARSE_ENDPOINT}`,
-      {
-        file: file,
-      },
-      {
-        'Content-Type': 'multipart/form-data',
-      },
+      file,
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
@@ -120,7 +114,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                   <form
                     onDrop={handleTranscriptDrop}
                     onDragOver={onDragOver}
-                    method="post"
+                    accept="application/pdf"
                     encType="multipart/form-data"
                   >
                     <TranscriptUploadBox>
