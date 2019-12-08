@@ -55,7 +55,7 @@ const ScheduleUploadModal = ({
         text: event.currentTarget.value,
       },
     );
-    if (status == 200) {
+    if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
     } else {
       setUploadState(UPLOAD_FAILED);
