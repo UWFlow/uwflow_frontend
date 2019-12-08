@@ -420,13 +420,20 @@ const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const ProfilePageContent = ({ user, reviews, coursesTaken, isBrowserDesktop }) => {
+const ProfilePageContent = ({
+  user,
+  reviews,
+  coursesTaken,
+  isBrowserDesktop,
+}) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
   const shortlist = user.shortlist;
   const reviewModalCourseList = coursesTaken.map(course => {
-    const curReview = reviews.find(review => review.course_id === course.course.id);
+    const curReview = reviews.find(
+      review => review.course_id === course.course.id,
+    );
     return { course: course.course, review: curReview };
   });
 
@@ -479,6 +486,8 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   const { loading, error, data } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
   });
+
+  console.log(data);
 
   if (data && data.user.length === 0) {
     logOut(dispatch);

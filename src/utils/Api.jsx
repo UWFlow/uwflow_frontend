@@ -4,10 +4,10 @@ export const makePOSTRequest = async (endpoint, data, options = {}) => {
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: options.accept ? options.accept : 'application/json',
+      ...options,
     },
-    body: JSON.stringify(data),
+    body: data,
   });
   const text = await res.text();
   const status = await res.status;
@@ -18,6 +18,17 @@ export const makePOSTRequest = async (endpoint, data, options = {}) => {
     respJSON = {};
   }
   return [respJSON, status];
+};
+
+export const makeAuthenticatedPOSTRequest = async (
+  endpoint,
+  data,
+  options = {},
+) => {
+  return makePOSTRequest(endpoint, data, {
+    ...options,
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  });
 };
 
 export const sendFile = async (endpoint, data) => {

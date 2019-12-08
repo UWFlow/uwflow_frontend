@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../../components/display/Modal';
 import { withTheme } from 'styled-components';
-import { makePOSTRequest } from '../../../utils/Api';
+import { makeAuthenticatedPOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
 
 /* Styled Components */
@@ -24,7 +24,10 @@ import {
 } from './styles/DataUploadModals';
 
 /* Constants */
-import { TRANSCRIPT_PARSE_ENDPOINT } from '../../../constants/Api';
+import {
+  BACKEND_ENDPOINT,
+  TRANSCRIPT_PARSE_ENDPOINT,
+} from '../../../constants/Api';
 import {
   AWAITING_UPLOAD,
   UPLOAD_PENDING,
@@ -47,16 +50,14 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleTranscriptDrop = async event => {
-    /* TODO: handle schedule paste */
-    console.log(event.dataTransfer.files);
     event.preventDefault();
     event.stopPropagation();
     setUploadState(UPLOAD_PENDING);
-    const [, status] = await makePOSTRequest(
-      TRANSCRIPT_PARSE_ENDPOINT,
-      {
-        file: event.dataTransfer.files,
-      },
+    var file = new FormData();
+    file.append('file', event.dataTransfer.files[0]);
+    const [, status] = await makeAuthenticatedPOSTRequest(
+      `${BACKEND_ENDPOINT}${TRANSCRIPT_PARSE_ENDPOINT}`,
+      file,
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
@@ -113,7 +114,7 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
                   <form
                     onDrop={handleTranscriptDrop}
                     onDragOver={onDragOver}
-                    method="post"
+                    accept="application/pdf"
                     encType="multipart/form-data"
                   >
                     <TranscriptUploadBox>
