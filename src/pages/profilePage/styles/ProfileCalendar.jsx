@@ -42,17 +42,22 @@ export const ProfileCalendarEventWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  padding: 4px 8px;
 `;
 
 export const EventCourseSectionWrapper = styled.span`
   display: block;
+  margin-top: 4px;
 `;
 
 export const CourseText = styled.span`
   font-weight: 600;
+  
 `;
 
-export const SectionText = styled.span``;
+export const SectionText = styled.span`
+  
+`;
 
-export const LocationText = styled.span``;
+export const LocationText = styled.span`
+  margin-top: 4px;
+`;

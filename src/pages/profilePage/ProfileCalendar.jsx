@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './styles/calendar.css';
 
 /* Child Components */
