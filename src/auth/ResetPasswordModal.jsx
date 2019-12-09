@@ -40,7 +40,7 @@ const ResetPasswordForm = ({ onSubmit, loading, error, success }) => {
       <TextboxWrapper>
         <Textbox
           options={{ width: '100%', type: 'email' }}
-          placeholder="Email address"
+          placeholder="Email"
           error={false}
           text={email}
           setText={value => {
@@ -87,7 +87,7 @@ const EnterResetCodeForm = ({
             setCode(value);
           }}
         />
-        <GreyLink onClick={resendEmail}>Resend email</GreyLink>
+        <GreyLink onClick={resendEmail}>Send me a new code</GreyLink>
       </TextboxWrapper>
       {loading ? (
         <LoadingSpinnerWrapper>

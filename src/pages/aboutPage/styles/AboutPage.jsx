@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, Heading2, Heading3, Body, PageWrapper as _PageWrapper } from '../../../constants/Mixins';
+import { PageContent, Heading1, Heading2, Body, PageWrapper as _PageWrapper } from '../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
   ${_PageWrapper}
@@ -24,7 +24,7 @@ export const PageHeader = styled.div`
 
 export const HeaderText = styled.div`
   ${PageContent}
-  ${Heading2}
+  ${Heading1}
   max-width: 720px;
   color: ${({ theme }) => theme.white};
 `;
@@ -45,15 +45,17 @@ export const PageBody = styled.div`
   align-items: flex-start;
   width: 100%;
   height: 100%;
+  margin-top: 16px;
 `;
 
 export const PageBodyHeader = styled.div`
-  ${Heading3}
-  margin-bottom: 4px;
+  ${Heading2}
+  font-size: 24px;
+  margin-bottom: 16px;
 `;
 
 export const PageBodyParagraph = styled.div`
   ${Body}
   line-height: 1.2;
-  margin-bottom: 32px;
+  margin-bottom: 64px;
 `;

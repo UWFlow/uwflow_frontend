@@ -6,7 +6,7 @@ import { Card, BoxShadow, Heading4, Heading3, Body } from '../../../constants/Mi
 export const ExtraInfoBoxWrapper = styled.div`
 ${Card('32px 24px')}
 ${BoxShadow}
-${Heading4}
+${Heading3}
 margin-bottom: 32px;
 `;
 
@@ -25,16 +25,17 @@ export const LineOfText = styled.div`
 
 export const CourseText = styled(Link)`
   ${Body}
+  font-weight: 600;
   color: ${({ theme }) => theme.courses};
 `;
 
 export const GreyText = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.light4};
+  color: ${({ theme }) => theme.dark2};
 `;
 
 export const PrereqText = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.dark3};
+  color: ${({ theme }) => theme.dark2};
 `;
 

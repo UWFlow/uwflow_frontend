@@ -38,8 +38,7 @@ export const CourseCodeAndNameSection = styled.div`
 
 export const CourseCodeAndStar = styled.div`
   display: flex;
-  align-items: center;
-  margin-bottom: 16px;
+  align-items: flex-start;
 
   ${breakpoint('tablet')`
     ${PageContent}
@@ -50,6 +49,7 @@ export const CourseCodeAndStar = styled.div`
 export const StarAlignmentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 3px;
 
   ${breakpoint('tablet')`
     margin-left: 16px;
@@ -102,7 +102,8 @@ export const CourseDescriptionSection = styled.div`
 
 export const Description = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.dark1};
+  font-weight: 500;
+  color: ${({ theme }) => theme.dark2};
 
   ${breakpoint('mobile', 'tablet')`
     margin-bottom: 16px;

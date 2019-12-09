@@ -24,25 +24,25 @@ export const HeaderRow = styled.tr`
 export const HeaderCell = styled.th`
   text-align: ${({ align }) => (align ? align : 'left')};
   width: ${({ maxWidth }) => maxWidth + 16}px;
-  min-width: ${({ maxWidth }) => maxWidth + 16}px;
+  min-width: ${({ maxWidth }) => maxWidth + 8}px;
   padding-top: 16px;
   padding-bottom: 16px;
   vertical-align: top;
 
-  padding-left: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
-  padding-right: ${({ rightAlign }) => (rightAlign ? '16px' : '0')};
+  padding-left: ${({ rightAlign }) => (rightAlign ? '8px' : '0')};
+  padding-right: ${({ rightAlign }) => (rightAlign ? '8px' : '0')};
 
   &:first-child {
-    padding-left: 32px;
-    width: ${({ maxWidth }) => maxWidth + 32 + 16}px;
-    max-width: ${({ maxWidth }) => maxWidth + 24 + 16}px;
+    padding-left: 16px;
+    width: ${({ maxWidth }) => maxWidth + 16}px;
+    max-width: ${({ maxWidth }) => maxWidth + 8}px;
   }
 
   &:last-child {
     padding-left: 0;
-    padding-right: 32px;
-    width: ${({ maxWidth }) => maxWidth + 24 + 16}px;
-    max-width: ${({ maxWidth }) => maxWidth + 24 + 16}px;
+    padding-right: 16px;
+    width: ${({ maxWidth }) => maxWidth + 24}px;
+    max-width: ${({ maxWidth }) => maxWidth + 8}px;
   }
 `;
 
@@ -78,24 +78,23 @@ export const Row = styled.tr`
 `;
 
 export const Cell = styled.td`
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: ${({ padding }) => padding ? padding : '8px 0'};
   text-align: ${({ align }) => (align ? align : 'left')};
   vertical-align: top;
   height: 0;
 
   &:first-child {
-    padding-left: 32px;
+    padding-left: 16px;
     padding-right: 0;
   }
 
   &:last-child {
     padding-left: 0;
-    padding-right: 32px;
+    padding-right: 16px;
   }
 
   &:only-child {
-    padding: auto 32px;
+    padding: auto 16px;
   }
 `;
 

@@ -79,6 +79,7 @@ const SearchResults = ({
   const results = () => (
     <SearchResultsContent>
       <Table
+        cellPadding='16px 0'
         data={courseSearch ? filteredCourses : filteredProfs}
         columns={courseSearch ? courseColumns : profColumns}
         rightAlignIndex={courseSearch ? 2 : 1}

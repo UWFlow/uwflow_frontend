@@ -32,7 +32,7 @@ export const LogoText = styled.div`
 
 export const TitleText = styled.div`
   color: white;
-  ${Heading2}
+  ${Heading1}
   margin-bottom: 32px;
 `;
 

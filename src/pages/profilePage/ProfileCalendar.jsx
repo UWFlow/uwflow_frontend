@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './styles/calendar.css';
 
 /* Child Components */
 import Button from '../../components/input/Button';
+import Tooltip from '../../components/input/Tooltip';
 
 /* Styled Components */
 import {
@@ -28,6 +28,7 @@ import {
   splitCourseCode,
   millisecondsPerDay,
 } from '../../utils/Misc';
+import { getCoursePageRoute } from '../../Routes';
 
 // set first day of week to Monday
 moment.locale('ko', {
@@ -37,10 +38,22 @@ moment.locale('ko', {
   },
 });
 
+const getCoursePageLink = rawCourseCode => {
+  let courseCode = rawCourseCode.replace(/ /g, '').toLowerCase()
+  courseCode = courseCode.substr(-1) == 'e' ? courseCode.substr(0, courseCode.length-1) : courseCode;
+  return getCoursePageRoute(courseCode);
+};
+
 const EventSection = ({ event }) => (
-  <ProfileCalendarEventWrapper>
+  <ProfileCalendarEventWrapper
+    data-tip={`<div align='center'><b>${event.courseCode}</b> - ${event.section}<br/><br/>@ ${event.location}</div>`}
+  >
+    <Tooltip />
     <EventCourseSectionWrapper>
-      <CourseText>{splitCourseCode(event.courseCode)}</CourseText> -{' '}
+      <CourseText to={getCoursePageLink(event.courseCode)}>
+        {splitCourseCode(event.courseCode)}
+      </CourseText>
+      {' '}-{' '}
       <SectionText>{event.section}</SectionText>
     </EventCourseSectionWrapper>
     <LocationText>{event.location}</LocationText>

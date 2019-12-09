@@ -11,7 +11,8 @@ import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 /* Styled Components */
 import {
   CourseScheduleWrapper,
-  TableWrapper,
+  ScheduleTableWrapper,
+  FinalExamsTableWrapper,
   FinalExamsText,
 } from './styles/CourseSchedule';
 
@@ -167,16 +168,16 @@ const CourseSchedule = ({ sections, courseCode, courseID, sectionSubscriptions }
       title: termCodeToDate(term),
       render: () => (
         <>
-          <TableWrapper>
+          <ScheduleTableWrapper>
             <Table
               columns={courseScheduleTableColumns}
               data={sectionsCleanedData.filter(c => c.term === term)}
             />
-          </TableWrapper>
-          <TableWrapper>
+          </ScheduleTableWrapper>
+          <FinalExamsTableWrapper>
             <FinalExamsText>Final Exams</FinalExamsText>
             <FinalExamTable courses={courseExams} includeCode={false} />
-          </TableWrapper>
+          </FinalExamsTableWrapper>
         </>
       ),
     };
@@ -190,8 +191,8 @@ const CourseSchedule = ({ sections, courseCode, courseID, sectionSubscriptions }
           tabList={tabList}
           contentPadding={'0'}
         />
+        {tabList.length > 0 && <LastUpdatedSchedule />}
       </CourseScheduleWrapper>
-      {tabList.length > 0 && <LastUpdatedSchedule />}
     </>
   );
 };

@@ -9,9 +9,9 @@ import {
 } from './styles/LoadingSpinner';
 
 const LoadingSpinner = ({
-  margin = '32px auto',
-  size = 48,
-  strokeWidth = 4,
+  margin = 'auto',
+  size = 128,
+  strokeWidth = 8,
   spinnerColor = null,
   backgroundColor = null
 }) => {
