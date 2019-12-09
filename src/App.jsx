@@ -1,6 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import { ToastContainer, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /* Routes */
 import {
@@ -35,6 +37,18 @@ Modal.setAppElement('#root');
 const App = () => {
   return (
     <>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnVisibilityChange
+        draggable
+        pauseOnHover
+        transition={Zoom}
+      />
       <Navbar />
       <Switch>
         <Route

@@ -24,7 +24,7 @@ const AuthModal = ({ isAuthModalOpen }) => {
       <AuthForm onAuthComplete={() => dispatch(authModalClose())} />
     </Modal>
   );
-}
+};
 
 AuthModal.propTypes = {
   isAuthModalOpen: PropTypes.bool.isRequired,

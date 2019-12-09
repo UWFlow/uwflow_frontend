@@ -38,6 +38,7 @@ const CourseInfoHeader = ({ course, shortlisted }) => {
               size={36}
               initialState={shortlisted}
               courseID={course.id}
+              courseCode={course.code}
             />
           </StarAlignmentWrapper>
         </CourseCodeAndStar>

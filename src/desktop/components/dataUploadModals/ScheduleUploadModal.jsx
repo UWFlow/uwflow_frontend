@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../../components/display/Modal';
 import { withTheme } from 'styled-components';
-import { makePOSTRequest } from '../../../utils/Api';
+import { makeAuthenticatedPOSTRequest } from '../../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';
 
 /* Styled Components */
@@ -26,7 +26,10 @@ import {
 } from './styles/DataUploadModals';
 
 /* Constants */
-import { SCHEDULE_PARSE_ENDPOINT } from '../../../constants/Api';
+import {
+  SCHEDULE_PARSE_ENDPOINT,
+  BACKEND_ENDPOINT,
+} from '../../../constants/Api';
 import {
   UPLOAD_PENDING,
   AWAITING_UPLOAD,
@@ -34,25 +37,38 @@ import {
   UPLOAD_SUCCESSFUL,
 } from '../../../constants/DataUploadStates';
 
-const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
+const ScheduleUploadModal = ({
+  onCloseModal,
+  isModalOpen,
+  onAfterClose = () => {},
+  theme,
+}) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleSchedulePaste = async event => {
-    /* TODO: handle schedule paste */
-    console.log(event.currentTarget.value);
     setUploadState(UPLOAD_PENDING);
-    const [, status] = await makePOSTRequest(SCHEDULE_PARSE_ENDPOINT, {
-      text: event.currentTarget.value,
-    });
+    const [, status] = await makeAuthenticatedPOSTRequest(
+      `${BACKEND_ENDPOINT}${SCHEDULE_PARSE_ENDPOINT}?user_id=${localStorage.getItem(
+        'user_id',
+      )}`,
+      {
+        text: event.currentTarget.value,
+      },
+    );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
     } else {
       setUploadState(UPLOAD_FAILED);
     }
+    console.log(status);
   };
 
   return (
-    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
+    <Modal
+      isOpen={isModalOpen}
+      onRequestClose={onCloseModal}
+      onAfterClose={onAfterClose}
+    >
       <ContentWrapper>
         <Header>Import your schedule from Quest</Header>
         <table>
@@ -119,7 +135,9 @@ const ScheduleUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
             </tr>
           </tbody>
         </table>
-        <SkipStepWrapper>skip this step ></SkipStepWrapper>
+        <SkipStepWrapper onClick={onCloseModal}>
+          skip this step >
+        </SkipStepWrapper>
       </ContentWrapper>
     </Modal>
   );

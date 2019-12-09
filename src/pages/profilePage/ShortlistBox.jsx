@@ -36,7 +36,12 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
     <>
       {sortedShortlist.map((entry, idx) => (
         <ShortlistCourse key={idx}>
-          <ShortlistStar key={entry.course.id} initialState={true} courseID={entry.course.id} />
+          <ShortlistStar
+            key={entry.course.id}
+            initialState={true}
+            courseID={entry.course.id}
+            courseCode={entry.course.code}
+          />
           <ShortListCourseText>
             <ShortlistCourseCode to={getCoursePageRoute(entry.course.code)}>
               {splitCourseCode(entry.course.code)}

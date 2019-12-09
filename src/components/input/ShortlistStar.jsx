@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
+import { toast } from 'react-toastify';
 
 /* Styled Components */
 import { ShortlistStarWrapper } from './styles/ShortlistStar';
@@ -14,12 +15,13 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 import { DELETE_USER_SHORTLIST, INSERT_USER_SHORTLIST } from '../../graphql/mutations/Shortlist';
 import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
+import { splitCourseCode } from '../../utils/Misc';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
-const ShortlistStar = ({ theme, courseID, isLoggedIn, initialState = false, size = 32 }) => {
+const ShortlistStar = ({ theme, courseID, courseCode, isLoggedIn, initialState = false, size = 32 }) => {
   const userID = localStorage.getItem('user_id');
   const refetchQueries = [
     { query: REFETCH_COURSE_SHORTLIST, variables: { user_id: userID, course_id: courseID } },
@@ -30,6 +32,9 @@ const ShortlistStar = ({ theme, courseID, isLoggedIn, initialState = false, size
   const [checked, setChecked] = useState(initialState);
   const [insertShortlist] = useMutation(INSERT_USER_SHORTLIST, { refetchQueries });
   const [deleteShortlist] = useMutation(DELETE_USER_SHORTLIST, { refetchQueries });
+
+  const notifyDelete = () => toast(`Removed ${splitCourseCode(courseCode)} from shortlist`);
+  const notifyInsert = () => toast(`Added ${splitCourseCode(courseCode)} to shortlist`);
 
   const onStarClicked = () => {
     if (!isLoggedIn) {
@@ -42,9 +47,9 @@ const ShortlistStar = ({ theme, courseID, isLoggedIn, initialState = false, size
     }
 
     if (checked) {
-      deleteShortlist({ variables: { course_id: courseID }});
+      deleteShortlist({ variables: { course_id: courseID }}).then(() => notifyDelete());
     } else {
-      insertShortlist({ variables: { user_id: userID, course_id: courseID }});
+      insertShortlist({ variables: { user_id: userID, course_id: courseID }}).then(() => notifyInsert());
     }
     setChecked(!checked);
   }

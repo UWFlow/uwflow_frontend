@@ -34,6 +34,7 @@ import { GET_USER } from '../../graphql/queries/user/User';
 import { LANDING_PAGE_ROUTE } from '../../Routes';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
 import { logOut } from '../../utils/Auth';
+import FirstTimeLoginFlow from './FirstTimeLoginFlow';
 
 const testSchedule = {
   schedule: [
@@ -420,13 +421,20 @@ const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
-const ProfilePageContent = ({ user, reviews, coursesTaken, isBrowserDesktop }) => {
+const ProfilePageContent = ({
+  user,
+  reviews,
+  coursesTaken,
+  isBrowserDesktop,
+}) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
   const shortlist = user.shortlist;
   const reviewModalCourseList = coursesTaken.map(course => {
-    const curReview = reviews.find(review => review.course_id === course.course.id);
+    const curReview = reviews.find(
+      review => review.course_id === course.course.id,
+    );
     return { course: course.course, review: curReview };
   });
 
@@ -435,7 +443,7 @@ const ProfilePageContent = ({ user, reviews, coursesTaken, isBrowserDesktop }) =
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar schedule={testSchedule.schedule} />
+          <ProfileCalendar schedule={undefined} />
           <ProfileCourses
             courses={coursesTaken}
             reviews={reviews}
@@ -475,10 +483,14 @@ const ProfilePageContent = ({ user, reviews, coursesTaken, isBrowserDesktop }) =
 
 export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   const dispatch = useDispatch();
+  const urlParams = new URLSearchParams(history.location.search);
+  const firstTimeLogin = urlParams.get('firstTimeLogin') === 'true';
 
   const { loading, error, data } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
   });
+
+  console.log(data);
 
   if (data && data.user.length === 0) {
     logOut(dispatch);
@@ -487,13 +499,14 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   if (!isLoggedIn) {
     history.push(LANDING_PAGE_ROUTE);
   }
-
   return loading ? (
     <ProfilePageWrapper>
       <LoadingSpinner />
     </ProfilePageWrapper>
   ) : error || !data ? (
     <NotFoundPage />
+  ) : firstTimeLogin ? (
+    <FirstTimeLoginFlow />
   ) : (
     <ProfilePageWrapper>
       <ProfilePageContent
@@ -501,6 +514,7 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
         reviews={data.review}
         coursesTaken={data.user_course_taken}
         isBrowserDesktop={isBrowserDesktop}
+        firstTimeLogin={firstTimeLogin}
       />
     </ProfilePageWrapper>
   );

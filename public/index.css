@@ -1,16 +1,19 @@
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk UltraBold'), url(fonts/AndersonGrotesk-Ultrabold.otf) format('opentype');
+  src: local('Anderson Grotesk UltraBold'),
+    url(fonts/AndersonGrotesk-Ultrabold.otf) format('opentype');
   font-weight: 800;
 }
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk Bold'), url(fonts/AndersonGrotesk-Bold.otf) format('opentype');
+  src: local('Anderson Grotesk Bold'),
+    url(fonts/AndersonGrotesk-Bold.otf) format('opentype');
   font-weight: 600;
 }
 @font-face {
   font-family: 'Anderson Grotesk';
-  src: local('Anderson Grotesk'), url(fonts/AndersonGrotesk.otf) format('opentype');
+  src: local('Anderson Grotesk'),
+    url(fonts/AndersonGrotesk.otf) format('opentype');
   font-weight: 400;
 }
 
@@ -94,4 +97,34 @@ a {
   overflow: auto;
   display: inline-flex;
   align-items: center;
+}
+
+.ReactModal__Html--open {
+  overflow: hidden; /* prevents background page from scrolling when the modal is open */
+}
+
+.ReactModal__Body--open {
+  overflow: hidden; /* prevents background page from scrolling when the modal is open */
+}
+.Toastify__toast-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0052cc; /* Primary */
+}
+
+.Toastify__toast {
+  background: #ffffff !important;
+  border-radius: 4px !important;
+}
+
+.Toastify__close-button {
+  font-weight: lighter !important;
+  color: #c6c9c9 !important; /* Light 4*/
+  opacity: 1 !important;
+}
+
+.Toastify__close-button:hover {
+  color: #97a0af !important; /* Dark 3 */
+  opacity: 1 !important;
 }

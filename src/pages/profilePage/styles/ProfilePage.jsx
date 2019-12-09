@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { WideColumn, ThinColumn, PageContent, BoxShadow, PageWrapper } from '../../../constants/Mixins';
+import {
+  WideColumn,
+  ThinColumn,
+  PageContent,
+  BoxShadow,
+  PageWrapper,
+} from '../../../constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`
   ${PageWrapper}
@@ -37,6 +43,6 @@ export const CompleteProfileWrapper = styled.div`
   padding-bottom: 0;
   margin-bottom: 32px;
   border-radius: 4px;
-  background-color: ${({theme}) => theme.white};
-  ${BoxShadow}  
+  background-color: ${({ theme }) => theme.white};
+  ${BoxShadow}
 `;
