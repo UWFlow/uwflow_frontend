@@ -24,7 +24,10 @@ import { PRIVACY_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN } from '../data/actions/AuthActions';
 
-export const AuthForm = ({ onAuthComplete = () => {} }) => {
+export const AuthForm = ({
+  onLoginComplete = () => {},
+  onSignupComplete = () => {},
+}) => {
   const dispatch = useDispatch();
 
   const [showLoginForm, setShowLoginForm] = useState(true);
@@ -38,8 +41,6 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
   const setJWT = response => {
     localStorage.setItem('token', response.token);
     localStorage.setItem('user_id', response.user_id);
-    dispatch({ type: LOGGED_IN });
-    onAuthComplete();
   };
 
   const handleAuth = async (
@@ -61,6 +62,12 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
       setErrorMessage(response.error);
     } else {
       setJWT(response);
+      dispatch({ type: LOGGED_IN });
+      if (showLoginForm) {
+        onLoginComplete();
+      } else {
+        onSignupComplete();
+      }
     }
   };
 
@@ -122,7 +129,8 @@ export const AuthForm = ({ onAuthComplete = () => {} }) => {
 };
 
 AuthForm.propTypes = {
-  onAuthComplete: PropTypes.func,
+  onLoginComplete: PropTypes.func,
+  onSignupComplete: PropTypes.func,
 };
 
 export default AuthForm;

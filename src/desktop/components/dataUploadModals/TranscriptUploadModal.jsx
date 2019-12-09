@@ -46,7 +46,12 @@ const onDragOver = event => {
   event.preventDefault();
 };
 
-const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
+const TranscriptUploadModal = ({
+  onCloseModal,
+  isModalOpen,
+  onAfterClose = () => {},
+  theme,
+}) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
 
   const handleTranscriptDrop = async event => {
@@ -79,7 +84,11 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
   }, []);
 
   return (
-    <Modal isOpen={isModalOpen} onRequestClose={onCloseModal}>
+    <Modal
+      isOpen={isModalOpen}
+      onRequestClose={onCloseModal}
+      onAfterClose={onAfterClose}
+    >
       <ContentWrapper>
         <Header>Upload your transcript</Header>
         <table>
@@ -141,7 +150,9 @@ const TranscriptUploadModal = ({ onCloseModal, isModalOpen, theme }) => {
             </tr>
           </tbody>
         </table>
-        <SkipStepWrapper>skip this step ></SkipStepWrapper>
+        <SkipStepWrapper onClick={onCloseModal}>
+          skip this step >
+        </SkipStepWrapper>
       </ContentWrapper>
     </Modal>
   );
