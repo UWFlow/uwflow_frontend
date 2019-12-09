@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 
 /* Styled Components */
 import {
@@ -64,8 +65,10 @@ export const AuthForm = ({
       setJWT(response);
       dispatch({ type: LOGGED_IN });
       if (showLoginForm) {
+        toast('Logged in successfully!');
         onLoginComplete();
       } else {
+        toast('Signed up successfully!');
         onSignupComplete();
       }
     }

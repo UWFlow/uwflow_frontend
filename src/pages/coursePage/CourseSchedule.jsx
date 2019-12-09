@@ -141,6 +141,7 @@ const CourseSchedule = ({ sections, courseCode, courseID, sectionSubscriptions }
     term: s.term_id,
     enrolled: {
       course_id: courseID,
+      course_code: courseCode,
       section_id: s.id,
       filled: s.enrollment_total,
       capacity: s.enrollment_capacity,

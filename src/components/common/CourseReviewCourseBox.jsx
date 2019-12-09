@@ -3,6 +3,7 @@ import { Trash2 } from 'react-feather';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
+import { toast } from 'react-toastify';
 
 import {
   CourseReviewCourseBoxWrapper,
@@ -128,6 +129,10 @@ const CourseReviewCourseBox = ({
   const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });
   const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries });
 
+  const notifyDelete = () => toast(`Deleted review for ${splitCourseCode(course.code)}`);
+  const notifyInsert = () => toast(`Created review for ${splitCourseCode(course.code)}`);
+  const notifyUpdate = () => toast(`Updated review for ${splitCourseCode(course.code)}`);
+
   const handlePost = () => {
     setReviewUpdating(true);
     const profID = selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
@@ -162,6 +167,11 @@ const CourseReviewCourseBox = ({
         }
       }
     }).then(() => {
+      if (review) {
+        notifyUpdate();
+      } else {
+        notifyInsert();
+      }
       onCancel();
       setReviewUpdating(false);
     });
@@ -171,6 +181,7 @@ const CourseReviewCourseBox = ({
     if (review) {
       setReviewDeleting(true);
       deleteReview({ variables: { review_id: review ? review.id : null }}).then(() => {
+        notifyDelete();
         onCancel();
         setReviewDeleting(false);
       });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
+import { toast } from 'react-toastify';
 
 /* Styled Components */
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
@@ -17,6 +18,8 @@ import {
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
 
+import { splitCourseCode } from '../../utils/Misc';
+
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
@@ -25,6 +28,7 @@ const ScheduleNotificationBell = ({
   isLoggedIn,
   sectionID,
   courseID,
+  courseCode,
   initialState = false
 }) => {
   const userID = localStorage.getItem('user_id');
@@ -39,6 +43,9 @@ const ScheduleNotificationBell = ({
   const [insertSubscription] = useMutation(INSERT_SECTION_SUBSCRIPTION, { refetchQueries });
   const [deleteSubscription] = useMutation(DELETE_SECTION_SUBSCRIPTION, { refetchQueries });
 
+  const notifyDelete = () => toast(`Unsubscribed from ${splitCourseCode(courseCode)} notifications`);
+  const notifyInsert = () => toast(`Subscribed to ${splitCourseCode(courseCode)} notifications`);
+
   const toggleOnClick = () => {
     if (!isLoggedIn) {
       dispatch(authModalOpen());
@@ -50,9 +57,9 @@ const ScheduleNotificationBell = ({
     }
 
     if (selected) {
-      deleteSubscription({ variables: { section_id: sectionID }});
+      deleteSubscription({ variables: { section_id: sectionID }}).then(() => notifyDelete());
     } else {
-      insertSubscription({ variables: { user_id: userID, section_id: sectionID }});
+      insertSubscription({ variables: { user_id: userID, section_id: sectionID }}).then(() => notifyInsert());
     }
     setSelected(!selected);
   }
