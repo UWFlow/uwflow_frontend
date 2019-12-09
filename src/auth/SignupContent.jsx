@@ -111,7 +111,7 @@ const SignupContent = ({
         <TextboxWrapper>
           <Textbox
             options={{ width: '100%', type: 'email' }}
-            placeholder="Email address"
+            placeholder="Email"
             error={emailError}
             text={formState.email}
             setText={value => {

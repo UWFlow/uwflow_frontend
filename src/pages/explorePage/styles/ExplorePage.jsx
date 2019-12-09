@@ -73,6 +73,6 @@ export const CourseCode = styled(RouterLink)`
 `;
 
 export const ProfName = styled(RouterLink)`
- ${Link}
+  ${Link}
   color: ${({theme}) => theme.professors};
 `;

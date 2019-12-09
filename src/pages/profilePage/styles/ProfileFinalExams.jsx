@@ -5,11 +5,11 @@ import { Card, BoxShadow, Heading3 } from '../../../constants/Mixins';
 export const ProfileFinalExamsWrapper = styled.div`
   ${Card('0 0 12px 0')}
   ${BoxShadow}
-  margin-bottom: 16px;
 `;
 
 export const ProfileFinalExamsHeader = styled.div`
-  padding: 24px 32px 16px 32px;
+  padding-left: 32px;
+  padding-top: 32px;
   ${Heading3}
   color: ${({ theme }) => theme.dark1};
 
@@ -19,5 +19,6 @@ export const ProfileFinalExamsHeader = styled.div`
 `;
 
 export const ProfileFinalExamsContent = styled.div`
+  padding: 32px 0;
   overflow-x: auto;
 `;

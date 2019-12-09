@@ -62,9 +62,7 @@ export const CourseRatings = styled.div`
 export const CourseHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 24px;
-  margin-right: 24px;
 
   ${breakpoint('mobile', 'tablet')`
     flex-direction: column;
@@ -134,7 +132,7 @@ export const CourseLikedPercent = styled.div`
 
 export const CourseLikedPercentLabel = styled.div`
   ${Body}
-  width: 64px;
+  width: 128px;
   margin-left: 16px;
 
   ${breakpoint('mobile', 'tablet')`

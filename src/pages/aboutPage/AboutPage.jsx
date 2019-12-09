@@ -1,5 +1,9 @@
 import React from 'react';
 
+import TeamMember from './TeamMember.jsx';
+
+import AyushImg from '../../img/about/ayush.jpg';
+
 import {
   PageWrapper,
   PageHeader,
@@ -46,8 +50,7 @@ const AboutPage = () => (
         doesn’t even include opinions from people who had taken those courses
         before. For that, we rely on friends and word of mouth. But that’s both
         incomplete and inconvenient.
-      </PageBodyParagraph>
-      <PageBodyParagraph>
+        <br/><br/>
         Want more? Go to {' '}
         <a href="http://david-hu.com/2014/02/28/open-sourcing-uw-flow-draft.html" target="_blank" rel="noopener noreferrer">
           http://david-hu.com/2014/02/28/open-sourcing-uw-flow-draft.html
@@ -58,9 +61,75 @@ const AboutPage = () => (
         you care about. As you navigate UW Flow 2.0, you’ll notice new features,
         better response times, and plenty more. What hasn’t changed is our
         commitment to the UWaterloo community and our drive to empower you.
+        <br/><br/>
+        Sincerely,
+        <br/><br/>
+        The UW Flow Team
       </PageBodyParagraph>
-      <PageBodyParagraph>Sincerely, The UW Flow Team</PageBodyParagraph>
       <PageBodyHeader>The Team</PageBodyHeader>
+      <TeamMember
+        name='Ayush Kapur'
+        title='Product Manager'
+        program='SE 2022'
+        photoName='ayush.jpg'
+        linkedIn='https://www.linkedin.com/in/ayush-kapur/'
+        photo={AyushImg}
+      >
+        
+      </TeamMember>
+      <TeamMember
+        name='Bob Wei'
+        title='Backend Developer'
+        program='CS 2022'
+        photoName='bob.jpg'
+        linkedIn='https://www.linkedin.com/in/bobqywei/'
+        photo={AyushImg}
+      >
+        
+      </TeamMember>
+      <TeamMember
+        name='Derrek Chow'
+        title='Designer'
+        program='SE 2022'
+        photoName='derrek.jpg'
+        website='https://www.derrekchow.com/'
+        linkedIn='https://www.linkedin.com/in/derrekchow/'
+        photo={AyushImg}
+      >
+        
+      </TeamMember>
+      <TeamMember
+        name='Edwin Zhang'
+        title='Frontend Developer'
+        program='CS 2021'
+        photoName='edwin.jpg'
+        website='https://www.edwinzhang.me/'
+        linkedIn='https://www.linkedin.com/in/edwin-zhang/'
+        photo={AyushImg}
+      >
+        
+      </TeamMember>
+      <TeamMember
+        name='Dmytro Shynkevych'
+        title='Backend Developer'
+        program='CS 2022'
+        photoName='dmytro.jpg'
+        linkedIn='https://www.linkedin.com/in/dmshynk/'
+        photo={AyushImg}
+      >
+        
+      </TeamMember>
+
+      <TeamMember
+        name='Max Dai'
+        title='Frontend Developer'
+        program='SE 2022'
+        photoName='max.jpg'
+        linkedIn='https://www.linkedin.com/in/max-dai/'
+        photo={AyushImg}
+      >
+        
+      </TeamMember>
     </PageBody>
     </PageContentWrapper>
   </PageWrapper>

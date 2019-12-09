@@ -19,6 +19,7 @@ import {
 import LoadingSpinner from '../display/LoadingSpinner';
 
 const Table = ({
+  cellPadding,
   columns,
   data,
   sortable = false,
@@ -105,6 +106,7 @@ const Table = ({
                 {row.cells.map(cell => (
                   <Cell
                     {...cell.getCellProps()}
+                    padding={cellPadding}
                     align={cell.column.align}
                     style={cell.column.style}
                   >
@@ -117,7 +119,7 @@ const Table = ({
         {((loading || shouldFetchMore) && !doneFetching && fetchMore !== null) && (
           <Row>
             <Cell colSpan={columns.length} style={{padding: 0, overflow: 'hidden'}}>
-              <LoadingSpinner margin={"4px auto"} />
+              <LoadingSpinner />
             </Cell>
           </Row>
         )}
@@ -128,6 +130,7 @@ const Table = ({
 };
 
 Table.propTypes = {
+  cellPadding: PropTypes.string,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       Header: PropTypes.string.isRequired,

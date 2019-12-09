@@ -73,7 +73,9 @@ export const Heading4 = `
 `;
 
 export const Body = `
-  font-size: 14px;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 15px;
 `;
 
 export const Small = `
@@ -82,8 +84,8 @@ export const Small = `
 `;
 
 export const Link = `
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 15px;
   text-decoration: underline;
   cursor: pointer;
   width: fit-content;

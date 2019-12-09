@@ -3,6 +3,9 @@ import { connect, useDispatch } from 'react-redux';
 import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
 
+/* Child Components */
+import Tooltip from '../../components/input/Tooltip';
+
 /* Styled Components */
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
@@ -59,6 +62,9 @@ const ScheduleNotificationBell = ({
 
   return (
     <NotificationBellWrapper
+      data-tip={selected ? 
+        'Click to unsubscribe from email alerts for this section'
+        : 'Click to receive an email when a spot opens up in this section'}
       selected={selected}
       onClick={toggleOnClick}
     >
@@ -67,6 +73,7 @@ const ScheduleNotificationBell = ({
         selected={selected}
         strokeWidth={3}
       />
+      <Tooltip />
     </NotificationBellWrapper>
   );
 };

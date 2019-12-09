@@ -69,6 +69,7 @@ export const DropdownTableText = styled.div`
 
 export const CourseProfReviewsWrapper = styled.div`
   background: ${({ theme }) => theme.light1};
+  color: ${({ theme }) => theme.dark2};
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -88,7 +89,6 @@ export const ProfHeader = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 32px;
-  align-items: center;
 
   ${breakpoint('mobile', 'tablet')`
     flex-direction: column;
@@ -126,7 +126,7 @@ export const ProfLikedPercent = styled.div`
 
 export const ProfLikedPercentLabel = styled.div`
   ${Body}
-  width: 64px;
+  width: 128px;
   margin-left: 12px;
 
   ${breakpoint('mobile', 'tablet')`

@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Card, BoxShadow, Body } from '../../../constants/Mixins';
+import { Link as RouterLink } from 'react-router-dom';
+import { Card, BoxShadow, Body, Heading2 } from '../../../constants/Mixins';
 
 export const ProfileCalendarWrapper = styled.div`
   ${Card()}
   ${BoxShadow}
-  margin-bottom: 64px;
+  margin-bottom: 32px;
 
   ${breakpoint('mobile', 'tablet')`
     padding: 24px 16px;
@@ -13,14 +14,14 @@ export const ProfileCalendarWrapper = styled.div`
 `;
 
 export const ProfileCalendarHeading = styled.div`
-  font-family: 'Anderson Grotesk';
+  ${Heading2}
   font-size: 32px;
   margin-bottom: 16px;
   color: ${({ theme }) => theme.dark1};
 `;
 
 export const ProfileCalendarText = styled.div`
-  font-family: Inter;
+  ${Body}
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 32px;
@@ -39,6 +40,7 @@ export const ProfileCalendarImg = styled.div`
 
 export const ProfileCalendarEventWrapper = styled.div`
   ${Body}
+  font-size: 13px;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -49,9 +51,11 @@ export const EventCourseSectionWrapper = styled.span`
   margin-top: 4px;
 `;
 
-export const CourseText = styled.span`
+export const CourseText = styled(RouterLink).attrs({
+  target: '_blank'
+})`
   font-weight: 600;
-  
+  color: white;
 `;
 
 export const SectionText = styled.span`

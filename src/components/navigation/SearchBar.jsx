@@ -5,6 +5,9 @@ import { compose } from 'redux';
 import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
 
+/* Child Components */
+import Tooltip from '../../components/input/Tooltip';
+
 /* Routes */
 import { EXPLORE_PAGE_ROUTE, getCoursePageRoute, getProfPageRoute } from '../../Routes';
 
@@ -153,6 +156,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
         {course.name}
       </ResultLeft>
       <ExploreCourseProfs
+        data-tip={`Explore professors that teach ${course.code}`}
         onClick={e => {
           e.stopPropagation();
           queryExploreCourses(course.code, false, true);
@@ -165,6 +169,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
 
   const profResult = (prof, ref = null) => (
     <SearchResult onClick={() => goToProf(prof.code)} key={prof.code} ref={ref}>
+      <Tooltip />
       <ResultLeft>
         <ProfText>
           <User />
@@ -174,6 +179,7 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
         Professor
       </ResultLeft>
       <ExploreProfCourses
+        data-tip={`Explore courses taught by ${prof.name}`}
         onClick={e => {
           e.stopPropagation();
           queryExploreCourses(prof.name);
@@ -227,13 +233,13 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   const options = isLanding ? {
     width: '100%',
     backgroundColor: 'white',
-    color: theme.primary
+    color: theme.dark1
   } : { width: '100%' }
 
   return (
     <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>
       <Textbox
-        icon={<Search color={isLanding ? theme.primary : theme.dark3} />}
+        icon={<Search color={isLanding ? theme.dark1 : theme.dark3} />}
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Explore or search for courses, subjects or professors"

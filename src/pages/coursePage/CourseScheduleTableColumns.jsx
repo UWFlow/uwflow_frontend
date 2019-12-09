@@ -68,7 +68,7 @@ const EnrolledCell = ({ cell }) => (
 );
 
 const CampusCell = ({ cell }) => (
-  <NormalCellWrapper>{cell.value}</NormalCellWrapper>
+  <ContentWrapper>{cell.value}</ContentWrapper>
 );
 
 const TimeCell = ({ cell }) => (

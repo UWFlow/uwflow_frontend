@@ -10,7 +10,8 @@ import {
   ShortlistCourse,
   ShortListCourseText,
   ShortlistCourseCode,
-  ShortlistCourseName
+  ShortlistCourseName,
+  ShortlistCoursePlaceholder
 } from './styles/ShortlistBox';
 
 /* Child Components */
@@ -46,7 +47,7 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
       ))}
       {shortlistCourses.length === 0 ? (
         <ShortlistCourse>
-          No shortlisted courses found
+          <ShortlistCoursePlaceholder>No shortlisted courses found</ShortlistCoursePlaceholder>
         </ShortlistCourse>
       ) : null}
     </>

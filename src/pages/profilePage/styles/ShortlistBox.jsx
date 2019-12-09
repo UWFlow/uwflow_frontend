@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { Body, Link, Card, BoxShadow, Heading3 } from '../../../constants/Mixins';
+import { Body, Link, Card, BoxShadow, Heading3, Heading4 } from '../../../constants/Mixins';
 
 export const ShortlistBoxWrapper = styled.div`
   ${Card('0')}
@@ -42,4 +42,9 @@ export const ShortlistCourseName = styled.div`
   ${Body}
   color: ${({theme}) => theme.dark2};
   margin-top: 4px;
+`;
+
+export const ShortlistCoursePlaceholder = styled.div`
+  ${Body}
+  color: ${({theme}) => theme.dark2};
 `;

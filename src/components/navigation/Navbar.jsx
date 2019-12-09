@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 
@@ -16,14 +15,9 @@ import SearchBar from './SearchBar';
 import FlowLogo from './FlowLogo';
 
 /* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import ProfileDropdown from './ProfileDropdown';
 
-const mapStateToProps = state => ({
-  isBrowserDesktop: getIsBrowserDesktop(state),
-});
-
-const Navbar = ({ location, isBrowserDesktop }) => {
+const Navbar = ({ location }) => {
   if (isOnLandingPageRoute(location)) {
     return null;
   }
@@ -32,7 +26,7 @@ const Navbar = ({ location, isBrowserDesktop }) => {
     <>
       <NavbarWrapper>
         <NavbarContent>
-          {isBrowserDesktop && <FlowLogo />}
+          <FlowLogo />
           <SearchBar maximizeWidth />
           <ProfileDropdown />
         </NavbarContent>
@@ -41,4 +35,4 @@ const Navbar = ({ location, isBrowserDesktop }) => {
   );
 };
 
-export default compose(connect(mapStateToProps), withRouter)(Navbar);
+export default compose(withRouter)(Navbar);

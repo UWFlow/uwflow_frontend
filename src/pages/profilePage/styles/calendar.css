@@ -52,19 +52,11 @@ button.rbc-input::-moz-focus-inner {
 	display: block;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	padding-bottom: 4px;
 }
 
 .rbc-rtl {
 	direction: rtl;
-}
-
-.rbc-off-range {
-	color: #999999;
-}
-
-.rbc-off-range-bg {
-	background: #e6e6e6;
 }
 
 .rbc-header {
@@ -78,16 +70,6 @@ button.rbc-input::-moz-focus-inner {
 	font-weight: bold;
 	font-size: 90%;
 	min-height: 0;
-	border-bottom: 1px solid #DDD;
-}
-
-.rbc-header+.rbc-header {
-	border-left: 1px solid #DDD;
-}
-
-.rbc-rtl .rbc-header+.rbc-header {
-	border-left-width: 0;
-	border-right: 1px solid #DDD;
 }
 
 .rbc-header>a,
@@ -105,7 +87,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-today {
-	background-color: #eaf6ff;
+	background-color: #F4F5F7;
 }
 
 .rbc-toolbar {
@@ -113,58 +95,33 @@ button.rbc-input::-moz-focus-inner {
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 10px;
-	font-size: 16px;
+	margin-bottom: 32px;
+    font-size: 16px;
 }
 
 .rbc-toolbar .rbc-toolbar-label {
 	flex-grow: 1;
 	padding: 0 10px;
-	text-align: center;
+    text-align: center;
+    font-weight: 600;
 }
 
 .rbc-toolbar button {
-	color: #373a3c;
 	display: inline-block;
 	margin: 0;
 	text-align: center;
 	vertical-align: middle;
 	background: none;
 	background-image: none;
-	border: 1px solid #ccc;
-	padding: .375rem 1rem;
+	padding: 8px 16px;
 	border-radius: 4px;
 	line-height: normal;
 	white-space: nowrap;
 }
 
-.rbc-toolbar button:active,
-.rbc-toolbar button.rbc-active {
-	background-image: none;
-	box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-	background-color: #e6e6e6;
-	border-color: #adadad;
-}
-
-.rbc-toolbar button:active:hover,
-.rbc-toolbar button:active:focus,
-.rbc-toolbar button.rbc-active:hover,
-.rbc-toolbar button.rbc-active:focus {
-	color: #373a3c;
-	background-color: #d4d4d4;
-	border-color: #8c8c8c;
-}
-
-.rbc-toolbar button:focus {
-	color: #373a3c;
-	background-color: #e6e6e6;
-	border-color: #adadad;
-}
-
-.rbc-toolbar button:hover {
-	color: #373a3c;
-	background-color: #e6e6e6;
-	border-color: #adadad;
+.rbc-toolbar button:focus, .rbc-toolbar button:hover {
+    background-color: #DFE1E5;
+    cursor: pointer;
 }
 
 .rbc-btn-group {
@@ -218,8 +175,8 @@ button.rbc-input::-moz-focus-inner {
 	box-shadow: none;
 	margin: 0;
 	padding: 2px 5px;
-	background-color: #3174ad;
-	border-radius: 5px;
+	background-color: #0747A6;
+	border-radius: 4px;
 	color: #fff;
 	cursor: pointer;
 	width: 100%;
@@ -229,14 +186,6 @@ button.rbc-input::-moz-focus-inner {
 .rbc-slot-selecting .rbc-event {
 	cursor: inherit;
 	pointer-events: none;
-}
-
-.rbc-event.rbc-selected {
-	background-color: #265985;
-}
-
-.rbc-event:focus {
-	outline: 5px auto #3b99fc;
 }
 
 .rbc-event-label {
@@ -289,37 +238,6 @@ button.rbc-input::-moz-focus-inner {
 	line-height: normal;
 }
 
-.rbc-month-view {
-	position: relative;
-	border: 1px solid #DDD;
-	display: flex;
-	flex-direction: column;
-	flex: 1 0 0;
-	width: 100%;
-	user-select: none;
-	-webkit-user-select: none;
-	height: 100%;
-}
-
-.rbc-month-header {
-	display: flex;
-	flex-direction: row;
-}
-
-.rbc-month-row {
-	display: flex;
-	position: relative;
-	flex-direction: column;
-	flex: 1 0 0;
-	flex-basis: 0px;
-	overflow: hidden;
-	height: 100%;
-}
-
-.rbc-month-row+.rbc-month-row {
-	border-top: 1px solid #DDD;
-}
-
 .rbc-date-cell {
 	flex: 1 1 0;
 	min-width: 0;
@@ -350,100 +268,12 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-day-bg+.rbc-day-bg {
-	border-left: 1px solid #DDD;
+	border-left: 1px solid #DFE1E5;
 }
 
 .rbc-rtl .rbc-day-bg+.rbc-day-bg {
 	border-left-width: 0;
-	border-right: 1px solid #DDD;
-}
-
-.rbc-overlay {
-	position: absolute;
-	z-index: 5;
-	border: 1px solid #e5e5e5;
-	background-color: #fff;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-	padding: 10px;
-}
-
-.rbc-overlay>*+* {
-	margin-top: 1px;
-}
-
-.rbc-overlay-header {
-	border-bottom: 1px solid #e5e5e5;
-	margin: -10px -10px 5px -10px;
-	padding: 2px 10px;
-}
-
-.rbc-agenda-view {
-	display: flex;
-	flex-direction: column;
-	flex: 1 0 0;
-	overflow: auto;
-}
-
-.rbc-agenda-view table.rbc-agenda-table {
-	width: 100%;
-	border: 1px solid #DDD;
-	border-spacing: 0;
-	border-collapse: collapse;
-}
-
-.rbc-agenda-view table.rbc-agenda-table tbody>tr>td {
-	padding: 5px 10px;
-	vertical-align: top;
-}
-
-.rbc-agenda-view table.rbc-agenda-table .rbc-agenda-time-cell {
-	padding-left: 15px;
-	padding-right: 15px;
-	text-transform: lowercase;
-}
-
-.rbc-agenda-view table.rbc-agenda-table tbody>tr>td+td {
-	border-left: 1px solid #DDD;
-}
-
-.rbc-rtl .rbc-agenda-view table.rbc-agenda-table tbody>tr>td+td {
-	border-left-width: 0;
-	border-right: 1px solid #DDD;
-}
-
-.rbc-agenda-view table.rbc-agenda-table tbody>tr+tr {
-	border-top: 1px solid #DDD;
-}
-
-.rbc-agenda-view table.rbc-agenda-table thead>tr>th {
-	padding: 3px 5px;
-	text-align: left;
-	border-bottom: 1px solid #DDD;
-}
-
-.rbc-rtl .rbc-agenda-view table.rbc-agenda-table thead>tr>th {
-	text-align: right;
-}
-
-.rbc-agenda-time-cell {
-	text-transform: lowercase;
-}
-
-.rbc-agenda-time-cell .rbc-continues-after:after {
-	content: ' »';
-}
-
-.rbc-agenda-time-cell .rbc-continues-prior:before {
-	content: '« ';
-}
-
-.rbc-agenda-date-cell,
-.rbc-agenda-time-cell {
-	white-space: nowrap;
-}
-
-.rbc-agenda-event-cell {
-	width: 100%;
+	border-right: 1px solid #DFE1E5;
 }
 
 .rbc-time-column {
@@ -457,7 +287,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-timeslot-group {
-	border-bottom: 1px solid #DDD;
+	border-top: 1px solid #DFE1E5;
 	min-height: 40px;
 	display: flex;
 	flex-flow: column nowrap;
@@ -481,7 +311,6 @@ button.rbc-input::-moz-focus-inner {
 	left: 0;
 	position: absolute;
 	right: 0;
-	margin-right: 10px;
 	top: 0;
 }
 
@@ -517,7 +346,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-day-slot .rbc-time-slot {
-	border-top: 1px solid #f7f7f7;
+	border-top: 1px solid #F4F5F7;
 }
 
 .rbc-time-view-resources .rbc-time-gutter,
@@ -525,7 +354,6 @@ button.rbc-input::-moz-focus-inner {
 	position: sticky;
 	left: 0;
 	background-color: white;
-	border-right: 1px solid #DDD;
 	z-index: 10;
 	margin-right: -1px;
 }
@@ -568,7 +396,7 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-day-header {
-	text-align: center;
+    text-align: center;
 }
 
 .rbc-slot-selection {
@@ -590,7 +418,6 @@ button.rbc-input::-moz-focus-inner {
 	flex-direction: column;
 	flex: 1;
 	width: 100%;
-	border: 1px solid #DDD;
 	min-height: 0;
 }
 
@@ -599,14 +426,11 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-time-view .rbc-allday-cell {
-	box-sizing: content-box;
-	width: 100%;
-	height: 100%;
-	position: relative;
+	display: none;
 }
 
 .rbc-time-view .rbc-allday-cell+.rbc-allday-cell {
-	border-left: 1px solid #DDD;
+	border-left: 1px solid #DFE1E5;
 }
 
 .rbc-time-view .rbc-allday-events {
@@ -625,23 +449,6 @@ button.rbc-input::-moz-focus-inner {
 	flex-direction: row;
 }
 
-.rbc-time-header.rbc-overflowing {
-	border-right: 1px solid #DDD;
-}
-
-.rbc-rtl .rbc-time-header.rbc-overflowing {
-	border-right-width: 0;
-	border-left: 1px solid #DDD;
-}
-
-.rbc-time-header>.rbc-row:first-child {
-	border-bottom: 1px solid #DDD;
-}
-
-.rbc-time-header>.rbc-row.rbc-row-resource {
-	border-bottom: 1px solid #DDD;
-}
-
 .rbc-time-header-cell-single-day {
 	display: none;
 }
@@ -651,17 +458,6 @@ button.rbc-input::-moz-focus-inner {
 	display: flex;
 	min-width: 0;
 	flex-direction: column;
-	border-left: 1px solid #DDD;
-}
-
-.rbc-rtl .rbc-time-header-content {
-	border-left-width: 0;
-	border-right: 1px solid #DDD;
-}
-
-.rbc-time-header-content>.rbc-row.rbc-row-resource {
-	border-bottom: 1px solid #DDD;
-	flex-shrink: 0;
 }
 
 .rbc-time-content {
@@ -669,7 +465,6 @@ button.rbc-input::-moz-focus-inner {
 	flex: 1 0 0%;
 	align-items: flex-start;
 	width: 100%;
-	border-top: 2px solid #DDD;
 	overflow-y: auto;
 	position: relative;
 }
@@ -679,12 +474,12 @@ button.rbc-input::-moz-focus-inner {
 }
 
 .rbc-time-content>*+*>* {
-	border-left: 1px solid #DDD;
+	border-left: 1px solid #DFE1E5;
 }
 
 .rbc-rtl .rbc-time-content>*+*>* {
 	border-left-width: 0;
-	border-right: 1px solid #DDD;
+	border-right: 1px solid #DFE1E5;
 }
 
 .rbc-time-content>.rbc-day-slot {
@@ -698,7 +493,7 @@ button.rbc-input::-moz-focus-inner {
 	z-index: 3;
 	left: 0;
 	right: 0;
-	height: 1px;
-	background-color: #74ad31;
+	height: 2px;
+	background-color: #0052CC;
 	pointer-events: none;
 }

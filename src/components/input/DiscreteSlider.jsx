@@ -59,7 +59,9 @@ const DiscreteSlider = ({
           rootStyle={{
             position: 'relative',
             width: '100%',
-            height: '8px'
+            height: '8px',
+            marginRight: '12px',
+            marginLeft: '12px'
           }}
         >
           <Rail>
