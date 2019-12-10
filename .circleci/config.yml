@@ -42,4 +42,4 @@ workflows:
             - build
           filters:
             branches:
-              only: deploy
+              only: master
