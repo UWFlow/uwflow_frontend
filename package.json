@@ -75,5 +75,10 @@
     "prettier": "^1.19.1",
     "react-app-rewired": "^2.1.5",
     "worker-loader": "^2.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run format"
+    }
   }
 }
