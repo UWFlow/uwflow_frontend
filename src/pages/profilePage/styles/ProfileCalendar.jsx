@@ -52,15 +52,13 @@ export const EventCourseSectionWrapper = styled.span`
 `;
 
 export const CourseText = styled(RouterLink).attrs({
-  target: '_blank'
+  target: '_blank',
 })`
   font-weight: 600;
   color: white;
 `;
 
-export const SectionText = styled.span`
-  
-`;
+export const SectionText = styled.span``;
 
 export const LocationText = styled.span`
   margin-top: 4px;

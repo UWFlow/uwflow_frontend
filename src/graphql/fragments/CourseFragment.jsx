@@ -63,25 +63,25 @@ const CourseFragment = {
     }
   `,
   courseRequirements: gql`
-  fragment CourseRequirementsFragment on course {
-    id
-    antireqs
-    prereqs
-    prerequisites {
-      prerequisite {
-        id
-        code
-        name
+    fragment CourseRequirementsFragment on course {
+      id
+      antireqs
+      prereqs
+      prerequisites {
+        prerequisite {
+          id
+          code
+          name
+        }
+      }
+      postrequisites {
+        postrequisite {
+          id
+          code
+          name
+        }
       }
     }
-    postrequisites {
-      postrequisite {
-        id
-        code
-        name
-      }
-    }
-  }
   `,
   courseRating: gql`
     fragment CourseRatingFragment on course {
@@ -91,10 +91,10 @@ const CourseFragment = {
         easy
         useful
         filled_count
-        comment_count  
+        comment_count
       }
     }
-  `
+  `,
 };
 
 export default CourseFragment;

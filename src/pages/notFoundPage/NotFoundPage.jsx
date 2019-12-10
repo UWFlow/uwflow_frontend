@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 import Button from '../../components/input/Button';
 import { LANDING_PAGE_ROUTE } from '../../Routes';
 
-import { NotFoundPageWrapper, NotFoundImage, PageHeader, HeaderText } from './styles/NotFoundPage';
+import {
+  NotFoundPageWrapper,
+  NotFoundImage,
+  PageHeader,
+  HeaderText,
+} from './styles/NotFoundPage';
 
 const NotFoundPage = ({ text, history }) => {
   const handleClick = () => {

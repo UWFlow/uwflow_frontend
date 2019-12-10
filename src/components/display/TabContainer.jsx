@@ -14,7 +14,7 @@ const TabContainer = ({
   containerWidth,
   tabWidth,
   initialSelectedTab = 0,
-  contentPadding = '32px'
+  contentPadding = '32px',
 }) => {
   const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
@@ -49,13 +49,13 @@ TabContainer.propTypes = {
     PropTypes.shape({
       onClick: PropTypes.func,
       title: PropTypes.string.isRequired,
-      render: PropTypes.func.isRequired
-    })
+      render: PropTypes.func.isRequired,
+    }),
   ).isRequired,
   initialSelectedTab: PropTypes.number,
   containerWidth: PropTypes.string,
   tabWidth: PropTypes.string,
-  contentPadding: PropTypes.string
+  contentPadding: PropTypes.string,
 };
 
 export default TabContainer;

@@ -13,8 +13,9 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
         ...CourseRequirementsFragment
         ...CourseRatingFragment
       }
-      ${fetchUserData ?
-        `user_shortlist(where: {
+      ${
+        fetchUserData
+          ? `user_shortlist(where: {
           user_id: {_eq: ${userId}},
           course: {code: {_eq: $code}}
         }) {
@@ -32,7 +33,8 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
         review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
           ...ReviewInfoFragment
         }
-        ` : ''
+        `
+          : ''
       }
     }
     ${CourseFragment.courseInfo}
@@ -41,14 +43,13 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
     ${CourseFragment.courseRating}
     ${ReviewFragment.reviewInfo}
   `;
-}
+};
 
 export const REFETCH_COURSE_SHORTLIST = gql`
   query REFETCH_COURSE_SHORTLIST($course_id: Int, $user_id: Int) {
-    user_shortlist(where: {
-      user_id: {_eq: $user_id},
-      course_id: {_eq: $course_id}
-    }) {
+    user_shortlist(
+      where: { user_id: { _eq: $user_id }, course_id: { _eq: $course_id } }
+    ) {
       course_id
       user_id
     }
@@ -57,10 +58,10 @@ export const REFETCH_COURSE_SHORTLIST = gql`
 
 export const REFETCH_RATINGS = gql`
   query REFETCH_RATINGS($course_id: Int, $user_id: Int, $prof_id: Int) {
-    course(where: {id: {_eq: $course_id}}) {
+    course(where: { id: { _eq: $course_id } }) {
       ...CourseRatingFragment
     }
-    prof(where: {id: {_eq: $prof_id}}) {
+    prof(where: { id: { _eq: $prof_id } }) {
       ...ProfRatingFragment
     }
   }
@@ -70,10 +71,12 @@ export const REFETCH_RATINGS = gql`
 
 export const REFETCH_SECTION_SUBSCRIPTIONS = gql`
   query REFETCH_SECTION_SUBSCRIPTIONS($course_id: Int, $user_id: Int) {
-    section_subscription(where: {
-      section: {course_id: {_eq: $course_id}},
-      user_id: {_eq: $user_id}
-    }) {
+    section_subscription(
+      where: {
+        section: { course_id: { _eq: $course_id } }
+        user_id: { _eq: $user_id }
+      }
+    ) {
       section_id
       user_id
     }

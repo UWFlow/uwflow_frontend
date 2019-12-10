@@ -17,7 +17,7 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 /* GraphQL */
 import {
   DELETE_SECTION_SUBSCRIPTION,
-  INSERT_SECTION_SUBSCRIPTION
+  INSERT_SECTION_SUBSCRIPTION,
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
 
@@ -32,22 +32,30 @@ const ScheduleNotificationBell = ({
   sectionID,
   courseID,
   courseCode,
-  initialState = false
+  initialState = false,
 }) => {
   const userID = localStorage.getItem('user_id');
 
-  const refetchQueries = [{
-    query: REFETCH_SECTION_SUBSCRIPTIONS,
-    variables: { course_id: courseID, user_id: userID }
-  }];
+  const refetchQueries = [
+    {
+      query: REFETCH_SECTION_SUBSCRIPTIONS,
+      variables: { course_id: courseID, user_id: userID },
+    },
+  ];
 
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(initialState);
-  const [insertSubscription] = useMutation(INSERT_SECTION_SUBSCRIPTION, { refetchQueries });
-  const [deleteSubscription] = useMutation(DELETE_SECTION_SUBSCRIPTION, { refetchQueries });
+  const [insertSubscription] = useMutation(INSERT_SECTION_SUBSCRIPTION, {
+    refetchQueries,
+  });
+  const [deleteSubscription] = useMutation(DELETE_SECTION_SUBSCRIPTION, {
+    refetchQueries,
+  });
 
-  const notifyDelete = () => toast(`Unsubscribed from ${splitCourseCode(courseCode)} notifications`);
-  const notifyInsert = () => toast(`Subscribed to ${splitCourseCode(courseCode)} notifications`);
+  const notifyDelete = () =>
+    toast(`Unsubscribed from ${splitCourseCode(courseCode)} notifications`);
+  const notifyInsert = () =>
+    toast(`Subscribed to ${splitCourseCode(courseCode)} notifications`);
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -60,26 +68,28 @@ const ScheduleNotificationBell = ({
     }
 
     if (selected) {
-      deleteSubscription({ variables: { section_id: sectionID }}).then(() => notifyDelete());
+      deleteSubscription({ variables: { section_id: sectionID } }).then(() =>
+        notifyDelete(),
+      );
     } else {
-      insertSubscription({ variables: { user_id: userID, section_id: sectionID }}).then(() => notifyInsert());
+      insertSubscription({
+        variables: { user_id: userID, section_id: sectionID },
+      }).then(() => notifyInsert());
     }
     setSelected(!selected);
-  }
+  };
 
   return (
     <NotificationBellWrapper
-      data-tip={selected ? 
-        'Click to unsubscribe from email alerts for this section'
-        : 'Click to receive an email when a spot opens up in this section'}
+      data-tip={
+        selected
+          ? 'Click to unsubscribe from email alerts for this section'
+          : 'Click to receive an email when a spot opens up in this section'
+      }
       selected={selected}
       onClick={toggleOnClick}
     >
-      <Bell
-        size={16}
-        selected={selected}
-        strokeWidth={3}
-      />
+      <Bell size={16} selected={selected} strokeWidth={3} />
       <Tooltip />
     </NotificationBellWrapper>
   );

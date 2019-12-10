@@ -11,7 +11,8 @@ export const SectionCellWrapper = styled.div`
   display: flex;
   position: relative;
   height: calc(
-    ${({ numRows }) => numRows}em + ${({ numRows }) => numRows * 4}px);
+    ${({ numRows }) => numRows}em + ${({ numRows }) => numRows * 4}px
+  );
   height: 100%;
   width: 100%;
   align-items: flex-begin;
@@ -71,7 +72,7 @@ export const EnrollmentText = styled.div`
   padding: 8px 0;
   display: flex;
   align-items: center;
-  color: ${({ theme, filled }) => filled ? theme.red : 'inherit'};
+  color: ${({ theme, filled }) => (filled ? theme.red : 'inherit')};
 `;
 
 export const FinalExamsText = styled.div`

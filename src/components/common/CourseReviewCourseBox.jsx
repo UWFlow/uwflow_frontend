@@ -18,7 +18,7 @@ import {
   FooterQuestionWrapper,
   SliderOptionText,
   DeleteReviewModalWrapper,
-  DeleteConfirmButtons
+  DeleteConfirmButtons,
 } from './styles/CourseReviewCourseBox';
 
 /* Child Components */
@@ -32,10 +32,7 @@ import Modal from '../display/Modal';
 import { splitCourseCode } from '../../utils/Misc';
 
 /* GraphQL */
-import {
-  DELETE_REVIEW,
-  UPSERT_REVIEW,
-} from '../../graphql/mutations/Review';
+import { DELETE_REVIEW, UPSERT_REVIEW } from '../../graphql/mutations/Review';
 import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 
 const easyOptions = [
@@ -90,52 +87,85 @@ const CourseReviewCourseBox = ({
 
   // add prof to dropdown if not fetched from backend
   if (review) {
-    let idx = profsTeaching.findIndex(prof => prof.prof && prof.prof.id === review.prof_id);
+    let idx = profsTeaching.findIndex(
+      prof => prof.prof && prof.prof.id === review.prof_id,
+    );
     if (idx === -1 && review.prof_id !== null) {
       profsTeaching.push({ prof: review.prof });
     }
   }
 
-  const profIndex = review ?
-    profsTeaching.findIndex(prof => prof.prof && prof.prof.id === review.prof_id) : -1;
+  const profIndex = review
+    ? profsTeaching.findIndex(
+        prof => prof.prof && prof.prof.id === review.prof_id,
+      )
+    : -1;
 
-    /* State */
+  /* State */
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
   const [reviewUpdating, setReviewUpdating] = useState(false);
   const [reviewDeleting, setReviewDeleting] = useState(false);
 
-  const [liked, setLiked] = useState(review ? (review.liked !== null ? 1 - review.liked : -1) : -1);
-  const [selectedAnonymous, setSelectedAnonymous] = useState(review && review.public ? 1 : 0);
+  const [liked, setLiked] = useState(
+    review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
+  );
+  const [selectedAnonymous, setSelectedAnonymous] = useState(
+    review && review.public ? 1 : 0,
+  );
 
   const [useful, setUseful] = useState((review && review.course_useful) || -1);
-  const [usefulSelected, setUsefulSelected] = useState(review ? review.course_useful !== null : false);
+  const [usefulSelected, setUsefulSelected] = useState(
+    review ? review.course_useful !== null : false,
+  );
   const [easy, setEasy] = useState((review && review.course_easy) || -1);
-  const [easySelected, setEasySelected] = useState(review ? review.course_easy !== null : false);
-  const [courseComment, setCourseComment] = useState((review && review.course_comment) || '');
+  const [easySelected, setEasySelected] = useState(
+    review ? review.course_easy !== null : false,
+  );
+  const [courseComment, setCourseComment] = useState(
+    (review && review.course_comment) || '',
+  );
 
   const [selectedProf, setSelectedProf] = useState(profIndex);
   const [clear, setClear] = useState((review && review.prof_clear) || -1);
-  const [clearSelected, setClearSelected] = useState(review ? review.prof_clear !== null : false);
-  const [engaging, setEngaging] = useState((review && review.prof_engaging) || -1);
-  const [engagingSelected, setEngagingSelected] = useState(review ? review.prof_engaging !== null : false);
-  const [profComment, setProfComment] = useState((review && review.prof_comment) || '');
+  const [clearSelected, setClearSelected] = useState(
+    review ? review.prof_clear !== null : false,
+  );
+  const [engaging, setEngaging] = useState(
+    (review && review.prof_engaging) || -1,
+  );
+  const [engagingSelected, setEngagingSelected] = useState(
+    review ? review.prof_engaging !== null : false,
+  );
+  const [profComment, setProfComment] = useState(
+    (review && review.prof_comment) || '',
+  );
 
   /* Mutations */
-  const refetchQueries = [{
-    query: REFETCH_RATINGS,
-    variables: { course_id: course.id, user_id: userID, prof_id: review ? review.prof_id : null }
-  }];
+  const refetchQueries = [
+    {
+      query: REFETCH_RATINGS,
+      variables: {
+        course_id: course.id,
+        user_id: userID,
+        prof_id: review ? review.prof_id : null,
+      },
+    },
+  ];
 
   const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });
   const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries });
 
-  const notifyDelete = () => toast(`Deleted review for ${splitCourseCode(course.code)}`);
-  const notifyInsert = () => toast(`Created review for ${splitCourseCode(course.code)}`);
-  const notifyUpdate = () => toast(`Updated review for ${splitCourseCode(course.code)}`);
+  const notifyDelete = () =>
+    toast(`Deleted review for ${splitCourseCode(course.code)}`);
+  const notifyInsert = () =>
+    toast(`Created review for ${splitCourseCode(course.code)}`);
+  const notifyUpdate = () =>
+    toast(`Updated review for ${splitCourseCode(course.code)}`);
 
   const handlePost = () => {
     setReviewUpdating(true);
-    const profID = selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
+    const profID =
+      selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
 
     const reviewData = {
       user_id: userID,
@@ -148,24 +178,24 @@ const CourseReviewCourseBox = ({
       course_comment: courseComment,
       prof_clear: clear === -1 ? null : clear,
       prof_engaging: engaging === -1 ? null : engaging,
-      prof_comment: profComment
+      prof_comment: profComment,
     };
 
     upsertReview({
       variables: reviewData,
       optimisticResponse: {
-        __typename: "mutation_root",
+        __typename: 'mutation_root',
         insert_review: {
-          __typename: "review_mutation_response",
+          __typename: 'review_mutation_response',
           returning: {
-            __typename: "review",
+            __typename: 'review',
             id: review ? review.id : null,
             ...reviewData,
             created_at: new Date(),
-            updated_at: new Date()
-          }
-        }
-      }
+            updated_at: new Date(),
+          },
+        },
+      },
     }).then(() => {
       if (review) {
         notifyUpdate();
@@ -180,7 +210,9 @@ const CourseReviewCourseBox = ({
   const handleDelete = () => {
     if (review) {
       setReviewDeleting(true);
-      deleteReview({ variables: { review_id: review ? review.id : null }}).then(() => {
+      deleteReview({
+        variables: { review_id: review ? review.id : null },
+      }).then(() => {
         notifyDelete();
         onCancel();
         setReviewDeleting(false);
@@ -198,7 +230,9 @@ const CourseReviewCourseBox = ({
           <DropdownList
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
-            options={courseList.map(courseObject => splitCourseCode(courseObject.course.code))}
+            options={courseList.map(courseObject =>
+              splitCourseCode(courseObject.course.code),
+            )}
             color={theme.courses}
             onChange={value => setSelectedCourseIndex(value)}
             zIndex={6}
@@ -249,7 +283,7 @@ const CourseReviewCourseBox = ({
         rows={5}
         value={courseComment}
         maxLength={8192}
-        onChange={(event) => setCourseComment(event.target.value)}
+        onChange={event => setCourseComment(event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -295,13 +329,16 @@ const CourseReviewCourseBox = ({
         rows={5}
         value={profComment}
         maxLength={8192}
-        onChange={(event) => setProfComment(event.target.value)}
+        onChange={event => setProfComment(event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
       <Footer>
         <DeleteIconWrapper>
-          <Trash2 onClick={() => setDeleteReviewModalOpen(true)} color={theme.red} />
+          <Trash2
+            onClick={() => setDeleteReviewModalOpen(true)}
+            color={theme.red}
+          />
         </DeleteIconWrapper>
         <FooterQuestionWrapper>
           <QuestionText>Post: </QuestionText>
@@ -326,14 +363,22 @@ const CourseReviewCourseBox = ({
           <Button
             handleClick={handlePost}
             loading={reviewUpdating}
-            disabled={!usefulSelected || !easySelected || liked === -1 || selectedProf === -1}
+            disabled={
+              !usefulSelected ||
+              !easySelected ||
+              liked === -1 ||
+              selectedProf === -1
+            }
           >
             Post
           </Button>
         </FooterQuestionWrapper>
       </Footer>
 
-      <Modal isOpen={deleteReviewModalOpen} onRequestClose={() => setDeleteReviewModalOpen(false)}>
+      <Modal
+        isOpen={deleteReviewModalOpen}
+        onRequestClose={() => setDeleteReviewModalOpen(false)}
+      >
         <DeleteReviewModalWrapper>
           Are you sure you want to delete this review?
           <DeleteConfirmButtons>
@@ -363,10 +408,12 @@ const CourseReviewCourseBox = ({
 };
 
 CourseReviewCourseBox.propTypes = {
-  courseList: PropTypes.arrayOf(PropTypes.shape({
-    course: PropTypes.object.isRequired,
-    review: PropTypes.object,
-  })).isRequired,
+  courseList: PropTypes.arrayOf(
+    PropTypes.shape({
+      course: PropTypes.object.isRequired,
+      review: PropTypes.object,
+    }),
+  ).isRequired,
   theme: PropTypes.object.isRequired,
   selectedCourseIndex: PropTypes.number,
   setSelectedCourseIndex: PropTypes.func,

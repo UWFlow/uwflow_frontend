@@ -1,14 +1,12 @@
-const hasLocalStorage = typeof(Storage)
+const hasLocalStorage = typeof Storage;
 
 export const setCookie = (name, value) => {
-  hasLocalStorage ? 
-    window.localStorage.setItem(name, JSON.stringify(value)) 
-  :
-    documents.cookie = `${name}=${JSON.stringify(value)}; path=/`
-
+  hasLocalStorage
+    ? window.localStorage.setItem(name, JSON.stringify(value))
+    : (documents.cookie = `${name}=${JSON.stringify(value)}; path=/`);
 };
 
-const cookieGetter = (name) => {
+const cookieGetter = name => {
   name = `${name}=`;
   const cookies = document.cookie.split(';');
   for (let cookie of cookies) {
@@ -20,15 +18,14 @@ const cookieGetter = (name) => {
     }
   }
   return null;
-}
-
-export const getCookie = (name) => {
-  return hasLocalStorage ? 
-    JSON.parse(window.localStorage.getItem(name))
-  :
-    cookieGetter(name)
 };
 
-export const removeItem = (name) => {
-  window.localStorage.removeItem(name)
-}
+export const getCookie = name => {
+  return hasLocalStorage
+    ? JSON.parse(window.localStorage.getItem(name))
+    : cookieGetter(name);
+};
+
+export const removeItem = name => {
+  window.localStorage.removeItem(name);
+};

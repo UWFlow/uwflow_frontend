@@ -9,19 +9,20 @@ import {
   SliderRail,
   SliderHandle,
   SliderTick,
-  SliderTrack
+  SliderTrack,
 } from './styles/DiscreteSlider';
 
-const Handle = ({
-  handle: { id, percent },
-  getHandleProps,
-  color
-}) => (
+const Handle = ({ handle: { id, percent }, getHandleProps, color }) => (
   <SliderHandle percent={percent} color={color} {...getHandleProps(id)} />
 );
 
 const Track = ({ source, target, color, getTrackProps }) => (
-  <SliderTrack target={target} source={source} color={color} {...getTrackProps()} />
+  <SliderTrack
+    target={target}
+    source={source}
+    color={color}
+    {...getTrackProps()}
+  />
 );
 
 const DiscreteSlider = ({
@@ -30,10 +31,10 @@ const DiscreteSlider = ({
   currentNode,
   color,
   onUpdate,
-  margin="0 0 40px 0",
-  showTicks=true,
-  selected=true,
-  setSelected=() => null
+  margin = '0 0 40px 0',
+  showTicks = true,
+  selected = true,
+  setSelected = () => null,
 }) => {
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
   let percentages = [];
@@ -49,7 +50,7 @@ const DiscreteSlider = ({
           step={1}
           mode={2}
           domain={[0, numNodes - 1]}
-          onUpdate={(value) => {
+          onUpdate={value => {
             onUpdate(value);
             if (value > 0) {
               setSelected(true);
@@ -61,30 +62,28 @@ const DiscreteSlider = ({
             width: '100%',
             height: '8px',
             marginRight: '12px',
-            marginLeft: '12px'
+            marginLeft: '12px',
           }}
         >
           <Rail>
             {({ getRailProps }) => (
               <>
                 <SliderRail {...getRailProps()} />
-                {showTicks && percentages.map((percent, idx) => (
-                  <SliderTick
-                    key={percent}
-                    color={idx <= currentNode ? color : theme.light3}
-                    percent={percent}
-                    {...getRailProps()}
-                  />
-                ))}
+                {showTicks &&
+                  percentages.map((percent, idx) => (
+                    <SliderTick
+                      key={percent}
+                      color={idx <= currentNode ? color : theme.light3}
+                      percent={percent}
+                      {...getRailProps()}
+                    />
+                  ))}
               </>
             )}
           </Rail>
           <Handles>
             {({ handles, getHandleProps }) => (
-              <div
-                className="slider-handles"
-                onClick={() => setSelected(true)}
-              >
+              <div className="slider-handles" onClick={() => setSelected(true)}>
                 {handles.map(handle => (
                   <Handle
                     key={handle.id}
@@ -124,7 +123,7 @@ DiscreteSlider.propTypes = {
   currentNode: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  showTicks: PropTypes.bool
+  showTicks: PropTypes.bool,
 };
 
 export default withTheme(DiscreteSlider);

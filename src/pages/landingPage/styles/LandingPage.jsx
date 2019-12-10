@@ -66,11 +66,11 @@ export const Column1 = styled.div`
 export const Column2 = styled.div`
   display: flex;
   height: 100vh;
-  min-width: ${({ loggedIn }) => loggedIn ? '0' : '500px'};
+  min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
   ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};
 
   @media only screen and (max-width: 1024px) {
-    min-width: ${({ loggedIn }) => loggedIn ? '100px' : '480px'};
+    min-width: ${({ loggedIn }) => (loggedIn ? '100px' : '480px')};
     ${({ loggedIn }) => loggedIn && 'max-width: 25%;'};
     align-items: none;
   }

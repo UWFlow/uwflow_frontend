@@ -20,21 +20,21 @@ export const ProfilePicture = styled.img`
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  ${({ isLanding }) => isLanding ? DarkBoxShadow : BoxShadow}
-  
+  ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
 `;
 
 export const ProfileText = styled.div`
   ${Heading4}
   color: white;
-  color: ${({ theme, isLanding }) => isLanding ? theme.white : theme.dark1};
+  color: ${({ theme, isLanding }) => (isLanding ? theme.white : theme.dark1)};
   text-decoration: none;
   display: flex;
   align-items: center;
   width: max-content;
   z-index: 1;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: ${({ theme }) => theme.primary};
   }
 `;

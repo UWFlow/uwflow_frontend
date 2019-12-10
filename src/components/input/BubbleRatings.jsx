@@ -8,16 +8,16 @@ import {
   BubbleRatingsWrapper,
   UnitCircle,
   ThumbsWrapper,
-  Thumb
+  Thumb,
 } from './styles/BubbleRatings';
 
 const Thumbs = ({ boolRating }) => (
   <ThumbsWrapper>
     <Thumb colored={boolRating === true}>
-      <ThumbsUp width={20} height={20} strokeWidth={3} fill='white' />
+      <ThumbsUp width={20} height={20} strokeWidth={3} fill="white" />
     </Thumb>
     <Thumb colored={boolRating === false}>
-      <ThumbsDown width={20} height={20} fill='white' />
+      <ThumbsDown width={20} height={20} fill="white" />
     </Thumb>
   </ThumbsWrapper>
 );
@@ -25,13 +25,7 @@ const Thumbs = ({ boolRating }) => (
 const Squares = ({ rating, total }) => (
   <>
     {Array.apply(null, Array(total)).map((_, ind) => {
-      return (
-        <UnitCircle
-          key={ind}
-          filled={ind < rating}
-          diameter={16}
-        />
-      );
+      return <UnitCircle key={ind} filled={ind < rating} diameter={16} />;
     })}
   </>
 );

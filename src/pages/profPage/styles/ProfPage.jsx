@@ -2,7 +2,12 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
 /* Mixins */
-import { WideColumn, ThinColumn, PageContent, PageWrapper } from '../../../constants/Mixins';
+import {
+  WideColumn,
+  ThinColumn,
+  PageContent,
+  PageWrapper,
+} from '../../../constants/Mixins';
 
 export const ProfPageWrapper = styled.div`
   ${PageWrapper}

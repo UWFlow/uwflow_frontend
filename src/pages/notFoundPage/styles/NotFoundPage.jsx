@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import NotFound from '../../../img/404_v1.svg';
 
-import { Heading2 , PageContent, PageWrapper } from '../../../constants/Mixins';
+import { Heading2, PageContent, PageWrapper } from '../../../constants/Mixins';
 
 export const NotFoundPageWrapper = styled.div`
   ${PageWrapper}

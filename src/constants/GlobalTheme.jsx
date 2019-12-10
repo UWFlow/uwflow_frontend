@@ -32,6 +32,6 @@ export default {
     mobile: 0,
     mobileLarge: 600,
     tablet: BREAKPOINT_WIDTH,
-    desktop: PAGE_CONTENT_WIDTH
-  }
+    desktop: PAGE_CONTENT_WIDTH,
+  },
 };

@@ -51,5 +51,6 @@ export const toCoursePageRoute = compile(COURSE_PAGE_ROUTE);
 export const toProfPageRoute = compile(PROF_PAGE_ROUTE);
 
 /* Route Getters */
-export const getCoursePageRoute = courseCode => toCoursePageRoute({ courseCode });
+export const getCoursePageRoute = courseCode =>
+  toCoursePageRoute({ courseCode });
 export const getProfPageRoute = profCode => toProfPageRoute({ profCode });

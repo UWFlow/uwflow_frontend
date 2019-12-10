@@ -14,18 +14,19 @@ const searchOptions = {
 const courseOptions = {
   ...searchOptions,
   keys: ['fullText', 'code', 'profs'],
-  scoreFn: (a) => Math.max(
-    a[0] ? a[0].score : -10000,
-    a[1] ? a[1].score : -10000,
-    a[2] ? a[2].score - 50 : -10000)
-}
+  scoreFn: a =>
+    Math.max(
+      a[0] ? a[0].score : -10000,
+      a[1] ? a[1].score : -10000,
+      a[2] ? a[2].score - 50 : -10000,
+    ),
+};
 
 const profOptions = {
   ...searchOptions,
   keys: ['name', 'courses'],
-  scoreFn: (a) => Math.max(
-    a[0] ? a[0].score : -10000,
-    a[1] ? a[1].score - 50 : -10000)
+  scoreFn: a =>
+    Math.max(a[0] ? a[0].score : -10000, a[1] ? a[1].score - 50 : -10000),
 };
 
 const courseCodeOptions = {
@@ -33,11 +34,13 @@ const courseCodeOptions = {
   key: 'code',
 };
 
-const weightByRatings = results => results.sort((a, b) => {
-  const ratingDifference = b.obj.rating_count - a.obj.rating_count;
-  return a.score === b.score ?
-    ratingDifference : (b.score - a.score) + ratingDifference * RATING_MULTIPLIER;
-});
+const weightByRatings = results =>
+  results.sort((a, b) => {
+    const ratingDifference = b.obj.rating_count - a.obj.rating_count;
+    return a.score === b.score
+      ? ratingDifference
+      : b.score - a.score + ratingDifference * RATING_MULTIPLIER;
+  });
 
 class SearchClient {
   constructor() {
@@ -64,10 +67,18 @@ class SearchClient {
 
     let courseResults = fuzzysort.go(parsedQuery, this.courses, courseOptions);
     let profResults = fuzzysort.go(parsedQuery, this.profs, profOptions);
-    let courseCodeResults = fuzzysort.go(parsedQuery, this.courseCodes, courseCodeOptions);
+    let courseCodeResults = fuzzysort.go(
+      parsedQuery,
+      this.courseCodes,
+      courseCodeOptions,
+    );
 
     if (courseCodeResults.length === 0) {
-      courseCodeResults = fuzzysort.go(parsedQuery.split(' ')[0], this.courseCodes, courseCodeOptions);
+      courseCodeResults = fuzzysort.go(
+        parsedQuery.split(' ')[0],
+        this.courseCodes,
+        courseCodeOptions,
+      );
     }
 
     // reranking by rating count
@@ -139,7 +150,10 @@ class SearchClient {
     this.courseCodes = courseCodes;
 
     // return compressed raw data for localstorage
-    return [LZString.compressToUTF16(JSON.stringify(parsedSearchData)), indexedDate];
+    return [
+      LZString.compressToUTF16(JSON.stringify(parsedSearchData)),
+      indexedDate,
+    ];
   }
 }
 

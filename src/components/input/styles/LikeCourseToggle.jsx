@@ -18,14 +18,21 @@ export const LikeCourseToggleButton = styled.button`
   height: 100%;
   width: 50%;
   margin: auto;
-  border-radius: ${({left}) => left ? '8px 0 0 8px' :  '0 8px 8px 0'};
-  border: 2px solid ${({selected, theme}) => selected ? theme.primary : theme.light4};
-  border-right-width: ${({left, noneSelected}) => left && noneSelected ? '1px' : '2px'};
-  border-left-width: ${({left, noneSelected}) => !left && noneSelected ? '1px' : '2px'};
-  background-color: ${({selected, theme}) => selected ? theme.primary : theme.light1};
+  border-radius: ${({ left }) => (left ? '8px 0 0 8px' : '0 8px 8px 0')};
+  border: 2px solid
+    ${({ selected, theme }) => (selected ? theme.primary : theme.light4)};
+  border-right-width: ${({ left, noneSelected }) =>
+    left && noneSelected ? '1px' : '2px'};
+  border-left-width: ${({ left, noneSelected }) =>
+    !left && noneSelected ? '1px' : '2px'};
+  background-color: ${({ selected, theme }) =>
+    selected ? theme.primary : theme.light1};
 
-  &:hover, &:focus {
-    border-color: ${({selected, theme}) => selected ? theme.primaryDark : theme.light4};
-    background-color: ${({selected, theme}) => selected ? theme.primaryDark : theme.light2};
+  &:hover,
+  &:focus {
+    border-color: ${({ selected, theme }) =>
+      selected ? theme.primaryDark : theme.light4};
+    background-color: ${({ selected, theme }) =>
+      selected ? theme.primaryDark : theme.light2};
   }
 `;

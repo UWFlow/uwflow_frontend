@@ -3,7 +3,7 @@ import { Heading3, Heading4 } from '../../../constants/Mixins';
 
 export const CompleteProfileHeading = styled.div`
   ${Heading3}
-  color: ${({theme}) => theme.dark1};
+  color: ${({ theme }) => theme.dark1};
 `;
 
 export const CheckedItem = styled.div`
@@ -17,5 +17,5 @@ export const CheckedText = styled.div`
   margin: auto;
   margin-left: 16px;
   ${Heading4}
-  color: ${({theme, checked}) => checked ? theme.dark3 : theme.dark2};
+  color: ${({ theme, checked }) => (checked ? theme.dark3 : theme.dark2)};
 `;

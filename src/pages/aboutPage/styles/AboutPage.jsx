@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, Heading1, Heading2, Body, PageWrapper as _PageWrapper } from '../../../constants/Mixins';
+import {
+  PageContent,
+  Heading1,
+  Heading2,
+  Body,
+  PageWrapper as _PageWrapper,
+} from '../../../constants/Mixins';
 
 export const PageWrapper = styled.div`
   ${_PageWrapper}

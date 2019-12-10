@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   margin-top: 32px;
   margin-bottom: 32px;
   width: 400px;
-  border-radius: 4px; 
+  border-radius: 4px;
   height: fit-content;
 
   @media only screen and (max-width: 420px) {

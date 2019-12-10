@@ -3,14 +3,14 @@ import { Heading4, BoxShadow } from '../../../constants/Mixins';
 
 export const ButtonWrapper = styled.button`
   outline: none;
-  cursor: ${({ disabled }) => disabled ? 'auto' : 'pointer'};
+  cursor: ${({ disabled }) => (disabled ? 'auto' : 'pointer')};
   display: flex;
   align-items: center;
   text-align: center;
-  border: 2px solid ${({ borderColor = 'none'}) => borderColor};
+  border: 2px solid ${({ borderColor = 'none' }) => borderColor};
   border-radius: 8px;
   padding: ${({ padding }) => padding};
-  color: ${({ theme, disabled }) => disabled ? theme.light1 : theme.dark1};
+  color: ${({ theme, disabled }) => (disabled ? theme.light1 : theme.dark1)};
   min-height: ${({ height }) => height}px;
   max-height: ${({ maxHeight }) => maxHeight}px;
   margin: ${({ margin }) => margin};
@@ -21,8 +21,11 @@ export const ButtonWrapper = styled.button`
   width: ${({ width }) => (width ? width : 'auto')};
 
   :hover {
-    background: ${({ theme, hoverColor = theme.accentDark, disabled = false }) =>
-      disabled ? theme.light4 : hoverColor};
+    background: ${({
+      theme,
+      hoverColor = theme.accentDark,
+      disabled = false,
+    }) => (disabled ? theme.light4 : hoverColor)};
   }
 
   :focus {

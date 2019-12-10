@@ -24,17 +24,22 @@ const convertInputToState = data => {
         id: current.course ? current.course.id : -1,
         name: current.course ? current.course.name : '',
         code: current.course ? current.course.code : '',
-        liked: current.course && current.course.rating ? current.course.rating.liked : null,
+        liked:
+          current.course && current.course.rating
+            ? current.course.rating.liked
+            : null,
         reviews: [],
       };
       allCourses.push(courseObject);
     }
     courseObject.reviews.push({
       id: current.id,
-      upvotes: current.prof_review_rating ?
-        current.prof_review_rating.upvote_count : 0,
-      upvote_users: current.prof_review_upvotes ?
-        current.prof_review_upvotes.map(vote => Number(vote.user_id)) : [],
+      upvotes: current.prof_review_rating
+        ? current.prof_review_rating.upvote_count
+        : 0,
+      upvote_users: current.prof_review_upvotes
+        ? current.prof_review_upvotes.map(vote => Number(vote.user_id))
+        : [],
       review: current.prof_comment,
       author: current.author,
       user: current.user,

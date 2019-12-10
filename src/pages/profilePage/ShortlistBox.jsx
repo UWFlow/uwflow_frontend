@@ -11,7 +11,7 @@ import {
   ShortListCourseText,
   ShortlistCourseCode,
   ShortlistCourseName,
-  ShortlistCoursePlaceholder
+  ShortlistCoursePlaceholder,
 } from './styles/ShortlistBox';
 
 /* Child Components */
@@ -25,12 +25,13 @@ import { splitCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
 const mapStateToProps = state => ({
-  isBrowserDesktop: getIsBrowserDesktop(state)
+  isBrowserDesktop: getIsBrowserDesktop(state),
 });
 
 const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
-  const sortedShortlist = shortlistCourses.sort((a, b) =>
-    (a.course.code > b.course.code) - (a.course.code < b.course.code));
+  const sortedShortlist = shortlistCourses.sort(
+    (a, b) => (a.course.code > b.course.code) - (a.course.code < b.course.code),
+  );
 
   const shorlistContent = (
     <>
@@ -52,7 +53,9 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
       ))}
       {shortlistCourses.length === 0 ? (
         <ShortlistCourse>
-          <ShortlistCoursePlaceholder>No shortlisted courses found</ShortlistCoursePlaceholder>
+          <ShortlistCoursePlaceholder>
+            No shortlisted courses found
+          </ShortlistCoursePlaceholder>
         </ShortlistCourse>
       ) : null}
     </>
@@ -61,9 +64,7 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
   return isBrowserDesktop ? (
     <ShortlistBoxWrapper>
       <ShortlistHeading>Shortlist</ShortlistHeading>
-      <ShortlistContentWrapper>
-        {shorlistContent}
-      </ShortlistContentWrapper>
+      <ShortlistContentWrapper>{shorlistContent}</ShortlistContentWrapper>
     </ShortlistBoxWrapper>
   ) : (
     <CollapseableContainer title="Shortlist" centerHeader={false}>

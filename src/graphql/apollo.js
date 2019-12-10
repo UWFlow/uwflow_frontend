@@ -16,15 +16,17 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      ...token && { Authorization: `Bearer ${token}` },
-    }
-  }
-});  
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+  };
+});
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) => {
-      console.log(`[GQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+      console.log(
+        `[GQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      );
       // hard coded error message for now
       if (message.includes('JWT')) {
         logOut();
@@ -38,25 +40,30 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: GRAPHQL_ENDPOINT
+  uri: GRAPHQL_ENDPOINT,
 });
 
 const link = ApolloLink.from([
   authLink,
   errorLink,
-  httpLink // terminating link must be added last
+  httpLink, // terminating link must be added last
 ]);
 
 const cache = new InMemoryCache({
   dataIdFromObject: object => {
     switch (object.__typename) {
-      case 'section_subscription': return `${object.section_id}:${object.user_id}`;
-      case 'user_shortlist': return `${object.course_id}:${object.user_id}`;
-      case 'user_schedule': return `${object.user_id}:${object.section_id}`;
-      case 'user_course_taken': return `${object.term_id}:${object.course_id}`;
-      default: return defaultDataIdFromObject(object);
+      case 'section_subscription':
+        return `${object.section_id}:${object.user_id}`;
+      case 'user_shortlist':
+        return `${object.course_id}:${object.user_id}`;
+      case 'user_schedule':
+        return `${object.user_id}:${object.section_id}`;
+      case 'user_course_taken':
+        return `${object.term_id}:${object.course_id}`;
+      default:
+        return defaultDataIdFromObject(object);
     }
-  }
+  },
 });
 
 const client = new ApolloClient({

@@ -55,8 +55,8 @@ export const ReviewUpvotes = styled.button`
   padding: 0;
   width: 40px;
   height: 40px;
-  background-color: ${({ selected, theme }) => selected ?
-    theme.primary : theme.light1};
+  background-color: ${({ selected, theme }) =>
+    selected ? theme.primary : theme.light1};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,7 +65,8 @@ export const ReviewUpvotes = styled.button`
   border: 2px solid ${({ theme }) => theme.light3};
   cursor: pointer;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     ${({ selected, theme }) =>
       `background-color:${selected ? theme.primaryDark : theme.light2};`}
   }

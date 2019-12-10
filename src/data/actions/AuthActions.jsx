@@ -4,17 +4,17 @@ export const AUTH_MODAL_OPEN = 'AUTH_MODEL_OPEN';
 export const AUTH_MODAL_CLOSE = 'AUTH_MODEL_CLOSE';
 
 export const loggedIn = () => ({
-	type: LOGGED_IN,
+  type: LOGGED_IN,
 });
-  
+
 export const loggedOut = () => ({
-	type: LOGGED_OUT,
+  type: LOGGED_OUT,
 });
 
 export const authModalOpen = () => ({
-	type: AUTH_MODAL_OPEN,
+  type: AUTH_MODAL_OPEN,
 });
 
 export const authModalClose = () => ({
-	type: AUTH_MODAL_CLOSE,
+  type: AUTH_MODAL_CLOSE,
 });

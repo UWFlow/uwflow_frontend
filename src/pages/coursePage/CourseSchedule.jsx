@@ -115,14 +115,25 @@ const getInfoGroupings = meetings => {
   const numDates = infoGroups.map(group => group.timeRanges.length);
 
   return {
-    times: infoGroups.map((group, i) => Object({ time: group.time, spaces: numDates[i] - 1})),
-    locations: infoGroups.map((group, i) => Object({ location: group.location, spaces: numDates[i] - 1})),
-    profs: infoGroups.map((group, i) => Object({ prof: group.prof, spaces: numDates[i] - 1})),
-    dates: infoGroups.map((group) => group.timeRanges),
+    times: infoGroups.map((group, i) =>
+      Object({ time: group.time, spaces: numDates[i] - 1 }),
+    ),
+    locations: infoGroups.map((group, i) =>
+      Object({ location: group.location, spaces: numDates[i] - 1 }),
+    ),
+    profs: infoGroups.map((group, i) =>
+      Object({ prof: group.prof, spaces: numDates[i] - 1 }),
+    ),
+    dates: infoGroups.map(group => group.timeRanges),
   };
 };
 
-const CourseSchedule = ({ sections, courseCode, courseID, sectionSubscriptions }) => {
+const CourseSchedule = ({
+  sections,
+  courseCode,
+  courseID,
+  sectionSubscriptions,
+}) => {
   if (!sections || sections.length === 0) {
     return null;
   }
@@ -133,33 +144,37 @@ const CourseSchedule = ({ sections, courseCode, courseID, sectionSubscriptions }
     return allTerms;
   }, []);
 
-  const subscribedSectionIDs = sectionSubscriptions.map(subscription => subscription.section_id);
+  const subscribedSectionIDs = sectionSubscriptions.map(
+    subscription => subscription.section_id,
+  );
 
-  const sectionsCleanedData = sections.map(s => ({
-    section: s.section_name,
-    campus: s.campus,
-    class: s.class_number,
-    term: s.term_id,
-    enrolled: {
-      course_id: courseID,
-      course_code: courseCode,
-      section_id: s.id,
-      filled: s.enrollment_total,
-      capacity: s.enrollment_capacity,
-      selected: subscribedSectionIDs.includes(s.id),
-    },
-    // Every grouping contains a single time of day, location, and instructor
-    // and the classes that occur with those parameters.
-    ...getInfoGroupings(s.meetings),
-  })).sort((a, b) => {
-    const sectionTypeA = a.section.split(' ')[0];
-    const sectionTypeB = b.section.split(' ')[0];
-    if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
-      return a.section.localeCompare(b.section);
-    } else {
-      return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
-    }
-  });
+  const sectionsCleanedData = sections
+    .map(s => ({
+      section: s.section_name,
+      campus: s.campus,
+      class: s.class_number,
+      term: s.term_id,
+      enrolled: {
+        course_id: courseID,
+        course_code: courseCode,
+        section_id: s.id,
+        filled: s.enrollment_total,
+        capacity: s.enrollment_capacity,
+        selected: subscribedSectionIDs.includes(s.id),
+      },
+      // Every grouping contains a single time of day, location, and instructor
+      // and the classes that occur with those parameters.
+      ...getInfoGroupings(s.meetings),
+    }))
+    .sort((a, b) => {
+      const sectionTypeA = a.section.split(' ')[0];
+      const sectionTypeB = b.section.split(' ')[0];
+      if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
+        return a.section.localeCompare(b.section);
+      } else {
+        return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
+      }
+    });
 
   const courseExams = processSectionExams(sections, courseCode);
 

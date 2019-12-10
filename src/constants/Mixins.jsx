@@ -1,4 +1,9 @@
-import { PAGE_CONTENT_WIDTH, FOOTER_HEIGHT, FOOTER_MARGIN_TOP, NAVBAR_HEIGHT } from './PageConstants';
+import {
+  PAGE_CONTENT_WIDTH,
+  FOOTER_HEIGHT,
+  FOOTER_MARGIN_TOP,
+  NAVBAR_HEIGHT,
+} from './PageConstants';
 import theme from './GlobalTheme';
 
 export const PageContentZIndex = 'z-index: -1;';

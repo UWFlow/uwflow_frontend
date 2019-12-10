@@ -12,7 +12,10 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
-import { DELETE_USER_SHORTLIST, INSERT_USER_SHORTLIST } from '../../graphql/mutations/Shortlist';
+import {
+  DELETE_USER_SHORTLIST,
+  INSERT_USER_SHORTLIST,
+} from '../../graphql/mutations/Shortlist';
 import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
 import { splitCourseCode } from '../../utils/Misc';
@@ -21,38 +24,58 @@ const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
-const ShortlistStar = ({ theme, courseID, courseCode, isLoggedIn, initialState = false, size = 32 }) => {
+const ShortlistStar = ({
+  theme,
+  courseID,
+  courseCode,
+  isLoggedIn,
+  initialState = false,
+  size = 32,
+}) => {
   const userID = localStorage.getItem('user_id');
   const refetchQueries = [
-    { query: REFETCH_COURSE_SHORTLIST, variables: { user_id: userID, course_id: courseID } },
+    {
+      query: REFETCH_COURSE_SHORTLIST,
+      variables: { user_id: userID, course_id: courseID },
+    },
     { query: REFETCH_USER_SHORTLIST, variables: { id: userID } },
   ];
 
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(initialState);
-  const [insertShortlist] = useMutation(INSERT_USER_SHORTLIST, { refetchQueries });
-  const [deleteShortlist] = useMutation(DELETE_USER_SHORTLIST, { refetchQueries });
+  const [insertShortlist] = useMutation(INSERT_USER_SHORTLIST, {
+    refetchQueries,
+  });
+  const [deleteShortlist] = useMutation(DELETE_USER_SHORTLIST, {
+    refetchQueries,
+  });
 
-  const notifyDelete = () => toast(`Removed ${splitCourseCode(courseCode)} from shortlist`);
-  const notifyInsert = () => toast(`Added ${splitCourseCode(courseCode)} to shortlist`);
+  const notifyDelete = () =>
+    toast(`Removed ${splitCourseCode(courseCode)} from shortlist`);
+  const notifyInsert = () =>
+    toast(`Added ${splitCourseCode(courseCode)} to shortlist`);
 
   const onStarClicked = () => {
     if (!isLoggedIn) {
       dispatch(authModalOpen());
       return;
-    } 
+    }
 
     if (!courseID) {
       return;
     }
 
     if (checked) {
-      deleteShortlist({ variables: { course_id: courseID }}).then(() => notifyDelete());
+      deleteShortlist({ variables: { course_id: courseID } }).then(() =>
+        notifyDelete(),
+      );
     } else {
-      insertShortlist({ variables: { user_id: userID, course_id: courseID }}).then(() => notifyInsert());
+      insertShortlist({
+        variables: { user_id: userID, course_id: courseID },
+      }).then(() => notifyInsert());
     }
     setChecked(!checked);
-  }
+  };
 
   return (
     <ShortlistStarWrapper

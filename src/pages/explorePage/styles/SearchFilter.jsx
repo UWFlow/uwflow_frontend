@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Card, BoxShadow, Heading3, Heading4, Body } from '../../../constants/Mixins';
+import {
+  Card,
+  BoxShadow,
+  Heading3,
+  Heading4,
+  Body,
+} from '../../../constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
   ${Card('40px 32px')}
@@ -14,13 +20,13 @@ export const SearchFilterWrapper = styled.div`
 
 export const SearchFilterHeader = styled.div`
   ${Heading3}
-  color: ${({theme}) => theme.dark1};
+  color: ${({ theme }) => theme.dark1};
   margin-bottom: 24px;
 `;
 
 export const SearchFilterText = styled.div`
   ${Heading4}
-  color: ${({theme}) => theme.dark2};
+  color: ${({ theme }) => theme.dark2};
   margin-bottom: 8px;
 `;
 
@@ -40,7 +46,7 @@ export const CourseFilterDropdown = styled.span`
 
 export const NumRatingsText = styled.span`
   ${Body}
-  color: ${({theme}) => theme.dark3};
+  color: ${({ theme }) => theme.dark3};
 `;
 
 export const NumRatingsWrapper = styled.div`
@@ -60,15 +66,15 @@ export const ResetButton = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: ${({theme}) => theme.primary};
+  background-color: ${({ theme }) => theme.primary};
   ${BoxShadow}
   ${Body}
-  color: ${({theme}) => theme.light1};
+  color: ${({ theme }) => theme.light1};
   border-radius: 4px;
   margin-top: 32px;
 
   &:hover {
-    background-color: ${({theme}) => theme.primaryDark};
+    background-color: ${({ theme }) => theme.primaryDark};
   }
 `;
 

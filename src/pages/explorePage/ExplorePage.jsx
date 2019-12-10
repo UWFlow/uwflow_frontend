@@ -17,7 +17,7 @@ import SearchFilter from './SearchFilter';
 
 import {
   buildExploreCodeQuery,
-  buildExploreQuery
+  buildExploreQuery,
 } from '../../graphql/queries/explore/Explore';
 
 const NUM_COURSE_CODE_FILTERS = 5;
@@ -29,9 +29,11 @@ const ExplorePageContent = ({
   courseTab,
   data,
   fetchMore,
-  loading
+  loading,
 }) => {
-  const [courseCodes, setCourseCodes] = useState(Array(NUM_COURSE_CODE_FILTERS).fill(true));
+  const [courseCodes, setCourseCodes] = useState(
+    Array(NUM_COURSE_CODE_FILTERS).fill(true),
+  );
   const [numCourseRatings, setNumCourseRatings] = useState(0);
   const [numProfRatings, setNumProfRatings] = useState(0);
   const [currentTerm, setCurrentTerm] = useState(false);
@@ -39,9 +41,14 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
-  let profCourses = !!data ? data.prof.reduce((acc, prof) => {
-    return acc.concat(prof.prof_courses.map(course => course.code));
-  }, ['any course']) : ['any course'];
+  let profCourses = !!data
+    ? data.prof.reduce(
+        (acc, prof) => {
+          return acc.concat(prof.prof_courses.map(course => course.code));
+        },
+        ['any course'],
+      )
+    : ['any course'];
   profCourses = profCourses.filter(code => !!code);
 
   const filterState = {
@@ -50,20 +57,20 @@ const ExplorePageContent = ({
     numProfRatings,
     currentTerm,
     nextTerm,
-    courseTaught
-  }
+    courseTaught,
+  };
 
   const resetCourseFilters = () => {
     setCourseCodes(Array(NUM_COURSE_CODE_FILTERS).fill(true));
     setNumCourseRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);
-  }
+  };
 
   const resetProfFilters = () => {
     setNumProfRatings(0);
     setCourseTaught(0);
-  }
+  };
 
   return (
     <ExplorePageWrapper>
@@ -92,19 +99,23 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setCourseCodes={setCourseCodes}
-            setNumRatings={exploreTab === 0 ? setNumCourseRatings : setNumProfRatings}
+            setNumRatings={
+              exploreTab === 0 ? setNumCourseRatings : setNumProfRatings
+            }
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
             setCourseTaught={setCourseTaught}
             ratingFilters={RATING_FILTERS}
-            resetFilters={exploreTab === 0 ? resetCourseFilters : resetProfFilters}
+            resetFilters={
+              exploreTab === 0 ? resetCourseFilters : resetProfFilters
+            }
             courseSearch={exploreTab === 0}
           />
         </Column2>
-    </ColumnWrapper>
+      </ColumnWrapper>
     </ExplorePageWrapper>
   );
-}
+};
 
 const ExplorePage = ({ location }) => {
   const { q: query, t: type, c: code } = queryString.parse(location.search);
@@ -117,10 +128,10 @@ const ExplorePage = ({ location }) => {
     exploreQuery('{rating: {filled_count: desc_nulls_last}}', query),
     {
       variables: { course_offset: 0, prof_offset: 0 },
-      notifyOnNetworkStatusChange: true
-    }
+      notifyOnNetworkStatusChange: true,
+    },
   );
-  
+
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
@@ -132,7 +143,7 @@ const ExplorePage = ({ location }) => {
         loading={loading}
       />
     </ExplorePageWrapper>
-  )
+  );
 };
 
 export default withRouter(ExplorePage);

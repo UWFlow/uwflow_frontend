@@ -156,7 +156,10 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     setIsLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
-    const [response, status] = await makePOSTRequest(
+    const [
+      response,
+      status,
+    ] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${RESET_PASSWORD_KEY_EMAIL_ENDPOINT}`,
       { email: email },
     );
@@ -208,7 +211,10 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     setIsLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
-    const [response, status] = await makePOSTRequest(
+    const [
+      response,
+      status,
+    ] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${RESET_PASSWORD_RESET_PASSWORD_ENDPOINT}`,
       { key: savedCode, password: newPass },
     );

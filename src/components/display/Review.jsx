@@ -37,7 +37,7 @@ import {
   DELETE_COURSE_REVIEW_VOTE,
   DELETE_PROF_REVIEW_VOTE,
   INSERT_COURSE_REVIEW_VOTE,
-  INSERT_PROF_REVIEW_VOTE
+  INSERT_PROF_REVIEW_VOTE,
 } from '../../graphql/mutations/Upvote';
 import { REFETCH_COURSE_REVIEW_UPVOTE } from '../../graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfReview';
@@ -81,25 +81,38 @@ const Review = ({
   theme,
   isBrowserDesktop,
   isLoggedIn,
-  isCourseReview
+  isCourseReview,
 }) => {
-  const { upvotes, upvote_users, review: reviewText, author, created_at, metrics } = review;
+  const {
+    upvotes,
+    upvote_users,
+    review: reviewText,
+    author,
+    created_at,
+    metrics,
+  } = review;
   const userID = localStorage.getItem('user_id');
 
-  const refetchQueries = [{
-    query: isCourseReview ? REFETCH_COURSE_REVIEW_UPVOTE : REFETCH_PROF_REVIEW_UPVOTE,
-    variables: { review_id: review.id }
-  }]
+  const refetchQueries = [
+    {
+      query: isCourseReview
+        ? REFETCH_COURSE_REVIEW_UPVOTE
+        : REFETCH_PROF_REVIEW_UPVOTE,
+      variables: { review_id: review.id },
+    },
+  ];
 
   const dispatch = useDispatch();
-  const [userUpvoted, setUserUpvoted] = useState(upvote_users.includes(Number(userID)));
+  const [userUpvoted, setUserUpvoted] = useState(
+    upvote_users.includes(Number(userID)),
+  );
   const [insertReviewVote] = useMutation(
     isCourseReview ? INSERT_COURSE_REVIEW_VOTE : INSERT_PROF_REVIEW_VOTE,
-    { refetchQueries }
+    { refetchQueries },
   );
   const [deleteReviewVote] = useMutation(
     isCourseReview ? DELETE_COURSE_REVIEW_VOTE : DELETE_PROF_REVIEW_VOTE,
-    { refetchQueries }
+    { refetchQueries },
   );
 
   const onClickUpvote = () => {
@@ -109,14 +122,20 @@ const Review = ({
     }
 
     if (userUpvoted) {
-      deleteReviewVote({variables: {review_id: review.id, user_id: userID} });
+      deleteReviewVote({
+        variables: { review_id: review.id, user_id: userID },
+      });
     } else {
-      insertReviewVote({variables: {review_id: review.id, user_id: userID} });
+      insertReviewVote({
+        variables: { review_id: review.id, user_id: userID },
+      });
     }
     setUserUpvoted(!userUpvoted);
-  }
+  };
 
-  const authorNameText = author.full_name ? author.full_name + (author.program ? ' - ' : '') : '';
+  const authorNameText = author.full_name
+    ? author.full_name + (author.program ? ' - ' : '')
+    : '';
   const authorText = authorNameText + (author.program ? author.program : '');
   const reviewContent = (
     <ReviewTextWrapper>
@@ -167,10 +186,10 @@ Review.propTypes = {
     author: PropTypes.shape({
       full_name: PropTypes.string,
       program: PropTypes.string,
-      picture_url: PropTypes.string
+      picture_url: PropTypes.string,
     }).isRequired,
     user: PropTypes.shape({
-      user_id: PropTypes.number
+      user_id: PropTypes.number,
     }),
     metrics: PropTypes.shape({
       useful: PropTypes.number, //not all these metrics have to exist, we should only display the ones that do
@@ -179,7 +198,7 @@ Review.propTypes = {
       clear: PropTypes.number,
       engaging: PropTypes.number,
     }).isRequired,
-  }).isRequired
+  }).isRequired,
 };
 
 export default withTheme(connect(mapStateToProps)(Review));

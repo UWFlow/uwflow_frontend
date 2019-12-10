@@ -4,12 +4,7 @@ import React from 'react';
 import { TooltipWrapper } from './styles/Tooltip';
 
 const Tooltip = props => (
-    <TooltipWrapper
-        {...props}
-        effect='solid'
-        html={true}
-    />
+  <TooltipWrapper {...props} effect="solid" html={true} />
 );
-
 
 export default Tooltip;

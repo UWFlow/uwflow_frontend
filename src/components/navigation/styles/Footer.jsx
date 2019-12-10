@@ -3,7 +3,10 @@ import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 
 import { Body, PageContent } from '../../../constants/Mixins';
-import { FOOTER_MARGIN_TOP, FOOTER_HEIGHT } from '../../../constants/PageConstants';
+import {
+  FOOTER_MARGIN_TOP,
+  FOOTER_HEIGHT,
+} from '../../../constants/PageConstants';
 
 export const FooterWrapper = styled.div`
   background: ${({ theme }) => theme.primaryExtraDark};
@@ -11,7 +14,7 @@ export const FooterWrapper = styled.div`
   min-height: ${FOOTER_HEIGHT}px;
   display: flex;
   align-items: center;
-  margin-top: ${({ noMargin }) => noMargin ? '0' : `${FOOTER_MARGIN_TOP}px`};
+  margin-top: ${({ noMargin }) => (noMargin ? '0' : `${FOOTER_MARGIN_TOP}px`)};
 `;
 
 export const FooterContent = styled.div`

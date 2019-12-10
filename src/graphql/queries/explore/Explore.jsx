@@ -3,7 +3,10 @@ import gql from 'graphql-tag';
 import CourseFragment from '../../fragments/CourseFragment.jsx';
 import ProfFragment from '../../fragments/ProfFragment.jsx';
 
-import { SEARCH_RESULTS_PER_PAGE, MAX_SEARCH_TERMS } from '../../../constants/Search.jsx';
+import {
+  SEARCH_RESULTS_PER_PAGE,
+  MAX_SEARCH_TERMS,
+} from '../../../constants/Search.jsx';
 import { splitCourseCode } from '../../../utils/Misc.jsx';
 
 export const buildExploreCodeQuery = (sort, query) => gql`
@@ -56,17 +59,21 @@ export const buildExploreQuery = (sort, query) => {
     .filter(term => term.length > 0)
     .slice(0, MAX_SEARCH_TERMS);
 
-  const courseQueries = queryTerms.map(term => `{_or: [
+  const courseQueries = queryTerms.map(
+    term => `{_or: [
     {code: {_ilike: "%${term}%"}},
     {name: {_ilike: "%${term}%"}},
     {profs_teaching: {prof: {name: {_ilike: "%${term}%"}}}},
-  ]},`);
+  ]},`,
+  );
 
-  const profQueries = queryTerms.map(term => `{_or: [
+  const profQueries = queryTerms.map(
+    term => `{_or: [
     {name: {_ilike: "%${term}%"}},
     {prof_courses: {course: {code: {_ilike: "%${term}%"}}}}
     {prof_courses: {course: {name: {_ilike: "%${term}%"}}}}
-  ]},`);
+  ]},`,
+  );
 
   const parsedCourseQuery = `{_and: [
     ${courseQueries.join('')}
@@ -115,5 +122,5 @@ export const buildExploreQuery = (sort, query) => {
     ${ProfFragment.profInfo}
     ${ProfFragment.profCoursesTaught}
     ${ProfFragment.profRating}
-  `
+  `;
 };

@@ -9,7 +9,11 @@ import useOnClickOutside from 'use-onclickoutside';
 import Tooltip from '../../components/input/Tooltip';
 
 /* Routes */
-import { EXPLORE_PAGE_ROUTE, getCoursePageRoute, getProfPageRoute } from '../../Routes';
+import {
+  EXPLORE_PAGE_ROUTE,
+  getCoursePageRoute,
+  getProfPageRoute,
+} from '../../Routes';
 
 import { splitCourseCode } from '../../utils/Misc';
 
@@ -32,7 +36,12 @@ import { useSearchContext } from '../../search/SearchProvider';
 /* Constants */
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
-const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false }) => {
+const SearchBar = ({
+  history,
+  theme,
+  isLanding = false,
+  maximizeWidth = false,
+}) => {
   const searchBarRef = useRef();
   const selectedResultRef = useRef();
   const inputRef = useRef();
@@ -43,26 +52,30 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   const [searchResults, setSearchResults] = useState({
     courseCodeResults: [],
     courseResults: [],
-    profResults: []
+    profResults: [],
   });
   const { searchWorker } = useSearchContext();
 
-  const handleUserKeyPress = useCallback(event => {
-    const { keyCode } = event;
-    if (keyCode === KeycodeConstants.ESCAPE) {
-      setOpen(false);
-    } else if (keyCode === KeycodeConstants.UP) {
-      event.preventDefault();
-      setSelectedResultIndex(Math.max(-1, selectedResultIndex - 1));
-    } else if (keyCode === KeycodeConstants.DOWN) {
-      event.preventDefault();
-      const length = searchResults.courseCodeResults.length +
-        searchResults.courseResults.length +
-        searchResults.profResults.length;
-      setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
-    }
-  }, [selectedResultIndex, searchResults]);
-  
+  const handleUserKeyPress = useCallback(
+    event => {
+      const { keyCode } = event;
+      if (keyCode === KeycodeConstants.ESCAPE) {
+        setOpen(false);
+      } else if (keyCode === KeycodeConstants.UP) {
+        event.preventDefault();
+        setSelectedResultIndex(Math.max(-1, selectedResultIndex - 1));
+      } else if (keyCode === KeycodeConstants.DOWN) {
+        event.preventDefault();
+        const length =
+          searchResults.courseCodeResults.length +
+          searchResults.courseResults.length +
+          searchResults.profResults.length;
+        setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
+      }
+    },
+    [selectedResultIndex, searchResults],
+  );
+
   const performSearch = event => {
     const { type } = event.data;
     if (type === 'autocomplete') {
@@ -80,7 +93,9 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
     window.addEventListener('keydown', handleUserKeyPress);
 
     return () => {
-      searchWorker.removeEventListener('message', event => performSearch(event));
+      searchWorker.removeEventListener('message', event =>
+        performSearch(event),
+      );
       window.removeEventListener('keydown', handleUserKeyPress);
     };
   }, [handleUserKeyPress, searchWorker]);
@@ -95,11 +110,19 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
 
   useOnClickOutside(searchBarRef, () => setOpen(false));
 
-  const queryExploreCourses = (query, codeSearch = false, profSearch = false) => {
+  const queryExploreCourses = (
+    query,
+    codeSearch = false,
+    profSearch = false,
+  ) => {
     const codeTerm = codeSearch ? '&c=t' : '';
     const profTerm = profSearch ? '&t=p' : '';
     setOpen(false);
-    history.push(`${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(query)}${codeTerm}${profTerm}`);
+    history.push(
+      `${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(
+        query,
+      )}${codeTerm}${profTerm}`,
+    );
   };
 
   const goToCourse = code => {
@@ -125,7 +148,11 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
   };
 
   const exploreResult = (code = '', ref = null) => (
-    <SearchResult onClick={() => queryExploreCourses(code, true)} key={code} ref={ref}>
+    <SearchResult
+      onClick={() => queryExploreCourses(code, true)}
+      key={code}
+      ref={ref}
+    >
       <ExploreText>
         <Layers />
         Explore all {code.toUpperCase()} courses and professors
@@ -199,22 +226,35 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
       return exploreResult();
     }
 
-    const courseCodeResults = searchResults.courseCodeResults.length > 0
-      ? searchResults.courseCodeResults.map((result, i) =>
-          exploreResult(result.code, selectedResultIndex === i ? selectedResultRef : null),
-        )
-      : [exploreResult('', selectedResultIndex  === 0 ? selectedResultRef : null)];
+    const courseCodeResults =
+      searchResults.courseCodeResults.length > 0
+        ? searchResults.courseCodeResults.map((result, i) =>
+            exploreResult(
+              result.code,
+              selectedResultIndex === i ? selectedResultRef : null,
+            ),
+          )
+        : [
+            exploreResult(
+              '',
+              selectedResultIndex === 0 ? selectedResultRef : null,
+            ),
+          ];
 
     let offset = courseCodeResults.length;
     const courseResults = searchResults.courseResults.map((result, i) => {
-        return courseResult(result,
-          selectedResultIndex === i + offset ? selectedResultRef : null)
-      });
+      return courseResult(
+        result,
+        selectedResultIndex === i + offset ? selectedResultRef : null,
+      );
+    });
 
     offset += searchResults.courseResults.length;
     const profResults = searchResults.profResults.map((result, i) => {
-      return profResult(result,
-        selectedResultIndex === i + offset ? selectedResultRef : null);
+      return profResult(
+        result,
+        selectedResultIndex === i + offset ? selectedResultRef : null,
+      );
     });
 
     const allResults = [...courseCodeResults, ...courseResults, ...profResults];
@@ -230,11 +270,13 @@ const SearchBar = ({ history, theme, isLanding = false, maximizeWidth = false })
     return null;
   };
 
-  const options = isLanding ? {
-    width: '100%',
-    backgroundColor: 'white',
-    color: theme.dark1
-  } : { width: '100%' }
+  const options = isLanding
+    ? {
+        width: '100%',
+        backgroundColor: 'white',
+        color: theme.dark1,
+      }
+    : { width: '100%' };
 
   return (
     <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>

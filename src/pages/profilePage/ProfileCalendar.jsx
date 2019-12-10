@@ -39,8 +39,11 @@ moment.locale('ko', {
 });
 
 const getCoursePageLink = rawCourseCode => {
-  let courseCode = rawCourseCode.replace(/ /g, '').toLowerCase()
-  courseCode = courseCode.substr(-1) == 'e' ? courseCode.substr(0, courseCode.length-1) : courseCode;
+  let courseCode = rawCourseCode.replace(/ /g, '').toLowerCase();
+  courseCode =
+    courseCode.substr(-1) == 'e'
+      ? courseCode.substr(0, courseCode.length - 1)
+      : courseCode;
   return getCoursePageRoute(courseCode);
 };
 
@@ -52,9 +55,8 @@ const EventSection = ({ event }) => (
     <EventCourseSectionWrapper>
       <CourseText to={getCoursePageLink(event.courseCode)}>
         {splitCourseCode(event.courseCode)}
-      </CourseText>
-      {' '}-{' '}
-      <SectionText>{event.section}</SectionText>
+      </CourseText>{' '}
+      - <SectionText>{event.section}</SectionText>
     </EventCourseSectionWrapper>
     <LocationText>{event.location}</LocationText>
   </ProfileCalendarEventWrapper>

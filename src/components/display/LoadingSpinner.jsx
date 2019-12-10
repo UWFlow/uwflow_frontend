@@ -13,15 +13,15 @@ const LoadingSpinner = ({
   size = 128,
   strokeWidth = 8,
   spinnerColor = null,
-  backgroundColor = null
+  backgroundColor = null,
 }) => {
   return (
     <LoadingSpinnerWrapper margin={margin} size={size}>
-      <CircularSvg viewBox={`${size/2} ${size/2} ${size} ${size}`}>
+      <CircularSvg viewBox={`${size / 2} ${size / 2} ${size} ${size}`}>
         <CircleSvgBackground
           cx={size}
           cy={size}
-          r={size/4}
+          r={size / 4}
           fill="none"
           strokeWidth={strokeWidth}
           color={backgroundColor}
@@ -29,7 +29,7 @@ const LoadingSpinner = ({
         <CircleSvgSpinner
           cx={size}
           cy={size}
-          r={size/4}
+          r={size / 4}
           fill="none"
           strokeWidth={strokeWidth}
           color={spinnerColor}

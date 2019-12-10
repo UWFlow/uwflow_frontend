@@ -12,18 +12,19 @@ import {
   CheckedText,
 } from './styles/CompleteProfileContent';
 
-const CompleteProfileContent = ({
-  theme,
-  user,
-  coursesTaken,
-  reviews
-}) => {
+const CompleteProfileContent = ({ theme, user, coursesTaken, reviews }) => {
   const hasScheduleUploaded = user.schedule && user.schedule.length > 0;
   const hasCourseInfo = coursesTaken && coursesTaken.length > 0;
-  const hasCoursesReviewed =  reviews && reviews.length > 0
-    && !!reviews.find(r => r.liked || r.course_comment);
-  const hasProfsReviewed = reviews && reviews.length > 0
-    && !!reviews.find(r => r.prof_id && (r.prof_clear || r.prof_engaging || r.prof_comment));
+  const hasCoursesReviewed =
+    reviews &&
+    reviews.length > 0 &&
+    !!reviews.find(r => r.liked || r.course_comment);
+  const hasProfsReviewed =
+    reviews &&
+    reviews.length > 0 &&
+    !!reviews.find(
+      r => r.prof_id && (r.prof_clear || r.prof_engaging || r.prof_comment),
+    );
 
   return (
     <>
@@ -58,7 +59,7 @@ const CompleteProfileContent = ({
 
 CompleteProfileContent.propTypes = {
   theme: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 export default withTheme(CompleteProfileContent);

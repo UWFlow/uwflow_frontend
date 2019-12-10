@@ -88,9 +88,13 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
       reviews.code === courseFilterOptions[selectedFilter],
   );
 
-  const curSelectedSort = selectedSort.length >= reviewsByCourseToShow.length ?
-    selectedSort.slice() :
-    [...selectedSort, ...Array(reviewsByCourseToShow.length - selectedSort.length).fill(0)];
+  const curSelectedSort =
+    selectedSort.length >= reviewsByCourseToShow.length
+      ? selectedSort.slice()
+      : [
+          ...selectedSort,
+          ...Array(reviewsByCourseToShow.length - selectedSort.length).fill(0),
+        ];
 
   if (reviewDataState.courses.length === 0) {
     return <NoReviewsBox>No Reviews</NoReviewsBox>;
@@ -142,15 +146,29 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                   }}
                 />
               </DropdownPanelWrapper>
-              {course.reviews.sort((a, b) => {
-                const timeSort = moment(b.created_at).format('YYYYMMDD') - moment(a.created_at).format('YYYYMMDD');
-                return selectedSort[idx] === 0 ?
-                  timeSort : b.upvotes === a.upvotes ? timeSort : b.upvotes - a.upvotes;
-              }).filter((_, i) => {
-                return i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code];
-              }).map((review) => (
-                <Review key={review.id} review={review} isCourseReview={false} />
-              ))}
+              {course.reviews
+                .sort((a, b) => {
+                  const timeSort =
+                    moment(b.created_at).format('YYYYMMDD') -
+                    moment(a.created_at).format('YYYYMMDD');
+                  return selectedSort[idx] === 0
+                    ? timeSort
+                    : b.upvotes === a.upvotes
+                    ? timeSort
+                    : b.upvotes - a.upvotes;
+                })
+                .filter((_, i) => {
+                  return (
+                    i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code]
+                  );
+                })
+                .map(review => (
+                  <Review
+                    key={review.id}
+                    review={review}
+                    isCourseReview={false}
+                  />
+                ))}
             </ReviewListWrapper>
             {course.reviews.length > MIN_REVIEWS_SHOWN && (
               <ShowMoreReviewsSection

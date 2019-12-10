@@ -8,7 +8,7 @@ const ProgressBar = ({ percentComplete, width = 188, height = 16 }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setPercentWidth(Math.round(percentComplete * 100))
+      setPercentWidth(Math.round(percentComplete * 100));
     }, 500);
   }, []);
 

@@ -41,7 +41,7 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: getIsLoggedIn(state)
+  isLoggedIn: getIsLoggedIn(state),
 });
 
 const CoursePageContent = ({
@@ -55,17 +55,14 @@ const CoursePageContent = ({
 }) => {
   const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  console.log(sectionSubscriptions)
+  console.log(sectionSubscriptions);
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
 
   return (
     <>
-      <CourseInfoHeader
-        course={course}
-        shortlisted={shortlisted}
-      />
+      <CourseInfoHeader course={course} shortlisted={shortlisted} />
       <ColumnWrapper>
         <Column1>
           <ScheduleAndReviewWrapper>
@@ -75,27 +72,29 @@ const CoursePageContent = ({
               courseID={course.id}
               sectionSubscriptions={sectionSubscriptions}
             />
-            {(!isLoggedIn || userCourseTaken) && <CourseReviewQuestionBox>
-              <CourseQuestionTextAndToggle>
-                <CourseReviewQuestionText>
-                  What do you think of {splitCourseCode(course.code)}?
-                </CourseReviewQuestionText>
-                <LikeCourseToggle
-                  courseCode={course.code}
-                  courseID={course.id}
-                  profID={userReview ? userReview.prof_id : null}
-                  reviewID={userReview ? userReview.id : null}
-                  initialState={userReview ? userReview.liked : null}
-                />
-              </CourseQuestionTextAndToggle>
-              <Button
-                width={isBrowserDesktop ? 'max-content' : '100%'}
-                padding="16px 24px"
-                handleClick={handleReviewClick}
-              >
-                {userReview ? 'Edit your review' : 'Add your review'}
-              </Button>
-            </CourseReviewQuestionBox>}
+            {(!isLoggedIn || userCourseTaken) && (
+              <CourseReviewQuestionBox>
+                <CourseQuestionTextAndToggle>
+                  <CourseReviewQuestionText>
+                    What do you think of {splitCourseCode(course.code)}?
+                  </CourseReviewQuestionText>
+                  <LikeCourseToggle
+                    courseCode={course.code}
+                    courseID={course.id}
+                    profID={userReview ? userReview.prof_id : null}
+                    reviewID={userReview ? userReview.id : null}
+                    initialState={userReview ? userReview.liked : null}
+                  />
+                </CourseQuestionTextAndToggle>
+                <Button
+                  width={isBrowserDesktop ? 'max-content' : '100%'}
+                  padding="16px 24px"
+                  handleClick={handleReviewClick}
+                >
+                  {userReview ? 'Edit your review' : 'Add your review'}
+                </Button>
+              </CourseReviewQuestionBox>
+            )}
           </ScheduleAndReviewWrapper>
           <CourseReviews courseID={course.id} />
         </Column1>
@@ -138,8 +137,12 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <CoursePageContent
         course={data.course[0]}
-        userReview={isLoggedIn && data.review.length > 0 ? data.review[0] : null}
-        userCourseTaken={isLoggedIn && data.user_course_taken.length > 0 ? true : false}
+        userReview={
+          isLoggedIn && data.review.length > 0 ? data.review[0] : null
+        }
+        userCourseTaken={
+          isLoggedIn && data.user_course_taken.length > 0 ? true : false
+        }
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         sectionSubscriptions={data.section_subscription || []}
         isLoggedIn={isLoggedIn}

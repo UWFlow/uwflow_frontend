@@ -8,10 +8,12 @@ export const SearchInputWrapper = styled.div`
 export const SearchInput = styled.input`
   position: relative;
   outline: none;
-  border: ${({ options, error, theme }) => 
+  border: ${({ options, error, theme }) =>
     error
       ? `1px solid ${theme.red}`
-      : options.border ? options.border : 'none'};
+      : options.border
+      ? options.border
+      : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) =>
@@ -22,21 +24,25 @@ export const SearchInput = styled.input`
   height: 48px;
   z-index: 2;
   color: ${({ error, theme }) => (error ? theme.red : theme.dark1)};
-  background-color: ${({ options }) => (options ? options.backgroundColor : '')};
+  background-color: ${({ options }) =>
+    options ? options.backgroundColor : ''};
   padding-left: ${({ hasIcon }) => (hasIcon ? '72px' : 'auto')};
 
   &:-ms-input-placeholder {
-    color: ${({ error, options, theme }) => (error ? theme.red : (options ? options.color : theme.dark3))};
+    color: ${({ error, options, theme }) =>
+      error ? theme.red : options ? options.color : theme.dark3};
     font-weight: 400;
   }
-  
+
   &::-webkit-input-placeholder {
-    color: ${({ error, options, theme }) => (error ? theme.red : (options ? options.color : theme.dark3))};
+    color: ${({ error, options, theme }) =>
+      error ? theme.red : options ? options.color : theme.dark3};
     font-weight: 400;
   }
 
   &::placeholder {
-    color: ${({ error, options, theme }) => (error ? theme.red : (options ? options.color : theme.dark3))};
+    color: ${({ error, options, theme }) =>
+      error ? theme.red : options ? options.color : theme.dark3};
     font-weight: 400;
   }
 

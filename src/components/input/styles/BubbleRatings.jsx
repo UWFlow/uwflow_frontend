@@ -6,7 +6,7 @@ export const BubbleRatingsWrapper = styled.div`
   padding-bottom: 16px;
 
   @media only screen and (max-width: 800px) {
-    padding-bottom: 8px
+    padding-bottom: 8px;
   }
 `;
 
@@ -26,7 +26,8 @@ export const UnitCircle = styled.div`
       : emptyColor
       ? emptyColor
       : 'white'};
-  border: 2px solid ${({ filled, theme }) => (filled ? theme.primaryDark : theme.light4)};
+  border: 2px solid
+    ${({ filled, theme }) => (filled ? theme.primaryDark : theme.light4)};
   margin: 0 1px;
 `;
 
@@ -39,6 +40,6 @@ export const ThumbsWrapper = styled.div`
 
 export const Thumb = styled.div`
   ${Body}
-  color: ${({theme, colored}) => colored ? theme.primary : theme.light4};
+  color: ${({ theme, colored }) => (colored ? theme.primary : theme.light4)};
   margin-left: 4px;
 `;

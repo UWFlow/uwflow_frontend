@@ -87,7 +87,7 @@ const ReviewFragment = {
         user_id
       }
     }
-  `
+  `,
 };
 
 export default ReviewFragment;

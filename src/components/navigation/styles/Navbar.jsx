@@ -11,10 +11,13 @@ export const NavbarWrapper = styled.div`
   height: ${NAVBAR_HEIGHT}px;
   position: fixed;
   z-index: 11;
-  background-color: ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
-  border: 1px solid ${({ theme, landingPage }) => landingPage ? theme.transparent : theme.white};
+  background-color: ${({ theme, landingPage }) =>
+    landingPage ? theme.transparent : theme.white};
+  border: 1px solid
+    ${({ theme, landingPage }) =>
+      landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
-  ${({ landingPage }) => landingPage ? '' : BoxShadow}
+  ${({ landingPage }) => (landingPage ? '' : BoxShadow)}
   border-radius: 4px;
   display: flex;
 `;

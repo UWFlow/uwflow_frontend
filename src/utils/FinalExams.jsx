@@ -13,10 +13,12 @@ export const processSectionExams = (sections, courseCode) => {
         groups[examKey] = {
           code: courseCode,
           sections: [section.section_name],
-          time: `${secsToTime(exam.start_seconds)} - ${secsToTime(exam.end_seconds)}`,
+          time: `${secsToTime(exam.start_seconds)} - ${secsToTime(
+            exam.end_seconds,
+          )}`,
           date: `${processDateString(exam.date)}`,
           location: exam.location,
-        }
+        };
       }
     });
     return groups;
@@ -24,10 +26,11 @@ export const processSectionExams = (sections, courseCode) => {
   return Object.values(groupedExams);
 };
 
-export const processMultipleCourseExams = courses => courses.reduce((allExams, course) => {
-  if (course.sections && course.sections.length > 0) {
-    const groupedExams = processSectionExams(course.sections, course.code);
-    groupedExams.map(exam => allExams.push(exam));
-  }
-  return allExams;
-}, []);
+export const processMultipleCourseExams = courses =>
+  courses.reduce((allExams, course) => {
+    if (course.sections && course.sections.length > 0) {
+      const groupedExams = processSectionExams(course.sections, course.code);
+      groupedExams.map(exam => allExams.push(exam));
+    }
+    return allExams;
+  }, []);

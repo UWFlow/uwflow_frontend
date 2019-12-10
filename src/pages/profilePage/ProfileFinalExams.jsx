@@ -17,9 +17,7 @@ const ProfileFinalExams = ({ courses }) => {
   return (
     <>
       <ProfileFinalExamsWrapper>
-        <ProfileFinalExamsHeader>
-          On campus final exams
-        </ProfileFinalExamsHeader>
+        <ProfileFinalExamsHeader>On campus final exams</ProfileFinalExamsHeader>
         <ProfileFinalExamsContent>
           <FinalExamTable courses={processMultipleCourseExams(courses)} />
         </ProfileFinalExamsContent>
@@ -30,7 +28,7 @@ const ProfileFinalExams = ({ courses }) => {
 };
 
 ProfileFinalExams.propTypes = {
-  courses: PropTypes.array.isRequired
+  courses: PropTypes.array.isRequired,
 };
 
 export default ProfileFinalExams;

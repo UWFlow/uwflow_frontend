@@ -11,8 +11,8 @@ export const courseColumns = [
     align: 'left',
     maxWidth: 120,
     Cell: ({ cell }) => (
-      <CourseCode to={getCoursePageRoute(cell.value)}>{
-        splitCourseCode(cell.value)}
+      <CourseCode to={getCoursePageRoute(cell.value)}>
+        {splitCourseCode(cell.value)}
       </CourseCode>
     ),
   },
@@ -20,7 +20,7 @@ export const courseColumns = [
     Header: 'Course Name',
     accessor: 'name',
     align: 'left',
-    maxWidth: 128
+    maxWidth: 128,
   },
   {
     Header: 'Ratings',
@@ -33,21 +33,21 @@ export const courseColumns = [
     accessor: 'useful',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => processRating(cell.value)
+    Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Easy',
     accessor: 'easy',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => processRating(cell.value)
+    Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => processRating(cell.value)
+    Cell: ({ cell }) => processRating(cell.value),
   },
 ];
 
@@ -74,20 +74,20 @@ export const profColumns = [
     accessor: 'clear',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => processRating(cell.value)
+    Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => processRating(cell.value)
+    Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     maxWidth: 64,
-    Cell: ({ cell }) => processRating(cell.value)
+    Cell: ({ cell }) => processRating(cell.value),
   },
 ];

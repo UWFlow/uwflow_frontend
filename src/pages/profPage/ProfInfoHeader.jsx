@@ -22,7 +22,9 @@ import { splitCourseCode } from '../../utils/Misc';
 
 const ProfInfoHeader = ({ prof }) => {
   const { liked, clear, engaging, filled_count, comment_count } = prof.rating;
-  const profCourses = prof.prof_courses.map(course => splitCourseCode(course.course.code));
+  const profCourses = prof.prof_courses.map(course =>
+    splitCourseCode(course.course.code),
+  );
 
   return (
     <ProfInfoHeaderWrapper>

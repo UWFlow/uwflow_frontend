@@ -30,7 +30,7 @@ const ProfFragment = {
         comment_count
       }
     }
-  `
+  `,
 };
 
 export default ProfFragment;

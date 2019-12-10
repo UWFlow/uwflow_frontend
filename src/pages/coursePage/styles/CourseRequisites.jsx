@@ -1,7 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { Card, BoxShadow, Heading4, Heading3, Body } from '../../../constants/Mixins';
+import {
+  Card,
+  BoxShadow,
+  Heading4,
+  Heading3,
+  Body,
+} from '../../../constants/Mixins';
 
 export const ExtraInfoBoxWrapper = styled.div`
 ${Card('32px 24px')}
@@ -38,4 +44,3 @@ export const PrereqText = styled.div`
   ${Body}
   color: ${({ theme }) => theme.dark2};
 `;
-

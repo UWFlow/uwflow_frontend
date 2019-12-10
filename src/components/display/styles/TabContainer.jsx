@@ -40,8 +40,7 @@ export const Tab = styled.div`
   }};
   background: ${({ selected, theme }) =>
     selected ? theme.white : theme.light2};
-  color: ${({ selected, theme }) =>
-    selected ? theme.dark1 : theme.dark3};
+  color: ${({ selected, theme }) => (selected ? theme.dark1 : theme.dark3)};
   ${Heading3}
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
 `;

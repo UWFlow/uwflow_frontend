@@ -2,7 +2,7 @@ import {
   LOGGED_IN,
   LOGGED_OUT,
   AUTH_MODAL_CLOSE,
-  AUTH_MODAL_OPEN
+  AUTH_MODAL_OPEN,
 } from '../actions/AuthActions';
 
 /* Selectors */
@@ -32,12 +32,12 @@ export default (
       return {
         ...state,
         authModalOpen: true,
-      };  
+      };
     case AUTH_MODAL_CLOSE:
       return {
         ...state,
         authModalOpen: false,
-      };    
+      };
     default:
       break;
   }

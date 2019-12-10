@@ -78,7 +78,7 @@ export const Row = styled.tr`
 `;
 
 export const Cell = styled.td`
-  padding: ${({ padding }) => padding ? padding : '8px 0'};
+  padding: ${({ padding }) => (padding ? padding : '8px 0')};
   text-align: ${({ align }) => (align ? align : 'left')};
   vertical-align: top;
   height: 0;

@@ -25,7 +25,7 @@ const Table = ({
   sortable = false,
   loading = false,
   doneFetching = false,
-  fetchMore = null
+  fetchMore = null,
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
@@ -54,9 +54,9 @@ const Table = ({
     }
     const offset = 800;
     const top = bottomRef.current.getBoundingClientRect().top;
-    const inView = (top + offset) >= 0 && (top - offset) <= window.innerHeight;
+    const inView = top + offset >= 0 && top - offset <= window.innerHeight;
     setShouldFetchMore(inView);
-  }
+  };
 
   const throttledSetFetchMore = throttle(setFetchMore, 100);
 
@@ -116,9 +116,12 @@ const Table = ({
               </Row>
             ),
         )}
-        {((loading || shouldFetchMore) && !doneFetching && fetchMore !== null) && (
+        {(loading || shouldFetchMore) && !doneFetching && fetchMore !== null && (
           <Row>
-            <Cell colSpan={columns.length} style={{padding: 0, overflow: 'hidden'}}>
+            <Cell
+              colSpan={columns.length}
+              style={{ padding: 0, overflow: 'hidden' }}
+            >
               <LoadingSpinner />
             </Cell>
           </Row>

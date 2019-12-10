@@ -2,8 +2,8 @@ import SearchClient from './SearchClient.js';
 
 const client = new SearchClient();
 
-  // eslint-disable-next-line no-restricted-globals
-  self.onmessage = async event => {
+// eslint-disable-next-line no-restricted-globals
+self.onmessage = async event => {
   const { type } = event.data;
   switch (type) {
     case 'autocomplete':
@@ -13,7 +13,9 @@ const client = new SearchClient();
       break;
     case 'build':
       const [searchData, lastIndexedDate] = await client.buildIndices(
-        event.data.searchData, event.data.lastIndexedDate);
+        event.data.searchData,
+        event.data.lastIndexedDate,
+      );
       postMessage({ type: 'data', searchData, lastIndexedDate });
       break;
     default:

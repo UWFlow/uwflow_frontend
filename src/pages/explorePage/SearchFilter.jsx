@@ -21,9 +21,13 @@ import {
   BoldText,
   ResetButton,
   HeaderButtonWrapper,
-  XWrapper
+  XWrapper,
 } from './styles/SearchFilter';
-import { termCodeToDate, getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
+import {
+  termCodeToDate,
+  getCurrentTermCode,
+  getNextTermCode,
+} from '../../utils/Misc';
 
 let courseNumberOptions = [1, 2, 3, 4].map(num => (
   <span>
@@ -139,7 +143,9 @@ const SearchFilter = ({
         </>
       )}
       <ResetButton onClick={resetFilters}>
-        <XWrapper><X size={16} /></XWrapper>
+        <XWrapper>
+          <X size={16} />
+        </XWrapper>
         Clear filter
       </ResetButton>
     </SearchFilterWrapper>

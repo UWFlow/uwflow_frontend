@@ -13,7 +13,7 @@ const examColumns = [
     Header: 'Course',
     accessor: 'code',
     maxWidth: 120,
-    Cell: ({cell}) => (
+    Cell: ({ cell }) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
         {splitCourseCode(cell.value)}
       </CourseCode>
@@ -23,7 +23,7 @@ const examColumns = [
     Header: 'Section(s)',
     accessor: 'sections',
     maxWidth: 174,
-    Cell: ({cell}) => cell.value.join(', ')
+    Cell: ({ cell }) => cell.value.join(', '),
   },
   {
     Header: 'Time',
@@ -40,7 +40,7 @@ const examColumns = [
     accessor: 'location',
     maxWidth: 160,
   },
-]
+];
 
 const FinalExamTable = ({ courses, includeCode = true }) => {
   return (
@@ -52,13 +52,15 @@ const FinalExamTable = ({ courses, includeCode = true }) => {
 };
 
 FinalExamTable.propTypes = {
-  courses: PropTypes.arrayOf(PropTypes.shape({
-    code: PropTypes.string,
-    sections: PropTypes.arrayOf(PropTypes.string),
-    time: PropTypes.string,
-    date: PropTypes.string,
-    location: PropTypes.string
-  })),
+  courses: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string,
+      sections: PropTypes.arrayOf(PropTypes.string),
+      time: PropTypes.string,
+      date: PropTypes.string,
+      location: PropTypes.string,
+    }),
+  ),
 };
 
 export default FinalExamTable;

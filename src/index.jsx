@@ -27,7 +27,7 @@ const ScrollToTop = () => {
   }, [pathname]);
 
   return null;
-}
+};
 
 const StartApp = (store, history) => {
   syncReduxHistory(store, history);

@@ -19,7 +19,7 @@ const Textbox = ({
   handleKeyDown = () => {},
   options = {},
   maxLength = 524288, // default browser maxLength,
-  forwardRef = null
+  forwardRef = null,
 }) => {
   const onKeyDown = event => {
     handleKeyDown(event, text);

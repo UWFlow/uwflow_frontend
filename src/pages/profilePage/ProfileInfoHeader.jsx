@@ -8,11 +8,11 @@ import {
   UserInfoWrapper,
   UserPicture,
   UserName,
-  UserProgram
+  UserProgram,
 } from './styles/ProfileInfoHeader';
 
-const placeholderImage
-  = 'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
+const placeholderImage =
+  'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
 
 const ProfileInfoHeader = ({ user }) => {
   return (

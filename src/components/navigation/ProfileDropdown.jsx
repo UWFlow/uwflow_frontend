@@ -48,7 +48,12 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
     }
   }
 
-  return <ProfilePicture src={user.picture_url || placeholderImage} isLanding={isLanding} />;
+  return (
+    <ProfilePicture
+      src={user.picture_url || placeholderImage}
+      isLanding={isLanding}
+    />
+  );
 };
 
 const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
@@ -68,14 +73,17 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
             variables={{ id: Number(localStorage.getItem('user_id')) }}
           >
             {({ data }) => (
-              <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
+              <ProfileText
+                onClick={handleProfileButtonClick}
+                isLanding={isLanding}
+              >
                 {renderProfilePicture(data, dispatch, isLanding)}
               </ProfileText>
             )}
           </Query>
           <DropdownList
             selectedIndex={-1}
-            color={isLanding ? theme.white: theme.dark1}
+            color={isLanding ? theme.white : theme.dark1}
             itemColor={theme.dark1}
             options={['View profile', 'Log out']}
             onChange={idx => {
@@ -97,11 +105,8 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
       )}
     </ProfileDropdownWrapper>
   );
-}
+};
 
 export default connect(mapStateToProps)(
-  compose(
-    withTheme,
-    withRouter,
-  )(ProfileDropdown),
+  compose(withTheme, withRouter)(ProfileDropdown),
 );

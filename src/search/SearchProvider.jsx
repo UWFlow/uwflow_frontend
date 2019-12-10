@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { SEARCH_DATA_ID, LAST_INDEXED_ID } from '../constants/Search';
@@ -16,7 +15,7 @@ const SearchProvider = ({ searchWorker, children }) => {
     searchWorker.postMessage({
       type: 'build',
       searchData: localStorage.getItem(SEARCH_DATA_ID),
-      lastIndexedDate: localStorage.getItem(LAST_INDEXED_ID)
+      lastIndexedDate: localStorage.getItem(LAST_INDEXED_ID),
     });
 
     searchWorker.addEventListener('message', event => {
@@ -26,9 +25,12 @@ const SearchProvider = ({ searchWorker, children }) => {
         const indexedDate = lastIndexedDate === null ? lastIndexedDate : Date();
         localStorage.setItem(SEARCH_DATA_ID, searchData);
         localStorage.setItem(LAST_INDEXED_ID, indexedDate);
-        
+
         // reload if index is more than 1 day old
-        if (new Date().getTime() - new Date(indexedDate).getTime() > millisecondsPerDay) {
+        if (
+          new Date().getTime() - new Date(indexedDate).getTime() >
+          millisecondsPerDay
+        ) {
           setShouldReindex(true);
         }
       }
@@ -43,7 +45,11 @@ const SearchProvider = ({ searchWorker, children }) => {
 
     localStorage.removeItem(LAST_INDEXED_ID);
     localStorage.removeItem(SEARCH_DATA_ID);
-    searchWorker.postMessage({ type: 'build', searchData: null, lastIndexedDate: null});
+    searchWorker.postMessage({
+      type: 'build',
+      searchData: null,
+      lastIndexedDate: null,
+    });
     setShouldReindex(false);
   }, [shouldReindex, searchWorker]);
 
@@ -62,6 +68,6 @@ const SearchProvider = ({ searchWorker, children }) => {
       }}
     </SearchContext.Consumer>
   );
-}
+};
 
 export default SearchProvider;

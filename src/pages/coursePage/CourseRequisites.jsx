@@ -1,13 +1,13 @@
 import React from 'react';
 
 /* Styled Components */
-import { 
+import {
   Header,
   LineOfText,
   CourseText,
   GreyText,
   PrereqText,
-  ExtraInfoBoxWrapper
+  ExtraInfoBoxWrapper,
 } from './styles/CourseRequisites';
 
 import { splitCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
@@ -32,33 +32,39 @@ const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
       return prereqs;
     }
 
-    return splitText.reduce((arr, element, index) => (matches[index] ? [
-      ...arr,
-      element,
-      <CourseText to={getCoursePageRoute(matches[index])} key={index}>
-        {`${splitCourseCode(matches[index])}`}
-      </CourseText>,
-    ] : [...arr, element]), []);
-  }
+    return splitText.reduce(
+      (arr, element, index) =>
+        matches[index]
+          ? [
+              ...arr,
+              element,
+              <CourseText to={getCoursePageRoute(matches[index])} key={index}>
+                {`${splitCourseCode(matches[index])}`}
+              </CourseText>,
+            ]
+          : [...arr, element],
+      [],
+    );
+  };
 
   return (
     <ExtraInfoBoxWrapper>
       <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
-        {prereqs ? (
-          <PrereqText>
-            {parsedPrereqs()}
-          </PrereqText>
-        ) : (
-          <LineOfText>
-            <GreyText>No prerequisites</GreyText>
-          </LineOfText>
-        )}
+      {prereqs ? (
+        <PrereqText>{parsedPrereqs()}</PrereqText>
+      ) : (
+        <LineOfText>
+          <GreyText>No prerequisites</GreyText>
+        </LineOfText>
+      )}
       <br />
       <Header>{`${splitCourseCode(courseCode)} leads to`}</Header>
       {postreqs.map((postreq, idx) => (
         <LineOfText key={idx}>
           <CourseText to={getCoursePageRoute(postreq.postrequisite.code)}>
-            {`${splitCourseCode(postreq.postrequisite.code)} - ${postreq.postrequisite.name}`}
+            {`${splitCourseCode(postreq.postrequisite.code)} - ${
+              postreq.postrequisite.name
+            }`}
           </CourseText>
         </LineOfText>
       ))}

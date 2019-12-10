@@ -43,7 +43,9 @@ const Button = ({
           spinnerColor={theme.dark2}
           backgroundColor={theme.white}
         />
-      ) : <ButtonText>{children}</ButtonText>}
+      ) : (
+        <ButtonText>{children}</ButtonText>
+      )}
     </ButtonWrapper>
   );
 };

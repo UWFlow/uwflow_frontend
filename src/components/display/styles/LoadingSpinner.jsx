@@ -48,13 +48,12 @@ export const CircleSvgSpinner = styled.circle`
   animation: ${DashAnimation} 2.5s ease-in-out infinite;
   stroke-linecap: square;
   stroke-width: ${({ strokeWidth }) => strokeWidth}px;
-  stroke: ${({ theme, color }) => color ? color : theme.primary};
-  z-index: 5
+  stroke: ${({ theme, color }) => (color ? color : theme.primary)};
+  z-index: 5;
 `;
-
 
 export const CircleSvgBackground = styled.circle`
   stroke-width: ${({ strokeWidth }) => strokeWidth}px;
-  stroke: ${({ theme, color }) => color ? color : theme.light4};
+  stroke: ${({ theme, color }) => (color ? color : theme.light4)};
   z-index: 2;
 `;

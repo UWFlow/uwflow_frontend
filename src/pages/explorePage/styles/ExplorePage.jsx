@@ -4,7 +4,14 @@ import { Link as RouterLink } from 'react-router-dom';
 import ExploreHeader from '../../../img/explore_v1.svg';
 
 /* Mixins */
-import { Heading2, PageContent, WideColumn, ThinColumn, Link, PageWrapper } from '../../../constants/Mixins';
+import {
+  Heading2,
+  PageContent,
+  WideColumn,
+  ThinColumn,
+  Link,
+  PageWrapper,
+} from '../../../constants/Mixins';
 
 export const ExplorePageWrapper = styled.div`
   ${PageWrapper}
@@ -41,7 +48,6 @@ export const ExploreHeaderText = styled.div`
   font-weight: 600;
 `;
 
-
 export const ColumnWrapper = styled.div`
   ${PageContent}
   display: flex;
@@ -69,10 +75,10 @@ export const Column2 = styled.div`
 
 export const CourseCode = styled(RouterLink)`
   ${Link}
-  color: ${({theme}) => theme.courses};
+  color: ${({ theme }) => theme.courses};
 `;
 
 export const ProfName = styled(RouterLink)`
   ${Link}
-  color: ${({theme}) => theme.professors};
+  color: ${({ theme }) => theme.professors};
 `;

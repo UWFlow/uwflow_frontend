@@ -63,7 +63,8 @@ export const MenuItem = styled.button`
     border-radius: 4px;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: ${({ theme }) => theme.primary};
   }
 `;

@@ -5,10 +5,7 @@ import { withRouter } from 'react-router-dom';
 /* Routes */
 import { isOnLandingPageRoute } from '../../Routes';
 /* Styled Components */
-import {
-  NavbarWrapper,
-  NavbarContent,
-} from './styles/Navbar';
+import { NavbarWrapper, NavbarContent } from './styles/Navbar';
 
 /* Child Components */
 import SearchBar from './SearchBar';

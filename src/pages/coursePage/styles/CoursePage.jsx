@@ -9,7 +9,7 @@ import {
   ThinColumn,
   BoxShadow,
   Heading3,
-  PageWrapper
+  PageWrapper,
 } from '../../../constants/Mixins';
 
 export const CoursePageWrapper = styled.div`

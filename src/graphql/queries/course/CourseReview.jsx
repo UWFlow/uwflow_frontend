@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 import ReviewFragment from '../../fragments/ReviewFragment';
 
-export const buildCourseReviewQuery = (loggedIn) => gql`
+export const buildCourseReviewQuery = loggedIn => gql`
   query COURSE_REVIEWS($id: Int) {
     review(where: {
       course_id: { _eq: $id },
@@ -20,7 +20,7 @@ export const buildCourseReviewQuery = (loggedIn) => gql`
 
 export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
   query REFETCH_COURSE_REVIEW_UPVOTE($review_id: Int) {
-    review(where: {id: {_eq: $review_id}}) {
+    review(where: { id: { _eq: $review_id } }) {
       ...ReviewVoteCountsFragment
     }
   }

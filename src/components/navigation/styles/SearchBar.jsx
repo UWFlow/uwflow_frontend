@@ -15,13 +15,14 @@ export const SearchResultsWrapper = styled.div`
   ${BoxShadow}
   border-radius:  0 0 4px 4px;
 
-  ${({ maximizeWidth }) => maximizeWidth
-    ? `@media only screen and (max-width: 425px) {
+  ${({ maximizeWidth }) =>
+    maximizeWidth
+      ? `@media only screen and (max-width: 425px) {
       width: 100vw;
       margin-top: 16px;
       margin-left: -17px; // including border 1px
-    }` : ''
-  }
+    }`
+      : ''}
 `;
 
 export const SearchResult = styled.button`
@@ -39,17 +40,19 @@ export const SearchResult = styled.button`
   border-bottom: 1px solid ${({ theme }) => theme.light3};
 
   &:last-child {
-    border-radius:  0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
     border-bottom: none;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: ${({ theme }) => theme.primary};
     color: ${({ theme }) => theme.light1} !important;
     border-bottom: none;
   }
 
-  &:hover span, &:focus span {
+  &:hover span,
+  &:focus span {
     color: ${({ theme }) => theme.light1} !important;
   }
 `;
@@ -74,7 +77,7 @@ const ResultText = `
   svg {
     margin-right: 24px;
   }
-`
+`;
 
 export const ExploreText = styled.span`
   color: ${({ theme }) => theme.primary};

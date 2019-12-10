@@ -10,7 +10,7 @@ const TestPage = () => {
   const [isModal2Open, setModal2Open] = useState(false);
 
   return (
-    <div style={{height: 'calc(100vw - 200px)', paddingTop: '100px'}}>
+    <div style={{ height: 'calc(100vw - 200px)', paddingTop: '100px' }}>
       <ScheduleUploadModal
         onCloseModal={() => setModalOpen(false)}
         isModalOpen={isModalOpen}
