@@ -490,8 +490,6 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
     variables: { id: localStorage.getItem('user_id') },
   });
 
-  console.log(data);
-
   if (data && data.user.length === 0) {
     logOut(dispatch);
   }

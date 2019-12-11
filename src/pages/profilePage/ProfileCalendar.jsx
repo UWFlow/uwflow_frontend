@@ -100,12 +100,10 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
             allIntv.push({
               start: momentOfWeekForDay
                 .clone()
-                .add(meeting.start_seconds, 'seconds')
-                .toDate(),
+                .add(meeting.start_seconds, 'seconds'),
               end: momentOfWeekForDay
                 .clone()
-                .add(meeting.end_seconds, 'seconds')
-                .toDate(),
+                .add(meeting.end_seconds, 'seconds'),
               courseCode: splitCourseCode(section.course.code),
               location: meeting.location,
               section: section.section_name,
@@ -116,6 +114,19 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
     });
     return allIntv;
   }, []);
+
+const getEventsByDate = events => {
+  let eventsByDate = {};
+  events.forEach(event => {
+    const dateString = event.start.format('YYYY-MM-DD');
+    if (!eventsByDate[dateString]) {
+      eventsByDate[dateString] = [event];
+    } else {
+      eventsByDate[dateString].push(event);
+    }
+  });
+  return eventsByDate;
+};
 
 const ProfileCalendar = ({ schedule, theme }) => {
   if (!schedule || schedule.length === 0)
@@ -143,8 +154,8 @@ const ProfileCalendar = ({ schedule, theme }) => {
 
   const [minDate, dayRange] = getScheduleRange(schedule);
   const events = getEventIntervals(moment(minDate), dayRange, schedule);
-
-  return <Calendar events={events} />;
+  const eventsByDate = getEventsByDate(events);
+  return <Calendar eventsByDate={eventsByDate} />;
 };
 
 ProfileCalendar.propTypes = {

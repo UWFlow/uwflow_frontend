@@ -3,7 +3,8 @@ import breakpoint from 'styled-components-breakpoint';
 import { Card, BoxShadow, Body, Heading3 } from '../../../constants/Mixins';
 
 export const HOUR_HEIGHT = 48;
-export const TIME_WIDTH = 60;
+const TIME_WIDTH = 60;
+const HEADER_HEIGHT = 24;
 
 export const CalendarWrapper = styled.div`
   ${Card('0')}
@@ -14,6 +15,7 @@ export const CalendarWrapper = styled.div`
 
 export const CalendarNavWrapper = styled.div`
   display: flex;
+  vertical-align: bottom;
   justify-content: space-between;
   padding: 16px;
   border-bottom: 2px solid ${({ theme }) => theme.light4};
@@ -22,6 +24,7 @@ export const CalendarNavWrapper = styled.div`
 export const DateRangeText = styled.div`
   display: flex;
   flex: 1;
+  align-items: center;
   ${Heading3}
 `;
 
@@ -29,11 +32,21 @@ export const NavButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const CurrentWeekButton = styled.button``;
+export const NavButton = styled.button`
+  border-radius: 4px;
+  background: ${({ theme }) => theme.light1};
+  border: 2px solid ${({ theme }) => theme.light3};
+  color: ${({ theme }) => theme.dark1};
+  font-weight: bold;
+  margin-left: 4px;
+  padding: 4px 16px;
+  cursor: pointer;
+  ${Body}
 
-export const PrevWeekButton = styled.button``;
-
-export const NextWeekButton = styled.button``;
+  &:hover {
+    background: ${({ theme }) => theme.light2};
+  }
+`;
 
 export const CalendarContentWrapper = styled.div`
   position: relative;
@@ -44,10 +57,9 @@ export const CalendarContentWrapper = styled.div`
 `;
 
 export const CalendarHeader = styled.div`
-  height: 24px;
+  height: ${HEADER_HEIGHT}px;
   text-align: center;
   padding: 4px;
-  font-weight: 600;
 `;
 
 export const HourRow = styled.div`
@@ -84,6 +96,7 @@ export const CalendarEvents = styled.div`
 `;
 
 export const DayColumn = styled.div`
+  position: relative;
   min-width: 104px;
   display: flex;
   flex: 1;
@@ -92,11 +105,26 @@ export const DayColumn = styled.div`
 `;
 
 export const DayHeader = styled.div`
-  height: 24px;
+  height: ${HEADER_HEIGHT}px;
   text-align: center;
   padding: 4px;
   font-weight: 600;
   width: 100%;
   display: flex;
   justify-content: center;
+`;
+
+export const EventWrapper = styled.div`
+  ${Body}
+  position: absolute;
+  top: ${({ top }) => top + HEADER_HEIGHT}px;
+  height: ${({ height }) => height - 2}px;
+  color: ${({ theme }) => theme.dark1};
+  background: ${({ color }) => color};
+  border-radius: 4px;
+  border: 1px solid ${({ theme }) => theme.primary};
+  border-left: 4px solid ${({ theme }) => theme.primaryDark};
+  width: calc(100% - 4px);
+  padding: 4px;
+  font-size: 12px;
 `;
