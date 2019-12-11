@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar';
-import './styles/calendar.css';
 
 /* Child Components */
 import Button from '../../components/input/Button';
-import Tooltip from '../../components/input/Tooltip';
+import Calendar from './Calendar';
 
 /* Styled Components */
 import {
@@ -15,11 +13,6 @@ import {
   ProfileCalendarHeading,
   ProfileCalendarText,
   ProfileCalendarImg,
-  ProfileCalendarEventWrapper,
-  LocationText,
-  CourseText,
-  SectionText,
-  EventCourseSectionWrapper,
 } from './styles/ProfileCalendar';
 
 /* Utils */
@@ -28,39 +21,6 @@ import {
   splitCourseCode,
   millisecondsPerDay,
 } from '../../utils/Misc';
-import { getCoursePageRoute } from '../../Routes';
-
-// set first day of week to Monday
-moment.locale('ko', {
-  week: {
-    dow: 1,
-    doy: 1,
-  },
-});
-
-const getCoursePageLink = rawCourseCode => {
-  let courseCode = rawCourseCode.replace(/ /g, '').toLowerCase();
-  courseCode =
-    courseCode.substr(-1) == 'e'
-      ? courseCode.substr(0, courseCode.length - 1)
-      : courseCode;
-  return getCoursePageRoute(courseCode);
-};
-
-const EventSection = ({ event }) => (
-  <ProfileCalendarEventWrapper
-    data-tip={`<div align='center'><b>${event.courseCode}</b> - ${event.section}<br/><br/>@ ${event.location}</div>`}
-  >
-    <Tooltip />
-    <EventCourseSectionWrapper>
-      <CourseText to={getCoursePageLink(event.courseCode)}>
-        {splitCourseCode(event.courseCode)}
-      </CourseText>{' '}
-      - <SectionText>{event.section}</SectionText>
-    </EventCourseSectionWrapper>
-    <LocationText>{event.location}</LocationText>
-  </ProfileCalendarEventWrapper>
-);
 
 const getScheduleRange = schedule => {
   let minTime = new Date();
@@ -118,9 +78,9 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
       allIntv.push({
         start: getDateWithSeconds(exam.date, exam.start_seconds),
         end: getDateWithSeconds(exam.date, exam.end_seconds),
-        courseCode: splitCourseCode(section.course.code),
+        courseCode: section.course.code,
         location: exam.location,
-        section: `${section.section} exam`,
+        section: `${section.section_name} exam`,
       });
     });
     section.meetings.forEach(meeting => {
@@ -148,7 +108,7 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
                 .toDate(),
               courseCode: splitCourseCode(section.course.code),
               location: meeting.location,
-              section: section.section,
+              section: section.section_name,
             });
           }
         });
@@ -182,22 +142,9 @@ const ProfileCalendar = ({ schedule, theme }) => {
     );
 
   const [minDate, dayRange] = getScheduleRange(schedule);
-  return (
-    <ProfileCalendarWrapper>
-      <Calendar
-        views={[Views.WEEK]}
-        defaultView={Views.WEEK}
-        step={15}
-        min={new Date(0, 0, 0, 8)} // minimum hour displayed
-        max={new Date(0, 0, 0, 22)} // maximum hour displayed
-        events={getEventIntervals(moment(minDate), dayRange, schedule)}
-        localizer={momentLocalizer(moment)}
-        components={{
-          event: EventSection,
-        }}
-      />
-    </ProfileCalendarWrapper>
-  );
+  const events = getEventIntervals(moment(minDate), dayRange, schedule);
+
+  return <Calendar events={events} />;
 };
 
 ProfileCalendar.propTypes = {

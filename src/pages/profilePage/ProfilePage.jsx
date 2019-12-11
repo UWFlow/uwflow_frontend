@@ -69,7 +69,7 @@ const testSchedule = {
             start_seconds: 41400,
           },
         ],
-        section: 'LEC 001',
+        section_name: 'LEC 001',
         course: {
           name: 'Foundations of Sequential Programs (Enriched)',
           id: 1414,
@@ -97,7 +97,7 @@ const testSchedule = {
             start_seconds: 59400,
           },
         ],
-        section: 'TUT 101',
+        section_name: 'TUT 101',
         course: {
           name: 'Foundations of Sequential Programs (Enriched)',
           id: 1414,
@@ -128,7 +128,7 @@ const testSchedule = {
             start_seconds: 68400,
           },
         ],
-        section: 'TST 201',
+        section_name: 'TST 201',
         course: {
           name: 'Foundations of Sequential Programs (Enriched)',
           id: 1414,
@@ -156,7 +156,7 @@ const testSchedule = {
             start_seconds: 37800,
           },
         ],
-        section: 'TUT 101',
+        section_name: 'TUT 101',
         course: {
           name: 'Logic and Computation (Enriched)',
           id: 1416,
@@ -187,7 +187,7 @@ const testSchedule = {
             start_seconds: 59400,
           },
         ],
-        section: 'TST 201',
+        section_name: 'TST 201',
         course: {
           name: 'Logic and Computation (Enriched)',
           id: 1416,
@@ -226,7 +226,7 @@ const testSchedule = {
             start_seconds: 46800,
           },
         ],
-        section: 'LEC 001',
+        section_name: 'LEC 001',
         course: {
           name: 'Logic and Computation (Enriched)',
           id: 1416,
@@ -265,7 +265,7 @@ const testSchedule = {
             start_seconds: 36000,
           },
         ],
-        section: 'LEC 001',
+        section_name: 'LEC 001',
         course: {
           name: 'Object-Oriented Software Development (Enriched)',
           id: 1418,
@@ -293,7 +293,7 @@ const testSchedule = {
             start_seconds: 45000,
           },
         ],
-        section: 'TUT 101',
+        section_name: 'TUT 101',
         course: {
           name: 'Object-Oriented Software Development (Enriched)',
           id: 1418,
@@ -324,7 +324,7 @@ const testSchedule = {
             start_seconds: 59400,
           },
         ],
-        section: 'TST 201',
+        section_name: 'TST 201',
         course: {
           name: 'Object-Oriented Software Development (Enriched)',
           id: 1418,
@@ -363,7 +363,7 @@ const testSchedule = {
             start_seconds: 52200,
           },
         ],
-        section: 'LEC 001',
+        section_name: 'LEC 001',
         course: {
           name: 'Probability (Advanced Level)',
           id: 7112,
@@ -405,7 +405,7 @@ const testSchedule = {
             start_seconds: 59400,
           },
         ],
-        section: 'TST 101',
+        section_name: 'TST 101',
         course: {
           name: 'Probability (Advanced Level)',
           id: 7112,
@@ -443,7 +443,7 @@ const ProfilePageContent = ({
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar schedule={undefined} />
+          <ProfileCalendar schedule={testSchedule.schedule} />
           <ProfileCourses
             courses={coursesTaken}
             reviews={reviews}
