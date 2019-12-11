@@ -14,6 +14,7 @@ import {
   ABOUT_PAGE_ROUTE,
   TEST_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
+  FIRST_TIME_SIGNIN_PAGE_ROUTE,
 } from './Routes';
 
 /* Child Components */
@@ -27,6 +28,7 @@ import {
   LoadableTestPage,
   LoadableNotFoundPage,
   LoadablePrivacyPage,
+  LoadableFirstTimeSigninPage,
 } from './LoadableComponents';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
@@ -90,6 +92,11 @@ const App = () => {
           exact
           path={TEST_PAGE_ROUTE}
           component={() => <LoadableTestPage />}
+        />
+        <Route
+          exact
+          path={FIRST_TIME_SIGNIN_PAGE_ROUTE}
+          component={() => <LoadableFirstTimeSigninPage />}
         />
         <Route path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>

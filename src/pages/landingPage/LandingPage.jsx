@@ -60,9 +60,6 @@ const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
             {!isLoggedIn && (
               <AuthContent>
                 <AuthForm
-                  onSignupComplete={() =>
-                    history.push(`${PROFILE_PAGE_ROUTE}?firstTimeLogin=true`)
-                  }
                   onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
                 />
               </AuthContent>

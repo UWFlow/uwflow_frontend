@@ -10,6 +10,7 @@ export const EXPLORE_PAGE_ROUTE = '/explore';
 export const ABOUT_PAGE_ROUTE = '/about';
 export const PRIVACY_PAGE_ROUTE = '/privacy';
 export const TEST_PAGE_ROUTE = '/api-test';
+export const FIRST_TIME_SIGNIN_PAGE_ROUTE = '/first-time-signin';
 
 /* Route Testers */
 export const LANDING_PAGE_TESTER = pathToRegexp(LANDING_PAGE_ROUTE);
@@ -20,6 +21,9 @@ export const PROF_PAGE_TESTER = pathToRegexp(PROF_PAGE_ROUTE);
 export const ABOUT_PAGE_TESTER = pathToRegexp(ABOUT_PAGE_ROUTE);
 export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const TEST_PAGE_TESTER = pathToRegexp(TEST_PAGE_ROUTE);
+export const FIRST_TIME_SIGNIN_PAGE_TESTER = pathToRegexp(
+  FIRST_TIME_SIGNIN_PAGE_ROUTE,
+);
 
 /* Page Testers */
 export const isOnLandingPageRoute = location =>
@@ -45,6 +49,10 @@ export const isOnPrivacyPageRoute = location =>
 
 export const isOnTestPageRoute = location =>
   TEST_PAGE_TESTER.test(location.pathname);
+
+export const isOnFirstTimeSigninPageRoute = location => {
+  FIRST_TIME_SIGNIN_PAGE_TESTER.test(location.pathname);
+};
 
 /* Route Generators */
 export const toCoursePageRoute = compile(COURSE_PAGE_ROUTE);
