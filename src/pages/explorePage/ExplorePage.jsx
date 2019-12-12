@@ -78,6 +78,8 @@ const ExplorePageContent = ({
         <ExploreHeaderText>
           {codeSearch
             ? `Showing all ${query.toUpperCase()} courses and professors`
+            : query === ''
+            ? `Showing all courses and professors`
             : `Showing results for "${query}"`}
         </ExploreHeaderText>
       </ExploreHeaderWrapper>
@@ -125,7 +127,10 @@ const ExplorePage = ({ location }) => {
   const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
 
   const { data, fetchMore, loading } = useQuery(
-    exploreQuery('{rating: {filled_count: desc_nulls_last}}', query),
+    exploreQuery(
+      '{rating: {filled_count: desc_nulls_last}}',
+      query ? query : '',
+    ),
     {
       variables: { course_offset: 0, prof_offset: 0 },
       notifyOnNetworkStatusChange: true,
@@ -135,8 +140,8 @@ const ExplorePage = ({ location }) => {
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
-        query={query}
-        codeSearch={codeSearch}
+        query={query || ''}
+        codeSearch={codeSearch || false}
         courseTab={courseTab}
         data={data}
         fetchMore={fetchMore}

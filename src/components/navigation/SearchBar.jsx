@@ -47,6 +47,7 @@ const SearchBar = ({
   const inputRef = useRef();
 
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
+
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState({
@@ -67,10 +68,10 @@ const SearchBar = ({
       } else if (keyCode === KeycodeConstants.DOWN) {
         event.preventDefault();
         const length =
-          searchResults.courseCodeResults.length +
+          Math.max(searchResults.courseCodeResults.length, 1) +
           searchResults.courseResults.length +
           searchResults.profResults.length;
-        setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
+        setSelectedResultIndex(Math.min(length - 1, selectedResultIndex + 1));
       }
     },
     [selectedResultIndex, searchResults],
@@ -149,7 +150,7 @@ const SearchBar = ({
 
   const exploreResult = (code = '', ref = null) => (
     <SearchResult
-      onClick={() => queryExploreCourses(code, true)}
+      onClick={() => queryExploreCourses(code, code !== '')}
       key={code}
       ref={ref}
     >
@@ -226,30 +227,14 @@ const SearchBar = ({
       return exploreResult();
     }
 
-    const courseCodeResults =
-      searchResults.courseCodeResults.length > 0
-        ? searchResults.courseCodeResults.map((result, i) =>
-            exploreResult(
-              result.code,
-              selectedResultIndex === i ? selectedResultRef : null,
-            ),
-          )
-        : [
-            exploreResult(
-              '',
-              selectedResultIndex === 0 ? selectedResultRef : null,
-            ),
-          ];
-
-    let offset = courseCodeResults.length;
     const courseResults = searchResults.courseResults.map((result, i) => {
       return courseResult(
         result,
-        selectedResultIndex === i + offset ? selectedResultRef : null,
+        selectedResultIndex === i ? selectedResultRef : null,
       );
     });
 
-    offset += searchResults.courseResults.length;
+    let offset = courseResults.length;
     const profResults = searchResults.profResults.map((result, i) => {
       return profResult(
         result,
@@ -257,7 +242,23 @@ const SearchBar = ({
       );
     });
 
-    const allResults = [...courseCodeResults, ...courseResults, ...profResults];
+    offset += profResults.length;
+    const courseCodeResults =
+      searchResults.courseCodeResults.length > 0
+        ? searchResults.courseCodeResults.map((result, i) =>
+            exploreResult(
+              result.code,
+              selectedResultIndex === i + offset ? selectedResultRef : null,
+            ),
+          )
+        : [
+            exploreResult(
+              '',
+              selectedResultIndex === offset ? selectedResultRef : null,
+            ),
+          ];
+
+    const allResults = [...courseResults, ...profResults, ...courseCodeResults];
 
     return (
       <SearchResultsWrapper maximizeWidth={maximizeWidth}>

@@ -50,7 +50,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
   ${ProfFragment.profRating}
 `;
 
-export const buildExploreQuery = (sort, query) => {
+export const buildExploreQuery = (sort, query = '') => {
   const queryTerms = query
     .replace('-', ' ')
     .split(' ')
