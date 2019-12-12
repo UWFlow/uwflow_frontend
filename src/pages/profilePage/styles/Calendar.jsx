@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import breakpoint from 'styled-components-breakpoint';
+import { Link } from 'react-router-dom';
 import { Card, BoxShadow, Body, Heading3 } from '../../../constants/Mixins';
+import { LEC, LAB } from '../../../constants/PageConstants';
 
-export const HOUR_HEIGHT = 48;
+export const HOUR_HEIGHT = 64;
 const TIME_WIDTH = 60;
 const HEADER_HEIGHT = 24;
 
@@ -21,11 +22,25 @@ export const CalendarNavWrapper = styled.div`
   border-bottom: 2px solid ${({ theme }) => theme.light4};
 `;
 
+export const DateHoursWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: left;
+  ${Heading3}
+`;
+
 export const DateRangeText = styled.div`
   display: flex;
-  flex: 1;
-  align-items: center;
+  margin-right: 8px;
   ${Heading3}
+`;
+
+export const TotalHours = styled.div`
+  display: flex;
+  ${Body}
+  font-weight: 400;
+  color: ${({ theme }) => theme.dark2};
 `;
 
 export const NavButtonWrapper = styled.div`
@@ -33,18 +48,25 @@ export const NavButtonWrapper = styled.div`
 `;
 
 export const NavButton = styled.button`
+  ${Body}
+  max-height: 48px;
+  font-weight: 600;
   border-radius: 4px;
   background: ${({ theme }) => theme.light1};
   border: 2px solid ${({ theme }) => theme.light3};
   color: ${({ theme }) => theme.dark1};
-  font-weight: bold;
   margin-left: 4px;
   padding: 4px 16px;
   cursor: pointer;
-  ${Body}
+  display: flex;
+  align-items: center;
 
   &:hover {
     background: ${({ theme }) => theme.light2};
+  }
+
+  @media only screen and (max-width: 480px) {
+    ${({ hideSmall }) => (hideSmall ? 'display: none;' : '')}
   }
 `;
 
@@ -97,7 +119,7 @@ export const CalendarEvents = styled.div`
 
 export const DayColumn = styled.div`
   position: relative;
-  min-width: 104px;
+  min-width: 136px;
   display: flex;
   flex: 1;
   height: 100%;
@@ -120,11 +142,31 @@ export const EventWrapper = styled.div`
   top: ${({ top }) => top + HEADER_HEIGHT}px;
   height: ${({ height }) => height - 2}px;
   color: ${({ theme }) => theme.dark1};
-  background: ${({ color }) => color};
+  background: ${({ theme }) => theme.light1};
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.primary};
-  border-left: 4px solid ${({ theme }) => theme.primaryDark};
+  border: 1px solid
+    ${({ color, theme }) =>
+      color === LEC
+        ? theme.lecture
+        : color === LAB
+        ? theme.lab
+        : theme.tutorial};
+  border-left: 4px solid
+    ${({ color, theme }) =>
+      color === LEC
+        ? theme.lecture
+        : color === LAB
+        ? theme.lab
+        : theme.tutorial};
   width: calc(100% - 4px);
-  padding: 4px;
+  padding: 2px 4px;
   font-size: 12px;
+`;
+
+export const CourseCode = styled(Link)`
+  ${Body}
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.dark1};
+  text-decoration: none;
 `;

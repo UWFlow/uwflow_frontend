@@ -19,6 +19,10 @@ export default {
   light3: '#dfe1e5',
   light4: '#c6c9c9',
 
+  lecture: '#b3d4ff',
+  lab: '#b3f3ff',
+  tutorial: '#c0b6f2',
+
   white: '#ffffff',
   red: '#ff5630',
   darkRed: '#de350b',

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'react-feather';
 import moment from 'moment';
-import { withTheme } from 'styled-components';
 
 /* Styled components */
 import {
   CalendarWrapper,
   CalendarNavWrapper,
+  DateHoursWrapper,
   DateRangeText,
+  TotalHours,
   NavButtonWrapper,
   NavButton,
   CalendarContentWrapper,
@@ -17,10 +19,13 @@ import {
   DayColumn,
   DayHeader,
   EventWrapper,
+  CourseCode,
   HOUR_HEIGHT,
 } from './styles/Calendar';
 
+import { getCoursePageRoute } from '../../Routes';
 import { splitCourseCode } from '../../utils/Misc';
+import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
 const getDateRangeString = (start, end) => {
   if (start.year() !== end.year()) {
@@ -32,7 +37,7 @@ const getDateRangeString = (start, end) => {
   }
 };
 
-const CalendarColumn = withTheme(({ theme, day, minHour, events = [] }) => (
+const CalendarColumn = ({ day, minHour, events = [] }) => (
   <DayColumn>
     <DayHeader>{day.format('ddd MMM D')}</DayHeader>
     {events.map((event, i) => {
@@ -41,19 +46,35 @@ const CalendarColumn = withTheme(({ theme, day, minHour, events = [] }) => (
       const timeDiffMinutes = moment
         .duration(event.start.diff(event.end))
         .asMinutes();
+
       return (
         <EventWrapper
           top={HOUR_HEIGHT * (Math.abs(startDurationMinutes) / 60)}
           height={HOUR_HEIGHT * (Math.abs(timeDiffMinutes) / 60)}
-          color={theme.light1}
+          color={
+            event.section.includes(LEC)
+              ? LEC
+              : event.section.includes(LAB)
+              ? LAB
+              : TUT
+          }
           key={i}
         >
-          {splitCourseCode(event.courseCode)} - {event.section}
+          <CourseCode to={getCoursePageRoute(event.courseCode)}>
+            {splitCourseCode(event.courseCode)}
+          </CourseCode>
+          {event.section.includes('Exam') && <br />}
+          {!event.section.includes('Exam') && ' - '}
+          {event.section}
+          <br />
+          {event.start.format('h:mma')} - {event.end.format('h:mma')}
+          <br />
+          {event.location}
         </EventWrapper>
       );
     })}
   </DayColumn>
-));
+);
 
 const Calendar = ({ eventsByDate }) => {
   const nearestMonday = moment().startOf('isoWeek');
@@ -72,13 +93,14 @@ const Calendar = ({ eventsByDate }) => {
   }
 
   // get dynamic time range to display
-  let minHour = 8;
+  let minHour = 9;
   let maxHour = 17;
+  let totalMinutes = 0;
   Object.values(currentWeekEvents).forEach(events => {
     if (events !== undefined) {
       events.forEach(event => {
-        if (event.start.hour() < minHour) {
-          minHour = Math.floor(event.start.hour());
+        if (event.start.hour() <= minHour) {
+          minHour = event.start.hour() - 1;
         }
         if (event.end.hour() >= maxHour) {
           maxHour = event.end.hour();
@@ -87,6 +109,11 @@ const Calendar = ({ eventsByDate }) => {
             maxHour += 1;
           }
         }
+
+        // add to totalMinutes (this does not account for time conflicts)
+        totalMinutes += Math.abs(
+          moment.duration(event.start.diff(event.end)).asMinutes(),
+        );
       });
     }
   });
@@ -114,14 +141,22 @@ const Calendar = ({ eventsByDate }) => {
   return (
     <CalendarWrapper>
       <CalendarNavWrapper>
-        <DateRangeText>
-          {getDateRangeString(
-            currentWeek,
-            includeSaturday ? saturdayOfWeek : fridayOfWeek,
-          )}
-        </DateRangeText>
+        <DateHoursWrapper>
+          <DateRangeText>
+            {getDateRangeString(
+              currentWeek,
+              includeSaturday ? saturdayOfWeek : fridayOfWeek,
+            )}
+          </DateRangeText>
+          <TotalHours>
+            ({Math.round((2 * totalMinutes) / 60) / 2} hours this week)
+          </TotalHours>
+        </DateHoursWrapper>
         <NavButtonWrapper>
-          <NavButton onClick={() => setCurrentWeek(nearestMonday)}>
+          <NavButton
+            hideSmall={true}
+            onClick={() => setCurrentWeek(nearestMonday)}
+          >
             Current Week
           </NavButton>
           <NavButton
@@ -129,12 +164,12 @@ const Calendar = ({ eventsByDate }) => {
               setCurrentWeek(currentWeek.clone().subtract(7, 'days'))
             }
           >
-            {'<'}
+            <ChevronLeft />
           </NavButton>
           <NavButton
             onClick={() => setCurrentWeek(currentWeek.clone().add(7, 'days'))}
           >
-            {'>'}
+            <ChevronRight />
           </NavButton>
         </NavButtonWrapper>
       </CalendarNavWrapper>

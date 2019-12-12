@@ -80,7 +80,7 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
         end: getDateWithSeconds(exam.date, exam.end_seconds),
         courseCode: section.course.code,
         location: exam.location,
-        section: `${section.section_name} exam`,
+        section: `${section.section_name} (Exam)`,
       });
     });
     section.meetings.forEach(meeting => {
