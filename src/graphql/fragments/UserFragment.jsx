@@ -27,11 +27,35 @@ const UserFragment = {
     fragment UserScheduleFragment on user {
       id
       schedule {
-        user_id
-        section_id
         section {
           id
-          campus
+          exams {
+            date
+            day
+            location
+            start_seconds
+            end_seconds
+          }
+          meetings {
+            days
+            end_date
+            end_seconds
+            is_cancelled
+            location
+            prof {
+              id
+              name
+            }
+            section_id
+            start_date
+            start_seconds
+          }
+          section_name
+          course {
+            id
+            name
+            code
+          }
         }
       }
     }

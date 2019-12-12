@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { LEC, LAB } from '../CourseScheduleTableColumns';
 import { Heading3 } from '../../../constants/Mixins';
+import { LEC, LAB } from '../../../constants/PageConstants';
 
 export const CourseScheduleWrapper = styled.div`
   margin-bottom: 32px;
@@ -25,8 +25,8 @@ export const ColorBar = styled.div`
   top: 0;
   height: 100%;
   width: 8px;
-  background-color: ${({ color }) =>
-    color === LEC ? '#B3D4FF' : color === LAB ? '#B3F5FF' : '#C0B6F2'};
+  background-color: ${({ color, theme }) =>
+    color === LEC ? theme.lecture : color === LAB ? theme.lab : theme.tutorial};
 `;
 
 export const NormalCellWrapper = styled.div`

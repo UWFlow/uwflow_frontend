@@ -15,10 +15,7 @@ import ScheduleNotificationBell from './ScheduleNotificationBell';
 
 import { getProfPageRoute } from '../../Routes';
 import { processDateString } from '../../utils/Misc';
-
-export const LEC = 'LEC';
-export const LAB = 'LAB';
-export const TUT = 'TUT';
+import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
 const contentSpace = spaces => {
   let content = [];
