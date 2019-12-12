@@ -72,7 +72,9 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
         if (onSignupComplete) {
           onSignupComplete();
         } else {
-          history.push(FIRST_TIME_SIGNIN_PAGE_ROUTE);
+          history.push(FIRST_TIME_SIGNIN_PAGE_ROUTE, {
+            prevPath: `${history.location.pathname}?${history.location.search}`,
+          });
         }
       }
     }

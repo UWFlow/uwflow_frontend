@@ -4,6 +4,9 @@ import { withRouter } from 'react-router-dom';
 /* Styled Components */
 import { FirstTimeLoginPageWrapper } from './styles/FirstTimeLoginPage';
 
+/* Constants */
+import { LANDING_PAGE_ROUTE } from '../../Routes';
+
 /* Child Components */
 import TranscriptUploadModalContent from '../../desktop/components/dataUploadModals/TranscriptUploadModalContent';
 import ScheduleUploadModalContent from '../../desktop/components/dataUploadModals/ScheduleUploadModalContent';
@@ -11,6 +14,7 @@ import ScheduleUploadModalContent from '../../desktop/components/dataUploadModal
 const FirstTimeLoginPage = ({ history }) => {
   const [isUploadingTranscript, setIsUploadingTranscript] = useState(true);
   const [isUploadingSchedule, setIsUploadingSchedule] = useState(false);
+
   return (
     <FirstTimeLoginPageWrapper>
       {isUploadingTranscript && (
@@ -22,7 +26,15 @@ const FirstTimeLoginPage = ({ history }) => {
         />
       )}
       {isUploadingSchedule && (
-        <ScheduleUploadModalContent onSkip={() => history.goBack()} />
+        <ScheduleUploadModalContent
+          onSkip={() =>
+            history.push(
+              history.location.state && history.location.state.prevPage
+                ? history.location.state.prevPage
+                : LANDING_PAGE_ROUTE,
+            )
+          }
+        />
       )}
     </FirstTimeLoginPageWrapper>
   );
