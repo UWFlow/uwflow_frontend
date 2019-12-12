@@ -122,7 +122,7 @@ const ProfileCourses = ({
 
   return tabList.length > 0 ? (
     <ProfileCoursesWrapper>
-      <TabContainer tabList={tabList} contentPadding="0" />
+      <TabContainer tabList={tabList} contentPadding="0" minTabWidth={144} />
     </ProfileCoursesWrapper>
   ) : null;
 };
