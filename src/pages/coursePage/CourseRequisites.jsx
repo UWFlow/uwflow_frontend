@@ -6,30 +6,30 @@ import {
   LineOfText,
   CourseText,
   GreyText,
-  PrereqText,
-  ExtraInfoBoxWrapper,
+  ReqText,
+  CourseRequisitesWrapper,
 } from './styles/CourseRequisites';
 
 import { splitCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
-const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
-  const parsedPrereqs = () => {
-    if (!prereqs) {
+const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
+  const parsedRequisites = requisites => {
+    if (!requisites) {
       return '';
     }
 
-    prereqs = prereqs.replace(/\s{2,}/gi, ' ');
-    prereqs = prereqs.replace(/\(\s*/gi, '(');
-    prereqs = prereqs.replace(/\s*\)/gi, ')');
-    prereqs = prereqs.replace(/\s*\\\s*/gi, '\\');
-    prereqs = prereqs.replace(/\s*\/\s*/gi, '/');
+    let parsedReqs = requisites.replace(/\s{2,}/gi, ' ');
+    parsedReqs = parsedReqs.replace(/\(\s*/gi, '(');
+    parsedReqs = parsedReqs.replace(/\s*\)/gi, ')');
+    parsedReqs = parsedReqs.replace(/\s*\\\s*/gi, '\\');
+    parsedReqs = parsedReqs.replace(/\s*\/\s*/gi, '/');
 
-    const splitText = prereqs.split(COURSE_CODE_REGEX);
-    const matches = prereqs.match(COURSE_CODE_REGEX);
+    const splitText = parsedReqs.split(COURSE_CODE_REGEX);
+    const matches = parsedReqs.match(COURSE_CODE_REGEX);
 
     if (splitText.length <= 1) {
-      return prereqs;
+      return parsedReqs;
     }
 
     return splitText.reduce(
@@ -48,13 +48,22 @@ const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
   };
 
   return (
-    <ExtraInfoBoxWrapper>
+    <CourseRequisitesWrapper>
       <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
       {prereqs ? (
-        <PrereqText>{parsedPrereqs()}</PrereqText>
+        <ReqText>{parsedRequisites(prereqs)}</ReqText>
       ) : (
         <LineOfText>
           <GreyText>No prerequisites</GreyText>
+        </LineOfText>
+      )}
+      <br />
+      <Header>{`${splitCourseCode(courseCode)} antirequisites`}</Header>
+      {antireqs ? (
+        <ReqText>{parsedRequisites(antireqs)}</ReqText>
+      ) : (
+        <LineOfText>
+          <GreyText>No antirequisites</GreyText>
         </LineOfText>
       )}
       <br />
@@ -70,11 +79,11 @@ const ExtraInfoBox = ({ prereqs, postreqs, courseCode }) => {
       ))}
       {postreqs.length === 0 && (
         <LineOfText>
-          <GreyText>Nothing</GreyText>
+          <GreyText>No courses</GreyText>
         </LineOfText>
       )}
-    </ExtraInfoBoxWrapper>
+    </CourseRequisitesWrapper>
   );
 };
 
-export default ExtraInfoBox;
+export default CourseRequisites;
