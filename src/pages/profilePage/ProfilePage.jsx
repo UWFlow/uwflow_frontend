@@ -57,7 +57,7 @@ const testSchedule = {
           {
             days: ['T', 'Th', 'h'],
             end_date: '2019-12-03',
-            end_seconds: 46200,
+            end_seconds: 42200,
             is_cancelled: false,
             location: 'E2 1732',
             prof: {
@@ -66,7 +66,7 @@ const testSchedule = {
             },
             section_id: 161,
             start_date: '2019-09-04',
-            start_seconds: 41400,
+            start_seconds: 38000,
           },
         ],
         section_name: 'LEC 001',

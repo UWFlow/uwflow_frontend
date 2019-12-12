@@ -16,11 +16,7 @@ import {
 } from './styles/ProfileCalendar';
 
 /* Utils */
-import {
-  getDateWithSeconds,
-  splitCourseCode,
-  millisecondsPerDay,
-} from '../../utils/Misc';
+import { getDateWithSeconds, millisecondsPerDay } from '../../utils/Misc';
 
 const getScheduleRange = schedule => {
   let minTime = new Date();
@@ -104,7 +100,7 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
               end: momentOfWeekForDay
                 .clone()
                 .add(meeting.end_seconds, 'seconds'),
-              courseCode: splitCourseCode(section.course.code),
+              courseCode: section.course.code,
               location: meeting.location,
               section: section.section_name,
             });

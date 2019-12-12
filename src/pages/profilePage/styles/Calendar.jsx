@@ -138,12 +138,14 @@ export const DayHeader = styled.div`
 
 export const EventWrapper = styled.div`
   ${Body}
+  z-index: 1
   position: absolute;
   top: ${({ top }) => top + HEADER_HEIGHT}px;
   height: ${({ height }) => height - 2}px;
   color: ${({ theme }) => theme.dark1};
   background: ${({ theme }) => theme.light1};
   border-radius: 4px;
+  overflow: hidden;
   border: 1px solid
     ${({ color, theme }) =>
       color === LEC
@@ -158,14 +160,22 @@ export const EventWrapper = styled.div`
         : color === LAB
         ? theme.lab
         : theme.tutorial};
-  width: calc(100% - 4px);
+  width: calc(${({ truncate }) => (truncate ? 50 : 100)}% - 4px);
   padding: 2px 4px;
-  font-size: 12px;
+  font-size: 11px;
+  ${({ truncate }) => (truncate ? `${truncate}: ${truncate === 'left' ? '0' : '4px'};` : '')}
+  transition: 0.2s all;
+
+  &:hover {
+    width: calc(100% - 4px);
+    z-index: 2;
+    transition: 0.2s all;
+  }
 `;
 
 export const CourseCode = styled(Link)`
   ${Body}
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: ${({ theme }) => theme.dark1};
   text-decoration: none;

@@ -37,16 +37,42 @@ const getDateRangeString = (start, end) => {
   }
 };
 
+const parseEventOverlap = events => {
+  if (events.length < 2) {
+    return events;
+  }
+
+  const sortedEvents = events.sort(
+    (a, b) => a.start.valueOf() - b.start.valueOf(),
+  );
+
+  let prevEvent = sortedEvents[0];
+  for (let i = 1; i < sortedEvents.length; i++) {
+    let curEvent = sortedEvents[i];
+
+    // alternate between left and right for overlapping events
+    if (prevEvent.end.valueOf() > curEvent.start.valueOf()) {
+      if (!prevEvent.truncate) {
+        prevEvent.truncate = 'left';
+        curEvent.truncate = 'right';
+      } else {
+        curEvent.truncate = prevEvent.truncate === 'left' ? 'right' : 'left';
+      }
+    }
+  }
+  return events;
+};
+
 const CalendarColumn = ({ day, minHour, events = [] }) => (
   <DayColumn>
     <DayHeader>{day.format('ddd MMM D')}</DayHeader>
-    {events.map((event, i) => {
+    {parseEventOverlap(events).map((event, i) => {
       const startDurationMinutes =
         (event.start.hour() - minHour) * 60 + event.start.minutes();
       const timeDiffMinutes = moment
         .duration(event.start.diff(event.end))
         .asMinutes();
-
+      console.log(event.courseCode);
       return (
         <EventWrapper
           top={HOUR_HEIGHT * (Math.abs(startDurationMinutes) / 60)}
@@ -59,6 +85,7 @@ const CalendarColumn = ({ day, minHour, events = [] }) => (
               : TUT
           }
           key={i}
+          truncate={event.truncate || false}
         >
           <CourseCode to={getCoursePageRoute(event.courseCode)}>
             {splitCourseCode(event.courseCode)}
