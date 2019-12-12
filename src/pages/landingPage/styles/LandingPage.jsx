@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Heading1, Heading2 } from '../../../constants/Mixins';
 import LandingImage from '../../../img/landing_v1.svg';
 
@@ -7,8 +8,8 @@ import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 export const LandingPageWrapper = styled.div`
   width: 100vw;
   margin: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
+  min-height: calc(100vh - 48px);
+  margin-bottom: 48px;
   display: flex;
 `;
 
@@ -34,16 +35,22 @@ export const TitleText = styled.div`
   color: white;
   ${Heading1}
   margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'mobileLarge')`
+    ${Heading2}
+  `}
 `;
 
 export const Subheading = styled.div`
   position: absolute;
-  width: 100vw;
   bottom: -200px;
   left: 64px;
   font-size: 24px;
   font-weight: 300;
   z-index: -1;
+  ${breakpoint('mobile', 'mobileLarge')`
+    font-size: 20px;
+  `}
 
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     left: 32px;
@@ -83,8 +90,12 @@ export const BackgroundImage = styled.div`
   background: url(${LandingImage});
   background-size: cover;
   background-position: center left;
-  height: 65vh;
-  max-height: 800px;
+  height: 55vh;
+  max-height: 720px;
+
+  ${breakpoint('mobile', 'mobileLarge')`
+    height: 60vh;
+  `}
 `;
 
 export const AuthContent = styled.div`

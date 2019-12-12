@@ -285,7 +285,7 @@ const SearchBar = ({
         icon={<Search color={isLanding ? theme.dark1 : theme.dark3} />}
         text={searchText}
         setText={handleKeyStroke}
-        placeholder="Explore or search for courses, subjects or professors"
+        placeholder="Search for courses, subjects or professors"
         handleKeyDown={handleSearch}
         options={options}
         maxLength={100}

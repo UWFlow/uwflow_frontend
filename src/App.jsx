@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { ToastContainer, Zoom } from 'react-toastify';
+import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 /* Routes */
@@ -47,7 +47,7 @@ const App = () => {
         pauseOnVisibilityChange
         draggable
         pauseOnHover
-        transition={Zoom}
+        transition={Bounce}
       />
       <Navbar />
       <Switch>

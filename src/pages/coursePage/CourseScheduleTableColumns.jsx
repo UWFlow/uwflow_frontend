@@ -132,7 +132,7 @@ export const courseScheduleTableColumns = [
     Header: 'Section',
     Cell: SectionCell,
     accessor: 'section',
-    maxWidth: 96,
+    maxWidth: 80,
     style: {
       padding: 0,
     },
@@ -141,7 +141,7 @@ export const courseScheduleTableColumns = [
     Header: 'Class',
     Cell: ClassCell,
     accessor: 'class',
-    maxWidth: 48,
+    maxWidth: 40,
   },
   {
     Header: 'Enrolled',
@@ -153,7 +153,7 @@ export const courseScheduleTableColumns = [
     Header: 'Time',
     Cell: TimeCell,
     accessor: 'times',
-    maxWidth: 136,
+    maxWidth: 138,
   },
   {
     Header: 'Date',

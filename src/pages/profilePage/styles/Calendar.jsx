@@ -178,6 +178,6 @@ export const CourseCode = styled(Link)`
   ${Body}
   font-size: 11px;
   font-weight: 600;
-  color: ${({ theme }) => theme.dark1};
-  text-decoration: none;
+  color: ${({ theme }) => theme.courses};
+  text-decoration: underline;
 `;

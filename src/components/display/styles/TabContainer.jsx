@@ -21,7 +21,7 @@ export const TabsWrapper = styled.div`
 
 export const Tab = styled.div`
   display: flex;
-  min-width: ${({ minWidth }) => minWidth ? `${minWidth}px` : 0};
+  min-width: ${({ minWidth }) => (minWidth ? `${minWidth}px` : 0)};
   flex: 1;
   justify-content: center;
   align-items: center;

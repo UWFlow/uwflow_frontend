@@ -33,6 +33,7 @@ export const NormalCellWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-right: 8px;
 `;
 
 export const SectionContentWrapper = styled.div`
@@ -47,6 +48,7 @@ export const SectionContentWrapper = styled.div`
 export const ContentWrapper = styled.div`
   display: flex;
   padding: 8px 0;
+  height: 32px;
   align-items: center;
   width: 100%;
 `;
@@ -55,12 +57,16 @@ export const InstructorLink = styled(Link)`
   color: ${({ theme }) => theme.professors};
   padding: 8px 0;
   font-weight: 600;
+  white-space: nowrap;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ScheduleTableWrapper = styled.div`
   overflow-x: auto;
+  overflow-y: hidden;
   zoom: 0.9;
-  max-height: 200vh;
 `;
 
 export const FinalExamsTableWrapper = styled.div`

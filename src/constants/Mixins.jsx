@@ -23,7 +23,7 @@ export const PageContent = `
   padding-left: 32px;
   padding-right: 32px;
 
-  @media only screen and (max-width: ${theme.breakpoints.tablet}px) {
+  @media only screen and (max-width: ${theme.breakpoints.tablet - 1}px) {
     padding-left: 0;
     padding-right: 0;
   }
@@ -97,7 +97,7 @@ export const Link = `
 `;
 
 export const BoxShadow = `
-  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+  box-shadow: 0px 2px 5px rgba(236, 237, 237, 0.4),
   0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
 
@@ -106,7 +106,7 @@ export const DarkBoxShadow = `
 `;
 
 export const TextShadow = `
-  text-shadow: 0px 2px 5px rgba(236, 237, 237, 0.5),
+  text-shadow: 0px 2px 5px rgba(236, 237, 237, 0.4),
   0px 0px 5px rgba(142, 147, 148, 0.2);
 `;
 
