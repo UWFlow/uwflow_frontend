@@ -7,6 +7,7 @@ export const DiscreteSliderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin: ${({ margin }) => margin};
+  width: 300px;
 `;
 
 export const SliderBarWrapper = styled.div`
