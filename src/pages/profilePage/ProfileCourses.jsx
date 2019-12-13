@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PlusSquare } from 'react-feather';
+import { PlusSquare, Edit } from 'react-feather';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
@@ -102,7 +102,11 @@ const ProfileCourses = ({
           >
             <ReviewButtonContents>
               <AddReviewIcon>
-                <PlusSquare color={theme.dark2} size={24} strokeWidth={2} />
+                {review ? (
+                  <Edit color={theme.dark2} size={20} strokeWidth={2} />
+                ) : (
+                  <PlusSquare color={theme.dark2} size={20} strokeWidth={2} />
+                )}
               </AddReviewIcon>
               <ProfileCourseReviewButtonText>
                 {review ? 'Edit review' : 'Add review'}

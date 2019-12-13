@@ -136,12 +136,7 @@ const ProfileCalendar = ({ schedule, theme }) => {
           It looks like:
         </ProfileCalendarText>
         <ProfileCalendarImg>
-          <Button
-            onClick={() => {}}
-            margin="auto"
-            borderColor={theme.dark3}
-            hasShadow={false}
-          >
+          <Button onClick={() => {}} margin="auto" hasShadow={false}>
             Import your schedule from Quest
           </Button>
         </ProfileCalendarImg>

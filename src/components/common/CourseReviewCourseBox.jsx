@@ -214,10 +214,12 @@ const CourseReviewCourseBox = ({
         variables: { review_id: review ? review.id : null },
       }).then(() => {
         notifyDelete();
+        setDeleteReviewModalOpen(false);
         onCancel();
         setReviewDeleting(false);
       });
     } else {
+      setDeleteReviewModalOpen(false);
       onCancel();
     }
   };

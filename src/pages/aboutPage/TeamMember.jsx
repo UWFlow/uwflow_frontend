@@ -29,8 +29,16 @@ const AboutPage = ({
       {title}
       <br />
       <br />
-      {linkedIn && <MemberLink>Linkedin</MemberLink>}
-      {website && <MemberLink>Website</MemberLink>}
+      {linkedIn && (
+        <MemberLink href={linkedIn} target="_blank" rel="noopener noreferrer">
+          Linkedin
+        </MemberLink>
+      )}
+      {website && (
+        <MemberLink href={website} target="_blank" rel="noopener noreferrer">
+          Website
+        </MemberLink>
+      )}
       <br />
       <br />
       <MemberBio>{children}</MemberBio>
