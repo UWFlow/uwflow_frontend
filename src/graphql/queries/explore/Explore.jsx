@@ -13,7 +13,6 @@ export const buildExploreCodeQuery = (sort, query) => gql`
   query EXPLORE_COURSE_CODE($course_offset: Int, $prof_offset: Int) {
     course(
       offset: $course_offset,
-      limit: ${SEARCH_RESULTS_PER_PAGE},
       order_by: ${sort},
       where: {code: {_ilike: "${query}%"}}
     ) {
@@ -28,7 +27,6 @@ export const buildExploreCodeQuery = (sort, query) => gql`
     }
     prof(
       offset: $prof_offset,
-      limit: ${SEARCH_RESULTS_PER_PAGE},
       order_by: ${sort},
       where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}
     ) {
@@ -87,7 +85,6 @@ export const buildExploreQuery = (sort, query = '') => {
     query EXPLORE_ALL($query: String, $course_offset: Int, $prof_offset: Int) {
       course(
         offset: $course_offset,
-        limit: ${SEARCH_RESULTS_PER_PAGE},
         order_by: ${sort},
         where: ${parsedCourseQuery}
       ) {
@@ -102,7 +99,6 @@ export const buildExploreQuery = (sort, query = '') => {
       }
       prof(
         offset: $prof_offset,
-        limit: ${SEARCH_RESULTS_PER_PAGE},
         order_by: ${sort},
         where: ${parsedProfQuery}
       ) {

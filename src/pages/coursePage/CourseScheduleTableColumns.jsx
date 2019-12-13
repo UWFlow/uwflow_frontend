@@ -171,7 +171,7 @@ export const courseScheduleTableColumns = [
     Header: 'Instructor',
     Cell: InstructorCell,
     accessor: 'profs',
-    maxWidth: 160,
+    maxWidth: 168,
   },
   {
     Header: 'Campus',

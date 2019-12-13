@@ -34,6 +34,7 @@ export const NormalCellWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-right: 8px;
+  transition 0.2s all;
 `;
 
 export const SectionContentWrapper = styled.div`
@@ -61,6 +62,14 @@ export const InstructorLink = styled(Link)`
   word-break: break-all;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 168px;
+  transition 0.1s all;
+
+  &:hover {
+    max-width: 100%;
+    transition 0.1s all;
+    text-overflow: none;
+  }
 `;
 
 export const ScheduleTableWrapper = styled.div`

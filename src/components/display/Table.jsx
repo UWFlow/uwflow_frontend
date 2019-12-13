@@ -13,7 +13,6 @@ import {
   HeaderCell,
   SortArrow,
   HeaderText,
-  TableBottom,
 } from './styles/Table';
 
 import LoadingSpinner from '../display/LoadingSpinner';
@@ -118,15 +117,10 @@ const Table = ({
         )}
         {(loading || shouldFetchMore) && !doneFetching && fetchMore !== null && (
           <Row>
-            <Cell
-              colSpan={columns.length}
-              style={{ padding: 0, overflow: 'hidden' }}
-            >
-              <LoadingSpinner />
-            </Cell>
+            <LoadingSpinner size={48} strokeWidth={4} />
           </Row>
         )}
-        <TableBottom ref={bottomRef} />
+        <div ref={bottomRef} />
       </TableBody>
     </TableWrapper>
   );

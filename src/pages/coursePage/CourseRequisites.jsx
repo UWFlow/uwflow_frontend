@@ -79,7 +79,7 @@ const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
       ))}
       {postreqs.length === 0 && (
         <LineOfText>
-          <GreyText>No courses</GreyText>
+          <GreyText>No other courses</GreyText>
         </LineOfText>
       )}
     </CourseRequisitesWrapper>
