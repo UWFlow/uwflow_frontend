@@ -24,9 +24,12 @@ const Table = ({
   columns,
   data,
   sortable = false,
+  manualSortBy = false,
+  setTableState = () => {},
   loading = false,
   doneFetching = false,
   fetchMore = null,
+  initialState = {},
   fetchOffset = 1000,
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
@@ -74,13 +77,20 @@ const Table = ({
     headerGroups,
     rows,
     prepareRow,
+    state: tableState,
   } = useTable(
     {
       columns,
       data,
+      initialState,
+      manualSortBy,
     },
     useSortBy,
   );
+
+  useEffect(() => {
+    setTableState(tableState);
+  }, [tableState]);
 
   const renderRows = () =>
     rows.map(
@@ -109,28 +119,34 @@ const Table = ({
       <TableHeader>
         {headerGroups.map(headerGroup => (
           <HeaderRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column, i) => (
               <HeaderCell
-                {...column.getHeaderProps(
-                  sortable && column.getSortByToggleProps(),
-                )}
                 align={column.align}
                 maxWidth={column.maxWidth}
+                {...column.getHeaderProps()}
               >
-                <HeaderText sortable={sortable}>
+                <HeaderText
+                  sortable={sortable}
+                  {...column.getHeaderProps(
+                    sortable && column.getSortByToggleProps(),
+                  )}
+                >
                   {column.render('Header')}
                 </HeaderText>
-                <SortArrow>
-                  {column.isSorted ? (
-                    column.isSortedDesc ? (
+                {column.isSorted && (
+                  <SortArrow
+                    {...column.getHeaderProps(
+                      sortable && column.getSortByToggleProps(),
+                    )}
+                    key="arrow"
+                  >
+                    {column.isSortedDesc ? (
                       <ChevronUp size={14} strokeWidth={4} />
                     ) : (
                       <ChevronDown size={14} strokeWidth={4} />
-                    )
-                  ) : (
-                    ''
-                  )}
-                </SortArrow>
+                    )}
+                  </SortArrow>
+                )}
               </HeaderCell>
             ))}
           </HeaderRow>

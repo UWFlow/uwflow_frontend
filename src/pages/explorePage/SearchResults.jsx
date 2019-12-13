@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Table from '../../components/display/Table';
@@ -12,6 +12,10 @@ import { SearchResultsContent } from './styles/SearchResults';
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
 
+const numberSort = (a, b, desc) => (desc ? a - b : b - a);
+const stringSort = (a, b, desc) =>
+  desc ? a.localeCompare(b) : b.localeCompare(a);
+
 const SearchResults = ({
   filterState,
   data,
@@ -22,44 +26,52 @@ const SearchResults = ({
   loading,
 }) => {
   const [numRendered, setNumRendered] = useState(50);
+  const [courses, setCourses] = useState(null);
+  const [profs, setProfs] = useState(null);
+  const [tableState, setTableState] = useState({ sortBy: [] });
 
   useEffect(() => {
     setNumRendered(50);
   }, [exploreTab]);
 
-  const courses = data
-    ? data.course.map(course =>
-        Object({
-          id: course.id,
-          code: course.code,
-          name: course.name,
-          description: course.description,
-          ratings: course.rating ? course.rating.filled_count : 0,
-          liked: course.rating ? course.rating.liked : null,
-          easy: course.rating ? course.rating.easy : null,
-          useful: course.rating ? course.rating.useful : null,
-          sections: course.sections,
-        }),
-      )
-    : [];
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
 
-  const profs = data
-    ? data.prof.map(prof =>
-        Object({
-          code_name: {
-            code: prof.code,
-            name: prof.name,
-          },
-          ratings: prof.rating ? prof.rating.filled_count : 0,
-          liked: prof.rating ? prof.rating.liked : null,
-          clear: prof.rating ? prof.rating.clear : null,
-          engaging: prof.rating ? prof.rating.engaging : null,
-          courses: prof.prof_courses.map(course => course.code),
-        }),
-      )
-    : [];
+    const newCourses = data.course.map(course =>
+      Object({
+        id: course.id,
+        code: course.code,
+        name: course.name,
+        description: course.description,
+        ratings: course.rating ? course.rating.filled_count : 0,
+        liked: course.rating ? course.rating.liked : null,
+        easy: course.rating ? course.rating.easy : null,
+        useful: course.rating ? course.rating.useful : null,
+        sections: course.sections,
+      }),
+    );
 
-  const courseCodeRegex = useCallback(() => {
+    const newProfs = data.prof.map(prof =>
+      Object({
+        code_name: {
+          code: prof.code,
+          name: prof.name,
+        },
+        ratings: prof.rating ? prof.rating.filled_count : 0,
+        liked: prof.rating ? prof.rating.liked : null,
+        clear: prof.rating ? prof.rating.clear : null,
+        engaging: prof.rating ? prof.rating.engaging : null,
+        courses: prof.prof_courses.map(course => course.code),
+      }),
+    );
+
+    setCourses(newCourses);
+    setProfs(newProfs);
+  }, [data]);
+
+  const courseCodeRegex = useMemo(() => {
     let regexStr = '';
     for (let i = filterState.courseCodes.length - 1; i >= 0; i--) {
       if (filterState.courseCodes[i]) {
@@ -72,11 +84,10 @@ const SearchResults = ({
     return new RegExp(regexStr);
   }, [filterState]);
 
-  const filteredCourses = useMemo(
-    () =>
-      courses.filter(
+  const filteredCourses = courses
+    ? courses.filter(
         course =>
-          courseCodeRegex().test(course.code) &&
+          courseCodeRegex.test(course.code) &&
           course.ratings >= ratingFilters[filterState.numCourseRatings] &&
           (!filterState.currentTerm ||
             (filterState.currentTerm &&
@@ -90,35 +101,54 @@ const SearchResults = ({
               course.sections.some(
                 section => Number(section.term_id) === nextTermCode,
               ))),
-      ),
-    [courses, filterState, ratingFilters],
-  );
+      )
+    : [];
 
-  const filteredProfs = useMemo(
-    () =>
-      profs.filter(
+  const filteredProfs = profs
+    ? profs.filter(
         prof =>
           prof.ratings >= ratingFilters[filterState.numProfRatings] &&
           (filterState.courseTaught === 0 ||
             prof.courses.includes(profCourses[filterState.courseTaught])),
-      ),
-    [profs, filterState, ratingFilters],
-  );
+      )
+    : [];
 
   const courseSearch = exploreTab === 0;
+
+  const resultsToReturn = () => {
+    let filtered = courseSearch ? filteredCourses : filteredProfs;
+    if (tableState.sortBy.length > 0) {
+      const { id: sortKey, desc } = tableState.sortBy[0];
+      filtered = filtered.sort((a, b) =>
+        ['code', 'name'].includes(sortKey)
+          ? stringSort(a[sortKey], b[sortKey], desc)
+          : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
+          ? stringSort(a[sortKey].name, b[sortKey].name, desc)
+          : numberSort(a[sortKey], b[sortKey], desc),
+      );
+    }
+    return filtered.slice(0, numRendered);
+  };
+
+  const tableProps = {
+    cellPadding: '16px 0',
+    loading,
+    fetchOffset: 2000,
+    sortable: true,
+    manualSortBy: true,
+    setTableState: state => {
+      setNumRendered(50);
+      setTableState(state);
+    },
+  };
 
   const results = () => (
     <SearchResultsContent>
       <Table
-        cellPadding="16px 0"
-        data={
-          courseSearch
-            ? filteredCourses.slice(0, numRendered)
-            : filteredProfs.slice(0, numRendered)
-        }
+        {...tableProps}
+        data={resultsToReturn()}
         columns={courseSearch ? courseColumns : profColumns}
         rightAlignIndex={courseSearch ? 2 : 1}
-        loading={loading}
         fetchMore={() =>
           setNumRendered(
             Math.min(
@@ -127,13 +157,14 @@ const SearchResults = ({
             ),
           )
         }
+        initialState={{
+          sortBy: [{ id: 'ratings', desc: false }],
+        }}
         doneFetching={
           courseSearch
             ? filteredCourses.length >= numRendered
             : filteredProfs.length >= numRendered
         }
-        fetchOffset={2000}
-        sortable
       />
     </SearchResultsContent>
   );
@@ -143,12 +174,12 @@ const SearchResults = ({
       tabList={[
         {
           onClick: () => setExploreTab(0),
-          title: `Courses ${data ? `(${filteredCourses.length})` : ''}`,
+          title: `Courses ${courses ? `(${filteredCourses.length})` : ''}`,
           render: results,
         },
         {
           onClick: () => setExploreTab(1),
-          title: `Profs ${data ? `(${filteredProfs.length})` : ''}`,
+          title: `Profs ${profs ? `(${filteredProfs.length})` : ''}`,
           render: results,
         },
       ]}

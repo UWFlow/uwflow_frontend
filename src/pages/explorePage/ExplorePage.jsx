@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import queryString from 'query-string';
@@ -30,6 +30,7 @@ const ExplorePageContent = ({
   data,
   loading,
 }) => {
+  const [profCourses, setProfCourses] = useState(['any course']);
   const [courseCodes, setCourseCodes] = useState(
     Array(NUM_COURSE_CODE_FILTERS).fill(true),
   );
@@ -40,15 +41,22 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
-  let profCourses = !!data
-    ? data.prof.reduce(
-        (acc, prof) => {
-          return acc.concat(prof.prof_courses.map(course => course.code));
-        },
-        ['any course'],
-      )
-    : ['any course'];
-  profCourses = profCourses.filter(code => !!code);
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const newProfCourses = data.prof.reduce(
+      (acc, prof) => {
+        return acc.concat(
+          prof.prof_courses
+            .filter(course => !!course.code)
+            .map(course => course.code),
+        );
+      },
+      ['any course'],
+    );
+    setProfCourses(newProfCourses);
+  }, [data]);
 
   const filterState = {
     courseCodes,
