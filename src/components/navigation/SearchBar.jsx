@@ -116,6 +116,10 @@ const SearchBar = ({
     codeSearch = false,
     profSearch = false,
   ) => {
+    if (query === '' || !query) {
+      history.push(EXPLORE_PAGE_ROUTE);
+    }
+
     const codeTerm = codeSearch ? '&c=t' : '';
     const profTerm = profSearch ? '&t=p' : '';
     setOpen(false);

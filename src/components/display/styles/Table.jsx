@@ -66,7 +66,8 @@ export const HeaderText = styled.span`
 
 export const SortArrow = styled.span`
   color: ${({ theme }) => theme.primary};
-  text-decoration: none !important;
+  margin-left: 4px;
+  vertical-align: middle;
 `;
 
 export const TableBody = styled.div`
@@ -108,4 +109,13 @@ export const Cell = styled.div`
     padding: 0 16px;
     column-span: all;
   }
+`;
+
+export const LoadingRow = styled.div`
+  display: table-caption;
+  caption-side: bottom;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 0 4px 4px 0;
 `;

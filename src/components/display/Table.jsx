@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 import { throttle } from 'lodash';
+import { ChevronUp, ChevronDown } from 'react-feather';
 
 import {
   TableWrapper,
@@ -13,6 +14,7 @@ import {
   HeaderCell,
   SortArrow,
   HeaderText,
+  LoadingRow,
 } from './styles/Table';
 
 import LoadingSpinner from '../display/LoadingSpinner';
@@ -25,6 +27,7 @@ const Table = ({
   loading = false,
   doneFetching = false,
   fetchMore = null,
+  fetchOffset = 1000,
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
@@ -51,9 +54,9 @@ const Table = ({
     if (loading || shouldFetchMore || !bottomRef.current || !fetchMore) {
       return;
     }
-    const offset = 800;
     const top = bottomRef.current.getBoundingClientRect().top;
-    const inView = top + offset >= 0 && top - offset <= window.innerHeight;
+    const inView =
+      top + fetchOffset >= 0 && top - fetchOffset <= window.innerHeight;
     setShouldFetchMore(inView);
   };
 
@@ -65,13 +68,41 @@ const Table = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable(
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable(
     {
       columns,
       data,
     },
     useSortBy,
   );
+
+  const renderRows = () =>
+    rows.map(
+      row =>
+        prepareRow(row) || (
+          <Row {...row.getRowProps()}>
+            {row.cells.map(cell => (
+              <Cell
+                {...cell.getCellProps()}
+                padding={cellPadding}
+                align={cell.column.align}
+                style={cell.column.style}
+              >
+                {cell.render('Cell')}
+              </Cell>
+            ))}
+          </Row>
+        ),
+    );
+
+  const isLoading =
+    (loading || shouldFetchMore) && !doneFetching && fetchMore !== null;
 
   return (
     <TableWrapper {...getTableProps()}>
@@ -90,38 +121,28 @@ const Table = ({
                   {column.render('Header')}
                 </HeaderText>
                 <SortArrow>
-                  {column.sorted ? (column.sortedDesc ? ' ▲' : ' ▼') : ''}
+                  {column.isSorted ? (
+                    column.isSortedDesc ? (
+                      <ChevronUp size={14} strokeWidth={4} />
+                    ) : (
+                      <ChevronDown size={14} strokeWidth={4} />
+                    )
+                  ) : (
+                    ''
+                  )}
                 </SortArrow>
               </HeaderCell>
             ))}
           </HeaderRow>
         ))}
       </TableHeader>
-      <TableBody>
-        {rows.map(
-          row =>
-            prepareRow(row) || (
-              <Row {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  <Cell
-                    {...cell.getCellProps()}
-                    padding={cellPadding}
-                    align={cell.column.align}
-                    style={cell.column.style}
-                  >
-                    {cell.render('Cell')}
-                  </Cell>
-                ))}
-              </Row>
-            ),
-        )}
-        {(loading || shouldFetchMore) && !doneFetching && fetchMore !== null && (
-          <Row>
-            <LoadingSpinner size={48} strokeWidth={4} />
-          </Row>
-        )}
-        <div ref={bottomRef} />
-      </TableBody>
+      <TableBody {...getTableBodyProps()}>{renderRows()}</TableBody>
+      {isLoading && (
+        <LoadingRow>
+          <LoadingSpinner size={48} strokeWidth={4} />
+        </LoadingRow>
+      )}
+      <div ref={bottomRef} />
     </TableWrapper>
   );
 };

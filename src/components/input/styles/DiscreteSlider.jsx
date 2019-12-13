@@ -8,6 +8,7 @@ export const DiscreteSliderWrapper = styled.div`
   flex-direction: row;
   margin: ${({ margin }) => margin};
   width: 300px;
+  max-width: 100%;
 `;
 
 export const SliderBarWrapper = styled.div`

@@ -28,7 +28,6 @@ const ExplorePageContent = ({
   codeSearch,
   courseTab,
   data,
-  fetchMore,
   loading,
 }) => {
   const [courseCodes, setCourseCodes] = useState(
@@ -93,7 +92,6 @@ const ExplorePageContent = ({
             ratingFilters={RATING_FILTERS}
             profCourses={profCourses}
             loading={loading}
-            fetchMore={fetchMore}
           />
         </Column1>
         <Column2>
@@ -126,16 +124,9 @@ const ExplorePage = ({ location }) => {
 
   const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
 
-  const { data, fetchMore, loading } = useQuery(
-    exploreQuery(
-      '{rating: {filled_count: desc_nulls_last}}',
-      query ? query : '',
-    ),
-    {
-      variables: { course_offset: 0, prof_offset: 0 },
-      notifyOnNetworkStatusChange: true,
-    },
-  );
+  const { data, loading } = useQuery(exploreQuery(query), {
+    notifyOnNetworkStatusChange: true,
+  });
 
   return (
     <ExplorePageWrapper>
@@ -144,7 +135,6 @@ const ExplorePage = ({ location }) => {
         codeSearch={codeSearch || false}
         courseTab={courseTab}
         data={data}
-        fetchMore={fetchMore}
         loading={loading}
       />
     </ExplorePageWrapper>
