@@ -88,6 +88,7 @@ const SocialLoginContent = ({ setJWT }) => {
         appId={`${FACEBOOK_APP_ID}`}
         isMobile={false}
         fields="name,email,picture"
+        scope="public_profile,email"
         callback={handleFacebookLogin}
         render={renderProps => (
           <FacebookButton
