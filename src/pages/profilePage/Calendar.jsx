@@ -72,18 +72,17 @@ const CalendarColumn = ({ day, minHour, events = [] }) => (
       const timeDiffMinutes = moment
         .duration(event.start.diff(event.end))
         .asMinutes();
-      console.log(event.courseCode);
+      const color = event.section.includes(LEC)
+        ? LEC
+        : event.section.includes(LAB)
+        ? LAB
+        : TUT;
+
       return (
         <EventWrapper
           top={HOUR_HEIGHT * (Math.abs(startDurationMinutes) / 60)}
           height={HOUR_HEIGHT * (Math.abs(timeDiffMinutes) / 60)}
-          color={
-            event.section.includes(LEC)
-              ? LEC
-              : event.section.includes(LAB)
-              ? LAB
-              : TUT
-          }
+          color={color}
           key={i}
           truncate={event.truncate || false}
         >

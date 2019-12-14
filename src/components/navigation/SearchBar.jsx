@@ -47,6 +47,7 @@ const SearchBar = ({
   const inputRef = useRef();
 
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
+
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState({
@@ -67,10 +68,10 @@ const SearchBar = ({
       } else if (keyCode === KeycodeConstants.DOWN) {
         event.preventDefault();
         const length =
-          searchResults.courseCodeResults.length +
+          Math.max(searchResults.courseCodeResults.length, 1) +
           searchResults.courseResults.length +
           searchResults.profResults.length;
-        setSelectedResultIndex(Math.min(length, selectedResultIndex + 1));
+        setSelectedResultIndex(Math.min(length - 1, selectedResultIndex + 1));
       }
     },
     [selectedResultIndex, searchResults],
@@ -115,6 +116,10 @@ const SearchBar = ({
     codeSearch = false,
     profSearch = false,
   ) => {
+    if (query === '' || !query) {
+      history.push(EXPLORE_PAGE_ROUTE);
+    }
+
     const codeTerm = codeSearch ? '&c=t' : '';
     const profTerm = profSearch ? '&t=p' : '';
     setOpen(false);
@@ -149,14 +154,16 @@ const SearchBar = ({
 
   const exploreResult = (code = '', ref = null) => (
     <SearchResult
-      onClick={() => queryExploreCourses(code, true)}
+      onClick={() => queryExploreCourses(code, code !== '')}
       key={code}
       ref={ref}
     >
-      <ExploreText>
-        <Layers />
-        Explore all {code.toUpperCase()} courses and professors
-      </ExploreText>
+      <ResultLeft>
+        <ExploreText>
+          <Layers />
+          {`Explore all ${code.toUpperCase()} courses and professors`}
+        </ExploreText>
+      </ResultLeft>
     </SearchResult>
   );
 
@@ -226,30 +233,14 @@ const SearchBar = ({
       return exploreResult();
     }
 
-    const courseCodeResults =
-      searchResults.courseCodeResults.length > 0
-        ? searchResults.courseCodeResults.map((result, i) =>
-            exploreResult(
-              result.code,
-              selectedResultIndex === i ? selectedResultRef : null,
-            ),
-          )
-        : [
-            exploreResult(
-              '',
-              selectedResultIndex === 0 ? selectedResultRef : null,
-            ),
-          ];
-
-    let offset = courseCodeResults.length;
     const courseResults = searchResults.courseResults.map((result, i) => {
       return courseResult(
         result,
-        selectedResultIndex === i + offset ? selectedResultRef : null,
+        selectedResultIndex === i ? selectedResultRef : null,
       );
     });
 
-    offset += searchResults.courseResults.length;
+    let offset = courseResults.length;
     const profResults = searchResults.profResults.map((result, i) => {
       return profResult(
         result,
@@ -257,7 +248,23 @@ const SearchBar = ({
       );
     });
 
-    const allResults = [...courseCodeResults, ...courseResults, ...profResults];
+    offset += profResults.length;
+    const courseCodeResults =
+      searchResults.courseCodeResults.length > 0
+        ? searchResults.courseCodeResults.map((result, i) =>
+            exploreResult(
+              result.code,
+              selectedResultIndex === i + offset ? selectedResultRef : null,
+            ),
+          )
+        : [
+            exploreResult(
+              '',
+              selectedResultIndex === offset ? selectedResultRef : null,
+            ),
+          ];
+
+    const allResults = [...courseResults, ...profResults, ...courseCodeResults];
 
     return (
       <SearchResultsWrapper maximizeWidth={maximizeWidth}>
@@ -281,10 +288,12 @@ const SearchBar = ({
   return (
     <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>
       <Textbox
-        icon={<Search color={isLanding ? theme.dark1 : theme.dark3} />}
+        icon={
+          <Search size={20} color={isLanding ? theme.dark1 : theme.dark3} />
+        }
         text={searchText}
         setText={handleKeyStroke}
-        placeholder="Explore or search for courses, subjects or professors"
+        placeholder="Search for courses, subjects or professors"
         handleKeyDown={handleSearch}
         options={options}
         maxLength={100}

@@ -163,7 +163,8 @@ export const EventWrapper = styled.div`
   width: calc(${({ truncate }) => (truncate ? 50 : 100)}% - 4px);
   padding: 2px 4px;
   font-size: 11px;
-  ${({ truncate }) => (truncate ? `${truncate}: ${truncate === 'left' ? '0' : '4px'};` : '')}
+  ${({ truncate }) =>
+    truncate ? `${truncate}: ${truncate === 'left' ? '0' : '4px'};` : ''}
   transition: 0.2s all;
 
   &:hover {
@@ -177,6 +178,6 @@ export const CourseCode = styled(Link)`
   ${Body}
   font-size: 11px;
   font-weight: 600;
-  color: ${({ theme }) => theme.dark1};
-  text-decoration: none;
+  color: ${({ theme }) => theme.courses};
+  text-decoration: underline;
 `;

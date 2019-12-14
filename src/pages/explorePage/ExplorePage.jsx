@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import queryString from 'query-string';
@@ -28,9 +28,9 @@ const ExplorePageContent = ({
   codeSearch,
   courseTab,
   data,
-  fetchMore,
   loading,
 }) => {
+  const [profCourses, setProfCourses] = useState(['all courses']);
   const [courseCodes, setCourseCodes] = useState(
     Array(NUM_COURSE_CODE_FILTERS).fill(true),
   );
@@ -41,15 +41,30 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
-  let profCourses = !!data
-    ? data.prof.reduce(
-        (acc, prof) => {
-          return acc.concat(prof.prof_courses.map(course => course.code));
-        },
-        ['any course'],
-      )
-    : ['any course'];
-  profCourses = profCourses.filter(code => !!code);
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    let seenCourses = new Set();
+    const newProfCourses = data.prof
+      .reduce((acc, prof) => {
+        return acc.concat(
+          prof.prof_courses
+            .filter(
+              courseObj =>
+                !!courseObj.course.code &&
+                !seenCourses.has(courseObj.course.code),
+            )
+            .map(courseObj => {
+              seenCourses.add(courseObj.course.code);
+              return courseObj.course.code;
+            }),
+        );
+      }, [])
+      .sort((a, b) => a.localeCompare(b));
+    setProfCourses(['all courses'].concat(newProfCourses));
+  }, [data]);
 
   const filterState = {
     courseCodes,
@@ -78,6 +93,8 @@ const ExplorePageContent = ({
         <ExploreHeaderText>
           {codeSearch
             ? `Showing all ${query.toUpperCase()} courses and professors`
+            : query === ''
+            ? `Showing all courses and professors`
             : `Showing results for "${query}"`}
         </ExploreHeaderText>
       </ExploreHeaderWrapper>
@@ -91,7 +108,6 @@ const ExplorePageContent = ({
             ratingFilters={RATING_FILTERS}
             profCourses={profCourses}
             loading={loading}
-            fetchMore={fetchMore}
           />
         </Column1>
         <Column2>
@@ -124,22 +140,17 @@ const ExplorePage = ({ location }) => {
 
   const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
 
-  const { data, fetchMore, loading } = useQuery(
-    exploreQuery('{rating: {filled_count: desc_nulls_last}}', query),
-    {
-      variables: { course_offset: 0, prof_offset: 0 },
-      notifyOnNetworkStatusChange: true,
-    },
-  );
+  const { data, loading } = useQuery(exploreQuery(query), {
+    notifyOnNetworkStatusChange: true,
+  });
 
   return (
     <ExplorePageWrapper>
       <ExplorePageContent
-        query={query}
-        codeSearch={codeSearch}
+        query={query || ''}
+        codeSearch={codeSearch || false}
         courseTab={courseTab}
         data={data}
-        fetchMore={fetchMore}
         loading={loading}
       />
     </ExplorePageWrapper>

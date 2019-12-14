@@ -111,6 +111,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
             options={courseFilterDisplayOptions}
             onChange={value => setSelectedFilter(value)}
             zIndex={5}
+            searchable
           />
         </DropdownPanelWrapper>
       </ProfCourseFilterWrapper>

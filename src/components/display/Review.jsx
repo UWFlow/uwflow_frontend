@@ -167,8 +167,8 @@ const Review = ({
           <ReviewMetricsBody>
             {MetricIfExists(metrics, 'clear')}
             {MetricIfExists(metrics, 'engaging')}
-            {MetricIfExists(metrics, 'useful')}
             {MetricIfExists(metrics, 'easy')}
+            {MetricIfExists(metrics, 'useful')}
             {MetricIfExists(metrics, 'liked')}
           </ReviewMetricsBody>
         </ReviewMetricsWrapper>

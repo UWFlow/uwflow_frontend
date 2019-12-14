@@ -21,7 +21,7 @@ const AuthModal = ({ isAuthModalOpen }) => {
       isOpen={isAuthModalOpen}
       onRequestClose={() => dispatch(authModalClose())}
     >
-      <AuthForm onAuthComplete={() => dispatch(authModalClose())} />
+      <AuthForm onLoginComplete={() => dispatch(authModalClose())} />
     </Modal>
   );
 };

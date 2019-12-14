@@ -3,43 +3,20 @@ import gql from 'graphql-tag';
 import CourseFragment from '../../fragments/CourseFragment.jsx';
 import ProfFragment from '../../fragments/ProfFragment.jsx';
 
-import {
-  SEARCH_RESULTS_PER_PAGE,
-  MAX_SEARCH_TERMS,
-} from '../../../constants/Search.jsx';
+import { MAX_SEARCH_TERMS } from '../../../constants/Search.jsx';
 import { splitCourseCode } from '../../../utils/Misc.jsx';
 
-export const buildExploreCodeQuery = (sort, query) => gql`
-  query EXPLORE_COURSE_CODE($course_offset: Int, $prof_offset: Int) {
-    course(
-      offset: $course_offset,
-      limit: ${SEARCH_RESULTS_PER_PAGE},
-      order_by: ${sort},
-      where: {code: {_ilike: "${query}%"}}
-    ) {
+export const buildExploreCodeQuery = (query = '') => gql`
+  query EXPLORE_COURSE_CODE {
+    course(where: {code: {_ilike: "${query}%"}}) {
       ...CourseInfoFragment
       ...CourseTermFragment
       ...CourseRatingFragment
     }
-    course_aggregate(where: {code: {_ilike: "${query}%"}}) {
-      aggregate {
-        count
-      }
-    }
-    prof(
-      offset: $prof_offset,
-      limit: ${SEARCH_RESULTS_PER_PAGE},
-      order_by: ${sort},
-      where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}
-    ) {
+    prof(where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}) {
       ...ProfInfoFragment
       ...ProfCoursesTaughtFragment
       ...ProfRatingFragment
-    }
-    prof_aggregate(where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}) {
-      aggregate {
-        count
-      }
     }
   }
   ${CourseFragment.courseInfo}
@@ -50,7 +27,7 @@ export const buildExploreCodeQuery = (sort, query) => gql`
   ${ProfFragment.profRating}
 `;
 
-export const buildExploreQuery = (sort, query) => {
+export const buildExploreQuery = (query = '') => {
   const queryTerms = query
     .replace('-', ' ')
     .split(' ')
@@ -84,36 +61,16 @@ export const buildExploreQuery = (sort, query) => {
   ]}`;
 
   return gql`
-    query EXPLORE_ALL($query: String, $course_offset: Int, $prof_offset: Int) {
-      course(
-        offset: $course_offset,
-        limit: ${SEARCH_RESULTS_PER_PAGE},
-        order_by: ${sort},
-        where: ${parsedCourseQuery}
-      ) {
+    query EXPLORE_ALL($query: String) {
+      course(where: ${parsedCourseQuery}) {
         ...CourseInfoFragment
         ...CourseTermFragment
         ...CourseRatingFragment
       }
-      course_aggregate(where: ${parsedCourseQuery}) {
-        aggregate {
-          count
-        }
-      }
-      prof(
-        offset: $prof_offset,
-        limit: ${SEARCH_RESULTS_PER_PAGE},
-        order_by: ${sort},
-        where: ${parsedProfQuery}
-      ) {
+      prof(where: ${parsedProfQuery}) {
         ...ProfInfoFragment
         ...ProfCoursesTaughtFragment
         ...ProfRatingFragment
-        }
-      prof_aggregate(where: ${parsedProfQuery}) {
-        aggregate {
-          count
-        }
       }
     }
     ${CourseFragment.courseInfo}

@@ -17,7 +17,7 @@ export const courseColumns = [
     ),
   },
   {
-    Header: 'Course Name',
+    Header: 'Course name',
     accessor: 'name',
     align: 'left',
     maxWidth: 128,

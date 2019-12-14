@@ -14,12 +14,14 @@ export const TabsWrapper = styled.div`
   flex-direction: row;
   position: sticky;
   top: ${NAVBAR_HEIGHT}px;
-  z-index: 7;
+  z-index: 4;
+  overflow: auto;
   ${BoxShadow}
 `;
 
 export const Tab = styled.div`
   display: flex;
+  min-width: ${({ minWidth }) => (minWidth ? `${minWidth}px` : 0)};
   flex: 1;
   justify-content: center;
   align-items: center;
