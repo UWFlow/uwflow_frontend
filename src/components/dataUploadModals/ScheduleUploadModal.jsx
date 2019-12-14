@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from '../../../components/display/Modal';
+import Modal from '../display/Modal';
 
 /* Child Components */
 import ScheduleUploadModalContent from './ScheduleUploadModalContent';

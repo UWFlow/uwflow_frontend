@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
-import { Heading1, Body, Link } from '../../../constants/Mixins';
+import { Heading1, Body, Link, Heading2 } from '../../../constants/Mixins';
 
 export const ProfileCoursesWrapper = styled.div`
   display: flex;
@@ -9,6 +9,7 @@ export const ProfileCoursesWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   border-radius: 4px;
+  background: ${({ theme }) => theme.white};
 `;
 
 export const ProfileCoursesCourse = styled.div`
@@ -107,5 +108,26 @@ export const LikedCourseWrapper = styled.span`
 
   @media only screen and (max-width: 500px) {
     display: none;
+  }
+`;
+
+export const YourCoursesWrapper = styled.div`
+  ${Heading2}
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 16px;
+  `}
+
+  @media only screen and (max-width: ${({ columnBreak }) => columnBreak}px) {
+    flex-direction: column;
+  }
+`;
+
+export const HeaderText = styled.div`
+  @media only screen and (max-width: ${({ columnBreak }) => columnBreak}px) {
+    margin-bottom: 16px;
   }
 `;

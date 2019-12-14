@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withTheme } from 'styled-components';
-import { makeAuthenticatedPOSTRequest } from '../../../utils/Api';
+import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
 
 /* Styled Components */
@@ -26,13 +26,13 @@ import {
 import {
   BACKEND_ENDPOINT,
   TRANSCRIPT_PARSE_ENDPOINT,
-} from '../../../constants/Api';
+} from '../../constants/Api';
 import {
   AWAITING_UPLOAD,
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
   UPLOAD_FAILED,
-} from '../../../constants/DataUploadStates';
+} from '../../constants/DataUploadStates';
 
 const privacyText = `
   Flow only uses your transcript so you can easily import your course

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withTheme } from 'styled-components';
-import { makeAuthenticatedPOSTRequest } from '../../../utils/Api';
+import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';
 
 /* Styled Components */
@@ -25,16 +25,13 @@ import {
 } from './styles/DataUploadModals';
 
 /* Constants */
-import {
-  SCHEDULE_PARSE_ENDPOINT,
-  BACKEND_ENDPOINT,
-} from '../../../constants/Api';
+import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from '../../constants/Api';
 import {
   UPLOAD_PENDING,
   AWAITING_UPLOAD,
   UPLOAD_FAILED,
   UPLOAD_SUCCESSFUL,
-} from '../../../constants/DataUploadStates';
+} from '../../constants/DataUploadStates';
 
 export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);

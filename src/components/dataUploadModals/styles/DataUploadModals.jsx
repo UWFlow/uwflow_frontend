@@ -6,7 +6,7 @@ import {
   BoxShadow,
   Heading4,
   Body,
-} from '../../../../constants/Mixins';
+} from '../../../constants/Mixins';
 
 export const ContentWrapper = styled.div`
   display: flex;
@@ -15,6 +15,7 @@ export const ContentWrapper = styled.div`
   ${BoxShadow}
   padding: 32px;
   margin: 32px 0;
+  border-radius: 4px;
 `;
 
 export const Header = styled.div`

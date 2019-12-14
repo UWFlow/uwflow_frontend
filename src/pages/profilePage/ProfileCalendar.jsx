@@ -1,18 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
+import React, { useState } from 'react';
 import moment from 'moment';
 
 /* Child Components */
 import Button from '../../components/input/Button';
 import Calendar from './Calendar';
+import ScheduleUploadModal from '../../components/dataUploadModals/ScheduleUploadModal';
 
 /* Styled Components */
 import {
   ProfileCalendarWrapper,
   ProfileCalendarHeading,
   ProfileCalendarText,
-  ProfileCalendarImg,
 } from './styles/ProfileCalendar';
 
 /* Utils */
@@ -127,7 +125,15 @@ const getEventsByDate = events => {
   return eventsByDate;
 };
 
-const ProfileCalendar = ({ schedule, theme }) => {
+const ProfileCalendar = ({ schedule }) => {
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+  const ScheduleModal = (
+    <ScheduleUploadModal
+      isModalOpen={scheduleModalOpen}
+      onCloseModal={() => setScheduleModalOpen(false)}
+    />
+  );
+
   if (!schedule || schedule.length === 0)
     return (
       <ProfileCalendarWrapper>
@@ -135,25 +141,30 @@ const ProfileCalendar = ({ schedule, theme }) => {
           Import your class schedule
         </ProfileCalendarHeading>
         <ProfileCalendarText>
-          To print, share, or export it to Google Calendar, Calendar.app, etc...
-          It looks like:
+          To export it to Google Calendar, Calendar.app, etc...
         </ProfileCalendarText>
-        <ProfileCalendarImg>
-          <Button onClick={() => {}} margin="auto" hasShadow={false}>
-            Import your schedule from Quest
-          </Button>
-        </ProfileCalendarImg>
+        <Button
+          handleClick={() => setScheduleModalOpen(true)}
+          margin="auto"
+          padding="8px 24px"
+          hasShadow={false}
+          width="100%"
+        >
+          Add current / upcoming term
+        </Button>
+        {ScheduleModal}
       </ProfileCalendarWrapper>
     );
 
   const [minDate, dayRange] = getScheduleRange(schedule);
   const events = getEventIntervals(moment(minDate), dayRange, schedule);
   const eventsByDate = getEventsByDate(events);
-  return <Calendar eventsByDate={eventsByDate} />;
+  return (
+    <>
+      <Calendar eventsByDate={eventsByDate} />
+      {ScheduleModal}
+    </>
+  );
 };
 
-ProfileCalendar.propTypes = {
-  theme: PropTypes.object.isRequired,
-};
-
-export default withTheme(ProfileCalendar);
+export default ProfileCalendar;
