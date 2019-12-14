@@ -90,6 +90,7 @@ const Table = ({
 
   useEffect(() => {
     setTableState(tableState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tableState]);
 
   const renderRows = () =>

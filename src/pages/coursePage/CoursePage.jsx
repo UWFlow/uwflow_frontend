@@ -55,7 +55,6 @@ const CoursePageContent = ({
 }) => {
   const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  console.log(sectionSubscriptions);
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };

@@ -88,42 +88,34 @@ const SearchResults = ({
     return new RegExp(regexStr);
   }, [filterState]);
 
-  const filteredCourses = useMemo(
-    () =>
-      courses
-        ? courses.filter(
-            course =>
-              courseCodeRegex.test(course.code) &&
-              course.ratings >= ratingFilters[filterState.numCourseRatings] &&
-              (!filterState.currentTerm ||
-                (filterState.currentTerm &&
-                  course.sections &&
-                  course.sections.some(
-                    section => Number(section.term_id) === currentTermCode,
-                  ))) &&
-              (!filterState.nextTerm ||
-                (filterState.nextTerm &&
-                  course.sections &&
-                  course.sections.some(
-                    section => Number(section.term_id) === nextTermCode,
-                  ))),
-          )
-        : [],
-    [filterState, courses],
-  );
+  const filteredCourses = courses
+    ? courses.filter(
+        course =>
+          courseCodeRegex.test(course.code) &&
+          course.ratings >= ratingFilters[filterState.numCourseRatings] &&
+          (!filterState.currentTerm ||
+            (filterState.currentTerm &&
+              course.sections &&
+              course.sections.some(
+                section => Number(section.term_id) === currentTermCode,
+              ))) &&
+          (!filterState.nextTerm ||
+            (filterState.nextTerm &&
+              course.sections &&
+              course.sections.some(
+                section => Number(section.term_id) === nextTermCode,
+              ))),
+      )
+    : [];
 
-  const filteredProfs = useMemo(
-    () =>
-      profs
-        ? profs.filter(
-            prof =>
-              prof.ratings >= ratingFilters[filterState.numProfRatings] &&
-              (filterState.courseTaught === 0 ||
-                prof.courses.has(profCourses[filterState.courseTaught])),
-          )
-        : [],
-    [filterState, profs],
-  );
+  const filteredProfs = profs
+    ? profs.filter(
+        prof =>
+          prof.ratings >= ratingFilters[filterState.numProfRatings] &&
+          (filterState.courseTaught === 0 ||
+            prof.courses.has(profCourses[filterState.courseTaught])),
+      )
+    : [];
 
   const courseSearch = exploreTab === 0;
 
