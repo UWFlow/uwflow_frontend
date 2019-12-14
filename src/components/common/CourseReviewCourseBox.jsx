@@ -238,6 +238,7 @@ const CourseReviewCourseBox = ({
             color={theme.courses}
             onChange={value => setSelectedCourseIndex(value)}
             zIndex={6}
+            searchable
           />
         </QuestionWrapper>
       )}
@@ -298,6 +299,7 @@ const CourseReviewCourseBox = ({
           color={theme.professors}
           onChange={value => setSelectedProf(value)}
           zIndex={5}
+          searchable
         />
       </QuestionWrapper>
 

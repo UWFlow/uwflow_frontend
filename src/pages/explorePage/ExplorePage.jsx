@@ -30,7 +30,7 @@ const ExplorePageContent = ({
   data,
   loading,
 }) => {
-  const [profCourses, setProfCourses] = useState(['any course']);
+  const [profCourses, setProfCourses] = useState(['all courses']);
   const [courseCodes, setCourseCodes] = useState(
     Array(NUM_COURSE_CODE_FILTERS).fill(true),
   );
@@ -45,17 +45,25 @@ const ExplorePageContent = ({
     if (!data) {
       return;
     }
-    const newProfCourses = data.prof.reduce(
-      (acc, prof) => {
+
+    let seenCourses = new Set();
+    const newProfCourses = data.prof
+      .reduce((acc, prof) => {
         return acc.concat(
           prof.prof_courses
-            .filter(course => !!course.code)
-            .map(course => course.code),
+            .filter(
+              courseObj =>
+                !!courseObj.course.code &&
+                !seenCourses.has(courseObj.course.code),
+            )
+            .map(courseObj => {
+              seenCourses.add(courseObj.course.code);
+              return courseObj.course.code;
+            }),
         );
-      },
-      ['any course'],
-    );
-    setProfCourses(newProfCourses);
+      }, [])
+      .sort((a, b) => a.localeCompare(b));
+    setProfCourses(['all courses'].concat(newProfCourses));
   }, [data]);
 
   const filterState = {

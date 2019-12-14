@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { X } from 'react-feather';
@@ -27,6 +27,7 @@ import {
   termCodeToDate,
   getCurrentTermCode,
   getNextTermCode,
+  splitCourseCode,
 } from '../../utils/Misc';
 
 let courseNumberOptions = [1, 2, 3, 4].map(num => (
@@ -133,9 +134,12 @@ const SearchFilter = ({
               <CourseFilterDropdown>
                 <DropdownList
                   selectedIndex={filterState.courseTaught}
-                  options={profCourses}
+                  options={profCourses.map(code =>
+                    code === 'all courses' ? code : splitCourseCode(code),
+                  )}
                   color={theme.courses}
                   onChange={idx => setCourseTaught(idx)}
+                  searchable
                 />
               </CourseFilterDropdown>
             </SearchFilterText>

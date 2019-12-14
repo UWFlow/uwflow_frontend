@@ -158,10 +158,12 @@ const SearchBar = ({
       key={code}
       ref={ref}
     >
-      <ExploreText>
-        <Layers />
-        Explore all {code.toUpperCase()} courses and professors
-      </ExploreText>
+      <ResultLeft>
+        <ExploreText>
+          <Layers />
+          {`Explore all ${code.toUpperCase()} courses and professors`}
+        </ExploreText>
+      </ResultLeft>
     </SearchResult>
   );
 
@@ -286,7 +288,9 @@ const SearchBar = ({
   return (
     <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>
       <Textbox
-        icon={<Search color={isLanding ? theme.dark1 : theme.dark3} />}
+        icon={
+          <Search size={20} color={isLanding ? theme.dark1 : theme.dark3} />
+        }
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Search for courses, subjects or professors"

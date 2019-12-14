@@ -6,6 +6,7 @@ import TabContainer from '../../components/display/TabContainer';
 import { courseColumns, profColumns } from './ExploreTableData';
 
 import { getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
+import { SEARCH_RESULTS_PER_PAGE } from '../../constants/Search';
 
 import { SearchResultsContent } from './styles/SearchResults';
 
@@ -14,7 +15,7 @@ const nextTermCode = getNextTermCode();
 
 const numberSort = (a, b, desc) => (desc ? a - b : b - a);
 const stringSort = (a, b, desc) =>
-  desc ? a.localeCompare(b) : b.localeCompare(a);
+  desc ? b.localeCompare(a) : a.localeCompare(b);
 
 const SearchResults = ({
   filterState,
@@ -25,13 +26,13 @@ const SearchResults = ({
   profCourses,
   loading,
 }) => {
-  const [numRendered, setNumRendered] = useState(50);
+  const [numRendered, setNumRendered] = useState(SEARCH_RESULTS_PER_PAGE);
   const [courses, setCourses] = useState(null);
   const [profs, setProfs] = useState(null);
   const [tableState, setTableState] = useState({ sortBy: [] });
 
   useEffect(() => {
-    setNumRendered(50);
+    setNumRendered(SEARCH_RESULTS_PER_PAGE);
   }, [exploreTab]);
 
   useEffect(() => {
@@ -63,7 +64,10 @@ const SearchResults = ({
         liked: prof.rating ? prof.rating.liked : null,
         clear: prof.rating ? prof.rating.clear : null,
         engaging: prof.rating ? prof.rating.engaging : null,
-        courses: prof.prof_courses.map(course => course.code),
+        courses: prof.prof_courses.reduce(
+          (acc, courseObj) => acc.add(courseObj.course.code),
+          new Set(),
+        ),
       }),
     );
 
@@ -84,34 +88,42 @@ const SearchResults = ({
     return new RegExp(regexStr);
   }, [filterState]);
 
-  const filteredCourses = courses
-    ? courses.filter(
-        course =>
-          courseCodeRegex.test(course.code) &&
-          course.ratings >= ratingFilters[filterState.numCourseRatings] &&
-          (!filterState.currentTerm ||
-            (filterState.currentTerm &&
-              course.sections &&
-              course.sections.some(
-                section => Number(section.term_id) === currentTermCode,
-              ))) &&
-          (!filterState.nextTerm ||
-            (filterState.nextTerm &&
-              course.sections &&
-              course.sections.some(
-                section => Number(section.term_id) === nextTermCode,
-              ))),
-      )
-    : [];
+  const filteredCourses = useMemo(
+    () =>
+      courses
+        ? courses.filter(
+            course =>
+              courseCodeRegex.test(course.code) &&
+              course.ratings >= ratingFilters[filterState.numCourseRatings] &&
+              (!filterState.currentTerm ||
+                (filterState.currentTerm &&
+                  course.sections &&
+                  course.sections.some(
+                    section => Number(section.term_id) === currentTermCode,
+                  ))) &&
+              (!filterState.nextTerm ||
+                (filterState.nextTerm &&
+                  course.sections &&
+                  course.sections.some(
+                    section => Number(section.term_id) === nextTermCode,
+                  ))),
+          )
+        : [],
+    [filterState, courses],
+  );
 
-  const filteredProfs = profs
-    ? profs.filter(
-        prof =>
-          prof.ratings >= ratingFilters[filterState.numProfRatings] &&
-          (filterState.courseTaught === 0 ||
-            prof.courses.includes(profCourses[filterState.courseTaught])),
-      )
-    : [];
+  const filteredProfs = useMemo(
+    () =>
+      profs
+        ? profs.filter(
+            prof =>
+              prof.ratings >= ratingFilters[filterState.numProfRatings] &&
+              (filterState.courseTaught === 0 ||
+                prof.courses.has(profCourses[filterState.courseTaught])),
+          )
+        : [],
+    [filterState, profs],
+  );
 
   const courseSearch = exploreTab === 0;
 
