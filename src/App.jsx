@@ -12,7 +12,6 @@ import {
   EXPLORE_PAGE_ROUTE,
   PROF_PAGE_ROUTE,
   ABOUT_PAGE_ROUTE,
-  TEST_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
 } from './Routes';
 
@@ -24,7 +23,6 @@ import {
   LoadableExplorePage,
   LoadableProfPage,
   LoadableAboutPage,
-  LoadableTestPage,
   LoadableNotFoundPage,
   LoadablePrivacyPage,
 } from './LoadableComponents';
@@ -85,11 +83,6 @@ const App = () => {
           exact
           path={PRIVACY_PAGE_ROUTE}
           component={() => <LoadablePrivacyPage />}
-        />
-        <Route
-          exact
-          path={TEST_PAGE_ROUTE}
-          component={() => <LoadableTestPage />}
         />
         <Route path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>

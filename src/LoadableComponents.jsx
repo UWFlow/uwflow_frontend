@@ -31,7 +31,3 @@ export const LoadableAboutPage = loadable(() =>
 export const LoadablePrivacyPage = loadable(() =>
   import(/* webpackPrefetch: true */ './pages/privacyPage/PrivacyPage'),
 );
-
-export const LoadableTestPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './desktop/components/testPage/TestPage'),
-);
