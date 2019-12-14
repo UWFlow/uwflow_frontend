@@ -88,7 +88,7 @@ export const ReviewsForSingleProfWrapper = styled.div`
 export const ProfHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   ${breakpoint('mobile', 'tablet')`
     flex-direction: column;

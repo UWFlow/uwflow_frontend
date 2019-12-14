@@ -146,8 +146,16 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
+const CourseProfReviews = ({ theme, reviewsByProf, ProfFilterDropdown, selectedSort, setSelectedSort }) => {
   const [showingReviewsMap, setShowingReviewsMap] = useState({});
+
+  const curSelectedSort =
+    selectedSort.length >= reviewsByProf.length
+      ? selectedSort.slice()
+      : [
+          ...selectedSort,
+          ...Array(reviewsByProf.length - selectedSort.length).fill(0),
+        ];
 
   const reviewList = useMemo(
     () =>
@@ -165,12 +173,31 @@ const CourseProfReviews = ({ reviewsByProf, ProfFilterDropdown }) => {
                 </ProfLikedPercentLabel>
               </ProfLikedMetric>
             </ProfHeader>
+            <ReviewsOptionsWrapper>
+              <DropdownPanelWrapper>
+                <DropdownTableText>Sort by: </DropdownTableText>
+                <DropdownList
+                  color={theme.primary}
+                  selectedIndex={curSelectedSort[idx]}
+                  options={['most recent', 'most helpful']}
+                  onChange={value => {
+                    curSelectedSort[idx] = value;
+                    setSelectedSort(curSelectedSort);
+                  }}
+                  zIndex={4}
+                />
+              </DropdownPanelWrapper>
+            </ReviewsOptionsWrapper>
             {prof.reviews
               .sort((a, b) => {
-                return (
+                const timeSort =
                   moment(b.created_at).format('YYYYMMDD') -
-                  moment(a.created_at).format('YYYYMMDD')
-                );
+                  moment(a.created_at).format('YYYYMMDD');
+                return selectedSort[idx] === 0
+                  ? timeSort
+                  : b.upvotes === a.upvotes
+                  ? timeSort
+                  : b.upvotes - a.upvotes;
               })
               .filter((_, i) => {
                 return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
@@ -253,6 +280,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
   const [profReviewFilter, setProfReviewFilter] = useState(0);
   const [showingProfReviews, setShowingProfReviews] = useState(false);
   const [reviewDataState, dispatchReviews] = useCourseReviewsReducer(data);
+  const [selectedProfSort, setSelectedProfSort] = useState(Array(1).fill(0));
 
   useEffect(() => {
     if (data) {
@@ -307,6 +335,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
         selectedIndex={profReviewFilter}
         options={profProfFilterOptions}
         onChange={value => setProfReviewFilter(value)}
+        zIndex={6}
         searchable
       />
     </ProfDropdownPanelWrapper>
@@ -346,8 +375,11 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
       )}
       {showingProfReviews && isBrowserDesktop && (
         <CourseProfReviews
+          theme={theme}
           reviewsByProf={profReviewsToShow}
           ProfFilterDropdown={!isBrowserDesktop && ProfFilterDropdown}
+          selectedSort={selectedProfSort}
+          setSelectedSort={setSelectedProfSort}
         />
       )}
       {!isBrowserDesktop && (
