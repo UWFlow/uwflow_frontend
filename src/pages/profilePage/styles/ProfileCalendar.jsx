@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Link as RouterLink } from 'react-router-dom';
 import { Card, BoxShadow, Body, Heading2 } from '../../../constants/Mixins';
 
 export const ProfileCalendarWrapper = styled.div`
@@ -36,30 +35,4 @@ export const ProfileCalendarImg = styled.div`
   height: 500px;
   background-color: ${({ theme }) => theme.dark3};
   border-radius: 3px;
-`;
-
-export const ProfileCalendarEventWrapper = styled.div`
-  ${Body}
-  font-size: 13px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-`;
-
-export const EventCourseSectionWrapper = styled.span`
-  display: block;
-  margin-top: 4px;
-`;
-
-export const CourseText = styled(RouterLink).attrs({
-  target: '_blank',
-})`
-  font-weight: 600;
-  color: white;
-`;
-
-export const SectionText = styled.span``;
-
-export const LocationText = styled.span`
-  margin-top: 4px;
 `;

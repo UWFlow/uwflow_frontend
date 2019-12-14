@@ -7,6 +7,12 @@ export const DiscreteSliderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin: ${({ margin }) => margin};
+  width: 300px;
+  max-width: 100%;
+
+  ${breakpoint('mobile', 'tablet')`
+    width: 100%;
+  `}
 `;
 
 export const SliderBarWrapper = styled.div`

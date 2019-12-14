@@ -25,7 +25,7 @@ export const FooterContent = styled.div`
   justify-content: space-between;
 
   ${breakpoint('mobile', 'tablet')`
-    padding: 0 16px;
+    padding: 16px;
     width: 100%;
   `}
 

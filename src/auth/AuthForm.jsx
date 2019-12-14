@@ -24,7 +24,7 @@ import ResetPasswordModal from './ResetPasswordModal';
 
 import { PRIVACY_PAGE_ROUTE, FIRST_TIME_SIGNIN_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
-import { LOGGED_IN } from '../data/actions/AuthActions';
+import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
 
 export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
   const dispatch = useDispatch();
@@ -117,7 +117,10 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
           <SocialLoginContent setJWT={setJWT} />
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
-            <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE}>
+            <PrivacyPolicyText
+              to={PRIVACY_PAGE_ROUTE}
+              onClick={() => dispatch(authModalClose())}
+            >
               Privacy Policy
             </PrivacyPolicyText>
           </PrivacyWrapper>

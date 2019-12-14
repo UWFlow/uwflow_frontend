@@ -102,6 +102,7 @@ const CourseCourseReviews = ({
               selectedIndex={courseProfFilter}
               options={courseProfFilterOptions}
               onChange={value => setCourseProfFilter(value)}
+              searchable
             />
           </DropdownPanelWrapper>
         </ReviewsOptionsWrapper>
@@ -306,6 +307,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
         selectedIndex={profReviewFilter}
         options={profProfFilterOptions}
         onChange={value => setProfReviewFilter(value)}
+        searchable
       />
     </ProfDropdownPanelWrapper>
   );

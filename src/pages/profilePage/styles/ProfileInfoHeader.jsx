@@ -19,7 +19,6 @@ export const ProfileInfoHeaderWrapper = styled.div`
 export const ProfileInfoSection = styled.div`
   display: flex;
   flex-direction: column;
-  margin: auto;
   position: relative;
   padding: 32px 16px;
 

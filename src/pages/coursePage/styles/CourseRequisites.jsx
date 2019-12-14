@@ -1,15 +1,9 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import {
-  Card,
-  BoxShadow,
-  Heading4,
-  Heading3,
-  Body,
-} from '../../../constants/Mixins';
+import { Card, BoxShadow, Heading3, Body } from '../../../constants/Mixins';
 
-export const ExtraInfoBoxWrapper = styled.div`
+export const CourseRequisitesWrapper = styled.div`
 ${Card('32px 24px')}
 ${BoxShadow}
 ${Heading3}
@@ -40,7 +34,8 @@ export const GreyText = styled.div`
   color: ${({ theme }) => theme.dark2};
 `;
 
-export const PrereqText = styled.div`
+export const ReqText = styled.div`
   ${Body}
   color: ${({ theme }) => theme.dark2};
+  margin-bottom: 16px;
 `;

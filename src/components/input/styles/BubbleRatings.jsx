@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Body, BoxShadow } from '../../../constants/Mixins';
+import { Body } from '../../../constants/Mixins';
 
 export const BubbleRatingsWrapper = styled.div`
   display: flex;

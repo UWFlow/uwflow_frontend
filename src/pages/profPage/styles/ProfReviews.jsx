@@ -111,6 +111,7 @@ export const DropdownPanelWrapper = styled.div`
 export const DropdownTableText = styled.div`
   ${Heading4}
   color: ${({ theme }) => theme.dark1};
+  white-space: nowrap;
 `;
 
 export const CourseLikedMetric = styled.div`

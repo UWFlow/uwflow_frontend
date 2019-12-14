@@ -10,7 +10,7 @@ const ProgressBar = ({ percentComplete, width = 188, height = 16 }) => {
     setTimeout(() => {
       setPercentWidth(Math.round(percentComplete * 100));
     }, 500);
-  }, []);
+  }, [percentComplete]);
 
   return (
     <ProgressBarWrapper width={width} height={height}>

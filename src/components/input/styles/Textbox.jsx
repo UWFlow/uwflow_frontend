@@ -15,6 +15,7 @@ export const SearchInput = styled.input`
       ? options.border
       : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
+  min-width: 152px;
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) =>
     options.fontSize ? options.fontSize : 'inherit'};
@@ -26,7 +27,7 @@ export const SearchInput = styled.input`
   color: ${({ error, theme }) => (error ? theme.red : theme.dark1)};
   background-color: ${({ options }) =>
     options ? options.backgroundColor : ''};
-  padding-left: ${({ hasIcon }) => (hasIcon ? '72px' : 'auto')};
+  padding-left: ${({ hasIcon }) => (hasIcon ? '48px' : '0')};
 
   &:-ms-input-placeholder {
     color: ${({ error, options, theme }) =>
@@ -77,7 +78,7 @@ export const AutocompleteInput = styled.input`
 export const Icon = styled.div`
   position: absolute;
   top: 12px;
-  left: 24px;
+  left: 16px;
   z-index: 3;
   color: ${({ theme }) => theme.dark3};
 

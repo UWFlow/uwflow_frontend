@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import { ToastContainer, Zoom } from 'react-toastify';
+import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 /* Routes */
@@ -12,7 +12,6 @@ import {
   EXPLORE_PAGE_ROUTE,
   PROF_PAGE_ROUTE,
   ABOUT_PAGE_ROUTE,
-  TEST_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
   FIRST_TIME_SIGNIN_PAGE_ROUTE,
 } from './Routes';
@@ -25,7 +24,6 @@ import {
   LoadableExplorePage,
   LoadableProfPage,
   LoadableAboutPage,
-  LoadableTestPage,
   LoadableNotFoundPage,
   LoadablePrivacyPage,
   LoadableFirstTimeSigninPage,
@@ -49,7 +47,7 @@ const App = () => {
         pauseOnVisibilityChange
         draggable
         pauseOnHover
-        transition={Zoom}
+        transition={Bounce}
       />
       <Navbar />
       <Switch>
@@ -87,11 +85,6 @@ const App = () => {
           exact
           path={PRIVACY_PAGE_ROUTE}
           component={() => <LoadablePrivacyPage />}
-        />
-        <Route
-          exact
-          path={TEST_PAGE_ROUTE}
-          component={() => <LoadableTestPage />}
         />
         <Route
           exact

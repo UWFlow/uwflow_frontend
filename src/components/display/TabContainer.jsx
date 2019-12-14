@@ -12,7 +12,7 @@ import {
 const TabContainer = ({
   tabList,
   containerWidth,
-  tabWidth,
+  minTabWidth,
   initialSelectedTab = 0,
   contentPadding = '32px',
 }) => {
@@ -24,7 +24,7 @@ const TabContainer = ({
         {tabList.map((tab, index) => (
           <Tab
             key={index}
-            width={tabWidth}
+            minWidth={minTabWidth}
             selected={index === selectedTab}
             first={index === 0}
             last={index === tabList.length - 1}

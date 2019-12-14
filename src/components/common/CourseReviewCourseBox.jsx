@@ -214,10 +214,12 @@ const CourseReviewCourseBox = ({
         variables: { review_id: review ? review.id : null },
       }).then(() => {
         notifyDelete();
+        setDeleteReviewModalOpen(false);
         onCancel();
         setReviewDeleting(false);
       });
     } else {
+      setDeleteReviewModalOpen(false);
       onCancel();
     }
   };
@@ -236,6 +238,7 @@ const CourseReviewCourseBox = ({
             color={theme.courses}
             onChange={value => setSelectedCourseIndex(value)}
             zIndex={6}
+            searchable
           />
         </QuestionWrapper>
       )}
@@ -296,6 +299,7 @@ const CourseReviewCourseBox = ({
           color={theme.professors}
           onChange={value => setSelectedProf(value)}
           zIndex={5}
+          searchable
         />
       </QuestionWrapper>
 

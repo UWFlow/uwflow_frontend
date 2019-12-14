@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 import { throttle } from 'lodash';
+import { ChevronUp, ChevronDown } from 'react-feather';
 
 import {
   TableWrapper,
@@ -13,7 +14,7 @@ import {
   HeaderCell,
   SortArrow,
   HeaderText,
-  TableBottom,
+  LoadingRow,
 } from './styles/Table';
 
 import LoadingSpinner from '../display/LoadingSpinner';
@@ -23,9 +24,13 @@ const Table = ({
   columns,
   data,
   sortable = false,
+  manualSortBy = false,
+  setTableState = () => {},
   loading = false,
   doneFetching = false,
   fetchMore = null,
+  initialState = {},
+  fetchOffset = 1000,
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
@@ -52,9 +57,9 @@ const Table = ({
     if (loading || shouldFetchMore || !bottomRef.current || !fetchMore) {
       return;
     }
-    const offset = 800;
     const top = bottomRef.current.getBoundingClientRect().top;
-    const inView = top + offset >= 0 && top - offset <= window.innerHeight;
+    const inView =
+      top + fetchOffset >= 0 && top - fetchOffset <= window.innerHeight;
     setShouldFetchMore(inView);
   };
 
@@ -66,68 +71,95 @@ const Table = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable(
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: tableState,
+  } = useTable(
     {
       columns,
       data,
+      initialState,
+      manualSortBy,
     },
     useSortBy,
   );
+
+  useEffect(() => {
+    setTableState(tableState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableState]);
+
+  const renderRows = () =>
+    rows.map(
+      row =>
+        prepareRow(row) || (
+          <Row {...row.getRowProps()}>
+            {row.cells.map(cell => (
+              <Cell
+                {...cell.getCellProps()}
+                padding={cellPadding}
+                align={cell.column.align}
+                style={cell.column.style}
+              >
+                {cell.render('Cell')}
+              </Cell>
+            ))}
+          </Row>
+        ),
+    );
+
+  const isLoading =
+    (loading || shouldFetchMore) && !doneFetching && fetchMore !== null;
 
   return (
     <TableWrapper {...getTableProps()}>
       <TableHeader>
         {headerGroups.map(headerGroup => (
           <HeaderRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column, i) => (
               <HeaderCell
-                {...column.getHeaderProps(
-                  sortable && column.getSortByToggleProps(),
-                )}
                 align={column.align}
                 maxWidth={column.maxWidth}
+                {...column.getHeaderProps()}
               >
-                <HeaderText sortable={sortable}>
+                <HeaderText
+                  sortable={sortable}
+                  {...column.getHeaderProps(
+                    sortable && column.getSortByToggleProps(),
+                  )}
+                >
                   {column.render('Header')}
                 </HeaderText>
-                <SortArrow>
-                  {column.sorted ? (column.sortedDesc ? ' ▲' : ' ▼') : ''}
-                </SortArrow>
+                {column.isSorted && (
+                  <SortArrow
+                    {...column.getHeaderProps(
+                      sortable && column.getSortByToggleProps(),
+                    )}
+                    key="arrow"
+                  >
+                    {column.isSortedDesc ? (
+                      <ChevronUp size={14} strokeWidth={4} />
+                    ) : (
+                      <ChevronDown size={14} strokeWidth={4} />
+                    )}
+                  </SortArrow>
+                )}
               </HeaderCell>
             ))}
           </HeaderRow>
         ))}
       </TableHeader>
-      <TableBody>
-        {rows.map(
-          row =>
-            prepareRow(row) || (
-              <Row {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  <Cell
-                    {...cell.getCellProps()}
-                    padding={cellPadding}
-                    align={cell.column.align}
-                    style={cell.column.style}
-                  >
-                    {cell.render('Cell')}
-                  </Cell>
-                ))}
-              </Row>
-            ),
-        )}
-        {(loading || shouldFetchMore) && !doneFetching && fetchMore !== null && (
-          <Row>
-            <Cell
-              colSpan={columns.length}
-              style={{ padding: 0, overflow: 'hidden' }}
-            >
-              <LoadingSpinner />
-            </Cell>
-          </Row>
-        )}
-        <TableBottom ref={bottomRef} />
-      </TableBody>
+      <TableBody {...getTableBodyProps()}>{renderRows()}</TableBody>
+      {isLoading && (
+        <LoadingRow>
+          <LoadingSpinner size={48} strokeWidth={4} />
+        </LoadingRow>
+      )}
+      <div ref={bottomRef} />
     </TableWrapper>
   );
 };

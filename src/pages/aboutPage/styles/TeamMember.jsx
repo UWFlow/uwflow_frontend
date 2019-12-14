@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import {
   Heading2,
-  Heading3,
   Heading4,
   Body,
   BoxShadow,

@@ -28,7 +28,6 @@
     "query-string": "^6.8.3",
     "react": "^16.11.0",
     "react-apollo": "3.1.3",
-    "react-big-calendar": "^0.23.0",
     "react-compound-slider": "^2.4.0",
     "react-dom": "^16.11.0",
     "react-facebook-login": "^4.1.1",
@@ -41,9 +40,9 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
     "react-spring": "^8.0.27",
-    "react-table": "^7.0.0-beta.1",
-    "react-tooltip": "^3.11.1",
+    "react-table": "^7.0.0-rc.10",
     "react-toastify": "^5.4.1",
+    "react-tooltip": "^3.11.1",
     "recharts": "^1.8.5",
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
@@ -78,7 +77,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run format",
       "pre-push": "npm run lint && npm run format"
     }
   }

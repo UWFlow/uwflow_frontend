@@ -9,7 +9,6 @@ export const PROF_PAGE_ROUTE = '/prof/:profCode';
 export const EXPLORE_PAGE_ROUTE = '/explore';
 export const ABOUT_PAGE_ROUTE = '/about';
 export const PRIVACY_PAGE_ROUTE = '/privacy';
-export const TEST_PAGE_ROUTE = '/api-test';
 export const FIRST_TIME_SIGNIN_PAGE_ROUTE = '/first-time-signin';
 
 /* Route Testers */
@@ -20,7 +19,6 @@ export const EXPLORE_PAGE_TESTER = pathToRegexp(EXPLORE_PAGE_ROUTE);
 export const PROF_PAGE_TESTER = pathToRegexp(PROF_PAGE_ROUTE);
 export const ABOUT_PAGE_TESTER = pathToRegexp(ABOUT_PAGE_ROUTE);
 export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
-export const TEST_PAGE_TESTER = pathToRegexp(TEST_PAGE_ROUTE);
 export const FIRST_TIME_SIGNIN_PAGE_TESTER = pathToRegexp(
   FIRST_TIME_SIGNIN_PAGE_ROUTE,
 );
@@ -46,9 +44,6 @@ export const isOnAboutPageRoute = location =>
 
 export const isOnPrivacyPageRoute = location =>
   PRIVACY_PAGE_TESTER.test(location.pathname);
-
-export const isOnTestPageRoute = location =>
-  TEST_PAGE_TESTER.test(location.pathname);
 
 export const isOnFirstTimeSigninPageRoute = location => {
   FIRST_TIME_SIGNIN_PAGE_TESTER.test(location.pathname);

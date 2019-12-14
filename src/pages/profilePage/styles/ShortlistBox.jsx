@@ -6,7 +6,6 @@ import {
   Card,
   BoxShadow,
   Heading3,
-  Heading4,
 } from '../../../constants/Mixins';
 
 export const ShortlistBoxWrapper = styled.div`

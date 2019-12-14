@@ -55,7 +55,6 @@ const CoursePageContent = ({
 }) => {
   const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
-  console.log(sectionSubscriptions);
   const handleReviewClick = () => {
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
@@ -102,6 +101,7 @@ const CoursePageContent = ({
           <CourseRequisites
             courseCode={course.code}
             prereqs={course.prereqs}
+            antireqs={course.antireqs}
             postreqs={course.postrequisites}
           />
         </Column2>

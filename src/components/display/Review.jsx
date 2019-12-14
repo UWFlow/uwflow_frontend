@@ -3,7 +3,6 @@ import { connect, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
-import moment from 'moment';
 import { useMutation } from 'react-apollo';
 
 /* Selectors */
@@ -88,7 +87,6 @@ const Review = ({
     upvote_users,
     review: reviewText,
     author,
-    created_at,
     metrics,
   } = review;
   const userID = localStorage.getItem('user_id');
@@ -167,8 +165,8 @@ const Review = ({
           <ReviewMetricsBody>
             {MetricIfExists(metrics, 'clear')}
             {MetricIfExists(metrics, 'engaging')}
-            {MetricIfExists(metrics, 'useful')}
             {MetricIfExists(metrics, 'easy')}
+            {MetricIfExists(metrics, 'useful')}
             {MetricIfExists(metrics, 'liked')}
           </ReviewMetricsBody>
         </ReviewMetricsWrapper>

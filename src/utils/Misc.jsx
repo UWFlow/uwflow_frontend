@@ -135,8 +135,7 @@ export const secsToTime = secs => {
 export const getDateWithSeconds = (date, secs) => {
   return moment(`${date}`, 'YYYY-MM-DD')
     .startOf('day')
-    .add(secs, 'seconds')
-    .toDate();
+    .add(secs, 'seconds');
 };
 
 export const isValidDayOfWeek = day => {
