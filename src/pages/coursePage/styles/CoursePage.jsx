@@ -41,7 +41,7 @@ export const Column2 = styled.div`
   `}
 `;
 
-export const ScheduleAndReviewWrapper = styled.div`
+export const ReviewWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;

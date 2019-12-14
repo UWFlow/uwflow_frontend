@@ -19,6 +19,7 @@ import {
 /* Utils */
 import { termCodeToDate, secsToTime } from '../../utils/Misc';
 import { processSectionExams } from '../../utils/FinalExams';
+import CollapseableContainer from '../../components/display/CollapseableContainer';
 
 const sectionOrder = {
   LEC: 0,
@@ -199,16 +200,17 @@ const CourseSchedule = ({
   });
 
   return (
-    <>
-      <CourseScheduleWrapper>
+    <CourseScheduleWrapper>
+      <CollapseableContainer title="Course Schedule" centerHeader={false} headerBorder bigTitle>
         <TabContainer
           initialSelectedTab={0}
           tabList={tabList}
           contentPadding={'0'}
+          boxShadow={false}
         />
-        {tabList.length > 0 && <LastUpdatedSchedule />}
-      </CourseScheduleWrapper>
-    </>
+      </CollapseableContainer>
+      {tabList.length > 0 && <LastUpdatedSchedule />}
+    </CourseScheduleWrapper>
   );
 };
 

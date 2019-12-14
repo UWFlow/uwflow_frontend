@@ -142,6 +142,7 @@ export const ShowMoreReviewsSection = styled.div`
   align-items: center;
   height: 64px;
   cursor: pointer;
+  border-radius: 0 0 4px 4px;
 `;
 
 export const ShowMoreReviewsText = styled.div`

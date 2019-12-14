@@ -5,6 +5,7 @@ import { LEC, LAB } from '../../../constants/PageConstants';
 
 export const CourseScheduleWrapper = styled.div`
   margin-bottom: 32px;
+  width: 100%;
 `;
 
 export const SectionCellWrapper = styled.div`
@@ -39,24 +40,23 @@ export const NormalCellWrapper = styled.div`
 
 export const SectionContentWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
-  width: 100%;
   font-weight: 600;
   position: relative;
-  top: 16px;
+  align-items: center;
+  width: 100%;
+  height: 28px;
+  top: 8px;
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
-  padding: 8px 0;
-  height: 32px;
   align-items: center;
   width: 100%;
+  height: 28px;
 `;
 
 export const InstructorLink = styled(Link)`
   color: ${({ theme }) => theme.professors};
-  padding: 8px 0;
   font-weight: 600;
   white-space: nowrap;
   word-break: break-word;
@@ -64,6 +64,9 @@ export const InstructorLink = styled(Link)`
   text-overflow: ellipsis;
   max-width: 168px;
   transition 0.1s all;
+  height: 28px;
+  display: flex;
+  align-items: center;
 
   &:hover {
     max-width: 100%;
@@ -75,7 +78,6 @@ export const InstructorLink = styled(Link)`
 export const ScheduleTableWrapper = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
-  zoom: 0.9;
 `;
 
 export const FinalExamsTableWrapper = styled.div`
@@ -84,7 +86,6 @@ export const FinalExamsTableWrapper = styled.div`
 `;
 
 export const EnrollmentText = styled.div`
-  padding: 8px 0;
   display: flex;
   align-items: center;
   color: ${({ theme, filled }) => (filled ? theme.red : 'inherit')};
@@ -98,6 +99,6 @@ export const FinalExamsText = styled.div`
 `;
 
 export const SpaceMargin = styled.div`
-  margin-bottom: 4px;
+  margin-bottom: 12px;
   content: '';
 `;

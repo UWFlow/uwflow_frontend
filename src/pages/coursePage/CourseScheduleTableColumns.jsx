@@ -147,13 +147,13 @@ export const courseScheduleTableColumns = [
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
-    maxWidth: 96,
+    maxWidth: 104,
   },
   {
     Header: 'Time',
     Cell: TimeCell,
     accessor: 'times',
-    maxWidth: 138,
+    maxWidth: 144,
   },
   {
     Header: 'Date',

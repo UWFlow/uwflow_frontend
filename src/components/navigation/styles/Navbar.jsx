@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, BoxShadow } from '../../../constants/Mixins';
+import { PageContent, BottomBoxShadow } from '../../../constants/Mixins';
 import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 
 export const NavbarWrapper = styled.div`
@@ -17,8 +17,7 @@ export const NavbarWrapper = styled.div`
     ${({ theme, landingPage }) =>
       landingPage ? theme.transparent : theme.white};
   box-sizing: border-box;
-  ${({ landingPage }) => (landingPage ? '' : BoxShadow)}
-  border-radius: 4px;
+  ${({ landingPage }) => (landingPage ? '' : BottomBoxShadow)}
   display: flex;
 `;
 

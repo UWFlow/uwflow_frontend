@@ -13,12 +13,14 @@ const CollapseableContainer = ({
   children,
   isInitiallyOpen = true,
   centerHeader = true,
+  headerBorder = false,
+  bigTitle = false,
 }) => {
   const [isOpen, setIsOpen] = useState(isInitiallyOpen);
   return (
     <ContainerWrapper>
-      <HeaderWrapper>
-        <HeaderTitle centerHeader={centerHeader}>{title}</HeaderTitle>
+      <HeaderWrapper headerBorder={isOpen && headerBorder}>
+        <HeaderTitle centerHeader={centerHeader} bigTitle={bigTitle}>{title}</HeaderTitle>
         <HeaderChevronBox onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
