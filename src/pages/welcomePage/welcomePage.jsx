@@ -8,8 +8,8 @@ import { WelcomePageWrapper } from './styles/welcomePage';
 import { LANDING_PAGE_ROUTE } from '../../Routes';
 
 /* Child Components */
-import TranscriptUploadModalContent from '../../desktop/components/dataUploadModals/TranscriptUploadModalContent';
-import ScheduleUploadModalContent from '../../desktop/components/dataUploadModals/ScheduleUploadModalContent';
+import TranscriptUploadModalContent from '../../components/dataUploadModals/TranscriptUploadModalContent';
+import ScheduleUploadModalContent from '../../components/dataUploadModals/ScheduleUploadModalContent';
 
 const WelcomePage = ({ history }) => {
   const [isUploadingTranscript, setIsUploadingTranscript] = useState(true);
