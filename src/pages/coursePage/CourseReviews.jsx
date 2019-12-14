@@ -146,7 +146,13 @@ CourseCourseReviews.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const CourseProfReviews = ({ theme, reviewsByProf, ProfFilterDropdown, selectedSort, setSelectedSort }) => {
+const CourseProfReviews = ({
+  theme,
+  reviewsByProf,
+  ProfFilterDropdown,
+  selectedSort,
+  setSelectedSort,
+}) => {
   const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
   const curSelectedSort =

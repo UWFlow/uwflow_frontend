@@ -5,12 +5,18 @@ import LandingImage from '../../../img/landing_v1.svg';
 
 import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
+const MAX_BG_HEIGHT = 720;
+
 export const LandingPageWrapper = styled.div`
   width: 100vw;
   margin: 0;
   min-height: calc(100vh - 48px);
   margin-bottom: 48px;
   display: flex;
+
+  @media only screen and (max-height: 800px) {
+    min-height: 800px;
+  }
 `;
 
 export const ProfileWrapper = styled.div`
@@ -87,6 +93,7 @@ export const Column1 = styled.div`
 export const Column2 = styled.div`
   display: flex;
   height: 100vh;
+  max-height: ${MAX_BG_HEIGHT + 560}px;
   min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
   ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};
 
@@ -94,6 +101,10 @@ export const Column2 = styled.div`
     min-width: ${({ loggedIn }) => (loggedIn ? '100px' : '480px')};
     ${({ loggedIn }) => loggedIn && 'max-width: 25%;'};
     align-items: none;
+  }
+
+  @media only screen and (max-height: 800px) {
+    min-height: 800px;
   }
 `;
 
@@ -104,12 +115,16 @@ export const BackgroundImage = styled.div`
   background: url(${LandingImage});
   background-size: cover;
   background-position: center left;
-  height: 55vh;
-  max-height: 720px;
+  height: 65vh;
+  max-height: ${MAX_BG_HEIGHT}px;
 
   ${breakpoint('mobile', 'mobileLarge')`
     height: 60vh;
   `}
+
+  @media only screen and (max-height: ${MAX_BG_HEIGHT}px) {
+    min-height: calc(${Math.round(MAX_BG_HEIGHT * 0.65)}px);
+  }
 `;
 
 export const AuthContent = styled.div`
