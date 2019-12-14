@@ -59,7 +59,7 @@ export const InstructorLink = styled(Link)`
   padding: 8px 0;
   font-weight: 600;
   white-space: nowrap;
-  word-break: break-all;
+  word-break: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 168px;

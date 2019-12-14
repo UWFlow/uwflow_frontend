@@ -1,6 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { withTheme } from 'styled-components';
 
 /* Routes */
 import { isOnLandingPageRoute } from '../../Routes';
@@ -10,11 +12,16 @@ import { NavbarWrapper, NavbarContent } from './styles/Navbar';
 /* Child Components */
 import SearchBar from './SearchBar';
 import FlowLogo from './FlowLogo';
-
-/* Selectors */
 import ProfileDropdown from './ProfileDropdown';
 
-const Navbar = ({ location }) => {
+/* Selectors */
+import { getWidth } from '../../data/reducers/BrowserReducer';
+
+const mapStateToProps = state => ({
+  width: getWidth(state),
+});
+
+const Navbar = ({ location, width, theme }) => {
   if (isOnLandingPageRoute(location)) {
     return null;
   }
@@ -23,7 +30,7 @@ const Navbar = ({ location }) => {
     <>
       <NavbarWrapper>
         <NavbarContent>
-          <FlowLogo />
+          {width >= theme.breakpoints.mobileLarge && <FlowLogo />}
           <SearchBar maximizeWidth />
           <ProfileDropdown />
         </NavbarContent>
@@ -32,4 +39,4 @@ const Navbar = ({ location }) => {
   );
 };
 
-export default compose(withRouter)(Navbar);
+export default compose(withRouter, connect(mapStateToProps), withTheme)(Navbar);

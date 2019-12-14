@@ -38,7 +38,7 @@ export const ExploreHeaderText = styled.div`
   ${Heading2}
   padding-top: 48px;
   padding-bottom: 16px;
-  word-break: break-all;
+  word-break: break-word;
   min-height: 104px;
   display: flex;
   flex-direction: row;
