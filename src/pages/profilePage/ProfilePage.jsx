@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
+import { Helmet } from 'react-helmet';
 
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
@@ -115,12 +116,18 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   }
   return loading ? (
     <ProfilePageWrapper>
+      <Helmet>
+        <title>Profile - UW Flow</title>
+      </Helmet>
       <LoadingSpinner />
     </ProfilePageWrapper>
   ) : error || !data ? (
     <NotFoundPage />
   ) : (
     <ProfilePageWrapper>
+      <Helmet>
+        <title>Profile - UW Flow</title>
+      </Helmet>
       <ProfilePageContent
         user={data.user[0]}
         reviews={data.review}

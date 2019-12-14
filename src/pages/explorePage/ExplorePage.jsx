@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import queryString from 'query-string';
+import { Helmet } from 'react-helmet';
 
 import {
   ExplorePageWrapper,
@@ -146,6 +147,13 @@ const ExplorePage = ({ location }) => {
 
   return (
     <ExplorePageWrapper>
+      <Helmet>
+        <title>Explore Courses - UW Flow</title>
+        <meta
+          name="description"
+          content="Explore courses and professors at the University of Waterloo."
+        />
+      </Helmet>
       <ExplorePageContent
         query={query || ''}
         codeSearch={codeSearch || false}

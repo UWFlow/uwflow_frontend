@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import TeamMember from './TeamMember.jsx';
 
@@ -16,6 +17,10 @@ import {
 
 const AboutPage = () => (
   <PageWrapper>
+    <Helmet>
+      <title>About - UW Flow</title>
+      <meta name="description" content="About UW Flow." />
+    </Helmet>
     <PageHeader>
       <HeaderText>About Flow</HeaderText>
     </PageHeader>

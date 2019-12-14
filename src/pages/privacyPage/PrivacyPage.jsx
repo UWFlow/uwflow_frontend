@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import {
   PageWrapper,
@@ -12,6 +13,10 @@ import {
 
 const PrivacyPage = () => (
   <PageWrapper>
+    <Helmet>
+      <title>Privacy Policy - UW Flow</title>
+      <meta name="description" content="Privacy policy for UW Flow." />
+    </Helmet>
     <PageHeader>
       <HeaderText>Privacy Policy</HeaderText>
     </PageHeader>
