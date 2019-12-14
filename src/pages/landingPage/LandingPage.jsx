@@ -20,7 +20,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* Constants */
-import { PROFILE_PAGE_ROUTE, FIRST_TIME_SIGNIN_PAGE_ROUTE } from '../../Routes';
+import { PROFILE_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../../Routes';
 
 /* Child Components */
 import AuthForm from '../../auth/AuthForm';
@@ -62,7 +62,7 @@ const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
                 <AuthForm
                   onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
                   onSignupComplete={() =>
-                    history.push(FIRST_TIME_SIGNIN_PAGE_ROUTE, {
+                    history.push(WELCOME_PAGE_ROUTE, {
                       prevPage: PROFILE_PAGE_ROUTE,
                     })
                   }

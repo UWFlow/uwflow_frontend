@@ -35,7 +35,7 @@ export const DropdownMenu = styled.div`
   width: fit-content;
   white-space: nowrap;
   background-color: ${({ theme }) => theme.white};
-  z-index: 5;
+  z-index: 8;
   ${({ maxItems }) =>
     maxItems
       ? `

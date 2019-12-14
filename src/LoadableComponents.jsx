@@ -32,8 +32,6 @@ export const LoadablePrivacyPage = loadable(() =>
   import(/* webpackPrefetch: true */ './pages/privacyPage/PrivacyPage'),
 );
 
-export const LoadableFirstTimeSigninPage = loadable(() =>
-  import(
-    /* webpackPrefetch: true */ './pages/firstTimeLoginPage/FirstTimeLoginPage'
-  ),
+export const LoadableWelcomePage = loadable(() =>
+  import(/* webpackPrefetch: true */ './pages/welcomePage/welcomePage'),
 );

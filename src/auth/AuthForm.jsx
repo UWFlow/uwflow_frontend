@@ -22,7 +22,7 @@ import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
 import ResetPasswordModal from './ResetPasswordModal';
 
-import { PRIVACY_PAGE_ROUTE, FIRST_TIME_SIGNIN_PAGE_ROUTE } from '../Routes';
+import { PRIVACY_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
 
@@ -72,7 +72,7 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
         if (onSignupComplete) {
           onSignupComplete();
         } else {
-          history.push(FIRST_TIME_SIGNIN_PAGE_ROUTE, {
+          history.push(WELCOME_PAGE_ROUTE, {
             prevPath: `${history.location.pathname}?${history.location.search}`,
           });
         }

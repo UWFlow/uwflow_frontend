@@ -46,7 +46,7 @@ export const courseColumns = [
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
-    maxWidth: 64,
+    maxWidth: 72,
     Cell: ({ cell }) => processRating(cell.value),
   },
 ];
@@ -73,21 +73,21 @@ export const profColumns = [
     Header: 'Clear',
     accessor: 'clear',
     align: 'right',
-    maxWidth: 64,
+    maxWidth: 72,
     Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
-    maxWidth: 64,
+    maxWidth: 80,
     Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
-    maxWidth: 64,
+    maxWidth: 72,
     Cell: ({ cell }) => processRating(cell.value),
   },
 ];

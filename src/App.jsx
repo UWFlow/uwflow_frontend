@@ -13,7 +13,7 @@ import {
   PROF_PAGE_ROUTE,
   ABOUT_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
-  FIRST_TIME_SIGNIN_PAGE_ROUTE,
+  WELCOME_PAGE_ROUTE,
 } from './Routes';
 
 /* Child Components */
@@ -26,7 +26,7 @@ import {
   LoadableAboutPage,
   LoadableNotFoundPage,
   LoadablePrivacyPage,
-  LoadableFirstTimeSigninPage,
+  LoadableWelcomePage,
 } from './LoadableComponents';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
@@ -88,8 +88,8 @@ const App = () => {
         />
         <Route
           exact
-          path={FIRST_TIME_SIGNIN_PAGE_ROUTE}
-          component={() => <LoadableFirstTimeSigninPage />}
+          path={WELCOME_PAGE_ROUTE}
+          component={() => <LoadableWelcomePage />}
         />
         <Route path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>

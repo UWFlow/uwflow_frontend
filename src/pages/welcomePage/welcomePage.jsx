@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
-import { FirstTimeLoginPageWrapper } from './styles/FirstTimeLoginPage';
+import { WelcomePageWrapper } from './styles/welcomePage';
 
 /* Constants */
 import { LANDING_PAGE_ROUTE } from '../../Routes';
@@ -11,12 +11,12 @@ import { LANDING_PAGE_ROUTE } from '../../Routes';
 import TranscriptUploadModalContent from '../../desktop/components/dataUploadModals/TranscriptUploadModalContent';
 import ScheduleUploadModalContent from '../../desktop/components/dataUploadModals/ScheduleUploadModalContent';
 
-const FirstTimeLoginPage = ({ history }) => {
+const WelcomePage = ({ history }) => {
   const [isUploadingTranscript, setIsUploadingTranscript] = useState(true);
   const [isUploadingSchedule, setIsUploadingSchedule] = useState(false);
 
   return (
-    <FirstTimeLoginPageWrapper>
+    <WelcomePageWrapper>
       {isUploadingTranscript && (
         <TranscriptUploadModalContent
           onSkip={() => {
@@ -36,8 +36,8 @@ const FirstTimeLoginPage = ({ history }) => {
           }
         />
       )}
-    </FirstTimeLoginPageWrapper>
+    </WelcomePageWrapper>
   );
 };
 
-export default withRouter(FirstTimeLoginPage);
+export default withRouter(WelcomePage);
