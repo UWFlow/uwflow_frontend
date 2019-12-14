@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import Button from '../../components/input/Button';
 import { LANDING_PAGE_ROUTE } from '../../Routes';
@@ -21,6 +22,9 @@ const NotFoundPage = ({ text, history }) => {
 
   return (
     <NotFoundPageWrapper>
+      <Helmet>
+        <title>Not Found - UW Flow</title>
+      </Helmet>
       <PageHeader>
         <HeaderText>{displayText}</HeaderText>
       </PageHeader>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
+import { Helmet } from 'react-helmet';
 
 /* Styled Components */
 import {
@@ -47,6 +48,13 @@ export const ProfPage = ({ match }) => {
     <NotFoundPage text="Sorry, we couldn't find that professor!" />
   ) : (
     <ProfPageWrapper>
+      <Helmet>
+        <title>{data.prof[0].name} - UW Flow</title>
+        <meta
+          name="description"
+          content={`Professor ${data.prof[0].name} at the University of Waterloo.`}
+        />
+      </Helmet>
       <ProfPageContent prof={data.prof[0]} />
     </ProfPageWrapper>
   );

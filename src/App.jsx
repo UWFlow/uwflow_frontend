@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 import 'react-toastify/dist/ReactToastify.css';
 
 /* Routes */
@@ -50,6 +51,14 @@ const App = () => {
         transition={Bounce}
       />
       <Navbar />
+      <Helmet>
+        <title>UW Flow</title>
+        <meta
+          name="description"
+          content="Course planning tool with reviews for courses
+            and professors at the University of Waterloo."
+        />
+      </Helmet>
       <Switch>
         <Route
           exact

@@ -3,6 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 /* Child Components */
 import CourseInfoHeader from './CourseInfoHeader';
@@ -135,6 +136,13 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <NotFoundPage text="Sorry, we couldn't find that course!" />
   ) : (
     <CoursePageWrapper>
+      <Helmet>
+        <title>
+          {splitCourseCode(data.course[0].code)} - {data.course[0].name} - UW
+          Flow
+        </title>
+        <meta name="description" content={data.course[0].description} />
+      </Helmet>
       <CoursePageContent
         course={data.course[0]}
         userReview={
