@@ -9,44 +9,46 @@ export const courseColumns = [
     Header: 'Course code',
     accessor: 'code',
     align: 'left',
-    maxWidth: 120,
+    minWidth: 120,
     Cell: ({ cell }) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
         {splitCourseCode(cell.value)}
       </CourseCode>
     ),
+    style: {
+      whiteSpace: 'nowrap',
+    },
   },
   {
     Header: 'Course name',
     accessor: 'name',
     align: 'left',
-    maxWidth: 128,
   },
   {
     Header: 'Ratings',
     accessor: 'ratings',
     align: 'right',
-    maxWidth: 80,
+    minWidth: 88,
   },
   {
     Header: 'Useful',
     accessor: 'useful',
     align: 'right',
-    maxWidth: 64,
+    minWidth: 88,
     Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Easy',
     accessor: 'easy',
     align: 'right',
-    maxWidth: 64,
+    minWidth: 80,
     Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
-    maxWidth: 72,
+    minWidth: 88,
     Cell: ({ cell }) => processRating(cell.value),
   },
 ];
@@ -56,7 +58,6 @@ export const profColumns = [
     Header: 'Professor name',
     accessor: 'code_name',
     align: 'left',
-    maxWidth: 160,
     Cell: ({ cell }) => (
       <ProfName to={getProfPageRoute(cell.value.code)}>
         {cell.value.name}
@@ -67,27 +68,27 @@ export const profColumns = [
     Header: 'Ratings',
     accessor: 'ratings',
     align: 'right',
-    maxWidth: 80,
+    minWidth: 80,
   },
   {
     Header: 'Clear',
     accessor: 'clear',
     align: 'right',
-    maxWidth: 72,
+    minWidth: 72,
     Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
-    maxWidth: 80,
+    minWidth: 80,
     Cell: ({ cell }) => processRating(cell.value),
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
-    maxWidth: 72,
+    minWidth: 72,
     Cell: ({ cell }) => processRating(cell.value),
   },
 ];

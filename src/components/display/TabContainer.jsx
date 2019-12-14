@@ -15,12 +15,13 @@ const TabContainer = ({
   minTabWidth,
   initialSelectedTab = 0,
   contentPadding = '32px',
+  boxShadow = true,
 }) => {
   const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
   return (
-    <ContainerWrapper width={containerWidth}>
-      <TabsWrapper>
+    <ContainerWrapper width={containerWidth} boxShadow={boxShadow}>
+      <TabsWrapper boxShadow={boxShadow}>
         {tabList.map((tab, index) => (
           <Tab
             key={index}

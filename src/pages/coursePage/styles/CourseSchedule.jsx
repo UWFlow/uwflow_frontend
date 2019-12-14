@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { Heading3 } from '../../../constants/Mixins';
 import { LEC, LAB } from '../../../constants/PageConstants';
 
+const CELL_HEIGHT = 28;
+
 export const CourseScheduleWrapper = styled.div`
   margin-bottom: 32px;
+  width: 100%;
 `;
 
 export const SectionCellWrapper = styled.div`
@@ -17,6 +20,7 @@ export const SectionCellWrapper = styled.div`
   width: 100%;
   align-items: flex-begin;
   padding-left: 20px;
+  white-space: nowrap;
 `;
 
 export const ColorBar = styled.div`
@@ -39,43 +43,36 @@ export const NormalCellWrapper = styled.div`
 
 export const SectionContentWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
-  width: 100%;
   font-weight: 600;
   position: relative;
-  top: 16px;
+  align-items: center;
+  width: 100%;
+  height: ${CELL_HEIGHT}px;
+  top: 8px;
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
-  padding: 8px 0;
-  height: 32px;
   align-items: center;
   width: 100%;
+  height: ${CELL_HEIGHT}px;
+  white-space: nowrap;
+  margin-bottom: -8px;
 `;
 
 export const InstructorLink = styled(Link)`
   color: ${({ theme }) => theme.professors};
-  padding: 8px 0;
   font-weight: 600;
   white-space: nowrap;
-  word-break: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 168px;
-  transition 0.1s all;
-
-  &:hover {
-    max-width: 100%;
-    transition 0.1s all;
-    text-overflow: none;
-  }
+  height: ${CELL_HEIGHT}px;
+  display: flex;
+  align-items: center;
+  margin-bottom: -8px;
 `;
 
 export const ScheduleTableWrapper = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
-  zoom: 0.9;
 `;
 
 export const FinalExamsTableWrapper = styled.div`
@@ -84,9 +81,11 @@ export const FinalExamsTableWrapper = styled.div`
 `;
 
 export const EnrollmentText = styled.div`
-  padding: 8px 0;
   display: flex;
   align-items: center;
+  margin-left: ${({ hasBell = true, filled }) =>
+    !filled && hasBell ? 36 : 0}px;
+  height: ${CELL_HEIGHT}px;
   color: ${({ theme, filled }) => (filled ? theme.red : 'inherit')};
 `;
 
@@ -98,6 +97,21 @@ export const FinalExamsText = styled.div`
 `;
 
 export const SpaceMargin = styled.div`
-  margin-bottom: 4px;
+  margin-bottom: 16px;
   content: '';
+`;
+
+export const GreyWeekDay = styled.span`
+  color: ${({ theme }) => theme.dark3};
+  margin-right: 1px;
+`;
+
+export const BoldWeekDay = styled.span`
+  color: ${({ theme }) => theme.dark1};
+  font-weight: 600;
+  margin-right: 1px;
+`;
+
+export const DateText = styled.span`
+  margin-left: 4px;
 `;

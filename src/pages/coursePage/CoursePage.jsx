@@ -27,7 +27,7 @@ import {
   ColumnWrapper,
   Column1,
   Column2,
-  ScheduleAndReviewWrapper,
+  ReviewWrapper,
   CourseReviewQuestionBox,
   CourseQuestionTextAndToggle,
   CourseReviewQuestionText,
@@ -60,18 +60,23 @@ const CoursePageContent = ({
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
 
+  const Schedule = (
+    <CourseSchedule
+      sections={course.sections}
+      courseCode={course.code}
+      courseID={course.id}
+      sectionSubscriptions={sectionSubscriptions}
+    />
+  );
+
   return (
     <>
       <CourseInfoHeader course={course} shortlisted={shortlisted} />
       <ColumnWrapper>
+        {isBrowserDesktop && Schedule}
         <Column1>
-          <ScheduleAndReviewWrapper>
-            <CourseSchedule
-              sections={course.sections}
-              courseCode={course.code}
-              courseID={course.id}
-              sectionSubscriptions={sectionSubscriptions}
-            />
+          <ReviewWrapper>
+            {!isBrowserDesktop && Schedule}
             {(!isLoggedIn || userCourseTaken) && (
               <CourseReviewQuestionBox>
                 <CourseQuestionTextAndToggle>
@@ -95,7 +100,7 @@ const CoursePageContent = ({
                 </Button>
               </CourseReviewQuestionBox>
             )}
-          </ScheduleAndReviewWrapper>
+          </ReviewWrapper>
           <CourseReviews courseID={course.id} />
         </Column1>
         <Column2>

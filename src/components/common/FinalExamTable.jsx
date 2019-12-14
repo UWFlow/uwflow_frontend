@@ -12,6 +12,7 @@ const examColumns = [
   {
     Header: 'Course',
     accessor: 'code',
+    minWidth: 120,
     maxWidth: 120,
     Cell: ({ cell }) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
@@ -22,23 +23,34 @@ const examColumns = [
   {
     Header: 'Section(s)',
     accessor: 'sections',
-    maxWidth: 174,
+    minWidth: 168,
+    maxWidth: 400,
     Cell: ({ cell }) => cell.value.join(', '),
   },
   {
     Header: 'Time',
     accessor: 'time',
-    maxWidth: 136,
+    align: 'right',
+    minWidth: 80,
+    style: {
+      whiteSpace: 'nowrap',
+    },
   },
   {
     Header: 'Date',
     accessor: 'date',
-    maxWidth: 120,
+    align: 'right',
+    minWidth: 80,
+    style: {
+      whiteSpace: 'nowrap',
+    },
   },
   {
     Header: 'Location',
     accessor: 'location',
-    maxWidth: 160,
+    minWidth: 160,
+    maxWidth: 224,
+    align: 'right',
   },
 ];
 

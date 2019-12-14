@@ -104,6 +104,7 @@ const Table = ({
                 padding={cellPadding}
                 align={cell.column.align}
                 style={cell.column.style}
+                maxWidth={cell.column.maxWidth}
               >
                 {cell.render('Cell')}
               </Cell>
@@ -123,6 +124,7 @@ const Table = ({
             {headerGroup.headers.map((column, i) => (
               <HeaderCell
                 align={column.align}
+                minWidth={column.minWidth}
                 maxWidth={column.maxWidth}
                 {...column.getHeaderProps()}
               >
