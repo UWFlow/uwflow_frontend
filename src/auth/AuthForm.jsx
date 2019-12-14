@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
 import {
@@ -21,14 +22,11 @@ import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
 import ResetPasswordModal from './ResetPasswordModal';
 
-import { PRIVACY_PAGE_ROUTE } from '../Routes';
+import { PRIVACY_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
 
-export const AuthForm = ({
-  onLoginComplete = () => {},
-  onSignupComplete = () => {},
-}) => {
+export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
   const dispatch = useDispatch();
 
   const [showLoginForm, setShowLoginForm] = useState(true);
@@ -66,10 +64,18 @@ export const AuthForm = ({
       dispatch({ type: LOGGED_IN });
       if (showLoginForm) {
         toast('Logged in successfully!');
-        onLoginComplete();
+        if (onLoginComplete) {
+          onLoginComplete();
+        }
       } else {
         toast('Signed up successfully!');
-        onSignupComplete();
+        if (onSignupComplete) {
+          onSignupComplete();
+        } else {
+          history.push(WELCOME_PAGE_ROUTE, {
+            prevPath: `${history.location.pathname}?${history.location.search}`,
+          });
+        }
       }
     }
   };
@@ -139,4 +145,4 @@ AuthForm.propTypes = {
   onSignupComplete: PropTypes.func,
 };
 
-export default AuthForm;
+export default withRouter(AuthForm);

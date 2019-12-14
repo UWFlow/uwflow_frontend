@@ -82,13 +82,7 @@ const Review = ({
   isLoggedIn,
   isCourseReview,
 }) => {
-  const {
-    upvotes,
-    upvote_users,
-    review: reviewText,
-    author,
-    metrics,
-  } = review;
+  const { upvotes, upvote_users, review: reviewText, author, metrics } = review;
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [

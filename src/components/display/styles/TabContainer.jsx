@@ -14,7 +14,7 @@ export const TabsWrapper = styled.div`
   flex-direction: row;
   position: sticky;
   top: ${NAVBAR_HEIGHT}px;
-  z-index: 4;
+  z-index: 7;
   overflow: auto;
   ${BoxShadow}
 `;

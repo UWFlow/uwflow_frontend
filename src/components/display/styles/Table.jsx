@@ -35,6 +35,7 @@ export const HeaderCell = styled.div`
   padding-bottom: 16px;
   vertical-align: top;
   font-weight: 600;
+  white-space: nowrap;
 
   padding-left: ${({ rightAlign }) => (rightAlign ? '8px' : '0')};
   padding-right: ${({ rightAlign }) => (rightAlign ? '8px' : '0')};

@@ -27,7 +27,7 @@ export const SearchInput = styled.input`
   color: ${({ error, theme }) => (error ? theme.red : theme.dark1)};
   background-color: ${({ options }) =>
     options ? options.backgroundColor : ''};
-  padding-left: ${({ hasIcon }) => (hasIcon ? '48px' : '0')};
+  padding-left: ${({ hasIcon }) => (hasIcon ? '48px' : 'auto')};
 
   &:-ms-input-placeholder {
     color: ${({ error, options, theme }) =>
