@@ -16,7 +16,11 @@ import {
 } from './styles/ProfileCalendar';
 
 /* Utils */
-import { getDateWithSeconds, millisecondsPerDay } from '../../utils/Misc';
+import {
+  getDateWithSeconds,
+  millisecondsPerDay,
+  weekDayLetters,
+} from '../../utils/Misc';
 
 const getScheduleRange = schedule => {
   let minTime = new Date();
@@ -55,11 +59,10 @@ const getScheduleRange = schedule => {
 
 // start and end inclusive
 const getMomentsWithinRange = (start, end, dayOfWeek) => {
-  const legalDays = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
   var currentMoment = start.clone();
   var daysToReturn = [];
   while (currentMoment.isSameOrBefore(end)) {
-    if (legalDays[currentMoment.weekday()] === dayOfWeek) {
+    if (weekDayLetters[currentMoment.weekday()] === dayOfWeek) {
       daysToReturn.push(currentMoment.clone().startOf('day'));
     }
     currentMoment.add(1, 'day');

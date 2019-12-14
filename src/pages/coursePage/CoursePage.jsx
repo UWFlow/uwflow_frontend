@@ -59,12 +59,14 @@ const CoursePageContent = ({
     isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
   };
 
-  const Schedule = <CourseSchedule
-    sections={course.sections}
-    courseCode={course.code}
-    courseID={course.id}
-    sectionSubscriptions={sectionSubscriptions}
-  />;
+  const Schedule = (
+    <CourseSchedule
+      sections={course.sections}
+      courseCode={course.code}
+      courseID={course.id}
+      sectionSubscriptions={sectionSubscriptions}
+    />
+  );
 
   return (
     <>

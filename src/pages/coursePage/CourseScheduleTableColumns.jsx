@@ -9,21 +9,33 @@ import {
   ColorBar,
   EnrollmentText,
   SpaceMargin,
+  GreyWeekDay,
+  BoldWeekDay,
+  DateText,
 } from './styles/CourseSchedule';
 
 import ScheduleNotificationBell from './ScheduleNotificationBell';
 
 import { getProfPageRoute } from '../../Routes';
-import { processDateString } from '../../utils/Misc';
+import { processDateString, weekDayLetters } from '../../utils/Misc';
 import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
 const contentSpace = spaces => {
   let content = [];
   for (let i = 0; i < spaces; i++) {
-    content.push(<ContentWrapper key={i}></ContentWrapper>);
+    content.push(<ContentWrapper key={i} compressed></ContentWrapper>);
   }
   return content;
 };
+
+const processWeekDays = days =>
+  weekDayLetters.map(day =>
+    days.includes(day) ? (
+      <BoldWeekDay key={day}>{day}</BoldWeekDay>
+    ) : (
+      <GreyWeekDay key={day}>{day}</GreyWeekDay>
+    ),
+  );
 
 const SectionCell = ({ cell }) => (
   <SectionCellWrapper numRows={cell.value.numRows}>
@@ -44,7 +56,7 @@ const ClassCell = ({ cell }) => (
 
 const EnrolledCell = ({ cell }) => (
   <NormalCellWrapper>
-    <EnrollmentText filled={cell.value.filled >= cell.value.capacity}>
+    <ContentWrapper>
       {(cell.value.filled >= cell.value.capacity || cell.value.selected) && (
         <ScheduleNotificationBell
           key={cell.value.section_id}
@@ -54,8 +66,13 @@ const EnrolledCell = ({ cell }) => (
           initialState={cell.value.selected}
         />
       )}
-      {cell.value.filled}/{cell.value.capacity}
-    </EnrollmentText>
+      <EnrollmentText
+        filled={cell.value.filled >= cell.value.capacity}
+        hasBell={cell.value.hasBell}
+      >
+        {cell.value.filled}/{cell.value.capacity}
+      </EnrollmentText>
+    </ContentWrapper>
   </NormalCellWrapper>
 );
 
@@ -84,7 +101,8 @@ const DateCell = ({ cell }) => (
               : '';
           return (
             <ContentWrapper key={idx}>
-              {date.days.join(' ')} {processedDate}
+              {processWeekDays(date.days)}
+              <DateText>{processedDate}</DateText>
             </ContentWrapper>
           );
         })}
@@ -132,7 +150,6 @@ export const courseScheduleTableColumns = [
     Header: 'Section',
     Cell: SectionCell,
     accessor: 'section',
-    maxWidth: 80,
     style: {
       padding: 0,
     },
@@ -141,42 +158,38 @@ export const courseScheduleTableColumns = [
     Header: 'Class',
     Cell: ClassCell,
     accessor: 'class',
-    maxWidth: 40,
   },
   {
     Header: 'Enrolled',
     Cell: EnrolledCell,
     accessor: 'enrolled',
-    maxWidth: 104,
   },
   {
     Header: 'Time',
     Cell: TimeCell,
     accessor: 'times',
-    maxWidth: 144,
   },
   {
     Header: 'Date',
     Cell: DateCell,
     accessor: 'dates',
-    maxWidth: 104,
+    style: {
+      paddingBottom: 16,
+    },
   },
   {
     Header: 'Location',
     Cell: LocationCell,
     accessor: 'locations',
-    maxWidth: 72,
   },
   {
     Header: 'Instructor',
     Cell: InstructorCell,
     accessor: 'profs',
-    maxWidth: 168,
   },
   {
     Header: 'Campus',
     Cell: CampusCell,
     accessor: 'campus',
-    maxWidth: 80,
   },
 ];

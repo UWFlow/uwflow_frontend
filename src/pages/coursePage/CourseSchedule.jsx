@@ -17,7 +17,7 @@ import {
 } from './styles/CourseSchedule';
 
 /* Utils */
-import { termCodeToDate, secsToTime } from '../../utils/Misc';
+import { termCodeToDate, secsToTime, weekDayLetters } from '../../utils/Misc';
 import { processSectionExams } from '../../utils/FinalExams';
 import CollapseableContainer from '../../components/display/CollapseableContainer';
 
@@ -76,7 +76,6 @@ const getInfoGroupings = meetings => {
   });
 
   // Merge and sort days of week for timeRanges that occur in the same date range
-  const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']; //not too sure about saturday and sunday
   infoGroups.forEach(entry => {
     let newTimeRanges = [];
     let newDays = [];
@@ -97,11 +96,13 @@ const getInfoGroupings = meetings => {
       }
 
       for (let day of currRange.days) {
-        if (!newDays.includes(day) && daysOfWeek.includes(day)) {
+        if (!newDays.includes(day) && weekDayLetters.includes(day)) {
           newDays.push(day);
         }
       }
-      newDays.sort((a, b) => daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b));
+      newDays.sort(
+        (a, b) => weekDayLetters.indexOf(a) - weekDayLetters.indexOf(b),
+      );
       newTimeRanges.push({
         days: newDays,
         startDate: currRange.startDate,
@@ -149,6 +150,10 @@ const CourseSchedule = ({
     subscription => subscription.section_id,
   );
 
+  const hasBell = sections.some(
+    section => section.enrollment_total >= section.enrollment_capacity,
+  );
+
   const sectionsCleanedData = sections
     .map(s => ({
       section: s.section_name,
@@ -161,6 +166,7 @@ const CourseSchedule = ({
         section_id: s.id,
         filled: s.enrollment_total,
         capacity: s.enrollment_capacity,
+        hasBell: hasBell,
         selected: subscribedSectionIDs.includes(s.id),
       },
       // Every grouping contains a single time of day, location, and instructor
@@ -201,7 +207,12 @@ const CourseSchedule = ({
 
   return (
     <CourseScheduleWrapper>
-      <CollapseableContainer title="Course Schedule" centerHeader={false} headerBorder bigTitle>
+      <CollapseableContainer
+        title="Course Schedule"
+        centerHeader={false}
+        headerBorder
+        bigTitle
+      >
         <TabContainer
           initialSelectedTab={0}
           tabList={tabList}

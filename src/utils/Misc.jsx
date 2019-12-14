@@ -138,9 +138,10 @@ export const getDateWithSeconds = (date, secs) => {
     .add(secs, 'seconds');
 };
 
+export const weekDayLetters = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
+
 export const isValidDayOfWeek = day => {
-  const legalDays = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
-  return legalDays.contains(day);
+  return weekDayLetters.contains(day);
 };
 
 // work with moment objects

@@ -1,12 +1,16 @@
 import styled from 'styled-components';
-import { Heading3, BoxShadow, BottomBoxShadow } from '../../../constants/Mixins';
+import {
+  Heading3,
+  BoxShadow,
+  BottomBoxShadow,
+} from '../../../constants/Mixins';
 import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 
 export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};
   border-radius: 4px;
   background: ${({ theme }) => theme.white};
-  ${({ boxShadow }) => boxShadow ? BoxShadow : ''}
+  ${({ boxShadow }) => (boxShadow ? BoxShadow : '')}
 `;
 
 export const TabsWrapper = styled.div`
@@ -16,7 +20,7 @@ export const TabsWrapper = styled.div`
   top: ${NAVBAR_HEIGHT}px;
   z-index: 7;
   overflow: auto;
-  ${({ boxShadow }) => boxShadow ? BottomBoxShadow : ''}
+  ${({ boxShadow }) => (boxShadow ? BottomBoxShadow : '')}
 `;
 
 export const Tab = styled.div`

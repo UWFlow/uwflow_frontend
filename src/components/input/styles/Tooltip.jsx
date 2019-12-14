@@ -11,8 +11,9 @@ export const TooltipWrapper = styled(ReactTooltip)`
     padding: 8px;
     max-width: 200px;
     color: ${({ theme }) => theme.dark1};
+    white-space: normal;
 
-    &:after { 
+    &:after {
       display: none;
     }
   }

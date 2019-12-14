@@ -29,28 +29,24 @@ export const HeaderRow = styled.div`
 export const HeaderCell = styled.div`
   display: table-cell;
   text-align: ${({ align }) => (align ? align : 'left')};
-  width: ${({ maxWidth }) => maxWidth + 16}px;
-  min-width: ${({ maxWidth }) => maxWidth + 8}px;
   padding-top: 16px;
   padding-bottom: 16px;
   vertical-align: top;
   font-weight: 600;
   white-space: nowrap;
-
-  padding-left: ${({ rightAlign }) => (rightAlign ? '8px' : '0')};
-  padding-right: ${({ rightAlign }) => (rightAlign ? '8px' : '0')};
+  padding-left: ${({ align }) => (align === 'right' ? '8px' : '0')};
+  padding-right: ${({ align }) => (align === 'right' ? '0' : '8px')};
+  min-width: ${({ minWidth }) => (minWidth ? `${minWidth}px` : '0')};
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : '100%')};
 
   &:first-child {
     padding-left: 16px;
-    width: ${({ maxWidth }) => maxWidth + 16}px;
-    max-width: ${({ maxWidth }) => maxWidth + 8}px;
+    padding-right: 16px;
   }
 
   &:last-child {
     padding-left: 0;
     padding-right: 16px;
-    width: ${({ maxWidth }) => maxWidth + 24}px;
-    max-width: ${({ maxWidth }) => maxWidth + 8}px;
   }
 `;
 
@@ -92,17 +88,19 @@ export const Row = styled.div`
 export const Cell = styled.div`
   display: table-cell;
   padding: ${({ padding }) => (padding ? padding : '8px 0')};
+  padding-left: ${({ align }) => (align === 'right' ? '8px' : '0')};
+  padding-right: ${({ align }) => (align === 'right' ? '0' : '8px')};
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : '100%')};
+
   text-align: ${({ align }) => (align ? align : 'left')};
   vertical-align: top;
   height: 0;
 
   &:first-child {
     padding-left: 16px;
-    padding-right: 0;
   }
 
   &:last-child {
-    padding-left: 0;
     padding-right: 16px;
   }
 
