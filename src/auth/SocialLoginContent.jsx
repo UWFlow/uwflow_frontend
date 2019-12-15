@@ -50,14 +50,14 @@ const SocialLoginContent = ({ setJWT }) => {
   };
 
   const handleGoogleSuccess = async res => {
-    const { tokenId } = res;
+    const { accessToken } = res;
 
     setGoogleLoading(true);
 
     const [response, status] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`,
       {
-        id_token: tokenId,
+        access_token: accessToken,
       },
     );
 
