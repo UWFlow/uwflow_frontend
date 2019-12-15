@@ -13,7 +13,7 @@ export const ButtonWrapper = styled.button`
   padding: ${({ padding }) => padding};
   color: ${({ theme, disabled }) => (disabled ? theme.light1 : theme.dark1)};
   min-height: ${({ height }) => height}px;
-  max-height: ${({ maxHeight }) => maxHeight}px;
+  max-height: ${({ maxHeight }) => maxHeight};
   margin: ${({ margin }) => margin};
   background: ${({ theme, color = theme.accent, disabled = false }) =>
     disabled ? theme.light4 : color};

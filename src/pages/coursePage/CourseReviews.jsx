@@ -234,7 +234,8 @@ const CourseProfReviews = ({
           )}
         </ReviewsForSingleProfWrapper>
       )),
-    [reviewsByProf, showingReviewsMap],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [reviewsByProf, showingReviewsMap, selectedSort, curSelectedSort],
   );
 
   return (
@@ -407,8 +408,11 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
             title={`Professor reviews (${numProfReviews})`}
           >
             <CourseProfReviews
+              theme={theme}
               reviewsByProf={profReviewsToShow}
               ProfFilterDropdown={ProfFilterDropdown}
+              selectedSort={selectedProfSort}
+              setSelectedSort={setSelectedProfSort}
             />
           </CollapseableContainer>
         </>

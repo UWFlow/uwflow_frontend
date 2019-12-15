@@ -11,18 +11,20 @@ import {
   NumberCircle,
   InstructionText,
   Link,
-  ScheduleStep1Picture,
-  ScheduleStep2Picture,
+  ScheduleStepPicture,
   ScheduleStep3Wrapper,
   SchedulePasteBoxWrapper,
-  SchedulePasteBoxBackground,
   SchedulePasteBox,
   GreyText,
   PrivacyPolicyWrapper,
   PrivacyPolicyText,
   PrivacyPolicyLink,
   SkipStepWrapper,
+  ErrorMessage,
 } from './styles/DataUploadModals';
+
+/* Child Components */
+import LoadingSpinner from '../display/LoadingSpinner';
 
 /* Constants */
 import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from '../../constants/Api';
@@ -33,10 +35,31 @@ import {
   UPLOAD_SUCCESSFUL,
 } from '../../constants/DataUploadStates';
 
+import { PRIVACY_PAGE_ROUTE } from '../../Routes';
+
+// keys for only allowing copy paste / deletion
+const clipboardKeys = {
+  winInsert: 45,
+  winDelete: 46,
+  SelectAll: 97,
+  macCopy: 99,
+  macPaste: 118,
+  macCut: 120,
+  redo: 121,
+  undo: 122,
+};
+
 export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
-  const [, setUploadState] = useState(AWAITING_UPLOAD);
+  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+  const [scheduleText, setScheduleText] = useState('');
 
   const handleSchedulePaste = async event => {
+    setScheduleText(event.currentTarget.value);
+
+    if (event.currentTarget.value === '') {
+      return;
+    }
+
     setUploadState(UPLOAD_PENDING);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${SCHEDULE_PARSE_ENDPOINT}?user_id=${localStorage.getItem(
@@ -51,6 +74,53 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
     } else {
       setUploadState(UPLOAD_FAILED);
     }
+  };
+
+  const handleKeyPress = event => {
+    const charCode = event.which;
+    if (
+      !(
+        (event.ctrlKey && charCode === clipboardKeys.redo) ||
+        (event.ctrlKey && charCode === clipboardKeys.undo) ||
+        (event.ctrlKey && charCode === clipboardKeys.macCut) ||
+        (event.ctrlKey && charCode === clipboardKeys.macPaste) ||
+        (event.ctrlKey && charCode === clipboardKeys.macCopy) ||
+        (event.shiftKey && event.keyCode === clipboardKeys.winInsert) ||
+        (event.shiftKey && event.keyCode === clipboardKeys.winDelete) ||
+        (event.ctrlKey && event.keyCode === clipboardKeys.winInsert) ||
+        (event.ctrlKey && charCode === clipboardKeys.SelectAll)
+      )
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+  }
+
+  const uploadContent = () => {
+    if (uploadState === UPLOAD_PENDING) {
+      return <LoadingSpinner />;
+    }
+
+    if (uploadState === UPLOAD_SUCCESSFUL) {
+      return <GreyText>Successfully uploaded schedule!</GreyText>;
+    }
+
+    return (
+      <>
+        <SchedulePasteBox
+          type="text"
+          value={scheduleText}
+          onChange={handleSchedulePaste}
+          onKeyPress={handleKeyPress}
+        />
+        {uploadState === UPLOAD_FAILED && (
+          <ErrorMessage>Invalid schedule</ErrorMessage>
+        )}
+        <Clipboard height={100} width={60} color={theme.dark3} />
+        <GreyText>Paste here! (Ctrl+V)</GreyText>
+      </>
+    );
   };
 
   return (
@@ -87,33 +157,27 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
           </tr>
           <tr>
             <td>
-              <ScheduleStep1Picture />
+              <ScheduleStepPicture />
             </td>
             <td>
               <ArrowRight color={theme.accent} height={100} width={80} />
             </td>
             <td>
-              <ScheduleStep2Picture />
+              <ScheduleStepPicture />
             </td>
             <td>
               <ArrowRight color={theme.accent} height={100} width={80} />
             </td>
             <td>
               <ScheduleStep3Wrapper>
-                <SchedulePasteBoxWrapper>
-                  <SchedulePasteBoxBackground>
-                    <Clipboard height={100} width={60} color={theme.dark3} />
-                    <GreyText>Paste here! (Ctrl+V)</GreyText>
-                  </SchedulePasteBoxBackground>
-                  <SchedulePasteBox
-                    type="text"
-                    value=""
-                    onChange={handleSchedulePaste}
-                  />
+                <SchedulePasteBoxWrapper uploadState={uploadState}>
+                  {uploadContent()}
                 </SchedulePasteBoxWrapper>
                 <PrivacyPolicyWrapper>
                   <PrivacyPolicyText>Check out our</PrivacyPolicyText>
-                  <PrivacyPolicyLink>privacy policy</PrivacyPolicyLink>
+                  <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+                    privacy policy
+                  </PrivacyPolicyLink>
                 </PrivacyPolicyWrapper>
               </ScheduleStep3Wrapper>
             </td>

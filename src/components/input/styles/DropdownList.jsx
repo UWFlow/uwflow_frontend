@@ -8,7 +8,7 @@ export const DropdownWrapper = styled.div`
   z-index: ${({ zIndex }) => zIndex};
   width: ${({ width }) => width};
   margin: ${({ margin }) => margin};
-  margin-left: 5px;
+  margin-left: 4px;
   width: fit-content;
   white-space: nowrap;
   cursor: pointer;
