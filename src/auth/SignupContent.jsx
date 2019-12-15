@@ -64,10 +64,8 @@ const SignupContent = ({
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
       {
-        name: [
-          transformName(formState.firstName),
-          transformName(formState.lastName),
-        ].join(' '),
+        first_name: transformName(formState.firstName),
+        last_name: transformName(formState.lastName),
         email: formState.email,
         password: formState.password,
       },
