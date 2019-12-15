@@ -20,6 +20,7 @@ import {
   PrivacyPolicyText,
   PrivacyPolicyLink,
   SkipStepWrapper,
+  ErrorMessage,
 } from './styles/DataUploadModals';
 
 /* Child Components */
@@ -36,6 +37,8 @@ import {
   UPLOAD_SUCCESSFUL,
   UPLOAD_FAILED,
 } from '../../constants/DataUploadStates';
+
+import { PRIVACY_PAGE_ROUTE } from '../../Routes';
 
 const privacyText = `
   Flow only uses your transcript so you can easily import your course
@@ -56,7 +59,7 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     if (fileInputRef) {
       fileInputRef.current.click();
     }
-  }
+  };
 
   const makeTranscriptRequest = async file => {
     let formData = new FormData();
@@ -73,13 +76,13 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     } else {
       setUploadState(UPLOAD_FAILED);
     }
-  }
+  };
 
   const handleFileInputChange = async event => {
     event.preventDefault();
     event.stopPropagation();
     await makeTranscriptRequest(fileInputRef.current.files[0]);
-  }
+  };
 
   const handleTranscriptDrop = async event => {
     event.preventDefault();
@@ -98,35 +101,24 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
   }, []);
 
   const uploadContent = () => {
-    switch(uploadState) {
-      case UPLOAD_PENDING:
-        return <LoadingSpinner />;
-      case UPLOAD_FAILED:
-        return (
-          <>
-            <Upload height={100} width={60} color={theme.dark3} />
-            <GreyText>
-              Unable to upload transcript :(, please try again.
-            </GreyText>
-          </>
-        );
-      case UPLOAD_SUCCESSFUL:
-        return (
-          <GreyText>
-            Successfully uploaded transcript!
-          </GreyText>
-        );
-      default:
-        return (
-          <>
-            <Upload height={100} width={60} color={theme.dark3} />
-            <GreyText>
-              Drag and drop your transcript file here!
-            </GreyText>
-          </>
-        );    
+    if (uploadState === UPLOAD_PENDING) {
+      return <LoadingSpinner />;
     }
-  }
+
+    if (uploadState === UPLOAD_SUCCESSFUL) {
+      return <GreyText>Successfully uploaded transcript!</GreyText>;
+    }
+
+    return (
+      <>
+        {uploadState === UPLOAD_FAILED && (
+          <ErrorMessage>Invalid Transcript</ErrorMessage>
+        )}
+        <Upload height={100} width={60} color={theme.dark3} />
+        <GreyText>Drag and drop your transcript file here!</GreyText>
+      </>
+    );
+  };
 
   return (
     <ContentWrapper>
@@ -172,7 +164,7 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
                   <input
                     type="file"
                     ref={fileInputRef}
-                    style={{display: "none"}}
+                    style={{ display: 'none' }}
                     onChange={handleFileInputChange}
                   />
                   <TranscriptUploadBox uploadState={uploadState}>
@@ -185,7 +177,9 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
                   </PrivacyPolicyHeader>
                   <PrivacyPolicyText>
                     {privacyText}
-                    <PrivacyPolicyLink>privacy policy</PrivacyPolicyLink>
+                    <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+                      privacy policy
+                    </PrivacyPolicyLink>
                     for more information
                   </PrivacyPolicyText>
                 </TranscriptPrivacyPolicyWrapper>

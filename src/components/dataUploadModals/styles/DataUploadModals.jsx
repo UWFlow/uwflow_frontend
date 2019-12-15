@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Heading1,
   Heading2,
@@ -7,7 +8,11 @@ import {
   Heading4,
   Body,
 } from '../../../constants/Mixins';
-import { AWAITING_UPLOAD, UPLOAD_PENDING, UPLOAD_SUCCESSFUL } from '../../../constants/DataUploadStates';
+import {
+  AWAITING_UPLOAD,
+  UPLOAD_PENDING,
+  UPLOAD_SUCCESSFUL,
+} from '../../../constants/DataUploadStates';
 
 export const ContentWrapper = styled.div`
   display: flex;
@@ -36,10 +41,12 @@ export const InstructionText = styled.div`
   margin-left: 16px;
 `;
 
-export const Link = styled.span`
-  color: blue;
+export const Link = styled.a`
+  ${Heading3}
+  color: ${({ theme }) => theme.primary};
   text-decoration: underline;
-  margin: 0 6px;
+  margin: 0 4px;
+  cursor: pointer;
 `;
 
 export const NumberCircle = styled.div`
@@ -51,19 +58,14 @@ export const NumberCircle = styled.div`
   width: 64px;
   min-width: 64px;
   border-radius: 32px;
-  background: ${({ theme }) => theme.accentDark};
+  background: ${({ theme }) => theme.accent};
 `;
 
-export const ScheduleStep1Picture = styled.div`
+export const ScheduleStepPicture = styled.div`
   height: 300px;
   width: 300px;
-  background: gray;
-`;
-
-export const ScheduleStep2Picture = styled.div`
-  height: 300px;
-  width: 300px;
-  background: gray;
+  background: ${({ theme }) => theme.light4};
+  border-radius: 4px;
 `;
 
 export const ScheduleStep3Wrapper = styled.div`
@@ -73,9 +75,6 @@ export const ScheduleStep3Wrapper = styled.div`
 
 export const SchedulePasteBoxWrapper = styled.div`
   position: relative;
-`;
-
-export const SchedulePasteBoxBackground = styled.div`
   height: 280px;
   width: 300px;
   background: ${({ theme }) => theme.light2};
@@ -84,22 +83,31 @@ export const SchedulePasteBoxBackground = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  border-radius: 5px;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.light2};
+  border: 3px solid
+    ${({ theme, uploadState }) =>
+      uploadState === AWAITING_UPLOAD || uploadState === UPLOAD_PENDING
+        ? theme.accent
+        : uploadState === UPLOAD_SUCCESSFUL
+        ? theme.primary
+        : theme.red};
+
+  &:hover {
+    background: ${({ theme }) => theme.light3};
+  }
 `;
 
 export const SchedulePasteBox = styled.textarea`
   height: 100%;
-  width: 300px;
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  opacity: 0.5;
-  border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.accent};
-
-  &:hover {
-    border: 3px solid ${({ theme }) => theme.accentDark};
-  }
+  z-index: 1;
+  resize: none;
+  border: none;
+  background: none;
 `;
 
 export const GreyText = styled.div`
@@ -123,7 +131,7 @@ export const PrivacyPolicyText = styled.div`
   color: ${({ theme }) => theme.dark3}
 `;
 
-export const PrivacyPolicyLink = styled.span`
+export const PrivacyPolicyLink = styled(RouterLink)`
   ${Body}
   color: ${({ theme }) => theme.dark2}
   text-decoration: underline;
@@ -148,7 +156,8 @@ export const LongInstructionWrapper = styled.div`
 export const TranscriptStep1Picture = styled.div`
   height: 400px;
   width: 500px;
-  background: gray;
+  background: ${({ theme }) => theme.light4};
+  border-radius: 4px;
 `;
 
 export const TranscriptUploadBox = styled.div`
@@ -161,13 +170,17 @@ export const TranscriptUploadBox = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  border-radius: 5px;
-  border: 3px solid ${({ theme, uploadState }) => uploadState === AWAITING_UPLOAD || uploadState === UPLOAD_PENDING ? theme.accent :
-    (uploadState === UPLOAD_SUCCESSFUL ? theme.primary : theme.red)};
+  border-radius: 4px;
+  border: 3px solid
+    ${({ theme, uploadState }) =>
+      uploadState === AWAITING_UPLOAD || uploadState === UPLOAD_PENDING
+        ? theme.accent
+        : uploadState === UPLOAD_SUCCESSFUL
+        ? theme.primary
+        : theme.red};
 
   &:hover {
-    border: 3px solid ${({ theme, uploadState }) => uploadState === AWAITING_UPLOAD || uploadState === UPLOAD_PENDING ? theme.accentDark :
-    (uploadState === UPLOAD_SUCCESSFUL ? theme.primaryDark : theme.darkRed)};
+    background: ${({ theme }) => theme.light3};
   }
 `;
 
@@ -176,4 +189,15 @@ export const TranscriptPrivacyPolicyWrapper = styled.div`
   flex-direction: column;
   margin-top: 16px;
   max-width: 500px;
+`;
+
+export const ErrorMessage = styled.div`
+  position: absolute;
+  border-radius: 0 0 0 4px;
+  padding: 2px 2px 4px 4px;
+  top: -1px;
+  right: -1px;
+  z-index: 2;
+  color: ${({ theme }) => theme.white};
+  background: ${({ theme }) => theme.red};
 `;

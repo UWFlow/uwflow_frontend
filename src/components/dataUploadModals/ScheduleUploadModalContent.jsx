@@ -11,18 +11,20 @@ import {
   NumberCircle,
   InstructionText,
   Link,
-  ScheduleStep1Picture,
-  ScheduleStep2Picture,
+  ScheduleStepPicture,
   ScheduleStep3Wrapper,
   SchedulePasteBoxWrapper,
-  SchedulePasteBoxBackground,
   SchedulePasteBox,
   GreyText,
   PrivacyPolicyWrapper,
   PrivacyPolicyText,
   PrivacyPolicyLink,
   SkipStepWrapper,
+  ErrorMessage,
 } from './styles/DataUploadModals';
+
+/* Child Components */
+import LoadingSpinner from '../display/LoadingSpinner';
 
 /* Constants */
 import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from '../../constants/Api';
@@ -33,8 +35,10 @@ import {
   UPLOAD_SUCCESSFUL,
 } from '../../constants/DataUploadStates';
 
+import { PRIVACY_PAGE_ROUTE } from '../../Routes';
+
 export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
-  const [, setUploadState] = useState(AWAITING_UPLOAD);
+  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
   const [scheduleText, setScheduleText] = useState('');
 
   const handleSchedulePaste = async event => {
@@ -53,6 +57,31 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
     } else {
       setUploadState(UPLOAD_FAILED);
     }
+  };
+
+  const uploadContent = () => {
+    if (uploadState === UPLOAD_PENDING) {
+      return <LoadingSpinner />;
+    }
+
+    if (uploadState === UPLOAD_SUCCESSFUL) {
+      return <GreyText>Successfully uploaded schedule!</GreyText>;
+    }
+
+    return (
+      <>
+        <SchedulePasteBox
+          type="text"
+          value={scheduleText}
+          onChange={handleSchedulePaste}
+        />
+        {uploadState === UPLOAD_FAILED && (
+          <ErrorMessage>Invalid schedule</ErrorMessage>
+        )}
+        <Clipboard height={100} width={60} color={theme.dark3} />
+        <GreyText>Paste here! (Ctrl+V)</GreyText>
+      </>
+    );
   };
 
   return (
@@ -89,33 +118,27 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
           </tr>
           <tr>
             <td>
-              <ScheduleStep1Picture />
+              <ScheduleStepPicture />
             </td>
             <td>
               <ArrowRight color={theme.accent} height={100} width={80} />
             </td>
             <td>
-              <ScheduleStep2Picture />
+              <ScheduleStepPicture />
             </td>
             <td>
               <ArrowRight color={theme.accent} height={100} width={80} />
             </td>
             <td>
               <ScheduleStep3Wrapper>
-                <SchedulePasteBoxWrapper>
-                  <SchedulePasteBoxBackground>
-                    <Clipboard height={100} width={60} color={theme.dark3} />
-                    <GreyText>Paste here! (Ctrl+V)</GreyText>
-                  </SchedulePasteBoxBackground>
-                  <SchedulePasteBox
-                    type="text"
-                    value={scheduleText}
-                    onChange={handleSchedulePaste}
-                  />
+                <SchedulePasteBoxWrapper uploadState={uploadState}>
+                  {uploadContent()}
                 </SchedulePasteBoxWrapper>
                 <PrivacyPolicyWrapper>
                   <PrivacyPolicyText>Check out our</PrivacyPolicyText>
-                  <PrivacyPolicyLink>privacy policy</PrivacyPolicyLink>
+                  <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+                    privacy policy
+                  </PrivacyPolicyLink>
                 </PrivacyPolicyWrapper>
               </ScheduleStep3Wrapper>
             </td>

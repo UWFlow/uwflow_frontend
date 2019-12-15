@@ -11,6 +11,12 @@ import {
   ProfileCalendarWrapper,
   ProfileCalendarHeading,
   ProfileCalendarText,
+  ExportCalendarWrapper,
+  RecentCalendarWrapper,
+  RecentCalendarText,
+  CalendarWithButtonsWrapper,
+  ExportCalendarText,
+  ButtonWrapper,
 } from './styles/ProfileCalendar';
 
 /* Utils */
@@ -134,6 +140,19 @@ const ProfileCalendar = ({ schedule }) => {
     />
   );
 
+  const ScheduleModalButton = (
+    <Button
+      handleClick={() => setScheduleModalOpen(true)}
+      margin="0"
+      padding="8px 24px"
+      maxHeight="48px"
+      hasShadow={false}
+      width="100%"
+    >
+      Add current / upcoming term
+    </Button>
+  );
+
   if (!schedule || schedule.length === 0)
     return (
       <ProfileCalendarWrapper>
@@ -143,15 +162,7 @@ const ProfileCalendar = ({ schedule }) => {
         <ProfileCalendarText>
           To export it to Google Calendar, Calendar.app, etc...
         </ProfileCalendarText>
-        <Button
-          handleClick={() => setScheduleModalOpen(true)}
-          margin="auto"
-          padding="8px 24px"
-          hasShadow={false}
-          width="100%"
-        >
-          Add current / upcoming term
-        </Button>
+        {ScheduleModalButton}
         {ScheduleModal}
       </ProfileCalendarWrapper>
     );
@@ -160,10 +171,20 @@ const ProfileCalendar = ({ schedule }) => {
   const events = getEventIntervals(moment(minDate), dayRange, schedule);
   const eventsByDate = getEventsByDate(events);
   return (
-    <>
+    <CalendarWithButtonsWrapper>
+      <ExportCalendarWrapper>
+        <ExportCalendarText>Export your calendar</ExportCalendarText>
+        <Button padding="0 32px" maxHeight="48px">
+          Export
+        </Button>
+      </ExportCalendarWrapper>
       <Calendar eventsByDate={eventsByDate} />
+      <RecentCalendarWrapper>
+        <RecentCalendarText>Have a more recent schedule?</RecentCalendarText>
+        <ButtonWrapper>{ScheduleModalButton}</ButtonWrapper>
+      </RecentCalendarWrapper>
       {ScheduleModal}
-    </>
+    </CalendarWithButtonsWrapper>
   );
 };
 

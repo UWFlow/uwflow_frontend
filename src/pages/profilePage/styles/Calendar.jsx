@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
-import { Card, BoxShadow, Body, Heading3 } from '../../../constants/Mixins';
+import { Body, Heading3 } from '../../../constants/Mixins';
 import { LEC, LAB } from '../../../constants/PageConstants';
 
 export const HOUR_HEIGHT = 64;
@@ -8,18 +9,21 @@ const TIME_WIDTH = 60;
 const HEADER_HEIGHT = 24;
 
 export const CalendarWrapper = styled.div`
-  ${Card('0')}
-  ${BoxShadow}
   position: relative;
-  margin-bottom: 32px;
+  background: ${({ theme }) => theme.white};
+  border-bottom: 2px solid ${({ theme }) => theme.light3};
 `;
 
 export const CalendarNavWrapper = styled.div`
   display: flex;
   vertical-align: bottom;
   justify-content: space-between;
-  padding: 16px;
-  border-bottom: 2px solid ${({ theme }) => theme.light4};
+  padding: 16px 32px;
+  border-bottom: 2px solid ${({ theme }) => theme.light3};
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 16px 16px;
+  `}
 `;
 
 export const DateHoursWrapper = styled.div`
@@ -124,6 +128,10 @@ export const DayColumn = styled.div`
   flex: 1;
   height: 100%;
   border-right: 1px solid ${({ theme }) => theme.light3};
+
+  &:last-child {
+    border-right: none;
+  }
 `;
 
 export const DayHeader = styled.div`
