@@ -95,7 +95,7 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
       event.stopPropagation();
       return;
     }
-  }
+  };
 
   const uploadContent = () => {
     if (uploadState === UPLOAD_PENDING) {

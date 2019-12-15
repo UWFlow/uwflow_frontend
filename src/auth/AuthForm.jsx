@@ -56,7 +56,6 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
     }
 
     const [response, status] = await makePOSTRequest(endpoint, data);
-
     if (status >= 400) {
       setErrorMessage(response.error);
     } else {

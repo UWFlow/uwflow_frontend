@@ -9,6 +9,7 @@ import {
   TextboxWrapper,
   Form,
   Error,
+  FormError,
 } from './styles/AuthForm';
 
 /* Child Components */
@@ -40,27 +41,31 @@ const SignupContent = ({
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   const transformName = name => {
+    if (name === '') {
+      return name;
+    }
     return name[0].toUpperCase() + name.slice(1);
   };
 
   const validateFields = () => {
-    setEmailError(!validateEmail(formState.email));
+    const emailValid = validateEmail(formState.email);
     setFirstNameError(formState.firstName === '');
     setLastNameError(formState.lastName === '');
+    setEmailError(!emailValid);
     setPasswordError(formState.password.length < MIN_PASSWORD_LENGTH);
     setConfirmPasswordError(formState.password !== formState.confirmPassword);
 
-    return !(
-      !validateEmail(formState.email) ||
-      formState.firstName === '' ||
-      formState.lastName === '' ||
-      formState.password.length < MIN_PASSWORD_LENGTH ||
-      formState.password !== formState.confirmPassword
+    return (
+      emailValid &&
+      formState.firstName !== '' &&
+      formState.lastName !== '' &&
+      formState.password.length >= MIN_PASSWORD_LENGTH &&
+      formState.password === formState.confirmPassword
     );
   };
 
   const handleSignUp = async event => {
-    handleAuth(
+    await handleAuth(
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
       {
@@ -78,6 +83,13 @@ const SignupContent = ({
     <>
       <Header>Sign up</Header>
       <Form onSubmit={handleSignUp}>
+        {firstNameError && <FormError>Please enter a first name</FormError>}
+        {lastNameError && <FormError>Please enter a first name</FormError>}
+        {emailError && <FormError>Please enter a valid email</FormError>}
+        {passwordError && (
+          <FormError>Password must be longer than 6 characters</FormError>
+        )}
+        {confirmPasswordError && <FormError>Passwords don't match</FormError>}
         <Error>{errorMessage}</Error>
         <NamesSection>
           <TextboxWrapper>

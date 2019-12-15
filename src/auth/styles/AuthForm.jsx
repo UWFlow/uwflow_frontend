@@ -167,3 +167,11 @@ export const ButtonText = styled.div`
 export const Form = styled.form`
   width: 100%;
 `;
+
+export const FormError = styled.div`
+  border-radius: 4px;
+  background: ${({ theme }) => theme.red};
+  color: ${({ theme }) => theme.white};
+  padding: 4px 8px;
+  margin-bottom: 8px;
+`;

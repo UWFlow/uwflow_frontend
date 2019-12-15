@@ -9,6 +9,7 @@ import {
   TextboxWrapper,
   Form,
   Error,
+  FormError,
 } from './styles/AuthForm';
 
 /* Child Components */
@@ -27,15 +28,17 @@ const LoginContent = ({
 }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const validateFields = () => {
     const emailValid = validateEmail(formState.email);
     setEmailError(!emailValid);
-    return emailValid;
+    setPasswordError(formState.password === '');
+    return emailValid && formState.password !== '';
   };
 
   const handleLogin = async event => {
-    handleAuth(
+    await handleAuth(
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
       {
@@ -51,6 +54,8 @@ const LoginContent = ({
     <>
       <Header>Log in</Header>
       <Form onSubmit={handleLogin}>
+        {emailError && <FormError>Please enter a valid email</FormError>}
+        {passwordError && <FormError>Please enter a password</FormError>}
         <Error>{errorMessage}</Error>
         <TextboxWrapper>
           <Textbox
@@ -68,8 +73,12 @@ const LoginContent = ({
           <Textbox
             options={{ width: '100%', type: 'password' }}
             placeholder="Password"
+            error={passwordError}
             text={formState.password}
-            setText={setPassword}
+            setText={value => {
+              setPassword(value);
+              setPasswordError(false);
+            }}
           />
         </TextboxWrapper>
         <ForgotPasswordWrapper>
