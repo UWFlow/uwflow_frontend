@@ -7,6 +7,7 @@ import {
   Heading4,
   Body,
 } from '../../../constants/Mixins';
+import { AWAITING_UPLOAD, UPLOAD_PENDING, UPLOAD_SUCCESSFUL } from '../../../constants/DataUploadStates';
 
 export const ContentWrapper = styled.div`
   display: flex;
@@ -86,8 +87,8 @@ export const SchedulePasteBoxBackground = styled.div`
   border-radius: 5px;
 `;
 
-export const SchedulePasteBox = styled.input`
-  height: 280px;
+export const SchedulePasteBox = styled.textarea`
+  height: 100%;
   width: 300px;
   position: absolute;
   top: 0;
@@ -153,6 +154,7 @@ export const TranscriptStep1Picture = styled.div`
 export const TranscriptUploadBox = styled.div`
   height: 318px;
   width: 500px;
+  cursor: pointer;
   background: ${({ theme }) => theme.light2};
   display: flex;
   flex-direction: column;
@@ -160,10 +162,12 @@ export const TranscriptUploadBox = styled.div`
   align-items: center;
   position: relative;
   border-radius: 5px;
-  border: 3px solid ${({ theme }) => theme.accent};
+  border: 3px solid ${({ theme, uploadState }) => uploadState === AWAITING_UPLOAD || uploadState === UPLOAD_PENDING ? theme.accent :
+    (uploadState === UPLOAD_SUCCESSFUL ? theme.primary : theme.red)};
 
   &:hover {
-    border: 3px solid ${({ theme }) => theme.accentDark};
+    border: 3px solid ${({ theme, uploadState }) => uploadState === AWAITING_UPLOAD || uploadState === UPLOAD_PENDING ? theme.accentDark :
+    (uploadState === UPLOAD_SUCCESSFUL ? theme.primaryDark : theme.darkRed)};
   }
 `;
 

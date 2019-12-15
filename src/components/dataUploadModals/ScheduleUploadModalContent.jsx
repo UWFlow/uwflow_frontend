@@ -35,8 +35,10 @@ import {
 
 export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
   const [, setUploadState] = useState(AWAITING_UPLOAD);
+  const [scheduleText, setScheduleText] = useState('');
 
   const handleSchedulePaste = async event => {
+    setScheduleText(event.currentTarget.value);
     setUploadState(UPLOAD_PENDING);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${SCHEDULE_PARSE_ENDPOINT}?user_id=${localStorage.getItem(
@@ -107,7 +109,7 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
                   </SchedulePasteBoxBackground>
                   <SchedulePasteBox
                     type="text"
-                    value=""
+                    value={scheduleText}
                     onChange={handleSchedulePaste}
                   />
                 </SchedulePasteBoxWrapper>

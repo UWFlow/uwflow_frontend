@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { withTheme } from 'styled-components';
 import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
@@ -21,6 +21,9 @@ import {
   PrivacyPolicyLink,
   SkipStepWrapper,
 } from './styles/DataUploadModals';
+
+/* Child Components */
+import LoadingSpinner from '../display/LoadingSpinner';
 
 /* Constants */
 import {
@@ -46,17 +49,22 @@ const onDragOver = event => {
 };
 
 export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
-  const [, setUploadState] = useState(AWAITING_UPLOAD);
+  const fileInputRef = useRef();
+  const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
 
-  const handleTranscriptDrop = async event => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleTranscriptClick = () => {
+    if (fileInputRef) {
+      fileInputRef.current.click();
+    }
+  }
+
+  const makeTranscriptRequest = async file => {
+    let formData = new FormData();
+    formData.append('file', file);
     setUploadState(UPLOAD_PENDING);
-    var file = new FormData();
-    file.append('file', event.dataTransfer.files[0]);
     const [, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${TRANSCRIPT_PARSE_ENDPOINT}`,
-      file,
+      formData,
       {},
       { noStringify: true },
     );
@@ -65,6 +73,18 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     } else {
       setUploadState(UPLOAD_FAILED);
     }
+  }
+
+  const handleFileInputChange = async event => {
+    event.preventDefault();
+    event.stopPropagation();
+    await makeTranscriptRequest(fileInputRef.current.files[0]);
+  }
+
+  const handleTranscriptDrop = async event => {
+    event.preventDefault();
+    event.stopPropagation();
+    await makeTranscriptRequest(event.dataTransfer.files[0]);
   };
 
   useEffect(() => {
@@ -76,6 +96,37 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
       window.removeEventListener('drop', preventDefault);
     };
   }, []);
+
+  const uploadContent = () => {
+    switch(uploadState) {
+      case UPLOAD_PENDING:
+        return <LoadingSpinner />;
+      case UPLOAD_FAILED:
+        return (
+          <>
+            <Upload height={100} width={60} color={theme.dark3} />
+            <GreyText>
+              Unable to upload transcript :(, please try again.
+            </GreyText>
+          </>
+        );
+      case UPLOAD_SUCCESSFUL:
+        return (
+          <GreyText>
+            Successfully uploaded transcript!
+          </GreyText>
+        );
+      default:
+        return (
+          <>
+            <Upload height={100} width={60} color={theme.dark3} />
+            <GreyText>
+              Drag and drop your transcript file here!
+            </GreyText>
+          </>
+        );    
+    }
+  }
 
   return (
     <ContentWrapper>
@@ -112,16 +163,20 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
             <td>
               <ScheduleStep3Wrapper>
                 <form
+                  onClick={handleTranscriptClick}
                   onDrop={handleTranscriptDrop}
                   onDragOver={onDragOver}
                   accept="application/pdf"
                   encType="multipart/form-data"
                 >
-                  <TranscriptUploadBox>
-                    <Upload height={100} width={60} color={theme.dark3} />
-                    <GreyText>
-                      Drag and drop your transcript file here!
-                    </GreyText>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{display: "none"}}
+                    onChange={handleFileInputChange}
+                  />
+                  <TranscriptUploadBox uploadState={uploadState}>
+                    {uploadContent()}
                   </TranscriptUploadBox>
                 </form>
                 <TranscriptPrivacyPolicyWrapper>
