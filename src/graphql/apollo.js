@@ -57,7 +57,7 @@ const cache = new InMemoryCache({
       case 'user_shortlist':
         return `${object.course_id}:${object.user_id}`;
       case 'user_schedule':
-        return `${object.user_id}:${object.section_id}`;
+        return `${object.user_id}:${object.section.id}`;
       case 'user_course_taken':
         return `${object.term_id}:${object.course_id}`;
       default:

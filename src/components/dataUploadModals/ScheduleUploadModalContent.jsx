@@ -74,7 +74,7 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
-      toast('Success! 🎉')
+      toast('Success! 🎉');
     } else {
       setUploadState(UPLOAD_FAILED);
       setUploadError(response.error);
@@ -116,7 +116,9 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
           onKeyPress={handleKeyPress}
         />
         {uploadState === UPLOAD_FAILED && (
-          <ErrorMessage>{SCHEDULE_ERRORS[uploadError] || SCHEDULE_ERRORS.default_schedule}</ErrorMessage>
+          <ErrorMessage>
+            {SCHEDULE_ERRORS[uploadError] || SCHEDULE_ERRORS.default_schedule}
+          </ErrorMessage>
         )}
         <Clipboard height={100} width={60} color={theme.dark3} />
         <GreyText>Paste here! (Ctrl+V)</GreyText>

@@ -67,7 +67,7 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     if (!file) {
       return;
     }
-  
+
     let formData = new FormData();
     formData.append('file', file);
     setUploadState(UPLOAD_PENDING);
@@ -79,7 +79,7 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
-      toast('Success! 🎉')
+      toast('Success! 🎉');
     } else {
       setUploadState(UPLOAD_FAILED);
     }
