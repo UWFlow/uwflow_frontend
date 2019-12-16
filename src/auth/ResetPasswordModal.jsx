@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Modal from '../components/display/Modal';
 import Textbox from '../components/input/Textbox';
 import Button from '../components/input/Button';
-import LoadingSpinner from '../components/display/LoadingSpinner';
 
 /* Utils */
 import { makePOSTRequest } from '../utils/Api';
@@ -15,25 +14,33 @@ import {
   RESET_PASSWORD_KEY_EMAIL_ENDPOINT,
   RESET_PASSWORD_VERIFY_KEY_ENDPOINT,
   RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
+  MIN_PASSWORD_LENGTH,
 } from '../constants/Api';
 
 /* Styled Components */
 import {
-  Wrapper,
+  FormWrapper,
   Header,
   Text,
   Error,
   Success,
   TextboxWrapper,
   GreyLink,
-  LoadingSpinnerWrapper,
 } from './styles/ResetPasswordModal';
+import { validateEmail } from '../utils/Email';
 
-const ResetPasswordForm = ({ onSubmit, loading, error, success }) => {
+const ResetPasswordForm = ({
+  onSubmit,
+  loading,
+  error,
+  success,
+  emailError,
+  setEmailError,
+}) => {
   const [email, setEmail] = useState('');
 
   return (
-    <Wrapper>
+    <FormWrapper onSubmit={event => onSubmit(event, email)}>
       <Header>Reset Password</Header>
       {error !== '' && <Error>{error}</Error>}
       {success !== '' && <Success>{success}</Success>}
@@ -41,23 +48,22 @@ const ResetPasswordForm = ({ onSubmit, loading, error, success }) => {
         <Textbox
           options={{ width: '100%', type: 'email' }}
           placeholder="Email"
-          error={false}
+          error={emailError}
           text={email}
           setText={value => {
             setEmail(value);
+            setEmailError(false);
           }}
         />
       </TextboxWrapper>
-      {loading ? (
-        <LoadingSpinnerWrapper>
-          <LoadingSpinner size={24} margin="" />
-        </LoadingSpinnerWrapper>
-      ) : (
-        <Button width="100%" handleClick={() => onSubmit(email)}>
-          Send Reset Email
-        </Button>
-      )}
-    </Wrapper>
+      <Button
+        loading={loading}
+        width="100%"
+        handleClick={event => onSubmit(event, email)}
+      >
+        Send Reset Email
+      </Button>
+    </FormWrapper>
   );
 };
 
@@ -67,10 +73,12 @@ const EnterResetCodeForm = ({
   error,
   resendEmail,
   success,
+  codeError,
+  setCodeError,
 }) => {
   const [code, setCode] = useState('');
   return (
-    <Wrapper>
+    <FormWrapper onSubmit={event => onSubmit(event, code)}>
       <Header>Enter reset code</Header>
       <Text>
         We just sent you an email with a reset code, please enter it below:
@@ -81,32 +89,41 @@ const EnterResetCodeForm = ({
         <Textbox
           options={{ width: '100%' }}
           placeholder="Code"
-          error={false}
+          error={codeError}
           text={code}
           setText={value => {
             setCode(value);
+            setCodeError(false);
           }}
         />
-        <GreyLink onClick={resendEmail}>Send me a new code</GreyLink>
+        <GreyLink onClick={(false, resendEmail)}>Send me a new code</GreyLink>
       </TextboxWrapper>
-      {loading ? (
-        <LoadingSpinnerWrapper>
-          <LoadingSpinner size={24} margin="" />
-        </LoadingSpinnerWrapper>
-      ) : (
-        <Button width="100%" handleClick={() => onSubmit(code)}>
-          Submit
-        </Button>
-      )}
-    </Wrapper>
+      <Button
+        loading={loading}
+        width="100%"
+        handleClick={event => onSubmit(event, code)}
+      >
+        Submit
+      </Button>
+    </FormWrapper>
   );
 };
 
-const EnterNewPasswordForm = ({ onSubmit, loading, error, success }) => {
+const EnterNewPasswordForm = ({
+  onSubmit,
+  loading,
+  error,
+  success,
+  passwordError,
+  setPasswordError,
+  confirmPasswordError,
+  setConfirmPasswordError,
+}) => {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+
   return (
-    <Wrapper>
+    <FormWrapper onSubmit={event => onSubmit(event, pass, confirmPass)}>
       <Header>Enter new password</Header>
       {error !== '' && <Error>{error}</Error>}
       {success !== '' && <Success>{success}</Success>}
@@ -114,10 +131,11 @@ const EnterNewPasswordForm = ({ onSubmit, loading, error, success }) => {
         <Textbox
           options={{ width: '100%', type: 'password' }}
           placeholder="New password"
-          error={false}
+          error={passwordError}
           text={pass}
           setText={value => {
             setPass(value);
+            setPasswordError(false);
           }}
         />
       </TextboxWrapper>
@@ -125,34 +143,53 @@ const EnterNewPasswordForm = ({ onSubmit, loading, error, success }) => {
         <Textbox
           options={{ width: '100%', type: 'password' }}
           placeholder="Confirm new password"
-          error={false}
+          error={confirmPasswordError}
           text={confirmPass}
           setText={value => {
             setConfirmPass(value);
+            setConfirmPasswordError(false);
           }}
         />
       </TextboxWrapper>
-      <Button width="100%" handleClick={() => onSubmit(pass, confirmPass)}>
+      <Button
+        loading={loading}
+        width="100%"
+        handleClick={event => onSubmit(event, pass, confirmPass)}
+      >
         Reset Password
       </Button>
-    </Wrapper>
+    </FormWrapper>
   );
 };
 
 const RESET_PASSWORD_FORM = 'RESET_PASSWORD';
 const ENTER_RESET_CODE_FORM = 'RESET_CODE';
 const ENTER_NEW_PASSWORD_FORM = 'NEW_PASSWORD';
-const TIMEOUT_LENGTH = 750;
+const TIMEOUT_LENGTH = 800;
 
 const ResetPasswordModal = ({ handleClose, isOpen }) => {
   const [showingForm, setShowingForm] = useState(RESET_PASSWORD_FORM);
-  const [savedCode, setCode] = useState('');
+  const [savedCode, setSavedCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [codeError, setCodeError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const handleSendResetEmail = async email => {
+  const handleSendResetEmail = async (event, email) => {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (!validateEmail(email)) {
+      setEmailError(true);
+      setErrorMessage('Please enter a valid email');
+      return;
+    }
+
     setIsLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
@@ -165,12 +202,10 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     );
     setIsLoading(false);
     if (status >= 400) {
-      // ERROR
       setErrorMessage(response.error);
     } else {
-      // SUCCESS
       setEmail(email);
-      setSuccessMessage('Successfully sent reset code!');
+      setSuccessMessage('Successfully sent reset code');
       if (showingForm !== ENTER_RESET_CODE_FORM) {
         setTimeout(() => {
           setSuccessMessage('');
@@ -180,7 +215,9 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     }
   };
 
-  const handleSubmitResetCode = async code => {
+  const handleSubmitResetCode = async (event, code) => {
+    event.preventDefault();
+
     setIsLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
@@ -190,12 +227,11 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     );
     setIsLoading(false);
     if (status >= 400) {
-      // ERROR
       setErrorMessage(response.error);
+      setCodeError(true);
     } else {
-      // SUCCESS
-      setCode(code);
-      setSuccessMessage('Code is valid!');
+      setSavedCode(code);
+      setSuccessMessage('Code is valid');
       setTimeout(() => {
         setSuccessMessage('');
         setShowingForm(ENTER_NEW_PASSWORD_FORM);
@@ -203,11 +239,23 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     }
   };
 
-  const handleNewPassword = async (newPass, confirmNewPass) => {
-    if (newPass !== confirmNewPass) {
-      setErrorMessage("Passwords don't match!");
+  const handleNewPassword = async (event, newPass, confirmNewPass) => {
+    event.preventDefault();
+
+    if (newPass.length < MIN_PASSWORD_LENGTH) {
+      setErrorMessage(
+        `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
+      );
+      setPasswordError(true);
       return;
     }
+
+    if (newPass !== confirmNewPass) {
+      setErrorMessage("Passwords don't match");
+      setConfirmPasswordError(true);
+      return;
+    }
+
     setIsLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
@@ -220,11 +268,9 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     );
     setIsLoading(false);
     if (status >= 400) {
-      // ERROR
       setErrorMessage(response.error);
     } else {
-      // SUCCESS
-      setSuccessMessage('Password successfully reset!');
+      setSuccessMessage('Password successfully reset');
       setTimeout(() => {
         setSuccessMessage('');
         handleClose();
@@ -240,6 +286,8 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
           loading={isLoading}
           error={errorMessage}
           success={successMessage}
+          emailError={emailError}
+          setEmailError={setEmailError}
         />
       )}
       {showingForm === ENTER_RESET_CODE_FORM && (
@@ -249,6 +297,8 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
           error={errorMessage}
           resendEmail={() => handleSendResetEmail(email)}
           success={successMessage}
+          codeError={codeError}
+          setCodeError={setCodeError}
         />
       )}
       {showingForm === ENTER_NEW_PASSWORD_FORM && (
@@ -257,6 +307,10 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
           loading={isLoading}
           error={errorMessage}
           success={successMessage}
+          passwordError={passwordError}
+          setPasswordError={setPasswordError}
+          confirmPasswordError={confirmPasswordError}
+          setConfirmPasswordError={setConfirmPasswordError}
         />
       )}
     </Modal>

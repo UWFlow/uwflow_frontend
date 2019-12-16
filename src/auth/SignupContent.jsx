@@ -20,9 +20,8 @@ import { validateEmail } from '../utils/Email';
 import {
   BACKEND_ENDPOINT,
   EMAIL_AUTH_REGISTER_ENDPOINT,
+  MIN_PASSWORD_LENGTH,
 } from '../constants/Api';
-
-const MIN_PASSWORD_LENGTH = 6;
 
 const SignupContent = ({
   handleAuth,
@@ -87,7 +86,9 @@ const SignupContent = ({
         {lastNameError && <FormError>Please enter a first name</FormError>}
         {emailError && <FormError>Please enter a valid email</FormError>}
         {passwordError && (
-          <FormError>Password must be longer than 6 characters</FormError>
+          <FormError>
+            Password must be at least {MIN_PASSWORD_LENGTH} characters
+          </FormError>
         )}
         {confirmPasswordError && <FormError>Passwords don't match</FormError>}
         <Error>{errorMessage}</Error>

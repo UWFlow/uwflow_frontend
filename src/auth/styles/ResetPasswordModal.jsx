@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Heading3, Body } from '../../constants/Mixins';
+import { Heading2, Body } from '../../constants/Mixins';
 
-export const Wrapper = styled.div`
-  padding: 16px;
+export const FormWrapper = styled.form`
+  padding: 24px 16px;
   display: flex;
   flex-direction: column;
   background: white;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Header = styled.div`
-  ${Heading3}
+  ${Heading2}
   margin-bottom: 16px;
 `;
 
