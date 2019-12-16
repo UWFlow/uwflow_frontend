@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withTheme } from 'styled-components';
 import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';
+import { toast } from 'react-toastify';
 
 /* Styled Components */
 import {
@@ -34,6 +35,7 @@ import {
   UPLOAD_FAILED,
   UPLOAD_SUCCESSFUL,
 } from '../../constants/DataUploadStates';
+import { SCHEDULE_ERRORS } from '../../constants/Error';
 
 import { PRIVACY_PAGE_ROUTE } from '../../Routes';
 
@@ -52,6 +54,7 @@ const clipboardKeys = {
 export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
   const [scheduleText, setScheduleText] = useState('');
+  const [uploadError, setUploadError] = useState('');
 
   const handleSchedulePaste = async event => {
     setScheduleText(event.currentTarget.value);
@@ -61,7 +64,7 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
     }
 
     setUploadState(UPLOAD_PENDING);
-    const [, status] = await makeAuthenticatedPOSTRequest(
+    const [response, status] = await makeAuthenticatedPOSTRequest(
       `${BACKEND_ENDPOINT}${SCHEDULE_PARSE_ENDPOINT}?user_id=${localStorage.getItem(
         'user_id',
       )}`,
@@ -71,8 +74,10 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
+      toast('Success! 🎉')
     } else {
       setUploadState(UPLOAD_FAILED);
+      setUploadError(response.error);
     }
   };
 
@@ -102,10 +107,6 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
       return <LoadingSpinner />;
     }
 
-    if (uploadState === UPLOAD_SUCCESSFUL) {
-      return <GreyText>Successfully uploaded schedule!</GreyText>;
-    }
-
     return (
       <>
         <SchedulePasteBox
@@ -115,7 +116,7 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
           onKeyPress={handleKeyPress}
         />
         {uploadState === UPLOAD_FAILED && (
-          <ErrorMessage>Invalid schedule</ErrorMessage>
+          <ErrorMessage>{SCHEDULE_ERRORS[uploadError] || SCHEDULE_ERRORS.default_schedule}</ErrorMessage>
         )}
         <Clipboard height={100} width={60} color={theme.dark3} />
         <GreyText>Paste here! (Ctrl+V)</GreyText>

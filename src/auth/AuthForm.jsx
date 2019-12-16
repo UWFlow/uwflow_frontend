@@ -25,6 +25,7 @@ import ResetPasswordModal from './ResetPasswordModal';
 import { PRIVACY_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
+import { AUTH_ERRORS, DEFAULT_ERROR } from '../constants/Error';
 
 export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
 
     const [response, status] = await makePOSTRequest(endpoint, data);
     if (status >= 400) {
-      setErrorMessage(response.error);
+      setErrorMessage(AUTH_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
       setJWT(response);
       dispatch({ type: LOGGED_IN });

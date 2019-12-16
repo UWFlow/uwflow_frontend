@@ -22,6 +22,7 @@ import {
   FACEBOOK_APP_ID,
 } from '../constants/Api';
 import { makePOSTRequest } from '../utils/Api';
+import { AUTH_ERRORS } from '../constants/Error';
 
 const SocialLoginContent = ({ setJWT }) => {
   const [error, setError] = useState('');
@@ -43,7 +44,7 @@ const SocialLoginContent = ({ setJWT }) => {
     );
 
     if (status >= 400) {
-      setError(response.error);
+      setError(AUTH_ERRORS[response.error] || AUTH_ERRORS.no_facebook_email);
     } else {
       setJWT(response);
     }
@@ -62,7 +63,7 @@ const SocialLoginContent = ({ setJWT }) => {
     );
 
     if (status >= 400) {
-      setError(response.error);
+      setError(AUTH_ERRORS[response.error] || AUTH_ERRORS.no_google_email);
     } else {
       setJWT(response);
     }

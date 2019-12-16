@@ -20,8 +20,8 @@ import { validateEmail } from '../utils/Email';
 import {
   BACKEND_ENDPOINT,
   EMAIL_AUTH_REGISTER_ENDPOINT,
-  MIN_PASSWORD_LENGTH,
 } from '../constants/Api';
+import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
 
 const SignupContent = ({
   handleAuth,
@@ -82,15 +82,15 @@ const SignupContent = ({
     <>
       <Header>Sign up</Header>
       <Form onSubmit={handleSignUp}>
-        {firstNameError && <FormError>Please enter a first name</FormError>}
-        {lastNameError && <FormError>Please enter a first name</FormError>}
-        {emailError && <FormError>Please enter a valid email</FormError>}
+        {firstNameError && <FormError>Please enter a first name.</FormError>}
+        {lastNameError && <FormError>Please enter a last name.</FormError>}
+        {emailError && <FormError>Please enter a valid email.</FormError>}
         {passwordError && (
           <FormError>
-            Password must be at least {MIN_PASSWORD_LENGTH} characters
+            Password must be at least {MIN_PASSWORD_LENGTH} characters.
           </FormError>
         )}
-        {confirmPasswordError && <FormError>Passwords don't match</FormError>}
+        {confirmPasswordError && <FormError>Passwords don't match.</FormError>}
         <Error>{errorMessage}</Error>
         <NamesSection>
           <TextboxWrapper>

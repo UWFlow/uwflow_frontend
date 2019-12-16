@@ -193,10 +193,11 @@ export const TranscriptPrivacyPolicyWrapper = styled.div`
 
 export const ErrorMessage = styled.div`
   position: absolute;
-  border-radius: 0 0 0 4px;
   padding: 2px 2px 4px 4px;
-  top: -1px;
-  right: -1px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0
   z-index: 2;
   color: ${({ theme }) => theme.white};
   background: ${({ theme }) => theme.red};

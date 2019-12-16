@@ -54,8 +54,8 @@ const LoginContent = ({
     <>
       <Header>Log in</Header>
       <Form onSubmit={handleLogin}>
-        {emailError && <FormError>Please enter a valid email</FormError>}
-        {passwordError && <FormError>Please enter a password</FormError>}
+        {emailError && <FormError>Please enter a valid email.</FormError>}
+        {passwordError && <FormError>Please enter a password.</FormError>}
         <Error>{errorMessage}</Error>
         <TextboxWrapper>
           <Textbox

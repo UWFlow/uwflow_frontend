@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { withTheme } from 'styled-components';
 import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
+import { toast } from 'react-toastify';
 
 /* Styled Components */
 import {
@@ -37,6 +38,7 @@ import {
   UPLOAD_SUCCESSFUL,
   UPLOAD_FAILED,
 } from '../../constants/DataUploadStates';
+import { TRANSCRIPT_ERRORS } from '../../constants/Error';
 
 import { PRIVACY_PAGE_ROUTE } from '../../Routes';
 
@@ -62,6 +64,10 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
   };
 
   const makeTranscriptRequest = async file => {
+    if (!file) {
+      return;
+    }
+  
     let formData = new FormData();
     formData.append('file', file);
     setUploadState(UPLOAD_PENDING);
@@ -73,6 +79,7 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     );
     if (status === 200) {
       setUploadState(UPLOAD_SUCCESSFUL);
+      toast('Success! 🎉')
     } else {
       setUploadState(UPLOAD_FAILED);
     }
@@ -105,14 +112,10 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
       return <LoadingSpinner />;
     }
 
-    if (uploadState === UPLOAD_SUCCESSFUL) {
-      return <GreyText>Successfully uploaded transcript!</GreyText>;
-    }
-
     return (
       <>
         {uploadState === UPLOAD_FAILED && (
-          <ErrorMessage>Invalid Transcript</ErrorMessage>
+          <ErrorMessage>{TRANSCRIPT_ERRORS.default_transcript}</ErrorMessage>
         )}
         <Upload height={100} width={60} color={theme.dark3} />
         <GreyText>Drag and drop your transcript file here!</GreyText>

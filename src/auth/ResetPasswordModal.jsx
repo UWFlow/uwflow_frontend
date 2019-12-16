@@ -14,8 +14,9 @@ import {
   RESET_PASSWORD_KEY_EMAIL_ENDPOINT,
   RESET_PASSWORD_VERIFY_KEY_ENDPOINT,
   RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
-  MIN_PASSWORD_LENGTH,
 } from '../constants/Api';
+import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
+import { RESET_PASSWORD_ERRORS, DEFAULT_ERROR } from '../constants/Error';
 
 /* Styled Components */
 import {
@@ -186,7 +187,7 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
 
     if (!validateEmail(email)) {
       setEmailError(true);
-      setErrorMessage('Please enter a valid email');
+      setErrorMessage('Please enter a valid email.');
       return;
     }
 
@@ -202,10 +203,10 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     );
     setIsLoading(false);
     if (status >= 400) {
-      setErrorMessage(response.error);
+      setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
       setEmail(email);
-      setSuccessMessage('Successfully sent reset code');
+      setSuccessMessage('Successfully sent reset code!');
       if (showingForm !== ENTER_RESET_CODE_FORM) {
         setTimeout(() => {
           setSuccessMessage('');
@@ -227,11 +228,11 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     );
     setIsLoading(false);
     if (status >= 400) {
-      setErrorMessage(response.error);
+      setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
       setCodeError(true);
     } else {
       setSavedCode(code);
-      setSuccessMessage('Code is valid');
+      setSuccessMessage('Code is valid!');
       setTimeout(() => {
         setSuccessMessage('');
         setShowingForm(ENTER_NEW_PASSWORD_FORM);
@@ -244,14 +245,14 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
 
     if (newPass.length < MIN_PASSWORD_LENGTH) {
       setErrorMessage(
-        `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
+        `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`,
       );
       setPasswordError(true);
       return;
     }
 
     if (newPass !== confirmNewPass) {
-      setErrorMessage("Passwords don't match");
+      setErrorMessage("Passwords don't match.");
       setConfirmPasswordError(true);
       return;
     }
@@ -268,9 +269,9 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     );
     setIsLoading(false);
     if (status >= 400) {
-      setErrorMessage(response.error);
+      setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
-      setSuccessMessage('Password successfully reset');
+      setSuccessMessage('Password successfully reset!');
       setTimeout(() => {
         setSuccessMessage('');
         handleClose();
