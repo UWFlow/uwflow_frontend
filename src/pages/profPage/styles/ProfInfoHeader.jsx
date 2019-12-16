@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+import { Link as RouterLink } from 'react-router-dom';
 import ProfHeader from '../../../img/prof_v1.svg';
 
 /* Mixins */
@@ -102,4 +103,11 @@ export const RatingsSection = styled.div`
     right: 0;
     bottom: 32px;
   `}
+`;
+
+export const CourseLink = styled(RouterLink)`
+  ${Heading3}
+  color: ${({ theme }) => theme.courses};
+  text-decoration: underline;
+  margin-left: 4px;
 `;

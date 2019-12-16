@@ -1,5 +1,5 @@
 import { LOGGED_OUT } from '../data/actions/AuthActions';
-import { toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 // returns if a user is logged in or not
 export const isLoggedIn = () => {
@@ -13,13 +13,11 @@ export const getUserId = () => {
   return localStorage.getItem('user_id');
 };
 
-export const logOut = (dispatch = _ => {}) => {
+export const logOut = (dispatch = _ => {}, showToast = true) => {
   localStorage.removeItem('token');
   localStorage.removeItem('user_id');
   dispatch({ type: LOGGED_OUT });
-  toast('Logged out successfully!', {
-    transition: Bounce,
-    position: 'top-right',
-    autoClose: 2000,
-  });
+  if (showToast) {
+    toast('Logged out successfully!', { position: 'top-right' });
+  }
 };

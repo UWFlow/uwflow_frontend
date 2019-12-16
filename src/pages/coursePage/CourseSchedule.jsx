@@ -185,25 +185,28 @@ const CourseSchedule = ({
 
   const courseExams = processSectionExams(sections, courseCode);
 
-  const tabList = termsOffered.map(term => {
-    return {
-      title: termCodeToDate(term),
-      render: () => (
-        <>
-          <ScheduleTableWrapper>
-            <Table
-              columns={courseScheduleTableColumns}
-              data={sectionsCleanedData.filter(c => c.term === term)}
-            />
-          </ScheduleTableWrapper>
-          <FinalExamsTableWrapper>
-            <FinalExamsText>Final Exams</FinalExamsText>
-            <FinalExamTable courses={courseExams} includeCode={false} />
-          </FinalExamsTableWrapper>
-        </>
-      ),
-    };
-  });
+  const tabList = termsOffered
+    .sort()
+    .reverse()
+    .map(term => {
+      return {
+        title: termCodeToDate(term),
+        render: () => (
+          <>
+            <ScheduleTableWrapper>
+              <Table
+                columns={courseScheduleTableColumns}
+                data={sectionsCleanedData.filter(c => c.term === term)}
+              />
+            </ScheduleTableWrapper>
+            <FinalExamsTableWrapper>
+              <FinalExamsText>Final Exams</FinalExamsText>
+              <FinalExamTable courses={courseExams} includeCode={false} />
+            </FinalExamsTableWrapper>
+          </>
+        ),
+      };
+    });
 
   return (
     <CourseScheduleWrapper>

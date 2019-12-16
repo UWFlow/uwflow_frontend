@@ -50,7 +50,7 @@ class SearchClient {
   }
 
   autocomplete(query = '') {
-    if (query.length === 1) {
+    if (query.length === 0) {
       return { courseResults: [], profResults: [], courseCodeResults: [] };
     }
 

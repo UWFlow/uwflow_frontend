@@ -29,7 +29,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       );
       // hard coded error message for now
       if (message.includes('JWT')) {
-        logOut();
+        logOut(() => {}, true);
+        document.location.reload();
       }
       return null;
     });
