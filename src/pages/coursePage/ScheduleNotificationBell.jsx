@@ -21,7 +21,12 @@ import {
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
 
-import { splitCourseCode } from '../../utils/Misc';
+/* Constants */
+import {
+  SUBSCRIPTION_ERROR,
+  SUBSCRIPTION_SUCCESS,
+  SUBSCRIPTION_TOOLTIP,
+} from '../../constants/Messages';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -31,7 +36,6 @@ const ScheduleNotificationBell = ({
   isLoggedIn,
   sectionID,
   courseID,
-  courseCode,
   initialState = false,
 }) => {
   const userID = localStorage.getItem('user_id');
@@ -52,10 +56,8 @@ const ScheduleNotificationBell = ({
     refetchQueries,
   });
 
-  const notifyDelete = () =>
-    toast(`Unsubscribed from ${splitCourseCode(courseCode)} notifications`);
-  const notifyInsert = () =>
-    toast(`Subscribed to ${splitCourseCode(courseCode)} notifications`);
+  const notifyDelete = () => toast(SUBSCRIPTION_SUCCESS.unsubscribed);
+  const notifyInsert = () => toast(SUBSCRIPTION_SUCCESS.subscribed);
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -68,13 +70,19 @@ const ScheduleNotificationBell = ({
     }
 
     if (selected) {
-      deleteSubscription({ variables: { section_id: sectionID } }).then(() =>
-        notifyDelete(),
-      );
+      deleteSubscription({ variables: { section_id: sectionID } })
+        .then(() => notifyDelete())
+        .catch(() => {
+          toast(SUBSCRIPTION_ERROR);
+        });
     } else {
       insertSubscription({
         variables: { user_id: userID, section_id: sectionID },
-      }).then(() => notifyInsert());
+      })
+        .then(() => notifyInsert())
+        .catch(() => {
+          toast(SUBSCRIPTION_ERROR);
+        });
     }
     setSelected(!selected);
   };
@@ -83,8 +91,8 @@ const ScheduleNotificationBell = ({
     <NotificationBellWrapper
       data-tip={
         selected
-          ? 'Click to unsubscribe from email alerts for this section'
-          : 'Click to receive an email when a spot opens up in this section'
+          ? SUBSCRIPTION_TOOLTIP.unsubscribe
+          : SUBSCRIPTION_TOOLTIP.subscribe
       }
       selected={selected}
       onClick={toggleOnClick}

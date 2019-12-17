@@ -38,9 +38,13 @@ import {
   UPLOAD_SUCCESSFUL,
   UPLOAD_FAILED,
 } from '../../constants/DataUploadStates';
-import { TRANSCRIPT_ERRORS } from '../../constants/Error';
+import {
+  TRANSCRIPT_ERRORS,
+  DATA_UPLOAD_SUCCESS,
+} from '../../constants/Messages';
 
 import { PRIVACY_PAGE_ROUTE } from '../../Routes';
+import { sleep } from '../../utils/Misc';
 
 const privacyText = `
   Flow only uses your transcript so you can easily import your course
@@ -77,9 +81,12 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
       {},
       { noStringify: true },
     );
+
     if (status === 200) {
+      await sleep(500);
       setUploadState(UPLOAD_SUCCESSFUL);
-      toast('Success! 🎉');
+      toast(DATA_UPLOAD_SUCCESS);
+      onSkip();
     } else {
       setUploadState(UPLOAD_FAILED);
     }

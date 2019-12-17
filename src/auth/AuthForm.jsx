@@ -25,7 +25,11 @@ import ResetPasswordModal from './ResetPasswordModal';
 import { PRIVACY_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
-import { AUTH_ERRORS, DEFAULT_ERROR } from '../constants/Error';
+import {
+  AUTH_ERRORS,
+  DEFAULT_ERROR,
+  AUTH_SUCCESS,
+} from '../constants/Messages';
 
 export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
   const dispatch = useDispatch();
@@ -63,12 +67,12 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
       setJWT(response);
       dispatch({ type: LOGGED_IN });
       if (showLoginForm) {
-        toast('Logged in successfully!');
+        toast(AUTH_SUCCESS.login);
         if (onLoginComplete) {
           onLoginComplete();
         }
       } else {
-        toast('Signed up successfully!');
+        toast(AUTH_SUCCESS.signup);
         if (onSignupComplete) {
           onSignupComplete();
         } else {

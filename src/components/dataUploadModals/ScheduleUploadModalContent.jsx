@@ -35,9 +35,10 @@ import {
   UPLOAD_FAILED,
   UPLOAD_SUCCESSFUL,
 } from '../../constants/DataUploadStates';
-import { SCHEDULE_ERRORS } from '../../constants/Error';
+import { SCHEDULE_ERRORS, DATA_UPLOAD_SUCCESS } from '../../constants/Messages';
 
 import { PRIVACY_PAGE_ROUTE } from '../../Routes';
+import { sleep } from '../../utils/Misc';
 
 // keys for only allowing copy paste / deletion
 const clipboardKeys = {
@@ -73,8 +74,10 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
       },
     );
     if (status === 200) {
+      await sleep(500);
       setUploadState(UPLOAD_SUCCESSFUL);
-      toast('Success! 🎉');
+      toast(DATA_UPLOAD_SUCCESS);
+      onSkip();
     } else {
       setUploadState(UPLOAD_FAILED);
       setUploadError(response.error);
@@ -114,6 +117,7 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
           value={scheduleText}
           onChange={handleSchedulePaste}
           onKeyPress={handleKeyPress}
+          error={uploadState === UPLOAD_FAILED}
         />
         {uploadState === UPLOAD_FAILED && (
           <ErrorMessage>

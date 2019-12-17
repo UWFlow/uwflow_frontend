@@ -62,7 +62,6 @@ const EnrolledCell = ({ cell }) => (
           key={cell.value.section_id}
           sectionID={cell.value.section_id}
           courseID={cell.value.course_id}
-          courseCode={cell.value.course_code}
           initialState={cell.value.selected}
         />
       )}

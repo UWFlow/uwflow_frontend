@@ -108,6 +108,7 @@ export const SchedulePasteBox = styled.textarea`
   resize: none;
   border: none;
   background: none;
+  padding-top: ${({ error }) => (error ? 64 : 0)}px;
 `;
 
 export const GreyText = styled.div`

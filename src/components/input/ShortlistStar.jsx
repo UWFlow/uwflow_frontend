@@ -18,7 +18,9 @@ import {
 } from '../../graphql/mutations/Shortlist';
 import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
+
 import { splitCourseCode } from '../../utils/Misc';
+import { SHORTLIST_ERROR } from '../../constants/Messages';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -66,13 +68,19 @@ const ShortlistStar = ({
     }
 
     if (checked) {
-      deleteShortlist({ variables: { course_id: courseID } }).then(() =>
-        notifyDelete(),
-      );
+      deleteShortlist({ variables: { course_id: courseID } })
+        .then(() => notifyDelete())
+        .catch(() => {
+          toast(SHORTLIST_ERROR);
+        });
     } else {
       insertShortlist({
         variables: { user_id: userID, course_id: courseID },
-      }).then(() => notifyInsert());
+      })
+        .then(() => notifyInsert())
+        .catch(() => {
+          toast(SHORTLIST_ERROR);
+        });
     }
     setChecked(!checked);
   };

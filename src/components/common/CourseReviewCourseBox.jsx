@@ -35,6 +35,9 @@ import { splitCourseCode } from '../../utils/Misc';
 import { DELETE_REVIEW, UPSERT_REVIEW } from '../../graphql/mutations/Review';
 import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 
+/* Constants */
+import { REVIEW_SUCCESS } from '../../constants/Messages';
+
 const easyOptions = [
   'Very difficult',
   'Difficult',
@@ -155,12 +158,9 @@ const CourseReviewCourseBox = ({
   const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });
   const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries });
 
-  const notifyDelete = () =>
-    toast(`Deleted review for ${splitCourseCode(course.code)}`);
-  const notifyInsert = () =>
-    toast(`Created review for ${splitCourseCode(course.code)}`);
-  const notifyUpdate = () =>
-    toast(`Updated review for ${splitCourseCode(course.code)}`);
+  const notifyDelete = () => toast(REVIEW_SUCCESS.deleted);
+  const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
+  const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
   const handlePost = () => {
     setReviewUpdating(true);

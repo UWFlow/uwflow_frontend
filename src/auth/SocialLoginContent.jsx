@@ -22,7 +22,7 @@ import {
   FACEBOOK_APP_ID,
 } from '../constants/Api';
 import { makePOSTRequest } from '../utils/Api';
-import { AUTH_ERRORS } from '../constants/Error';
+import { AUTH_ERRORS } from '../constants/Messages';
 
 const SocialLoginContent = ({ setJWT }) => {
   const [error, setError] = useState('');
@@ -30,7 +30,7 @@ const SocialLoginContent = ({ setJWT }) => {
 
   const handleFacebookLogin = async res => {
     if (!res.accessToken) {
-      setError('Error logging in with Facebook');
+      setError(AUTH_ERRORS.no_facebook_email);
       return;
     }
 
@@ -73,9 +73,7 @@ const SocialLoginContent = ({ setJWT }) => {
 
   const handleGoogleFailure = res => {
     const errorMessage =
-      res.error === 'popup_closed_by_user'
-        ? ''
-        : `Error logging in with Google: ${res.error}`;
+      res.error === 'popup_closed_by_user' ? '' : AUTH_ERRORS.no_google_email;
 
     if (!res.error.includes('idpiframe')) {
       setError(errorMessage);

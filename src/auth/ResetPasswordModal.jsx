@@ -16,7 +16,7 @@ import {
   RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
 } from '../constants/Api';
 import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
-import { RESET_PASSWORD_ERRORS, DEFAULT_ERROR } from '../constants/Error';
+import { RESET_PASSWORD_ERRORS, DEFAULT_ERROR } from '../constants/Messages';
 
 /* Styled Components */
 import {
@@ -29,6 +29,7 @@ import {
   GreyLink,
 } from './styles/ResetPasswordModal';
 import { validateEmail } from '../utils/Email';
+import { sleep } from '../utils/Misc';
 
 const ResetPasswordForm = ({
   onSubmit,
@@ -208,10 +209,9 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
       setEmail(email);
       setSuccessMessage('Successfully sent reset code!');
       if (showingForm !== ENTER_RESET_CODE_FORM) {
-        setTimeout(() => {
-          setSuccessMessage('');
-          setShowingForm(ENTER_RESET_CODE_FORM);
-        }, TIMEOUT_LENGTH);
+        await sleep(TIMEOUT_LENGTH);
+        setSuccessMessage('');
+        setShowingForm(ENTER_RESET_CODE_FORM);
       }
     }
   };
@@ -233,10 +233,9 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     } else {
       setSavedCode(code);
       setSuccessMessage('Code is valid!');
-      setTimeout(() => {
-        setSuccessMessage('');
-        setShowingForm(ENTER_NEW_PASSWORD_FORM);
-      }, TIMEOUT_LENGTH);
+      await sleep(TIMEOUT_LENGTH);
+      setSuccessMessage('');
+      setShowingForm(ENTER_NEW_PASSWORD_FORM);
     }
   };
 
@@ -272,10 +271,9 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
       setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
       setSuccessMessage('Password successfully reset!');
-      setTimeout(() => {
-        setSuccessMessage('');
-        handleClose();
-      }, TIMEOUT_LENGTH);
+      await sleep(TIMEOUT_LENGTH);
+      setSuccessMessage('');
+      handleClose();
     }
   };
 

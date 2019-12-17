@@ -148,3 +148,7 @@ export const isValidDayOfWeek = day => {
 export const isTimeRangeInside = (inStart, inEnd, outStart, outEnd) => {
   return inStart.isAfter(outStart, 'minute') && outEnd.isAfter(inEnd, 'minute');
 };
+
+export const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};

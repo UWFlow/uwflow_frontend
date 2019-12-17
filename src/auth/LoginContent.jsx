@@ -18,6 +18,7 @@ import Button from '../components/input/Button';
 
 import { validateEmail } from '../utils/Email';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../constants/Api';
+import { AUTH_FORM_ERRORS } from '../constants/Messages';
 
 const LoginContent = ({
   handleAuth,
@@ -54,8 +55,10 @@ const LoginContent = ({
     <>
       <Header>Log in</Header>
       <Form onSubmit={handleLogin}>
-        {emailError && <FormError>Please enter a valid email.</FormError>}
-        {passwordError && <FormError>Please enter a password.</FormError>}
+        {emailError && <FormError>{AUTH_FORM_ERRORS.invalid_email}</FormError>}
+        {passwordError && (
+          <FormError>{AUTH_FORM_ERRORS.empty_password}</FormError>
+        )}
         <Error>{errorMessage}</Error>
         <TextboxWrapper>
           <Textbox

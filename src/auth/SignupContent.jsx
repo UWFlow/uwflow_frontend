@@ -22,6 +22,7 @@ import {
   EMAIL_AUTH_REGISTER_ENDPOINT,
 } from '../constants/Api';
 import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
+import { AUTH_FORM_ERRORS } from '../constants/Messages';
 
 const SignupContent = ({
   handleAuth,
@@ -82,15 +83,19 @@ const SignupContent = ({
     <>
       <Header>Sign up</Header>
       <Form onSubmit={handleSignUp}>
-        {firstNameError && <FormError>Please enter a first name.</FormError>}
-        {lastNameError && <FormError>Please enter a last name.</FormError>}
-        {emailError && <FormError>Please enter a valid email.</FormError>}
-        {passwordError && (
-          <FormError>
-            Password must be at least {MIN_PASSWORD_LENGTH} characters.
-          </FormError>
+        {firstNameError && (
+          <FormError>{AUTH_FORM_ERRORS.empty_first_name}</FormError>
         )}
-        {confirmPasswordError && <FormError>Passwords don't match.</FormError>}
+        {lastNameError && (
+          <FormError>{AUTH_FORM_ERRORS.empty_last_name}</FormError>
+        )}
+        {emailError && <FormError>{AUTH_FORM_ERRORS.invalid_email}</FormError>}
+        {passwordError && (
+          <FormError>{AUTH_FORM_ERRORS.password_too_short}</FormError>
+        )}
+        {confirmPasswordError && (
+          <FormError>{AUTH_FORM_ERRORS.passwords_dont_match}</FormError>
+        )}
         <Error>{errorMessage}</Error>
         <NamesSection>
           <TextboxWrapper>
