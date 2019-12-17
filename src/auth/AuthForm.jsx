@@ -31,7 +31,12 @@ import {
   AUTH_SUCCESS,
 } from '../constants/Messages';
 
-export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
+export const AuthForm = ({
+  onLoginComplete,
+  onSignupComplete,
+  history,
+  margin = '32px 0',
+}) => {
   const dispatch = useDispatch();
 
   const [showLoginForm, setShowLoginForm] = useState(true);
@@ -94,7 +99,7 @@ export const AuthForm = ({ onLoginComplete, onSignupComplete, history }) => {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper margin={margin}>
         <ContentWrapper>
           {showLoginForm ? (
             <LoginContent

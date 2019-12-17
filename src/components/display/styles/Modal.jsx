@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ModalChildren = styled.div`
   position: relative;
-  margin: 32px;
+  margin: 4px;
 `;
 
 export const ModalX = styled.button`

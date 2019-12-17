@@ -5,6 +5,7 @@ import LandingImage from '../../../img/landing_v1.svg';
 
 import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
+const MAX_PAGE_WIDTH = 1400;
 const MAX_BG_HEIGHT = 720;
 
 export const LandingPageWrapper = styled.div`
@@ -16,6 +17,18 @@ export const LandingPageWrapper = styled.div`
 
   @media only screen and (max-height: 800px) {
     min-height: 800px;
+  }
+`;
+
+export const Nav = styled.div`
+  position: absolute;
+  width: 100vw;
+  max-width: ${MAX_PAGE_WIDTH}px;
+  margin: auto;
+  left: calc((100vw - ${MAX_PAGE_WIDTH}px) / 2);
+
+  @media only screen and (max-width: ${MAX_PAGE_WIDTH + 64}px) {
+    left: 0;
   }
 `;
 
@@ -57,55 +70,47 @@ export const TitleText = styled.div`
 `;
 
 export const Subheading = styled.div`
-  position: absolute;
-  bottom: -200px;
-  left: 64px;
+  margin-top: 64px;
   font-size: 24px;
   font-weight: 300;
-  z-index: -1;
+  position: absolute;
+  bottom: -200px;
+
+  @media only screen and (max-width: 900px) {
+    max-width: 320px;
+  }
+
+  ${breakpoint('mobile', 'tablet')`
+    max-width: 100%;
+  `}
 
   ${breakpoint('mobile', 'mobileLarge')`
     font-size: 20px;
   `}
-
-  @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
-    left: 32px;
-  }
 `;
 
-export const Column1 = styled.div`
+export const Column = styled.div`
   position: relative;
   display: flex;
   justify-content: flex-end;
   padding: 64px;
-  max-width: 1000px;
-  flex-direction: column;
+  max-width: ${MAX_PAGE_WIDTH}px;
+  margin: 0 auto;
 
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     padding: 32px;
   }
 
   ${breakpoint('mobile', 'mobileLarge')`
-  padding: 16px;
+    padding: 16px;
   `}
 `;
 
-export const Column2 = styled.div`
+export const TitleSearchBarWrapper = styled.div`
   display: flex;
-  height: 100vh;
-  max-height: ${MAX_BG_HEIGHT + 560}px;
-  min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
-  ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};
-
-  @media only screen and (max-width: 1024px) {
-    min-width: ${({ loggedIn }) => (loggedIn ? '100px' : '480px')};
-    ${({ loggedIn }) => loggedIn && 'max-width: 25%;'};
-    align-items: none;
-  }
-
-  @media only screen and (max-height: 800px) {
-    min-height: 800px;
-  }
+  flex-direction: column;
+  align-self: flex-end;
+  height: max-content;
 `;
 
 export const BackgroundImage = styled.div`
@@ -128,5 +133,20 @@ export const BackgroundImage = styled.div`
 `;
 
 export const AuthContent = styled.div`
+  display: flex;
   margin: auto;
+  height: 100vh;
+  max-height: ${MAX_BG_HEIGHT + 560}px;
+  min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
+  ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};
+
+  @media only screen and (max-width: 1024px) {
+    min-width: ${({ loggedIn }) => (loggedIn ? '100px' : '480px')};
+    ${({ loggedIn }) => loggedIn && 'max-width: 25%;'};
+    align-items: none;
+  }
+
+  @media only screen and (max-height: 800px) {
+    min-height: 800px;
+  }
 `;

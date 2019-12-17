@@ -5,9 +5,10 @@ import { withRouter } from 'react-router-dom';
 /* Styled Components */
 import {
   ProfileWrapper,
+  Nav,
   LandingPageWrapper,
-  Column1,
-  Column2,
+  Column,
+  TitleSearchBarWrapper,
   TitleText,
   Subheading,
   BackgroundImage,
@@ -35,42 +36,43 @@ const mapStateToProps = state => ({
 const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
   return (
     <LandingPageWrapper>
-      <BackgroundImage>
+      <Nav>
+        <LogoText>UW Flow</LogoText>
         <ProfileWrapper>
           {(isLoggedIn || !isDesktop) && <ProfileDropdown />}
         </ProfileWrapper>
-        <LogoText>UW Flow</LogoText>
-        <Column1 loggedIn={isLoggedIn}>
-          <TitleText>
-            Explore over 20,000 course and professor reviews from UW students
-          </TitleText>
-          <SearchBar isLanding />
-          <Subheading>
-            Plan courses
-            <br />
-            <br />
-            Read course and professor reviews
-            <br />
-            <br />
-            Export your schedule
-          </Subheading>
-        </Column1>
-        {isDesktop && (
-          <Column2 loggedIn={isLoggedIn}>
-            {!isLoggedIn && (
-              <AuthContent>
-                <AuthForm
-                  onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
-                  onSignupComplete={() =>
-                    history.push(WELCOME_PAGE_ROUTE, {
-                      prevPage: PROFILE_PAGE_ROUTE,
-                    })
-                  }
-                />
-              </AuthContent>
-            )}
-          </Column2>
-        )}
+      </Nav>
+      <BackgroundImage>
+        <Column loggedIn={isLoggedIn}>
+          <TitleSearchBarWrapper>
+            <TitleText>
+              Explore over 20,000 course and professor reviews from UW students
+            </TitleText>
+            <SearchBar isLanding />
+            <Subheading>
+              Plan courses
+              <br />
+              <br />
+              Read course and professor reviews
+              <br />
+              <br />
+              Export your schedule
+            </Subheading>
+          </TitleSearchBarWrapper>
+          {isDesktop && !isLoggedIn && (
+            <AuthContent>
+              <AuthForm
+                onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
+                onSignupComplete={() =>
+                  history.push(WELCOME_PAGE_ROUTE, {
+                    prevPage: PROFILE_PAGE_ROUTE,
+                  })
+                }
+                margin="auto 0 auto 64px"
+              />
+            </AuthContent>
+          )}
+        </Column>
       </BackgroundImage>
     </LandingPageWrapper>
   );
