@@ -1,3 +1,5 @@
+import { keyframes } from 'styled-components';
+
 import {
   PAGE_CONTENT_WIDTH,
   FOOTER_HEIGHT,
@@ -124,4 +126,13 @@ export const Card = (padding = '32px', margin = '0') => `
   padding: ${padding};
   margin: ${margin};
   background-color: white;
+`;
+
+export const FadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 `;

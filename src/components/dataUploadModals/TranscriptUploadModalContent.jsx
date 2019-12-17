@@ -8,6 +8,9 @@ import { toast } from 'react-toastify';
 import {
   ContentWrapper,
   Header,
+  ContentSteps,
+  StepWrapper,
+  ArrowWrapper,
   LongInstructionWrapper,
   NumberCircle,
   InstructionText,
@@ -133,71 +136,61 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
   return (
     <ContentWrapper>
       <Header>Upload your transcript</Header>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <LongInstructionWrapper>
-                <NumberCircle>1</NumberCircle>
-                <InstructionText>
-                  Follow the
-                  <Link>instructions here</Link>
-                  to download your transcript as a PDF file
-                </InstructionText>
-              </LongInstructionWrapper>
-            </td>
-            <td />
-            <td>
-              <LongInstructionWrapper>
-                <NumberCircle>2</NumberCircle>
-                <InstructionText>Upload your transcript file</InstructionText>
-              </LongInstructionWrapper>
-            </td>
-            <td />
-          </tr>
-          <tr>
-            <td>
-              <TranscriptStep1Picture />
-            </td>
-            <td>
-              <ArrowRight color={theme.accent} height={100} width={80} />
-            </td>
-            <td>
-              <ScheduleStep3Wrapper>
-                <form
-                  onClick={handleTranscriptClick}
-                  onDrop={handleTranscriptDrop}
-                  onDragOver={onDragOver}
-                  accept="application/pdf"
-                  encType="multipart/form-data"
-                >
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={handleFileInputChange}
-                  />
-                  <TranscriptUploadBox uploadState={uploadState}>
-                    {uploadContent()}
-                  </TranscriptUploadBox>
-                </form>
-                <TranscriptPrivacyPolicyWrapper>
-                  <PrivacyPolicyHeader>
-                    We do not store your grades.
-                  </PrivacyPolicyHeader>
-                  <PrivacyPolicyText>
-                    {privacyText}
-                    <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
-                      privacy policy
-                    </PrivacyPolicyLink>
-                    for more information
-                  </PrivacyPolicyText>
-                </TranscriptPrivacyPolicyWrapper>
-              </ScheduleStep3Wrapper>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <ContentSteps>
+        <StepWrapper>
+          <LongInstructionWrapper>
+            <NumberCircle>1</NumberCircle>
+            <InstructionText>
+              Follow the
+              <Link>instructions here</Link>
+              to download your transcript as a PDF file
+            </InstructionText>
+          </LongInstructionWrapper>
+          <TranscriptStep1Picture />
+        </StepWrapper>
+
+        <ArrowWrapper>
+          <ArrowRight color={theme.accent} height={100} width={80} />
+        </ArrowWrapper>
+
+        <StepWrapper>
+          <LongInstructionWrapper>
+            <NumberCircle>2</NumberCircle>
+            <InstructionText>Upload your transcript file</InstructionText>
+          </LongInstructionWrapper>
+          <ScheduleStep3Wrapper>
+            <form
+              onClick={handleTranscriptClick}
+              onDrop={handleTranscriptDrop}
+              onDragOver={onDragOver}
+              accept="application/pdf"
+              encType="multipart/form-data"
+            >
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileInputChange}
+              />
+              <TranscriptUploadBox uploadState={uploadState}>
+                {uploadContent()}
+              </TranscriptUploadBox>
+            </form>
+            <TranscriptPrivacyPolicyWrapper>
+              <PrivacyPolicyHeader>
+                We do not store your grades.
+              </PrivacyPolicyHeader>
+              <PrivacyPolicyText>
+                {privacyText}
+                <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+                  privacy policy
+                </PrivacyPolicyLink>
+                for more information
+              </PrivacyPolicyText>
+            </TranscriptPrivacyPolicyWrapper>
+          </ScheduleStep3Wrapper>
+        </StepWrapper>
+      </ContentSteps>
       <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
     </ContentWrapper>
   );

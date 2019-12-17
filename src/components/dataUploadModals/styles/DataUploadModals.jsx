@@ -20,8 +20,23 @@ export const ContentWrapper = styled.div`
   background: white;
   ${BoxShadow}
   padding: 32px;
-  margin: 32px 0;
+  margin: 48px auto;
   border-radius: 4px;
+  width: max-content;
+`;
+
+export const ContentSteps = styled.div`
+  display: flex;
+  height: 100%;
+`;
+
+export const StepWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ArrowWrapper = styled.div`
+  margin: auto;
 `;
 
 export const Header = styled.div`

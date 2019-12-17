@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { Heading4, BoxShadow } from '../../../constants/Mixins';
+import {
+  Heading4,
+  BoxShadow,
+  FadeInAnimation,
+} from '../../../constants/Mixins';
 
 const ITEM_HEIGHT = 56;
 
@@ -36,6 +40,7 @@ export const DropdownMenu = styled.div`
   white-space: nowrap;
   background-color: ${({ theme }) => theme.white};
   z-index: 8;
+  animation: ${FadeInAnimation} 200ms;
   ${({ maxItems }) =>
     maxItems
       ? `

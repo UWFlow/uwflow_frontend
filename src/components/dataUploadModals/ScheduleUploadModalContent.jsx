@@ -7,7 +7,10 @@ import { toast } from 'react-toastify';
 /* Styled Components */
 import {
   ContentWrapper,
+  ContentSteps,
+  StepWrapper,
   Header,
+  ArrowWrapper,
   InstructionWrapper,
   NumberCircle,
   InstructionText,
@@ -133,64 +136,54 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
   return (
     <ContentWrapper>
       <Header>Import your schedule from Quest</Header>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <InstructionWrapper>
-                <NumberCircle>1</NumberCircle>
-                <InstructionText>
-                  <Link>Login to Quest</Link>
-                  and click "Enroll"
-                </InstructionText>
-              </InstructionWrapper>
-            </td>
-            <td />
-            <td>
-              <InstructionWrapper>
-                <NumberCircle>2</NumberCircle>
-                <InstructionText>
-                  Pick your term then select all (Ctrl+A) and copy (Ctrl+C)
-                </InstructionText>
-              </InstructionWrapper>
-            </td>
-            <td />
-            <td>
-              <InstructionWrapper>
-                <NumberCircle>3</NumberCircle>
-                <InstructionText>Paste into the box below</InstructionText>
-              </InstructionWrapper>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <ScheduleStepPicture />
-            </td>
-            <td>
-              <ArrowRight color={theme.accent} height={100} width={80} />
-            </td>
-            <td>
-              <ScheduleStepPicture />
-            </td>
-            <td>
-              <ArrowRight color={theme.accent} height={100} width={80} />
-            </td>
-            <td>
-              <ScheduleStep3Wrapper>
-                <SchedulePasteBoxWrapper uploadState={uploadState}>
-                  {uploadContent()}
-                </SchedulePasteBoxWrapper>
-                <PrivacyPolicyWrapper>
-                  <PrivacyPolicyText>Check out our</PrivacyPolicyText>
-                  <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
-                    privacy policy
-                  </PrivacyPolicyLink>
-                </PrivacyPolicyWrapper>
-              </ScheduleStep3Wrapper>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <ContentSteps>
+        <StepWrapper>
+          <InstructionWrapper>
+            <NumberCircle>1</NumberCircle>
+            <InstructionText>
+              <Link>Login to Quest</Link>
+              and click "Enroll"
+            </InstructionText>
+          </InstructionWrapper>
+          <ScheduleStepPicture />
+        </StepWrapper>
+
+        <ArrowWrapper>
+          <ArrowRight color={theme.accent} height={100} width={80} />
+        </ArrowWrapper>
+
+        <StepWrapper>
+          <InstructionWrapper>
+            <NumberCircle>2</NumberCircle>
+            <InstructionText>
+              Pick your term then select all (Ctrl+A) and copy (Ctrl+C)
+            </InstructionText>
+          </InstructionWrapper>
+          <ScheduleStepPicture />
+        </StepWrapper>
+
+        <ArrowWrapper>
+          <ArrowRight color={theme.accent} height={100} width={80} />
+        </ArrowWrapper>
+
+        <StepWrapper>
+          <InstructionWrapper>
+            <NumberCircle>3</NumberCircle>
+            <InstructionText>Paste into the box below</InstructionText>
+          </InstructionWrapper>
+          <ScheduleStep3Wrapper>
+            <SchedulePasteBoxWrapper uploadState={uploadState}>
+              {uploadContent()}
+            </SchedulePasteBoxWrapper>
+            <PrivacyPolicyWrapper>
+              <PrivacyPolicyText>Check out our</PrivacyPolicyText>
+              <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+                privacy policy
+              </PrivacyPolicyLink>
+            </PrivacyPolicyWrapper>
+          </ScheduleStep3Wrapper>
+        </StepWrapper>
+      </ContentSteps>
       <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
     </ContentWrapper>
   );
