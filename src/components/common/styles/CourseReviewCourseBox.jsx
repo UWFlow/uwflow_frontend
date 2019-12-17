@@ -7,14 +7,17 @@ import {
   Body,
 } from '../../../constants/Mixins';
 
+const MODAL_WIDTH = 660;
+
 export const CourseReviewCourseBoxWrapper = styled.div`
   ${Card('24px', '32px 0')}
   ${BoxShadow}
-  width: 660px;
+  width: ${MODAL_WIDTH}px;
 `;
 
 export const QuestionText = styled.div`
   ${Heading4}
+  white-space: nowrap;
 `;
 
 export const SliderOptionText = styled.div`

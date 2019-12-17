@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import { X } from 'react-feather';
+
+import { ModalChildren, ModalX } from './styles/Modal';
 
 /* Styles found in index.css */
 const Modal = ({
@@ -18,7 +21,12 @@ const Modal = ({
       overlayClassName={'ModalOverlay'}
       onAfterClose={onAfterClose}
     >
-      {children}
+      <ModalChildren>
+        <ModalX onClick={onRequestClose}>
+          <X />
+        </ModalX>
+        {children}
+      </ModalChildren>
     </ReactModal>
   );
 };
