@@ -3,9 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import Button from '../../components/input/Button';
-import { LANDING_PAGE_ROUTE } from '../../Routes';
-
+/* Styled Components */
 import {
   NotFoundPageWrapper,
   NotFoundImage,
@@ -13,20 +11,28 @@ import {
   HeaderText,
 } from './styles/NotFoundPage';
 
-const NotFoundPage = ({ text, history }) => {
+/* Child Components */
+import Button from '../../components/input/Button';
+
+import { LANDING_PAGE_ROUTE } from '../../Routes';
+import { NOT_FOUND } from '../../constants/Messages';
+
+const NotFoundPage = ({
+  text = NOT_FOUND.page,
+  title = 'Not Found',
+  history,
+}) => {
   const handleClick = () => {
     history.push(LANDING_PAGE_ROUTE);
   };
 
-  const displayText = text ? text : `Sorry, this page doesn't exist!`;
-
   return (
     <NotFoundPageWrapper>
       <Helmet>
-        <title>Not Found - UW Flow</title>
+        <title>{title} - UW Flow</title>
       </Helmet>
       <PageHeader>
-        <HeaderText>{displayText}</HeaderText>
+        <HeaderText>{text}</HeaderText>
       </PageHeader>
       <NotFoundImage />
       <Button handleClick={handleClick}>Home</Button>
@@ -36,6 +42,7 @@ const NotFoundPage = ({ text, history }) => {
 
 NotFoundPage.propTypes = {
   text: PropTypes.string,
+  title: PropTypes.string,
   history: PropTypes.object.isRequired,
 };
 

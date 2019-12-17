@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+/* Styled Components */
 import {
   PageWrapper,
   PageHeader,
@@ -11,11 +12,14 @@ import {
   PageBodyParagraph,
 } from './styles/PrivacyPage';
 
+/* Constants */
+import { SEO_DESCRIPTIONS } from '../../constants/Messages';
+
 const PrivacyPage = () => (
   <PageWrapper>
     <Helmet>
       <title>Privacy Policy - UW Flow</title>
-      <meta name="description" content="Privacy policy for UW Flow." />
+      <meta name="description" content={SEO_DESCRIPTIONS.privacy} />
     </Helmet>
     <PageHeader>
       <HeaderText>Privacy Policy</HeaderText>

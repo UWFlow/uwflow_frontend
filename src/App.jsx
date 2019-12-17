@@ -33,6 +33,9 @@ import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
 import AuthModal from './auth/AuthModal';
 
+/* Constants */
+import { SEO_DESCRIPTIONS } from './constants/Messages';
+
 Modal.setAppElement('#root');
 
 const App = () => {
@@ -53,11 +56,7 @@ const App = () => {
       <Navbar />
       <Helmet>
         <title>UW Flow</title>
-        <meta
-          name="description"
-          content="Course planning tool with reviews for courses
-            and professors at the University of Waterloo."
-        />
+        <meta name="description" content={SEO_DESCRIPTIONS.default} />
       </Helmet>
       <Switch>
         <Route

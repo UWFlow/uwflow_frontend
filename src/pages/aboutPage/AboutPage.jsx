@@ -1,10 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import TeamMember from './TeamMember.jsx';
-
+/* Images */
 import AyushImg from '../../img/about/ayush.jpg';
 
+/* Styled Components */
 import {
   PageWrapper,
   PageHeader,
@@ -15,11 +15,17 @@ import {
   PageBodyParagraph,
 } from './styles/AboutPage';
 
+/* Child Components */
+import TeamMember from './TeamMember.jsx';
+
+/* Constants */
+import { SEO_DESCRIPTIONS } from '../../constants/Messages.jsx';
+
 const AboutPage = () => (
   <PageWrapper>
     <Helmet>
       <title>About - UW Flow</title>
-      <meta name="description" content="About UW Flow." />
+      <meta name="description" content={SEO_DESCRIPTIONS.about} />
     </Helmet>
     <PageHeader>
       <HeaderText>About Flow</HeaderText>

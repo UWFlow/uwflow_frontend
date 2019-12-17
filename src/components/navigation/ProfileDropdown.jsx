@@ -90,7 +90,7 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
               if (idx === 0) {
                 handleProfileButtonClick();
               } else {
-                logOut(dispatch);
+                logOut(dispatch, true);
               }
             }}
             placeholder=""

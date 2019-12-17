@@ -39,6 +39,7 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 import { splitCourseCode } from '../../utils/Misc';
 import { authModalOpen } from '../../data/actions/AuthActions';
+import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -137,8 +138,10 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <LoadingSpinner />
     </CoursePageWrapper>
-  ) : error || !data || !data.course || data.course.length === 0 ? (
-    <NotFoundPage text="Sorry, we couldn't find that course!" />
+  ) : error || !data ? (
+    <NotFoundPage text={DEFAULT_ERROR} title="" />
+  ) : data.course.length === 0 ? (
+    <NotFoundPage text={NOT_FOUND.course} />
   ) : (
     <CoursePageWrapper>
       <Helmet>

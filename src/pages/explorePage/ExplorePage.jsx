@@ -4,6 +4,7 @@ import { useQuery } from 'react-apollo';
 import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 
+/* Styled Components */
 import {
   ExplorePageWrapper,
   ExploreHeaderWrapper,
@@ -13,13 +14,18 @@ import {
   Column2,
 } from './styles/ExplorePage';
 
+/* Child Components */
 import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
+/* GraphQL */
 import {
   buildExploreCodeQuery,
   buildExploreQuery,
 } from '../../graphql/queries/explore/Explore';
+
+/* Constants */
+import { SEO_DESCRIPTIONS } from '../../constants/Messages';
 
 const NUM_COURSE_CODE_FILTERS = 5;
 const RATING_FILTERS = [0, 10, 20, 50, 100, 250, 500, 1000];
@@ -29,6 +35,7 @@ const ExplorePageContent = ({
   codeSearch,
   courseTab,
   data,
+  error,
   loading,
 }) => {
   const [profCourses, setProfCourses] = useState(['all courses']);
@@ -104,6 +111,7 @@ const ExplorePageContent = ({
           <SearchResults
             filterState={filterState}
             data={data}
+            error={error}
             exploreTab={exploreTab}
             setExploreTab={setExploreTab}
             ratingFilters={RATING_FILTERS}
@@ -141,7 +149,7 @@ const ExplorePage = ({ location }) => {
 
   const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
 
-  const { data, loading } = useQuery(exploreQuery(query), {
+  const { data, error, loading } = useQuery(exploreQuery(query), {
     notifyOnNetworkStatusChange: true,
   });
 
@@ -149,16 +157,14 @@ const ExplorePage = ({ location }) => {
     <ExplorePageWrapper>
       <Helmet>
         <title>Explore Courses - UW Flow</title>
-        <meta
-          name="description"
-          content="Explore courses and professors at the University of Waterloo."
-        />
+        <meta name="description" content={SEO_DESCRIPTIONS.explore} />
       </Helmet>
       <ExplorePageContent
         query={query || ''}
         codeSearch={codeSearch || false}
         courseTab={courseTab}
         data={data}
+        error={!!error}
         loading={loading}
       />
     </ExplorePageWrapper>

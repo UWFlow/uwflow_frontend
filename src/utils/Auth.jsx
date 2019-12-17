@@ -13,7 +13,7 @@ export const getUserId = () => {
   return localStorage.getItem('user_id');
 };
 
-export const logOut = (dispatch = _ => {}, showToast = true) => {
+export const logOut = (dispatch = _ => {}, showToast = false) => {
   localStorage.removeItem('token');
   localStorage.removeItem('user_id');
   dispatch({ type: LOGGED_OUT });

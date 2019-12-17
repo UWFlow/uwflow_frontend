@@ -1,14 +1,20 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+/* Styled Components */
+import { SearchResultsContent, ResultsError } from './styles/SearchResults';
+
+/* Child Components */
 import Table from '../../components/display/Table';
 import TabContainer from '../../components/display/TabContainer';
 import { courseColumns, profColumns } from './ExploreTableData';
 
+/* Utils */
 import { getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
-import { SEARCH_RESULTS_PER_PAGE } from '../../constants/Search';
 
-import { SearchResultsContent } from './styles/SearchResults';
+/* Constants */
+import { SEARCH_RESULTS_PER_PAGE } from '../../constants/Search';
+import { EXPLORE_COURSES_ERROR } from '../../constants/Messages';
 
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
@@ -20,6 +26,7 @@ const stringSort = (a, b, desc) =>
 const SearchResults = ({
   filterState,
   data,
+  error,
   exploreTab,
   setExploreTab,
   ratingFilters,
@@ -174,22 +181,25 @@ const SearchResults = ({
   );
 
   return (
-    <TabContainer
-      tabList={[
-        {
-          onClick: () => setExploreTab(0),
-          title: `Courses ${courses ? `(${filteredCourses.length})` : ''}`,
-          render: results,
-        },
-        {
-          onClick: () => setExploreTab(1),
-          title: `Profs ${profs ? `(${filteredProfs.length})` : ''}`,
-          render: results,
-        },
-      ]}
-      initialSelectedTab={exploreTab}
-      contentPadding="0"
-    />
+    <>
+      <TabContainer
+        tabList={[
+          {
+            onClick: () => setExploreTab(0),
+            title: `Courses ${courses ? `(${filteredCourses.length})` : ''}`,
+            render: results,
+          },
+          {
+            onClick: () => setExploreTab(1),
+            title: `Profs ${profs ? `(${filteredProfs.length})` : ''}`,
+            render: results,
+          },
+        ]}
+        initialSelectedTab={exploreTab}
+        contentPadding="0"
+      />
+      {error && <ResultsError>{EXPLORE_COURSES_ERROR}</ResultsError>}
+    </>
   );
 };
 

@@ -4,6 +4,15 @@ import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 
+/* Styled Components */
+import {
+  ProfilePageWrapper,
+  CompleteProfileWrapper,
+  ColumnWrapper,
+  Column1,
+  Column2,
+} from './styles/ProfilePage';
+
 /* Child Components */
 import ProfileInfoHeader from './ProfileInfoHeader';
 import ShortlistBox from './ShortlistBox';
@@ -14,15 +23,7 @@ import Modal from '../../components/display/Modal';
 import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import CompleteProfileContent from './CompleteProfileContent';
-
-/* Styled Components */
-import {
-  ProfilePageWrapper,
-  CompleteProfileWrapper,
-  ColumnWrapper,
-  Column1,
-  Column2,
-} from './styles/ProfilePage';
+import NotFoundPage from '../notFoundPage/NotFoundPage';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
@@ -33,8 +34,9 @@ import { GET_USER } from '../../graphql/queries/user/User';
 
 /* Routes */
 import { LANDING_PAGE_ROUTE } from '../../Routes';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
+
 import { logOut } from '../../utils/Auth';
+import { SEO_DESCRIPTIONS } from '../../constants/Messages';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -114,10 +116,12 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   if (!isLoggedIn) {
     history.push(LANDING_PAGE_ROUTE);
   }
+
   return loading ? (
     <ProfilePageWrapper>
       <Helmet>
         <title>Profile - UW Flow</title>
+        <meta name="description" content={SEO_DESCRIPTIONS.profile} />
       </Helmet>
       <LoadingSpinner />
     </ProfilePageWrapper>

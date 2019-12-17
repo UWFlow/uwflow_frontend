@@ -20,6 +20,9 @@ import ProfReviews from './ProfReviews';
 /* Queries */
 import { GET_PROF } from '../../graphql/queries/prof/Prof';
 
+/* Constants */
+import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
+
 const ProfPageContent = ({ prof }) => {
   return (
     <>
@@ -44,8 +47,10 @@ export const ProfPage = ({ match }) => {
     <ProfPageWrapper>
       <LoadingSpinner />
     </ProfPageWrapper>
-  ) : error || !data || data.prof.length === 0 ? (
-    <NotFoundPage text="Sorry, we couldn't find that professor!" />
+  ) : error || !data ? (
+    <NotFoundPage text={DEFAULT_ERROR} title="" />
+  ) : data.prof.length === 0 ? (
+    <NotFoundPage text={NOT_FOUND.prof} />
   ) : (
     <ProfPageWrapper>
       <Helmet>
