@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow, Body, DarkBoxShadow } from '../../../constants/Mixins';
+import { BoxShadow, Body, DarkBoxShadow, Hover } from '../../../constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
   ${({ isLanding }) => isLanding && DarkBoxShadow}
@@ -106,14 +106,11 @@ const ExploreSideButton = `
   justify-content: center;
   height: 32px;
   width: 32px;
+  ${Hover()}
 
   svg {
     width: 20px;
     height: 20px;
-  }
-
-  &:hover, &:focus {
-    filter: brightness(85%);
   }
 `;
 

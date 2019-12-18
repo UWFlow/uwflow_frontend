@@ -95,9 +95,9 @@ const Table = ({
 
   const renderRows = () =>
     rows.map(
-      row =>
+      (row, index) =>
         prepareRow(row) || (
-          <Row {...row.getRowProps()}>
+          <Row {...row.getRowProps()} odd={index % 2}>
             {row.cells.map(cell => (
               <Cell
                 {...cell.getCellProps()}
@@ -158,7 +158,7 @@ const Table = ({
       <TableBody {...getTableBodyProps()}>{renderRows()}</TableBody>
       {isLoading && (
         <LoadingRow>
-          <LoadingSpinner size={48} strokeWidth={4} />
+          <LoadingSpinner />
         </LoadingRow>
       )}
       <div ref={bottomRef} />

@@ -38,7 +38,7 @@ export const NormalCellWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-right: 8px;
-  transition 0.2s all;
+  transition: 0.2s all;
 `;
 
 export const SectionContentWrapper = styled.div`
@@ -48,7 +48,7 @@ export const SectionContentWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: ${CELL_HEIGHT}px;
-  top: 8px;
+  top: 4px;
 `;
 
 export const ContentWrapper = styled.div`

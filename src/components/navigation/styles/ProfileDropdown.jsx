@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Heading4, BoxShadow, DarkBoxShadow } from '../../../constants/Mixins';
+import { Heading4, BoxShadow, DarkBoxShadow, Hover } from '../../../constants/Mixins';
 
 export const ProfileDropdownWrapper = styled.div`
   display: flex;
@@ -21,6 +21,7 @@ export const ProfilePicture = styled.img`
   border-radius: 50%;
   object-fit: cover;
   ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
+  ${Hover()}
 `;
 
 export const ProfileText = styled.div`

@@ -90,12 +90,25 @@ export const Small = `
   font-size: 14px;
 `;
 
+export const HoverTransition = (target = 'all', time = '0.1s') => `
+  transition: ${target} ${time} ease-in;
+`;
+
+export const Hover = (target = 'filter') => `
+  ${HoverTransition(target)}
+  &:hover, &:focus {
+    cursor: pointer;
+    filter: brightness(85%) !important;
+  }
+`;
+
 export const Link = `
   font-weight: 600;
   font-size: 15px;
   text-decoration: underline;
   cursor: pointer;
   width: fit-content;
+  ${Hover()}
 `;
 
 export const BoxShadow = `

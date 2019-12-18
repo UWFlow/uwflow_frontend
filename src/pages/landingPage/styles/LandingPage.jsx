@@ -109,6 +109,7 @@ export const Column = styled.div`
 export const TitleSearchBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 900px;
   align-self: flex-end;
   height: max-content;
 `;
