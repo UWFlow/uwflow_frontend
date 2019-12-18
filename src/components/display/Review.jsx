@@ -5,11 +5,6 @@ import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
 import { useMutation } from 'react-apollo';
 
-/* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
-
 /* Styled Components */
 import {
   ReviewWrapper,
@@ -30,6 +25,12 @@ import {
 
 /* Child Components */
 import BubbleRatings from '../input/BubbleRatings';
+import Tooltip from '../display/Tooltip';
+
+/* Selectors */
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import {
@@ -143,7 +144,12 @@ const Review = ({
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
           <ReviewPicture />
-          <ReviewUpvotes selected={userUpvoted} onClick={onClickUpvote}>
+          <Tooltip />
+          <ReviewUpvotes
+            data-tip={userUpvoted ? `Remove upvote` : `Upvote this review`}
+            selected={userUpvoted}
+            onClick={onClickUpvote}
+          >
             <ThumbsUp
               color={userUpvoted ? 'white' : theme.dark3}
               size={16}

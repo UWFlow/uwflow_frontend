@@ -6,7 +6,7 @@ import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
 
 /* Child Components */
-import Tooltip from '../../components/input/Tooltip';
+import Tooltip from '../../components/display/Tooltip';
 
 /* Routes */
 import {

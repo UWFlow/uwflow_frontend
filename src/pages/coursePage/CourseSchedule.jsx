@@ -150,9 +150,15 @@ const CourseSchedule = ({
     subscription => subscription.section_id,
   );
 
-  const hasBell = sections.some(
-    section => section.enrollment_total >= section.enrollment_capacity,
-  );
+  let hasBell = {};
+  termsOffered.forEach(term => {
+    hasBell[term] = sections.some(section => {
+      return (
+        section.enrollment_total >= section.enrollment_capacity &&
+        section.term_id === term
+      );
+    });
+  });
 
   const sectionsCleanedData = sections
     .map(s => ({
@@ -166,7 +172,7 @@ const CourseSchedule = ({
         section_id: s.id,
         filled: s.enrollment_total,
         capacity: s.enrollment_capacity,
-        hasBell: hasBell,
+        hasBell: hasBell[s.term_id],
         selected: subscribedSectionIDs.includes(s.id),
       },
       // Every grouping contains a single time of day, location, and instructor
