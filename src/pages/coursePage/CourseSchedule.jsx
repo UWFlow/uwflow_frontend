@@ -195,7 +195,7 @@ const CourseSchedule = ({
           <>
             <ScheduleTableWrapper>
               <Table
-                cellPadding='4px 0'
+                cellPadding="4px 0"
                 columns={courseScheduleTableColumns}
                 data={sectionsCleanedData.filter(c => c.term === term)}
               />

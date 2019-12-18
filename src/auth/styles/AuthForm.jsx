@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading2, Heading4, Body, BoxShadow, Hover } from '../../constants/Mixins';
+import {
+  Heading2,
+  Heading4,
+  Body,
+  BoxShadow,
+  Hover,
+} from '../../constants/Mixins';
 
 export const Wrapper = styled.div`
   ${BoxShadow}

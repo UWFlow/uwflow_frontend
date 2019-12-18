@@ -20,19 +20,13 @@ export const ButtonWrapper = styled.button`
   ${({ hasShadow }) => hasShadow && BoxShadow}
   max-width: 100%;
   width: ${({ width }) => (width ? width : 'auto')};
-  ${Hover()}
-
-  :hover {
-    background: ${({
-      theme,
-      disabled = false,
-}) => (disabled && theme.light4)};
+  ${Hover()} :hover {
+    background: ${({ theme, disabled = false }) => disabled && theme.light4};
   }
 
   :focus {
     color: ${({ theme }) => theme.dark2};
   }
-  
 `;
 
 export const ButtonText = styled.div`
