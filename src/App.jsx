@@ -4,6 +4,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 import 'react-toastify/dist/ReactToastify.css';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 /* Routes */
 import {
@@ -15,6 +16,7 @@ import {
   ABOUT_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
+  isOnLandingPageRoute,
 } from './Routes';
 
 /* Child Components */
@@ -35,10 +37,11 @@ import AuthModal from './auth/AuthModal';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from './constants/Messages';
+import { NAVBAR_HEIGHT } from './constants/PageConstants';
 
 Modal.setAppElement('#root');
 
-const App = () => {
+const App = ({ history }) => {
   return (
     <>
       <ToastContainer
@@ -53,55 +56,68 @@ const App = () => {
         pauseOnHover
         transition={Bounce}
       />
-      <Navbar />
+      <Switch>
+        <Route exact path={LANDING_PAGE_ROUTE} />
+        <Route path="*" component={() => <Navbar />} />
+      </Switch>
       <Helmet>
         <title>UW Flow</title>
         <meta name="description" content={SEO_DESCRIPTIONS.default} />
       </Helmet>
-      <Switch>
-        <Route
-          exact
-          path={LANDING_PAGE_ROUTE}
-          component={() => <LoadableLandingPage />}
-        />
-        <Route
-          exact
-          path={PROFILE_PAGE_ROUTE}
-          component={() => <LoadableProfilePage />}
-        />
-        <Route
-          exact
-          path={COURSE_PAGE_ROUTE}
-          component={() => <LoadableCoursePage />}
-        />
-        <Route
-          exact
-          path={PROF_PAGE_ROUTE}
-          component={() => <LoadableProfPage />}
-        />
-        <Route
-          exact
-          path={EXPLORE_PAGE_ROUTE}
-          component={() => <LoadableExplorePage />}
-        />
-        <Route
-          exact
-          path={ABOUT_PAGE_ROUTE}
-          component={() => <LoadableAboutPage />}
-        />
-        <Route
-          exact
-          path={PRIVACY_PAGE_ROUTE}
-          component={() => <LoadablePrivacyPage />}
-        />
-        <Route
-          exact
-          path={WELCOME_PAGE_ROUTE}
-          component={() => <LoadableWelcomePage />}
-        />
-        <Route path="*" component={() => <LoadableNotFoundPage />} />
-      </Switch>
-      <Footer />
+      <Scrollbars autoHeight autoHide autoHeightMin="100%" autoHeightMax="100%">
+        <div
+          style={{
+            height: `calc(100vh - ${
+              isOnLandingPageRoute(history.location) ? 0 : NAVBAR_HEIGHT
+            }px)`,
+          }}
+        >
+          <Switch>
+            <Route
+              exact
+              path={LANDING_PAGE_ROUTE}
+              component={() => <LoadableLandingPage />}
+            />
+            <Route
+              exact
+              path={PROFILE_PAGE_ROUTE}
+              component={() => <LoadableProfilePage />}
+            />
+            <Route
+              exact
+              path={COURSE_PAGE_ROUTE}
+              component={() => <LoadableCoursePage />}
+            />
+            <Route
+              exact
+              path={PROF_PAGE_ROUTE}
+              component={() => <LoadableProfPage />}
+            />
+            <Route
+              exact
+              path={EXPLORE_PAGE_ROUTE}
+              component={() => <LoadableExplorePage />}
+            />
+            <Route
+              exact
+              path={ABOUT_PAGE_ROUTE}
+              component={() => <LoadableAboutPage />}
+            />
+            <Route
+              exact
+              path={PRIVACY_PAGE_ROUTE}
+              component={() => <LoadablePrivacyPage />}
+            />
+            <Route
+              exact
+              path={WELCOME_PAGE_ROUTE}
+              component={() => <LoadableWelcomePage />}
+            />
+            <Route path="*" component={() => <LoadableNotFoundPage />} />
+          </Switch>
+          <Footer />
+        </div>
+      </Scrollbars>
       <AuthModal />
     </>
   );
