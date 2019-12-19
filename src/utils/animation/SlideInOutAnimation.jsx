@@ -7,20 +7,14 @@ import {
   ChildrenWrapper,
 } from './styles/SlideInOutAnimation';
 
-const SlideInOutAnimation = ({
-  isOpen,
-  children,
-  onFinish,
-  shouldAnimateInitialOpen = true,
-  styles = {},
-}) => {
-  const [isTrulyOpen, setTrulyOpen] = useState(isOpen);
+const SlideInOutAnimation = ({ isOpen, children, onFinish, styles = {} }) => {
+  const [isTrulyOpen, setTrulyOpen] = useState(false);
   const [childHeight, setChildHeight] = useState(undefined);
+  const [isMoving, setIsMoving] = useState(isOpen);
   const childRef = useRef();
 
-  const initialHeight = isOpen && !shouldAnimateInitialOpen ? '100%' : '0';
-  const initialYTransform =
-    isOpen && !shouldAnimateInitialOpen ? 'translateY(0)' : 'translateY(-100)';
+  const initialHeight = '0';
+  const initialYTransform = 'translateY(-100)';
   const springFromHeight = childHeight ? (isOpen ? 0 : childHeight) : -1;
   const springFromYTransform = childHeight ? (isOpen ? -100 : 0) : -1;
   const springToHeight = childHeight ? (isOpen ? childHeight : 0) : -1;
@@ -28,6 +22,7 @@ const SlideInOutAnimation = ({
 
   const onRest = () => {
     setTrulyOpen(isOpen);
+    setIsMoving(false);
     onFinish && onFinish();
   };
 
@@ -38,7 +33,7 @@ const SlideInOutAnimation = ({
     },
     to: { heightTransform: springToHeight, yTransform: springToYTransform },
     onRest: onRest,
-    config: { mass: 1, tension: 200, friction: 25 },
+    config: { duration: 350 },
   });
 
   useEffect(() => {
@@ -47,7 +42,13 @@ const SlideInOutAnimation = ({
     }
   }, [childRef]);
 
-  return isTrulyOpen || isOpen ? (
+  useEffect(() => {
+    if (isOpen != isTrulyOpen) {
+      setIsMoving(true);
+    }
+  }, [isOpen, isTrulyOpen]);
+
+  return isOpen || isMoving ? (
     <SlideInOutAnimationWrapper
       style={{
         height:
