@@ -1,13 +1,14 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { withTheme } from 'styled-components';
 
-/* Routes */
-import { isOnLandingPageRoute } from '../../Routes';
 /* Styled Components */
-import { NavbarWrapper, NavbarContent } from './styles/Navbar';
+import {
+  NavbarWrapper,
+  NavbarContent,
+  NavbarPlaceholder,
+} from './styles/Navbar';
 
 /* Child Components */
 import SearchBar from './SearchBar';
@@ -21,22 +22,17 @@ const mapStateToProps = state => ({
   width: getWidth(state),
 });
 
-const Navbar = ({ location, width, theme }) => {
-  if (isOnLandingPageRoute(location)) {
-    return null;
-  }
+const Navbar = ({ width, theme }) => (
+  <>
+    <NavbarWrapper>
+      <NavbarContent>
+        {width >= theme.breakpoints.mobileLarge && <FlowLogo />}
+        <SearchBar maximizeWidth />
+        <ProfileDropdown />
+      </NavbarContent>
+    </NavbarWrapper>
+    <NavbarPlaceholder />
+  </>
+);
 
-  return (
-    <>
-      <NavbarWrapper>
-        <NavbarContent>
-          {width >= theme.breakpoints.mobileLarge && <FlowLogo />}
-          <SearchBar maximizeWidth />
-          <ProfileDropdown />
-        </NavbarContent>
-      </NavbarWrapper>
-    </>
-  );
-};
-
-export default compose(withRouter, connect(mapStateToProps), withTheme)(Navbar);
+export default compose(connect(mapStateToProps), withTheme)(Navbar);

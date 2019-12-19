@@ -16,6 +16,7 @@ import {
   ABOUT_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
+  isOnLandingPageRoute,
 } from './Routes';
 
 /* Child Components */
@@ -36,10 +37,11 @@ import AuthModal from './auth/AuthModal';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from './constants/Messages';
+import { NAVBAR_HEIGHT } from './constants/PageConstants';
 
 Modal.setAppElement('#root');
 
-const App = () => {
+const App = ({ history }) => {
   return (
     <>
       <ToastContainer
@@ -54,13 +56,22 @@ const App = () => {
         pauseOnHover
         transition={Bounce}
       />
-      <Navbar />
+      <Switch>
+        <Route exact path={LANDING_PAGE_ROUTE} />
+        <Route path="*" component={() => <Navbar />} />
+      </Switch>
       <Helmet>
         <title>UW Flow</title>
         <meta name="description" content={SEO_DESCRIPTIONS.default} />
       </Helmet>
       <Scrollbars autoHeight autoHide autoHeightMin="100%" autoHeightMax="100%">
-        <div style={{ height: '100vh' }}>
+        <div
+          style={{
+            height: `calc(100vh - ${
+              isOnLandingPageRoute(history.location) ? 0 : NAVBAR_HEIGHT
+            }px)`,
+          }}
+        >
           <Switch>
             <Route
               exact

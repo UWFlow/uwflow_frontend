@@ -4,7 +4,6 @@ import {
   BoxShadow,
   BottomBoxShadow,
 } from '../../../constants/Mixins';
-import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 
 export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};
@@ -17,7 +16,7 @@ export const TabsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   position: sticky;
-  top: ${NAVBAR_HEIGHT}px;
+  top: 0;
   z-index: 7;
   overflow: auto;
   ${({ boxShadow }) => (boxShadow ? BottomBoxShadow : '')}

@@ -13,7 +13,7 @@ const Modal = ({
   onAfterClose = () => {},
 }) => {
   return (
-    <Scrollbars autoHide>
+    <Scrollbars autoHeight autoHide autoHeightMin="100%" autoHeightMax="100%">
       <ReactModal
         isOpen={isOpen}
         onRequestClose={onRequestClose}

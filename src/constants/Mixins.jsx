@@ -4,7 +4,6 @@ import {
   PAGE_CONTENT_WIDTH,
   FOOTER_HEIGHT,
   FOOTER_MARGIN_TOP,
-  NAVBAR_HEIGHT,
 } from './PageConstants';
 import theme from './GlobalTheme';
 
@@ -14,7 +13,6 @@ export const PageWrapper = `
   min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px);
   display: flex;
   flex-direction: column;
-  padding-top: ${NAVBAR_HEIGHT}px;
 `;
 
 export const PageContent = `
