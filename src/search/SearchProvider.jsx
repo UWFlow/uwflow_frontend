@@ -4,7 +4,6 @@ import { SEARCH_DATA_ID, LAST_INDEXED_ID } from '../constants/Search';
 import { millisecondsPerDay } from '../utils/Misc';
 
 export const SearchContext = createContext();
-
 export const useSearchContext = () => useContext(SearchContext);
 
 const SearchProvider = ({ searchWorker, children }) => {

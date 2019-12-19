@@ -13,7 +13,7 @@ const LastUpdatedSchedule = () => {
 
   let updatedTime = null;
   if (!loading && data) {
-    data.update_time.map(update => {
+    data.update_time.forEach(update => {
       if (!updatedTime || moment(update.time).isAfter(moment(updatedTime))) {
         updatedTime = update.time;
       }
