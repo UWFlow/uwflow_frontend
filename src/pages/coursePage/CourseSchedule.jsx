@@ -205,7 +205,7 @@ const CourseSchedule = ({
                 data={sectionsCleanedData.filter(c => c.term === term)}
               />
             </ScheduleTableWrapper>
-            <FinalExamsTableWrapper>
+            <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
               <FinalExamsText>Final Exams</FinalExamsText>
               <FinalExamTable courses={courseExams} includeCode={false} />
             </FinalExamsTableWrapper>
@@ -226,7 +226,7 @@ const CourseSchedule = ({
           initialSelectedTab={0}
           tabList={tabList}
           contentPadding={'0'}
-          boxShadow={false}
+          borderRadius={false}
         />
       </CollapseableContainer>
       {tabList.length > 0 && <LastUpdatedSchedule />}

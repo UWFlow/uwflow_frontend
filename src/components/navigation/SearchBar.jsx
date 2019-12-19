@@ -47,7 +47,6 @@ const SearchBar = ({
   const inputRef = useRef();
 
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
-
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState({
@@ -56,6 +55,18 @@ const SearchBar = ({
     profResults: [],
   });
   const { searchWorker } = useSearchContext();
+
+  const performSearch = event => {
+    const { type } = event.data;
+    if (type === 'autocomplete') {
+      const results = event.data.results;
+      setSearchResults(results);
+      setSelectedResultIndex(-1);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
+  };
 
   const handleUserKeyPress = useCallback(
     event => {
@@ -76,18 +87,6 @@ const SearchBar = ({
     },
     [selectedResultIndex, searchResults],
   );
-
-  const performSearch = event => {
-    const { type } = event.data;
-    if (type === 'autocomplete') {
-      const results = event.data.results;
-      setSearchResults(results);
-      setSelectedResultIndex(-1);
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }
-  };
 
   useEffect(() => {
     searchWorker.addEventListener('message', event => performSearch(event));
@@ -148,7 +147,7 @@ const SearchBar = ({
 
   const handleKeyStroke = value => {
     setSearchText(value);
-    setOpen(value !== '');
+    setOpen(true);
     searchWorker.postMessage({ type: 'autocomplete', query: value });
   };
 
@@ -225,14 +224,6 @@ const SearchBar = ({
   );
 
   const renderSearchResults = () => {
-    if (searchText === '') {
-      return null;
-    }
-
-    if (!searchResults) {
-      return exploreResult();
-    }
-
     const courseResults = searchResults.courseResults.map((result, i) => {
       return courseResult(
         result,
@@ -273,6 +264,7 @@ const SearchBar = ({
     );
   };
 
+  // TODO(Edwin)
   const autocompleteResult = () => {
     return null;
   };
@@ -282,8 +274,9 @@ const SearchBar = ({
         width: '100%',
         backgroundColor: 'white',
         color: theme.dark1,
+        borderRadius: open ? '4px 4px 0 0' : '4px',
       }
-    : { width: '100%' };
+    : { width: '100%', borderRadius: open ? '4px 4px 0 0' : '4px' };
 
   return (
     <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>

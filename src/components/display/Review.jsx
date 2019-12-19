@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
 import { useMutation } from 'react-apollo';
+import moment from 'moment';
 
 /* Styled Components */
 import {
@@ -21,6 +22,7 @@ import {
   SingleMetricWrapper,
   SingleMetricSquares,
   SingleMetricLabel,
+  ProfText,
 } from './styles/Review';
 
 /* Child Components */
@@ -41,6 +43,9 @@ import {
 } from '../../graphql/mutations/Upvote';
 import { REFETCH_COURSE_REVIEW_UPVOTE } from '../../graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfReview';
+
+/* Routes */
+import { getProfPageRoute } from '../../Routes';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -83,7 +88,16 @@ const Review = ({
   isLoggedIn,
   isCourseReview,
 }) => {
-  const { upvotes, upvote_users, review: reviewText, author, metrics } = review;
+  const {
+    upvotes,
+    upvote_users,
+    review: reviewText,
+    created_at,
+    author,
+    metrics,
+    prof,
+    prof_code,
+  } = review;
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [
@@ -126,15 +140,27 @@ const Review = ({
     setUserUpvoted(!userUpvoted);
   };
 
-  const authorNameText = author.full_name
-    ? author.full_name + (author.program ? ' - ' : '')
-    : '';
-  const authorText = authorNameText + (author.program ? author.program : '');
+  const authorText = author.full_name ? `${author.full_name}, ` : 'Anonymous ';
+  const programText = `${author.program ? author.program : ''} ${
+    !author.full_name || author.program ? 'student' : ''
+  } `;
+  const timeAgo = `about ${moment(created_at).fromNow()}`;
+  const profText = prof
+    ? [
+        ', taken with ',
+        <ProfText to={getProfPageRoute(prof_code)}>{prof}</ProfText>,
+      ]
+    : [''];
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        {Boolean(authorText.length) && `— ${authorText}`}
+        {Boolean(authorText.length) && (
+          <>
+            {`— ${authorText}${programText}${timeAgo}`}
+            {profText}
+          </>
+        )}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );

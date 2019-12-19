@@ -15,7 +15,6 @@ import {
 
 export const ExplorePageWrapper = styled.div`
   ${PageWrapper}
-  padding-top: 40px;
 `;
 
 export const ExploreHeaderWrapper = styled.div`

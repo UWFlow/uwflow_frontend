@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { BoxShadow, Body, DarkBoxShadow } from '../../../constants/Mixins';
+import {
+  BoxShadow,
+  Body,
+  DarkBoxShadow,
+  FadeInAnimation,
+} from '../../../constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
   ${({ isLanding }) => isLanding && DarkBoxShadow}
@@ -38,6 +43,7 @@ export const SearchResult = styled.button`
   padding: 8px 24px;
   height: 48px;
   border-bottom: 1px solid ${({ theme }) => theme.light3};
+  animation: ${FadeInAnimation} 0.2s;
 
   &:last-child {
     border-radius: 0 0 4px 4px;

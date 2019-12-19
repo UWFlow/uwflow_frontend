@@ -15,13 +15,13 @@ const TabContainer = ({
   minTabWidth,
   initialSelectedTab = 0,
   contentPadding = '32px',
-  boxShadow = true,
+  borderRadius = true,
 }) => {
   const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
   return (
-    <ContainerWrapper width={containerWidth} boxShadow={boxShadow}>
-      <TabsWrapper boxShadow={boxShadow}>
+    <ContainerWrapper width={containerWidth} borderRadius={borderRadius}>
+      <TabsWrapper>
         {tabList.map((tab, index) => (
           <Tab
             key={index}
@@ -33,6 +33,7 @@ const TabContainer = ({
               tab.onClick && tab.onClick(index);
               setSelectedTab(index);
             }}
+            borderRadius={borderRadius}
           >
             {tab.title}
           </Tab>

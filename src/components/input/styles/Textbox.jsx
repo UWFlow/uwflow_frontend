@@ -19,7 +19,8 @@ export const SearchInput = styled.input`
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
   font-size: ${({ options }) =>
     options.fontSize ? options.fontSize : 'inherit'};
-  border-radius: 4px;
+  border-radius: ${({ options }) =>
+    options.borderRadius ? options.borderRadius : '4px'};
   background: ${({ autocompleteActive, theme }) =>
     autocompleteActive ? 'transparent' : theme.light2};
   height: 48px;
