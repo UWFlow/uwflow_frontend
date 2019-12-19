@@ -77,7 +77,7 @@ export const ScheduleTableWrapper = styled.div`
 
 export const FinalExamsTableWrapper = styled.div`
   overflow-x: auto;
-  padding: ${({ hasExams }) => hasExams ? '32px 0' : '32px 0 0 0'};
+  padding: ${({ hasExams }) => (hasExams ? '32px 0' : '32px 0 0 0')};
 `;
 
 export const EnrollmentText = styled.div`

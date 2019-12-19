@@ -19,6 +19,6 @@ export const ProfileFinalExamsHeader = styled.div`
 `;
 
 export const ProfileFinalExamsContent = styled.div`
-  padding: ${({ hasExams }) => hasExams ? '32px 0' : '32px 0 0 0'};
+  padding: ${({ hasExams }) => (hasExams ? '32px 0' : '32px 0 0 0')};
   overflow-x: auto;
 `;

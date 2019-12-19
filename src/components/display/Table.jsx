@@ -164,9 +164,7 @@ const Table = ({
         </LoadingRow>
       )}
       {!isLoading && showNoResults && rows.length === 0 && (
-        <NoResultsRow>
-          No results found
-        </NoResultsRow>
+        <NoResultsRow>No results found</NoResultsRow>
       )}
       <div ref={bottomRef} />
     </TableWrapper>
