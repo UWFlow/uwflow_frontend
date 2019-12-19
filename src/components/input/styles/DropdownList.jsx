@@ -20,7 +20,10 @@ export const DropdownWrapper = styled.div`
   user-select: none;
 `;
 
-export const DropdownControl = styled.div`
+export const DropdownControl = styled.button`
+  background: none;
+  border: none;
+  outline: none;
   position: relative;
   cursor: pointer;
   display: flex;

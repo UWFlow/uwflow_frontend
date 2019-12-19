@@ -106,8 +106,8 @@ export const DarkBoxShadow = `
 `;
 
 export const BottomBoxShadow = `
-  box-shadow: 0px 5px 5px -5px rgba(236, 237, 237, 0.4),
-    0px 5px 5px -5px rgba(142, 147, 148, 0.2);
+  box-shadow: 0px 1px 3px rgba(236, 237, 237, 0.4),
+    0px 1px 3px rgba(142, 147, 148, 0.2);
 `;
 
 export const TextShadow = `

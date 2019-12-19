@@ -15,6 +15,7 @@ import {
   SortArrow,
   HeaderText,
   LoadingRow,
+  NoResultsRow,
 } from './styles/Table';
 
 import LoadingSpinner from '../display/LoadingSpinner';
@@ -31,6 +32,7 @@ const Table = ({
   fetchMore = null,
   initialState = {},
   fetchOffset = 1000,
+  showNoResults = false,
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
@@ -160,6 +162,11 @@ const Table = ({
         <LoadingRow>
           <LoadingSpinner size={48} strokeWidth={4} />
         </LoadingRow>
+      )}
+      {!isLoading && showNoResults && rows.length === 0 && (
+        <NoResultsRow>
+          No results found
+        </NoResultsRow>
       )}
       <div ref={bottomRef} />
     </TableWrapper>

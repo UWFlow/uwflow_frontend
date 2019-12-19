@@ -23,7 +23,7 @@ export const HeaderWrapper = styled.div`
 
 export const HeaderTitle = styled.div`
   ${({ bigTitle }) => (bigTitle ? Heading2 : Heading3)}
-  ${({ bigTitle }) => (bigTitle ? 'font-size: 24px;' : '')}
+  ${({ bigTitle }) => (bigTitle ? '' : '')}
   display: flex;
   align-items: center;
   justify-content: ${({ centerHeader }) =>

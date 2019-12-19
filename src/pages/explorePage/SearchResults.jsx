@@ -160,6 +160,7 @@ const SearchResults = ({
         data={resultsToReturn()}
         columns={courseSearch ? courseColumns : profColumns}
         rightAlignIndex={courseSearch ? 2 : 1}
+        showNoResults
         fetchMore={() =>
           setNumRendered(
             Math.min(

@@ -14,12 +14,13 @@ import LastUpdatedSchedule from '../../components/common/LastUpdatedSchedule';
 import { processMultipleCourseExams } from '../../utils/FinalExams';
 
 const ProfileFinalExams = ({ courses }) => {
+  const exams = processMultipleCourseExams(courses);
   return (
     <>
       <ProfileFinalExamsWrapper>
         <ProfileFinalExamsHeader>On campus final exams</ProfileFinalExamsHeader>
-        <ProfileFinalExamsContent>
-          <FinalExamTable courses={processMultipleCourseExams(courses)} />
+        <ProfileFinalExamsContent hasExams={exams.length > 0}>
+          <FinalExamTable courses={exams} />
         </ProfileFinalExamsContent>
       </ProfileFinalExamsWrapper>
       <LastUpdatedSchedule />

@@ -15,7 +15,7 @@ export const NotificationBellWrapper = styled.button`
   cursor: pointer;
   ${BoxShadow}
 
-  &:hover {
+  &:hover, &:focus {
     background: ${({ theme, selected }) =>
       selected ? theme.primaryDark : theme.light2};
   }
