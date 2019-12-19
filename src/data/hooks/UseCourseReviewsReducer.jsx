@@ -30,6 +30,7 @@ const convertInputToState = data => {
       liked: r.liked != null,
     },
     prof: r.prof ? r.prof.name : '',
+    prof_code: r.prof ? r.prof.code : '',
   }));
 
   const reviewsByProf = data.review.reduce((allProfs, current) => {

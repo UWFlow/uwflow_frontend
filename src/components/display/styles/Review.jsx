@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { Link as RouterLink } from 'react-router-dom';
 import breakpoint from 'styled-components-breakpoint';
-import { Card, BoxShadow, Body } from '../../../constants/Mixins';
+import { Card, BoxShadow, Body, Link } from '../../../constants/Mixins';
 
 export const ReviewWrapper = styled.div`
   ${BoxShadow}
@@ -127,4 +128,9 @@ export const UpvoteNumber = styled.div`
   ${Body}
   color: ${({ selected, theme }) => (selected ? 'white' : theme.dark3)}
   margin-left: 4px;
+`;
+
+export const ProfText = styled(RouterLink)`
+  color: ${({ theme }) => theme.professors};
+  ${Link}
 `;

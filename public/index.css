@@ -39,6 +39,10 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+}
+
 /**
  * Form elements render using OS defaults,
  * so font-family inheritance must be specifically declared
