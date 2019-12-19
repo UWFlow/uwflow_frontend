@@ -24,8 +24,6 @@
     "lodash": "^4.17.15",
     "lz-string": "^1.4.4",
     "moment": "^2.24.0",
-    "overlayscrollbars": "^1.10.0",
-    "overlayscrollbars-react": "^0.2.0",
     "path-to-regexp": "^4.0.4",
     "query-string": "^6.8.3",
     "react": "^16.11.0",
