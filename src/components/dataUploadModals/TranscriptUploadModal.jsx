@@ -8,6 +8,7 @@ const TranscriptUploadModal = ({
   onCloseModal,
   isModalOpen,
   onAfterClose = () => {},
+  showSkipStepButton = false,
 }) => {
   return (
     <Modal
@@ -15,7 +16,10 @@ const TranscriptUploadModal = ({
       onRequestClose={onCloseModal}
       onAfterClose={onAfterClose}
     >
-      <TranscriptUploadModalContent onSkip={onCloseModal} />
+      <TranscriptUploadModalContent
+        onSkip={onCloseModal}
+        showSkipStepButton={showSkipStepButton}
+      />
     </Modal>
   );
 };

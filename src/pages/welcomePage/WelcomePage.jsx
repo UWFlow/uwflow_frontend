@@ -35,6 +35,7 @@ const WelcomePage = ({ history, isLoggedIn }) => {
             setIsUploadingTranscript(false);
             setIsUploadingSchedule(true);
           }}
+          showSkipStepButton={true}
         />
       )}
       {isUploadingSchedule && (
@@ -46,6 +47,7 @@ const WelcomePage = ({ history, isLoggedIn }) => {
                 : LANDING_PAGE_ROUTE,
             )
           }
+          showSkipStepButton={true}
         />
       )}
     </WelcomePageWrapper>
