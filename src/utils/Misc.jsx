@@ -138,6 +138,7 @@ export const getDateWithSeconds = (date, secs) => {
     .add(secs, 'seconds');
 };
 
+// do not change the order of this, the calendar uses the index numbers
 export const weekDayLetters = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
 
 export const isValidDayOfWeek = day => {

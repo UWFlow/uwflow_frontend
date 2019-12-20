@@ -26,6 +26,7 @@ export const RESET_PASSWORD_ERRORS = {
 };
 
 export const TRANSCRIPT_ERRORS = {
+  file_too_big: 'Please upload a file smaller than 10 MB',
   default_transcript:
     'We were unable to process your transcript. Get in touch at info@uwflow.com if this persists',
 };

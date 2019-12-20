@@ -122,12 +122,17 @@ const Calendar = ({ eventsByDate }) => {
   let minHour = 9;
   let maxHour = 17;
   let totalMinutes = 0;
+
   Object.values(currentWeekEvents).forEach(events => {
     if (events !== undefined) {
       events.forEach(event => {
         if (event.start.hour() <= minHour) {
-          minHour = event.start.hour() - 1;
+          minHour = event.start.hour();
+          if (event.start.minutes() === 0) {
+            minHour -= 1;
+          }
         }
+
         if (event.end.hour() >= maxHour) {
           maxHour = event.end.hour();
           // minutes might be in the middle of the hour
