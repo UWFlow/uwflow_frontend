@@ -65,7 +65,7 @@ const ProfilePageContent = ({
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar schedule={user.schedule} />
+          <ProfileCalendar schedule={user.schedule} secretID={user.secret_id} />
           <ProfileCourses
             courses={coursesTaken}
             reviews={reviews}

@@ -128,6 +128,6 @@ export const NoResultsRow = styled.div`
   padding: 24px 16px;
   text-align: center;
   border-radius: 0 0 4px 4px;
-  background: ${({ theme }) => theme.light2};
+  background: ${({ theme }) => theme.white};
   color: ${({ theme }) => theme.dark3};
 `;

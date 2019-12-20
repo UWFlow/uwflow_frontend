@@ -28,7 +28,7 @@ import {
 import { SEO_DESCRIPTIONS } from '../../constants/Messages';
 
 const NUM_COURSE_CODE_FILTERS = 5;
-const RATING_FILTERS = [0, 10, 20, 50, 100, 250, 500, 1000];
+const RATING_FILTERS = [0, 1, 5, 10, 20, 50, 75, 100, 200, 500];
 
 const ExplorePageContent = ({
   query,

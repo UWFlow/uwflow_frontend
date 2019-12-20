@@ -148,7 +148,9 @@ const Review = ({
   const profText = prof
     ? [
         ', taken with ',
-        <ProfText to={getProfPageRoute(prof_code)}>{prof}</ProfText>,
+        <ProfText key={prof_code} to={getProfPageRoute(prof_code)}>
+          {prof}
+        </ProfText>,
       ]
     : [''];
   const reviewContent = (
