@@ -11,7 +11,7 @@ const ScrollProvider = ({ value, children }) => {
     if (value === null) {
       return;
     }
-    value.current.parentNode.scrollTo(0, 0);
+    value.current.parentNode.scrollTo({ top: 0, left: 0, behaviour: 'smooth' });
   }, [value, pathname]);
 
   return (
