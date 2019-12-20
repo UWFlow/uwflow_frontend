@@ -89,7 +89,9 @@ const RatingBox = ({
           <NumCommentsAndRatingsWrapper>
             <NumCommentsWrapper
               onClick={() =>
-                document.getElementById(REVIEWS_DIV_ID).scrollIntoView()
+                document
+                  .getElementById(REVIEWS_DIV_ID)
+                  .scrollIntoView({ behavior: 'smooth' })
               }
             >
               {numComments ? numComments : 0}{' '}
