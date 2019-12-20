@@ -41,8 +41,8 @@ const WelcomePage = ({ history, isLoggedIn }) => {
         <ScheduleUploadModalContent
           onSkip={() =>
             history.push(
-              history.location.state && history.location.state.prevPage
-                ? history.location.state.prevPage
+              history.location.state && history.location.state.prevPath
+                ? history.location.state.prevPath
                 : LANDING_PAGE_ROUTE,
             )
           }
