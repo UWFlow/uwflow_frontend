@@ -60,7 +60,11 @@ const onDragOver = event => {
   event.preventDefault();
 };
 
-export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
+export const TranscriptUploadModalContent = ({
+  onSkip,
+  theme,
+  showSkipStepButton,
+}) => {
   const fileInputRef = useRef();
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
   const [fileSizeError, setFileSizeError] = useState(false);
@@ -205,7 +209,9 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
           </ScheduleStep3Wrapper>
         </StepWrapper>
       </ContentSteps>
-      <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+      {showSkipStepButton && (
+        <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+      )}
     </ContentWrapper>
   );
 };

@@ -55,7 +55,11 @@ const clipboardKeys = {
   undo: 122,
 };
 
-export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
+export const ScheduleUploadModalContent = ({
+  onSkip,
+  theme,
+  showSkipStepButton,
+}) => {
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
   const [scheduleText, setScheduleText] = useState('');
   const [uploadError, setUploadError] = useState('');
@@ -184,7 +188,9 @@ export const ScheduleUploadModalContent = ({ onSkip, theme }) => {
           </ScheduleStep3Wrapper>
         </StepWrapper>
       </ContentSteps>
-      <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+      {showSkipStepButton && (
+        <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+      )}
     </ContentWrapper>
   );
 };

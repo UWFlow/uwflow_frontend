@@ -8,7 +8,7 @@ const ScheduleUploadModal = ({
   onCloseModal,
   isModalOpen,
   onAfterClose = () => {},
-  theme,
+  showSkipStepButton = false,
 }) => {
   return (
     <Modal
@@ -16,7 +16,10 @@ const ScheduleUploadModal = ({
       onRequestClose={onCloseModal}
       onAfterClose={onAfterClose}
     >
-      <ScheduleUploadModalContent onSkip={onCloseModal} theme={theme} />
+      <ScheduleUploadModalContent
+        onSkip={onCloseModal}
+        showSkipStepButton={showSkipStepButton}
+      />
     </Modal>
   );
 };
