@@ -23,6 +23,9 @@ import {
   NumRatingsWrapper,
 } from './styles/RatingBox';
 
+/* Constants */
+import { REVIEWS_DIV_ID } from '../../constants/PageConstants';
+
 /* Child Components */
 import ProgressBar from './ProgressBar';
 import CircularPercentage from '../statistics/CircularPercentage';
@@ -84,7 +87,13 @@ const RatingBox = ({
         )}
         <ReviewsAndGraphButtonWrapper>
           <NumCommentsAndRatingsWrapper>
-            <NumCommentsWrapper>
+            <NumCommentsWrapper
+              onClick={() =>
+                document
+                  .getElementById(REVIEWS_DIV_ID)
+                  .scrollIntoView({ behavior: 'smooth' })
+              }
+            >
               {numComments ? numComments : 0}{' '}
               {numComments === 1 ? 'comment' : 'comments'}
             </NumCommentsWrapper>

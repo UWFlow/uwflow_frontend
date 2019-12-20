@@ -37,7 +37,10 @@ import {
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
+/* Utils */
 import { splitCourseCode } from '../../utils/Misc';
+
+/* Constants */
 import { authModalOpen } from '../../data/actions/AuthActions';
 import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
 
