@@ -43,7 +43,6 @@ import { splitCourseCode } from '../../utils/Misc';
 /* Constants */
 import { authModalOpen } from '../../data/actions/AuthActions';
 import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
-import { REVIEWS_DIV_ID } from '../../constants/PageConstants';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
