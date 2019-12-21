@@ -20,7 +20,7 @@ export const ContentWrapper = styled.div`
   background: white;
   ${BoxShadow}
   padding: 32px;
-  margin: 48px auto;
+  margin: 0 auto;
   border-radius: 4px;
   width: max-content;
 `;
