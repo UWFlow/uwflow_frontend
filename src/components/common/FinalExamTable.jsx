@@ -59,6 +59,7 @@ const FinalExamTable = ({ courses, includeCode = true }) => {
     <Table
       columns={includeCode ? examColumns : examColumns.slice(1)}
       data={courses}
+      showNoResults
     />
   );
 };

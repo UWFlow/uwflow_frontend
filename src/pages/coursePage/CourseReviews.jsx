@@ -6,7 +6,10 @@ import { withTheme } from 'styled-components';
 import moment from 'moment';
 
 /* Constants */
-import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
+import {
+  MIN_REVIEWS_SHOWN,
+  REVIEWS_DIV_ID,
+} from '../../constants/PageConstants';
 
 /* Custom Hooks */
 import useCourseReviewsReducer, {
@@ -372,7 +375,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
   ];
 
   return (
-    <CourseReviewWrapper>
+    <CourseReviewWrapper id={REVIEWS_DIV_ID}>
       {isBrowserDesktop && (
         <TabContainer
           tabList={tabList}

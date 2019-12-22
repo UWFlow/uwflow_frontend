@@ -7,6 +7,9 @@ import { toast } from 'react-toastify';
 /* Styled Components */
 import { ShortlistStarWrapper } from './styles/ShortlistStar';
 
+/* Child Components */
+import Tooltip from '../display/Tooltip';
+
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
@@ -86,13 +89,17 @@ const ShortlistStar = ({
   };
 
   return (
-    <ShortlistStarWrapper
-      onClick={onStarClicked}
-      checked={checked}
-      width={size}
-      color={checked ? theme.dark3 : theme.light4}
-      strokeWidth={2}
-    />
+    <>
+      <Tooltip />
+      <ShortlistStarWrapper
+        data-tip={`Add ${splitCourseCode(courseCode)} to your shortlist`}
+        onClick={onStarClicked}
+        checked={checked}
+        width={size}
+        color={checked ? theme.dark3 : theme.light4}
+        strokeWidth={2}
+      />
+    </>
   );
 };
 

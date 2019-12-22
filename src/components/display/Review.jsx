@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
 import { useMutation } from 'react-apollo';
-
-/* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
+import moment from 'moment';
 
 /* Styled Components */
 import {
@@ -26,10 +22,17 @@ import {
   SingleMetricWrapper,
   SingleMetricSquares,
   SingleMetricLabel,
+  ProfText,
 } from './styles/Review';
 
 /* Child Components */
 import BubbleRatings from '../input/BubbleRatings';
+import Tooltip from '../display/Tooltip';
+
+/* Selectors */
+import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
+import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import {
@@ -40,6 +43,9 @@ import {
 } from '../../graphql/mutations/Upvote';
 import { REFETCH_COURSE_REVIEW_UPVOTE } from '../../graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfReview';
+
+/* Routes */
+import { getProfPageRoute } from '../../Routes';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -82,7 +88,16 @@ const Review = ({
   isLoggedIn,
   isCourseReview,
 }) => {
-  const { upvotes, upvote_users, review: reviewText, author, metrics } = review;
+  const {
+    upvotes,
+    upvote_users,
+    review: reviewText,
+    created_at,
+    author,
+    metrics,
+    prof,
+    prof_code,
+  } = review;
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [
@@ -125,15 +140,29 @@ const Review = ({
     setUserUpvoted(!userUpvoted);
   };
 
-  const authorNameText = author.full_name
-    ? author.full_name + (author.program ? ' - ' : '')
-    : '';
-  const authorText = authorNameText + (author.program ? author.program : '');
+  const authorText = author.full_name ? `${author.full_name}, ` : 'Anonymous ';
+  const programText = `${author.program ? author.program : ''} ${
+    !author.full_name || author.program ? 'student' : ''
+  } `;
+  const timeAgo = `about ${moment(created_at).fromNow()}`;
+  const profText = prof
+    ? [
+        ', taken with ',
+        <ProfText key={prof_code} to={getProfPageRoute(prof_code)}>
+          {prof}
+        </ProfText>,
+      ]
+    : [''];
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        {Boolean(authorText.length) && `— ${authorText}`}
+        {Boolean(authorText.length) && (
+          <>
+            {`— ${authorText}${programText}${timeAgo}`}
+            {profText}
+          </>
+        )}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
@@ -143,7 +172,12 @@ const Review = ({
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
           <ReviewPicture />
-          <ReviewUpvotes selected={userUpvoted} onClick={onClickUpvote}>
+          <Tooltip />
+          <ReviewUpvotes
+            data-tip={userUpvoted ? `Remove upvote` : `Upvote this review`}
+            selected={userUpvoted}
+            onClick={onClickUpvote}
+          >
             <ThumbsUp
               color={userUpvoted ? 'white' : theme.dark3}
               size={16}

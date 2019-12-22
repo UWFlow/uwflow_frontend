@@ -66,7 +66,8 @@ const SearchFilter = ({
       <NumRatingsWrapper>
         <SearchFilterText>Min # of ratings</SearchFilterText>
         <NumRatingsText>
-          &ge; {ratingFilters[numRatings]} ratings
+          &ge; {ratingFilters[numRatings]}{' '}
+          {ratingFilters[numRatings] === 1 ? 'rating' : 'ratings'}
         </NumRatingsText>
       </NumRatingsWrapper>
       <DiscreteSlider

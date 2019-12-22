@@ -80,11 +80,10 @@ export const AuthForm = ({
         toast(AUTH_SUCCESS.signup);
         if (onSignupComplete) {
           onSignupComplete();
-        } else {
-          history.push(WELCOME_PAGE_ROUTE, {
-            prevPath: `${history.location.pathname}?${history.location.search}`,
-          });
         }
+        history.push(WELCOME_PAGE_ROUTE, {
+          prevPath: `${history.location.pathname}?${history.location.search}`,
+        });
       }
     }
   };

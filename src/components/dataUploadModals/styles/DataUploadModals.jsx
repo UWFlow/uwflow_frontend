@@ -20,7 +20,7 @@ export const ContentWrapper = styled.div`
   background: white;
   ${BoxShadow}
   padding: 32px;
-  margin: 48px auto;
+  margin: 0 auto;
   border-radius: 4px;
   width: max-content;
 `;
@@ -123,7 +123,7 @@ export const SchedulePasteBox = styled.textarea`
   resize: none;
   border: none;
   background: none;
-  padding-top: ${({ error }) => (error ? 64 : 0)}px;
+  padding: ${({ error }) => (error ? '64px 8px 8px 8px' : '8px')};
 `;
 
 export const GreyText = styled.div`

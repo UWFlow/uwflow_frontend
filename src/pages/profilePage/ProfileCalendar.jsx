@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment';
+import { withTheme } from 'styled-components';
 
 /* Child Components */
 import Button from '../../components/input/Button';
@@ -26,6 +27,14 @@ import {
   weekDayLetters,
 } from '../../utils/Misc';
 
+/* Constants */
+import {
+  CALENDAR_EXPORT_ENDPOINT,
+  BACKEND_ENDPOINT,
+  GOOGLE_CALENDAR_URL,
+} from '../../constants/Api';
+import DropdownList from '../../components/input/DropdownList';
+
 const getScheduleRange = schedule => {
   let minTime = new Date();
   let maxTime = new Date();
@@ -42,11 +51,12 @@ const getScheduleRange = schedule => {
     });
 
     section.meetings.forEach(meeting => {
-      const meetingDate = new Date(meeting.start_date);
-      if (meetingDate < minTime) {
-        minTime = meetingDate;
-      } else if (meetingDate > maxTime) {
-        maxTime = meetingDate;
+      const meetingStart = new Date(meeting.start_date);
+      const meetingEnd = new Date(meeting.end_date);
+      if (meetingStart < minTime) {
+        minTime = meetingStart;
+      } else if (meetingEnd > maxTime) {
+        maxTime = meetingEnd;
       }
     });
   });
@@ -63,10 +73,10 @@ const getScheduleRange = schedule => {
 
 // start and end inclusive
 const getMomentsWithinRange = (start, end, dayOfWeek) => {
-  var currentMoment = start.clone();
-  var daysToReturn = [];
+  let currentMoment = start.clone();
+  let daysToReturn = [];
   while (currentMoment.isSameOrBefore(end)) {
-    if (weekDayLetters[currentMoment.weekday()] === dayOfWeek) {
+    if (weekDayLetters[currentMoment.weekday() - 1] === dayOfWeek) {
       daysToReturn.push(currentMoment.clone().startOf('day'));
     }
     currentMoment.add(1, 'day');
@@ -86,6 +96,7 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
         section: `${section.section_name} (Exam)`,
       });
     });
+
     section.meetings.forEach(meeting => {
       const meetingStart = moment(meeting.start_date);
       const meetingEnd = moment(meeting.end_date);
@@ -131,8 +142,20 @@ const getEventsByDate = events => {
   return eventsByDate;
 };
 
-const ProfileCalendar = ({ schedule }) => {
+const ProfileCalendar = ({ schedule, secretID, theme }) => {
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+
+  const handleCalendarExport = async download => {
+    const response = await fetch(
+      `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretID)}`,
+    );
+    if (download) {
+      window.location.assign(response.url);
+    } else {
+      window.open(`${GOOGLE_CALENDAR_URL}${response.url}`, '_blank');
+    }
+  };
+
   const ScheduleModal = (
     <ScheduleUploadModal
       isModalOpen={scheduleModalOpen}
@@ -170,13 +193,25 @@ const ProfileCalendar = ({ schedule }) => {
   const [minDate, dayRange] = getScheduleRange(schedule);
   const events = getEventIntervals(moment(minDate), dayRange, schedule);
   const eventsByDate = getEventsByDate(events);
+
   return (
     <CalendarWithButtonsWrapper>
       <ExportCalendarWrapper>
         <ExportCalendarText>Export your calendar</ExportCalendarText>
-        <Button padding="0 32px" maxHeight="48px">
-          Export
-        </Button>
+        <DropdownList
+          selectedIndex={-1}
+          options={['Google', 'iCalendar']}
+          margin="auto 0"
+          onChange={value => {
+            if (value === 0) {
+              handleCalendarExport(false);
+            } else {
+              handleCalendarExport(true);
+            }
+          }}
+          color={theme.primary}
+          placeholder="Export as"
+        />
       </ExportCalendarWrapper>
       <Calendar eventsByDate={eventsByDate} />
       <RecentCalendarWrapper>
@@ -188,4 +223,4 @@ const ProfileCalendar = ({ schedule }) => {
   );
 };
 
-export default ProfileCalendar;
+export default withTheme(ProfileCalendar);

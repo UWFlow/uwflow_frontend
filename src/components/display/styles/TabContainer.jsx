@@ -4,26 +4,27 @@ import {
   BoxShadow,
   BottomBoxShadow,
 } from '../../../constants/Mixins';
-import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 
 export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};
-  border-radius: 4px;
+  border-radius: ${({ borderRadius }) => (borderRadius ? '4px' : 0)};
   background: ${({ theme }) => theme.white};
-  ${({ boxShadow }) => (boxShadow ? BoxShadow : '')}
+  ${BoxShadow}
 `;
 
 export const TabsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   position: sticky;
-  top: ${NAVBAR_HEIGHT}px;
+  top: 0;
   z-index: 7;
   overflow: auto;
-  ${({ boxShadow }) => (boxShadow ? BottomBoxShadow : '')}
+  ${BottomBoxShadow}
 `;
 
-export const Tab = styled.div`
+export const Tab = styled.button`
+  outline: none;
+  border: none;
   display: flex;
   min-width: ${({ minWidth }) => (minWidth ? `${minWidth}px` : 0)};
   flex: 1;
@@ -32,9 +33,12 @@ export const Tab = styled.div`
   height: 64px;
   cursor: pointer;
   padding: 0 8px;
-  border-radius: ${({ first, last, selected }) => {
-    if (!selected) {
+  border-radius: ${({ first, last, selected, borderRadius }) => {
+    if (!selected || !borderRadius) {
       return '0';
+    }
+    if (first && last) {
+      return '4px 4px 0 0';
     }
     if (first) {
       return '4px 0 0 0';

@@ -4,6 +4,7 @@ import {
   Body,
   DarkBoxShadow,
   Hover,
+  FadeInAnimation,
 } from '../../../constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
@@ -43,6 +44,7 @@ export const SearchResult = styled.button`
   padding: 8px 24px;
   height: 48px;
   border-bottom: 1px solid ${({ theme }) => theme.light3};
+  animation: ${FadeInAnimation} 0.2s;
 
   &:last-child {
     border-radius: 0 0 4px 4px;

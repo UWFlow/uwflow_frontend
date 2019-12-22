@@ -75,9 +75,10 @@ export const NumCommentsAndRatingsWrapper = styled.div`
   `}
 `;
 
-export const NumCommentsWrapper = styled.div`
+export const NumCommentsWrapper = styled.a`
   ${Body}
-  color: ${({ theme }) => theme.dark3};
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export const NumRatingsWrapper = styled.div`

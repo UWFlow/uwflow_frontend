@@ -150,9 +150,15 @@ const CourseSchedule = ({
     subscription => subscription.section_id,
   );
 
-  const hasBell = sections.some(
-    section => section.enrollment_total >= section.enrollment_capacity,
-  );
+  let hasBell = {};
+  termsOffered.forEach(term => {
+    hasBell[term] = sections.some(section => {
+      return (
+        section.enrollment_total >= section.enrollment_capacity &&
+        section.term_id === term
+      );
+    });
+  });
 
   const sectionsCleanedData = sections
     .map(s => ({
@@ -166,7 +172,7 @@ const CourseSchedule = ({
         section_id: s.id,
         filled: s.enrollment_total,
         capacity: s.enrollment_capacity,
-        hasBell: hasBell,
+        hasBell: hasBell[s.term_id],
         selected: subscribedSectionIDs.includes(s.id),
       },
       // Every grouping contains a single time of day, location, and instructor
@@ -200,7 +206,7 @@ const CourseSchedule = ({
                 data={sectionsCleanedData.filter(c => c.term === term)}
               />
             </ScheduleTableWrapper>
-            <FinalExamsTableWrapper>
+            <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
               <FinalExamsText>Final Exams</FinalExamsText>
               <FinalExamTable courses={courseExams} includeCode={false} />
             </FinalExamsTableWrapper>
@@ -221,7 +227,7 @@ const CourseSchedule = ({
           initialSelectedTab={0}
           tabList={tabList}
           contentPadding={'0'}
-          boxShadow={false}
+          borderRadius={false}
         />
       </CollapseableContainer>
       {tabList.length > 0 && <LastUpdatedSchedule />}

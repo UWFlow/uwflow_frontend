@@ -5,7 +5,7 @@ export const AUTH_ERRORS = {
   email_taken_by_email: 'You’ve already signed up with this email',
   email_taken_by_google: 'You’ve already signed up with Google',
   email_taken_by_facebook: 'You’ve already signed up with Facebook',
-  email_not_registered: 'We don’t recognize that email – try signing up',
+  email_not_registered: 'We don’t recognize that email — try signing up',
   email_wrong_password: 'Invalid password',
   no_facebook_email: 'We were unable able to log you in through Facebook',
   no_google_email: 'We were unable able to log you in through Google',
@@ -26,6 +26,7 @@ export const RESET_PASSWORD_ERRORS = {
 };
 
 export const TRANSCRIPT_ERRORS = {
+  file_too_big: 'Please upload a file smaller than 10 MB',
   default_transcript:
     'We were unable to process your transcript. Get in touch at info@uwflow.com if this persists',
 };

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 
-import { Body, PageContent, Hover } from '../../../constants/Mixins';
+import { Body, PageContent, FadeInAnimation, Hover } from '../../../constants/Mixins';
 import {
   FOOTER_MARGIN_TOP,
   FOOTER_HEIGHT,
@@ -10,11 +10,12 @@ import {
 
 export const FooterWrapper = styled.div`
   background: ${({ theme }) => theme.primaryExtraDark};
-  height: 100%;
+  height: fit-content;
   min-height: ${FOOTER_HEIGHT}px;
   display: flex;
   align-items: center;
   margin-top: ${({ noMargin }) => (noMargin ? '0' : `${FOOTER_MARGIN_TOP}px`)};
+  animation: ${FadeInAnimation} 1s;
 `;
 
 export const FooterContent = styled.div`

@@ -5,7 +5,7 @@ import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 /* Child Components */
-import Tooltip from '../../components/input/Tooltip';
+import Tooltip from '../../components/display/Tooltip';
 
 /* Styled Components */
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';

@@ -60,9 +60,14 @@ const onDragOver = event => {
   event.preventDefault();
 };
 
-export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
+export const TranscriptUploadModalContent = ({
+  onSkip,
+  theme,
+  showSkipStepButton,
+}) => {
   const fileInputRef = useRef();
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
+  const [fileSizeError, setFileSizeError] = useState(false);
 
   const handleTranscriptClick = () => {
     if (fileInputRef) {
@@ -71,7 +76,16 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
   };
 
   const makeTranscriptRequest = async file => {
+    setFileSizeError(false);
+
     if (!file) {
+      return;
+    }
+
+    const fileSizeMB = file.size / 1024 / 1024;
+    if (fileSizeMB > 10) {
+      setUploadState(UPLOAD_FAILED);
+      setFileSizeError(true);
       return;
     }
 
@@ -125,7 +139,11 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
     return (
       <>
         {uploadState === UPLOAD_FAILED && (
-          <ErrorMessage>{TRANSCRIPT_ERRORS.default_transcript}</ErrorMessage>
+          <ErrorMessage>
+            {fileSizeError
+              ? TRANSCRIPT_ERRORS.file_too_big
+              : TRANSCRIPT_ERRORS.default_transcript}
+          </ErrorMessage>
         )}
         <Upload height={100} width={60} color={theme.dark3} />
         <GreyText>Drag and drop your transcript file here!</GreyText>
@@ -191,7 +209,9 @@ export const TranscriptUploadModalContent = ({ onSkip, theme }) => {
           </ScheduleStep3Wrapper>
         </StepWrapper>
       </ContentSteps>
-      <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+      {showSkipStepButton && (
+        <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+      )}
     </ContentWrapper>
   );
 };

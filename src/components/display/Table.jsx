@@ -4,6 +4,7 @@ import { useTable, useSortBy } from 'react-table';
 import { throttle } from 'lodash';
 import { ChevronUp, ChevronDown } from 'react-feather';
 
+/* Styled Components */
 import {
   TableWrapper,
   TableHeader,
@@ -15,9 +16,12 @@ import {
   SortArrow,
   HeaderText,
   LoadingRow,
+  NoResultsRow,
 } from './styles/Table';
 
+/* Child Components */
 import LoadingSpinner from '../display/LoadingSpinner';
+import { useScrollContext } from '../../data/providers/ScrollProvider';
 
 const Table = ({
   cellPadding,
@@ -31,7 +35,9 @@ const Table = ({
   fetchMore = null,
   initialState = {},
   fetchOffset = 1000,
+  showNoResults = false,
 }) => {
+  const scrollContext = useScrollContext();
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
 
@@ -66,10 +72,17 @@ const Table = ({
   const throttledSetFetchMore = throttle(setFetchMore, 100);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => throttledSetFetchMore());
-    return window.removeEventListener('scroll', () => throttledSetFetchMore());
+    if (scrollContext === null) {
+      return;
+    }
+    scrollContext.current.parentNode.addEventListener('scroll', () =>
+      throttledSetFetchMore(),
+    );
+    return scrollContext.current.parentNode.removeEventListener('scroll', () =>
+      throttledSetFetchMore(),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+  }, [scrollContext, loading]);
 
   const {
     getTableProps,
@@ -160,6 +173,9 @@ const Table = ({
         <LoadingRow>
           <LoadingSpinner />
         </LoadingRow>
+      )}
+      {!isLoading && showNoResults && rows.length === 0 && (
+        <NoResultsRow>No results found</NoResultsRow>
       )}
       <div ref={bottomRef} />
     </TableWrapper>

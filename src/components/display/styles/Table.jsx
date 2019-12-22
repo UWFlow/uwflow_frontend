@@ -117,5 +117,18 @@ export const LoadingRow = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 0 4px 4px;
+`;
+
+export const NoResultsRow = styled.div`
+  display: table-caption;
+  caption-side: bottom;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 24px 16px;
+  text-align: center;
+  border-radius: 0 0 4px 4px;
+  background: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.dark3};
 `;
