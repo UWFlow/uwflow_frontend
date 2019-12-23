@@ -59,7 +59,7 @@ const ProfilePageContent = ({
     );
     return { course: course.course, review: curReview };
   });
-  console.log(user);
+
   return (
     <>
       <ProfileInfoHeader user={user} />

@@ -167,7 +167,7 @@ const Review = ({
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
-  console.log(author);
+
   return (
     <ReviewWrapper>
       <ReviewPictureAndMetricsRow>
