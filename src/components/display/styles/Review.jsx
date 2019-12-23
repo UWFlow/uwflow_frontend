@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 import breakpoint from 'styled-components-breakpoint';
 import { Card, BoxShadow, Body, Link } from '../../../constants/Mixins';
+import { getKittenFromProgram } from '../../../utils/Kitten';
 
 export const ReviewWrapper = styled.div`
   ${BoxShadow}
@@ -40,16 +41,16 @@ export const ReviewPictureAndUpvotesWrapper = styled.div`
     position: relative;
   `}
 `;
-
 export const ReviewPicture = styled.div`
   width: 64px;
   height: 64px;
-  background-color: ${({ theme }) => theme.dark3};
   border-radius: 32px;
-
+  background-image: ${({ authorProgram }) =>
+    `url(${getKittenFromProgram(authorProgram)})`};
+  background-size: 64px;
   ${breakpoint('mobile', 'tablet')`
     margin-right: 8px;
-  `}
+  `};
 `;
 
 export const ReviewUpvotes = styled.button`

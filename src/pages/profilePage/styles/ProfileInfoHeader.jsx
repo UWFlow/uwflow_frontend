@@ -6,7 +6,7 @@ import ProfileHeader from '../../../img/user_v1.svg';
 import { Heading1, PageContent, Heading2 } from '../../../constants/Mixins';
 
 /* Utils */
-import { getKitten } from '../../../utils/Kitten';
+import { getKittenFromUserID } from '../../../utils/Kitten';
 
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ export const UserPicture = styled.div`
   border: 5px solid ${({ theme }) => theme.light1};
   margin-right: 32px;
   object-fit: cover;
-  background-image: ${({ kitten }) => `url(${getKitten(kitten)})`};
+  background-image: ${({ id }) => `url(${getKittenFromUserID(id)})`};
   background-size: 208px;
   ${breakpoint('mobile', 'tablet')`
     width: 96px;

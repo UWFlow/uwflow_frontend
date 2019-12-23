@@ -166,12 +166,12 @@ const Review = ({
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
-
+  console.log(author);
   return (
     <ReviewWrapper>
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
-          <ReviewPicture />
+          <ReviewPicture authorProgram={author.program} />
           <Tooltip />
           <ReviewUpvotes
             data-tip={userUpvoted ? `Remove upvote` : `Upvote this review`}

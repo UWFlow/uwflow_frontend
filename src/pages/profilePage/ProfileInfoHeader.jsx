@@ -18,7 +18,7 @@ const ProfileInfoHeader = ({ user }) => {
   return (
     <ProfileInfoHeaderWrapper>
       <ProfileInfoSection>
-        <UserPicture kitten={user.id % 13} />
+        <UserPicture id={user.id} />
         <UserInfoWrapper>
           <UserName>{user.full_name}</UserName>
           <UserProgram>{user.program}</UserProgram>
