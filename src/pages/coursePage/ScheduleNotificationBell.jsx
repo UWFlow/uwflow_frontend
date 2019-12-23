@@ -100,7 +100,6 @@ const ScheduleNotificationBell = ({
         onClick={toggleOnClick}
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
-        
       </NotificationBellWrapper>
     </>
   );

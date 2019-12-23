@@ -8,6 +8,7 @@ import {
 } from './styles/CollapseableContainer';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import SlideInOutAnimation from '../../utils/animation/SlideInOutAnimation';
+import Collapsible from 'react-collapsible';
 
 const CollapseableContainer = ({
   title,
@@ -28,9 +29,9 @@ const CollapseableContainer = ({
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
       </HeaderWrapper>
-      <SlideInOutAnimation isOpen={isOpen}>
+      <Collapsible open={isOpen}>
         <ContentWrapper>{children}</ContentWrapper>
-      </SlideInOutAnimation>
+      </Collapsible>
     </ContainerWrapper>
   );
 };
