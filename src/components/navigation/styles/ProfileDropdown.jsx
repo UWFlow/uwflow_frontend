@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Heading4, BoxShadow, DarkBoxShadow } from '../../../constants/Mixins';
+import { getKittenFromUserID } from '../../../utils/Kitten';
 
 export const ProfileDropdownWrapper = styled.div`
   display: flex;
@@ -15,11 +16,13 @@ export const ProfileDropdownWrapper = styled.div`
   `}
 `;
 
-export const ProfilePicture = styled.img`
+export const ProfilePicture = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  background-image: url(${({ id }) => id && getKittenFromUserID(id)});
+  background-size: 40px;
   ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
 `;
 

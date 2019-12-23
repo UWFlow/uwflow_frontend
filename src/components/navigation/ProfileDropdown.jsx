@@ -48,12 +48,7 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
     }
   }
 
-  return (
-    <ProfilePicture
-      src={user.picture_url || placeholderImage}
-      isLanding={isLanding}
-    />
-  );
+  return <ProfilePicture id={user.id} isLanding={isLanding} />;
 };
 
 const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
