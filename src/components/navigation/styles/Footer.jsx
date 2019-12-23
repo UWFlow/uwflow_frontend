@@ -1,8 +1,13 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
+import FadeIn from 'react-fade-in';
 
-import { Body, PageContent, FadeInAnimation, Hover } from '../../../constants/Mixins';
+import {
+  Body,
+  PageContent,
+  Hover,
+} from '../../../constants/Mixins';
 import {
   FOOTER_MARGIN_TOP,
   FOOTER_HEIGHT,
@@ -13,9 +18,9 @@ export const FooterWrapper = styled.div`
   height: fit-content;
   min-height: ${FOOTER_HEIGHT}px;
   display: flex;
-  align-items: center;
   margin-top: ${({ noMargin }) => (noMargin ? '0' : `${FOOTER_MARGIN_TOP}px`)};
-  animation: ${FadeInAnimation} 1s;
+  width: 100%;
+  align-items: center;
 `;
 
 export const FooterContent = styled.div`

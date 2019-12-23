@@ -23,9 +23,9 @@ const WelcomePage = ({ history, isLoggedIn }) => {
   const [isUploadingTranscript, setIsUploadingTranscript] = useState(true);
   const [isUploadingSchedule, setIsUploadingSchedule] = useState(false);
 
-  if (!isLoggedIn) {
-    history.push(LANDING_PAGE_ROUTE);
-  }
+  // if (!isLoggedIn) {
+  //   history.push(LANDING_PAGE_ROUTE);
+  // }
 
   return (
     <WelcomePageWrapper>

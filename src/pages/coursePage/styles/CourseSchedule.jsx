@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading3 } from '../../../constants/Mixins';
+import { Heading3, Hover } from '../../../constants/Mixins';
 import { LEC, LAB } from '../../../constants/PageConstants';
+import FadeIn from 'react-fade-in';
 
 const CELL_HEIGHT = 28;
 
-export const CourseScheduleWrapper = styled.div`
+export const CourseScheduleWrapper = styled(FadeIn)`
   margin-bottom: 32px;
   width: 100%;
 `;
@@ -68,6 +69,7 @@ export const InstructorLink = styled(Link)`
   display: flex;
   align-items: center;
   margin-bottom: -8px;
+  ${Hover()}
 `;
 
 export const ScheduleTableWrapper = styled.div`

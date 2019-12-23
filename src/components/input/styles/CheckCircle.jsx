@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow } from '../../../constants/Mixins';
+import { BoxShadow, Hover } from '../../../constants/Mixins';
 
 export const CheckCircleWrapper = styled.div`
   width: ${({ width }) => width}px;
@@ -15,6 +15,7 @@ export const CheckCircleWrapper = styled.div`
   cursor: ${({ disabled }) => (disabled ? 'inherit' : 'pointer')};
   ${BoxShadow}
   position: relative;
+  ${Hover()}
 `;
 
 export const CheckIcon = styled.div`

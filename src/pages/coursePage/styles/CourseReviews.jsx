@@ -8,6 +8,7 @@ import {
   Heading2,
   Body,
   BoxShadow,
+  Hover,
 } from '../../../constants/Mixins';
 
 export const CourseReviewWrapper = styled.div`
@@ -105,6 +106,7 @@ export const ProfName = styled(Link)`
   ${breakpoint('mobile', 'tablet')`
     margin: 16px;
   `}
+  ${Hover()}
 `;
 
 export const ProfLikedMetric = styled.div`
@@ -143,9 +145,11 @@ export const ShowMoreReviewsSection = styled.div`
   height: 64px;
   cursor: pointer;
   border-radius: 0 0 4px 4px;
+  ${Hover()}
 `;
 
 export const ShowMoreReviewsText = styled.div`
   ${Heading4}
+  color: ${({ theme }) => theme.dark2};
   cursor: pointer;
 `;

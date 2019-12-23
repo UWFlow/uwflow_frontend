@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
 import ProfHeader from '../../../img/prof_v1.svg';
+import FadeIn from 'react-fade-in';
 
 /* Mixins */
-import { Heading1, Heading3, PageContent } from '../../../constants/Mixins';
+import { Heading1, Heading3, PageContent, Hover } from '../../../constants/Mixins';
 
-export const ProfInfoHeaderWrapper = styled.div`
+export const ProfInfoHeaderWrapper = styled(FadeIn)`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
@@ -110,4 +111,5 @@ export const CourseLink = styled(RouterLink)`
   color: ${({ theme }) => theme.courses};
   text-decoration: underline;
   margin-left: 4px;
+  ${Hover()}
 `;

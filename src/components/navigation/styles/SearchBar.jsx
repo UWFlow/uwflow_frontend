@@ -99,6 +99,7 @@ export const CourseText = styled.span`
 export const ProfText = styled.span`
   color: ${({ theme }) => theme.professors};
   ${ResultText}
+  ${Hover()}
 `;
 
 export const Dash = styled.span`

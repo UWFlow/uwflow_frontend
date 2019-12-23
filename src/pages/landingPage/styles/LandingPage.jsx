@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Heading1, Heading2 } from '../../../constants/Mixins';
 import LandingImage from '../../../img/landing_v1.svg';
+import FadeIn from 'react-fade-in';
 
 import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
@@ -20,7 +21,7 @@ export const LandingPageWrapper = styled.div`
   }
 `;
 
-export const Nav = styled.div`
+export const Nav = styled(FadeIn)`
   position: absolute;
   width: 100vw;
   max-width: ${MAX_PAGE_WIDTH}px;
@@ -70,11 +71,10 @@ export const TitleText = styled.div`
 `;
 
 export const Subheading = styled.div`
-  margin-top: 64px;
   font-size: 24px;
   font-weight: 300;
   position: absolute;
-  bottom: -200px;
+  top: 100px;
 
   @media only screen and (max-width: 900px) {
     max-width: 320px;
@@ -106,7 +106,7 @@ export const Column = styled.div`
   `}
 `;
 
-export const TitleSearchBarWrapper = styled.div`
+export const TitleSearchBarWrapper = styled(FadeIn)`
   display: flex;
   flex-direction: column;
   max-width: 900px;

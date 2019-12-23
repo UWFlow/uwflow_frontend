@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import CourseHeader from '../../../img/course_v1.svg';
+import FadeIn from 'react-fade-in';
 
 /* Mixins */
 import {
@@ -10,7 +11,7 @@ import {
   PageContent,
 } from '../../../constants/Mixins';
 
-export const CourseInfoHeaderWrapper = styled.div`
+export const CourseInfoHeaderWrapper = styled(FadeIn)`
   width: 100%;
   margin-bottom: 32px;
   display: flex;

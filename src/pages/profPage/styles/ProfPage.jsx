@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+import FadeIn from 'react-fade-in';
 
 /* Mixins */
 import {
@@ -9,7 +10,7 @@ import {
   PageWrapper,
 } from '../../../constants/Mixins';
 
-export const ProfPageWrapper = styled.div`
+export const ProfPageWrapper = styled(FadeIn)`
   ${PageWrapper}
   background-color: ${({ theme }) => theme.light1};
 `;

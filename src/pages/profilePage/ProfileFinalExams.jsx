@@ -22,8 +22,8 @@ const ProfileFinalExams = ({ courses }) => {
         <ProfileFinalExamsContent hasExams={exams.length > 0}>
           <FinalExamTable courses={exams} />
         </ProfileFinalExamsContent>
+         <LastUpdatedSchedule />
       </ProfileFinalExamsWrapper>
-      <LastUpdatedSchedule />
     </>
   );
 };

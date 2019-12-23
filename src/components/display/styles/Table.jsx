@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from '../../../constants/Mixins';
+import { Link, Hover } from '../../../constants/Mixins';
 
 export const TableWrapper = styled.div`
   display: table;
@@ -54,11 +54,7 @@ export const HeaderText = styled.span`
   ${({ sortable }) => (sortable ? Link : '')}
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'inherit')};
   color: ${({ theme, sortable }) => (sortable ? theme.primary : theme.dark1)};
-
-  &:hover, &:focus {
-    color: ${({ theme, sortable }) =>
-      sortable ? theme.primaryDark : theme.dark1};
-  }
+  ${Hover(true)}
 `;
 
 export const SortArrow = styled.span`

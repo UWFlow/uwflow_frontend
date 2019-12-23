@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow } from '../../../constants/Mixins';
+import { BoxShadow, Hover } from '../../../constants/Mixins';
 
 export const NotificationBellWrapper = styled.button`
   border-radius: 50%;
@@ -14,9 +14,5 @@ export const NotificationBellWrapper = styled.button`
     ${({ theme, selected }) => (selected ? theme.primaryDark : theme.light4)};
   cursor: pointer;
   ${BoxShadow}
-
-  &:hover, &:focus {
-    background: ${({ theme, selected }) =>
-      selected ? theme.primaryDark : theme.light2};
-  }
+  ${Hover()}
 `;

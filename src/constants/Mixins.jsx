@@ -92,11 +92,11 @@ export const HoverTransition = (target = 'all', time = '0.1s') => `
   transition: ${target} ${time} ease-in;
 `;
 
-export const Hover = (target = 'filter') => `
-  ${HoverTransition(target)}
+export const Hover = (darker = false) => `
+  ${HoverTransition()}
   &:hover, &:focus {
     cursor: pointer;
-    filter: brightness(85%) !important;
+    filter: brightness(${darker ? '60%' : '85%'});
   }
 `;
 
@@ -106,7 +106,7 @@ export const Link = `
   text-decoration: underline;
   cursor: pointer;
   width: fit-content;
-  ${Hover()}
+  ${Hover(true)}
 `;
 
 export const BoxShadow = `

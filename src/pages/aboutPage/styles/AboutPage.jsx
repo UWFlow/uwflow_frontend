@@ -7,6 +7,7 @@ import {
   Body,
   PageWrapper as _PageWrapper,
 } from '../../../constants/Mixins';
+import FadeIn from 'react-fade-in';
 
 export const PageWrapper = styled.div`
   ${_PageWrapper}
@@ -28,14 +29,14 @@ export const PageHeader = styled.div`
   `}
 `;
 
-export const HeaderText = styled.div`
+export const HeaderText = styled(FadeIn)`
   ${PageContent}
   ${Heading1}
   max-width: 720px;
   color: ${({ theme }) => theme.white};
 `;
 
-export const PageContentWrapper = styled.div`
+export const PageContentWrapper = styled(FadeIn)`
   ${PageContent}
   max-width: 720px;
   margin: auto;

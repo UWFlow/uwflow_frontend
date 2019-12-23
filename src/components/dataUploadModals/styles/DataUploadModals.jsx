@@ -7,14 +7,16 @@ import {
   BoxShadow,
   Heading4,
   Body,
+  Hover,
 } from '../../../constants/Mixins';
 import {
   AWAITING_UPLOAD,
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
 } from '../../../constants/DataUploadStates';
+import FadeIn from 'react-fade-in';
 
-export const ContentWrapper = styled.div`
+export const ContentWrapper = styled(FadeIn)`
   display: flex;
   flex-direction: column;
   background: white;
@@ -62,6 +64,7 @@ export const Link = styled.a`
   text-decoration: underline;
   margin: 0 4px;
   cursor: pointer;
+  ${Hover()}
 `;
 
 export const NumberCircle = styled.div`
@@ -108,9 +111,7 @@ export const SchedulePasteBoxWrapper = styled.div`
         ? theme.primary
         : theme.red};
 
-  &:hover {
-    background: ${({ theme }) => theme.light3};
-  }
+  ${Hover()}
 `;
 
 export const SchedulePasteBox = styled.textarea`
@@ -149,17 +150,21 @@ export const PrivacyPolicyText = styled.div`
 
 export const PrivacyPolicyLink = styled(RouterLink)`
   ${Body}
-  color: ${({ theme }) => theme.dark2}
+  color: ${({ theme }) => theme.dark2};
   text-decoration: underline;
   margin: 0 4px;
   cursor: pointer;
 `;
 
 export const SkipStepWrapper = styled.div`
-  align-self: flex-end;
-  color: ${({ theme }) => theme.dark3};
-  margin-top: 24px;
+  ${Heading4}
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  color: ${({ theme }) => theme.primary};
+  margin-top: 48px;
   cursor: pointer;
+  ${Hover(true)}
 `;
 
 export const LongInstructionWrapper = styled.div`
@@ -195,9 +200,7 @@ export const TranscriptUploadBox = styled.div`
         ? theme.primary
         : theme.red};
 
-  &:hover {
-    background: ${({ theme }) => theme.light3};
-  }
+  ${Hover()}
 `;
 
 export const TranscriptPrivacyPolicyWrapper = styled.div`
