@@ -141,8 +141,13 @@ const Review = ({
   };
 
   const programText = author.program ? `${author.program} student ` : '';
-  const authorText = author.full_name ? `${author.full_name}${programText.length && ','} ` : '';
-  const authorTitle = (authorText.length || programText.length) ?  `${authorText}${programText}` : 'A student ';
+  const authorText = author.full_name
+    ? `${author.full_name}${programText.length && ','} `
+    : '';
+  const authorTitle =
+    authorText.length || programText.length
+      ? `${authorText}${programText}`
+      : 'A student ';
 
   const timeAgo = `${moment(created_at).fromNow()}`;
   const profText = prof
@@ -158,7 +163,8 @@ const Review = ({
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        {`— ${authorTitle}${timeAgo}`}{profText}
+        {`— ${authorTitle}${timeAgo}`}
+        {profText}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );

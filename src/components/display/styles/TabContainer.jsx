@@ -55,7 +55,7 @@ export const Tab = styled.button`
   color: ${({ selected, theme }) => (selected ? theme.dark1 : theme.dark2)};
   ${Heading3}
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
-  ${({ selected }) => !selected && Hover() }
+  ${({ selected }) => !selected && Hover()}
 `;
 
 export const ContentContainer = styled(FadeIn)`

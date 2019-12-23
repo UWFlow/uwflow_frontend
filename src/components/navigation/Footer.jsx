@@ -26,7 +26,9 @@ const Footer = ({ location }) => (
         <FooterLeft>
           <FooterPageLink to={LANDING_PAGE_ROUTE}>Home</FooterPageLink>
           <FooterPageLink to={ABOUT_PAGE_ROUTE}>About</FooterPageLink>
-          <FooterPageLink to={PRIVACY_PAGE_ROUTE}>Privacy Policy</FooterPageLink>
+          <FooterPageLink to={PRIVACY_PAGE_ROUTE}>
+            Privacy Policy
+          </FooterPageLink>
         </FooterLeft>
         <FooterRight>
           <FooterNormalLink

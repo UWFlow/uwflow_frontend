@@ -5,7 +5,12 @@ import ProfHeader from '../../../img/prof_v1.svg';
 import FadeIn from 'react-fade-in';
 
 /* Mixins */
-import { Heading1, Heading3, PageContent, Hover } from '../../../constants/Mixins';
+import {
+  Heading1,
+  Heading3,
+  PageContent,
+  Hover,
+} from '../../../constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled(FadeIn)`
   width: 100%;

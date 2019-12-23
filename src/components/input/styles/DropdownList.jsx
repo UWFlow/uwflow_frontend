@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-import {
-  Heading4,
-  BoxShadow,
-  Hover,
-} from '../../../constants/Mixins';
+import { Heading4, BoxShadow, Hover } from '../../../constants/Mixins';
 
 const ITEM_HEIGHT = 56;
 
