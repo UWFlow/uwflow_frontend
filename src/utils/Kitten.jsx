@@ -29,7 +29,7 @@ const kittens = [
   kitten_13,
 ];
 
-export const getKittenFromUserID = id => kittens[id % 13];
+export const getKittenFromID = id => kittens[id % 13];
 
 export const getRandomKitten = () => kittens[randIntBetween(0, 14)];
 
