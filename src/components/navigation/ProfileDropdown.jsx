@@ -34,10 +34,6 @@ const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
-// TODO(Edwin) change to actual placeholders
-const placeholderImage =
-  'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
-
 const renderProfilePicture = (data, dispatch, isLanding) => {
   let user = { picture_url: null };
   if (data && data.user) {
@@ -48,12 +44,7 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
     }
   }
 
-  return (
-    <ProfilePicture
-      src={user.picture_url || placeholderImage}
-      isLanding={isLanding}
-    />
-  );
+  return <ProfilePicture id={user.id} isLanding={isLanding} />;
 };
 
 const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
