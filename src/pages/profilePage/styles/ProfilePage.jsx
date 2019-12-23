@@ -7,6 +7,7 @@ import {
   BoxShadow,
   PageWrapper,
 } from '../../../constants/Mixins';
+import FadeIn from 'react-fade-in';
 
 export const ProfilePageWrapper = styled.div`
   ${PageWrapper}
@@ -18,7 +19,7 @@ export const ColumnWrapper = styled.div`
   flex-flow: row wrap;
 `;
 
-export const Column1 = styled.div`
+export const Column1 = styled(FadeIn)`
   ${WideColumn}
 
   ${breakpoint('mobile', 'tablet')`
@@ -28,7 +29,7 @@ export const Column1 = styled.div`
   `}
 `;
 
-export const Column2 = styled.div`
+export const Column2 = styled(FadeIn)`
   ${ThinColumn}
 
   ${breakpoint('mobile', 'tablet')`

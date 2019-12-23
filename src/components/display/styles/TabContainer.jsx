@@ -5,9 +5,8 @@ import {
   BottomBoxShadow,
   Hover,
 } from '../../../constants/Mixins';
-import FadeIn from 'react-fade-in';
 
-export const ContainerWrapper = styled(FadeIn)`
+export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};
   border-radius: ${({ borderRadius }) => (borderRadius ? '4px' : 0)};
   background: ${({ theme }) => theme.white};
@@ -58,7 +57,7 @@ export const Tab = styled.button`
   ${({ selected }) => !selected && Hover()}
 `;
 
-export const ContentContainer = styled(FadeIn)`
+export const ContentContainer = styled.div`
   width: 100%;
   background: white;
   padding: ${({ padding }) => padding};

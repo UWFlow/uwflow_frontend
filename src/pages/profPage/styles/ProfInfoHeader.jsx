@@ -12,7 +12,7 @@ import {
   Hover,
 } from '../../../constants/Mixins';
 
-export const ProfInfoHeaderWrapper = styled(FadeIn)`
+export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
@@ -42,10 +42,10 @@ export const ProfNameSection = styled.div`
   `}
 `;
 
-export const ProfNameWrapper = styled.div`
+export const ProfNameWrapper = styled(FadeIn)`
   ${PageContent}
   margin: auto;
-  margin-bottom: 48px;
+  margin-bottom: 16px;
 
   ${breakpoint('mobile', 'tablet')`
     margin-bottom: 0;
@@ -99,7 +99,7 @@ export const Description = styled.div`
   `}
 `;
 
-export const RatingsSection = styled.div`
+export const RatingsSection = styled(FadeIn)`
   ${breakpoint('mobile', 'tablet')`
     width: 100%;
   `}

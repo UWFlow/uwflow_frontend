@@ -11,7 +11,7 @@ import {
   PageContent,
 } from '../../../constants/Mixins';
 
-export const CourseInfoHeaderWrapper = styled(FadeIn)`
+export const CourseInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
   display: flex;
@@ -47,7 +47,7 @@ export const CourseCodeAndStar = styled.div`
   `}
 `;
 
-export const StarAlignmentWrapper = styled.div`
+export const StarAlignmentWrapper = styled(FadeIn)`
   display: flex;
   flex-direction: column;
   margin-top: 3px;
@@ -57,7 +57,7 @@ export const StarAlignmentWrapper = styled.div`
   `}
 `;
 
-export const CourseCode = styled.div`
+export const CourseCode = styled(FadeIn)`
   ${Heading1}
   color: white;
   text-transform: uppercase;
@@ -71,7 +71,7 @@ export const CourseCode = styled.div`
   `}
 `;
 
-export const CourseNameWrapper = styled.div`
+export const CourseNameWrapper = styled(FadeIn)`
   ${breakpoint('tablet')`
     ${PageContent}
     margin: 16px auto 0 auto;
@@ -101,7 +101,7 @@ export const CourseDescriptionSection = styled.div`
   `}
 `;
 
-export const Description = styled.div`
+export const Description = styled(FadeIn)`
   ${Body}
   font-weight: 500;
   color: ${({ theme }) => theme.dark2};
@@ -118,7 +118,7 @@ export const Description = styled.div`
   `}
 `;
 
-export const RatingsSection = styled.div`
+export const RatingsSection = styled(FadeIn)`
   ${breakpoint('mobile', 'tablet')`
     width: 100%;
   `}

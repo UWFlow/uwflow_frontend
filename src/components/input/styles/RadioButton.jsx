@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Body, Hover } from '../../../constants/Mixins';
+import { Body } from '../../../constants/Mixins';
 
 export const RadioButtonWrapper = styled.div`
   display: flex;

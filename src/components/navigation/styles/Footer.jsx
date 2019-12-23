@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
-import FadeIn from 'react-fade-in';
 
 import { Body, PageContent, Hover } from '../../../constants/Mixins';
 import {

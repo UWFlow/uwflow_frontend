@@ -88,18 +88,21 @@ const ScheduleNotificationBell = ({
   };
 
   return (
-    <NotificationBellWrapper
-      data-tip={
-        selected
-          ? SUBSCRIPTION_TOOLTIP.unsubscribe
-          : SUBSCRIPTION_TOOLTIP.subscribe
-      }
-      selected={selected}
-      onClick={toggleOnClick}
-    >
-      <Bell size={16} selected={selected} strokeWidth={3} />
+    <>
       <Tooltip />
-    </NotificationBellWrapper>
+      <NotificationBellWrapper
+        data-tip={
+          selected
+            ? SUBSCRIPTION_TOOLTIP.unsubscribe
+            : SUBSCRIPTION_TOOLTIP.subscribe
+        }
+        selected={selected}
+        onClick={toggleOnClick}
+      >
+        <Bell size={16} selected={selected} strokeWidth={3} />
+        
+      </NotificationBellWrapper>
+    </>
   );
 };
 

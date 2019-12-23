@@ -135,8 +135,8 @@ export const BackgroundImage = styled.div`
 
 export const AuthContent = styled.div`
   display: flex;
+  height: 90vh;
   margin: auto;
-  height: 100vh;
   max-height: ${MAX_BG_HEIGHT + 560}px;
   min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
   ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};

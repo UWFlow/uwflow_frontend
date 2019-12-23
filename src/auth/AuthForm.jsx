@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { withRouter } from 'react-router-dom';
-import FadeIn from 'react-fade-in';
 
 /* Styled Components */
 import {
@@ -98,7 +97,7 @@ export const AuthForm = ({
   };
 
   return (
-    <FadeIn>
+    <>
       <Wrapper margin={margin}>
         <ContentWrapper>
           {showLoginForm ? (
@@ -145,7 +144,7 @@ export const AuthForm = ({
         handleClose={() => setShowResetPassword(false)}
         isOpen={showResetPassword}
       />
-    </FadeIn>
+    </>
   );
 };
 

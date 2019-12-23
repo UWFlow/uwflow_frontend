@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Heading3, Hover } from '../../../constants/Mixins';
 import { LEC, LAB } from '../../../constants/PageConstants';
-import FadeIn from 'react-fade-in';
 
 const CELL_HEIGHT = 28;
 
-export const CourseScheduleWrapper = styled(FadeIn)`
+export const CourseScheduleWrapper = styled.div`
   margin-bottom: 32px;
   width: 100%;
 `;
