@@ -18,7 +18,7 @@ const ProfileInfoHeader = ({ user }) => {
   return (
     <ProfileInfoHeaderWrapper>
       <ProfileInfoSection>
-        <UserPicture src={user.picture_url || placeholderImage} />
+        <UserPicture kitten={user.id % 13} />
         <UserInfoWrapper>
           <UserName>{user.full_name}</UserName>
           <UserProgram>{user.program}</UserProgram>

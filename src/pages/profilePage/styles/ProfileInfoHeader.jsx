@@ -5,6 +5,9 @@ import ProfileHeader from '../../../img/user_v1.svg';
 /* Mixins */
 import { Heading1, PageContent, Heading2 } from '../../../constants/Mixins';
 
+/* Utils */
+import { getKitten } from '../../../utils/Kitten';
+
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;
   margin-bottom: 32px;
@@ -31,19 +34,21 @@ export const ProfileInfoSection = styled.div`
   `}
 `;
 
-export const UserPicture = styled.img`
+export const UserPicture = styled.div`
   width: 208px;
   height: 208px;
   border-radius: 50%;
   border: 5px solid ${({ theme }) => theme.light1};
   margin-right: 32px;
   object-fit: cover;
-
+  background-image: ${({ kitten }) => `url(${getKitten(kitten)})`};
+  background-size: 208px;
   ${breakpoint('mobile', 'tablet')`
     width: 96px;
     height: 96px;
+    background-size: 96px;
     margin-bottom: 16px;
-  `}
+  `};
 `;
 
 export const UserInfoWrapper = styled.div`
