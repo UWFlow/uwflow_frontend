@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { Heading2, Heading3, BoxShadow } from '../../../constants/Mixins';
+import {
+  Heading2,
+  Heading3,
+  BoxShadow,
+  Hover,
+} from '../../../constants/Mixins';
 
 const HEADER_HEIGHT = 64;
 
@@ -37,11 +42,14 @@ export const HeaderTitle = styled.div`
 export const HeaderChevronBox = styled.div`
   width: ${HEADER_HEIGHT}px;
   height: ${HEADER_HEIGHT}px;
+  border-top-right-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: ${({ theme }) => theme.light1};
+  background: ${({ theme }) => theme.light3};
+  color: ${({ theme }) => theme.dark2};
+  ${Hover()}
 `;
 
 export const ContentWrapper = styled.div`

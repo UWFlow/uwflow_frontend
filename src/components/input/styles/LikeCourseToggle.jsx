@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Hover } from '../../../constants/Mixins';
 
 export const LikeCourseToggleWrapper = styled.div`
   width: 72px;
@@ -28,11 +29,5 @@ export const LikeCourseToggleButton = styled.button`
   background-color: ${({ selected, theme }) =>
     selected ? theme.primary : theme.light1};
 
-  &:hover,
-  &:focus {
-    border-color: ${({ selected, theme }) =>
-      selected ? theme.primaryDark : theme.light4};
-    background-color: ${({ selected, theme }) =>
-      selected ? theme.primaryDark : theme.light2};
-  }
+  ${Hover()}
 `;

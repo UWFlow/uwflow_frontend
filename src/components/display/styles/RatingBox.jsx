@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Body, BoxShadow } from '../../../constants/Mixins';
+import { Body, BoxShadow, Hover } from '../../../constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`
   width: 100%;
@@ -79,6 +79,7 @@ export const NumCommentsWrapper = styled.a`
   ${Body}
   text-decoration: underline;
   cursor: pointer;
+  ${Hover(true)}
 `;
 
 export const NumRatingsWrapper = styled.div`

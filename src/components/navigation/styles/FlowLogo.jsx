@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading4 } from '../../../constants/Mixins';
+import { Heading4, Hover } from '../../../constants/Mixins';
 
 export const FlowLogoWrapper = styled(Link)`
   user-select: none;
@@ -15,6 +15,7 @@ export const FlowLogoWrapper = styled(Link)`
   font-size: 24px;
   margin-right: 40px;
   font-weight: 600;
+  ${Hover()}
 `;
 
 export const BlueText = styled.div`

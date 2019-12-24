@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-import {
-  Heading4,
-  BoxShadow,
-  FadeInAnimation,
-} from '../../../constants/Mixins';
+import { Heading4, BoxShadow, Hover } from '../../../constants/Mixins';
 
 const ITEM_HEIGHT = 56;
 
@@ -30,6 +26,7 @@ export const DropdownControl = styled.button`
   align-items: center;
   color: ${({ theme, open, color }) => (open ? theme.light3 : color)};
   ${Heading4}
+  ${Hover(true)}
 `;
 
 export const DropdownMenu = styled.div`
@@ -43,7 +40,6 @@ export const DropdownMenu = styled.div`
   white-space: nowrap;
   background-color: ${({ theme }) => theme.white};
   z-index: 8;
-  animation: ${FadeInAnimation} 200ms;
   ${({ maxItems }) =>
     maxItems
       ? `
@@ -69,9 +65,9 @@ export const MenuItem = styled.button`
   height: ${ITEM_HEIGHT}px;
 
   color: ${({ theme, selected, itemColor }) =>
-    itemColor ? itemColor : selected ? theme.dark1 : theme.dark2};
+    itemColor ? itemColor : selected ? theme.white : theme.dark2};
   background-color: ${({ theme, selected }) =>
-    selected ? theme.light1 : theme.white};
+    selected ? theme.primary : theme.white};
   padding: 16px;
   border-radius: 0;
   border: 1px solid ${({ theme }) => theme.light1};
@@ -89,10 +85,7 @@ export const MenuItem = styled.button`
     border-radius: 4px;
   }
 
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => theme.primary};
-  }
+  ${Hover()}
 `;
 
 export const MenuSearch = styled.div`

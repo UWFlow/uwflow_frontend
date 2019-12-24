@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 import breakpoint from 'styled-components-breakpoint';
-import { Card, BoxShadow, Body, Link } from '../../../constants/Mixins';
+import { Card, BoxShadow, Body, Link, Hover } from '../../../constants/Mixins';
 import { getKittenFromID } from '../../../utils/Kitten';
 
 export const ReviewWrapper = styled.div`
@@ -65,12 +65,7 @@ export const ReviewUpvotes = styled.button`
   border-radius: 20px 20px 20px 20px;
   border: 2px solid ${({ theme }) => theme.light3};
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    ${({ selected, theme }) =>
-      `background-color:${selected ? theme.primaryDark : theme.light2};`}
-  }
+  ${Hover()}
 
   ${breakpoint('tablet')`
     position: absolute;

@@ -3,6 +3,7 @@ import {
   BoxShadow,
   Body,
   DarkBoxShadow,
+  Hover,
   FadeInAnimation,
 } from '../../../constants/Mixins';
 
@@ -98,6 +99,7 @@ export const CourseText = styled.span`
 export const ProfText = styled.span`
   color: ${({ theme }) => theme.professors};
   ${ResultText}
+  ${Hover()}
 `;
 
 export const Dash = styled.span`
@@ -112,14 +114,11 @@ const ExploreSideButton = `
   justify-content: center;
   height: 32px;
   width: 32px;
+  ${Hover()}
 
   svg {
     width: 20px;
     height: 20px;
-  }
-
-  &:hover, &:focus {
-    filter: brightness(85%);
   }
 `;
 

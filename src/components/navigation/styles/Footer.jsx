@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link } from 'react-router-dom';
 
-import { Body, PageContent, FadeInAnimation } from '../../../constants/Mixins';
+import { Body, PageContent, Hover } from '../../../constants/Mixins';
 import {
   FOOTER_MARGIN_TOP,
   FOOTER_HEIGHT,
@@ -13,9 +13,9 @@ export const FooterWrapper = styled.div`
   height: fit-content;
   min-height: ${FOOTER_HEIGHT}px;
   display: flex;
-  align-items: center;
   margin-top: ${({ noMargin }) => (noMargin ? '0' : `${FOOTER_MARGIN_TOP}px`)};
-  animation: ${FadeInAnimation} 1s;
+  width: 100%;
+  align-items: center;
 `;
 
 export const FooterContent = styled.div`
@@ -51,6 +51,7 @@ export const FooterPageLink = styled(Link)`
   text-decoration: none;
   font-weight: 400;
   margin-right: 32px;
+  ${Hover()}
 `;
 
 export const FooterNormalLink = styled.a`
@@ -59,6 +60,7 @@ export const FooterNormalLink = styled.a`
   text-decoration: none;
   font-weight: 400;
   margin-left: 32px;
+  ${Hover()}
 
   @media only screen and (max-width: 450px) {
     margin: 16px 16px 0 0;

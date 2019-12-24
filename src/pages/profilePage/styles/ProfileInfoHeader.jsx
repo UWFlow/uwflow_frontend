@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import ProfileHeader from '../../../img/user_v1.svg';
+import FadeIn from 'react-fade-in';
 
 /* Mixins */
 import { Heading1, PageContent, Heading2 } from '../../../constants/Mixins';
@@ -59,13 +60,13 @@ export const UserInfoWrapper = styled.div`
   `}
 `;
 
-export const UserName = styled.div`
+export const UserName = styled(FadeIn)`
   ${Heading1}
   color: ${({ theme }) => theme.white};
   margin-bottom: 16px;
 `;
 
-export const UserProgram = styled.div`
+export const UserProgram = styled(FadeIn)`
   ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;

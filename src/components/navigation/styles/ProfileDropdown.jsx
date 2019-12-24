@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Heading4, BoxShadow, DarkBoxShadow } from '../../../constants/Mixins';
+import {
+  Heading4,
+  BoxShadow,
+  DarkBoxShadow,
+  Hover,
+} from '../../../constants/Mixins';
 import { getKittenFromID } from '../../../utils/Kitten';
 
 export const ProfileDropdownWrapper = styled.div`
@@ -24,6 +29,7 @@ export const ProfilePicture = styled.div`
   background-image: url(${({ id }) => id && getKittenFromID(id)});
   background-size: 40px;
   ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
+  ${Hover()}
 `;
 
 export const ProfileText = styled.div`

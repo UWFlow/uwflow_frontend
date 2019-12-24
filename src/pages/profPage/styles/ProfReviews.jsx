@@ -10,6 +10,7 @@ import {
   Heading1,
   BoxShadow,
   Heading3,
+  Hover,
 } from '../../../constants/Mixins';
 
 export const ProfCourseReviewWrapper = styled.div`
@@ -32,11 +33,8 @@ export const ProfCourseFilterWrapper = styled.div`
 `;
 
 export const NoReviewsBox = styled.div`
-  display: flex;
-  padding: 32px;
-  background: white;
+  ${Card()}
   align-items: center;
-  justify-content: flex-start;
   ${Heading3}
   color: ${({ theme }) => theme.dark2}
 `;
@@ -84,6 +82,7 @@ export const CourseCode = styled(Link)`
   ${breakpoint('mobile', 'tablet')`
     margin: 16px 16px 0 16px;
   `}
+  ${Hover()}
 `;
 
 export const CourseName = styled.div`
@@ -150,9 +149,11 @@ export const ShowMoreReviewsSection = styled.div`
   height: 64px;
   cursor: pointer;
   border-radius: 0 0 4px 4px;
+  ${Hover()}
 `;
 
 export const ShowMoreReviewsText = styled.div`
   ${Heading4}
+  color: ${({ theme }) => theme.dark2};
   cursor: pointer;
 `;

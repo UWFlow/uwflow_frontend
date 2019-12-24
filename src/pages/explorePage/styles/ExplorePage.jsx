@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
 import ExploreHeader from '../../../img/explore_v1.svg';
+import FadeIn from 'react-fade-in';
 
 /* Mixins */
 import {
@@ -32,7 +33,7 @@ export const ExploreHeaderWrapper = styled.div`
   `}
 `;
 
-export const ExploreHeaderText = styled.div`
+export const ExploreHeaderText = styled(FadeIn)`
   ${PageContent}
   ${Heading2}
   padding-top: 48px;
@@ -53,7 +54,7 @@ export const ColumnWrapper = styled.div`
   flex-flow: row wrap;
 `;
 
-export const Column1 = styled.div`
+export const Column1 = styled(FadeIn)`
   ${WideColumn}
 
   ${breakpoint('mobile', 'tablet')`
@@ -63,7 +64,7 @@ export const Column1 = styled.div`
   `}
 `;
 
-export const Column2 = styled.div`
+export const Column2 = styled(FadeIn)`
   ${ThinColumn}
 
   ${breakpoint('mobile', 'tablet')`

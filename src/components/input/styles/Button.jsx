@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading4, BoxShadow } from '../../../constants/Mixins';
+import { Heading4, BoxShadow, Hover } from '../../../constants/Mixins';
 
 export const ButtonWrapper = styled.button`
   outline: none;
@@ -20,13 +20,8 @@ export const ButtonWrapper = styled.button`
   ${({ hasShadow }) => hasShadow && BoxShadow}
   max-width: 100%;
   width: ${({ width }) => (width ? width : 'auto')};
-
-  :hover {
-    background: ${({
-      theme,
-      hoverColor = theme.accentDark,
-      disabled = false,
-    }) => (disabled ? theme.light4 : hoverColor)};
+  ${Hover()} :hover {
+    background: ${({ theme, disabled = false }) => disabled && theme.light4};
   }
 
   :focus {

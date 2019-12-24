@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { Card, BoxShadow, Heading3, Body } from '../../../constants/Mixins';
+import {
+  Card,
+  BoxShadow,
+  Heading3,
+  Body,
+  Hover,
+} from '../../../constants/Mixins';
 
 export const CourseRequisitesWrapper = styled.div`
 ${Card('32px 24px')}
@@ -27,6 +33,7 @@ export const CourseText = styled(Link)`
   ${Body}
   font-weight: 600;
   color: ${({ theme }) => theme.courses};
+  ${Hover()}
 `;
 
 export const GreyText = styled.div`

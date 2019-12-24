@@ -88,12 +88,25 @@ export const Small = `
   font-size: 14px;
 `;
 
+export const HoverTransition = (target = 'all', time = '0.1s') => `
+  transition: ${target} ${time} ease-in;
+`;
+
+export const Hover = (darker = false) => `
+  ${HoverTransition()}
+  &:hover, &:focus {
+    cursor: pointer;
+    filter: brightness(${darker ? '60%' : '85%'});
+  }
+`;
+
 export const Link = `
   font-weight: 600;
   font-size: 15px;
   text-decoration: underline;
   cursor: pointer;
   width: fit-content;
+  ${Hover(true)}
 `;
 
 export const BoxShadow = `

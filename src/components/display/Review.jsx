@@ -141,29 +141,31 @@ const Review = ({
     setUserUpvoted(!userUpvoted);
   };
 
-  const authorText = author.full_name ? `${author.full_name}, ` : 'Anonymous ';
-  const programText = `${author.program ? author.program : ''} ${
-    !author.full_name || author.program ? 'student' : ''
-  } `;
-  const timeAgo = `about ${moment(created_at).fromNow()}`;
+  const programText = author.program ? `${author.program} student ` : '';
+  const authorText = author.full_name
+    ? `${author.full_name}${programText.length && ','} `
+    : '';
+  const authorTitle =
+    authorText.length || programText.length
+      ? `${authorText}${programText}`
+      : 'A student ';
+
+  const timeAgo = `${moment(created_at).fromNow()}`;
   const profText = prof
     ? [
-        ', taken with ',
+        ', taught by ',
         <ProfText key={prof_code} to={getProfPageRoute(prof_code)}>
           {prof}
         </ProfText>,
       ]
     : [''];
+
   const reviewContent = (
     <ReviewTextWrapper>
       <ReviewText>{reviewText}</ReviewText>
       <ReviewAuthor>
-        {Boolean(authorText.length) && (
-          <>
-            {`— ${authorText}${programText}${timeAgo}`}
-            {profText}
-          </>
-        )}
+        {`— ${authorTitle}${timeAgo}`}
+        {profText}
       </ReviewAuthor>
     </ReviewTextWrapper>
   );
@@ -175,7 +177,7 @@ const Review = ({
           <ReviewPicture id={id} />
           <Tooltip />
           <ReviewUpvotes
-            data-tip={userUpvoted ? `Remove upvote` : `Upvote this review`}
+            data-tip={userUpvoted ? `Remove vote` : `This review was helpful`}
             selected={userUpvoted}
             onClick={onClickUpvote}
           >

@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading2, Heading4, Body, BoxShadow } from '../../constants/Mixins';
+import {
+  Heading2,
+  Heading4,
+  Body,
+  BoxShadow,
+  Hover,
+} from '../../constants/Mixins';
 
 export const Wrapper = styled.div`
   ${BoxShadow}
@@ -126,6 +132,7 @@ export const FacebookButton = styled.button`
   align-items: center;
   text-align: center;
   ${BoxShadow}
+  ${Hover()}
 `;
 
 export const FacebookIcon = styled.div`
@@ -148,6 +155,7 @@ export const GoogleButton = styled.button`
   align-items: center;
   text-align: center;
   ${BoxShadow}
+  ${Hover()}
 `;
 
 export const GoogleIcon = styled.div`

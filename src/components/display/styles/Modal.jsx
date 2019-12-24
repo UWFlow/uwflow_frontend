@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import FadeIn from 'react-fade-in';
 
-export const ModalChildren = styled.div`
+export const ModalChildren = styled(FadeIn)`
   position: relative;
   margin: 4px;
 `;

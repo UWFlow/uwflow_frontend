@@ -6,6 +6,7 @@ import {
   Body,
   BoxShadow,
   Link,
+  Hover,
 } from '../../../constants/Mixins';
 
 export const TeamMembersWrapper = styled.div`
@@ -52,4 +53,5 @@ export const MemberBio = styled.div`
 export const MemberLink = styled.a`
   ${Link}
   margin-right: 16px;
+  ${Hover(true)};
 `;

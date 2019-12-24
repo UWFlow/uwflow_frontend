@@ -2,9 +2,15 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
 import ProfHeader from '../../../img/prof_v1.svg';
+import FadeIn from 'react-fade-in';
 
 /* Mixins */
-import { Heading1, Heading3, PageContent } from '../../../constants/Mixins';
+import {
+  Heading1,
+  Heading3,
+  PageContent,
+  Hover,
+} from '../../../constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;
@@ -36,10 +42,10 @@ export const ProfNameSection = styled.div`
   `}
 `;
 
-export const ProfNameWrapper = styled.div`
+export const ProfNameWrapper = styled(FadeIn)`
   ${PageContent}
   margin: auto;
-  margin-bottom: 48px;
+  margin-bottom: 16px;
 
   ${breakpoint('mobile', 'tablet')`
     margin-bottom: 0;
@@ -93,7 +99,7 @@ export const Description = styled.div`
   `}
 `;
 
-export const RatingsSection = styled.div`
+export const RatingsSection = styled(FadeIn)`
   ${breakpoint('mobile', 'tablet')`
     width: 100%;
   `}
@@ -110,4 +116,5 @@ export const CourseLink = styled(RouterLink)`
   color: ${({ theme }) => theme.courses};
   text-decoration: underline;
   margin-left: 4px;
+  ${Hover()}
 `;
