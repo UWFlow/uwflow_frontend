@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Heading4, BoxShadow, Hover } from '../../../constants/Mixins';
 
-const ITEM_HEIGHT = 56;
+export const ITEM_HEIGHT = 56;
 
 export const DropdownWrapper = styled.div`
   color: ${({ color }) => color};
@@ -40,14 +40,6 @@ export const DropdownMenu = styled.div`
   white-space: nowrap;
   background-color: ${({ theme }) => theme.white};
   z-index: 8;
-  ${({ maxItems }) =>
-    maxItems
-      ? `
-      max-height: ${maxItems * ITEM_HEIGHT}px;
-      overflow: auto;
-    `
-      : ''};
-
   input {
     border-radius: 4px 4px 0 0 !important;
   }

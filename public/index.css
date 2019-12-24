@@ -52,7 +52,7 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit;
+  font-family: sans-serif;
   box-sizing: border-box;
 }
 

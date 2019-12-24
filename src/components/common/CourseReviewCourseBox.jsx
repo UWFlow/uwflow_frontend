@@ -165,7 +165,9 @@ const CourseReviewCourseBox = ({
   const handlePost = () => {
     setReviewUpdating(true);
     const profID =
-      selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
+      selectedProf === -1 || selectedProf === profsTeaching.length
+        ? null
+        : profsTeaching[selectedProf].prof.id;
 
     const reviewData = {
       user_id: userID,
@@ -175,10 +177,10 @@ const CourseReviewCourseBox = ({
       public: selectedAnonymous === 0 ? false : true,
       course_easy: easy,
       course_useful: useful,
-      course_comment: courseComment,
-      prof_clear: clear === -1 ? null : clear,
-      prof_engaging: engaging === -1 ? null : engaging,
-      prof_comment: profComment,
+      course_comment: courseComment !== '' ? courseComment : null,
+      prof_clear: profID && clear !== -1 ? clear : null,
+      prof_engaging: profID && engaging !== -1 ? engaging : null,
+      prof_comment: profID && profComment !== '' ? profComment : null,
     };
 
     upsertReview({
@@ -295,7 +297,10 @@ const CourseReviewCourseBox = ({
         <DropdownList
           selectedIndex={selectedProf}
           placeholder="select your professor"
-          options={profsTeaching.map(prof => prof.prof.name)}
+          options={[
+            ...profsTeaching.map(prof => prof.prof.name),
+            "my professor isn't here",
+          ]}
           color={theme.professors}
           onChange={value => setSelectedProf(value)}
           zIndex={5}
@@ -367,12 +372,7 @@ const CourseReviewCourseBox = ({
           <Button
             handleClick={handlePost}
             loading={reviewUpdating}
-            disabled={
-              !usefulSelected ||
-              !easySelected ||
-              liked === -1 ||
-              selectedProf === -1
-            }
+            disabled={!usefulSelected || !easySelected || liked === -1}
           >
             Post
           </Button>
