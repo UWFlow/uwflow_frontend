@@ -142,7 +142,7 @@ const getEventsByDate = events => {
   return eventsByDate;
 };
 
-const ProfileCalendar = ({ schedule, secretID, theme }) => {
+const ProfileCalendar = ({ schedule, secretID, theme, refetchAll }) => {
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 
   const handleCalendarExport = async download => {
@@ -160,6 +160,7 @@ const ProfileCalendar = ({ schedule, secretID, theme }) => {
     <ScheduleUploadModal
       isModalOpen={scheduleModalOpen}
       onCloseModal={() => setScheduleModalOpen(false)}
+      onAfterUploadSuccess={() => refetchAll()}
     />
   );
 

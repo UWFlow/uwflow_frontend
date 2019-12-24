@@ -59,6 +59,7 @@ export const ScheduleUploadModalContent = ({
   onSkip,
   theme,
   showSkipStepButton,
+  onAfterUploadSuccess,
 }) => {
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
   const [scheduleText, setScheduleText] = useState('');
@@ -84,6 +85,9 @@ export const ScheduleUploadModalContent = ({
       await sleep(500);
       setUploadState(UPLOAD_SUCCESSFUL);
       toast(DATA_UPLOAD_SUCCESS);
+      if (onAfterUploadSuccess) {
+        onAfterUploadSuccess();
+      }
       onSkip();
     } else {
       setUploadState(UPLOAD_FAILED);

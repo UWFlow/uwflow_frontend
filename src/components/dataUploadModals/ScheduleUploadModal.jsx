@@ -9,6 +9,7 @@ const ScheduleUploadModal = ({
   isModalOpen,
   onAfterClose = () => {},
   showSkipStepButton = false,
+  onAfterUploadSuccess,
 }) => {
   return (
     <Modal
@@ -19,6 +20,7 @@ const ScheduleUploadModal = ({
       <ScheduleUploadModalContent
         onSkip={onCloseModal}
         showSkipStepButton={showSkipStepButton}
+        onAfterUploadSuccess={onAfterUploadSuccess}
       />
     </Modal>
   );
