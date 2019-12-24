@@ -13,7 +13,7 @@ import ScheduleUploadModalContent from '../../components/dataUploadModals/Schedu
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 /* Constants */
-import { LANDING_PAGE_ROUTE } from '../../Routes';
+import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../Routes';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -40,13 +40,14 @@ const WelcomePage = ({ history, isLoggedIn }) => {
       )}
       {isUploadingSchedule && (
         <ScheduleUploadModalContent
-          onSkip={() =>
+          onSkip={() => {
+            setIsUploadingSchedule(false);
             history.push(
               history.location.state && history.location.state.prevPath
                 ? history.location.state.prevPath
-                : LANDING_PAGE_ROUTE,
-            )
-          }
+                : PROFILE_PAGE_ROUTE,
+            );
+          }}
           showSkipStepButton={true}
         />
       )}

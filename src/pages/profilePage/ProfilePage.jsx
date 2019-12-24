@@ -48,6 +48,7 @@ const ProfilePageContent = ({
   reviews,
   coursesTaken,
   isBrowserDesktop,
+  refetchAll,
 }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
@@ -65,12 +66,17 @@ const ProfilePageContent = ({
       <ProfileInfoHeader user={user} />
       <ColumnWrapper>
         <Column1>
-          <ProfileCalendar schedule={user.schedule} secretID={user.secret_id} />
+          <ProfileCalendar
+            schedule={user.schedule}
+            secretID={user.secret_id}
+            refetchAll={refetchAll}
+          />
           <ProfileCourses
             courses={coursesTaken}
             reviews={reviews}
             setReviewCourse={setSelectedCourseIndex}
             openModal={() => setReviewModalOpen(true)}
+            refetchAll={refetchAll}
           />
           <ProfileFinalExams courses={coursesTaken} />
         </Column1>
@@ -105,7 +111,7 @@ const ProfilePageContent = ({
 
 export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   const dispatch = useDispatch();
-  const { loading, error, data } = useQuery(GET_USER, {
+  const { loading, error, data, refetch } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
   });
 
@@ -135,6 +141,7 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
       <ProfilePageContent
         user={data.user[0]}
         reviews={data.review}
+        refetchAll={refetch}
         coursesTaken={data.user_course_taken}
         isBrowserDesktop={isBrowserDesktop}
       />
