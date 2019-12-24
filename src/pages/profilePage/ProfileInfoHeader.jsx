@@ -11,14 +11,11 @@ import {
   UserProgram,
 } from './styles/ProfileInfoHeader';
 
-const placeholderImage =
-  'https://wiki.ideashop.iit.edu/images/7/7e/Placeholder.jpeg';
-
 const ProfileInfoHeader = ({ user }) => {
   return (
     <ProfileInfoHeaderWrapper>
       <ProfileInfoSection>
-        <UserPicture src={user.picture_url || placeholderImage} />
+        <UserPicture id={user.id} />
         <UserInfoWrapper>
           <UserName>{user.full_name}</UserName>
           <UserProgram>{user.program}</UserProgram>

@@ -6,6 +6,7 @@ import {
   DarkBoxShadow,
   Hover,
 } from '../../../constants/Mixins';
+import { getKittenFromID } from '../../../utils/Kitten';
 
 export const ProfileDropdownWrapper = styled.div`
   display: flex;
@@ -20,11 +21,13 @@ export const ProfileDropdownWrapper = styled.div`
   `}
 `;
 
-export const ProfilePicture = styled.img`
+export const ProfilePicture = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  background-image: url(${({ id }) => id && getKittenFromID(id)});
+  background-size: 40px;
   ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
   ${Hover()}
 `;

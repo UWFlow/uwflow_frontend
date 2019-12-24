@@ -89,6 +89,7 @@ const Review = ({
   isCourseReview,
 }) => {
   const {
+    id,
     upvotes,
     upvote_users,
     review: reviewText,
@@ -173,7 +174,7 @@ const Review = ({
     <ReviewWrapper>
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
-          <ReviewPicture />
+          <ReviewPicture id={id} />
           <Tooltip />
           <ReviewUpvotes
             data-tip={userUpvoted ? `Remove vote` : `This review was helpful`}

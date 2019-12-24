@@ -2,6 +2,10 @@ export const randBetween = (start, end) => {
   return Math.random() * (end - start) + start;
 };
 
+export const randIntBetween = (start, end) => {
+  return Math.floor(randBetween(start, end));
+};
+
 export const shouldDoWithProbablity = probability => {
   return Math.random() < probability;
 };

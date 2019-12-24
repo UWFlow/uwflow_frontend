@@ -81,9 +81,6 @@ export const AuthForm = ({
         if (onSignupComplete) {
           onSignupComplete();
         }
-        history.push(WELCOME_PAGE_ROUTE, {
-          prevPath: `${history.location.pathname}?${history.location.search}`,
-        });
       }
     }
   };
