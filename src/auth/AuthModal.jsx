@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
   isAuthModalOpen: getIsAuthModalOpen(state),
 });
 
-const AuthModal = ({ isAuthModalOpen }) => {
+const AuthModal = ({ isAuthModalOpen, onAfterLogin, onAfterSignup }) => {
   const dispatch = useDispatch();
   return (
     <Modal
@@ -22,8 +22,18 @@ const AuthModal = ({ isAuthModalOpen }) => {
       onRequestClose={() => dispatch(authModalClose())}
     >
       <AuthForm
-        onLoginComplete={() => dispatch(authModalClose())}
-        onSignupComplete={() => dispatch(authModalClose())}
+        onLoginComplete={() => {
+          dispatch(authModalClose());
+          if (onAfterLogin) {
+            onAfterLogin();
+          }
+        }}
+        onSignupComplete={() => {
+          dispatch(authModalClose());
+          if (onAfterSignup) {
+            onAfterSignup();
+          }
+        }}
         margin="0"
       />
     </Modal>
