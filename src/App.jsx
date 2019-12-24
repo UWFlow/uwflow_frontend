@@ -129,7 +129,13 @@ const App = ({ history }) => {
           </div>
         </Scrollbars>
       </ScrollProvider>
-      <AuthModal />
+      <AuthModal
+        onAfterSignup={() =>
+          history.push(WELCOME_PAGE_ROUTE, {
+            prevPath: `${history.location.pathname}?${history.location.search}`,
+          })
+        }
+      />
     </>
   );
 };
