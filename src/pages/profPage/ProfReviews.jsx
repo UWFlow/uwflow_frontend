@@ -149,6 +149,12 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
               </DropdownPanelWrapper>
               {course.reviews
                 .sort((a, b) => {
+                  if (b.user !== null) {
+                    return 1;
+                  } else if (a.user !== null) {
+                    return -1;
+                  }
+
                   const timeSort =
                     moment(b.created_at).format('YYYYMMDD') -
                     moment(a.created_at).format('YYYYMMDD');

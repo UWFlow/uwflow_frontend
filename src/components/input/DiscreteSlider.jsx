@@ -50,9 +50,9 @@ const DiscreteSlider = ({
           step={1}
           mode={2}
           domain={[0, numNodes - 1]}
-          onUpdate={value => {
+          onChange={value => {
             onUpdate(value);
-            if (value > 0) {
+            if (value > 0 && !selected) {
               setSelected(true);
             }
           }}
@@ -83,7 +83,7 @@ const DiscreteSlider = ({
           </Rail>
           <Handles>
             {({ handles, getHandleProps }) => (
-              <div className="slider-handles" onClick={() => setSelected(true)}>
+              <div className="slider-handles" onClick={() => { if (!selected) { setSelected(true)}}}>
                 {handles.map(handle => (
                   <Handle
                     key={handle.id}
