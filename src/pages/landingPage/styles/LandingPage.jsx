@@ -121,6 +121,8 @@ export const BackgroundImage = styled.div`
   background: url(${LandingImage});
   background-size: cover;
   background-position: center left;
+  background-repeat: no-repeat;
+  will-change: transform;
   height: 65vh;
   max-height: ${MAX_BG_HEIGHT}px;
 
