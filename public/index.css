@@ -110,6 +110,7 @@ a {
 .ReactModal__Body--open {
   overflow: hidden; /* prevents background page from scrolling when the modal is open */
 }
+
 .Toastify__toast-body {
   display: flex;
   align-items: center;
