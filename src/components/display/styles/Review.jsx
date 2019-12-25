@@ -8,6 +8,8 @@ export const ReviewWrapper = styled.div`
   ${BoxShadow}
   margin-bottom: 32px;
   background-color: ${({ theme }) => theme.light1};
+  ${({ theme, isUserReview }) =>
+    isUserReview ? `border: 2px solid ${theme.accent};` : ''}
 
   ${breakpoint('mobile', 'desktop')`
     padding: 16px;

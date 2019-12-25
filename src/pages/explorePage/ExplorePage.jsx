@@ -151,6 +151,7 @@ const ExplorePage = ({ location }) => {
 
   const { data, error, loading } = useQuery(exploreQuery(query), {
     notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'no-cache',
   });
 
   return (

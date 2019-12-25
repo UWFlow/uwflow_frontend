@@ -15,6 +15,7 @@ export const ContainerWrapper = styled.div`
   ${BoxShadow}
   margin-bottom: 32px;
   border-radius: 4px;
+  max-width: 100vw;
 `;
 
 export const HeaderWrapper = styled.div`
@@ -39,10 +40,12 @@ export const HeaderTitle = styled.div`
   border-radius: 4px 4px 0 0;
 `;
 
-export const HeaderChevronBox = styled.div`
+export const HeaderChevronBox = styled.button`
   width: ${HEADER_HEIGHT}px;
   height: ${HEADER_HEIGHT}px;
   border-top-right-radius: 4px;
+  border: none;
+  outline: none;
   display: flex;
   justify-content: center;
   align-items: center;

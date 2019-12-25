@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { withTheme } from 'styled-components';
@@ -30,12 +30,19 @@ const DiscreteSlider = ({
   numNodes,
   currentNode,
   color,
-  onUpdate,
   margin = '0 0 40px 0',
   showTicks = true,
   selected = true,
-  setSelected = () => null,
+  onSlideEnd = () => {},
+  onUpdate = () => {},
+  setSelected = () => {},
 }) => {
+  const [updateValue, setUpdateValue] = useState(currentNode);
+
+  useEffect(() => {
+    setUpdateValue(currentNode);
+  }, [currentNode]);
+
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
   let percentages = [];
   for (let i = 0; i < 100; i += percentGap) {
@@ -50,11 +57,12 @@ const DiscreteSlider = ({
           step={1}
           mode={2}
           domain={[0, numNodes - 1]}
+          onSlideEnd={value => {
+            onSlideEnd(value);
+          }}
           onUpdate={value => {
+            setUpdateValue(value);
             onUpdate(value);
-            if (value > 0) {
-              setSelected(true);
-            }
           }}
           values={[currentNode]}
           rootStyle={{
@@ -73,7 +81,7 @@ const DiscreteSlider = ({
                   percentages.map((percent, idx) => (
                     <SliderTick
                       key={percent}
-                      color={idx <= currentNode ? color : theme.light3}
+                      color={idx <= updateValue ? color : theme.light3}
                       percent={percent}
                       {...getRailProps()}
                     />
@@ -83,7 +91,14 @@ const DiscreteSlider = ({
           </Rail>
           <Handles>
             {({ handles, getHandleProps }) => (
-              <div className="slider-handles" onClick={() => setSelected(true)}>
+              <div
+                className="slider-handles"
+                onClick={() => {
+                  if (!selected) {
+                    setSelected(true);
+                  }
+                }}
+              >
                 {handles.map(handle => (
                   <Handle
                     key={handle.id}
@@ -122,7 +137,6 @@ DiscreteSlider.propTypes = {
   numNodes: PropTypes.number.isRequired, // includes 0 so 6 for 0 20 40 60 80 100
   currentNode: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  onUpdate: PropTypes.func.isRequired,
   showTicks: PropTypes.bool,
 };
 

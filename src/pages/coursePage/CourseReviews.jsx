@@ -41,7 +41,7 @@ import TabContainer from '../../components/display/TabContainer';
 import Review from '../../components/display/Review';
 import DropdownList from '../../components/input/DropdownList';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
-import CollapseableContainer from '../../components/display/CollapseableContainer';
+import CollapsibleContainer from '../../components/display/CollapsibleContainer';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
@@ -66,6 +66,12 @@ const CourseCourseReviews = ({
     () =>
       reviews
         .sort((a, b) => {
+          if (b.user !== null) {
+            return 1;
+          } else if (a.user !== null) {
+            return -1;
+          }
+
           const timeSort =
             moment(b.created_at).format('YYYYMMDD') -
             moment(a.created_at).format('YYYYMMDD');
@@ -199,6 +205,12 @@ const CourseProfReviews = ({
             </ReviewsOptionsWrapper>
             {prof.reviews
               .sort((a, b) => {
+                if (b.user !== null) {
+                  return 1;
+                } else if (a.user !== null) {
+                  return -1;
+                }
+
                 const timeSort =
                   moment(b.created_at).format('YYYYMMDD') -
                   moment(a.created_at).format('YYYYMMDD');
@@ -394,7 +406,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
       )}
       {!isBrowserDesktop && (
         <>
-          <CollapseableContainer
+          <CollapsibleContainer
             title={`Course reviews (${courseReviewsToShow.length})`}
           >
             <CourseCourseReviews
@@ -406,10 +418,8 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
               courseProfFilterOptions={courseProfFilterOptions}
               setCourseProfFilter={setCourseProfFilter}
             />
-          </CollapseableContainer>
-          <CollapseableContainer
-            title={`Professor reviews (${numProfReviews})`}
-          >
+          </CollapsibleContainer>
+          <CollapsibleContainer title={`Professor reviews (${numProfReviews})`}>
             <CourseProfReviews
               theme={theme}
               reviewsByProf={profReviewsToShow}
@@ -417,7 +427,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
               selectedSort={selectedProfSort}
               setSelectedSort={setSelectedProfSort}
             />
-          </CollapseableContainer>
+          </CollapsibleContainer>
         </>
       )}
     </CourseReviewWrapper>

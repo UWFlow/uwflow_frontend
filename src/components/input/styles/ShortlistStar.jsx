@@ -9,9 +9,16 @@ export const ShortlistStarWrapper = styled(Star)`
   min-height: ${({ width }) => width}px;
   fill: ${({ checked, theme }) => (checked ? theme.accent : 'none')};
   user-select: none;
-  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   stroke: ${({ checked, theme }) => (checked ? theme.accent : theme.light3)};
+`;
 
+export const ShortlistStarButton = styled.button`
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  height: min-content;
+  margin: auto 0;
   ${Hover()}
 `;

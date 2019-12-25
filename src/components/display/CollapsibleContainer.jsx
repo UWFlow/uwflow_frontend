@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'react-feather';
+import Collapsible from 'react-collapsible';
+
+/* Styled Components */
 import {
   ContainerWrapper,
   HeaderWrapper,
   HeaderTitle,
   HeaderChevronBox,
   ContentWrapper,
-} from './styles/CollapseableContainer';
-import { ChevronDown, ChevronUp } from 'react-feather';
-import SlideInOutAnimation from '../../utils/animation/SlideInOutAnimation';
-import Collapsible from 'react-collapsible';
+} from './styles/CollapsibleContainer';
 
-const CollapseableContainer = ({
+const CollapsibleContainer = ({
   title,
   children,
   isInitiallyOpen = true,
@@ -29,11 +30,11 @@ const CollapseableContainer = ({
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
       </HeaderWrapper>
-      <Collapsible open={isOpen}>
+      <Collapsible open={isOpen} transitionTime={250}>
         <ContentWrapper>{children}</ContentWrapper>
       </Collapsible>
     </ContainerWrapper>
   );
 };
 
-export default CollapseableContainer;
+export default CollapsibleContainer;

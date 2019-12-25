@@ -17,6 +17,7 @@ const Textbox = ({
   icon,
   error = false,
   handleKeyDown = () => {},
+  onFocus = () => {},
   options = {},
   maxLength = 524288, // default browser maxLength,
   forwardRef = null,
@@ -45,6 +46,7 @@ const Textbox = ({
         value={text}
         placeholder={placeholder}
         onChange={onChange}
+        onFocus={onFocus}
         onKeyDown={onKeyDown}
         options={options}
         maxLength={`${maxLength}`}

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import useOnClickOutside from 'use-onclickoutside';
 import { ChevronDown, Search } from 'react-feather';
 import { withTheme } from 'styled-components';
+import { Scrollbars } from 'react-custom-scrollbars';
+import FadeIn from 'react-fade-in';
 
 /* Styled Components */
 import {
@@ -11,6 +13,7 @@ import {
   DropdownMenu,
   MenuItem,
   MenuSearch,
+  ITEM_HEIGHT,
 } from './styles/DropdownList';
 import KeycodeConstants from '../../constants/KeycodeConstants';
 import Textbox from './Textbox';
@@ -55,53 +58,57 @@ const DropdownList = ({
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
         <ChevronDown />
       </DropdownControl>
-      <DropdownMenu
-        open={open}
-        menuOffset={menuOffset}
-        maxItems={searchable ? maxItems : false}
-      >
-        {searchable && options.length > maxItems && (
-          <MenuSearch>
-            <Textbox
-              icon={<Search color={theme.dark3} />}
-              text={searchText}
-              setText={setSearchText}
-              placeholder=""
-              maxLength={50}
-              options={{
-                width: '100%',
-                backgroundColor: theme.light2,
-                padding: 0,
-              }}
-            />
-          </MenuSearch>
-        )}
-        {options
-          .map((opt, idx) => Object({ value: opt, index: idx }))
-          .filter(opt => {
-            const lowercaseOpt = opt.value.toLowerCase();
-            const lowercaseSearchText = searchText.toLowerCase();
-            return (
-              lowercaseOpt
-                .split(' ')
-                .some(val => val.startsWith(lowercaseSearchText)) ||
-              lowercaseOpt.startsWith(lowercaseSearchText)
-            );
-          })
-          .map(opt => (
-            <MenuItem
-              key={opt.index}
-              selected={opt.index === selectedIndex}
-              itemColor={itemColor}
-              onClick={() => {
-                onChange(opt.index);
-                setOpen(false);
-              }}
-            >
-              {opt.value}
-            </MenuItem>
-          ))}{' '}
-      </DropdownMenu>
+      <FadeIn>
+        <DropdownMenu open={open} menuOffset={menuOffset}>
+          <Scrollbars
+            autoHeight
+            autoHeightMin="100%"
+            autoHeightMax={maxItems * ITEM_HEIGHT}
+          >
+            {searchable && options.length > maxItems && (
+              <MenuSearch>
+                <Textbox
+                  icon={<Search color={theme.dark3} />}
+                  text={searchText}
+                  setText={setSearchText}
+                  placeholder=""
+                  maxLength={50}
+                  options={{
+                    width: '100%',
+                    backgroundColor: theme.light2,
+                    padding: 0,
+                  }}
+                />
+              </MenuSearch>
+            )}
+            {options
+              .map((opt, idx) => Object({ value: opt, index: idx }))
+              .filter(opt => {
+                const lowercaseOpt = opt.value.toLowerCase();
+                const lowercaseSearchText = searchText.toLowerCase();
+                return (
+                  lowercaseOpt
+                    .split(' ')
+                    .some(val => val.startsWith(lowercaseSearchText)) ||
+                  lowercaseOpt.startsWith(lowercaseSearchText)
+                );
+              })
+              .map(opt => (
+                <MenuItem
+                  key={opt.index}
+                  selected={opt.index === selectedIndex}
+                  itemColor={itemColor}
+                  onClick={() => {
+                    onChange(opt.index);
+                    setOpen(false);
+                  }}
+                >
+                  {opt.value}
+                </MenuItem>
+              ))}{' '}
+          </Scrollbars>
+        </DropdownMenu>
+      </FadeIn>
     </DropdownWrapper>
   );
 };
