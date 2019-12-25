@@ -8,6 +8,7 @@ const UserFragment = {
       program
       picture_url
       secret_id
+      email
     }
   `,
   userShortlist: gql`
