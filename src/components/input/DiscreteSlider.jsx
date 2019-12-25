@@ -30,11 +30,12 @@ const DiscreteSlider = ({
   numNodes,
   currentNode,
   color,
-  onUpdate,
   margin = '0 0 40px 0',
   showTicks = true,
   selected = true,
-  setSelected = () => null,
+  onSlideEnd = () => {},
+  onUpdate = () => {},
+  setSelected = () => {},
 }) => {
   const [updateValue, setUpdateValue] = useState(currentNode);
 
@@ -57,12 +58,12 @@ const DiscreteSlider = ({
           mode={2}
           domain={[0, numNodes - 1]}
           onSlideEnd={value => {
-            onUpdate(value);
-            if (!selected) {
-              setSelected(true);
-            }
+            onSlideEnd(value);
           }}
-          onUpdate={value => setUpdateValue(value)}
+          onUpdate={value => {
+            setUpdateValue(value);
+            onUpdate(value);
+          }}
           values={[currentNode]}
           rootStyle={{
             position: 'relative',
@@ -136,7 +137,6 @@ DiscreteSlider.propTypes = {
   numNodes: PropTypes.number.isRequired, // includes 0 so 6 for 0 20 40 60 80 100
   currentNode: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  onUpdate: PropTypes.func.isRequired,
   showTicks: PropTypes.bool,
 };
 

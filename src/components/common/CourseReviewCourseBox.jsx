@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Trash2 } from 'react-feather';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
@@ -105,15 +105,15 @@ const CourseReviewCourseBox = ({
 
     return {
       liked: review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
-      useful: (review && review.course_useful) || -1,
+      useful: (review && review.course_useful) || 0,
       usefulSelected: review ? review.course_useful !== null : false,
-      easy: (review && review.course_easy) || -1,
+      easy: (review && review.course_easy) || 0,
       easySelected: review ? review.course_easy !== null : false,
       courseComment: (review && review.course_comment) || '',
       selectedProf: profIndex,
-      clear: (review && review.prof_clear) || -1,
+      clear: (review && review.prof_clear) || 0,
       clearSelected: review ? review.prof_clear !== null : false,
-      engaging: (review && review.prof_engaging) || -1,
+      engaging: (review && review.prof_engaging) || 0,
       engagingSelected: review ? review.prof_engaging !== null : false,
       profComment: (review && review.prof_comment) || '',
       selectedAnonymous: review && review.public ? 1 : 0,
@@ -188,8 +188,8 @@ const CourseReviewCourseBox = ({
       course_easy: easy,
       course_useful: useful,
       course_comment: courseComment !== '' ? courseComment : null,
-      prof_clear: profID && clear !== -1 ? clear : null,
-      prof_engaging: profID && engaging !== -1 ? engaging : null,
+      prof_clear: profID && clearSelected ? clear : null,
+      prof_engaging: profID && engagingSelected ? engaging : null,
       prof_comment: profID && profComment !== '' ? profComment : null,
     };
 
@@ -246,6 +246,17 @@ const CourseReviewCourseBox = ({
     });
   };
 
+  const setSliderValue = (key, value, selectedKey) => {
+    setReviewStates({
+      ...reviewStates,
+      [course.code]: {
+        ...reviewStates[course.code],
+        [key]: value,
+        [selectedKey]: true,
+      },
+    });
+  };
+
   return (
     <CourseReviewCourseBoxWrapper>
       {(courseList.length > 1 || showCourseDropdown) && (
@@ -274,11 +285,15 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={useful}
           color={theme.courses}
-          onUpdate={value => setReviewValue('useful', value[0])}
+          onSlideEnd={value =>
+            setSliderValue('useful', value[0], 'usefulSelected')
+          }
           selected={usefulSelected}
           setSelected={value => setReviewValue('usefulSelected', value)}
         />
-        <SliderOptionText>{usefulOptions[useful]}</SliderOptionText>
+        <SliderOptionText>
+          {usefulSelected ? usefulOptions[useful] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -287,11 +302,13 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={easy}
           color={theme.courses}
-          onUpdate={value => setReviewValue('easy', value[0])}
+          onSlideEnd={value => setSliderValue('easy', value[0], 'easySelected')}
           selected={easySelected}
           setSelected={value => setReviewValue('easySelected', value)}
         />
-        <SliderOptionText>{easyOptions[easy]}</SliderOptionText>
+        <SliderOptionText>
+          {easySelected ? easyOptions[easy] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -334,11 +351,15 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={clear}
           color={theme.professors}
-          onUpdate={value => setReviewValue('clear', value[0])}
+          onSlideEnd={value =>
+            setSliderValue('clear', value[0], 'clearSelected')
+          }
           selected={clearSelected}
           setSelected={value => setReviewValue('clearSelected', value)}
         />
-        <SliderOptionText>{clearOptions[clear]}</SliderOptionText>
+        <SliderOptionText>
+          {clearSelected ? clearOptions[clear] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -347,11 +368,15 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={engaging}
           color={theme.professors}
-          onUpdate={value => setReviewValue('engaging', value[0])}
+          onSlideEnd={value =>
+            setSliderValue('engaging', value[0], 'engagingSelected')
+          }
           selected={engagingSelected}
           setSelected={value => setReviewValue('engagingSelected', value)}
         />
-        <SliderOptionText>{engagingOptions[engaging]}</SliderOptionText>
+        <SliderOptionText>
+          {engagingSelected ? engagingOptions[engaging] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <ReviewTextArea

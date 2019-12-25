@@ -46,7 +46,6 @@ import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfRevie
 
 /* Routes */
 import { getProfPageRoute } from '../../Routes';
-import Button from '../input/Button';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

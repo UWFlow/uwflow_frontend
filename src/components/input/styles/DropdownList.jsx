@@ -94,6 +94,7 @@ export const MenuSearch = styled.div`
   border-radius: 4px 4px 0 0;
   border: 1px solid ${({ theme }) => theme.light2};
   ${Heading4}
+  z-index: 1;
 
   &:focus {
     ${BoxShadow}

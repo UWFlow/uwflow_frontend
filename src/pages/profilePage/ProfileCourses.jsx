@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { PlusSquare, Edit } from 'react-feather';
 import { withTheme } from 'styled-components';
-import { useQuery } from 'react-apollo';
 
 /* Child Components */
 import TabContainer from '../../components/display/TabContainer';
