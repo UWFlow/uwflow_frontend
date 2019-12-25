@@ -15,7 +15,7 @@ import {
 } from './styles/ShortlistBox';
 
 /* Child Components */
-import CollapseableContainer from '../../components/display/CollapseableContainer';
+import CollapsibleContainer from '../../components/display/CollapsibleContainer';
 import ShortlistStar from '../../components/input/ShortlistStar';
 
 /* Selectors */
@@ -67,9 +67,9 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
       <ShortlistContentWrapper>{shorlistContent}</ShortlistContentWrapper>
     </ShortlistBoxWrapper>
   ) : (
-    <CollapseableContainer title="Shortlist" centerHeader={false}>
+    <CollapsibleContainer title="Shortlist" centerHeader={false}>
       {shorlistContent}
-    </CollapseableContainer>
+    </CollapsibleContainer>
   );
 };
 

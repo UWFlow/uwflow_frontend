@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
 import { withTheme } from 'styled-components';
@@ -36,6 +36,12 @@ const DiscreteSlider = ({
   selected = true,
   setSelected = () => null,
 }) => {
+  const [updateValue, setUpdateValue] = useState(currentNode);
+
+  useEffect(() => {
+    setUpdateValue(currentNode);
+  }, [currentNode]);
+
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
   let percentages = [];
   for (let i = 0; i < 100; i += percentGap) {
@@ -50,12 +56,13 @@ const DiscreteSlider = ({
           step={1}
           mode={2}
           domain={[0, numNodes - 1]}
-          onChange={value => {
+          onSlideEnd={value => {
             onUpdate(value);
-            if (value > 0 && !selected) {
+            if (!selected) {
               setSelected(true);
             }
           }}
+          onUpdate={value => setUpdateValue(value)}
           values={[currentNode]}
           rootStyle={{
             position: 'relative',
@@ -73,7 +80,7 @@ const DiscreteSlider = ({
                   percentages.map((percent, idx) => (
                     <SliderTick
                       key={percent}
-                      color={idx <= currentNode ? color : theme.light3}
+                      color={idx <= updateValue ? color : theme.light3}
                       percent={percent}
                       {...getRailProps()}
                     />
@@ -83,7 +90,14 @@ const DiscreteSlider = ({
           </Rail>
           <Handles>
             {({ handles, getHandleProps }) => (
-              <div className="slider-handles" onClick={() => { if (!selected) { setSelected(true)}}}>
+              <div
+                className="slider-handles"
+                onClick={() => {
+                  if (!selected) {
+                    setSelected(true);
+                  }
+                }}
+              >
                 {handles.map(handle => (
                   <Handle
                     key={handle.id}

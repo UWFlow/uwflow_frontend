@@ -10,7 +10,7 @@ import {
 const MODAL_WIDTH = 660;
 
 export const CourseReviewCourseBoxWrapper = styled.div`
-  ${Card('24px', '32px 0')}
+  ${Card('24px', '0')}
   ${BoxShadow}
   width: ${MODAL_WIDTH}px;
 `;

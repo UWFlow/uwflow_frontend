@@ -40,6 +40,7 @@ export const DropdownMenu = styled.div`
   white-space: nowrap;
   background-color: ${({ theme }) => theme.white};
   z-index: 8;
+  overflow: none;
   input {
     border-radius: 4px 4px 0 0 !important;
   }

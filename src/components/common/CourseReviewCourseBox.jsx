@@ -98,10 +98,10 @@ const CourseReviewCourseBox = ({
     }
 
     const profIndex = review
-    ? profsTeaching.findIndex(
-        prof => prof.prof && prof.prof.id === review.prof_id,
-      )
-    : -1;
+      ? profsTeaching.findIndex(
+          prof => prof.prof && prof.prof.id === review.prof_id,
+        )
+      : -1;
 
     return {
       liked: review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
@@ -149,10 +149,8 @@ const CourseReviewCourseBox = ({
     engagingSelected,
     profComment,
     selectedAnonymous,
-    profsTeaching
+    profsTeaching,
   } = reviewStates[course.code];
-
-  console.log(useful, easy, liked);
 
   /* Mutations */
   const refetchQueries = [
@@ -239,7 +237,6 @@ const CourseReviewCourseBox = ({
   };
 
   const setReviewValue = (key, value) => {
-    console.log(key, value);
     setReviewStates({
       ...reviewStates,
       [course.code]: {

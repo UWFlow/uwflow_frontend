@@ -140,8 +140,10 @@ export const CourseLikedPercentLabel = styled.div`
   `}
 `;
 
-export const ShowMoreReviewsSection = styled.div`
+export const ShowMoreReviewsSection = styled.button`
   background: ${({ theme }) => theme.light3};
+  outline: none;
+  border: none;
   width: 100%;
   display: flex;
   justify-content: center;

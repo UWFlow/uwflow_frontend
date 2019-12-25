@@ -41,7 +41,7 @@ export const Column2 = styled(FadeIn)`
 export const CompleteProfileWrapper = styled.div`
   width: 100%;
   padding: 32px;
-  padding-bottom: 0;
+  padding-bottom: 1px;
   margin-bottom: 32px;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.white};

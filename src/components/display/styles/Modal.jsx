@@ -17,6 +17,7 @@ export const ModalX = styled.button`
   background: none;
   border: none;
   padding: 0;
+  z-index: 1;
   color: ${({ theme }) => theme.dark3};
 
   &:hover {
