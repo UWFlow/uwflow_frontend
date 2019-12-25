@@ -4,7 +4,13 @@ import ProfileHeader from '../../../img/user_v1.svg';
 import FadeIn from 'react-fade-in';
 
 /* Mixins */
-import { Heading1, PageContent, Heading2 } from '../../../constants/Mixins';
+import {
+  Heading1,
+  PageContent,
+  Heading2,
+  Heading4,
+  Body,
+} from '../../../constants/Mixins';
 
 /* Utils */
 import { getKittenFromID } from '../../../utils/Kitten';
@@ -70,4 +76,27 @@ export const UserProgram = styled(FadeIn)`
   ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;
+`;
+
+export const UserEmailWrapper = styled(FadeIn)`
+  ${Body}
+  color: ${({ theme }) => theme.light1};
+  display: flex;
+  margin-top: 16px;
+  align-items: center;
+`;
+
+export const UserEmailText = styled.div`
+  margin-right: 1ex;
+`;
+
+export const UserEmail = styled.div`
+  text-decoration: underline;
+  margin-right: 4px;
+`;
+
+export const EditWrapper = styled.div`
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
 `;
