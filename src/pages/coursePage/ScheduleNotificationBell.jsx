@@ -85,7 +85,8 @@ const ScheduleNotificationBell = ({
     } else {
       // Assume user data will be loaded by the time a notification bell is clicked
       if (!loading && data) {
-        if (!data.user.email || data.user.email === '') {
+        if (!data.user[0] || data.user[0].email === '') {
+          // TODO: chain insertSubscription and setSelected to fire after user has entered email
           dispatch(courseNotificationEmailModalOpen());
         }
       }
