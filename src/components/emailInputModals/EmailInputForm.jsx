@@ -11,7 +11,7 @@ import {
 import Button from '../input/Button';
 import Textbox from '../input/Textbox';
 
-const EmailInputForm = ({ title, renderText, submitText, theme }) => {
+const EmailInputForm = ({ title, renderText, submitText, theme, onClose }) => {
   const [email, setEmail] = useState('');
   return (
     <EmailInputFormWrapper>
@@ -27,7 +27,11 @@ const EmailInputForm = ({ title, renderText, submitText, theme }) => {
         />
       </TextboxWrapper>
       <ButtonsWrapper>
-        <Button color={theme.dark3} hoverColor={theme.dark2}>
+        <Button
+          color={theme.dark3}
+          hoverColor={theme.dark2}
+          handleClick={onClose}
+        >
           Cancel
         </Button>
         <Button>{submitText}</Button>

@@ -27,6 +27,15 @@ export const GET_USER = gql`
   ${ReviewFragment.reviewInfo}
 `;
 
+export const GET_USER_INFO = gql`
+  query GET_USER($id: Int) {
+    user(where: { id: { _eq: $id } }) {
+      ...UserInfoFragment
+    }
+  }
+  ${UserFragment.userInfo}
+`;
+
 export const REFETCH_USER_SHORTLIST = gql`
   query REFETCH_USER_SHORTLIST($id: Int) {
     user(where: { id: { _eq: $id } }) {

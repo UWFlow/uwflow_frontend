@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading2, BoxShadow } from '../../../constants/Mixins';
+import { Heading2, BoxShadow, Link } from '../../../constants/Mixins';
 
 export const EmailInputFormWrapper = styled.div`
   ${BoxShadow}
@@ -7,7 +7,7 @@ export const EmailInputFormWrapper = styled.div`
   flex-direction: column;
   padding: 32px;
   background: white;
-  width: 300px;
+  width: 350px;
   border-radius: 4px;
 `;
 
@@ -29,4 +29,7 @@ export const FormText = styled.div`
   margin-bottom: 16px;
 `;
 
-export const FormLink = styled.div``;
+export const FormLink = styled.a`
+  text-decoration: underline;
+  cursor: pointer;
+`;

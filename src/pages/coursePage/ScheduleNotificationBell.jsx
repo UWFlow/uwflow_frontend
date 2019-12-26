@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-apollo';
 import { connect, useDispatch } from 'react-redux';
 import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
@@ -13,6 +14,7 @@ import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
+import { courseNotificationEmailModalOpen } from '../../data/actions/ModalActions';
 
 /* GraphQL */
 import {
@@ -20,6 +22,7 @@ import {
   INSERT_SECTION_SUBSCRIPTION,
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
+import { GET_USER_INFO } from '../../graphql/queries/user/User';
 
 /* Constants */
 import {
@@ -39,6 +42,10 @@ const ScheduleNotificationBell = ({
   initialState = false,
 }) => {
   const userID = localStorage.getItem('user_id');
+
+  const { loading, data } = useQuery(GET_USER_INFO, {
+    variables: { id: localStorage.getItem('user_id') },
+  });
 
   const refetchQueries = [
     {
@@ -76,6 +83,12 @@ const ScheduleNotificationBell = ({
           toast(SUBSCRIPTION_ERROR);
         });
     } else {
+      // Assume user data will be loaded by the time a notification bell is clicked
+      if (!loading && data) {
+        if (!data.user.email || data.user.email === '') {
+          dispatch(courseNotificationEmailModalOpen());
+        }
+      }
       insertSubscription({
         variables: { user_id: userID, section_id: sectionID },
       })

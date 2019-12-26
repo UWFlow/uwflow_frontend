@@ -16,6 +16,7 @@ const EditEmailModal = ({ isOpen, onClose }) => (
       title="Edit your email"
       renderText={renderText}
       submitText="Save"
+      onClose={onClose}
     />
   </Modal>
 );
