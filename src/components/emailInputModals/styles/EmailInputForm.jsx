@@ -7,7 +7,7 @@ export const EmailInputFormWrapper = styled.div`
   flex-direction: column;
   padding: 32px;
   background: white;
-  width: 350px;
+  width: 400px;
   border-radius: 4px;
 `;
 
@@ -22,7 +22,7 @@ export const TextboxWrapper = styled.div`
 
 export const ButtonsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const FormText = styled.div`

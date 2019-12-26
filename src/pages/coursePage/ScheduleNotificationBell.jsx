@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 /* Child Components */
 import Tooltip from '../../components/display/Tooltip';
+import CourseNotificationEmailModal from '../../components/emailInputModals/CourseNotificationEmailModal';
 
 /* Styled Components */
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
@@ -42,6 +43,7 @@ const ScheduleNotificationBell = ({
   initialState = false,
 }) => {
   const userID = localStorage.getItem('user_id');
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   const { loading, data } = useQuery(GET_USER_INFO, {
     variables: { id: localStorage.getItem('user_id') },
@@ -64,7 +66,7 @@ const ScheduleNotificationBell = ({
   });
 
   const notifyDelete = () => toast(SUBSCRIPTION_SUCCESS.unsubscribed);
-  const notifyInsert = () => toast(SUBSCRIPTION_SUCCESS.subscribed);
+  const notifyInsert = email => toast(SUBSCRIPTION_SUCCESS.subscribed(email));
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -82,23 +84,27 @@ const ScheduleNotificationBell = ({
         .catch(() => {
           toast(SUBSCRIPTION_ERROR);
         });
+      setSelected(false);
     } else {
       // Assume user data will be loaded by the time a notification bell is clicked
-      if (!loading && data) {
-        if (!data.user[0] || data.user[0].email === '') {
-          // TODO: chain insertSubscription and setSelected to fire after user has entered email
-          dispatch(courseNotificationEmailModalOpen());
-        }
+      if (!loading && data && (!data.user[0] || data.user[0].email === '')) {
+        // TODO: chain insertSubscription and setSelected to fire after user has entered email
+        // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
+        // TODO: Find way to pass callbacks to top level modal
+        setIsEmailModalOpen(true);
+      } else {
+        insertSubscription({
+          variables: { user_id: userID, section_id: sectionID },
+        })
+          .then(() => {
+            notifyInsert(data.user[0].email);
+            setSelected(true);
+          })
+          .catch(() => {
+            toast(SUBSCRIPTION_ERROR);
+          });
       }
-      insertSubscription({
-        variables: { user_id: userID, section_id: sectionID },
-      })
-        .then(() => notifyInsert())
-        .catch(() => {
-          toast(SUBSCRIPTION_ERROR);
-        });
     }
-    setSelected(!selected);
   };
 
   return (
@@ -115,6 +121,24 @@ const ScheduleNotificationBell = ({
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
       </NotificationBellWrapper>
+      <div style={{ overflow: 'hidden' }}>
+        <CourseNotificationEmailModal
+          isOpen={isEmailModalOpen}
+          onClose={() => setIsEmailModalOpen(false)}
+          onSuccess={email =>
+            insertSubscription({
+              variables: { user_id: userID, section_id: sectionID },
+            })
+              .then(() => {
+                notifyInsert(email);
+                setSelected(true);
+              })
+              .catch(() => {
+                toast(SUBSCRIPTION_ERROR);
+              })
+          }
+        />
+      </div>
     </>
   );
 };

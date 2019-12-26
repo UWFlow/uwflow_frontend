@@ -11,8 +11,25 @@ import {
 import Button from '../input/Button';
 import Textbox from '../input/Textbox';
 
-const EmailInputForm = ({ title, renderText, submitText, theme, onClose }) => {
+const EmailInputForm = ({
+  title,
+  renderText,
+  submitText,
+  theme,
+  onClose,
+  onSuccess,
+}) => {
   const [email, setEmail] = useState('');
+
+  const onSubmit = () => {
+    // TODO: Submit email mutation
+    // This part executes if submit email is successful
+    if (onSuccess) {
+      onSuccess(email);
+    }
+    onClose();
+  };
+
   return (
     <EmailInputFormWrapper>
       <FormTitle>{title}</FormTitle>
@@ -31,10 +48,11 @@ const EmailInputForm = ({ title, renderText, submitText, theme, onClose }) => {
           color={theme.dark3}
           hoverColor={theme.dark2}
           handleClick={onClose}
+          margin="0 16px 0 0"
         >
           Cancel
         </Button>
-        <Button>{submitText}</Button>
+        <Button handleClick={onSubmit}>{submitText}</Button>
       </ButtonsWrapper>
     </EmailInputFormWrapper>
   );

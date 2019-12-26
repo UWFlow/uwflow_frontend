@@ -31,23 +31,32 @@ const renderText = (history, dispatch) => () => (
   </FormText>
 );
 
-const CourseNotificationEmailModal = ({ isOpen, history }) => {
+const CourseNotificationEmailModal = ({
+  isOpen,
+  onClose,
+  history,
+  onSuccess,
+}) => {
   const dispatch = useDispatch();
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={() => dispatch(courseNotificationEmailModalClose())}
+      // onRequestClose={() => dispatch(courseNotificationEmailModalClose())}
+      onRequestClose={onClose}
     >
       <EmailInputForm
         title="Subscribe to alerts"
         renderText={renderText(history, dispatch)}
         submitText="Subscribe"
-        onClose={() => dispatch(courseNotificationEmailModalClose())}
+        // onClose={() => dispatch(courseNotificationEmailModalClose())}
+        onClose={onClose}
+        onSuccess={onSuccess}
       />
     </Modal>
   );
 };
 
 export default withRouter(
-  connect(mapStateToProps)(CourseNotificationEmailModal),
+  // connect(mapStateToProps)(CourseNotificationEmailModal),
+  CourseNotificationEmailModal,
 );

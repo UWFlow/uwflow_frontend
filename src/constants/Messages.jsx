@@ -71,9 +71,9 @@ export const AUTH_SUCCESS = {
 };
 
 export const SUBSCRIPTION_SUCCESS = {
-  subscribed:
-    'Subscribed! You’ll receive an email from us when at least one spot opens up',
   unsubscribed: 'Unsubscribed!',
+  subscribed: email =>
+    `Subscribed to section with email ${email}, to change this email go to your profile page`,
 };
 
 export const REVIEW_SUCCESS = {
