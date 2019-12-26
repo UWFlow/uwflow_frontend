@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   TeamMembersWrapper,
@@ -24,26 +23,25 @@ const AboutPage = ({
   <TeamMembersWrapper>
     <MemberPhoto img={photo} />
     <MemberWrapper>
-      <MemberTitle>
-        {name}
-      </MemberTitle>
-      {title}{program && ` — ${program}`}
+      <MemberTitle>{name}</MemberTitle>
+      {title}
+      {program && ` — ${program}`}
       <MemberLinksWrapper>
-      {linkedIn && (
-        <MemberLink href={linkedIn} target="_blank" rel="noopener noreferrer">
-          Linkedin
-        </MemberLink>
-      )}
-      {website && (
-        <MemberLink href={website} target="_blank" rel="noopener noreferrer">
-          Website
-        </MemberLink>
-      )}
-      {twitter && (
-        <MemberLink href={twitter} target="_blank" rel="noopener noreferrer">
-          Twitter
-        </MemberLink>
-      )}
+        {linkedIn && (
+          <MemberLink href={linkedIn} target="_blank" rel="noopener noreferrer">
+            Linkedin
+          </MemberLink>
+        )}
+        {website && (
+          <MemberLink href={website} target="_blank" rel="noopener noreferrer">
+            Website
+          </MemberLink>
+        )}
+        {twitter && (
+          <MemberLink href={twitter} target="_blank" rel="noopener noreferrer">
+            Twitter
+          </MemberLink>
+        )}
       </MemberLinksWrapper>
       <MemberBio>{children}</MemberBio>
     </MemberWrapper>

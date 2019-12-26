@@ -54,11 +54,11 @@ const RatingBox = ({
 
   const scrollToReviews = () => {
     if (numComments) {
-        document
+      document
         .getElementById(REVIEWS_DIV_ID)
-        .scrollIntoView({ behavior: 'smooth' })
+        .scrollIntoView({ behavior: 'smooth' });
     }
-  }
+  };
 
   return (
     <RatingBoxWrapper

@@ -76,13 +76,16 @@ export const NumCommentsAndRatingsWrapper = styled.div`
 `;
 
 export const NumCommentsWrapper = styled.div`
-  ${({ hasComments }) => hasComments && `
+  ${({ hasComments }) =>
+    hasComments &&
+    `
     ${Link}
     text-decoration: underline;
     cursor: pointer;
     ${Hover(true)}
   `};
-  color: ${({ hasComments, theme }) => hasComments ? theme.primary : theme.dark3};
+  color: ${({ hasComments, theme }) =>
+    hasComments ? theme.primary : theme.dark3};
 `;
 
 export const NumRatingsWrapper = styled.div`
