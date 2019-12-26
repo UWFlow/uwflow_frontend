@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
-import ProfHeader from '../../../img/prof_v1.svg';
+import ProfHeader from '../../../img/prof.svg';
 import FadeIn from 'react-fade-in';
 
 /* Mixins */

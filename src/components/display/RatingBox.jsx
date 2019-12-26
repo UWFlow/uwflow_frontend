@@ -52,6 +52,14 @@ const RatingBox = ({
     ? Math.round(percentages[0].percent * 100)
     : null;
 
+  const scrollToReviews = () => {
+    if (numComments) {
+        document
+        .getElementById(REVIEWS_DIV_ID)
+        .scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   return (
     <RatingBoxWrapper
       ratingBoxHeight={RATING_BOX_HEIGHT}
@@ -88,11 +96,8 @@ const RatingBox = ({
         <ReviewsAndGraphButtonWrapper>
           <NumCommentsAndRatingsWrapper>
             <NumCommentsWrapper
-              onClick={() =>
-                document
-                  .getElementById(REVIEWS_DIV_ID)
-                  .scrollIntoView({ behavior: 'smooth' })
-              }
+              onClick={scrollToReviews}
+              hasComments={Boolean(numComments)}
             >
               {numComments ? numComments : 0}{' '}
               {numComments === 1 ? 'comment' : 'comments'}

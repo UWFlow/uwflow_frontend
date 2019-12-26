@@ -6,6 +6,7 @@ import {
   Heading3,
   Heading4,
   Body,
+  Hover,
 } from '../../../constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
@@ -73,9 +74,7 @@ export const ResetButton = styled.button`
   border-radius: 4px;
   margin-top: 32px;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.primaryDark};
-  }
+  ${Hover()}
 `;
 
 export const HeaderButtonWrapper = styled.div`

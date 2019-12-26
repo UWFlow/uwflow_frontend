@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Body, BoxShadow, Hover } from '../../../constants/Mixins';
+import { Body, BoxShadow, Hover, Link } from '../../../constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`
   width: 100%;
@@ -75,11 +75,14 @@ export const NumCommentsAndRatingsWrapper = styled.div`
   `}
 `;
 
-export const NumCommentsWrapper = styled.a`
-  ${Body}
-  text-decoration: underline;
-  cursor: pointer;
-  ${Hover(true)}
+export const NumCommentsWrapper = styled.div`
+  ${({ hasComments }) => hasComments && `
+    ${Link}
+    text-decoration: underline;
+    cursor: pointer;
+    ${Hover(true)}
+  `};
+  color: ${({ hasComments, theme }) => hasComments ? theme.primary : theme.dark3};
 `;
 
 export const NumRatingsWrapper = styled.div`

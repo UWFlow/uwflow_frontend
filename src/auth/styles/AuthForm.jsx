@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link as _Link } from 'react-router-dom';
 import {
   Heading2,
   Heading4,
   Body,
   BoxShadow,
   Hover,
+  Link,
 } from '../../constants/Mixins';
 
 export const Wrapper = styled.div`
@@ -76,12 +77,12 @@ export const PrivacyWrapper = styled.div`
 export const GreyText = styled.div`
   color: ${({ theme }) => theme.dark3};
   ${Body}
-  font-size: 12px;
+  font-size: 14px;
 `;
 
-export const PrivacyPolicyText = styled(Link)`
+export const PrivacyPolicyText = styled(_Link)`
   ${Body}
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => theme.dark1};
   margin-left: 4px;
 `;
@@ -99,6 +100,7 @@ export const SwapModalWrapper = styled.div`
 `;
 
 export const SwapModalLink = styled.button`
+  ${Link}
   outline: none;
   background: none;
   padding: 0;

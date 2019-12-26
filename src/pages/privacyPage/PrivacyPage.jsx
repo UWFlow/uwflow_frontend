@@ -39,7 +39,7 @@ const PrivacyPage = () => (
           Privacy Policy document outlines information we collected and how we
           use it. If you have additional questions or require more information
           about our Privacy Policy, do not hesitate to contact us through email
-          at info@uwflow.com.
+          at <a href="mailto:info@uwflow.com">info@uwflow.com</a>.
         </PageBodyParagraph>
         <PageBodyHeader>Log Files</PageBodyHeader>
         <PageBodyParagraph>

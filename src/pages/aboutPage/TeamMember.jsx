@@ -8,15 +8,17 @@ import {
   MemberWrapper,
   MemberBio,
   MemberLink,
+  MemberLinksWrapper,
 } from './styles/TeamMember';
 
 const AboutPage = ({
-  photo = '',
+  photo,
   name,
   title,
   linkedIn,
   program,
   website,
+  twitter,
   children,
 }) => (
   <TeamMembersWrapper>
@@ -24,11 +26,9 @@ const AboutPage = ({
     <MemberWrapper>
       <MemberTitle>
         {name}
-        {program && ` (${program})`}
       </MemberTitle>
-      {title}
-      <br />
-      <br />
+      {title}{program && ` — ${program}`}
+      <MemberLinksWrapper>
       {linkedIn && (
         <MemberLink href={linkedIn} target="_blank" rel="noopener noreferrer">
           Linkedin
@@ -39,17 +39,15 @@ const AboutPage = ({
           Website
         </MemberLink>
       )}
-      <br />
-      <br />
+      {twitter && (
+        <MemberLink href={twitter} target="_blank" rel="noopener noreferrer">
+          Twitter
+        </MemberLink>
+      )}
+      </MemberLinksWrapper>
       <MemberBio>{children}</MemberBio>
     </MemberWrapper>
   </TeamMembersWrapper>
 );
-
-AboutPage.propTypes = {
-  photoName: PropTypes.string,
-  title: PropTypes.string,
-  children: PropTypes.any,
-};
 
 export default AboutPage;

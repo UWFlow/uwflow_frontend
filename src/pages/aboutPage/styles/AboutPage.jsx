@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+import PageHeaderBackground from '../../../img/generic.svg';
 import {
   PageContent,
   Heading1,
   Heading2,
   Body,
   PageWrapper as _PageWrapper,
+  Link,
 } from '../../../constants/Mixins';
 import FadeIn from 'react-fade-in';
 
@@ -19,7 +21,9 @@ export const PageHeader = styled.div`
   align-items: flex-end;
   width: 100%;
   height: 208px;
-  background: ${({ theme }) => theme.primaryExtraDark};
+  background-image: url(${PageHeaderBackground});
+  background-color: ${({ theme }) => theme.primaryExtraDark};
+  background-size: cover;
   padding-bottom: 32px;
   margin-bottom: 32px;
 
@@ -32,13 +36,13 @@ export const PageHeader = styled.div`
 export const HeaderText = styled(FadeIn)`
   ${PageContent}
   ${Heading1}
-  max-width: 720px;
+  max-width: 800px;
   color: ${({ theme }) => theme.white};
 `;
 
 export const PageContentWrapper = styled(FadeIn)`
   ${PageContent}
-  max-width: 720px;
+  max-width: 800px;
   margin: auto;
 
   ${breakpoint('mobile', 'tablet')`
@@ -57,12 +61,17 @@ export const PageBody = styled.div`
 
 export const PageBodyHeader = styled.div`
   ${Heading2}
-  font-size: 24px;
+  font-size: 30px;
   margin-bottom: 16px;
 `;
 
 export const PageBodyParagraph = styled.div`
   ${Body}
-  line-height: 1.2;
+  line-height: 1.5;
   margin-bottom: 64px;
+`;
+
+export const ContributorLink = styled.a`
+  ${Link}
+  line-height: 2;
 `;

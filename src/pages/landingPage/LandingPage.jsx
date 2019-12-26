@@ -46,7 +46,7 @@ const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
         <Column loggedIn={isLoggedIn}>
           <TitleSearchBarWrapper>
             <TitleText>
-              Explore over 20,000 course and professor reviews from UW students
+              Explore thousands of course and professor reviews from UW students
             </TitleText>
             <SearchBar isLanding />
             <Subheading>

@@ -13,7 +13,7 @@ export const TeamMembersWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  margin: 48px 0;
+  margin: 100px 0;
 `;
 
 export const MemberPhoto = styled.div`
@@ -43,11 +43,15 @@ export const MemberTitle = styled.div`
   ${Heading2}
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 `;
 
 export const MemberBio = styled.div`
   ${Body}
+`;
+
+export const MemberLinksWrapper = styled.div`
+  margin: 16px 0;
 `;
 
 export const MemberLink = styled.a`

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+import PageHeaderBackground from '../../../img/generic.svg';
 import {
   PageContent,
   Heading2,
@@ -19,7 +20,9 @@ export const PageHeader = styled.div`
   align-items: flex-end;
   width: 100%;
   height: 208px;
-  background: ${({ theme }) => theme.primaryExtraDark};
+  background-image: url(${PageHeaderBackground});
+  background-color: ${({ theme }) => theme.primaryExtraDark};
+  background-size: cover;
   padding-bottom: 32px;
   margin-bottom: 32px;
 
@@ -32,13 +35,13 @@ export const PageHeader = styled.div`
 export const HeaderText = styled(FadeIn)`
   ${PageContent}
   ${Heading2}
-  max-width: 720px;
+  max-width: 800px;
   color: white;
 `;
 
 export const PageContentWrapper = styled(FadeIn)`
   ${PageContent}
-  max-width: 720px;
+  max-width: 800px;
   margin: auto;
 
   ${breakpoint('mobile', 'tablet')`
@@ -56,11 +59,11 @@ export const PageBody = styled.div`
 
 export const PageBodyHeader = styled.div`
   ${Heading3}
-  margin-bottom: 4px;
+  margin: 8px 0;
 `;
 
 export const PageBodyParagraph = styled.div`
   ${Body}
-  line-height: 1.2;
+  line-height: 1.5;
   margin-bottom: 32px;
 `;

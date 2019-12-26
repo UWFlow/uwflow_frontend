@@ -13,6 +13,7 @@ export const PageWrapper = `
   min-height: calc(100vh - ${FOOTER_HEIGHT}px - ${FOOTER_MARGIN_TOP}px);
   display: flex;
   flex-direction: column;
+  padding-bottom: 32px;
 `;
 
 export const PageContent = `
@@ -80,7 +81,7 @@ export const Heading4 = `
 export const Body = `
   font-family: 'Inter';
   font-weight: 400;
-  font-size: 15px;
+  font-size: 16px;
 `;
 
 export const Small = `
@@ -94,7 +95,7 @@ export const HoverTransition = (target = 'all', time = '0.1s') => `
 
 export const Hover = (darker = false) => `
   ${HoverTransition()}
-  &:hover, &:focus {
+  &:hover {
     cursor: pointer;
     filter: brightness(${darker ? '60%' : '85%'});
   }
@@ -102,7 +103,7 @@ export const Hover = (darker = false) => `
 
 export const Link = `
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   text-decoration: underline;
   cursor: pointer;
   width: fit-content;

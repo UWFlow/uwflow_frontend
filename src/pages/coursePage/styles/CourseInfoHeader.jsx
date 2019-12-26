@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import CourseHeader from '../../../img/course_v1.svg';
+import CourseHeader from '../../../img/course.svg';
 import FadeIn from 'react-fade-in';
 
 /* Mixins */
