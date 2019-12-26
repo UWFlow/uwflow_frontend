@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Heading1, Heading2 } from '../../../constants/Mixins';
-import LandingImage from '../../../img/landing_v1.svg';
+import LandingImage from '../../../img/landing.svg';
 import FadeIn from 'react-fade-in';
 
 import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
@@ -47,7 +47,7 @@ export const ProfileWrapper = styled.div`
 export const LogoText = styled.div`
   position: absolute;
   top: 32px;
-  left: 64px;
+  left: 74px;
   color: white;
   ${Heading2}
 
@@ -137,7 +137,8 @@ export const BackgroundImage = styled.div`
 
 export const AuthContent = styled.div`
   display: flex;
-  height: 90vh;
+  justify-content: flex-end;
+  height: 100vh;
   margin: auto;
   max-height: ${MAX_BG_HEIGHT + 560}px;
   min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};

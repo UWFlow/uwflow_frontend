@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Body, BoxShadow } from '../../../constants/Mixins';
+import { Body, BoxShadow, Hover } from '../../../constants/Mixins';
 
 export const MultiSelectButtonWrapper = styled.div`
   width: 100%;
@@ -26,9 +26,5 @@ export const ButtonWrapper = styled.div`
     margin-right: 0;
   }
 
-  &:hover,
-  &:focus {
-    background-color: ${({ theme, selected }) =>
-      selected ? theme.primaryDark : theme.light1};
-  }
+  ${Hover()}
 `;

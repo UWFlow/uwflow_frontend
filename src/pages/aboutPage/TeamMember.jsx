@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   TeamMembersWrapper,
@@ -8,48 +7,45 @@ import {
   MemberWrapper,
   MemberBio,
   MemberLink,
+  MemberLinksWrapper,
 } from './styles/TeamMember';
 
 const AboutPage = ({
-  photo = '',
+  photo,
   name,
   title,
   linkedIn,
   program,
   website,
+  twitter,
   children,
 }) => (
   <TeamMembersWrapper>
     <MemberPhoto img={photo} />
     <MemberWrapper>
-      <MemberTitle>
-        {name}
-        {program && ` (${program})`}
-      </MemberTitle>
+      <MemberTitle>{name}</MemberTitle>
       {title}
-      <br />
-      <br />
-      {linkedIn && (
-        <MemberLink href={linkedIn} target="_blank" rel="noopener noreferrer">
-          Linkedin
-        </MemberLink>
-      )}
-      {website && (
-        <MemberLink href={website} target="_blank" rel="noopener noreferrer">
-          Website
-        </MemberLink>
-      )}
-      <br />
-      <br />
+      {program && ` — ${program}`}
+      <MemberLinksWrapper>
+        {linkedIn && (
+          <MemberLink href={linkedIn} target="_blank" rel="noopener noreferrer">
+            Linkedin
+          </MemberLink>
+        )}
+        {website && (
+          <MemberLink href={website} target="_blank" rel="noopener noreferrer">
+            Website
+          </MemberLink>
+        )}
+        {twitter && (
+          <MemberLink href={twitter} target="_blank" rel="noopener noreferrer">
+            Twitter
+          </MemberLink>
+        )}
+      </MemberLinksWrapper>
       <MemberBio>{children}</MemberBio>
     </MemberWrapper>
   </TeamMembersWrapper>
 );
-
-AboutPage.propTypes = {
-  photoName: PropTypes.string,
-  title: PropTypes.string,
-  children: PropTypes.any,
-};
 
 export default AboutPage;

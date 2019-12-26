@@ -21,7 +21,7 @@ html {
   /* Load system fonts */
   font-family: Inter, -apple-system, BlinkMacSystemFont, San Francisco, Roboto,
     Segoe UI, Helvetica Neue, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   color: #31393c;
   background: #f4f5f7;
   scroll-behavior: smooth;
@@ -65,7 +65,7 @@ textarea {
 }
 
 a {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #006ed8;
 }
