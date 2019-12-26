@@ -41,13 +41,10 @@ const ScheduleNotificationBell = ({
   sectionID,
   courseID,
   initialState = false,
+  userEmail,
 }) => {
   const userID = localStorage.getItem('user_id');
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
-
-  const { loading, data } = useQuery(GET_USER_INFO, {
-    variables: { id: localStorage.getItem('user_id') },
-  });
 
   const refetchQueries = [
     {
@@ -87,7 +84,8 @@ const ScheduleNotificationBell = ({
       setSelected(false);
     } else {
       // Assume user data will be loaded by the time a notification bell is clicked
-      if (!loading && data && (!data.user[0] || data.user[0].email === '')) {
+      console.log(userEmail);
+      if (userEmail === '' || userEmail === null || userEmail === undefined) {
         // TODO: chain insertSubscription and setSelected to fire after user has entered email
         // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
         // TODO: Find way to pass callbacks to top level modal
@@ -97,7 +95,7 @@ const ScheduleNotificationBell = ({
           variables: { user_id: userID, section_id: sectionID },
         })
           .then(() => {
-            notifyInsert(data.user[0].email);
+            notifyInsert(userEmail);
             setSelected(true);
           })
           .catch(() => {
