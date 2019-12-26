@@ -19,7 +19,7 @@ import {
 /* Utils */
 import { termCodeToDate, secsToTime, weekDayLetters } from '../../utils/Misc';
 import { processSectionExams } from '../../utils/FinalExams';
-import CollapseableContainer from '../../components/display/CollapseableContainer';
+import CollapsibleContainer from '../../components/display/CollapsibleContainer';
 
 const sectionOrder = {
   LEC: 0,
@@ -217,7 +217,7 @@ const CourseSchedule = ({
 
   return (
     <CourseScheduleWrapper>
-      <CollapseableContainer
+      <CollapsibleContainer
         title="Course Schedule"
         centerHeader={false}
         headerBorder
@@ -229,7 +229,7 @@ const CourseSchedule = ({
           contentPadding={'0'}
           borderRadius={false}
         />
-      </CollapseableContainer>
+      </CollapsibleContainer>
       {tabList.length > 0 && <LastUpdatedSchedule />}
     </CourseScheduleWrapper>
   );

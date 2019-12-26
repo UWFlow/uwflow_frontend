@@ -98,6 +98,7 @@ const Review = ({
     metrics,
     prof,
     prof_code,
+    user,
   } = review;
   const userID = localStorage.getItem('user_id');
 
@@ -143,12 +144,13 @@ const Review = ({
 
   const programText = author.program ? `${author.program} student ` : '';
   const authorText = author.full_name
-    ? `${author.full_name}${programText.length && ','} `
+    ? `${author.full_name}${programText.length ? ',' : ''} `
     : '';
-  const authorTitle =
-    authorText.length || programText.length
-      ? `${authorText}${programText}`
-      : 'A student ';
+  const authorTitle = user
+    ? 'You wrote this '
+    : authorText.length || programText.length
+    ? `${authorText}${user ? '' : programText}`
+    : 'A student ';
 
   const timeAgo = `${moment(created_at).fromNow()}`;
   const profText = prof
@@ -171,7 +173,7 @@ const Review = ({
   );
 
   return (
-    <ReviewWrapper>
+    <ReviewWrapper isUserReview={!!user}>
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
           <ReviewPicture id={id} />

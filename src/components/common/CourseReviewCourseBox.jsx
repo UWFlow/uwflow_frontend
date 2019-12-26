@@ -83,65 +83,74 @@ const CourseReviewCourseBox = ({
   setSelectedCourseIndex = () => {},
   onCancel = () => {},
 }) => {
+  const buildDefaultReview = (course, review) => {
+    let profsTeaching = course.profs_teaching;
+    profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
+
+    // add prof to dropdown if not fetched from backend
+    if (review) {
+      let idx = profsTeaching.findIndex(
+        prof => prof.prof && prof.prof.id === review.prof_id,
+      );
+      if (idx === -1 && review.prof_id !== null) {
+        profsTeaching.push({ prof: review.prof });
+      }
+    }
+
+    const profIndex = review
+      ? profsTeaching.findIndex(
+          prof => prof.prof && prof.prof.id === review.prof_id,
+        )
+      : -1;
+
+    return {
+      liked: review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
+      useful: (review && review.course_useful) || 0,
+      usefulSelected: review ? review.course_useful !== null : false,
+      easy: (review && review.course_easy) || 0,
+      easySelected: review ? review.course_easy !== null : false,
+      courseComment: (review && review.course_comment) || '',
+      selectedProf: profIndex,
+      clear: (review && review.prof_clear) || 0,
+      clearSelected: review ? review.prof_clear !== null : false,
+      engaging: (review && review.prof_engaging) || 0,
+      engagingSelected: review ? review.prof_engaging !== null : false,
+      profComment: (review && review.prof_comment) || '',
+      selectedAnonymous: review && review.public ? 1 : 0,
+      profsTeaching,
+    };
+  };
+
   const userID = localStorage.getItem('user_id');
   const { course, review } = courseList[selectedCourseIndex];
-  let profsTeaching = course.profs_teaching;
-  profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
-
-  // add prof to dropdown if not fetched from backend
-  if (review) {
-    let idx = profsTeaching.findIndex(
-      prof => prof.prof && prof.prof.id === review.prof_id,
-    );
-    if (idx === -1 && review.prof_id !== null) {
-      profsTeaching.push({ prof: review.prof });
-    }
-  }
-
-  const profIndex = review
-    ? profsTeaching.findIndex(
-        prof => prof.prof && prof.prof.id === review.prof_id,
-      )
-    : -1;
 
   /* State */
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
   const [reviewUpdating, setReviewUpdating] = useState(false);
   const [reviewDeleting, setReviewDeleting] = useState(false);
-
-  const [liked, setLiked] = useState(
-    review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
-  );
-  const [selectedAnonymous, setSelectedAnonymous] = useState(
-    review && review.public ? 1 : 0,
-  );
-
-  const [useful, setUseful] = useState((review && review.course_useful) || -1);
-  const [usefulSelected, setUsefulSelected] = useState(
-    review ? review.course_useful !== null : false,
-  );
-  const [easy, setEasy] = useState((review && review.course_easy) || -1);
-  const [easySelected, setEasySelected] = useState(
-    review ? review.course_easy !== null : false,
-  );
-  const [courseComment, setCourseComment] = useState(
-    (review && review.course_comment) || '',
+  const [reviewStates, setReviewStates] = useState(
+    courseList.reduce((states, { course, review }) => {
+      states[course.code] = buildDefaultReview(course, review);
+      return states;
+    }, {}),
   );
 
-  const [selectedProf, setSelectedProf] = useState(profIndex);
-  const [clear, setClear] = useState((review && review.prof_clear) || -1);
-  const [clearSelected, setClearSelected] = useState(
-    review ? review.prof_clear !== null : false,
-  );
-  const [engaging, setEngaging] = useState(
-    (review && review.prof_engaging) || -1,
-  );
-  const [engagingSelected, setEngagingSelected] = useState(
-    review ? review.prof_engaging !== null : false,
-  );
-  const [profComment, setProfComment] = useState(
-    (review && review.prof_comment) || '',
-  );
+  const {
+    liked,
+    useful,
+    usefulSelected,
+    easy,
+    easySelected,
+    courseComment,
+    selectedProf,
+    clear,
+    clearSelected,
+    engaging,
+    engagingSelected,
+    profComment,
+    selectedAnonymous,
+    profsTeaching,
+  } = reviewStates[course.code];
 
   /* Mutations */
   const refetchQueries = [
@@ -164,8 +173,11 @@ const CourseReviewCourseBox = ({
 
   const handlePost = () => {
     setReviewUpdating(true);
+
     const profID =
-      selectedProf === -1 ? null : profsTeaching[selectedProf].prof.id;
+      selectedProf === -1 || selectedProf === profsTeaching.length
+        ? null
+        : profsTeaching[selectedProf].prof.id;
 
     const reviewData = {
       user_id: userID,
@@ -175,10 +187,10 @@ const CourseReviewCourseBox = ({
       public: selectedAnonymous === 0 ? false : true,
       course_easy: easy,
       course_useful: useful,
-      course_comment: courseComment,
-      prof_clear: clear === -1 ? null : clear,
-      prof_engaging: engaging === -1 ? null : engaging,
-      prof_comment: profComment,
+      course_comment: courseComment !== '' ? courseComment : null,
+      prof_clear: profID && clearSelected ? clear : null,
+      prof_engaging: profID && engagingSelected ? engaging : null,
+      prof_comment: profID && profComment !== '' ? profComment : null,
     };
 
     upsertReview({
@@ -224,6 +236,27 @@ const CourseReviewCourseBox = ({
     }
   };
 
+  const setReviewValue = (key, value) => {
+    setReviewStates({
+      ...reviewStates,
+      [course.code]: {
+        ...reviewStates[course.code],
+        [key]: value,
+      },
+    });
+  };
+
+  const setSliderValue = (key, value, selectedKey) => {
+    setReviewStates({
+      ...reviewStates,
+      [course.code]: {
+        ...reviewStates[course.code],
+        [key]: value,
+        [selectedKey]: true,
+      },
+    });
+  };
+
   return (
     <CourseReviewCourseBoxWrapper>
       {(courseList.length > 1 || showCourseDropdown) && (
@@ -236,7 +269,7 @@ const CourseReviewCourseBox = ({
               splitCourseCode(courseObject.course.code),
             )}
             color={theme.courses}
-            onChange={value => setSelectedCourseIndex(value)}
+            onChange={setSelectedCourseIndex}
             zIndex={6}
             searchable
           />
@@ -252,11 +285,15 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={useful}
           color={theme.courses}
-          onUpdate={value => setUseful(value[0])}
+          onSlideEnd={value =>
+            setSliderValue('useful', value[0], 'usefulSelected')
+          }
           selected={usefulSelected}
-          setSelected={setUsefulSelected}
+          setSelected={value => setReviewValue('usefulSelected', value)}
         />
-        <SliderOptionText>{usefulOptions[useful]}</SliderOptionText>
+        <SliderOptionText>
+          {usefulSelected ? usefulOptions[useful] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -265,11 +302,13 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={easy}
           color={theme.courses}
-          onUpdate={value => setEasy(value[0])}
+          onSlideEnd={value => setSliderValue('easy', value[0], 'easySelected')}
           selected={easySelected}
-          setSelected={setEasySelected}
+          setSelected={value => setReviewValue('easySelected', value)}
         />
-        <SliderOptionText>{easyOptions[easy]}</SliderOptionText>
+        <SliderOptionText>
+          {easySelected ? easyOptions[easy] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -278,7 +317,7 @@ const CourseReviewCourseBox = ({
           selected={liked}
           options={['Yes', 'No']}
           color={theme.courses}
-          onClick={value => setLiked(value)}
+          onClick={value => setReviewValue('liked', value)}
         />
       </MetricQuestionWrapper>
 
@@ -286,7 +325,7 @@ const CourseReviewCourseBox = ({
         rows={5}
         value={courseComment}
         maxLength={8192}
-        onChange={event => setCourseComment(event.target.value)}
+        onChange={event => setReviewValue('courseComment', event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -295,9 +334,12 @@ const CourseReviewCourseBox = ({
         <DropdownList
           selectedIndex={selectedProf}
           placeholder="select your professor"
-          options={profsTeaching.map(prof => prof.prof.name)}
+          options={[
+            ...profsTeaching.map(prof => prof.prof.name),
+            "my professor isn't here",
+          ]}
           color={theme.professors}
-          onChange={value => setSelectedProf(value)}
+          onChange={value => setReviewValue('selectedProf', value)}
           zIndex={5}
           searchable
         />
@@ -309,11 +351,15 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={clear}
           color={theme.professors}
-          onUpdate={value => setClear(value[0])}
+          onSlideEnd={value =>
+            setSliderValue('clear', value[0], 'clearSelected')
+          }
           selected={clearSelected}
-          setSelected={setClearSelected}
+          setSelected={value => setReviewValue('clearSelected', value)}
         />
-        <SliderOptionText>{clearOptions[clear]}</SliderOptionText>
+        <SliderOptionText>
+          {clearSelected ? clearOptions[clear] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <MetricQuestionWrapper>
@@ -322,18 +368,22 @@ const CourseReviewCourseBox = ({
           numNodes={6}
           currentNode={engaging}
           color={theme.professors}
-          onUpdate={value => setEngaging(value[0])}
+          onSlideEnd={value =>
+            setSliderValue('engaging', value[0], 'engagingSelected')
+          }
           selected={engagingSelected}
-          setSelected={setEngagingSelected}
+          setSelected={value => setReviewValue('engagingSelected', value)}
         />
-        <SliderOptionText>{engagingOptions[engaging]}</SliderOptionText>
+        <SliderOptionText>
+          {engagingSelected ? engagingOptions[engaging] : ''}
+        </SliderOptionText>
       </MetricQuestionWrapper>
 
       <ReviewTextArea
         rows={5}
         value={profComment}
         maxLength={8192}
-        onChange={event => setProfComment(event.target.value)}
+        onChange={event => setReviewValue('profComment', event.target.value)}
         placeholder="Add any comments or tips..."
       />
 
@@ -350,7 +400,7 @@ const CourseReviewCourseBox = ({
             selectedIndex={selectedAnonymous}
             options={['anonymously', 'as yourself']}
             color={theme.primary}
-            onChange={value => setSelectedAnonymous(value)}
+            onChange={value => setReviewValue('selectedAnonymous', value)}
             margin="auto 16px auto auto"
             zIndex={2}
           />
@@ -367,12 +417,7 @@ const CourseReviewCourseBox = ({
           <Button
             handleClick={handlePost}
             loading={reviewUpdating}
-            disabled={
-              !usefulSelected ||
-              !easySelected ||
-              liked === -1 ||
-              selectedProf === -1
-            }
+            disabled={!usefulSelected || !easySelected || liked === -1}
           >
             Post
           </Button>

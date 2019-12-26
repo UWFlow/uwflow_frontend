@@ -28,6 +28,8 @@ export const CourseCodeAndNameSection = styled.div`
   background-image: url(${CourseHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
   background-size: cover;
+  background-repeat: no-repeat;
+  will-change: transform;
   position: relative;
   min-height: 160px;
   padding: 16px;

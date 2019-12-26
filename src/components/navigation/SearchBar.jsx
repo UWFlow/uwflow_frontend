@@ -108,6 +108,13 @@ const SearchBar = ({
     }
   }, [selectedResultIndex, selectedResultRef, inputRef]);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      setOpen(false);
+      inputRef.current.blur();
+    }
+  }, [inputRef]);
+
   useOnClickOutside(searchBarRef, () => setOpen(false));
 
   const queryExploreCourses = (
@@ -292,6 +299,7 @@ const SearchBar = ({
         maxLength={100}
         autocompletePlaceholder={autocompleteResult()}
         forwardRef={inputRef}
+        onFocus={() => setOpen(true)}
       />
       {open && renderSearchResults()}
     </SearchBarWrapper>

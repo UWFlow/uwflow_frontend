@@ -5,7 +5,10 @@ import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 /* Styled Components */
-import { ShortlistStarWrapper } from './styles/ShortlistStar';
+import {
+  ShortlistStarWrapper,
+  ShortlistStarButton,
+} from './styles/ShortlistStar';
 
 /* Child Components */
 import Tooltip from '../display/Tooltip';
@@ -91,14 +94,16 @@ const ShortlistStar = ({
   return (
     <>
       <Tooltip />
-      <ShortlistStarWrapper
-        data-tip={`Add ${splitCourseCode(courseCode)} to your shortlist`}
-        onClick={onStarClicked}
-        checked={checked}
-        width={size}
-        color={checked ? theme.dark3 : theme.light4}
-        strokeWidth={2}
-      />
+      <ShortlistStarButton>
+        <ShortlistStarWrapper
+          data-tip={`Add ${splitCourseCode(courseCode)} to your shortlist`}
+          onClick={onStarClicked}
+          checked={checked}
+          width={size}
+          color={checked ? theme.dark3 : theme.light4}
+          strokeWidth={2}
+        />
+      </ShortlistStarButton>
     </>
   );
 };

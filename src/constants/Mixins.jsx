@@ -7,6 +7,9 @@ import {
 } from './PageConstants';
 import theme from './GlobalTheme';
 
+export const InterFont = `Inter, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Helvetica Neue, sans-serif`;
+export const AndersonFont = `'Anderson Grotesk', -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Helvetica Neue, sans-serif`;
+
 export const PageContentZIndex = 'z-index: -1;';
 
 export const PageWrapper = `
@@ -47,7 +50,7 @@ export const ThinColumn = `
 
 /* Fonts */
 export const Heading1 = `
-  font-family: 'Anderson Grotesk';
+  font-family: ${AndersonFont};
   font-size: 40px;
   font-weight: 800;
 
@@ -57,7 +60,7 @@ export const Heading1 = `
 `;
 
 export const Heading2 = `
-  font-family: 'Anderson Grotesk';
+  font-family: ${AndersonFont};
   font-size: 32px;
   font-weight: 800;
 
@@ -67,19 +70,19 @@ export const Heading2 = `
 `;
 
 export const Heading3 = `
-  font-family: 'Anderson Grotesk';
+  font-family: ${AndersonFont};
   font-size: 20px;
   font-weight: 600;
 `;
 
 export const Heading4 = `
-  font-family: 'Anderson Grotesk';
+  font-family: ${AndersonFont};
   font-size: 18px;
   font-weight: 600;
 `;
 
 export const Body = `
-  font-family: 'Inter';
+  font-family: ${InterFont};
   font-weight: 400;
   font-size: 16px;
 `;

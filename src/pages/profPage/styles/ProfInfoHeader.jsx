@@ -29,6 +29,8 @@ export const ProfNameSection = styled.div`
   background-image: url(${ProfHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
   background-size: cover;
+  background-repeat: no-repeat;
+  will-change: transform;
   position: relative;
   min-height: 120px;
   padding: 16px;
