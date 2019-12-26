@@ -57,6 +57,7 @@ const CoursePageContent = ({
   sectionSubscriptions,
   isLoggedIn,
   isBrowserDesktop,
+  userEmail,
 }) => {
   const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
@@ -70,6 +71,7 @@ const CoursePageContent = ({
       courseCode={course.code}
       courseID={course.id}
       sectionSubscriptions={sectionSubscriptions}
+      userEmail={userEmail}
     />
   );
 
@@ -166,6 +168,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
         sectionSubscriptions={data.section_subscription || []}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
+        userEmail={data.user[0].email}
       />
     </CoursePageWrapper>
   );

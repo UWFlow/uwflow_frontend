@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-apollo';
 import { connect, useDispatch } from 'react-redux';
 import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
@@ -6,6 +7,7 @@ import { toast } from 'react-toastify';
 
 /* Child Components */
 import Tooltip from '../../components/display/Tooltip';
+import CourseNotificationEmailModal from '../../components/emailInputModals/CourseNotificationEmailModal';
 
 /* Styled Components */
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
@@ -13,6 +15,7 @@ import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
+import { courseNotificationEmailModalOpen } from '../../data/actions/ModalActions';
 
 /* GraphQL */
 import {
@@ -20,6 +23,7 @@ import {
   INSERT_SECTION_SUBSCRIPTION,
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
+import { GET_USER_INFO } from '../../graphql/queries/user/User';
 
 /* Constants */
 import {
@@ -37,8 +41,10 @@ const ScheduleNotificationBell = ({
   sectionID,
   courseID,
   initialState = false,
+  userEmail,
 }) => {
   const userID = localStorage.getItem('user_id');
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   const refetchQueries = [
     {
@@ -57,7 +63,7 @@ const ScheduleNotificationBell = ({
   });
 
   const notifyDelete = () => toast(SUBSCRIPTION_SUCCESS.unsubscribed);
-  const notifyInsert = () => toast(SUBSCRIPTION_SUCCESS.subscribed);
+  const notifyInsert = email => toast(SUBSCRIPTION_SUCCESS.subscribed(email));
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -75,16 +81,28 @@ const ScheduleNotificationBell = ({
         .catch(() => {
           toast(SUBSCRIPTION_ERROR);
         });
+      setSelected(false);
     } else {
-      insertSubscription({
-        variables: { user_id: userID, section_id: sectionID },
-      })
-        .then(() => notifyInsert())
-        .catch(() => {
-          toast(SUBSCRIPTION_ERROR);
-        });
+      // Assume user data will be loaded by the time a notification bell is clicked
+      console.log(userEmail);
+      if (userEmail === '' || userEmail === null || userEmail === undefined) {
+        // TODO: chain insertSubscription and setSelected to fire after user has entered email
+        // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
+        // TODO: Find way to pass callbacks to top level modal
+        setIsEmailModalOpen(true);
+      } else {
+        insertSubscription({
+          variables: { user_id: userID, section_id: sectionID },
+        })
+          .then(() => {
+            notifyInsert(userEmail);
+            setSelected(true);
+          })
+          .catch(() => {
+            toast(SUBSCRIPTION_ERROR);
+          });
+      }
     }
-    setSelected(!selected);
   };
 
   return (
@@ -101,6 +119,24 @@ const ScheduleNotificationBell = ({
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
       </NotificationBellWrapper>
+      <div style={{ overflow: 'hidden' }}>
+        <CourseNotificationEmailModal
+          isOpen={isEmailModalOpen}
+          onClose={() => setIsEmailModalOpen(false)}
+          onSuccess={email =>
+            insertSubscription({
+              variables: { user_id: userID, section_id: sectionID },
+            })
+              .then(() => {
+                notifyInsert(email);
+                setSelected(true);
+              })
+              .catch(() => {
+                toast(SUBSCRIPTION_ERROR);
+              })
+          }
+        />
+      </div>
     </>
   );
 };

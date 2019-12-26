@@ -63,6 +63,7 @@ const EnrolledCell = ({ cell }) => (
           sectionID={cell.value.section_id}
           courseID={cell.value.course_id}
           initialState={cell.value.selected}
+          userEmail={cell.value.userEmail}
         />
       )}
       <EnrollmentText

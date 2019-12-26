@@ -135,6 +135,7 @@ const CourseSchedule = ({
   courseCode,
   courseID,
   sectionSubscriptions,
+  userEmail,
 }) => {
   if (!sections || sections.length === 0) {
     return null;
@@ -174,6 +175,7 @@ const CourseSchedule = ({
         capacity: s.enrollment_capacity,
         hasBell: hasBell[s.term_id],
         selected: subscribedSectionIDs.includes(s.id),
+        userEmail: userEmail,
       },
       // Every grouping contains a single time of day, location, and instructor
       // and the classes that occur with those parameters.

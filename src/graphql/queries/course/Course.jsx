@@ -33,6 +33,9 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
         review(where: {course: {code: {_eq: $code}}, user: {user_id: {_eq: ${userId}}}}) {
           ...ReviewInfoFragment
         }
+        user {
+          email
+        }
         `
           : ''
       }

@@ -34,6 +34,7 @@ import {
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
 import AuthModal from './auth/AuthModal';
+import CourseNotificationEmailModal from './components/emailInputModals/CourseNotificationEmailModal';
 import ScrollProvider from './data/providers/ScrollProvider';
 
 /* Constants */
@@ -136,6 +137,7 @@ const App = ({ history }) => {
           })
         }
       />
+      <CourseNotificationEmailModal />
     </>
   );
 };
