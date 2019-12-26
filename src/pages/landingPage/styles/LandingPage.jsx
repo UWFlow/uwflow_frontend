@@ -27,7 +27,7 @@ export const Nav = styled(FadeIn)`
   max-width: ${MAX_PAGE_WIDTH}px;
   margin: auto;
   left: calc((100vw - ${MAX_PAGE_WIDTH}px) / 2);
-
+  z-index: 11;
   @media only screen and (max-width: ${MAX_PAGE_WIDTH + 64}px) {
     left: 0;
   }
