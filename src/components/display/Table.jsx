@@ -42,7 +42,7 @@ const Table = ({
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    if (!shouldFetchMore || !fetchMore || loading) {
+    if (!shouldFetchMore || !fetchMore || loading || doneFetching) {
       return;
     }
 
@@ -63,6 +63,7 @@ const Table = ({
     if (loading || shouldFetchMore || !bottomRef.current || !fetchMore) {
       return;
     }
+
     const top = bottomRef.current.getBoundingClientRect().top;
     const inView =
       top + fetchOffset >= 0 && top - fetchOffset <= window.innerHeight;
