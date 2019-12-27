@@ -16,6 +16,7 @@ const TabContainer = ({
   initialSelectedTab = 0,
   contentPadding = '32px',
   borderRadius = true,
+  onChange = () => {},
 }) => {
   const [selectedTab, setSelectedTab] = useState(initialSelectedTab);
 
@@ -32,6 +33,7 @@ const TabContainer = ({
             onClick={() => {
               tab.onClick && tab.onClick(index);
               setSelectedTab(index);
+              onChange(index);
             }}
             borderRadius={borderRadius}
           >

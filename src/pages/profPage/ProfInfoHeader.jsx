@@ -19,7 +19,7 @@ import RatingBox, {
   RATING_BOX_WIDTH,
 } from '../../components/display/RatingBox';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
 const ProfInfoHeader = ({ prof }) => {
@@ -28,7 +28,7 @@ const ProfInfoHeader = ({ prof }) => {
   const profCourseLinks = profCourses.map((courseCode, i) => (
     <span key={courseCode}>
       <CourseLink to={getCoursePageRoute(courseCode)}>
-        {splitCourseCode(courseCode)}
+        {formatCourseCode(courseCode)}
       </CourseLink>
       {i < profCourses.length - 1 && ','}
     </span>

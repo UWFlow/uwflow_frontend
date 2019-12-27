@@ -29,7 +29,7 @@ import {
 
 import {
   termCodeToDate,
-  splitCourseCode,
+  formatCourseCode,
   processRating,
 } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
@@ -73,7 +73,7 @@ const ProfileCourses = ({
             <ProfileCourseCode
               to={getCoursePageRoute(course_taken.course.code)}
             >
-              {splitCourseCode(course_taken.course.code)}
+              {formatCourseCode(course_taken.course.code)}
             </ProfileCourseCode>
             <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
           </ProfileCourseText>

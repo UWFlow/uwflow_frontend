@@ -1,7 +1,7 @@
 import fuzzysort from 'fuzzysort';
 import LZString from 'lz-string';
 import { SEARCH_DATA_ENDPOINT, BACKEND_ENDPOINT } from '../constants/Api';
-import { splitCourseCode } from '../utils/Misc';
+import { formatCourseCode } from '../utils/Misc';
 
 const RATING_MULTIPLIER = 0.1;
 const MAX_AUTOCOMPLETE_LENGTH = 50;
@@ -60,7 +60,7 @@ class SearchClient {
 
     const parsedQuery = query
       .split(' ')
-      .map(term => splitCourseCode(term))
+      .map(term => formatCourseCode(term))
       .join(' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -113,7 +113,7 @@ class SearchClient {
     let courseCodeRatings = {};
 
     const courses = parsedSearchData.courses.map(course => {
-      const courseLetters = splitCourseCode(course.code).split(' ')[0];
+      const courseLetters = formatCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
 
       // total number of ratings for reranking during search
@@ -124,8 +124,8 @@ class SearchClient {
 
       return {
         ...course,
-        code: splitCourseCode(course.code),
-        fullText: `${splitCourseCode(course.code)} — ${course.name}`,
+        code: formatCourseCode(course.code),
+        fullText: `${formatCourseCode(course.code)} — ${course.name}`,
         profs: course.profs === null ? '' : course.profs.join(' '),
       };
     });
@@ -136,7 +136,7 @@ class SearchClient {
         courses:
           prof.courses === null
             ? ''
-            : prof.courses.map(course => splitCourseCode(course)).join(' '),
+            : prof.courses.map(course => formatCourseCode(course)).join(' '),
       };
     });
 

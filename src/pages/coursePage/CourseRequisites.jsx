@@ -10,7 +10,7 @@ import {
   CourseRequisitesWrapper,
 } from './styles/CourseRequisites';
 
-import { splitCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
+import { formatCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
 const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
@@ -39,7 +39,7 @@ const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
               ...arr,
               element,
               <CourseText to={getCoursePageRoute(matches[index])} key={index}>
-                {`${splitCourseCode(matches[index])}`}
+                {`${formatCourseCode(matches[index])}`}
               </CourseText>,
             ]
           : [...arr, element],
@@ -49,7 +49,7 @@ const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
 
   return (
     <CourseRequisitesWrapper>
-      <Header>{`${splitCourseCode(courseCode)} prerequisites`}</Header>
+      <Header>{`${formatCourseCode(courseCode)} prerequisites`}</Header>
       {prereqs ? (
         <ReqText>{parsedRequisites(prereqs)}</ReqText>
       ) : (
@@ -58,7 +58,7 @@ const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
         </LineOfText>
       )}
       <br />
-      <Header>{`${splitCourseCode(courseCode)} antirequisites`}</Header>
+      <Header>{`${formatCourseCode(courseCode)} antirequisites`}</Header>
       {antireqs ? (
         <ReqText>{parsedRequisites(antireqs)}</ReqText>
       ) : (
@@ -67,11 +67,11 @@ const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
         </LineOfText>
       )}
       <br />
-      <Header>{`${splitCourseCode(courseCode)} leads to`}</Header>
+      <Header>{`${formatCourseCode(courseCode)} leads to`}</Header>
       {postreqs.map((postreq, idx) => (
         <LineOfText key={idx}>
           <CourseText to={getCoursePageRoute(postreq.postrequisite.code)}>
-            {`${splitCourseCode(postreq.postrequisite.code)} - ${
+            {`${formatCourseCode(postreq.postrequisite.code)} - ${
               postreq.postrequisite.name
             }`}
           </CourseText>

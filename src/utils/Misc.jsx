@@ -38,7 +38,7 @@ export const COURSE_CODE_REGEX = /[a-zA-Z]{2,}[0-9]+[a-zA-Z]*/gi;
 
 export const splitCourseCode = code => {
   if (!code || code === '') {
-    return code;
+    return ['', ''];
   }
 
   let codeLetters = '';
@@ -52,7 +52,17 @@ export const splitCourseCode = code => {
     i++;
   }
 
-  return [codeLetters, code.slice(i)].join(' ').toUpperCase();
+  return [codeLetters, code.slice(i)];
+};
+
+export const formatCourseCode = code => {
+  if (!code || code === '') {
+    return code;
+  }
+
+  return splitCourseCode(code)
+    .join(' ')
+    .toUpperCase();
 };
 
 export const processRating = rating => {

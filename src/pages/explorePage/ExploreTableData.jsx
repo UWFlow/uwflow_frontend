@@ -1,7 +1,7 @@
 import React from 'react';
 import { CourseCode, ProfName } from './styles/ExplorePage';
 
-import { splitCourseCode, processRating } from '../../utils/Misc';
+import { formatCourseCode, processRating } from '../../utils/Misc';
 import { getCoursePageRoute, getProfPageRoute } from '../../Routes';
 
 export const courseColumns = [
@@ -12,7 +12,7 @@ export const courseColumns = [
     minWidth: 120,
     Cell: ({ cell }) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
-        {splitCourseCode(cell.value)}
+        {formatCourseCode(cell.value)}
       </CourseCode>
     ),
     style: {

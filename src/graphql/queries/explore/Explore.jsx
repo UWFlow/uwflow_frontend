@@ -4,7 +4,7 @@ import CourseFragment from '../../fragments/CourseFragment.jsx';
 import ProfFragment from '../../fragments/ProfFragment.jsx';
 
 import { MAX_SEARCH_TERMS } from '../../../constants/Search.jsx';
-import { splitCourseCode } from '../../../utils/Misc.jsx';
+import { formatCourseCode } from '../../../utils/Misc.jsx';
 
 export const buildExploreCodeQuery = (query = '') => gql`
   query EXPLORE_COURSE_CODE {
@@ -31,7 +31,7 @@ export const buildExploreQuery = (query = '') => {
   const queryTerms = query
     .replace('-', ' ')
     .split(' ')
-    .map(term => splitCourseCode(term))
+    .map(term => formatCourseCode(term))
     .map(term => term.trim())
     .filter(term => term.length > 0)
     .slice(0, MAX_SEARCH_TERMS);

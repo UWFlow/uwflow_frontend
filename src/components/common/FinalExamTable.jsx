@@ -6,7 +6,7 @@ import { CourseCode } from './styles/FinalExamTable';
 
 import Table from '../display/Table';
 import { getCoursePageRoute } from '../../Routes';
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 
 const examColumns = [
   {
@@ -16,7 +16,7 @@ const examColumns = [
     maxWidth: 120,
     Cell: ({ cell }) => (
       <CourseCode to={getCoursePageRoute(cell.value)}>
-        {splitCourseCode(cell.value)}
+        {formatCourseCode(cell.value)}
       </CourseCode>
     ),
   },

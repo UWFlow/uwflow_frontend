@@ -21,7 +21,7 @@ import RatingBox, {
 } from '../../components/display/RatingBox';
 import ShortlistStar from '../../components/input/ShortlistStar';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 
 const CourseInfoHeader = ({ course, shortlisted }) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating;
@@ -31,7 +31,7 @@ const CourseInfoHeader = ({ course, shortlisted }) => {
       <CourseCodeAndNameSection>
         <CourseCodeAndStar>
           <CourseCode ratingBoxWidth={RATING_BOX_WIDTH}>
-            {splitCourseCode(course.code)}
+            {formatCourseCode(course.code)}
           </CourseCode>
           <StarAlignmentWrapper>
             <ShortlistStar

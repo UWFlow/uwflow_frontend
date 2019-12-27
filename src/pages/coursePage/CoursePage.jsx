@@ -38,7 +38,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* Utils */
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 
 /* Constants */
 import { authModalOpen } from '../../data/actions/AuthActions';
@@ -87,7 +87,7 @@ const CoursePageContent = ({
               <CourseReviewQuestionBox>
                 <CourseQuestionTextAndToggle>
                   <CourseReviewQuestionText>
-                    What do you think of {splitCourseCode(course.code)}?
+                    What do you think of {formatCourseCode(course.code)}?
                   </CourseReviewQuestionText>
                   <LikeCourseToggle
                     courseCode={course.code}
@@ -151,7 +151,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
     <CoursePageWrapper>
       <Helmet>
         <title>
-          {splitCourseCode(data.course[0].code)} - {data.course[0].name} - UW
+          {formatCourseCode(data.course[0].code)} - {data.course[0].name} - UW
           Flow
         </title>
         <meta name="description" content={data.course[0].description} />
