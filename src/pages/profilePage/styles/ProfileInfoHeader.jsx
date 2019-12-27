@@ -86,7 +86,7 @@ export const UserEmailWrapper = styled(FadeIn)`
 `;
 
 export const UserEmailText = styled.div`
-  margin-right: 4px;
+  margin-right: 5px;
 `;
 
 export const UserEmail = styled.a`
