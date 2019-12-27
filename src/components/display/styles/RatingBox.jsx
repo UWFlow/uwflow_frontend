@@ -85,6 +85,7 @@ export const NumCommentsWrapper = styled.button`
     ${Link}
     text-decoration: underline;
     cursor: pointer;
+    padding: 0;
     ${Hover(true)}
   `};
   color: ${({ hasComments, theme }) =>

@@ -28,7 +28,7 @@ const ProfileInfoHeader = ({ user }) => {
             <UserName>{user.full_name}</UserName>
             <UserProgram>{user.program}</UserProgram>
             <UserEmailWrapper>
-              <UserEmailText>Send notifications to:</UserEmailText>
+              <UserEmailText>Send notifications to</UserEmailText>
               <UserEmail onClick={() => setEditEmailModalOpen(true)}>
                 {user.email}
               </UserEmail>

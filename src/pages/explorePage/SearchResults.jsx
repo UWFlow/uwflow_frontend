@@ -126,7 +126,7 @@ const SearchResults = ({
 
   const courseSearch = exploreTab === 0;
 
-  const resultsToReturn = () => {
+  const resultsToReturn = useMemo(() => {
     let filtered = courseSearch ? filteredCourses : filteredProfs;
     if (tableState.sortBy.length > 0) {
       const { id: sortKey, desc } = tableState.sortBy[0];
@@ -138,13 +138,12 @@ const SearchResults = ({
           : numberSort(a[sortKey], b[sortKey], desc),
       );
     }
-    return filtered.slice(0, numRendered);
-  };
+    return filtered;
+  }, [courseSearch, filteredCourses, filteredProfs, tableState.sortBy]);
 
   const tableProps = {
     cellPadding: '16px 0',
-    loading,
-    fetchOffset: 2000,
+    loading: loading || courses === null || profs === null,
     sortable: true,
     manualSortBy: true,
     setTableState: state => {
@@ -153,15 +152,18 @@ const SearchResults = ({
     },
   };
 
-  const doneFetching = courseSearch
-    ? filteredCourses.length <= numRendered
-    : filteredProfs.length <= numRendered;
+  const doneFetching =
+    courses !== null && profs !== null
+      ? courseSearch
+        ? filteredCourses.length <= numRendered
+        : filteredProfs.length <= numRendered
+      : false;
 
   const results = () => (
     <SearchResultsContent>
       <Table
         {...tableProps}
-        data={resultsToReturn()}
+        data={resultsToReturn.slice(0, numRendered)}
         columns={courseSearch ? courseColumns : profColumns}
         rightAlignIndex={courseSearch ? 2 : 1}
         showNoResults

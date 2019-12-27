@@ -50,7 +50,7 @@ export const HeaderCell = styled.div`
   }
 `;
 
-export const HeaderText = styled.button`
+export const HeaderText = styled.a`
   background: none;
   border: none;
   ${({ sortable }) => (sortable ? Link : '')}
