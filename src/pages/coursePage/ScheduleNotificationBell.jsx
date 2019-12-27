@@ -60,7 +60,7 @@ const ScheduleNotificationBell = ({
   });
 
   const notifyDelete = () => toast(SUBSCRIPTION_SUCCESS.unsubscribed);
-  const notifyInsert = email => toast(SUBSCRIPTION_SUCCESS.subscribed(email));
+  const notifyInsert = () => toast(SUBSCRIPTION_SUCCESS.subscribed);
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -81,7 +81,6 @@ const ScheduleNotificationBell = ({
       setSelected(false);
     } else {
       // Assume user data will be loaded by the time a notification bell is clicked
-      console.log(userEmail);
       if (userEmail === '' || userEmail === null || userEmail === undefined) {
         // TODO: chain insertSubscription and setSelected to fire after user has entered email
         // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
@@ -120,12 +119,12 @@ const ScheduleNotificationBell = ({
         <CourseNotificationEmailModal
           isOpen={isEmailModalOpen}
           onClose={() => setIsEmailModalOpen(false)}
-          onSuccess={email =>
+          onSuccess={() =>
             insertSubscription({
               variables: { user_id: userID, section_id: sectionID },
             })
               .then(() => {
-                notifyInsert(email);
+                notifyInsert();
                 setSelected(true);
               })
               .catch(() => {

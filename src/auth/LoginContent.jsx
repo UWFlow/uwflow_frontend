@@ -89,7 +89,12 @@ const LoginContent = ({
             Forgot password?
           </ForgotPasswordText>
         </ForgotPasswordWrapper>
-        <Button margin="0 0 16px 0" width="100%" onClick={handleLogin}>
+        <Button
+          margin="0 0 16px 0"
+          width="100%"
+          onClick={handleLogin}
+          type="submit"
+        >
           Log in
         </Button>
       </Form>

@@ -415,6 +415,7 @@ const CourseReviewCourseBox = ({
             </Button>
           )}
           <Button
+            type="submit"
             handleClick={handlePost}
             loading={reviewUpdating}
             disabled={!usefulSelected || !easySelected || liked === -1}

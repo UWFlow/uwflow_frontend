@@ -48,6 +48,9 @@ export const SHORTLIST_ERROR =
 export const REVIEW_ERROR =
   'Sorry, we couldn’t post your review. Try again in a few minutes';
 
+export const EMAIL_ERROR =
+  'Sorry, we couldn’t update your email. Try again in a few minutes';
+
 export const DEFAULT_ERROR =
   'Sorry, looks like something is wrong on our end. Try again in a few minutes';
 
@@ -64,6 +67,8 @@ export const EXPLORE_COURSES_ERROR =
 
 export const DATA_UPLOAD_SUCCESS = 'Success! 🎉';
 
+export const EMAIL_UPDATE_SUCCESS = 'Successfully updated email! 🎉';
+
 export const AUTH_SUCCESS = {
   login: 'Logged in!',
   logout: 'Logged out!',
@@ -72,8 +77,8 @@ export const AUTH_SUCCESS = {
 
 export const SUBSCRIPTION_SUCCESS = {
   unsubscribed: 'Unsubscribed!',
-  subscribed: email =>
-    `Subscribed to section with email ${email}, to change this email go to your profile page`,
+  subscribed:
+    'Subscribed! You’ll receive an email from us when at least one spot opens up',
 };
 
 export const REVIEW_SUCCESS = {

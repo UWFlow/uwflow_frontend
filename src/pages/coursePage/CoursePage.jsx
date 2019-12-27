@@ -165,7 +165,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
           isLoggedIn && data.user_course_taken.length > 0 ? true : false
         }
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
-        sectionSubscriptions={data.section_subscription || []}
+        sectionSubscriptions={data.queue_section_subscribed || []}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
         userEmail={isLoggedIn && data.user[0].email}

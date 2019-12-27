@@ -22,7 +22,6 @@ const renderText = (history, dispatch) => () => (
     >
       profile page
     </FormLink>
-    .
   </FormText>
 );
 

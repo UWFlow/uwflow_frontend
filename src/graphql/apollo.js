@@ -53,7 +53,7 @@ const link = ApolloLink.from([
 const cache = new InMemoryCache({
   dataIdFromObject: object => {
     switch (object.__typename) {
-      case 'section_subscription':
+      case 'queue_section_subscribed':
         return `${object.section_id}:${object.user_id}`;
       case 'user_shortlist':
         return `${object.course_id}:${object.user_id}`;

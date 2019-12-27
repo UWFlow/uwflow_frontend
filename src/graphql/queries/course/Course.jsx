@@ -26,7 +26,7 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
           term_id
           course_id
         }
-        section_subscription(where: {section: {course: {code: {_eq: $code}}}, user_id: {_eq: ${userId}}}) {
+        queue_section_subscribed(where: {section: {course: {code: {_eq: $code}}}, user_id: {_eq: ${userId}}}) {
           section_id
           user_id
         }
@@ -74,7 +74,7 @@ export const REFETCH_RATINGS = gql`
 
 export const REFETCH_SECTION_SUBSCRIPTIONS = gql`
   query REFETCH_SECTION_SUBSCRIPTIONS($course_id: Int, $user_id: Int) {
-    section_subscription(
+    queue_section_subscribed(
       where: {
         section: { course_id: { _eq: $course_id } }
         user_id: { _eq: $user_id }
