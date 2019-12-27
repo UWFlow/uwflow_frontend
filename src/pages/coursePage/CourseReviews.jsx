@@ -233,12 +233,16 @@ const CourseProfReviews = ({
           </ReviewListWrapper>
           {prof.reviews.length > MIN_REVIEWS_SHOWN && (
             <ShowMoreReviewsSection
-              onClick={() =>
+              id={prof.name}
+              onClick={() => {
                 setShowingReviewsMap({
                   ...showingReviewsMap,
                   [prof.name]: !showingReviewsMap[prof.name],
-                })
-              }
+                });
+                if (showingReviewsMap[prof.name]) {
+                  document.getElementById(prof.name).scrollIntoView();
+                }
+              }}
             >
               <ShowMoreReviewsText>
                 {showingReviewsMap[prof.name]
