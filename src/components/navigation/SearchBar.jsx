@@ -187,6 +187,7 @@ const SearchBar = ({
       key={course.code}
       ref={ref}
     >
+      <Tooltip id={`${course.code}`} />
       <ResultLeft>
         <CourseText>
           <Square />
@@ -197,6 +198,7 @@ const SearchBar = ({
       </ResultLeft>
       <ExploreCourseProfs
         data-tip={`Explore professors that teach ${course.code}`}
+        data-for={`${course.code}`}
         onClick={e => {
           e.stopPropagation();
           queryExploreCourses(course.code, false, true);
@@ -209,7 +211,7 @@ const SearchBar = ({
 
   const profResult = (prof, ref = null) => (
     <SearchResult onClick={() => goToProf(prof.code)} key={prof.code} ref={ref}>
-      <Tooltip />
+      <Tooltip id={`${prof.code}`} />
       <ResultLeft>
         <ProfText>
           <User />
@@ -220,6 +222,7 @@ const SearchBar = ({
       </ResultLeft>
       <ExploreProfCourses
         data-tip={`Explore courses taught by ${prof.name}`}
+        data-for={`${prof.code}`}
         onClick={e => {
           e.stopPropagation();
           queryExploreCourses(prof.name);

@@ -176,10 +176,11 @@ const Review = ({
     <ReviewWrapper isUserReview={!!user}>
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
-          <ReviewPicture id={id} />
-          <Tooltip />
+          <ReviewPicture id={`${id}`} />
+          <Tooltip id={`${id}`} />
           <ReviewUpvotes
             data-tip={userUpvoted ? `Remove vote` : `This review was helpful`}
+            data-for={id}
             selected={userUpvoted}
             onClick={onClickUpvote}
           >
