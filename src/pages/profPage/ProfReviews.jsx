@@ -179,12 +179,16 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
             </ReviewListWrapper>
             {course.reviews.length > MIN_REVIEWS_SHOWN && (
               <ShowMoreReviewsSection
-                onClick={() =>
+                id={course.code}
+                onClick={() => {
                   setShowingReviewsMap({
                     ...showingReviewsMap,
                     [course.code]: !showingReviewsMap[course.code],
-                  })
-                }
+                  });
+                  if (showingReviewsMap[course.code]) {
+                    document.getElementById(course.code).scrollIntoView();
+                  }
+                }}
               >
                 <ShowMoreReviewsText>
                   {showingReviewsMap[course.code]
