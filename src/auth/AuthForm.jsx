@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
 import {
@@ -22,7 +21,7 @@ import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
 import ResetPasswordModal from './ResetPasswordModal';
 
-import { PRIVACY_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../Routes';
+import { PRIVACY_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
 import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
 import {
@@ -34,7 +33,6 @@ import {
 export const AuthForm = ({
   onLoginComplete,
   onSignupComplete,
-  history,
   margin = '32px 0',
 }) => {
   const dispatch = useDispatch();
@@ -150,4 +148,4 @@ AuthForm.propTypes = {
   onSignupComplete: PropTypes.func,
 };
 
-export default withRouter(AuthForm);
+export default AuthForm;

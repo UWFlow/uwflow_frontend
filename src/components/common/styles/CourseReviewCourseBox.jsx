@@ -33,7 +33,6 @@ export const ReviewTextArea = styled.textarea`
   background: ${({ theme }) => theme.light2};
   margin: 0 0 40px 0;
   border-radius: 4px;
-  outline: none;
   border: none;
   height: ${({ rows }) => rows * 16}px;
   resize: none;

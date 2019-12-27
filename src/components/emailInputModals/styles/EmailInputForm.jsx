@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Heading2, BoxShadow, Link } from '../../../constants/Mixins';
+import { Heading2, BoxShadow } from '../../../constants/Mixins';
 
-export const EmailInputFormWrapper = styled.div`
+export const EmailInputFormWrapper = styled.form`
   ${BoxShadow}
   display: flex;
   flex-direction: column;

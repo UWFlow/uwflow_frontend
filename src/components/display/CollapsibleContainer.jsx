@@ -18,10 +18,11 @@ const CollapsibleContainer = ({
   centerHeader = true,
   headerBorder = false,
   bigTitle = false,
+  margin = '32px 0 0 0',
 }) => {
   const [isOpen, setIsOpen] = useState(isInitiallyOpen);
   return (
-    <ContainerWrapper>
+    <ContainerWrapper margin={margin}>
       <HeaderWrapper headerBorder={isOpen && headerBorder}>
         <HeaderTitle centerHeader={centerHeader} bigTitle={bigTitle}>
           {title}

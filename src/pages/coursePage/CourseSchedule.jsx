@@ -222,6 +222,7 @@ const CourseSchedule = ({
       <CollapsibleContainer
         title="Course Schedule"
         centerHeader={false}
+        margin="0"
         headerBorder
         bigTitle
       >
@@ -232,7 +233,7 @@ const CourseSchedule = ({
           borderRadius={false}
         />
       </CollapsibleContainer>
-      {tabList.length > 0 && <LastUpdatedSchedule />}
+      {tabList.length > 0 && <LastUpdatedSchedule margin={'8px 0 32px 0'} />}
     </CourseScheduleWrapper>
   );
 };

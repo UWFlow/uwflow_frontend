@@ -94,10 +94,9 @@ const ShortlistStar = ({
   return (
     <>
       <Tooltip />
-      <ShortlistStarButton>
+      <ShortlistStarButton onClick={onStarClicked}>
         <ShortlistStarWrapper
           data-tip={`Add ${splitCourseCode(courseCode)} to your shortlist`}
-          onClick={onStarClicked}
           checked={checked}
           width={size}
           color={checked ? theme.dark3 : theme.light4}

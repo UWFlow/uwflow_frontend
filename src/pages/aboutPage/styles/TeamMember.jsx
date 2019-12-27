@@ -57,5 +57,5 @@ export const MemberLinksWrapper = styled.div`
 export const MemberLink = styled.a`
   ${Link}
   margin-right: 16px;
-  ${Hover(true)};
+  ${Hover(true, true)};
 `;

@@ -168,7 +168,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
         sectionSubscriptions={data.section_subscription || []}
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
-        userEmail={data.user[0].email}
+        userEmail={isLoggedIn && data.user[0].email}
       />
     </CoursePageWrapper>
   );

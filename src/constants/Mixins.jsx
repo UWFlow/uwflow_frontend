@@ -96,9 +96,9 @@ export const HoverTransition = (target = 'all', time = '0.1s') => `
   transition: ${target} ${time} ease-in;
 `;
 
-export const Hover = (darker = false) => `
+export const Hover = (darker = false, focus = false) => `
   ${HoverTransition()}
-  &:hover {
+  &:hover${focus ? ', &:focus' : ''} {
     cursor: pointer;
     filter: brightness(${darker ? '60%' : '85%'});
   }

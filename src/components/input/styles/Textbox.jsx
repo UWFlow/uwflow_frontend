@@ -7,7 +7,6 @@ export const SearchInputWrapper = styled.div`
 
 export const SearchInput = styled.input`
   position: relative;
-  outline: none;
   border: ${({ options, error, theme }) =>
     error
       ? `1px solid ${theme.red}`
@@ -57,7 +56,6 @@ export const AutocompleteInput = styled.input`
   position: absolute;
   top: 0;
   left: 0;
-  outline: none;
   border: ${({ error, theme }) => (error ? `1px solid ${theme.red}` : 'none')};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};

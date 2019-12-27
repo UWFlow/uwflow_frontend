@@ -64,7 +64,6 @@ export const BoldText = styled.span`
 export const ResetButton = styled.button`
   display: inline-block;
   padding: 8px 12px;
-  outline: none;
   border: none;
   cursor: pointer;
   background-color: ${({ theme }) => theme.primary};

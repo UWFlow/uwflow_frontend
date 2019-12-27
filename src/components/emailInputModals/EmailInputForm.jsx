@@ -12,6 +12,7 @@ import Button from '../input/Button';
 import Textbox from '../input/Textbox';
 
 const EmailInputForm = ({
+  email,
   title,
   renderText,
   submitText,
@@ -19,10 +20,9 @@ const EmailInputForm = ({
   onClose,
   onSuccess,
 }) => {
-  const [email, setEmail] = useState('');
+  const [emailText, setEmailText] = useState(email ? email : '');
 
   const onSubmit = () => {
-    // TODO: Submit email mutation
     // This part executes if submit email is successful
     if (onSuccess) {
       onSuccess(email);
@@ -31,13 +31,13 @@ const EmailInputForm = ({
   };
 
   return (
-    <EmailInputFormWrapper>
+    <EmailInputFormWrapper onSubmit={onSubmit}>
       <FormTitle>{title}</FormTitle>
       {renderText()}
       <TextboxWrapper>
         <Textbox
-          text={email}
-          setText={setEmail}
+          text={emailText}
+          setText={setEmailText}
           placeholder="Email"
           maxLength={100}
           options={{ width: '100%', type: 'email' }}

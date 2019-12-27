@@ -6,13 +6,14 @@ import { FormText } from './styles/EmailInputForm';
 const renderText = () => (
   <FormText>
     We will send an alert to the following email when a spot opens up in a
-    section you're subscribed to.
+    section you're subscribed to
   </FormText>
 );
 
-const EditEmailModal = ({ isOpen, onClose }) => (
+const EditEmailModal = ({ email, isOpen, onClose }) => (
   <Modal isOpen={isOpen} onRequestClose={onClose}>
     <EmailInputForm
+      email={email}
       title="Edit your email"
       renderText={renderText}
       submitText="Save"

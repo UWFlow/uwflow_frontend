@@ -8,7 +8,7 @@ import { LastUpdatedText, LastUpdatedLink } from './styles/LastUpdatedSchedule';
 /* GraphQL */
 import { UPDATE_TIME_QUERY } from '../../graphql/queries/common/UpdateTime';
 
-const LastUpdatedSchedule = () => {
+const LastUpdatedSchedule = ({ margin = '8px 0 0 0' }) => {
   const { data, loading } = useQuery(UPDATE_TIME_QUERY);
 
   let updatedTime = null;
@@ -21,7 +21,7 @@ const LastUpdatedSchedule = () => {
   }
 
   return (
-    <LastUpdatedText>
+    <LastUpdatedText margin={margin}>
       Last updated {updatedTime && moment(data.update_time[0].time).fromNow()}{' '}
       from{' '}
       <LastUpdatedLink

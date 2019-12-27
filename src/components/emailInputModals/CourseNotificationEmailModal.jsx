@@ -2,19 +2,14 @@ import React from 'react';
 import Modal from '../display/Modal';
 import EmailInputForm from './EmailInputForm';
 import { FormText, FormLink } from './styles/EmailInputForm';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 /* Selectors */
-import { getIsCourseNotificationEmailModalOpen } from '../../data/reducers/ModalReducer';
 import { courseNotificationEmailModalClose } from '../../data/actions/ModalActions';
 
 /* Routes */
 import { PROFILE_PAGE_ROUTE } from '../../Routes';
-
-const mapStateToProps = state => ({
-  isOpen: getIsCourseNotificationEmailModalOpen(state),
-});
 
 const renderText = (history, dispatch) => () => (
   <FormText>

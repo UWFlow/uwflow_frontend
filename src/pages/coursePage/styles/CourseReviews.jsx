@@ -106,7 +106,7 @@ export const ProfName = styled(Link)`
   ${breakpoint('mobile', 'tablet')`
     margin: 16px;
   `}
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const ProfLikedMetric = styled.div`
@@ -138,7 +138,6 @@ export const ProfLikedPercentLabel = styled.div`
 
 export const ShowMoreReviewsSection = styled.button`
   background: ${({ theme }) => theme.light3};
-  outline: none;
   border: none;
   width: 100%;
   display: flex;

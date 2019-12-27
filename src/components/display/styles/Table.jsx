@@ -50,11 +50,13 @@ export const HeaderCell = styled.div`
   }
 `;
 
-export const HeaderText = styled.span`
+export const HeaderText = styled.button`
+  background: none;
+  border: none;
   ${({ sortable }) => (sortable ? Link : '')}
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'inherit')};
   color: ${({ theme, sortable }) => (sortable ? theme.primary : theme.dark1)};
-  ${Hover(true)}
+  ${Hover(true, true)}
 `;
 
 export const SortArrow = styled.span`

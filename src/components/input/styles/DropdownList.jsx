@@ -19,14 +19,13 @@ export const DropdownWrapper = styled.div`
 export const DropdownControl = styled.button`
   background: none;
   border: none;
-  outline: none;
   position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
   color: ${({ theme, open, color }) => (open ? theme.light3 : color)};
   ${Heading4}
-  ${Hover(true)}
+  ${Hover(true, true)}
 `;
 
 export const DropdownMenu = styled.div`
@@ -49,7 +48,6 @@ export const DropdownMenu = styled.div`
 `;
 
 export const MenuItem = styled.button`
-  outline: none;
   border: none;
   display: block;
   cursor: pointer;
@@ -78,7 +76,7 @@ export const MenuItem = styled.button`
     border-radius: 4px;
   }
 
-  ${Hover()}
+  ${Hover(true, true)}
 `;
 
 export const MenuSearch = styled.div`

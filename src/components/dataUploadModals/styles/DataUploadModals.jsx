@@ -64,7 +64,7 @@ export const Link = styled.a`
   text-decoration: underline;
   margin: 0 4px;
   cursor: pointer;
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const NumberCircle = styled.div`
@@ -164,7 +164,7 @@ export const SkipStepWrapper = styled.div`
   color: ${({ theme }) => theme.primary};
   margin-top: 48px;
   cursor: pointer;
-  ${Hover(true)}
+  ${Hover(true, true)}
 `;
 
 export const LongInstructionWrapper = styled.div`

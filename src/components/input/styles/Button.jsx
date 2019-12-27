@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Heading4, BoxShadow, Hover } from '../../../constants/Mixins';
 
 export const ButtonWrapper = styled.button`
-  outline: none;
   cursor: ${({ disabled }) => (disabled ? 'auto' : 'pointer')};
   display: flex;
   align-items: center;
