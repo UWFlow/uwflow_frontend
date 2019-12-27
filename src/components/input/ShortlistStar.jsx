@@ -93,10 +93,14 @@ const ShortlistStar = ({
 
   return (
     <>
-      <Tooltip />
-      <ShortlistStarButton onClick={onStarClicked}>
+      <Tooltip id={`${courseID}`} />
+      <ShortlistStarButton
+        onClick={onStarClicked}
+        data-tip={`Add ${formatCourseCode(courseCode)} to your shortlist`}
+        data-for={`${courseID}`}
+        data-offset="{'top': 70}"
+      >
         <ShortlistStarWrapper
-          data-tip={`Add ${formatCourseCode(courseCode)} to your shortlist`}
           checked={checked}
           width={size}
           color={checked ? theme.dark3 : theme.light4}
