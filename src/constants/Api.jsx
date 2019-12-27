@@ -20,7 +20,7 @@ export const CALENDAR_EXPORT_ENDPOINT = secretID => `/calendar/${secretID}.ics`;
 export const GOOGLE_CALENDAR_URL = `https://calendar.google.com/calendar/r?cid=`;
 
 export const GOOGLE_APP_ID = '292230821846-cogmasv1s0rbvhp0dr886vik2c73etb3';
-export const FACEBOOK_APP_ID = '289196947861602';
+export const FACEBOOK_APP_ID = '219309734863464';
 
 export const RESET_PASSWORD_KEY_EMAIL_ENDPOINT =
   '/auth/forgot-password/send-email';
