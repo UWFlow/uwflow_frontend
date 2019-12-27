@@ -74,7 +74,7 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
           </Query>
           <DropdownList
             selectedIndex={-1}
-            color={isLanding ? theme.white : theme.dark1}
+            color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
             options={['View profile', 'Log out']}
             onChange={idx => {

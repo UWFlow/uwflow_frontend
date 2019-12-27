@@ -11,7 +11,6 @@ export const LikeCourseToggleWrapper = styled.div`
 `;
 
 export const LikeCourseToggleButton = styled.button`
-  outline: none;
   cursor: pointer;
   display: flex;
   vertical-align: middle;

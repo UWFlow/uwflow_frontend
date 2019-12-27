@@ -21,7 +21,8 @@ export const ProfileDropdownWrapper = styled.div`
   `}
 `;
 
-export const ProfilePicture = styled.div`
+export const ProfilePicture = styled.button`
+  border: none;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -29,7 +30,7 @@ export const ProfilePicture = styled.div`
   background-image: url(${({ id }) => id && getKittenFromID(id)});
   background-size: 40px;
   ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const ProfileText = styled.div`

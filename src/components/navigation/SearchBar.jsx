@@ -15,7 +15,7 @@ import {
   getProfPageRoute,
 } from '../../Routes';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 
 import {
   SearchResultsWrapper,
@@ -190,7 +190,7 @@ const SearchBar = ({
       <ResultLeft>
         <CourseText>
           <Square />
-          {splitCourseCode(course.code.toUpperCase())}
+          {formatCourseCode(course.code.toUpperCase())}
         </CourseText>
         <Dash>&mdash;</Dash>
         {course.name}

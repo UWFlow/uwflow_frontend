@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Child Components */
@@ -137,9 +137,12 @@ const CourseSchedule = ({
   sectionSubscriptions,
   userEmail,
 }) => {
+  const [selectedTerm, setSelectedTerm] = useState(0);
+
   if (!sections || sections.length === 0) {
     return null;
   }
+
   const termsOffered = sections.reduce((allTerms, curr) => {
     if (!allTerms.includes(curr.term_id)) {
       allTerms.push(curr.term_id);
@@ -222,6 +225,7 @@ const CourseSchedule = ({
       <CollapsibleContainer
         title="Course Schedule"
         centerHeader={false}
+        margin="0"
         headerBorder
         bigTitle
       >
@@ -230,9 +234,16 @@ const CourseSchedule = ({
           tabList={tabList}
           contentPadding={'0'}
           borderRadius={false}
+          onChange={setSelectedTerm}
         />
       </CollapsibleContainer>
-      {tabList.length > 0 && <LastUpdatedSchedule />}
+      {tabList.length > 0 && (
+        <LastUpdatedSchedule
+          margin={'8px 0 32px 0'}
+          courseCode={courseCode}
+          term={termsOffered[selectedTerm]}
+        />
+      )}
     </CourseScheduleWrapper>
   );
 };

@@ -29,7 +29,7 @@ import DiscreteSlider from '../input/DiscreteSlider';
 import Modal from '../display/Modal';
 
 /* Utils */
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 
 /* GraphQL */
 import { DELETE_REVIEW, UPSERT_REVIEW } from '../../graphql/mutations/Review';
@@ -266,7 +266,7 @@ const CourseReviewCourseBox = ({
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
             options={courseList.map(courseObject =>
-              splitCourseCode(courseObject.course.code),
+              formatCourseCode(courseObject.course.code),
             )}
             color={theme.courses}
             onChange={setSelectedCourseIndex}
@@ -415,6 +415,7 @@ const CourseReviewCourseBox = ({
             </Button>
           )}
           <Button
+            type="submit"
             handleClick={handlePost}
             loading={reviewUpdating}
             disabled={!usefulSelected || !easySelected || liked === -1}

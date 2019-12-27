@@ -101,7 +101,6 @@ export const SwapModalWrapper = styled.div`
 
 export const SwapModalLink = styled.button`
   ${Link}
-  outline: none;
   background: none;
   padding: 0;
   border: none;
@@ -124,7 +123,6 @@ export const FacebookButton = styled.button`
   width: 100%;
   padding: 8px 16px;
   border: none;
-  outline: none;
   cursor: pointer;
   border-radius: 4px;
   color: ${({ theme }) => theme.white};
@@ -147,7 +145,6 @@ export const GoogleButton = styled.button`
   width: 100%;
   padding: 8px 16px;
   border: none;
-  outline: none;
   cursor: pointer;
   border-radius: 4px;
   color: ${({ theme }) => theme.white};

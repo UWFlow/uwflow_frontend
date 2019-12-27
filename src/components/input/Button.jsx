@@ -20,6 +20,7 @@ const Button = ({
   hasShadow = true,
   loading = false,
   disabled = false,
+  type = 'button',
 }) => {
   return (
     <ButtonWrapper
@@ -34,6 +35,7 @@ const Button = ({
       padding={padding}
       width={width}
       maxHeight={maxHeight}
+      type={type}
     >
       {loading ? (
         <LoadingSpinner

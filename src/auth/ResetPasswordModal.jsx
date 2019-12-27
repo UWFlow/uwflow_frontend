@@ -61,6 +61,7 @@ const ResetPasswordForm = ({
       <Button
         loading={loading}
         width="100%"
+        type="submit"
         handleClick={event => onSubmit(event, email)}
       >
         Send Reset Email

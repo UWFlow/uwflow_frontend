@@ -153,6 +153,10 @@ const SearchResults = ({
     },
   };
 
+  const doneFetching = courseSearch
+    ? filteredCourses.length <= numRendered
+    : filteredProfs.length <= numRendered;
+
   const results = () => (
     <SearchResultsContent>
       <Table
@@ -172,11 +176,7 @@ const SearchResults = ({
         initialState={{
           sortBy: [{ id: 'ratings', desc: false }],
         }}
-        doneFetching={
-          courseSearch
-            ? filteredCourses.length >= numRendered
-            : filteredProfs.length >= numRendered
-        }
+        doneFetching={doneFetching}
       />
     </SearchResultsContent>
   );

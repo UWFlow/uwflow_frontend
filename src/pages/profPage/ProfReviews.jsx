@@ -41,7 +41,7 @@ import { buildProfReviewQuery } from '../../graphql/queries/prof/ProfReview.jsx'
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
@@ -79,7 +79,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   const courseFilterOptions = ['show all courses', ...reviewDataState.courses];
   const courseFilterDisplayOptions = [
     'show all courses',
-    ...reviewDataState.courses.map(code => splitCourseCode(code)),
+    ...reviewDataState.courses.map(code => formatCourseCode(code)),
   ];
 
   const reviewsByCourseToShow = reviewDataState.reviewsByCourse.filter(
@@ -122,7 +122,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
               <CourseHeader key={course.id}>
                 <CourseNameAndCode>
                   <CourseCode to={getCoursePageRoute(course.code)}>
-                    {splitCourseCode(course.code)}
+                    {formatCourseCode(course.code)}
                   </CourseCode>
                   <CourseName>{course.name}</CourseName>
                 </CourseNameAndCode>

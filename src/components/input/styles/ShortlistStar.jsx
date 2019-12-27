@@ -16,7 +16,6 @@ export const ShortlistStarWrapper = styled(Star)`
 export const ShortlistStarButton = styled.button`
   background: none;
   border: none;
-  outline: none;
   cursor: pointer;
   height: min-content;
   margin: auto 0;

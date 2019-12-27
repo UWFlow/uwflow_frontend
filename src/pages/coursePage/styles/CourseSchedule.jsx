@@ -6,7 +6,7 @@ import { LEC, LAB } from '../../../constants/PageConstants';
 const CELL_HEIGHT = 28;
 
 export const CourseScheduleWrapper = styled.div`
-  margin-bottom: 32px;
+  margin-bottom: 0;
   width: 100%;
 `;
 
@@ -68,7 +68,7 @@ export const InstructorLink = styled(Link)`
   display: flex;
   align-items: center;
   margin-bottom: -8px;
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const ScheduleTableWrapper = styled.div`

@@ -27,7 +27,7 @@ import {
   termCodeToDate,
   getCurrentTermCode,
   getNextTermCode,
-  splitCourseCode,
+  formatCourseCode,
 } from '../../utils/Misc';
 
 let courseNumberOptions = [1, 2, 3, 4].map(num => (
@@ -136,7 +136,7 @@ const SearchFilter = ({
                 <DropdownList
                   selectedIndex={filterState.courseTaught}
                   options={profCourses.map(code =>
-                    code === 'all courses' ? code : splitCourseCode(code),
+                    code === 'all courses' ? code : formatCourseCode(code),
                   )}
                   color={theme.courses}
                   onChange={idx => setCourseTaught(idx)}

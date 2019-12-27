@@ -266,6 +266,7 @@ const AboutPage = () => (
             <a
               href="https://github.com/phleet/flask_debugtoolbar_lineprofilerpanel"
               target="_blank"
+              rel="noopener noreferrer"
             >
               first piece of open source software!
             </a>

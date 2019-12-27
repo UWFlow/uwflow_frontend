@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Link } from 'react-router-dom';
-import { Body, Heading3 } from '../../../constants/Mixins';
+import { Link as RouterLink } from 'react-router-dom';
+import { Body, Heading3, Hover, Link } from '../../../constants/Mixins';
 import { LEC, LAB } from '../../../constants/PageConstants';
 
 export const HOUR_HEIGHT = 64;
@@ -65,10 +65,7 @@ export const NavButton = styled.button`
   display: flex;
   align-items: center;
 
-  &:hover {
-    background: ${({ theme }) => theme.light2};
-  }
-
+  ${Hover(false, true)}
   @media only screen and (max-width: 480px) {
     ${({ hideSmall }) => (hideSmall ? 'display: none;' : '')}
   }
@@ -182,10 +179,9 @@ export const EventWrapper = styled.div`
   }
 `;
 
-export const CourseCode = styled(Link)`
-  ${Body}
+export const CourseCode = styled(RouterLink)`
+  ${Link}
   font-size: 11px;
   font-weight: 600;
   color: ${({ theme }) => theme.courses};
-  text-decoration: underline;
 `;

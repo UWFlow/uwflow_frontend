@@ -8,7 +8,6 @@ import {
   Heading1,
   PageContent,
   Heading2,
-  Heading4,
   Body,
 } from '../../../constants/Mixins';
 
@@ -90,13 +89,17 @@ export const UserEmailText = styled.div`
   margin-right: 1ex;
 `;
 
-export const UserEmail = styled.div`
+export const UserEmail = styled.a`
   text-decoration: underline;
   margin-right: 4px;
+  cursor: pointer;
+  color: ${({ theme }) => theme.light1};
 `;
 
-export const EditWrapper = styled.div`
+export const EditWrapper = styled.a`
   cursor: pointer;
   height: 16px;
   width: 16px;
+  color: ${({ theme }) => theme.light1};
+  display: flex;
 `;

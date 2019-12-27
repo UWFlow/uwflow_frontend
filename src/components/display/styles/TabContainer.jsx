@@ -24,7 +24,6 @@ export const TabsWrapper = styled.div`
 `;
 
 export const Tab = styled.button`
-  outline: none;
   border: none;
   display: flex;
   min-width: ${({ minWidth }) => (minWidth ? `${minWidth}px` : 0)};
@@ -54,7 +53,7 @@ export const Tab = styled.button`
   color: ${({ selected, theme }) => (selected ? theme.dark1 : theme.dark2)};
   ${Heading3}
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
-  ${({ selected }) => !selected && Hover()}
+  ${({ selected }) => !selected && Hover(false, true)}
 `;
 
 export const ContentContainer = styled.div`

@@ -13,7 +13,6 @@ export const ModalX = styled.button`
   height: 24px;
   width: 24px;
   cursor: pointer;
-  outline: none;
   background: none;
   border: none;
   padding: 0;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-apollo';
 import { connect, useDispatch } from 'react-redux';
 import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
@@ -15,7 +14,6 @@ import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { authModalOpen } from '../../data/actions/AuthActions';
-import { courseNotificationEmailModalOpen } from '../../data/actions/ModalActions';
 
 /* GraphQL */
 import {
@@ -23,7 +21,6 @@ import {
   INSERT_SECTION_SUBSCRIPTION,
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
-import { GET_USER_INFO } from '../../graphql/queries/user/User';
 
 /* Constants */
 import {
@@ -63,7 +60,7 @@ const ScheduleNotificationBell = ({
   });
 
   const notifyDelete = () => toast(SUBSCRIPTION_SUCCESS.unsubscribed);
-  const notifyInsert = email => toast(SUBSCRIPTION_SUCCESS.subscribed(email));
+  const notifyInsert = () => toast(SUBSCRIPTION_SUCCESS.subscribed);
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -84,7 +81,6 @@ const ScheduleNotificationBell = ({
       setSelected(false);
     } else {
       // Assume user data will be loaded by the time a notification bell is clicked
-      console.log(userEmail);
       if (userEmail === '' || userEmail === null || userEmail === undefined) {
         // TODO: chain insertSubscription and setSelected to fire after user has entered email
         // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
@@ -123,12 +119,12 @@ const ScheduleNotificationBell = ({
         <CourseNotificationEmailModal
           isOpen={isEmailModalOpen}
           onClose={() => setIsEmailModalOpen(false)}
-          onSuccess={email =>
+          onSuccess={() =>
             insertSubscription({
               variables: { user_id: userID, section_id: sectionID },
             })
               .then(() => {
-                notifyInsert(email);
+                notifyInsert();
                 setSelected(true);
               })
               .catch(() => {

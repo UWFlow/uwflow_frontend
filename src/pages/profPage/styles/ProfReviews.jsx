@@ -82,7 +82,7 @@ export const CourseCode = styled(Link)`
   ${breakpoint('mobile', 'tablet')`
     margin: 16px 16px 0 16px;
   `}
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const CourseName = styled.div`
@@ -142,7 +142,6 @@ export const CourseLikedPercentLabel = styled.div`
 
 export const ShowMoreReviewsSection = styled.button`
   background: ${({ theme }) => theme.light3};
-  outline: none;
   border: none;
   width: 100%;
   display: flex;

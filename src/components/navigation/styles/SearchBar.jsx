@@ -33,7 +33,6 @@ export const SearchResultsWrapper = styled.div`
 
 export const SearchResult = styled.button`
   ${Body}
-  outline: none;
   border: none;
   cursor: pointer;
   display: flex;
@@ -99,7 +98,7 @@ export const CourseText = styled.span`
 export const ProfText = styled.span`
   color: ${({ theme }) => theme.professors};
   ${ResultText}
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const Dash = styled.span`
@@ -114,7 +113,7 @@ const ExploreSideButton = `
   justify-content: center;
   height: 32px;
   width: 32px;
-  ${Hover()}
+  ${Hover(false, true)}
 
   svg {
     width: 20px;

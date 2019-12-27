@@ -75,7 +75,10 @@ export const NumCommentsAndRatingsWrapper = styled.div`
   `}
 `;
 
-export const NumCommentsWrapper = styled.div`
+export const NumCommentsWrapper = styled.button`
+  background: none;
+  border: none;
+
   ${({ hasComments }) =>
     hasComments &&
     `

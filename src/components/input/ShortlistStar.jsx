@@ -25,7 +25,7 @@ import {
 import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 import { SHORTLIST_ERROR } from '../../constants/Messages';
 
 const mapStateToProps = state => ({
@@ -59,9 +59,9 @@ const ShortlistStar = ({
   });
 
   const notifyDelete = () =>
-    toast(`Removed ${splitCourseCode(courseCode)} from shortlist`);
+    toast(`Removed ${formatCourseCode(courseCode)} from shortlist`);
   const notifyInsert = () =>
-    toast(`Added ${splitCourseCode(courseCode)} to shortlist`);
+    toast(`Added ${formatCourseCode(courseCode)} to shortlist`);
 
   const onStarClicked = () => {
     if (!isLoggedIn) {
@@ -94,10 +94,9 @@ const ShortlistStar = ({
   return (
     <>
       <Tooltip />
-      <ShortlistStarButton>
+      <ShortlistStarButton onClick={onStarClicked}>
         <ShortlistStarWrapper
-          data-tip={`Add ${splitCourseCode(courseCode)} to your shortlist`}
-          onClick={onStarClicked}
+          data-tip={`Add ${formatCourseCode(courseCode)} to your shortlist`}
           checked={checked}
           width={size}
           color={checked ? theme.dark3 : theme.light4}

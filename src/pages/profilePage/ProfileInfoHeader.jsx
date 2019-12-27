@@ -29,7 +29,9 @@ const ProfileInfoHeader = ({ user }) => {
             <UserProgram>{user.program}</UserProgram>
             <UserEmailWrapper>
               <UserEmailText>Send notifications to:</UserEmailText>
-              <UserEmail>{user.email}</UserEmail>
+              <UserEmail onClick={() => setEditEmailModalOpen(true)}>
+                {user.email}
+              </UserEmail>
               <EditWrapper onClick={() => setEditEmailModalOpen(true)}>
                 <Edit size={16} />
               </EditWrapper>
@@ -38,6 +40,7 @@ const ProfileInfoHeader = ({ user }) => {
         </ProfileInfoSection>
       </ProfileInfoHeaderWrapper>
       <EditEmailModal
+        email={user.email}
         isOpen={editEmailModalOpen}
         onClose={() => setEditEmailModalOpen(false)}
       />

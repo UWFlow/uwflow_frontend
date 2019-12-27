@@ -12,6 +12,7 @@ import {
   ThinColumn,
   Link,
   PageWrapper,
+  Hover,
 } from '../../../constants/Mixins';
 
 export const ExplorePageWrapper = styled.div`
@@ -78,9 +79,11 @@ export const Column2 = styled(FadeIn)`
 export const CourseCode = styled(RouterLink)`
   ${Link}
   color: ${({ theme }) => theme.courses};
+  ${Hover(false, true)}
 `;
 
 export const ProfName = styled(RouterLink)`
   ${Link}
   color: ${({ theme }) => theme.professors};
+  ${Hover(false, true)}
 `;

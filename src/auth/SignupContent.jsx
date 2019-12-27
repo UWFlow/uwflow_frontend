@@ -165,7 +165,12 @@ const SignupContent = ({
             }}
           />
         </TextboxWrapper>
-        <Button margin="0 0 16px 0" width="100%" handleClick={handleSignUp}>
+        <Button
+          margin="0 0 16px 0"
+          width="100%"
+          handleClick={handleSignUp}
+          type="submit"
+        >
           Sign Up
         </Button>
       </Form>

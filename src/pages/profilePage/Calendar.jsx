@@ -24,7 +24,7 @@ import {
 } from './styles/Calendar';
 
 import { getCoursePageRoute } from '../../Routes';
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
 const getDateRangeString = (start, end) => {
@@ -87,7 +87,7 @@ const CalendarColumn = ({ day, minHour, events = [] }) => (
           truncate={event.truncate || false}
         >
           <CourseCode to={getCoursePageRoute(event.courseCode)}>
-            {splitCourseCode(event.courseCode)}
+            {formatCourseCode(event.courseCode)}
           </CourseCode>
           {event.section.includes('Exam') && <br />}
           {!event.section.includes('Exam') && ' - '}

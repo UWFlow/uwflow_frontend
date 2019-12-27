@@ -13,7 +13,7 @@ export const ContainerWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   ${BoxShadow}
-  margin-bottom: 32px;
+  margin:  ${({ margin }) => margin};
   border-radius: 4px;
   max-width: 100vw;
 `;
@@ -45,14 +45,13 @@ export const HeaderChevronBox = styled.button`
   height: ${HEADER_HEIGHT}px;
   border-top-right-radius: 4px;
   border: none;
-  outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   background: ${({ theme }) => theme.light3};
   color: ${({ theme }) => theme.dark2};
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const ContentWrapper = styled.div`

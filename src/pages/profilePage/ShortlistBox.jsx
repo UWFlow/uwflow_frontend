@@ -21,7 +21,7 @@ import ShortlistStar from '../../components/input/ShortlistStar';
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
-import { splitCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
 const mapStateToProps = state => ({
@@ -45,7 +45,7 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
           />
           <ShortListCourseText>
             <ShortlistCourseCode to={getCoursePageRoute(entry.course.code)}>
-              {splitCourseCode(entry.course.code)}
+              {formatCourseCode(entry.course.code)}
             </ShortlistCourseCode>
             <ShortlistCourseName>{entry.course.name}</ShortlistCourseName>
           </ShortListCourseText>

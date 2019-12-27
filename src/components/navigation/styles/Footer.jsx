@@ -51,7 +51,7 @@ export const FooterPageLink = styled(Link)`
   text-decoration: none;
   font-weight: 400;
   margin-right: 32px;
-  ${Hover()}
+  ${Hover(false, true)}
 `;
 
 export const FooterNormalLink = styled.a`
@@ -60,7 +60,7 @@ export const FooterNormalLink = styled.a`
   text-decoration: none;
   font-weight: 400;
   margin-left: 32px;
-  ${Hover()}
+  ${Hover(false, true)}
 
   @media only screen and (max-width: 450px) {
     margin: 16px 16px 0 0;
