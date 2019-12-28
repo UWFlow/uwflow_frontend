@@ -22,6 +22,9 @@ import { isOnLandingPageRoute } from '../../Routes';
 /* GraphQL Queries */
 import { GET_USER } from '../../graphql/queries/user/User';
 
+/* Utils */
+import { getKittenFromID } from '../../utils/Kitten';
+
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
@@ -44,7 +47,18 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
     }
   }
 
-  return <ProfilePicture id={user.id} isLanding={isLanding} />;
+  return (
+    <ProfilePicture
+      image={
+        user.picture_url
+          ? user.picture_url
+          : user.id
+          ? getKittenFromID(user.id)
+          : null
+      }
+      isLanding={isLanding}
+    />
+  );
 };
 
 const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {

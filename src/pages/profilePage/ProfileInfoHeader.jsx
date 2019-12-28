@@ -15,6 +15,11 @@ import {
   UserEmail,
   EditWrapper,
 } from './styles/ProfileInfoHeader';
+
+/* Utils */
+import { getKittenFromID } from '../../utils/Kitten';
+
+/* Child Components */
 import EditEmailModal from '../../components/emailInputModals/EditEmailModal';
 
 const ProfileInfoHeader = ({ user }) => {
@@ -23,7 +28,11 @@ const ProfileInfoHeader = ({ user }) => {
     <>
       <ProfileInfoHeaderWrapper>
         <ProfileInfoSection>
-          <UserPicture id={user.id} />
+          <UserPicture
+            image={
+              user.picture_url ? user.picture_url : getKittenFromID(user.id)
+            }
+          />
           <UserInfoWrapper>
             <UserName>{user.full_name}</UserName>
             <UserProgram>{user.program}</UserProgram>
