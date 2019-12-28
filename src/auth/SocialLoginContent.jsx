@@ -24,9 +24,24 @@ import {
 import { makePOSTRequest } from '../utils/Api';
 import { AUTH_ERRORS } from '../constants/Messages';
 
-const SocialLoginContent = ({ setJWT, onLoginComplete, onSignupComplete }) => {
+const SocialLoginContent = ({
+  setJWT,
+  onLoginComplete,
+  onSignupComplete,
+  isLoggingIn,
+}) => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  const onAuthSuccess = response => {
+    setJWT(response);
+    if (isLoggingIn && onLoginComplete) {
+      onLoginComplete();
+    }
+    if (!isLoggingIn && onSignupComplete) {
+      onSignupComplete();
+    }
+  };
 
   const handleFacebookLogin = async res => {
     if (!res.accessToken) {
@@ -46,7 +61,7 @@ const SocialLoginContent = ({ setJWT, onLoginComplete, onSignupComplete }) => {
     if (status >= 400) {
       setError(AUTH_ERRORS[response.error] || AUTH_ERRORS.no_facebook_email);
     } else {
-      setJWT(response);
+      onAuthSuccess(response);
     }
   };
 
@@ -65,7 +80,7 @@ const SocialLoginContent = ({ setJWT, onLoginComplete, onSignupComplete }) => {
     if (status >= 400) {
       setError(AUTH_ERRORS[response.error] || AUTH_ERRORS.no_google_email);
     } else {
-      setJWT(response);
+      onAuthSuccess(response);
     }
   };
 

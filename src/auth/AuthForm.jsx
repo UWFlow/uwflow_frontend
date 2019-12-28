@@ -120,6 +120,7 @@ export const AuthForm = ({
             setJWT={setJWT}
             onLoginComplete={onLoginComplete}
             onSignupComplete={onSignupComplete}
+            isLoggingIn={showLoginForm}
           />
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
