@@ -134,11 +134,11 @@ export const AuthForm = ({
             {showLoginForm ? 'Sign up' : 'Log in'}
           </SwapModalLink>
         </SwapModalWrapper>
+        <ResetPasswordModal
+          handleClose={() => setShowResetPassword(false)}
+          isOpen={showResetPassword}
+        />
       </Wrapper>
-      <ResetPasswordModal
-        handleClose={() => setShowResetPassword(false)}
-        isOpen={showResetPassword}
-      />
     </>
   );
 };
