@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,9 +33,11 @@ const SocialLoginContent = ({
 }) => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onAuthSuccess = response => {
     setJWT(response);
+    dispatch({ type: LOGGED_IN });
     if (isLoggingIn && onLoginComplete) {
       onLoginComplete();
     }
