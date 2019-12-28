@@ -24,7 +24,7 @@ import {
 import { makePOSTRequest } from '../utils/Api';
 import { AUTH_ERRORS } from '../constants/Messages';
 
-const SocialLoginContent = ({ setJWT }) => {
+const SocialLoginContent = ({ setJWT, onLoginComplete, onSignupComplete }) => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
 
@@ -61,14 +61,12 @@ const SocialLoginContent = ({ setJWT }) => {
         access_token: accessToken,
       },
     );
-
+    setGoogleLoading(false);
     if (status >= 400) {
       setError(AUTH_ERRORS[response.error] || AUTH_ERRORS.no_google_email);
     } else {
       setJWT(response);
     }
-
-    setGoogleLoading(false);
   };
 
   const handleGoogleFailure = res => {
