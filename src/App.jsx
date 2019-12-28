@@ -37,6 +37,7 @@ import Footer from './components/navigation/Footer';
 import AuthModal from './auth/AuthModal';
 import CourseNotificationEmailModal from './components/emailInputModals/CourseNotificationEmailModal';
 import ScrollProvider from './data/providers/ScrollProvider';
+import ModalMount from './components/modal/ModalMount';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from './constants/Messages';
@@ -170,6 +171,7 @@ const App = ({ history, isLoggedIn, location }) => {
         }
       />
       <CourseNotificationEmailModal />
+      <ModalMount />
     </>
   );
 };

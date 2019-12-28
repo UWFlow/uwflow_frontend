@@ -10,6 +10,8 @@ import AuthForm from './AuthForm';
 import { getIsAuthModalOpen } from '../data/reducers/AuthReducer';
 import { authModalClose } from '../data/actions/AuthActions';
 
+export const AUTH_MODAL = 'AUTH_MODAL';
+
 const mapStateToProps = state => ({
   isAuthModalOpen: getIsAuthModalOpen(state),
 });
