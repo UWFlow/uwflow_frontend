@@ -62,7 +62,6 @@ export const AuthForm = ({
     if (!validateFields()) {
       return;
     }
-
     const [response, status] = await makePOSTRequest(endpoint, data);
     if (status >= 400) {
       setErrorMessage(AUTH_ERRORS[response.error] || DEFAULT_ERROR);
@@ -117,7 +116,12 @@ export const AuthForm = ({
             />
           )}
           <OrWrapper>OR</OrWrapper>
-          <SocialLoginContent setJWT={setJWT} />
+          <SocialLoginContent
+            setJWT={setJWT}
+            onLoginComplete={onLoginComplete}
+            onSignupComplete={onSignupComplete}
+            isLoggingIn={showLoginForm}
+          />
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
             <PrivacyPolicyText
