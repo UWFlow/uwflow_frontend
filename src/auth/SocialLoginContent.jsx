@@ -23,7 +23,12 @@ import {
   FACEBOOK_APP_ID,
 } from '../constants/Api';
 import { makePOSTRequest } from '../utils/Api';
+
+/* Constants */
 import { AUTH_ERRORS } from '../constants/Messages';
+
+/* Actions */
+import { LOGGED_IN } from '../data/actions/AuthActions';
 
 const SocialLoginContent = ({
   setJWT,
