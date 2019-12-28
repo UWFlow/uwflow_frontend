@@ -4,6 +4,7 @@ import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
+import { toast } from 'react-toastify';
 
 /* Styled Components */
 import {
@@ -25,7 +26,7 @@ import {
 import { makePOSTRequest } from '../utils/Api';
 
 /* Constants */
-import { AUTH_ERRORS } from '../constants/Messages';
+import { AUTH_ERRORS, AUTH_SUCCESS } from '../constants/Messages';
 
 /* Actions */
 import { LOGGED_IN } from '../data/actions/AuthActions';
@@ -44,9 +45,11 @@ const SocialLoginContent = ({
     setJWT(response);
     dispatch({ type: LOGGED_IN });
     if (isLoggingIn && onLoginComplete) {
+      toast(AUTH_SUCCESS.login);
       onLoginComplete();
     }
     if (!isLoggingIn && onSignupComplete) {
+      toast(AUTH_SUCCESS.signup);
       onSignupComplete();
     }
   };
