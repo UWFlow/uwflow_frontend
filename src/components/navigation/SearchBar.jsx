@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withTheme } from 'styled-components';
 import { compose } from 'redux';
+import queryString from 'query-string';
 import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
 
@@ -37,18 +38,21 @@ import { useSearchContext } from '../../search/SearchProvider';
 import KeycodeConstants from '../../constants/KeycodeConstants';
 
 const SearchBar = ({
+  location,
   history,
   theme,
   isLanding = false,
   maximizeWidth = false,
 }) => {
+  const { q: query } = queryString.parse(location.search);
+
   const searchBarRef = useRef();
   const selectedResultRef = useRef();
   const inputRef = useRef();
 
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState(query ? query : '');
   const [searchResults, setSearchResults] = useState({
     courseCodeResults: [],
     courseResults: [],
