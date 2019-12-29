@@ -93,7 +93,8 @@ const SearchResults = ({
         }`;
       }
     }
-    regexStr = regexStr === '' ? 'a^' : `(${regexStr.slice(1)})([0-9]*)`;
+    regexStr =
+      regexStr === '' ? 'a^' : `[a-z|A-Z]+(${regexStr.slice(1)})([0-9]*)`;
     return new RegExp(regexStr);
   }, [filterState]);
 

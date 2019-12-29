@@ -5,17 +5,6 @@ import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
 
-/* Constants */
-import {
-  MIN_REVIEWS_SHOWN,
-  REVIEWS_DIV_ID,
-} from '../../constants/PageConstants';
-
-/* Custom Hooks */
-import useCourseReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from '../../data/hooks/UseCourseReviewsReducer';
-
 /* Styled Components */
 import {
   CourseReviewWrapper,
@@ -49,6 +38,20 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 /* GraphQL Queries */
 import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseReview.jsx';
+
+/* Constants */
+import {
+  MIN_REVIEWS_SHOWN,
+  REVIEWS_DIV_ID,
+} from '../../constants/PageConstants';
+
+/* Hooks */
+import useCourseReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from '../../data/hooks/UseCourseReviewsReducer';
+
+/* Utils */
+import { sortReviews } from '../../utils/Review';
 import { getProfPageRoute } from '../../Routes';
 
 const CourseCourseReviews = ({
@@ -64,23 +67,7 @@ const CourseCourseReviews = ({
 
   const renderReviews = useMemo(
     () =>
-      reviews
-        .sort((a, b) => {
-          if (b.user !== null) {
-            return 1;
-          } else if (a.user !== null) {
-            return -1;
-          }
-
-          const timeSort =
-            moment(b.created_at).format('YYYYMMDD') -
-            moment(a.created_at).format('YYYYMMDD');
-          return courseSort === 0
-            ? timeSort
-            : b.upvotes === a.upvotes
-            ? timeSort
-            : b.upvotes - a.upvotes;
-        })
+      sortReviews(reviews, courseSort === 0)
         .filter((_, i) => {
           return showingAllReviews || i < MIN_REVIEWS_SHOWN;
         })
@@ -203,23 +190,7 @@ const CourseProfReviews = ({
                 />
               </DropdownPanelWrapper>
             </ReviewsOptionsWrapper>
-            {prof.reviews
-              .sort((a, b) => {
-                if (b.user !== null) {
-                  return 1;
-                } else if (a.user !== null) {
-                  return -1;
-                }
-
-                const timeSort =
-                  moment(b.created_at).format('YYYYMMDD') -
-                  moment(a.created_at).format('YYYYMMDD');
-                return selectedSort[idx] === 0
-                  ? timeSort
-                  : b.upvotes === a.upvotes
-                  ? timeSort
-                  : b.upvotes - a.upvotes;
-              })
+            {sortReviews(prof.reviews, selectedSort[idx] === 0)
               .filter((_, i) => {
                 return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
               })

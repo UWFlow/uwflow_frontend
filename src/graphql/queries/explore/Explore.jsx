@@ -34,7 +34,7 @@ export const buildExploreQuery = (query = '', codeOnly = false) => {
     ? query
     : queryTerms.map(term => term + ':*').join(' & ');
 
-return gql`
+  return gql`
     query EXPLORE_QUERY {
       search_courses(args: {query: "${parsedQuery}", code_only: ${codeOnly}}) {
       ...CourseSearchFragment

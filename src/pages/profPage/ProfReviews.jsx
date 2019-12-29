@@ -5,11 +5,6 @@ import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 import moment from 'moment';
 
-/* Custom Reducers */
-import useProfReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from '../../data/hooks/UseProfReviewsReducer';
-
 /* Styled Components */
 import {
   ProfCourseReviewWrapper,
@@ -35,13 +30,20 @@ import Review from '../../components/display/Review';
 import DropdownList from '../../components/input/DropdownList';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 
+/* Hooks */
+import useProfReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from '../../data/hooks/UseProfReviewsReducer';
+
 /* GraphQL Queries */
 import { buildProfReviewQuery } from '../../graphql/queries/prof/ProfReview.jsx';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
+/* Utils */
 import { formatCourseCode } from '../../utils/Misc';
+import { sortReviews } from '../../utils/Review';
 import { getCoursePageRoute } from '../../Routes';
 import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
 
@@ -147,23 +149,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                   }}
                 />
               </DropdownPanelWrapper>
-              {course.reviews
-                .sort((a, b) => {
-                  if (b.user !== null) {
-                    return 1;
-                  } else if (a.user !== null) {
-                    return -1;
-                  }
-
-                  const timeSort =
-                    moment(b.created_at).format('YYYYMMDD') -
-                    moment(a.created_at).format('YYYYMMDD');
-                  return selectedSort[idx] === 0
-                    ? timeSort
-                    : b.upvotes === a.upvotes
-                    ? timeSort
-                    : b.upvotes - a.upvotes;
-                })
+              {sortReviews(course.reviews, selectedSort[idx] === 0)
                 .filter((_, i) => {
                   return (
                     i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code]
