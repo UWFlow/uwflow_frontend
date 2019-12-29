@@ -1,83 +1,49 @@
 import gql from 'graphql-tag';
 
-import CourseFragment from '../../fragments/CourseFragment.jsx';
-import ProfFragment from '../../fragments/ProfFragment.jsx';
+import SearchFragment from '../../fragments/SearchFragment';
 
-import { MAX_SEARCH_TERMS } from '../../../constants/Search.jsx';
-import { formatCourseCode } from '../../../utils/Misc.jsx';
+import { MAX_SEARCH_TERMS } from '../../../constants/Search';
 
-export const buildExploreCodeQuery = (query = '') => gql`
-  query EXPLORE_COURSE_CODE {
-    course(where: {code: {_ilike: "${query}%"}}) {
-      ...CourseInfoFragment
-      ...CourseTermFragment
-      ...CourseRatingFragment
+const exploreAllQuery = gql`
+  query EXPLORE_ALL {
+    course_search_index {
+      ...CourseSearchFragment
     }
-    prof(where: {prof_courses: {course: {code: {_ilike: "${query}%"}}}}) {
-      ...ProfInfoFragment
-      ...ProfCoursesTaughtFragment
-      ...ProfRatingFragment
+    prof_search_index {
+      ...ProfSearchFragment
     }
   }
-  ${CourseFragment.courseInfo}
-  ${CourseFragment.courseTerm}
-  ${CourseFragment.courseRating}
-  ${ProfFragment.profInfo}
-  ${ProfFragment.profCoursesTaught}
-  ${ProfFragment.profRating}
+  ${SearchFragment.courseSearch}
+  ${SearchFragment.profSearch}
 `;
 
-export const buildExploreQuery = (query = '') => {
+export const buildExploreQuery = (query = '', codeOnly = false) => {
+  if (query === '') {
+    return exploreAllQuery;
+  }
+
   const queryTerms = query
+    .toLowerCase()
     .replace('-', ' ')
     .split(' ')
-    .map(term => formatCourseCode(term))
     .map(term => term.trim())
     .filter(term => term.length > 0)
     .slice(0, MAX_SEARCH_TERMS);
 
-  const courseQueries = queryTerms.map(
-    term => `{_or: [
-    {code: {_ilike: "%${term}%"}},
-    {name: {_ilike: "%${term}%"}},
-    {profs_teaching: {prof: {name: {_ilike: "%${term}%"}}}},
-  ]},`,
-  );
+  const parsedQuery = codeOnly
+    ? query
+    : queryTerms.map(term => term + ':*').join(' & ');
 
-  const profQueries = queryTerms.map(
-    term => `{_or: [
-    {name: {_ilike: "%${term}%"}},
-    {prof_courses: {course: {code: {_ilike: "%${term}%"}}}}
-    {prof_courses: {course: {name: {_ilike: "%${term}%"}}}}
-  ]},`,
-  );
-
-  const parsedCourseQuery = `{_and: [
-    ${courseQueries.join('')}
-  ]}`;
-
-  const parsedProfQuery = `{_and: [
-    ${profQueries.join('')}
-  ]}`;
-
-  return gql`
-    query EXPLORE_ALL($query: String) {
-      course(where: ${parsedCourseQuery}) {
-        ...CourseInfoFragment
-        ...CourseTermFragment
-        ...CourseRatingFragment
+return gql`
+    query EXPLORE_QUERY {
+      search_courses(args: {query: "${parsedQuery}", code_only: ${codeOnly}}) {
+      ...CourseSearchFragment
       }
-      prof(where: ${parsedProfQuery}) {
-        ...ProfInfoFragment
-        ...ProfCoursesTaughtFragment
-        ...ProfRatingFragment
+      search_profs(args: {query: "${parsedQuery}", code_only: ${codeOnly}}) {
+        ...ProfSearchFragment
       }
     }
-    ${CourseFragment.courseInfo}
-    ${CourseFragment.courseTerm}
-    ${CourseFragment.courseRating}
-    ${ProfFragment.profInfo}
-    ${ProfFragment.profCoursesTaught}
-    ${ProfFragment.profRating}
+    ${SearchFragment.courseSearch}
+    ${SearchFragment.profSearch}
   `;
 };

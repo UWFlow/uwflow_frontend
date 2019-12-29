@@ -32,6 +32,7 @@ const SearchResults = ({
   ratingFilters,
   profCourses,
   loading,
+  exploreAll,
 }) => {
   const [numRendered, setNumRendered] = useState(SEARCH_RESULTS_PER_PAGE);
   const [courses, setCourses] = useState(null);
@@ -47,40 +48,41 @@ const SearchResults = ({
       return;
     }
 
-    const newCourses = data.course.map(course =>
+    const newCourses = data[
+      exploreAll ? 'course_search_index' : 'search_courses'
+    ].map(result =>
       Object({
-        id: course.id,
-        code: course.code,
-        name: course.name,
-        description: course.description,
-        ratings: course.rating ? course.rating.filled_count : 0,
-        liked: course.rating ? course.rating.liked : null,
-        easy: course.rating ? course.rating.easy : null,
-        useful: course.rating ? course.rating.useful : null,
-        sections: course.sections,
+        id: result.course_id,
+        code: result.code,
+        name: result.name,
+        ratings: result.ratings,
+        liked: result.liked,
+        easy: result.easy,
+        useful: result.useful,
+        terms: result.terms,
       }),
     );
 
-    const newProfs = data.prof.map(prof =>
+    const newProfs = data[
+      exploreAll ? 'prof_search_index' : 'search_profs'
+    ].map(result =>
       Object({
+        id: result.prof_id,
         code_name: {
-          code: prof.code,
-          name: prof.name,
+          code: result.code,
+          name: result.name,
         },
-        ratings: prof.rating ? prof.rating.filled_count : 0,
-        liked: prof.rating ? prof.rating.liked : null,
-        clear: prof.rating ? prof.rating.clear : null,
-        engaging: prof.rating ? prof.rating.engaging : null,
-        courses: prof.prof_courses.reduce(
-          (acc, courseObj) => acc.add(courseObj.course.code),
-          new Set(),
-        ),
+        ratings: result.ratings,
+        liked: result.liked,
+        clear: result.clear,
+        engaging: result.engaging,
+        courses: new Set(), // TODO
       }),
     );
 
     setCourses(newCourses);
     setProfs(newProfs);
-  }, [data]);
+  }, [data, exploreAll]);
 
   const courseCodeRegex = useMemo(() => {
     let regexStr = '';
@@ -91,7 +93,7 @@ const SearchResults = ({
         }`;
       }
     }
-    regexStr = regexStr === '' ? 'a^' : `(${regexStr.slice(1)})([0-9]{2})`;
+    regexStr = regexStr === '' ? 'a^' : `(${regexStr.slice(1)})([0-9]*)`;
     return new RegExp(regexStr);
   }, [filterState]);
 
@@ -102,16 +104,10 @@ const SearchResults = ({
           course.ratings >= ratingFilters[filterState.numCourseRatings] &&
           (!filterState.currentTerm ||
             (filterState.currentTerm &&
-              course.sections &&
-              course.sections.some(
-                section => Number(section.term_id) === currentTermCode,
-              ))) &&
+              course.terms.some(term => Number(term) === currentTermCode))) &&
           (!filterState.nextTerm ||
             (filterState.nextTerm &&
-              course.sections &&
-              course.sections.some(
-                section => Number(section.term_id) === nextTermCode,
-              ))),
+              course.terms.some(term => Number(term) === nextTermCode))),
       )
     : [];
 
@@ -157,6 +153,8 @@ const SearchResults = ({
       ? courseSearch
         ? filteredCourses.length <= numRendered
         : filteredProfs.length <= numRendered
+      : error
+      ? true
       : false;
 
   const results = () => (

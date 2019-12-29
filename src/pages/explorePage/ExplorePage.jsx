@@ -19,10 +19,7 @@ import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
 /* GraphQL */
-import {
-  buildExploreCodeQuery,
-  buildExploreQuery,
-} from '../../graphql/queries/explore/Explore';
+import { buildExploreQuery } from '../../graphql/queries/explore/Explore';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from '../../constants/Messages';
@@ -49,13 +46,16 @@ const ExplorePageContent = ({
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
 
+  const exploreAll = query === '';
+
   useEffect(() => {
     if (!data) {
       return;
     }
 
+    /* TODO(Edwin) fix once I figure out how to return course codes
     let seenCourses = new Set();
-    const newProfCourses = data.prof
+    const newProfCourses = data[exploreAll ? 'prof_search_index' : 'search_profs']
       .reduce((acc, prof) => {
         return acc.concat(
           prof.prof_courses
@@ -71,7 +71,9 @@ const ExplorePageContent = ({
         );
       }, [])
       .sort((a, b) => a.localeCompare(b));
+      
     setProfCourses(['all courses'].concat(newProfCourses));
+    */
   }, [data]);
 
   const filterState = {
@@ -101,7 +103,7 @@ const ExplorePageContent = ({
         <ExploreHeaderText>
           {codeSearch
             ? `Showing all ${query.toUpperCase()} courses and professors`
-            : query === ''
+            : exploreAll
             ? `Showing all courses and professors`
             : `Showing results for "${query}"`}
         </ExploreHeaderText>
@@ -117,6 +119,7 @@ const ExplorePageContent = ({
             ratingFilters={RATING_FILTERS}
             profCourses={profCourses}
             loading={loading}
+            exploreAll={exploreAll}
           />
         </Column1>
         <Column2>
@@ -147,12 +150,13 @@ const ExplorePage = ({ location }) => {
   const courseTab = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
 
-  const exploreQuery = codeSearch ? buildExploreCodeQuery : buildExploreQuery;
-
-  const { data, error, loading } = useQuery(exploreQuery(query), {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'no-cache',
-  });
+  const { data, error, loading } = useQuery(
+    buildExploreQuery(query, codeSearch),
+    {
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: !query || query === '' ? 'no-cache' : 'cache-and-network',
+    },
+  );
 
   return (
     <ExplorePageWrapper>
