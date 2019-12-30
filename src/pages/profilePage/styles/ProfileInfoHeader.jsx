@@ -9,6 +9,7 @@ import {
   PageContent,
   Heading2,
   Body,
+  Hover,
 } from '../../../constants/Mixins';
 
 export const ProfileInfoHeaderWrapper = styled.div`
@@ -100,9 +101,10 @@ export const UserEmail = styled.a`
   margin-right: 4px;
   cursor: pointer;
   color: ${({ theme }) => theme.light1};
+  ${Hover(false, true)}
 `;
 
-export const EditWrapper = styled.a`
+export const EditWrapper = styled.div`
   cursor: pointer;
   height: 16px;
   width: 16px;

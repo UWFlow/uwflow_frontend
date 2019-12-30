@@ -29,6 +29,8 @@ import {
 
 /* Child Components */
 import LoadingSpinner from '../display/LoadingSpinner';
+import Step1Image from '../../img/upload/calendar-step-1.png';
+import Step2Image from '../../img/upload/calendar-step-2.png';
 
 /* Constants */
 import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from '../../constants/Api';
@@ -149,11 +151,20 @@ export const ScheduleUploadModalContent = ({
           <InstructionWrapper>
             <NumberCircle>1</NumberCircle>
             <InstructionText>
-              <Link>Login to Quest</Link>
+              <Link
+                href="https://quest.pecs.uwaterloo.ca/psp/SS/ACADEMIC/SA/?cmd=login&languageCd=ENG"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Login to Quest
+              </Link>
               and click "Enroll"
             </InstructionText>
           </InstructionWrapper>
-          <ScheduleStepPicture />
+          <ScheduleStepPicture
+            src={Step1Image}
+            alt="Login to Quest schedule upload step"
+          />
         </StepWrapper>
 
         <ArrowWrapper>
@@ -167,7 +178,10 @@ export const ScheduleUploadModalContent = ({
               Pick your term then select all (Ctrl+A) and copy (Ctrl+C)
             </InstructionText>
           </InstructionWrapper>
-          <ScheduleStepPicture />
+          <ScheduleStepPicture
+            src={Step2Image}
+            alt="Copy all Quest schedule step"
+          />
         </StepWrapper>
 
         <ArrowWrapper>

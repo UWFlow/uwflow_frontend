@@ -70,7 +70,7 @@ const ExplorePageContent = ({
       .sort((a, b) => a.localeCompare(b));
 
     setProfCourses(['all courses'].concat(allProfCourses));
-  }, [data]);
+  }, [data, exploreAll]);
 
   const filterState = {
     courseCodes,

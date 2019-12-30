@@ -80,7 +80,7 @@ export const NumberCircle = styled.div`
   background: ${({ theme }) => theme.accent};
 `;
 
-export const ScheduleStepPicture = styled.div`
+export const ScheduleStepPicture = styled.img`
   height: 300px;
   width: 300px;
   background: ${({ theme }) => theme.light4};
@@ -176,7 +176,7 @@ export const LongInstructionWrapper = styled.div`
   min-height: 64px;
 `;
 
-export const TranscriptStep1Picture = styled.div`
+export const TranscriptStep1Video = styled.video`
   height: 400px;
   width: 500px;
   background: ${({ theme }) => theme.light4};

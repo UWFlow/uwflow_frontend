@@ -15,7 +15,7 @@ import {
   NumberCircle,
   InstructionText,
   Link,
-  TranscriptStep1Picture,
+  TranscriptStep1Video,
   ScheduleStep3Wrapper,
   TranscriptUploadBox,
   GreyText,
@@ -29,6 +29,8 @@ import {
 
 /* Child Components */
 import LoadingSpinner from '../display/LoadingSpinner';
+import TranscriptUploadVideoMP4 from '../../img/upload/transcript-import-chrome.mp4';
+import TranscriptUploadVideoWebm from '../../img/upload/transcript-import-chrome.webm';
 
 /* Constants */
 import {
@@ -164,11 +166,20 @@ export const TranscriptUploadModalContent = ({
             <NumberCircle>1</NumberCircle>
             <InstructionText>
               Follow the
-              <Link>instructions here</Link>
+              <Link
+                href="https://uwaterloo.ca/quest/help/students/how-do-i/unofficial-transcript"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                instructions here
+              </Link>
               to download your transcript as a PDF file
             </InstructionText>
           </LongInstructionWrapper>
-          <TranscriptStep1Picture />
+          <TranscriptStep1Video loop muted controls preload="meta">
+            <source src={TranscriptUploadVideoMP4} type="video/mp4" />
+            <source src={TranscriptUploadVideoWebm} type="video/webm" />
+          </TranscriptStep1Video>
         </StepWrapper>
 
         <ArrowWrapper>

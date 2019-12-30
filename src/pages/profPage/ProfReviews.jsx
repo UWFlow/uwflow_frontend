@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
-import moment from 'moment';
 
 /* Styled Components */
 import {
