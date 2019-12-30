@@ -24,13 +24,14 @@ import { GET_USER } from '../../graphql/queries/user/User';
 
 /* Utils */
 import { getKittenFromID } from '../../utils/Kitten';
+import withModal from '../modal/withModal';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
 
 import { logOut } from '../../utils/Auth';
+import { AUTH_MODAL_CONTENT } from '../../auth/AuthModalContent';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -61,12 +62,21 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
   );
 };
 
-const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
+const ProfileDropdown = ({
+  history,
+  theme,
+  isLoggedIn,
+  location,
+  openModal,
+  closeModal,
+}) => {
   const dispatch = useDispatch();
   const isLanding = isOnLandingPageRoute(location);
 
   const handleProfileButtonClick = () => {
-    isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : dispatch(authModalOpen());
+    isLoggedIn
+      ? history.push(PROFILE_PAGE_ROUTE)
+      : openModal(AUTH_MODAL_CONTENT);
   };
 
   return (
@@ -113,5 +123,5 @@ const ProfileDropdown = ({ history, theme, isLoggedIn, location }) => {
 };
 
 export default connect(mapStateToProps)(
-  compose(withTheme, withRouter)(ProfileDropdown),
+  compose(withTheme, withRouter, withModal)(ProfileDropdown),
 );

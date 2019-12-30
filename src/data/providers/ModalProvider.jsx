@@ -1,16 +1,13 @@
-import React, { useState, createContext } from 'react';
-import AuthModal, { AUTH_MODAL } from '../../auth/AuthModal';
+import React, { useState, createContext, useRef } from 'react';
 
 export const ModalContext = createContext(null);
-
-const modalNameToModal = {
-  [AUTH_MODAL]: (isOpen, props) => <AuthModal isOpen={isOpen} {...props} />,
-};
 
 // Note modals can be mounted but not open eg. going through closing animation
 // Assume modals are opened in a first open, last closed fashion
 const ModalProvider = ({ children }) => {
   const [modalsById, setModalsById] = useState([]);
+  const currentModalsById = useRef(null);
+  currentModalsById.current = modalsById;
 
   const findIndOfModalByIdAndModal = (id, modal, modals) => {
     for (let i = modals.length - 1; i >= 0; i--) {
@@ -37,21 +34,25 @@ const ModalProvider = ({ children }) => {
     return props;
   };
 
-  const openModal = (modal, id, props) => {
-    var newModalsById = [...modalsById];
-    newModalsById.push({
-      id: id,
-      modal: modal,
-      props: injectOnAfterCloseIntoProps(modal, id, props),
-      isOpen: true,
-    });
-    setModalsById(newModalsById);
-  };
   const closeModal = (modal, id) => {
-    var newModalsById = [...modalsById];
+    var newModalsById = [...currentModalsById.current];
     newModalsById[
       findIndOfModalByIdAndModal(id, modal, newModalsById)
     ].isOpen = false;
+    setModalsById(newModalsById);
+  };
+
+  const openModal = (modal, id, props) => {
+    var newModalsById = [...currentModalsById.current];
+    newModalsById.push({
+      id: id,
+      modal: modal,
+      props: {
+        onRequestClose: () => closeModal(modal, id), // default onRequestClose is just close modal, can be overridden with props
+        ...injectOnAfterCloseIntoProps(modal, id, props),
+      },
+      isOpen: true,
+    });
     setModalsById(newModalsById);
   };
 
@@ -61,7 +62,6 @@ const ModalProvider = ({ children }) => {
         openModal: openModal,
         closeModal: closeModal,
         modalsById: modalsById,
-        modalNameToModal: modalNameToModal,
       }}
     >
       {children}

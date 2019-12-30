@@ -34,7 +34,6 @@ import {
 } from './LoadableComponents';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
-import AuthModal from './auth/AuthModal';
 import CourseNotificationEmailModal from './components/emailInputModals/CourseNotificationEmailModal';
 import ScrollProvider from './data/providers/ScrollProvider';
 import ModalMount from './components/modal/ModalMount';
@@ -163,13 +162,6 @@ const App = ({ history, isLoggedIn, location }) => {
           </div>
         </Scrollbars>
       </ScrollProvider>
-      <AuthModal
-        onAfterSignup={() =>
-          history.push(WELCOME_PAGE_ROUTE, {
-            prevPath: `${history.location.pathname}?${history.location.search}`,
-          })
-        }
-      />
       <CourseNotificationEmailModal />
       <ModalMount />
     </>
