@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import { Helmet } from 'react-helmet';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -40,11 +41,42 @@ import ScrollProvider from './data/providers/ScrollProvider';
 /* Constants */
 import { SEO_DESCRIPTIONS } from './constants/Messages';
 import { NAVBAR_HEIGHT } from './constants/PageConstants';
+import { BACKEND_ENDPOINT, AUTH_REFRESH_ENDPOINT } from './constants/Api';
+
+/* Utils */
+import { makeAuthenticatedPOSTRequest } from './utils/Api';
+import { getIsLoggedIn } from './data/reducers/AuthReducer';
 
 Modal.setAppElement('#root');
 
-const App = ({ history }) => {
+const mapStateToProps = state => ({
+  isLoggedIn: getIsLoggedIn(state),
+});
+
+const App = ({ history, isLoggedIn, location }) => {
   const scrollRef = useRef(null);
+
+  // refresh auth token if logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+
+    const refreshAuth = async () => {
+      const [response, status] = await makeAuthenticatedPOSTRequest(
+        `${BACKEND_ENDPOINT}${AUTH_REFRESH_ENDPOINT}`,
+        {},
+      );
+
+      if (status >= 400) {
+        return;
+      }
+
+      localStorage.setItem('token', response.token);
+    };
+
+    refreshAuth();
+  });
 
   return (
     <>
@@ -142,4 +174,4 @@ const App = ({ history }) => {
   );
 };
 
-export default withRouter(App);
+export default withRouter(connect(mapStateToProps)(App));

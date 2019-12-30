@@ -11,6 +11,7 @@ export const EMAIL_AUTH_LOGIN_ENDPOINT = '/auth/email/login';
 export const EMAIL_AUTH_REGISTER_ENDPOINT = '/auth/email/register';
 export const GOOGLE_AUTH_ENDPOINT = '/auth/google/login';
 export const FACEBOOK_AUTH_ENDPOINT = '/auth/facebook/login';
+export const AUTH_REFRESH_ENDPOINT = '/auth/refresh';
 
 export const SCHEDULE_PARSE_ENDPOINT = '/parse/schedule';
 export const TRANSCRIPT_PARSE_ENDPOINT = '/parse/transcript';
