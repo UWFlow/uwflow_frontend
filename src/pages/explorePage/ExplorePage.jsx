@@ -53,27 +53,23 @@ const ExplorePageContent = ({
       return;
     }
 
-    /* TODO(Edwin) fix once I figure out how to return course codes
     let seenCourses = new Set();
-    const newProfCourses = data[exploreAll ? 'prof_search_index' : 'search_profs']
-      .reduce((acc, prof) => {
+    const allProfCourses = data[
+      exploreAll ? 'prof_search_index' : 'search_profs'
+    ]
+      .reduce((acc, result) => {
         return acc.concat(
-          prof.prof_courses
-            .filter(
-              courseObj =>
-                !!courseObj.course.code &&
-                !seenCourses.has(courseObj.course.code),
-            )
-            .map(courseObj => {
-              seenCourses.add(courseObj.course.code);
-              return courseObj.course.code;
+          result.course_codes
+            .filter(code => !seenCourses.has(code))
+            .map(code => {
+              seenCourses.add(code);
+              return code;
             }),
         );
       }, [])
       .sort((a, b) => a.localeCompare(b));
-      
-    setProfCourses(['all courses'].concat(newProfCourses));
-    */
+
+    setProfCourses(['all courses'].concat(allProfCourses));
   }, [data]);
 
   const filterState = {

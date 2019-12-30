@@ -51,6 +51,7 @@ export const InstructionWrapper = styled.div`
   align-items: center;
   max-width: 300px;
   margin-bottom: 16px;
+  min-height: 80px;
 `;
 
 export const InstructionText = styled.div`
@@ -172,6 +173,7 @@ export const LongInstructionWrapper = styled.div`
   align-items: center;
   max-width: 500px;
   margin-bottom: 16px;
+  min-height: 64px;
 `;
 
 export const TranscriptStep1Picture = styled.div`

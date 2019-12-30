@@ -383,6 +383,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
         <>
           <CollapsibleContainer
             title={`Course reviews (${courseReviewsToShow.length})`}
+            margin="0 auto"
           >
             <CourseCourseReviews
               reviews={courseReviewsToShow}

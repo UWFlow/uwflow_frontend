@@ -67,7 +67,11 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
       <ShortlistContentWrapper>{shorlistContent}</ShortlistContentWrapper>
     </ShortlistBoxWrapper>
   ) : (
-    <CollapsibleContainer title="Shortlist" centerHeader={false}>
+    <CollapsibleContainer
+      title="Shortlist"
+      centerHeader={false}
+      margin="0 0 32px 0"
+    >
       {shorlistContent}
     </CollapsibleContainer>
   );

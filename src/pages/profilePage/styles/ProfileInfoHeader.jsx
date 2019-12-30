@@ -80,13 +80,22 @@ export const UserEmailWrapper = styled(FadeIn)`
   display: flex;
   margin-top: 16px;
   align-items: center;
+
+  ${breakpoint('mobile', 'mobileLarge')`
+    flex-direction: column;
+    align-items: flex-start;
+  `}
 `;
 
 export const UserEmailText = styled.div`
   margin-right: 5px;
+  white-space: no-wrap;
+  width: max-content;
 `;
 
 export const UserEmail = styled.a`
+  display: flex;
+  align-items: center;
   text-decoration: underline;
   margin-right: 4px;
   cursor: pointer;
@@ -98,5 +107,5 @@ export const EditWrapper = styled.a`
   height: 16px;
   width: 16px;
   color: ${({ theme }) => theme.light1};
-  display: flex;
+  margin-left: 4px;
 `;

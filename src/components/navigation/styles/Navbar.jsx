@@ -37,4 +37,6 @@ export const NavbarContent = styled.div`
 export const NavbarPlaceholder = styled.div`
   min-height: ${NAVBAR_HEIGHT}px;
   height: ${NAVBAR_HEIGHT}px;
+  width: 100vw;
+  content: '';
 `;

@@ -21,6 +21,7 @@ const SearchFragment = {
       code
       clear
       course_ids
+      course_codes
       engaging
       liked
       ratings

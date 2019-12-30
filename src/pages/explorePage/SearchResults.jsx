@@ -76,7 +76,7 @@ const SearchResults = ({
         liked: result.liked,
         clear: result.clear,
         engaging: result.engaging,
-        courses: new Set(), // TODO
+        courses: new Set(result.course_codes),
       }),
     );
 

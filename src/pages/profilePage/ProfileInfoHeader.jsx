@@ -40,10 +40,10 @@ const ProfileInfoHeader = ({ user }) => {
               <UserEmailText>Send notifications to</UserEmailText>
               <UserEmail onClick={() => setEditEmailModalOpen(true)}>
                 {user.email}
+                <EditWrapper onClick={() => setEditEmailModalOpen(true)}>
+                  <Edit size={16} />
+                </EditWrapper>
               </UserEmail>
-              <EditWrapper onClick={() => setEditEmailModalOpen(true)}>
-                <Edit size={16} />
-              </EditWrapper>
             </UserEmailWrapper>
           </UserInfoWrapper>
         </ProfileInfoSection>
