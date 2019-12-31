@@ -69,7 +69,6 @@ const ProfileDropdown = ({
   isLoggedIn,
   location,
   openModal,
-  closeModal,
 }) => {
   const dispatch = useDispatch();
   const isLanding = isOnLandingPageRoute(location);

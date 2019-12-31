@@ -7,11 +7,10 @@ import Modal from '../display/Modal';
 /* Constants */
 import { modalNameToModal } from '../../constants/Modal';
 
-const ModalMountInner = ({ context }) => {
-  console.log(context.modalsById);
+const ModalMountInner = ({ modalsById }) => {
   return (
     <>
-      {context.modalsById.map(modalData => (
+      {modalsById.map(modalData => (
         <Modal
           isOpen={modalData.isOpen}
           onRequestClose={modalData.props.onRequestClose}
@@ -27,7 +26,7 @@ const ModalMountInner = ({ context }) => {
 
 const ModalMount = () => (
   <ModalContext.Consumer>
-    {context => <ModalMountInner context={context} />}
+    {context => <ModalMountInner modalsById={context.modalsById} />}
   </ModalContext.Consumer>
 );
 
