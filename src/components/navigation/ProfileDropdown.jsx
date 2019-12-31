@@ -29,9 +29,10 @@ import withModal from '../modal/withModal';
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
 import { logOut } from '../../utils/Auth';
-import { AUTH_MODAL_CONTENT } from '../../auth/AuthModalContent';
+
+/* Constants */
+import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -74,9 +75,7 @@ const ProfileDropdown = ({
   const isLanding = isOnLandingPageRoute(location);
 
   const handleProfileButtonClick = () => {
-    isLoggedIn
-      ? history.push(PROFILE_PAGE_ROUTE)
-      : openModal(AUTH_MODAL_CONTENT);
+    isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : openModal(AUTH_MODAL);
   };
 
   return (

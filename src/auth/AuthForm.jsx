@@ -23,7 +23,7 @@ import ResetPasswordModal from './ResetPasswordModal';
 
 import { PRIVACY_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
-import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
+import { LOGGED_IN } from '../data/actions/AuthActions';
 import {
   AUTH_ERRORS,
   DEFAULT_ERROR,
@@ -34,6 +34,7 @@ export const AuthForm = ({
   onLoginComplete,
   onSignupComplete,
   margin = '32px 0',
+  closeModal,
 }) => {
   const dispatch = useDispatch();
 
@@ -124,10 +125,7 @@ export const AuthForm = ({
           />
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
-            <PrivacyPolicyText
-              to={PRIVACY_PAGE_ROUTE}
-              onClick={() => dispatch(authModalClose())}
-            >
+            <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE} onClick={closeModal}>
               Privacy Policy
             </PrivacyPolicyText>
           </PrivacyWrapper>

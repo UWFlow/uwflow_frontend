@@ -8,8 +8,6 @@ import AuthForm from './AuthForm';
 /* Routes */
 import { WELCOME_PAGE_ROUTE } from '../Routes';
 
-export const AUTH_MODAL_CONTENT = 'AUTH_MODAL_CONTENT';
-
 const AuthModalContent = ({
   onAfterLogin,
   onAfterSignup,
@@ -35,6 +33,7 @@ const AuthModalContent = ({
         onAfterSignup();
       }}
       margin="0"
+      closeModal={onRequestClose}
     />
   );
 };

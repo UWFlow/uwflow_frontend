@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
@@ -13,7 +13,6 @@ import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import {
@@ -22,12 +21,16 @@ import {
 } from '../../graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
 
+/* Utils */
+import withModal from '../../components/modal/withModal';
+
 /* Constants */
 import {
   SUBSCRIPTION_ERROR,
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_TOOLTIP,
 } from '../../constants/Messages';
+import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -39,6 +42,7 @@ const ScheduleNotificationBell = ({
   courseID,
   initialState = false,
   userEmail,
+  openModal,
 }) => {
   const userID = localStorage.getItem('user_id');
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -50,7 +54,6 @@ const ScheduleNotificationBell = ({
     },
   ];
 
-  const dispatch = useDispatch();
   const [selected, setSelected] = useState(initialState);
   const [insertSubscription] = useMutation(INSERT_SECTION_SUBSCRIPTION, {
     refetchQueries,
@@ -64,7 +67,7 @@ const ScheduleNotificationBell = ({
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
-      dispatch(authModalOpen());
+      openModal(AUTH_MODAL);
       return;
     }
 
@@ -138,4 +141,4 @@ const ScheduleNotificationBell = ({
   );
 };
 
-export default connect(mapStateToProps)(ScheduleNotificationBell);
+export default withModal(connect(mapStateToProps)(ScheduleNotificationBell));

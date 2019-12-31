@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
@@ -15,7 +15,6 @@ import Tooltip from '../display/Tooltip';
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import {
@@ -25,8 +24,13 @@ import {
 import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
 
+/* Utils */
 import { formatCourseCode } from '../../utils/Misc';
+import withModal from '../modal/withModal';
+
+/* Constants */
 import { SHORTLIST_ERROR } from '../../constants/Messages';
+import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -39,6 +43,7 @@ const ShortlistStar = ({
   isLoggedIn,
   initialState = false,
   size = 32,
+  openModal,
 }) => {
   const userID = localStorage.getItem('user_id');
   const refetchQueries = [
@@ -49,7 +54,6 @@ const ShortlistStar = ({
     { query: REFETCH_USER_SHORTLIST, variables: { id: userID } },
   ];
 
-  const dispatch = useDispatch();
   const [checked, setChecked] = useState(initialState);
   const [insertShortlist] = useMutation(INSERT_USER_SHORTLIST, {
     refetchQueries,
@@ -65,7 +69,7 @@ const ShortlistStar = ({
 
   const onStarClicked = () => {
     if (!isLoggedIn) {
-      dispatch(authModalOpen());
+      openModal(AUTH_MODAL);
       return;
     }
 
@@ -111,4 +115,4 @@ const ShortlistStar = ({
   );
 };
 
-export default withTheme(connect(mapStateToProps)(ShortlistStar));
+export default withModal(withTheme(connect(mapStateToProps)(ShortlistStar)));

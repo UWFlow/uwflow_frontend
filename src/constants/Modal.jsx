@@ -1,8 +1,10 @@
 import React from 'react';
 
 /* Modal Content */
-import AuthModalContent, { AUTH_MODAL_CONTENT } from '../auth/AuthModalContent';
+import AuthModalContent from '../auth/AuthModalContent';
+
+export const AUTH_MODAL = 'AUTH_MODAL';
 
 export const modalNameToModal = {
-  [AUTH_MODAL_CONTENT]: AuthModalContent,
+  [AUTH_MODAL]: AuthModalContent,
 };

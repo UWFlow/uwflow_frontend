@@ -18,6 +18,12 @@ import { authModalOpen } from '../../data/actions/AuthActions';
 import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
 import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 
+/* Utils */
+import withModal from '../modal/withModal';
+
+/* Constants */
+import { AUTH_MODAL } from '../../constants/Modal';
+
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
@@ -29,6 +35,7 @@ const LikeCourseToggle = ({
   profID,
   reviewID = null,
   initialState = null,
+  openModal,
 }) => {
   const userID = localStorage.getItem('user_id');
 
@@ -49,7 +56,7 @@ const LikeCourseToggle = ({
 
   const toggleOnClick = targetState => {
     if (!isLoggedIn) {
-      dispatch(authModalOpen());
+      openModal(AUTH_MODAL);
       return;
     }
 
@@ -105,4 +112,4 @@ const LikeCourseToggle = ({
   );
 };
 
-export default withTheme(connect(mapStateToProps)(LikeCourseToggle));
+export default withModal(withTheme(connect(mapStateToProps)(LikeCourseToggle)));

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -39,10 +39,11 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* Utils */
 import { formatCourseCode } from '../../utils/Misc';
+import withModal from '../../components/modal/withModal';
 
 /* Constants */
-import { authModalOpen } from '../../data/actions/AuthActions';
 import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
+import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -58,11 +59,11 @@ const CoursePageContent = ({
   isLoggedIn,
   isBrowserDesktop,
   userEmail,
+  openModal,
 }) => {
-  const dispatch = useDispatch();
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const handleReviewClick = () => {
-    isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
+    isLoggedIn ? setReviewModalOpen(true) : openModal(AUTH_MODAL);
   };
 
   const Schedule = (
@@ -131,7 +132,7 @@ const CoursePageContent = ({
   );
 };
 
-const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
+const CoursePage = ({ match, isLoggedIn, isBrowserDesktop, openModal }) => {
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn, getUserId());
 
@@ -169,6 +170,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
         userEmail={isLoggedIn && data.user[0].email}
+        openModal={openModal}
       />
     </CoursePageWrapper>
   );
@@ -178,4 +180,4 @@ CoursePage.propTypes = {
   data: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps)(CoursePage));
+export default withModal(withRouter(connect(mapStateToProps)(CoursePage)));
