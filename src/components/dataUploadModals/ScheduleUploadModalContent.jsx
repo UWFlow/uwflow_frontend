@@ -60,7 +60,7 @@ const clipboardKeys = {
 export const ScheduleUploadModalContent = ({
   onSkip,
   theme,
-  showSkipStepButton,
+  showSkipStepButton = false,
   onAfterUploadSuccess,
 }) => {
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
