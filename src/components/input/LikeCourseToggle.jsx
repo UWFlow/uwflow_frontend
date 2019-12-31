@@ -57,22 +57,23 @@ const LikeCourseToggle = ({
       return;
     }
 
-    let likedValue = liked === targetState ? null : targetState;
-    upsertLiked({
-      variables: { user_id: userID, course_id: courseID, liked: likedValue },
-      optimisticResponse: {
-        __typename: 'mutation_root',
-        insert_review: {
-          __typename: 'review_mutation_response',
-          returning: {
-            __typename: 'review',
-            id: reviewID,
-            liked: likedValue,
+    if (liked !== targetState) {
+      upsertLiked({
+        variables: { user_id: userID, course_id: courseID, liked: targetState },
+        optimisticResponse: {
+          __typename: 'mutation_root',
+          insert_review: {
+            __typename: 'review_mutation_response',
+            returning: {
+              __typename: 'review',
+              id: reviewID,
+              liked: targetState,
+            },
           },
         },
-      },
-    });
-    setLiked(likedValue);
+      });
+      setLiked(targetState);
+    }
   };
 
   return (
