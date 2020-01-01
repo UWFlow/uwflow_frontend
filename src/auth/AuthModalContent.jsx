@@ -33,7 +33,7 @@ const AuthModalContent = ({
         onAfterSignup();
       }}
       margin="0"
-      closeModal={onRequestClose}
+      closeAuthModal={onRequestClose}
     />
   );
 };

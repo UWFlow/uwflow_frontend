@@ -170,7 +170,7 @@ const ENTER_RESET_CODE_FORM = 'RESET_CODE';
 const ENTER_NEW_PASSWORD_FORM = 'NEW_PASSWORD';
 const TIMEOUT_LENGTH = 800;
 
-const ResetPasswordModal = ({ handleClose, isOpen }) => {
+const ResetPasswordModalContent = ({ handleClose }) => {
   const [showingForm, setShowingForm] = useState(RESET_PASSWORD_FORM);
   const [savedCode, setSavedCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -278,43 +278,43 @@ const ResetPasswordModal = ({ handleClose, isOpen }) => {
     }
   };
 
-  return (
-    <Modal isOpen={isOpen} onRequestClose={handleClose}>
-      {showingForm === RESET_PASSWORD_FORM && (
-        <ResetPasswordForm
-          onSubmit={handleSendResetEmail}
-          loading={isLoading}
-          error={errorMessage}
-          success={successMessage}
-          emailError={emailError}
-          setEmailError={setEmailError}
-        />
-      )}
-      {showingForm === ENTER_RESET_CODE_FORM && (
-        <EnterResetCodeForm
-          onSubmit={handleSubmitResetCode}
-          loading={isLoading}
-          error={errorMessage}
-          resendEmail={() => handleSendResetEmail(email)}
-          success={successMessage}
-          codeError={codeError}
-          setCodeError={setCodeError}
-        />
-      )}
-      {showingForm === ENTER_NEW_PASSWORD_FORM && (
-        <EnterNewPasswordForm
-          onSubmit={handleNewPassword}
-          loading={isLoading}
-          error={errorMessage}
-          success={successMessage}
-          passwordError={passwordError}
-          setPasswordError={setPasswordError}
-          confirmPasswordError={confirmPasswordError}
-          setConfirmPasswordError={setConfirmPasswordError}
-        />
-      )}
-    </Modal>
-  );
+  if (showingForm === RESET_PASSWORD_FORM)
+    return (
+      <ResetPasswordForm
+        onSubmit={handleSendResetEmail}
+        loading={isLoading}
+        error={errorMessage}
+        success={successMessage}
+        emailError={emailError}
+        setEmailError={setEmailError}
+      />
+    );
+  if (showingForm === ENTER_RESET_CODE_FORM)
+    return (
+      <EnterResetCodeForm
+        onSubmit={handleSubmitResetCode}
+        loading={isLoading}
+        error={errorMessage}
+        resendEmail={() => handleSendResetEmail(email)}
+        success={successMessage}
+        codeError={codeError}
+        setCodeError={setCodeError}
+      />
+    );
+
+  if (showingForm === ENTER_NEW_PASSWORD_FORM)
+    return (
+      <EnterNewPasswordForm
+        onSubmit={handleNewPassword}
+        loading={isLoading}
+        error={errorMessage}
+        success={successMessage}
+        passwordError={passwordError}
+        setPasswordError={setPasswordError}
+        confirmPasswordError={confirmPasswordError}
+        setConfirmPasswordError={setConfirmPasswordError}
+      />
+    );
 };
 
-export default ResetPasswordModal;
+export default ResetPasswordModalContent;

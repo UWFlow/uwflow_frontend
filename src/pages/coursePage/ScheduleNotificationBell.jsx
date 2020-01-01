@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 
 /* Child Components */
 import Tooltip from '../../components/display/Tooltip';
-import CourseNotificationEmailModal from '../../components/emailInputModals/CourseNotificationEmailModal';
 
 /* Styled Components */
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
@@ -30,7 +29,10 @@ import {
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_TOOLTIP,
 } from '../../constants/Messages';
-import { AUTH_MODAL } from '../../constants/Modal';
+import {
+  AUTH_MODAL,
+  COURSE_NOTIFICATION_EMAIL_MODAL,
+} from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -45,7 +47,6 @@ const ScheduleNotificationBell = ({
   openModal,
 }) => {
   const userID = localStorage.getItem('user_id');
-  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   const refetchQueries = [
     {
@@ -64,6 +65,19 @@ const ScheduleNotificationBell = ({
 
   const notifyDelete = () => toast(SUBSCRIPTION_SUCCESS.unsubscribed);
   const notifyInsert = () => toast(SUBSCRIPTION_SUCCESS.subscribed);
+  const emailModalProps = {
+    onSuccess: () =>
+      insertSubscription({
+        variables: { user_id: userID, section_id: sectionID },
+      })
+        .then(() => {
+          notifyInsert();
+          setSelected(true);
+        })
+        .catch(() => {
+          toast(SUBSCRIPTION_ERROR);
+        }),
+  };
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
@@ -88,7 +102,7 @@ const ScheduleNotificationBell = ({
         // TODO: chain insertSubscription and setSelected to fire after user has entered email
         // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
         // TODO: Find way to pass callbacks to top level modal
-        setIsEmailModalOpen(true);
+        openModal(COURSE_NOTIFICATION_EMAIL_MODAL, emailModalProps);
       } else {
         insertSubscription({
           variables: { user_id: userID, section_id: sectionID },
@@ -119,24 +133,6 @@ const ScheduleNotificationBell = ({
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
       </NotificationBellWrapper>
-      <div style={{ overflow: 'hidden' }}>
-        <CourseNotificationEmailModal
-          isOpen={isEmailModalOpen}
-          onClose={() => setIsEmailModalOpen(false)}
-          onSuccess={() =>
-            insertSubscription({
-              variables: { user_id: userID, section_id: sectionID },
-            })
-              .then(() => {
-                notifyInsert();
-                setSelected(true);
-              })
-              .catch(() => {
-                toast(SUBSCRIPTION_ERROR);
-              })
-          }
-        />
-      </div>
     </>
   );
 };

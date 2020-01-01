@@ -19,8 +19,6 @@ import ShortlistBox from './ShortlistBox';
 import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileFinalExams from './ProfileFinalExams';
-import Modal from '../../components/display/Modal';
-import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import CompleteProfileContent from './CompleteProfileContent';
 import NotFoundPage from '../notFoundPage/NotFoundPage';
@@ -35,8 +33,13 @@ import { GET_USER } from '../../graphql/queries/user/User';
 /* Routes */
 import { LANDING_PAGE_ROUTE } from '../../Routes';
 
-import { logOut } from '../../utils/Auth';
+/* Constants */
 import { SEO_DESCRIPTIONS } from '../../constants/Messages';
+import { COURSE_REVIEW_COURSE_MODAL } from '../../constants/Modal';
+
+/* Utils */
+import { logOut } from '../../utils/Auth';
+import withModal from '../../components/modal/withModal';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -49,8 +52,9 @@ const ProfilePageContent = ({
   coursesTaken,
   isBrowserDesktop,
   refetchAll,
+  openModal,
+  closeModal,
 }) => {
-  const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
 
   const shortlist = user.shortlist;
@@ -60,6 +64,14 @@ const ProfilePageContent = ({
     );
     return { course: course.course, review: curReview };
   });
+
+  const reviewModalProps = {
+    showCourseDropdown: true,
+    courseList: reviewModalCourseList,
+    selectedCourseIndex: selectedCourseIndex,
+    setSelectedCourseIndex: setSelectedCourseIndex,
+    onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
+  };
 
   return (
     <>
@@ -75,7 +87,9 @@ const ProfilePageContent = ({
             courses={coursesTaken}
             reviews={reviews}
             setReviewCourse={setSelectedCourseIndex}
-            openModal={() => setReviewModalOpen(true)}
+            openReviewModal={() =>
+              openModal(COURSE_REVIEW_COURSE_MODAL, reviewModalProps)
+            }
             refetchAll={refetchAll}
           />
           <ProfileFinalExams courses={coursesTaken} />
@@ -93,23 +107,17 @@ const ProfilePageContent = ({
           <ShortlistBox shortlistCourses={shortlist} />
         </Column2>
       </ColumnWrapper>
-      <Modal
-        isOpen={reviewModalOpen}
-        onRequestClose={() => setReviewModalOpen(false)}
-      >
-        <CourseReviewCourseBox
-          showCourseDropdown
-          courseList={reviewModalCourseList}
-          selectedCourseIndex={selectedCourseIndex}
-          setSelectedCourseIndex={setSelectedCourseIndex}
-          onCancel={() => setReviewModalOpen(false)}
-        />
-      </Modal>
     </>
   );
 };
 
-export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
+export const ProfilePage = ({
+  history,
+  isLoggedIn,
+  isBrowserDesktop,
+  openModal,
+  closeModal,
+}) => {
   const dispatch = useDispatch();
   const { loading, error, data, refetch } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
@@ -144,9 +152,11 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
         refetchAll={refetch}
         coursesTaken={data.user_course_taken}
         isBrowserDesktop={isBrowserDesktop}
+        openModal={openModal}
+        closeModal={closeModal}
       />
     </ProfilePageWrapper>
   );
 };
 
-export default withRouter(connect(mapStateToProps)(ProfilePage));
+export default withModal(withRouter(connect(mapStateToProps)(ProfilePage)));

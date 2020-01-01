@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Edit } from 'react-feather';
 
@@ -18,47 +18,40 @@ import {
 
 /* Utils */
 import { getKittenFromID } from '../../utils/Kitten';
+import withModal from '../../components/modal/withModal';
 
-/* Child Components */
-import EditEmailModal from '../../components/emailInputModals/EditEmailModal';
+/* Constants */
+import { EDIT_EMAIL_MODAL } from '../../constants/Modal';
 
-const ProfileInfoHeader = ({ user }) => {
-  const [editEmailModalOpen, setEditEmailModalOpen] = useState(false);
-  return (
-    <>
-      <ProfileInfoHeaderWrapper>
-        <ProfileInfoSection>
-          <UserPicture
-            image={
-              user.picture_url ? user.picture_url : getKittenFromID(user.id)
-            }
-          />
-          <UserInfoWrapper>
-            <UserName>{user.full_name}</UserName>
-            <UserProgram>{user.program}</UserProgram>
-            <UserEmailWrapper>
-              <UserEmailText>Send notifications to</UserEmailText>
-              <UserEmail onClick={() => setEditEmailModalOpen(true)}>
-                {user.email}
-                <EditWrapper>
-                  <Edit size={16} />
-                </EditWrapper>
-              </UserEmail>
-            </UserEmailWrapper>
-          </UserInfoWrapper>
-        </ProfileInfoSection>
-      </ProfileInfoHeaderWrapper>
-      <EditEmailModal
-        email={user.email}
-        isOpen={editEmailModalOpen}
-        onClose={() => setEditEmailModalOpen(false)}
+const ProfileInfoHeader = ({ user, openModal }) => (
+  <ProfileInfoHeaderWrapper>
+    <ProfileInfoSection>
+      <UserPicture
+        image={user.picture_url ? user.picture_url : getKittenFromID(user.id)}
       />
-    </>
-  );
-};
+      <UserInfoWrapper>
+        <UserName>{user.full_name}</UserName>
+        <UserProgram>{user.program}</UserProgram>
+        <UserEmailWrapper>
+          <UserEmailText>Send notifications to</UserEmailText>
+          <UserEmail
+            onClick={() => openModal(EDIT_EMAIL_MODAL, { email: user.email })}
+          >
+            {user.email}
+          </UserEmail>
+          <EditWrapper
+            onClick={() => openModal(EDIT_EMAIL_MODAL, { email: user.email })}
+          >
+            <Edit size={16} />
+          </EditWrapper>
+        </UserEmailWrapper>
+      </UserInfoWrapper>
+    </ProfileInfoSection>
+  </ProfileInfoHeaderWrapper>
+);
 
 ProfileInfoHeader.propTypes = {
   user: PropTypes.object.isRequired,
 };
 
-export default ProfileInfoHeader;
+export default withModal(ProfileInfoHeader);

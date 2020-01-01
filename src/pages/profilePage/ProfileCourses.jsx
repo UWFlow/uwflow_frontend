@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { PlusSquare, Edit } from 'react-feather';
 import { withTheme } from 'styled-components';
@@ -7,7 +7,6 @@ import { withTheme } from 'styled-components';
 import TabContainer from '../../components/display/TabContainer';
 import Button from '../../components/input/Button';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
-import TranscriptUploadModal from '../../components/dataUploadModals/TranscriptUploadModal';
 
 /* Styled Components */
 import {
@@ -27,12 +26,17 @@ import {
   HeaderText,
 } from './styles/ProfileCourses';
 
+/* Routes */
+import { getCoursePageRoute } from '../../Routes';
+
+/* Utils */
 import {
   termCodeToDate,
   formatCourseCode,
   processRating,
 } from '../../utils/Misc';
-import { getCoursePageRoute } from '../../Routes';
+import withModal from '../../components/modal/withModal';
+import { TRANSCRIPT_UPLOAD_MODAL } from '../../constants/Modal';
 
 const ProfileCourses = ({
   theme,
@@ -40,10 +44,9 @@ const ProfileCourses = ({
   reviews,
   setReviewCourse,
   openModal,
+  openReviewModal,
   refetchAll,
 }) => {
-  const [transcriptModalOpen, setTranscriptModalOpen] = useState(false);
-
   const groupByTerm = courses => {
     return courses.reduce((groups, course, idx) => {
       groups[course.term_id] = groups[course.term_id] || [];
@@ -103,7 +106,7 @@ const ProfileCourses = ({
             maxHeight={48}
             handleClick={() => {
               setReviewCourse(course_taken.index);
-              openModal();
+              openReviewModal();
             }}
           >
             <ReviewButtonContents>
@@ -130,40 +133,38 @@ const ProfileCourses = ({
     };
   });
 
-  const TranscriptModal = (
-    <TranscriptUploadModal
-      isModalOpen={transcriptModalOpen}
-      onCloseModal={() => setTranscriptModalOpen(false)}
-      onAfterUploadSuccess={() => refetchAll()}
-    />
-  );
+  const transcriptModalProps = {
+    onAfterUploadSuccess: refetchAll,
+  };
 
   return tabList.length > 0 ? (
     <ProfileCoursesWrapper>
       <YourCoursesWrapper columnBreak={425}>
         <HeaderText columnBreak={425}>Your courses</HeaderText>
         <Button
-          handleClick={() => setTranscriptModalOpen(true)}
+          handleClick={() =>
+            openModal(TRANSCRIPT_UPLOAD_MODAL, transcriptModalProps)
+          }
           padding="8px 24px"
         >
           Add previous terms
         </Button>
       </YourCoursesWrapper>
       <TabContainer tabList={tabList} contentPadding="0" minTabWidth={144} />
-      {TranscriptModal}
     </ProfileCoursesWrapper>
   ) : (
     <ProfileCoursesWrapper>
       <YourCoursesWrapper columnBreak={1120}>
         <HeaderText columnBreak={1120}>Add courses you have taken</HeaderText>
         <Button
-          handleClick={() => setTranscriptModalOpen(true)}
+          handleClick={() =>
+            openModal(TRANSCRIPT_UPLOAD_MODAL, transcriptModalProps)
+          }
           padding="8px 24px"
         >
           Add previous terms
         </Button>
       </YourCoursesWrapper>
-      {TranscriptModal}
     </ProfileCoursesWrapper>
   );
 };
@@ -175,4 +176,4 @@ ProfileCourses.propTypes = {
   openModal: PropTypes.func.isRequired,
 };
 
-export default withTheme(ProfileCourses);
+export default withModal(withTheme(ProfileCourses));

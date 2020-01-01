@@ -43,7 +43,7 @@ import withModal from '../../components/modal/withModal';
 
 /* Constants */
 import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
-import { AUTH_MODAL } from '../../constants/Modal';
+import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -60,10 +60,16 @@ const CoursePageContent = ({
   isBrowserDesktop,
   userEmail,
   openModal,
+  closeModal,
 }) => {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const handleReviewClick = () => {
-    isLoggedIn ? setReviewModalOpen(true) : openModal(AUTH_MODAL);
+    isLoggedIn
+      ? openModal(COURSE_REVIEW_COURSE_MODAL, {
+          courseList: [{ course: course, review: userReview }],
+          onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
+        })
+      : openModal(AUTH_MODAL);
   };
 
   const Schedule = (
@@ -119,15 +125,6 @@ const CoursePageContent = ({
           />
         </Column2>
       </ColumnWrapper>
-      <Modal
-        isOpen={reviewModalOpen}
-        onRequestClose={() => setReviewModalOpen(false)}
-      >
-        <CourseReviewCourseBox
-          courseList={[{ course: course, review: userReview }]}
-          onCancel={() => setReviewModalOpen(false)}
-        />
-      </Modal>
     </>
   );
 };

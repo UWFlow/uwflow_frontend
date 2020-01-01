@@ -57,7 +57,7 @@ const clipboardKeys = {
   undo: 122,
 };
 
-export const ScheduleUploadModalContent = ({
+const ScheduleUploadModalContent = ({
   onSkip,
   theme,
   showSkipStepButton = false,
@@ -199,7 +199,7 @@ export const ScheduleUploadModalContent = ({
             </SchedulePasteBoxWrapper>
             <PrivacyPolicyWrapper>
               <PrivacyPolicyText>Check out our</PrivacyPolicyText>
-              <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+              <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE} onClick={onSkip}>
                 privacy policy
               </PrivacyPolicyLink>
             </PrivacyPolicyWrapper>

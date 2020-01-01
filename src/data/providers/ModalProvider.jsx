@@ -21,7 +21,7 @@ const ModalProvider = ({ children }) => {
   const injectOnAfterCloseIntoProps = useCallback((modal, id, props) => {
     const originalOnAfterClose = props.onAfterClose;
     props.onAfterClose = () => {
-      var newModalsById = [...modalsById];
+      var newModalsById = [...currentModalsById.current];
       newModalsById.splice(
         findIndOfModalByIdAndModal(id, modal, newModalsById),
         1,

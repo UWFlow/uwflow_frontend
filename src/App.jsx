@@ -34,7 +34,6 @@ import {
 } from './LoadableComponents';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
-import CourseNotificationEmailModal from './components/emailInputModals/CourseNotificationEmailModal';
 import ScrollProvider from './data/providers/ScrollProvider';
 import ModalMount from './components/modal/ModalMount';
 
@@ -162,7 +161,6 @@ const App = ({ history, isLoggedIn, location }) => {
           </div>
         </Scrollbars>
       </ScrollProvider>
-      <CourseNotificationEmailModal />
       <ModalMount />
     </>
   );
