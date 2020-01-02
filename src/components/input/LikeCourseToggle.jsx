@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { ThumbsUp, ThumbsDown } from 'react-feather';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
@@ -12,11 +12,16 @@ import {
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
 import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
+
+/* Utils */
+import withModal from '../modal/withModal';
+
+/* Constants */
+import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -29,6 +34,7 @@ const LikeCourseToggle = ({
   profID,
   reviewID = null,
   initialState = null,
+  openModal,
 }) => {
   const userID = localStorage.getItem('user_id');
 
@@ -42,14 +48,12 @@ const LikeCourseToggle = ({
       },
     },
   ];
-
-  const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
   const [upsertLiked] = useMutation(UPSERT_LIKED_REVIEW, { refetchQueries });
 
   const toggleOnClick = targetState => {
     if (!isLoggedIn) {
-      dispatch(authModalOpen());
+      openModal(AUTH_MODAL);
       return;
     }
 
@@ -105,4 +109,4 @@ const LikeCourseToggle = ({
   );
 };
 
-export default withTheme(connect(mapStateToProps)(LikeCourseToggle));
+export default withModal(withTheme(connect(mapStateToProps)(LikeCourseToggle)));

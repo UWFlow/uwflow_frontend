@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
@@ -32,7 +32,6 @@ import Tooltip from '../display/Tooltip';
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import {
@@ -46,6 +45,12 @@ import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfRevie
 
 /* Routes */
 import { getProfPageRoute } from '../../Routes';
+
+/* Utils */
+import withModal from '../modal/withModal';
+
+/* Constants */
+import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -87,6 +92,7 @@ const Review = ({
   isBrowserDesktop,
   isLoggedIn,
   isCourseReview,
+  openModal,
 }) => {
   const {
     id,
@@ -111,7 +117,6 @@ const Review = ({
     },
   ];
 
-  const dispatch = useDispatch();
   const [userUpvoted, setUserUpvoted] = useState(
     upvote_users.includes(Number(userID)),
   );
@@ -126,7 +131,7 @@ const Review = ({
 
   const onClickUpvote = () => {
     if (!isLoggedIn) {
-      dispatch(authModalOpen());
+      openModal(AUTH_MODAL);
       return;
     }
 
@@ -233,4 +238,4 @@ Review.propTypes = {
   }).isRequired,
 };
 
-export default withTheme(connect(mapStateToProps)(Review));
+export default withModal(withTheme(connect(mapStateToProps)(Review)));

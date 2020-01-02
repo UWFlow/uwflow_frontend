@@ -62,7 +62,7 @@ const onDragOver = event => {
   event.preventDefault();
 };
 
-export const TranscriptUploadModalContent = ({
+const TranscriptUploadModalContent = ({
   onSkip,
   theme,
   showSkipStepButton,

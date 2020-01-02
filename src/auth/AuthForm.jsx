@@ -19,21 +19,25 @@ import {
 import LoginContent from './LoginContent';
 import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
-import ResetPasswordModal from './ResetPasswordModal';
 
 import { PRIVACY_PAGE_ROUTE } from '../Routes';
 import { makePOSTRequest } from '../utils/Api';
-import { LOGGED_IN, authModalClose } from '../data/actions/AuthActions';
+import { LOGGED_IN } from '../data/actions/AuthActions';
 import {
   AUTH_ERRORS,
   DEFAULT_ERROR,
   AUTH_SUCCESS,
 } from '../constants/Messages';
+import withModal from '../components/modal/withModal';
+import { RESET_PASSWORD_MODAL } from '../constants/Modal';
 
 export const AuthForm = ({
   onLoginComplete,
   onSignupComplete,
   margin = '32px 0',
+  closeAuthModal,
+  openModal,
+  closeModal,
 }) => {
   const dispatch = useDispatch();
 
@@ -43,7 +47,6 @@ export const AuthForm = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showResetPassword, setShowResetPassword] = useState(false);
 
   const setJWT = response => {
     localStorage.setItem('token', response.token);
@@ -101,7 +104,11 @@ export const AuthForm = ({
               formState={formState}
               setEmail={setEmail}
               setPassword={setPassword}
-              onShowResetPassword={() => setShowResetPassword(true)}
+              onShowResetPassword={() =>
+                openModal(RESET_PASSWORD_MODAL, {
+                  handleClose: () => closeModal(RESET_PASSWORD_MODAL),
+                })
+              }
             />
           ) : (
             <SignupContent
@@ -124,10 +131,7 @@ export const AuthForm = ({
           />
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
-            <PrivacyPolicyText
-              to={PRIVACY_PAGE_ROUTE}
-              onClick={() => dispatch(authModalClose())}
-            >
+            <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE} onClick={closeAuthModal}>
               Privacy Policy
             </PrivacyPolicyText>
           </PrivacyWrapper>
@@ -138,10 +142,6 @@ export const AuthForm = ({
             {showLoginForm ? 'Sign up' : 'Log in'}
           </SwapModalLink>
         </SwapModalWrapper>
-        <ResetPasswordModal
-          handleClose={() => setShowResetPassword(false)}
-          isOpen={showResetPassword}
-        />
       </Wrapper>
     </>
   );
@@ -152,4 +152,4 @@ AuthForm.propTypes = {
   onSignupComplete: PropTypes.func,
 };
 
-export default AuthForm;
+export default withModal(AuthForm);

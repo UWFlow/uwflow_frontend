@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,9 +10,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
-import Modal from '../../components/display/Modal';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
@@ -39,10 +37,11 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 
 /* Utils */
 import { formatCourseCode } from '../../utils/Misc';
+import withModal from '../../components/modal/withModal';
 
 /* Constants */
-import { authModalOpen } from '../../data/actions/AuthActions';
 import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
+import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
@@ -58,11 +57,16 @@ const CoursePageContent = ({
   isLoggedIn,
   isBrowserDesktop,
   userEmail,
+  openModal,
+  closeModal,
 }) => {
-  const dispatch = useDispatch();
-  const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const handleReviewClick = () => {
-    isLoggedIn ? setReviewModalOpen(true) : dispatch(authModalOpen());
+    isLoggedIn
+      ? openModal(COURSE_REVIEW_COURSE_MODAL, {
+          courseList: [{ course: course, review: userReview }],
+          onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
+        })
+      : openModal(AUTH_MODAL);
   };
 
   const Schedule = (
@@ -118,20 +122,11 @@ const CoursePageContent = ({
           />
         </Column2>
       </ColumnWrapper>
-      <Modal
-        isOpen={reviewModalOpen}
-        onRequestClose={() => setReviewModalOpen(false)}
-      >
-        <CourseReviewCourseBox
-          courseList={[{ course: course, review: userReview }]}
-          onCancel={() => setReviewModalOpen(false)}
-        />
-      </Modal>
     </>
   );
 };
 
-const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
+const CoursePage = ({ match, isLoggedIn, isBrowserDesktop, openModal }) => {
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn, getUserId());
 
@@ -169,6 +164,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
         userEmail={isLoggedIn && data.user[0].email}
+        openModal={openModal}
       />
     </CoursePageWrapper>
   );
@@ -178,4 +174,4 @@ CoursePage.propTypes = {
   data: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps)(CoursePage));
+export default withModal(withRouter(connect(mapStateToProps)(CoursePage)));

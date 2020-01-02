@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
 import Button from '../../components/input/Button';
 import Calendar from './Calendar';
-import ScheduleUploadModal from '../../components/dataUploadModals/ScheduleUploadModal';
 
 /* Styled Components */
 import {
@@ -26,6 +25,7 @@ import {
   millisecondsPerDay,
   weekDayLetters,
 } from '../../utils/Misc';
+import withModal from '../../components/modal/withModal';
 
 /* Constants */
 import {
@@ -34,6 +34,7 @@ import {
   GOOGLE_CALENDAR_URL,
 } from '../../constants/Api';
 import DropdownList from '../../components/input/DropdownList';
+import { SCHEDULE_UPLOAD_MODAL } from '../../constants/Modal';
 
 const getScheduleRange = schedule => {
   let minTime = new Date();
@@ -142,9 +143,14 @@ const getEventsByDate = events => {
   return eventsByDate;
 };
 
-const ProfileCalendar = ({ schedule, secretID, theme, refetchAll }) => {
-  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-
+const ProfileCalendar = ({
+  schedule,
+  secretID,
+  theme,
+  refetchAll,
+  openModal,
+  closeModal,
+}) => {
   const handleCalendarExport = async download => {
     const response = await fetch(
       `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretID)}`,
@@ -156,17 +162,14 @@ const ProfileCalendar = ({ schedule, secretID, theme, refetchAll }) => {
     }
   };
 
-  const ScheduleModal = (
-    <ScheduleUploadModal
-      isModalOpen={scheduleModalOpen}
-      onCloseModal={() => setScheduleModalOpen(false)}
-      onAfterUploadSuccess={() => refetchAll()}
-    />
-  );
+  const scheduleModalProps = {
+    onSkip: () => closeModal(SCHEDULE_UPLOAD_MODAL),
+    onAfterUploadSuccess: refetchAll,
+  };
 
   const ScheduleModalButton = (
     <Button
-      handleClick={() => setScheduleModalOpen(true)}
+      handleClick={() => openModal(SCHEDULE_UPLOAD_MODAL, scheduleModalProps)}
       margin="0"
       padding="8px 24px"
       maxHeight="48px"
@@ -187,7 +190,6 @@ const ProfileCalendar = ({ schedule, secretID, theme, refetchAll }) => {
           To export it to Google Calendar, Calendar.app, etc...
         </ProfileCalendarText>
         {ScheduleModalButton}
-        {ScheduleModal}
       </ProfileCalendarWrapper>
     );
 
@@ -219,9 +221,8 @@ const ProfileCalendar = ({ schedule, secretID, theme, refetchAll }) => {
         <RecentCalendarText>Have a more recent schedule?</RecentCalendarText>
         <ButtonWrapper>{ScheduleModalButton}</ButtonWrapper>
       </RecentCalendarWrapper>
-      {ScheduleModal}
     </CalendarWithButtonsWrapper>
   );
 };
 
-export default withTheme(ProfileCalendar);
+export default withModal(withTheme(ProfileCalendar));
