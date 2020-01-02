@@ -47,7 +47,7 @@ export const ReviewPicture = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 32px;
-  background-image: ${({ id }) => `url(${getKittenFromID(id)})`};
+  background-image: ${({ image }) => `url(${image})`};
   background-size: 64px;
   ${breakpoint('mobile', 'tablet')`
     margin-right: 8px;
