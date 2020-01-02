@@ -19,6 +19,8 @@ export const ProfileInfoHeaderWrapper = styled.div`
   background-image: url(${ProfileHeader});
   background-color: ${({ theme }) => theme.primaryExtraDark};
   background-size: cover;
+  background-repeat: no-repeat;
+  will-change: transform;
   flex-direction: column;
   position: relative;
 `;
@@ -47,6 +49,8 @@ export const UserPicture = styled.div`
   object-fit: cover;
   background-image: ${({ image }) => `url(${image})`};
   background-size: 208px;
+  background-repeat: no-repeat;
+  will-change: transform;
   ${breakpoint('mobile', 'tablet')`
     width: 96px;
     height: 96px;
