@@ -93,6 +93,7 @@ const Review = ({
   isLoggedIn,
   isCourseReview,
   openModal,
+  closeModal,
 }) => {
   const {
     id,

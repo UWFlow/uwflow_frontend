@@ -126,7 +126,13 @@ const CoursePageContent = ({
   );
 };
 
-const CoursePage = ({ match, isLoggedIn, isBrowserDesktop, openModal }) => {
+const CoursePage = ({
+  match,
+  isLoggedIn,
+  isBrowserDesktop,
+  openModal,
+  closeModal,
+}) => {
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn, getUserId());
 
@@ -165,6 +171,7 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop, openModal }) => {
         isBrowserDesktop={isBrowserDesktop}
         userEmail={isLoggedIn && data.user[0].email}
         openModal={openModal}
+        closeModal={closeModal}
       />
     </CoursePageWrapper>
   );
