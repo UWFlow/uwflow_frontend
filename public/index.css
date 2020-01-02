@@ -60,7 +60,7 @@ textarea {
   box-sizing: border-box;
 }
 
-*:focus {
+input:focus, textarea:focus {
   outline: none;
 }
 
@@ -88,6 +88,7 @@ a {
   margin: auto;
   width: max-content;
   height: max-content;
+  outline: none;
 }
 
 .ModalOverlay {
@@ -101,6 +102,7 @@ a {
   overflow: auto;
   display: inline-flex;
   align-items: center;
+  outline: none;
 }
 
 .ReactModal__Html--open {

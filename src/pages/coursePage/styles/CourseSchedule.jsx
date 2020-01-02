@@ -68,7 +68,7 @@ export const InstructorLink = styled(Link)`
   display: flex;
   align-items: center;
   margin-bottom: -8px;
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const ScheduleTableWrapper = styled.div`

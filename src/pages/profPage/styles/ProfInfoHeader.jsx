@@ -118,5 +118,5 @@ export const CourseLink = styled(RouterLink)`
   color: ${({ theme }) => theme.courses};
   text-decoration: underline;
   margin-left: 4px;
-  ${Hover(false, true)}
+  ${Hover()}
 `;

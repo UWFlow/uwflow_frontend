@@ -196,6 +196,7 @@ const Review = ({
             data-for={id}
             selected={userUpvoted}
             onClick={onClickUpvote}
+            onMouseDown={e => e.preventDefault()}
           >
             <ThumbsUp
               color={userUpvoted ? 'white' : theme.dark3}

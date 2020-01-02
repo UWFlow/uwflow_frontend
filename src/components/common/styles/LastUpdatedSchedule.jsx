@@ -15,5 +15,5 @@ export const LastUpdatedText = styled.div`
 export const LastUpdatedLink = styled.a`
   ${Link}
   color: ${({ theme }) => theme.dark3};
-  ${Hover(false, true)}
+  ${Hover()}
 `;

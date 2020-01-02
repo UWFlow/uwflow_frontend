@@ -65,7 +65,7 @@ export const Link = styled.a`
   text-decoration: underline;
   margin: 0 4px;
   cursor: pointer;
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const NumberCircle = styled.div`

@@ -82,7 +82,7 @@ export const CourseCode = styled(Link)`
   ${breakpoint('mobile', 'tablet')`
     margin: 16px 16px 0 16px;
   `}
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const CourseName = styled.div`

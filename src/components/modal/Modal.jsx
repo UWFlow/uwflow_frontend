@@ -32,7 +32,7 @@ const Modal = ({
         onAfterClose={onAfterClose}
       >
         <ModalChildren>
-          <ModalX onClick={onRequestClose}>
+          <ModalX onClick={onRequestClose} onMouseDown={e => e.preventDefault()}>
             <X />
           </ModalX>
           {children}

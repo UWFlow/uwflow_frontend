@@ -51,7 +51,7 @@ export const HeaderChevronBox = styled.button`
   cursor: pointer;
   background: ${({ theme }) => theme.light3};
   color: ${({ theme }) => theme.dark2};
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const ContentWrapper = styled.div`

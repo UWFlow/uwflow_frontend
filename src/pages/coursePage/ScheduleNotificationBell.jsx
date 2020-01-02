@@ -130,6 +130,7 @@ const ScheduleNotificationBell = ({
         data-for={`${sectionID}${courseID}`}
         selected={selected}
         onClick={toggleOnClick}
+        onMouseDown={e => e.preventDefault()}
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
       </NotificationBellWrapper>

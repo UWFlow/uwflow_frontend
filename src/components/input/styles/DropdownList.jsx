@@ -48,6 +48,7 @@ export const DropdownMenu = styled.div`
 `;
 
 export const MenuItem = styled.button`
+  outline: none;
   border: none;
   display: block;
   cursor: pointer;

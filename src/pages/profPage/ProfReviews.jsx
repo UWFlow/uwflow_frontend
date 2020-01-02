@@ -44,7 +44,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { formatCourseCode } from '../../utils/Misc';
 import { sortReviews } from '../../utils/Review';
 import { getCoursePageRoute } from '../../Routes';
-import { MIN_REVIEWS_SHOWN } from '../../constants/PageConstants';
+import { MIN_REVIEWS_SHOWN, REVIEWS_DIV_ID } from '../../constants/PageConstants';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -102,7 +102,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   }
 
   return (
-    <ProfCourseReviewWrapper>
+    <ProfCourseReviewWrapper id={REVIEWS_DIV_ID}>
       <ProfCourseFilterWrapper>
         <DropdownPanelWrapper>
           <DropdownTableText>Filter by course: </DropdownTableText>
@@ -164,7 +164,6 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
             </ReviewListWrapper>
             {course.reviews.length > MIN_REVIEWS_SHOWN && (
               <ShowMoreReviewsSection
-                id={course.code}
                 onClick={() => {
                   setShowingReviewsMap({
                     ...showingReviewsMap,
@@ -174,6 +173,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                     document.getElementById(course.code).scrollIntoView();
                   }
                 }}
+                onMouseDown={e => e.preventDefault()}
               >
                 <ShowMoreReviewsText>
                   {showingReviewsMap[course.code]

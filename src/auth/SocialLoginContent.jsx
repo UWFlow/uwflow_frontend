@@ -115,6 +115,7 @@ const SocialLoginContent = ({
         render={renderProps => (
           <FacebookButton
             onClick={renderProps.onClick}
+            onMouseDown={e => e.preventDefault()}
             isLoading={renderProps.isProcessing}
           >
             <FacebookIcon>
@@ -129,7 +130,7 @@ const SocialLoginContent = ({
         onSuccess={handleGoogleSuccess}
         onFailure={handleGoogleFailure}
         render={renderProps => (
-          <GoogleButton onClick={renderProps.onClick} isLoading={googleLoading}>
+          <GoogleButton onClick={renderProps.onClick} onMouseDown={e => e.preventDefault()} isLoading={googleLoading}>
             <GoogleIcon>
               <FontAwesomeIcon icon={faGoogle} />
             </GoogleIcon>

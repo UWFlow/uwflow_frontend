@@ -103,6 +103,7 @@ const ShortlistStar = ({
         data-tip={`Add ${formatCourseCode(courseCode)} to your shortlist`}
         data-for={`${courseID}`}
         data-offset="{'top': 70}"
+        onMouseDown={e => e.preventDefault()}
       >
         <ShortlistStarWrapper
           checked={checked}

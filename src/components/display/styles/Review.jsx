@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 import breakpoint from 'styled-components-breakpoint';
+
 import { Card, BoxShadow, Body, Link, Hover } from '../../../constants/Mixins';
 import { getKittenFromID } from '../../../utils/Kitten';
 

@@ -187,6 +187,7 @@ const Calendar = ({ eventsByDate }) => {
           <NavButton
             hideSmall={true}
             onClick={() => setCurrentWeek(nearestMonday)}
+            onMouseDown={e => e.preventDefault()}
           >
             Current Week
           </NavButton>
@@ -194,11 +195,13 @@ const Calendar = ({ eventsByDate }) => {
             onClick={() =>
               setCurrentWeek(currentWeek.clone().subtract(7, 'days'))
             }
+            onMouseDown={e => e.preventDefault()}
           >
             <ChevronLeft />
           </NavButton>
           <NavButton
             onClick={() => setCurrentWeek(currentWeek.clone().add(7, 'days'))}
+            onMouseDown={e => e.preventDefault()}
           >
             <ChevronRight />
           </NavButton>

@@ -76,6 +76,7 @@ const SearchFilter = ({
         color={theme.primary}
         onUpdate={value => setNumRatings(value[0])}
         showTicks={false}
+        fullWidthMobile
       />
     </>
   );
@@ -147,7 +148,7 @@ const SearchFilter = ({
           </SearchFilterSection>
         </>
       )}
-      <ResetButton onClick={resetFilters}>
+      <ResetButton onClick={resetFilters}         onMouseDown={e => e.preventDefault()}>
         <XWrapper>
           <X size={16} />
         </XWrapper>
