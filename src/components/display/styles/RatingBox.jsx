@@ -81,13 +81,14 @@ export const NumCommentsWrapper = styled.a`
   padding: 0;
 
   ${({ hasComments }) =>
-    hasComments ?
-    `
+    hasComments
+      ? `
     text-decoration: underline;
     cursor: pointer;
     ${Hover(true)}
     ${Link}
-  ` : `
+  `
+      : `
     ${Body}
   `};
   color: ${({ hasComments, theme }) =>

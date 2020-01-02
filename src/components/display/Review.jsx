@@ -48,6 +48,7 @@ import { getProfPageRoute } from '../../Routes';
 
 /* Utils */
 import withModal from '../modal/withModal';
+import { getKittenFromID } from '../../utils/Kitten';
 
 /* Constants */
 import { AUTH_MODAL } from '../../constants/Modal';
@@ -178,11 +179,17 @@ const Review = ({
     </ReviewTextWrapper>
   );
 
+  const userImage = user
+    ? author.picture_url
+      ? author.picture_url
+      : getKittenFromID(user.user_id)
+    : getKittenFromID(id);
+
   return (
     <ReviewWrapper isUserReview={!!user}>
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
-          <ReviewPicture id={`${id}`} />
+          <ReviewPicture image={userImage} />
           <Tooltip id={`${id}`} />
           <ReviewUpvotes
             data-tip={userUpvoted ? `Remove vote` : `This review was helpful`}
