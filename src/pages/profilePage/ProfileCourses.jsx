@@ -75,14 +75,9 @@ const ProfileCourses = ({
       courseGroups[termCodeToDate(term)] = unorderedGroups[term];
     });
 
-  console.log('ProfileCourses review:');
-  console.log(reviews.find(r => r.course_id === 1419));
   const tabContent = termName =>
     courseGroups[termName].map((course_taken, idx) => {
       const review = reviews.find(r => r.course_id === course_taken.course_id);
-      if (review) {
-        console.log(review);
-      }
 
       return (
         <ProfileCoursesCourse key={idx}>

@@ -222,9 +222,12 @@ const ResetPasswordModalContent = ({ handleClose }) => {
     setIsLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
-    const [response, status] = await makePOSTRequest(
-      `${BACKEND_ENDPOINT}${RESET_PASSWORD_VERIFY_KEY_ENDPOINT}?key=${code}`,
-      {},
+    const [
+      response,
+      status,
+    ] = await makePOSTRequest(
+      `${BACKEND_ENDPOINT}${RESET_PASSWORD_VERIFY_KEY_ENDPOINT}`,
+      { key: code },
     );
     setIsLoading(false);
     if (status >= 400) {

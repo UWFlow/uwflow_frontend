@@ -34,11 +34,8 @@ const WithModalComponent = ({ Child, props }) => {
   );
 };
 
-const withModal = Child => props => {
-  const newChild = memo(Child, (prevProps, newProps) =>
-    _.isEqual(prevProps, newProps),
-  );
-  return <WithModalComponent props={props} Child={newChild} />;
-};
+const withModal = Child => props => (
+  <WithModalComponent props={props} Child={Child} />
+);
 
 export default withModal;
