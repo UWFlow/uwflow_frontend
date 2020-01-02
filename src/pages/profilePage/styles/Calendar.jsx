@@ -5,7 +5,7 @@ import { Body, Heading3, Hover, Link } from '../../../constants/Mixins';
 import { LEC, LAB } from '../../../constants/PageConstants';
 
 export const HOUR_HEIGHT = 64;
-const TIME_WIDTH = 60;
+const TIME_WIDTH = 64;
 const HEADER_HEIGHT = 24;
 
 export const CalendarWrapper = styled.div`

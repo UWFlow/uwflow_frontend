@@ -75,18 +75,20 @@ export const NumCommentsAndRatingsWrapper = styled.div`
   `}
 `;
 
-export const NumCommentsWrapper = styled.button`
+export const NumCommentsWrapper = styled.a`
   background: none;
   border: none;
+  padding: 0;
 
   ${({ hasComments }) =>
-    hasComments &&
+    hasComments ?
     `
-    ${Link}
     text-decoration: underline;
     cursor: pointer;
-    padding: 0;
     ${Hover(true)}
+    ${Link}
+  ` : `
+    ${Body}
   `};
   color: ${({ hasComments, theme }) =>
     hasComments ? theme.primary : theme.dark3};
