@@ -65,7 +65,7 @@ export const NavButton = styled.button`
   display: flex;
   align-items: center;
 
-  ${Hover(false, true)}
+  ${Hover()}
   @media only screen and (max-width: 480px) {
     ${({ hideSmall }) => (hideSmall ? 'display: none;' : '')}
   }

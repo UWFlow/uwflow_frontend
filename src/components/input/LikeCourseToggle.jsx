@@ -75,8 +75,9 @@ const LikeCourseToggle = ({
           },
         },
       },
+    }).then(() => {
+      setLiked(likedValue);
     });
-    setLiked(likedValue);
   };
 
   return (
@@ -86,6 +87,7 @@ const LikeCourseToggle = ({
         noneSelected={liked === null}
         selected={liked === 1}
         onClick={() => toggleOnClick(1)}
+        onMouseDown={e => e.preventDefault()}
       >
         <ThumbsUp
           color={liked === 1 ? theme.white : theme.dark3}
@@ -98,6 +100,7 @@ const LikeCourseToggle = ({
         noneSelected={liked === null}
         selected={liked === 0}
         onClick={() => toggleOnClick(0)}
+        onMouseDown={e => e.preventDefault()}
       >
         <ThumbsDown
           color={liked === 0 ? theme.white : theme.dark3}

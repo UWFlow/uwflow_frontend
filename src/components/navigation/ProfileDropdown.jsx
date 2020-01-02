@@ -59,6 +59,7 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
           : null
       }
       isLanding={isLanding}
+      onMouseDown={e => e.preventDefault()}
     />
   );
 };

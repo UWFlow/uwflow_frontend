@@ -11,17 +11,13 @@ export const DiscreteSliderWrapper = styled.div`
   max-width: 100%;
 
   ${breakpoint('mobile', 'tablet')`
-    width: 100%;
+    ${({ fullWidthMobile }) => fullWidthMobile ? 'width: calc(100% - 16px);' : ''}
   `}
 `;
 
 export const SliderBarWrapper = styled.div`
-  width: 300px;
+  width: 100%;
   margin: auto 0;
-
-  ${breakpoint('mobile', 'tablet')`
-    width: 100%;
-  `}
 `;
 
 export const SliderRail = styled.div`

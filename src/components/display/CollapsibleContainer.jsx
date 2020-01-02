@@ -27,7 +27,7 @@ const CollapsibleContainer = ({
         <HeaderTitle centerHeader={centerHeader} bigTitle={bigTitle}>
           {title}
         </HeaderTitle>
-        <HeaderChevronBox onClick={() => setIsOpen(!isOpen)}>
+        <HeaderChevronBox onClick={() => setIsOpen(!isOpen)} onMouseDown={e => e.preventDefault()}>
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
       </HeaderWrapper>

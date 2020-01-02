@@ -44,6 +44,7 @@ export const SearchResult = styled.button`
   height: 48px;
   border-bottom: 1px solid ${({ theme }) => theme.light3};
   animation: ${FadeInAnimation} 0.2s;
+  outline: none;
 
   &:last-child {
     border-radius: 0 0 4px 4px;
@@ -98,7 +99,7 @@ export const CourseText = styled.span`
 export const ProfText = styled.span`
   color: ${({ theme }) => theme.professors};
   ${ResultText}
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const Dash = styled.span`
@@ -113,7 +114,7 @@ const ExploreSideButton = `
   justify-content: center;
   height: 32px;
   width: 32px;
-  ${Hover(false, true)}
+  ${Hover()}
 
   svg {
     width: 20px;

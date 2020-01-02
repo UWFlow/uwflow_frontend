@@ -29,7 +29,7 @@ export const ProfilePicture = styled.button`
   background-image: url(${({ image }) => image});
   background-size: 40px;
   ${({ isLanding }) => (isLanding ? DarkBoxShadow : BoxShadow)}
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const ProfileText = styled.div`

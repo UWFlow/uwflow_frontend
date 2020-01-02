@@ -36,6 +36,7 @@ const Button = ({
       width={width}
       maxHeight={maxHeight}
       type={type}
+      onMouseDown={e => e.preventDefault()}
     >
       {loading ? (
         <LoadingSpinner

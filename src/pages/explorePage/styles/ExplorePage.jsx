@@ -79,11 +79,11 @@ export const Column2 = styled(FadeIn)`
 export const CourseCode = styled(RouterLink)`
   ${Link}
   color: ${({ theme }) => theme.courses};
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const ProfName = styled(RouterLink)`
   ${Link}
   color: ${({ theme }) => theme.professors};
-  ${Hover(false, true)}
+  ${Hover()}
 `;

@@ -33,7 +33,7 @@ export const CourseText = styled(Link)`
   ${Body}
   font-weight: 600;
   color: ${({ theme }) => theme.courses};
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const GreyText = styled.div`

@@ -105,7 +105,7 @@ export const UserEmail = styled.a`
   margin-right: 4px;
   cursor: pointer;
   color: ${({ theme }) => theme.light1};
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const EditWrapper = styled.div`

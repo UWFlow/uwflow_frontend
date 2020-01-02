@@ -35,6 +35,7 @@ const TabContainer = ({
               setSelectedTab(index);
               onChange(index);
             }}
+            onMouseDown={e => e.preventDefault()}
             borderRadius={borderRadius}
           >
             {tab.title}

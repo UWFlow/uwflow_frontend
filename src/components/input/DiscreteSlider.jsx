@@ -33,6 +33,7 @@ const DiscreteSlider = ({
   margin = '0 0 40px 0',
   showTicks = true,
   selected = true,
+  fullWidthMobile = false,
   onSlideEnd = () => {},
   onUpdate = () => {},
   setSelected = () => {},
@@ -51,7 +52,7 @@ const DiscreteSlider = ({
   percentages.push(100);
 
   return (
-    <DiscreteSliderWrapper margin={margin}>
+    <DiscreteSliderWrapper margin={margin} fullWidthMobile={fullWidthMobile}>
       <SliderBarWrapper>
         <Slider
           step={1}

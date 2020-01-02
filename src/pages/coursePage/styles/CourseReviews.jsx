@@ -106,7 +106,7 @@ export const ProfName = styled(Link)`
   ${breakpoint('mobile', 'tablet')`
     margin: 16px;
   `}
-  ${Hover(false, true)}
+  ${Hover()}
 `;
 
 export const ProfLikedMetric = styled.div`

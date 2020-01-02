@@ -106,6 +106,7 @@ const CourseCourseReviews = ({
       {reviews.length > MIN_REVIEWS_SHOWN && (
         <ShowMoreReviewsSection
           onClick={() => setShowingAllReviews(!showingAllReviews)}
+          onMouseDown={e => e.preventDefault()}
         >
           <ShowMoreReviewsText>
             {showingAllReviews
@@ -213,6 +214,7 @@ const CourseProfReviews = ({
                   document.getElementById(prof.name).scrollIntoView();
                 }
               }}
+              onMouseDown={e => e.preventDefault()}
             >
               <ShowMoreReviewsText>
                 {showingReviewsMap[prof.name]
