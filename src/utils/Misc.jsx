@@ -66,7 +66,7 @@ export const formatCourseCode = code => {
 };
 
 export const processRating = rating => {
-  return rating ? `${Math.round(rating * 100)}%` : 'N/A';
+  return rating !== null ? `${Math.round(rating * 100)}%` : 'N/A';
 };
 
 export const isCurrentTerm = code => {

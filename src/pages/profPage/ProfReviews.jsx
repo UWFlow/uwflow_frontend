@@ -44,7 +44,10 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 import { formatCourseCode } from '../../utils/Misc';
 import { sortReviews } from '../../utils/Review';
 import { getCoursePageRoute } from '../../Routes';
-import { MIN_REVIEWS_SHOWN, REVIEWS_DIV_ID } from '../../constants/PageConstants';
+import {
+  MIN_REVIEWS_SHOWN,
+  REVIEWS_DIV_ID,
+} from '../../constants/PageConstants';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),

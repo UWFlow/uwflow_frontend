@@ -25,7 +25,7 @@ const renderText = (history, dispatch) => () => (
 );
 
 const CourseNotificationEmailModalContent = ({
-  closeModal,
+  onRequestClose,
   history,
   onSuccess,
 }) => {
@@ -35,7 +35,7 @@ const CourseNotificationEmailModalContent = ({
       title="Subscribe to alerts"
       renderText={renderText(history, dispatch)}
       submitText="Subscribe"
-      onClose={closeModal}
+      onClose={onRequestClose}
       onSuccess={onSuccess}
     />
   );

@@ -9,7 +9,6 @@ import {
   Link,
 } from '../../constants/Mixins';
 
-
 export const Wrapper = styled.div`
   ${BoxShadow}
   background: white;

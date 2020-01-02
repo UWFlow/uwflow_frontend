@@ -138,7 +138,10 @@ export const AuthForm = ({
         </ContentWrapper>
         <SwapModalWrapper>
           New to UW Flow?
-          <SwapModalLink onClick={() => setShowLoginForm(!showLoginForm)} onMouseDown={e => e.preventDefault()}>
+          <SwapModalLink
+            onClick={() => setShowLoginForm(!showLoginForm)}
+            onMouseDown={e => e.preventDefault()}
+          >
             {showLoginForm ? 'Sign up' : 'Log in'}
           </SwapModalLink>
         </SwapModalWrapper>

@@ -9,13 +9,13 @@ const renderText = () => (
   </FormText>
 );
 
-const EditEmailModalContent = ({ email, onClose }) => (
+const EditEmailModalContent = ({ email, onRequestClose }) => (
   <EmailInputForm
     email={email}
     title="Edit your email"
     renderText={renderText}
     submitText="Save"
-    onClose={onClose}
+    onClose={onRequestClose}
   />
 );
 

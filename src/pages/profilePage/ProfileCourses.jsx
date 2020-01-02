@@ -36,15 +36,18 @@ import {
   processRating,
 } from '../../utils/Misc';
 import withModal from '../../components/modal/withModal';
-import { TRANSCRIPT_UPLOAD_MODAL } from '../../constants/Modal';
+import {
+  TRANSCRIPT_UPLOAD_MODAL,
+  COURSE_REVIEW_COURSE_MODAL,
+} from '../../constants/Modal';
 
 const ProfileCourses = ({
   theme,
   courses,
+  reviewModalCourseList,
   reviews,
-  setReviewCourse,
   openModal,
-  openReviewModal,
+  closeModal,
   refetchAll,
 }) => {
   const groupByTerm = courses => {
@@ -57,6 +60,12 @@ const ProfileCourses = ({
 
   const unorderedGroups = groupByTerm(courses);
   const courseGroups = {};
+  let reviewModalProps = {
+    showCourseDropdown: true,
+    courseList: reviewModalCourseList,
+    initialSelectedCourseIndex: 0,
+    onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
+  };
 
   // sort terms by date
   Object.keys(unorderedGroups)
@@ -105,8 +114,8 @@ const ProfileCourses = ({
             height={48}
             maxHeight={48}
             handleClick={() => {
-              setReviewCourse(course_taken.index);
-              openReviewModal();
+              reviewModalProps.initialSelectedCourseIndex = course_taken.index;
+              openModal(COURSE_REVIEW_COURSE_MODAL, reviewModalProps);
             }}
           >
             <ReviewButtonContents>
@@ -135,6 +144,7 @@ const ProfileCourses = ({
 
   const transcriptModalProps = {
     onAfterUploadSuccess: refetchAll,
+    onSkip: () => closeModal(TRANSCRIPT_UPLOAD_MODAL),
   };
 
   return tabList.length > 0 ? (
@@ -172,7 +182,6 @@ const ProfileCourses = ({
 ProfileCourses.propTypes = {
   theme: PropTypes.object.isRequired,
   courses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setReviewCourse: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
 };
 

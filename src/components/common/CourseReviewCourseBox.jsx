@@ -77,12 +77,14 @@ const engagingOptions = [
 const CourseReviewCourseBox = ({
   theme,
   courseList,
-  selectedCourseIndex = 0,
+  initialSelectedCourseIndex = 0,
   showCourseDropdown = false,
   cancelButton = true,
-  setSelectedCourseIndex = () => {},
   onCancel = () => {},
 }) => {
+  const [selectedCourseIndex, setSelectedCourseIndex] = useState(
+    initialSelectedCourseIndex,
+  );
   const buildDefaultReview = (course, review) => {
     let profsTeaching = course.profs_teaching;
     profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
