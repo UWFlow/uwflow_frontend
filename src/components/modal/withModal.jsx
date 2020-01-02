@@ -1,5 +1,6 @@
 import React, { useState, useCallback, memo } from 'react';
 import { ModalContext } from '../../data/providers/ModalProvider';
+import _ from 'lodash';
 
 /* Utils */
 import { randString } from '../../utils/Random';
@@ -13,6 +14,7 @@ const ModalComponentInner = memo(
     const close = useCallback(modal => closeModal(modal, id), [id, closeModal]);
     return <Child {...{ ...childProps, openModal: open, closeModal: close }} />;
   },
+  (prevProps, newProps) => _.isEqual(prevProps, newProps),
 );
 
 const WithModalComponent = ({ Child, props }) => {
@@ -33,7 +35,9 @@ const WithModalComponent = ({ Child, props }) => {
 };
 
 const withModal = Child => props => {
-  const newChild = memo(Child);
+  const newChild = memo(Child, (prevProps, newProps) =>
+    _.isEqual(prevProps, newProps),
+  );
   return <WithModalComponent props={props} Child={newChild} />;
 };
 
