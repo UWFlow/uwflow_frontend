@@ -148,7 +148,7 @@ const SearchFilter = ({
           </SearchFilterSection>
         </>
       )}
-      <ResetButton onClick={resetFilters}         onMouseDown={e => e.preventDefault()}>
+      <ResetButton onClick={resetFilters} onMouseDown={e => e.preventDefault()}>
         <XWrapper>
           <X size={16} />
         </XWrapper>

@@ -55,53 +55,58 @@ const DropdownList = ({
   const DropdownMenuContent = () => (
     <>
       {searchable && options.length > maxItems && (
-      <MenuSearch>
-        <Textbox
-          icon={<Search color={theme.dark3} />}
-          text={searchText}
-          setText={setSearchText}
-          placeholder=""
-          maxLength={50}
-          options={{
-            width: '100%',
-            backgroundColor: theme.light2,
-            padding: 0,
-          }}
-        />
-      </MenuSearch>
-    )}
-    {options
-      .map((opt, idx) => Object({ value: opt, index: idx }))
-      .filter(opt => {
-        const lowercaseOpt = opt.value.toLowerCase();
-        const lowercaseSearchText = searchText.toLowerCase();
-        return (
-          lowercaseOpt
-            .split(' ')
-            .some(val => val.startsWith(lowercaseSearchText)) ||
-          lowercaseOpt.startsWith(lowercaseSearchText)
-        );
-      })
-      .map(opt => (
-        <MenuItem
-          key={opt.index}
-          selected={opt.index === selectedIndex}
-          itemColor={itemColor}
-          onMouseDown={e => e.preventDefault()}
-          onClick={() => {
-            onChange(opt.index);
-            setOpen(false);
-          }}
-        >
-          {opt.value}
-        </MenuItem>
-      ))}{' '}
+        <MenuSearch>
+          <Textbox
+            icon={<Search color={theme.dark3} />}
+            text={searchText}
+            setText={setSearchText}
+            placeholder=""
+            maxLength={50}
+            options={{
+              width: '100%',
+              backgroundColor: theme.light2,
+              padding: 0,
+            }}
+          />
+        </MenuSearch>
+      )}
+      {options
+        .map((opt, idx) => Object({ value: opt, index: idx }))
+        .filter(opt => {
+          const lowercaseOpt = opt.value.toLowerCase();
+          const lowercaseSearchText = searchText.toLowerCase();
+          return (
+            lowercaseOpt
+              .split(' ')
+              .some(val => val.startsWith(lowercaseSearchText)) ||
+            lowercaseOpt.startsWith(lowercaseSearchText)
+          );
+        })
+        .map(opt => (
+          <MenuItem
+            key={opt.index}
+            selected={opt.index === selectedIndex}
+            itemColor={itemColor}
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => {
+              onChange(opt.index);
+              setOpen(false);
+            }}
+          >
+            {opt.value}
+          </MenuItem>
+        ))}{' '}
     </>
   );
 
   return (
     <DropdownWrapper zIndex={zIndex} ref={ref} width={width} margin={margin}>
-      <DropdownControl open={open} color={color} onClick={() => setOpen(!open)} onMouseDown={e => e.preventDefault()}>
+      <DropdownControl
+        open={open}
+        color={color}
+        onClick={() => setOpen(!open)}
+        onMouseDown={e => e.preventDefault()}
+      >
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
         <ChevronDown />
       </DropdownControl>
@@ -115,7 +120,9 @@ const DropdownList = ({
             >
               {DropdownMenuContent()}
             </Scrollbars>
-          ) : DropdownMenuContent()}
+          ) : (
+            DropdownMenuContent()
+          )}
         </DropdownMenu>
       </FadeIn>
     </DropdownWrapper>

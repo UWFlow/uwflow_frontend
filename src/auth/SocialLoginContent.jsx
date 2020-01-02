@@ -130,7 +130,11 @@ const SocialLoginContent = ({
         onSuccess={handleGoogleSuccess}
         onFailure={handleGoogleFailure}
         render={renderProps => (
-          <GoogleButton onClick={renderProps.onClick} onMouseDown={e => e.preventDefault()} isLoading={googleLoading}>
+          <GoogleButton
+            onClick={renderProps.onClick}
+            onMouseDown={e => e.preventDefault()}
+            isLoading={googleLoading}
+          >
             <GoogleIcon>
               <FontAwesomeIcon icon={faGoogle} />
             </GoogleIcon>

@@ -215,7 +215,7 @@ const TranscriptUploadModalContent = ({
               </PrivacyPolicyHeader>
               <PrivacyPolicyText>
                 {privacyText}
-                <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE}>
+                <PrivacyPolicyLink to={PRIVACY_PAGE_ROUTE} onClick={onSkip}>
                   privacy policy
                 </PrivacyPolicyLink>
                 for more information

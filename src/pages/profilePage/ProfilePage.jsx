@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
@@ -35,11 +35,9 @@ import { LANDING_PAGE_ROUTE } from '../../Routes';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from '../../constants/Messages';
-import { COURSE_REVIEW_COURSE_MODAL } from '../../constants/Modal';
 
 /* Utils */
 import { logOut } from '../../utils/Auth';
-import withModal from '../../components/modal/withModal';
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -52,11 +50,7 @@ const ProfilePageContent = ({
   coursesTaken,
   isBrowserDesktop,
   refetchAll,
-  openModal,
-  closeModal,
 }) => {
-  const [selectedCourseIndex, setSelectedCourseIndex] = useState(0);
-
   const shortlist = user.shortlist;
   const reviewModalCourseList = coursesTaken.map(course => {
     const curReview = reviews.find(
@@ -64,14 +58,6 @@ const ProfilePageContent = ({
     );
     return { course: course.course, review: curReview };
   });
-
-  const reviewModalProps = {
-    showCourseDropdown: true,
-    courseList: reviewModalCourseList,
-    selectedCourseIndex: selectedCourseIndex,
-    setSelectedCourseIndex: setSelectedCourseIndex,
-    onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
-  };
 
   return (
     <>
@@ -85,11 +71,8 @@ const ProfilePageContent = ({
           />
           <ProfileCourses
             courses={coursesTaken}
+            reviewModalCourseList={reviewModalCourseList}
             reviews={reviews}
-            setReviewCourse={setSelectedCourseIndex}
-            openReviewModal={() =>
-              openModal(COURSE_REVIEW_COURSE_MODAL, reviewModalProps)
-            }
             refetchAll={refetchAll}
           />
           <ProfileFinalExams courses={coursesTaken} />
@@ -111,13 +94,7 @@ const ProfilePageContent = ({
   );
 };
 
-export const ProfilePage = ({
-  history,
-  isLoggedIn,
-  isBrowserDesktop,
-  openModal,
-  closeModal,
-}) => {
+export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
   const dispatch = useDispatch();
   const { loading, error, data, refetch } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
@@ -152,11 +129,9 @@ export const ProfilePage = ({
         refetchAll={refetch}
         coursesTaken={data.user_course_taken}
         isBrowserDesktop={isBrowserDesktop}
-        openModal={openModal}
-        closeModal={closeModal}
       />
     </ProfilePageWrapper>
   );
 };
 
-export default withModal(withRouter(connect(mapStateToProps)(ProfilePage)));
+export default withRouter(connect(mapStateToProps)(ProfilePage));
