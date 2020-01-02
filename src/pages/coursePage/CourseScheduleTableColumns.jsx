@@ -92,6 +92,7 @@ const TimeCell = ({ cell }) => (
 
 const DateCell = ({ cell }) => (
   <NormalCellWrapper>
+    <ContentWrapper />
     {cell.value.map((timeRanges, timeRangeIdx) => (
       <Fragment key={timeRangeIdx}>
         {timeRanges.map((date, idx) => {

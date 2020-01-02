@@ -25,6 +25,8 @@ export const buildExploreQuery = (query = '', codeOnly = false) => {
   const queryTerms = query
     .toLowerCase()
     .replace('-', ' ')
+    // remove all special characters for postgres ts_query
+    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '')
     .split(' ')
     .map(term => term.trim())
     .filter(term => term.length > 0)

@@ -36,7 +36,7 @@ const LastUpdatedSchedule = ({
       : 'grad';
   const link =
     courseCode && term
-      ? `http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=${courseLevel}&sess=${term}&subject=${courseLetters}&cournum=${courseNum}`
+      ? `http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=${courseLevel}&sess=${term}&subject=${courseLetters}&cournum=${courseNum.toUpperCase()}`
       : defaultLink;
 
   return (
