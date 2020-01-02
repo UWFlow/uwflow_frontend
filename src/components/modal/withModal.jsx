@@ -4,23 +4,19 @@ import { ModalContext } from '../../data/providers/ModalProvider';
 /* Utils */
 import { randString } from '../../utils/Random';
 
-const ModalComponentInner = ({
-  Child,
-  id,
-  childProps,
-  openModal,
-  closeModal,
-}) => {
-  const open = useCallback((modal, props = {}) => openModal(modal, id, props), [
-    id,
-  ]);
-  const close = useCallback(modal => closeModal(modal, id), [id]);
-
-  return <Child {...{ ...childProps, openModal: open, closeModal: close }} />;
-};
+const ModalComponentInner = memo(
+  ({ Child, id, childProps, openModal, closeModal }) => {
+    const open = useCallback(
+      (modal, props = {}) => openModal(modal, id, props),
+      [id, openModal],
+    );
+    const close = useCallback(modal => closeModal(modal, id), [id, closeModal]);
+    return <Child {...{ ...childProps, openModal: open, closeModal: close }} />;
+  },
+);
 
 const WithModalComponent = ({ Child, props }) => {
-  const [id, setId] = useState(randString());
+  const [id] = useState(randString());
   return (
     <ModalContext.Consumer>
       {context => (

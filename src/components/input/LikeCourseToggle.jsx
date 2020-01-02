@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { ThumbsUp, ThumbsDown } from 'react-feather';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
@@ -12,7 +12,6 @@ import {
 
 /* Selectors */
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { authModalOpen } from '../../data/actions/AuthActions';
 
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
@@ -49,8 +48,6 @@ const LikeCourseToggle = ({
       },
     },
   ];
-
-  const dispatch = useDispatch();
   const [liked, setLiked] = useState(initialState);
   const [upsertLiked] = useMutation(UPSERT_LIKED_REVIEW, { refetchQueries });
 

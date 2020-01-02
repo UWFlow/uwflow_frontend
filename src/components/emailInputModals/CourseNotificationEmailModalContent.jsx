@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from '../display/Modal';
 import EmailInputForm from './EmailInputForm';
 import { FormText, FormLink } from './styles/EmailInputForm';
 import { useDispatch } from 'react-redux';

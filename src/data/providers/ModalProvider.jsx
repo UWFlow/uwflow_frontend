@@ -4,7 +4,7 @@ export const ModalContext = createContext(null);
 
 const findIndOfModalByIdAndModal = (id, modal, modals) => {
   for (let i = modals.length - 1; i >= 0; i--) {
-    if (modals[i].id == id && modals[i].modal == modal) {
+    if (modals[i].id === id && modals[i].modal === modal) {
       return i;
     }
   }
@@ -18,21 +18,24 @@ const ModalProvider = ({ children }) => {
   const currentModalsById = useRef(null);
   currentModalsById.current = modalsById;
 
-  const injectOnAfterCloseIntoProps = useCallback((modal, id, props) => {
-    const originalOnAfterClose = props.onAfterClose;
-    props.onAfterClose = () => {
-      var newModalsById = [...currentModalsById.current];
-      newModalsById.splice(
-        findIndOfModalByIdAndModal(id, modal, newModalsById),
-        1,
-      );
-      setModalsById(newModalsById);
-      if (originalOnAfterClose) {
-        originalOnAfterClose();
-      }
-    };
-    return props;
-  });
+  const injectOnAfterCloseIntoProps = useCallback(
+    (modal, id, props) => {
+      const originalOnAfterClose = props.onAfterClose;
+      props.onAfterClose = () => {
+        var newModalsById = [...currentModalsById.current];
+        newModalsById.splice(
+          findIndOfModalByIdAndModal(id, modal, newModalsById),
+          1,
+        );
+        setModalsById(newModalsById);
+        if (originalOnAfterClose) {
+          originalOnAfterClose();
+        }
+      };
+      return props;
+    },
+    [currentModalsById],
+  );
 
   const closeModal = useCallback(
     (modal, id) => {
@@ -59,7 +62,7 @@ const ModalProvider = ({ children }) => {
       });
       setModalsById(newModalsById);
     },
-    [currentModalsById],
+    [currentModalsById, injectOnAfterCloseIntoProps, closeModal],
   );
 
   return (

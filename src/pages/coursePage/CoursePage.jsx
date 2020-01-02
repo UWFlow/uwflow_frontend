@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
@@ -10,9 +10,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 import CourseSchedule from './CourseSchedule';
 import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
-import CourseReviewCourseBox from '../../components/common/CourseReviewCourseBox';
 import Button from '../../components/input/Button';
-import Modal from '../../components/display/Modal';
 import LikeCourseToggle from '../../components/input/LikeCourseToggle';
 import LoadingSpinner from '../../components/display/LoadingSpinner';
 import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
@@ -62,7 +60,6 @@ const CoursePageContent = ({
   openModal,
   closeModal,
 }) => {
-  const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const handleReviewClick = () => {
     isLoggedIn
       ? openModal(COURSE_REVIEW_COURSE_MODAL, {

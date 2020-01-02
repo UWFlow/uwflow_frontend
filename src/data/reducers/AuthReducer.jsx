@@ -1,9 +1,4 @@
-import {
-  LOGGED_IN,
-  LOGGED_OUT,
-  AUTH_MODAL_CLOSE,
-  AUTH_MODAL_OPEN,
-} from '../actions/AuthActions';
+import { LOGGED_IN, LOGGED_OUT } from '../actions/AuthActions';
 
 /* Selectors */
 import { getDataState } from './DataReducer';

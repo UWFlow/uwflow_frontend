@@ -26,7 +26,7 @@ import RadioButton from '../input/RadioButton';
 import DropdownList from '../input/DropdownList';
 import Button from '../input/Button';
 import DiscreteSlider from '../input/DiscreteSlider';
-import Modal from '../display/Modal';
+import Modal from '../modal/Modal';
 
 /* Utils */
 import { formatCourseCode } from '../../utils/Misc';

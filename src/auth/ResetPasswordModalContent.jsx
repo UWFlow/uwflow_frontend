@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 /* Child Components */
-import Modal from '../components/display/Modal';
 import Textbox from '../components/input/Textbox';
 import Button from '../components/input/Button';
 
