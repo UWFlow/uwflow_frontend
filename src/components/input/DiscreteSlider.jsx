@@ -12,15 +12,26 @@ import {
   SliderTrack,
 } from './styles/DiscreteSlider';
 
-const Handle = ({ handle: { id, percent }, getHandleProps, color }) => (
-  <SliderHandle percent={percent} color={color} {...getHandleProps(id)} />
+const Handle = ({
+  handle: { id, percent },
+  getHandleProps,
+  color,
+  disabled,
+}) => (
+  <SliderHandle
+    percent={percent}
+    color={color}
+    disabled={disabled}
+    {...getHandleProps(id)}
+  />
 );
 
-const Track = ({ source, target, color, getTrackProps }) => (
+const Track = ({ source, target, color, getTrackProps, disabled }) => (
   <SliderTrack
     target={target}
     source={source}
     color={color}
+    disabled={disabled}
     {...getTrackProps()}
   />
 );
@@ -34,6 +45,7 @@ const DiscreteSlider = ({
   showTicks = true,
   selected = true,
   fullWidthMobile = false,
+  disabled = false,
   onSlideEnd = () => {},
   onUpdate = () => {},
   setSelected = () => {},
@@ -58,10 +70,17 @@ const DiscreteSlider = ({
           step={1}
           mode={2}
           domain={[0, numNodes - 1]}
+          disabled={disabled}
           onSlideEnd={value => {
+            if (disabled) {
+              return;
+            }
             onSlideEnd(value);
           }}
           onUpdate={value => {
+            if (disabled) {
+              return;
+            }
             setUpdateValue(value);
             onUpdate(value);
           }}
@@ -77,13 +96,14 @@ const DiscreteSlider = ({
           <Rail>
             {({ getRailProps }) => (
               <>
-                <SliderRail {...getRailProps()} />
+                <SliderRail {...getRailProps()} disabled={disabled} />
                 {showTicks &&
                   percentages.map((percent, idx) => (
                     <SliderTick
                       key={percent}
                       color={idx <= updateValue ? color : theme.light3}
                       percent={percent}
+                      disabled={disabled}
                       {...getRailProps()}
                     />
                   ))}
@@ -95,7 +115,7 @@ const DiscreteSlider = ({
               <div
                 className="slider-handles"
                 onClick={() => {
-                  if (!selected) {
+                  if (!selected && !disabled) {
                     setSelected(true);
                   }
                 }}
@@ -106,6 +126,7 @@ const DiscreteSlider = ({
                     handle={handle}
                     getHandleProps={getHandleProps}
                     color={selected ? color : theme.light3}
+                    disabled={disabled}
                   />
                 ))}
               </div>
@@ -121,6 +142,7 @@ const DiscreteSlider = ({
                     target={target}
                     color={color}
                     getTrackProps={getTrackProps}
+                    disabled={disabled}
                   />
                 ))}
               </div>
