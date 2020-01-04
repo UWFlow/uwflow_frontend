@@ -9,7 +9,6 @@ export const FlowLogoWrapper = styled(Link)`
   cursor: pointer;
   color: ${({ theme }) => theme.dark1};
   text-decoration: none;
-  outline: 0;
   border: none;
   ${Heading4}
   font-size: 24px;
