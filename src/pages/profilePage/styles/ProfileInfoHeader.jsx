@@ -114,4 +114,5 @@ export const EditWrapper = styled.div`
   width: 16px;
   color: ${({ theme }) => theme.light1};
   margin-left: 4px;
+  margin-top: 2px;
 `;

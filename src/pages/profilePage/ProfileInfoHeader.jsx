@@ -38,12 +38,10 @@ const ProfileInfoHeader = ({ user, openModal }) => (
             onClick={() => openModal(EDIT_EMAIL_MODAL, { email: user.email })}
           >
             {user.email}
+            <EditWrapper>
+              <Edit size={16} />
+            </EditWrapper>
           </UserEmail>
-          <EditWrapper
-            onClick={() => openModal(EDIT_EMAIL_MODAL, { email: user.email })}
-          >
-            <Edit size={16} />
-          </EditWrapper>
         </UserEmailWrapper>
       </UserInfoWrapper>
     </ProfileInfoSection>

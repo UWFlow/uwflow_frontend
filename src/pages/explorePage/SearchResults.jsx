@@ -19,9 +19,31 @@ import { EXPLORE_COURSES_ERROR } from '../../constants/Messages';
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
 
-const numberSort = (a, b, desc) => (desc ? a - b : b - a);
-const stringSort = (a, b, desc) =>
-  desc ? b.localeCompare(a) : a.localeCompare(b);
+const compareNull = (a, b) => {
+  if (a === null && b === null) {
+    return 0;
+  } else if (a === null) {
+    return 1;
+  } else if (b === null) {
+    return -1;
+  }
+};
+
+const numberSort = (a, b, desc) => {
+  if (a === null || b === null) {
+    return compareNull(a, b);
+  }
+
+  return desc ? a - b : b - a;
+};
+
+const stringSort = (a, b, desc) => {
+  if (a === null || b === null) {
+    return compareNull(a, b);
+  }
+
+  return desc ? b.localeCompare(a) : a.localeCompare(b);
+};
 
 const SearchResults = ({
   filterState,

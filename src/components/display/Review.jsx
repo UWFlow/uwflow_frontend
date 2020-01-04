@@ -26,8 +26,8 @@ import {
 } from './styles/Review';
 
 /* Child Components */
-import BubbleRatings from '../input/BubbleRatings';
-import Tooltip from '../display/Tooltip';
+import BubbleRatings from './BubbleRatings';
+import Tooltip from './Tooltip';
 
 /* Selectors */
 import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';

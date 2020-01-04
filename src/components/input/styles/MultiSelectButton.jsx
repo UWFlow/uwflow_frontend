@@ -11,7 +11,7 @@ export const ButtonWrapper = styled.div`
   display: inline-block;
   height: 24px;
   border-radius: 12px;
-  padding: 2px 6px;
+  padding: 0 6px;
   margin-bottom: 8px;
   ${Body}
   ${BoxShadow}
