@@ -173,13 +173,13 @@ const CourseReviewCourseBox = ({
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
+  const profID =
+    selectedProf === -1 || selectedProf === profsTeaching.length
+      ? null
+      : profsTeaching[selectedProf].prof.id;
+
   const handlePost = () => {
     setReviewUpdating(true);
-
-    const profID =
-      selectedProf === -1 || selectedProf === profsTeaching.length
-        ? null
-        : profsTeaching[selectedProf].prof.id;
 
     const reviewData = {
       user_id: userID,
@@ -358,9 +358,10 @@ const CourseReviewCourseBox = ({
           }
           selected={clearSelected}
           setSelected={value => setReviewValue('clearSelected', value)}
+          disabled={profID === null}
         />
         <SliderOptionText>
-          {clearSelected ? clearOptions[clear] : ''}
+          {clearSelected && profID !== null ? clearOptions[clear] : ''}
         </SliderOptionText>
       </MetricQuestionWrapper>
 
@@ -375,9 +376,10 @@ const CourseReviewCourseBox = ({
           }
           selected={engagingSelected}
           setSelected={value => setReviewValue('engagingSelected', value)}
+          disabled={profID === null}
         />
         <SliderOptionText>
-          {engagingSelected ? engagingOptions[engaging] : ''}
+          {engagingSelected && profID !== null ? engagingOptions[engaging] : ''}
         </SliderOptionText>
       </MetricQuestionWrapper>
 
@@ -387,6 +389,7 @@ const CourseReviewCourseBox = ({
         maxLength={8192}
         onChange={event => setReviewValue('profComment', event.target.value)}
         placeholder="Add any comments or tips..."
+        disabled={profID === null}
       />
 
       <Footer>

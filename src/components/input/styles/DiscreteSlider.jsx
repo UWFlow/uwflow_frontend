@@ -27,7 +27,7 @@ export const SliderRail = styled.div`
   height: 8px;
   background-color: ${({ theme }) => theme.light3};
   border-radius: 4px;
-  cursor: pointer;
+  ${({ disabled }) => (disabled ? '' : 'cursor: pointer;')}
   ${BoxShadow}
 `;
 
@@ -40,9 +40,10 @@ export const SliderHandle = styled.div`
   width: 32px;
   height: 32px;
   border: 3px solid ${({ theme }) => theme.white};
-  cursor: pointer;
+  ${({ disabled }) => (disabled ? '' : 'cursor: pointer;')}
   border-radius: 50%;
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, color, disabled }) =>
+    disabled ? theme.light3 : color};
   ${BoxShadow}
 `;
 
@@ -51,9 +52,10 @@ export const SliderTrack = styled.div`
   height: 8px;
   z-index: 1;
   margin-top: -8px;
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, color, disabled }) =>
+    disabled ? theme.light3 : color};
   border-radius: 4px;
-  cursor: pointer;
+  ${({ disabled }) => (disabled ? '' : 'cursor: pointer;')}
   left: ${({ source }) => source.percent}%;
   width: ${({ target, source }) => target.percent - source.percent}%;
 `;
@@ -65,10 +67,11 @@ export const SliderTick = styled.div`
   z-index: 2;
   height: 8px;
   width: 8px;
-  background-color: ${({ color }) => color};
+  background-color: ${({ theme, color, disabled }) =>
+    disabled ? theme.light3 : color};
   border-radius: 50%;
   box-sizing: content-box;
   border: 3px solid ${({ theme }) => theme.white};
-  cursor: pointer;
+  ${({ disabled }) => (disabled ? '' : 'cursor: pointer;')}
   left: ${({ percent }) => percent}%;
 `;

@@ -27,7 +27,7 @@ const convertInputToState = data => {
     metrics: {
       useful: r.course_useful,
       easy: r.course_easy,
-      liked: r.liked != null,
+      liked: r.liked === 1 ? true : r.liked === 0 ? false : null,
     },
     prof: r.prof ? r.prof.name : '',
     prof_code: r.prof ? r.prof.code : '',

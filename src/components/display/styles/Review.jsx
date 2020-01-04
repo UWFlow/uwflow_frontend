@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import breakpoint from 'styled-components-breakpoint';
 
 import { Card, BoxShadow, Body, Link, Hover } from '../../../constants/Mixins';
-import { getKittenFromID } from '../../../utils/Kitten';
 
 export const ReviewWrapper = styled.div`
   ${BoxShadow}

@@ -59,6 +59,8 @@ const mapStateToProps = state => ({
 });
 
 const MetricIfExists = (metrics, metric) => {
+  const metricText = metric.charAt(0).toUpperCase() + metric.slice(1);
+
   if (metrics[metric] !== null && metrics[metric] !== undefined) {
     if (metrics[metric] === true || metrics[metric] === false) {
       return (
@@ -66,9 +68,7 @@ const MetricIfExists = (metrics, metric) => {
           <SingleMetricSquares>
             <BubbleRatings boolRating={metrics[metric]} />
           </SingleMetricSquares>
-          <SingleMetricLabel>
-            {metric === 'liked' ? 'Liked' : metric}
-          </SingleMetricLabel>
+          <SingleMetricLabel>{metricText}</SingleMetricLabel>
         </SingleMetricWrapper>
       );
     } else {
@@ -77,10 +77,7 @@ const MetricIfExists = (metrics, metric) => {
           <SingleMetricSquares>
             <BubbleRatings total={5} rating={metrics[metric]} />
           </SingleMetricSquares>
-          <SingleMetricLabel>
-            {' '}
-            {metric.charAt(0).toUpperCase() + metric.slice(1)}
-          </SingleMetricLabel>
+          <SingleMetricLabel> {metricText}</SingleMetricLabel>
         </SingleMetricWrapper>
       );
     }
@@ -94,7 +91,6 @@ const Review = ({
   isLoggedIn,
   isCourseReview,
   openModal,
-  closeModal,
 }) => {
   const {
     id,
