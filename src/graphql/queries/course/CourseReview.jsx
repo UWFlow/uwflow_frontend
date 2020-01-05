@@ -6,7 +6,7 @@ export const buildCourseReviewQuery = loggedIn => gql`
   query COURSE_REVIEWS($id: Int) {
     review(where: {
       course_id: { _eq: $id },
-      course_comment: { _is_null: false }
+      _or: [{course_comment: { _is_null: false }}, {prof_comment: {_is_null: false}}],
     }) {
       ...ReviewInfoFragment
       ...ReviewVoteCountsFragment
