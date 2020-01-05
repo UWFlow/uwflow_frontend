@@ -13,25 +13,27 @@ const convertInputToState = data => {
     };
   }
 
-  const courseReviews = data.review.filter(r => r.course_comment).map(r => ({
-    id: r.id,
-    upvotes: r.course_review_rating ? r.course_review_rating.upvote_count : 0,
-    upvote_users: r.course_review_upvotes
-      ? r.course_review_upvotes.map(vote => Number(vote.user_id))
-      : [],
-    review: r.course_comment,
-    author: r.author,
-    user: r.user,
-    created_at: r.created_at,
-    updated_at: r.updated_at,
-    metrics: {
-      useful: r.course_useful,
-      easy: r.course_easy,
-      liked: r.liked === 1 ? true : r.liked === 0 ? false : null,
-    },
-    prof: r.prof ? r.prof.name : '',
-    prof_code: r.prof ? r.prof.code : '',
-  }));
+  const courseReviews = data.review
+    .filter(r => r.course_comment)
+    .map(r => ({
+      id: r.id,
+      upvotes: r.course_review_rating ? r.course_review_rating.upvote_count : 0,
+      upvote_users: r.course_review_upvotes
+        ? r.course_review_upvotes.map(vote => Number(vote.user_id))
+        : [],
+      review: r.course_comment,
+      author: r.author,
+      user: r.user,
+      created_at: r.created_at,
+      updated_at: r.updated_at,
+      metrics: {
+        useful: r.course_useful,
+        easy: r.course_easy,
+        liked: r.liked === 1 ? true : r.liked === 0 ? false : null,
+      },
+      prof: r.prof ? r.prof.name : '',
+      prof_code: r.prof ? r.prof.code : '',
+    }));
 
   const reviewsByProf = data.review.reduce((allProfs, current) => {
     let profObject;
