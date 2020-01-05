@@ -47,6 +47,7 @@ export const ReviewPicture = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 32px;
+  background-color: ${({ theme }) => theme.light3};
   background-image: ${({ image }) => `url(${image})`};
   background-size: 64px;
   ${breakpoint('mobile', 'tablet')`
