@@ -13,7 +13,7 @@ const convertInputToState = data => {
     };
   }
 
-  const courseReviews = data.review.map(r => ({
+  const courseReviews = data.review.filter(r => r.course_comment).map(r => ({
     id: r.id,
     upvotes: r.course_review_rating ? r.course_review_rating.upvote_count : 0,
     upvote_users: r.course_review_upvotes
