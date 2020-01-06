@@ -143,6 +143,23 @@ const getEventsByDate = events => {
   return eventsByDate;
 };
 
+const getInitialMonday = eventsByDate => {
+  const currentDate = moment();
+  const dates = Object.keys(eventsByDate).sort((a, b) =>
+    moment(a, 'YYYY-MM-DD').isBefore(moment(b, 'YYYY-MM-DD')) ? -1 : 1,
+  );
+  const currentWeekMonday = currentDate.startOf('isoWeek');
+  if (dates.length === 0) {
+    return currentWeekMonday;
+  }
+  const scheduleFirstDay = moment(dates[0], 'YYYY-MM-DD');
+  if (currentDate.isBefore(scheduleFirstDay)) {
+    return scheduleFirstDay.startOf('isoWeek');
+  } else {
+    return currentWeekMonday;
+  }
+};
+
 const ProfileCalendar = ({
   schedule,
   secretID,
@@ -198,6 +215,7 @@ const ProfileCalendar = ({
   const [minDate, dayRange] = getScheduleRange(schedule);
   const events = getEventIntervals(moment(minDate), dayRange, schedule);
   const eventsByDate = getEventsByDate(events);
+  const initialStartDate = getInitialMonday(eventsByDate);
 
   return (
     <CalendarWithButtonsWrapper>
@@ -218,7 +236,10 @@ const ProfileCalendar = ({
           placeholder="Export as"
         />
       </ExportCalendarWrapper>
-      <Calendar eventsByDate={eventsByDate} />
+      <Calendar
+        eventsByDate={eventsByDate}
+        initialStartDate={initialStartDate}
+      />
       <RecentCalendarWrapper>
         <RecentCalendarText>Have a more recent schedule?</RecentCalendarText>
         <ButtonWrapper>{ScheduleModalButton}</ButtonWrapper>
