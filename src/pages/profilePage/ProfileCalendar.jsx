@@ -158,7 +158,9 @@ const ProfileCalendar = ({
     if (download) {
       window.location.assign(response.url);
     } else {
-      window.open(`${GOOGLE_CALENDAR_URL}${response.url}`, '_blank');
+      // replace https:// with webcal://
+      const calendarUrl = response.url.replace(/^https:\/\//, 'webcal://');
+      window.open(`${GOOGLE_CALENDAR_URL}${calendarUrl}`, '_blank');
     }
   };
 
