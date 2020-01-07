@@ -102,8 +102,8 @@ const CalendarColumn = ({ day, minHour, events = [] }) => (
   </DayColumn>
 );
 
-const Calendar = ({ eventsByDate }) => {
-  const nearestMonday = moment().startOf('isoWeek');
+const Calendar = ({ eventsByDate, initialStartDate }) => {
+  const nearestMonday = initialStartDate;
   const [currentWeek, setCurrentWeek] = useState(nearestMonday);
   const fridayOfWeek = currentWeek.clone().add(4, 'days');
   const saturdayOfWeek = currentWeek.clone().add(5, 'days');
