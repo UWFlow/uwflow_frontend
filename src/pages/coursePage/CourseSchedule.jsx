@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 /* Child Components */
 import TabContainer from '../../components/display/TabContainer';
@@ -130,6 +131,25 @@ const getInfoGroupings = meetings => {
   };
 };
 
+const getStartingTab = termsOffered => {
+  for (let i in termsOffered) {
+    const term = termsOffered[i];
+    const monthInt = term % 10;
+    const year = 1900 + Math.floor(term / 10);
+    const currentTime = moment();
+    const termStart = moment(`0${monthInt}-${year}`, 'MM-YYYY').startOf(
+      'month',
+    );
+    const termEnd = moment(`0${monthInt + 4}-${year}`, 'MM-YYYY').endOf(
+      'month',
+    );
+    if (currentTime.isAfter(termStart) && currentTime.isBefore(termEnd)) {
+      return parseInt(i);
+    }
+  }
+  return 0;
+};
+
 const CourseSchedule = ({
   sections,
   courseCode,
@@ -143,7 +163,7 @@ const CourseSchedule = ({
     return null;
   }
 
-  const termsOffered = sections.reduce((allTerms, curr) => {
+  let termsOffered = sections.reduce((allTerms, curr) => {
     if (!allTerms.includes(curr.term_id)) {
       allTerms.push(curr.term_id);
     }
@@ -163,6 +183,8 @@ const CourseSchedule = ({
       );
     });
   });
+  termsOffered = termsOffered.sort().reverse();
+  const startingTab = getStartingTab(termsOffered);
 
   const sectionsCleanedData = sections
     .map(s => ({
@@ -196,29 +218,26 @@ const CourseSchedule = ({
 
   const courseExams = processSectionExams(sections, courseCode);
 
-  const tabList = termsOffered
-    .sort()
-    .reverse()
-    .map(term => {
-      return {
-        title: termCodeToDate(term),
-        render: () => (
-          <>
-            <ScheduleTableWrapper>
-              <Table
-                cellPadding="4px 0"
-                columns={courseScheduleTableColumns}
-                data={sectionsCleanedData.filter(c => c.term === term)}
-              />
-            </ScheduleTableWrapper>
-            <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
-              <FinalExamsText>Final Exams</FinalExamsText>
-              <FinalExamTable courses={courseExams} includeCode={false} />
-            </FinalExamsTableWrapper>
-          </>
-        ),
-      };
-    });
+  const tabList = termsOffered.map(term => {
+    return {
+      title: termCodeToDate(term),
+      render: () => (
+        <>
+          <ScheduleTableWrapper>
+            <Table
+              cellPadding="4px 0"
+              columns={courseScheduleTableColumns}
+              data={sectionsCleanedData.filter(c => c.term === term)}
+            />
+          </ScheduleTableWrapper>
+          <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
+            <FinalExamsText>Final Exams</FinalExamsText>
+            <FinalExamTable courses={courseExams} includeCode={false} />
+          </FinalExamsTableWrapper>
+        </>
+      ),
+    };
+  });
 
   return (
     <CourseScheduleWrapper>
@@ -230,7 +249,7 @@ const CourseSchedule = ({
         bigTitle
       >
         <TabContainer
-          initialSelectedTab={0}
+          initialSelectedTab={startingTab}
           tabList={tabList}
           contentPadding={'0'}
           borderRadius={false}
