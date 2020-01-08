@@ -15,7 +15,7 @@ export const CheckCircleWrapper = styled.div`
   cursor: ${({ disabled }) => (disabled ? 'inherit' : 'pointer')};
   ${BoxShadow}
   position: relative;
-  ${Hover()}
+  ${({ disabled }) => (disabled ? '' : Hover())}
 `;
 
 export const CheckIcon = styled.div`
