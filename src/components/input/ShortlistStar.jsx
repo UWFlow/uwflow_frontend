@@ -63,9 +63,9 @@ const ShortlistStar = ({
   });
 
   const notifyDelete = () =>
-    toast(`Removed ${formatCourseCode(courseCode)} from shortlist`);
+    toast(`Removed ${formatCourseCode(courseCode)} from favourites`);
   const notifyInsert = () =>
-    toast(`Added ${formatCourseCode(courseCode)} to shortlist`);
+    toast(`Added ${formatCourseCode(courseCode)} to favourites`);
 
   const onStarClicked = () => {
     if (!isLoggedIn) {
@@ -100,7 +100,7 @@ const ShortlistStar = ({
       <Tooltip id={`${courseID}`} />
       <ShortlistStarButton
         onClick={onStarClicked}
-        data-tip={`Add ${formatCourseCode(courseCode)} to your shortlist`}
+        data-tip={`Add ${formatCourseCode(courseCode)} to your favourites`}
         data-for={`${courseID}`}
         data-offset="{'top': 70}"
         onMouseDown={e => e.preventDefault()}

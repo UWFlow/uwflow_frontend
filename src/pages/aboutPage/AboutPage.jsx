@@ -167,7 +167,7 @@ const AboutPage = () => (
           <TeamMember
             name="Dmytro Shynkevych"
             title="Backend Developer"
-            program="Software Engineering 2022"
+            program="Computer Science 2022"
             linkedIn="https://www.linkedin.com/in/dmshynk/"
             photo={DmytroImg}
           >
@@ -183,11 +183,19 @@ const AboutPage = () => (
           <TeamMember
             name="Edwin Zhang"
             title="Frontend Developer"
-            program="Computer Science 2021"
+            program="Computer Science 2022"
             website="https://www.edwinzhang.me/"
             linkedIn="https://www.linkedin.com/in/edwin-zhang/"
             photo={EdwinImg}
-          ></TeamMember>
+          >
+            Edwin built many of the new frontend interfaces for Flow 2.0
+            including the new Explore Courses page and the search bar.
+            <br />
+            <br />
+            He is interested in information retrieval and has previously worked
+            on the search teams at LinkedIn and Shopify. In his spare time, he
+            enjoys playing underwater hockey and practicing the trombone.
+          </TeamMember>
           <TeamMember
             name="Max Dai"
             title="Frontend Developer"
@@ -284,7 +292,7 @@ const AboutPage = () => (
             photo={JeffImg}
           >
             Jeff enjoys juggling and getting involved in the Waterloo
-            Engineering Society
+            Engineering Society.
             <br />
             <br />
             He has worked at Square, enjoying all the sunny weather San
