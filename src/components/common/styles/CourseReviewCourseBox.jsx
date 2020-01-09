@@ -38,6 +38,11 @@ export const ReviewTextArea = styled.textarea`
   resize: none;
   ${BoxShadow}
   ${Body}
+  transition: 0.2s all;
+
+  &:disabled {
+    color: ${({ theme }) => theme.light4};
+  }
 `;
 
 export const MetricQuestionWrapper = styled.div`

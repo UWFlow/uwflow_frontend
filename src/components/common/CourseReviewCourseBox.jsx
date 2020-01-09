@@ -39,39 +39,35 @@ import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 import { REVIEW_SUCCESS } from '../../constants/Messages';
 
 const easyOptions = [
-  'Very difficult',
   'Difficult',
   'Somewhat difficult',
+  'Neutral',
   'Somewhat easy',
   'Easy',
-  'Very easy',
 ];
 
 const usefulOptions = [
-  'Very useless',
   'Useless',
   'Somewhat useless',
+  'Neutral',
   'Somewhat useful',
   'Useful',
-  'Very useful',
 ];
 
 const clearOptions = [
-  'Very unclear',
   'Unclear',
   'Somewhat unclear',
+  'Neutral',
   'Somewhat clear',
   'Clear',
-  'Very clear',
 ];
 
 const engagingOptions = [
-  'Very unengaging',
   'Unengaging',
   'Somewhat unengaging',
+  'Neutral',
   'Somewhat engaging',
   'Engaging',
-  'Very engaging',
 ];
 
 const CourseReviewCourseBox = ({
@@ -284,7 +280,7 @@ const CourseReviewCourseBox = ({
       <MetricQuestionWrapper>
         <MetricQuestionText>Useful?</MetricQuestionText>
         <DiscreteSlider
-          numNodes={6}
+          numNodes={5}
           currentNode={useful}
           color={theme.courses}
           onSlideEnd={value =>
@@ -301,7 +297,7 @@ const CourseReviewCourseBox = ({
       <MetricQuestionWrapper>
         <MetricQuestionText>Easy?</MetricQuestionText>
         <DiscreteSlider
-          numNodes={6}
+          numNodes={5}
           currentNode={easy}
           color={theme.courses}
           onSlideEnd={value => setSliderValue('easy', value[0], 'easySelected')}
@@ -350,7 +346,7 @@ const CourseReviewCourseBox = ({
       <MetricQuestionWrapper>
         <MetricQuestionText>Clear?</MetricQuestionText>
         <DiscreteSlider
-          numNodes={6}
+          numNodes={5}
           currentNode={clear}
           color={theme.professors}
           onSlideEnd={value =>
@@ -368,7 +364,7 @@ const CourseReviewCourseBox = ({
       <MetricQuestionWrapper>
         <MetricQuestionText>Engaging?</MetricQuestionText>
         <DiscreteSlider
-          numNodes={6}
+          numNodes={5}
           currentNode={engaging}
           color={theme.professors}
           onSlideEnd={value =>

@@ -29,13 +29,13 @@ const Circles = ({ rating, total }) => (
   </>
 );
 
-const BubbleRatings = ({ total = 5, rating, boolRating }) => {
+const BubbleRatings = ({ total, rating, boolRating }) => {
   return (
     <BubbleRatingsWrapper>
       {boolRating === true || boolRating === false ? (
         <Thumbs boolRating={boolRating} />
       ) : (
-        <Circles rating={rating} total={total} />
+        <Circles rating={rating + 1} total={total} />
       )}
     </BubbleRatingsWrapper>
   );

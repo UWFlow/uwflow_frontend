@@ -45,6 +45,7 @@ export const SliderHandle = styled.div`
   background-color: ${({ theme, color, disabled }) =>
     disabled ? theme.light3 : color};
   ${BoxShadow}
+  transition: 0.1s all;
 `;
 
 export const SliderTrack = styled.div`
@@ -58,6 +59,7 @@ export const SliderTrack = styled.div`
   ${({ disabled }) => (disabled ? '' : 'cursor: pointer;')}
   left: ${({ source }) => source.percent}%;
   width: ${({ target, source }) => target.percent - source.percent}%;
+  transition: 0.2s all;
 `;
 
 export const SliderTick = styled.div`
@@ -74,4 +76,5 @@ export const SliderTick = styled.div`
   border: 3px solid ${({ theme }) => theme.white};
   ${({ disabled }) => (disabled ? '' : 'cursor: pointer;')}
   left: ${({ percent }) => percent}%;
+  transition: 0.2s all;
 `;
