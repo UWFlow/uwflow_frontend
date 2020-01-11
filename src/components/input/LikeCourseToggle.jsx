@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ThumbsUp, ThumbsDown } from 'react-feather';
 import { withTheme } from 'styled-components';
@@ -51,6 +51,8 @@ const LikeCourseToggle = ({
   const [liked, setLiked] = useState(initialState);
   const [upsertLiked] = useMutation(UPSERT_LIKED_REVIEW, { refetchQueries });
 
+  useEffect(() => setLiked(initialState), [initialState]);
+
   const toggleOnClick = targetState => {
     if (!isLoggedIn) {
       openModal(AUTH_MODAL);
@@ -62,6 +64,8 @@ const LikeCourseToggle = ({
     }
 
     let likedValue = liked === targetState ? null : targetState;
+    setLiked(likedValue);
+
     upsertLiked({
       variables: { user_id: userID, course_id: courseID, liked: likedValue },
       optimisticResponse: {
@@ -75,8 +79,6 @@ const LikeCourseToggle = ({
           },
         },
       },
-    }).then(() => {
-      setLiked(likedValue);
     });
   };
 

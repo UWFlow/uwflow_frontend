@@ -109,6 +109,14 @@ export const ProfName = styled(Link)`
   ${Hover()}
 `;
 
+export const NumProfReviews = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.dark2};
+  margin-top: 8px;
+`;
+
+export const NameNumReviewsWrapper = styled.div``;
+
 export const ProfLikedMetric = styled.div`
   display: flex;
   align-items: center;

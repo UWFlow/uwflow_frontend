@@ -182,14 +182,14 @@ const AboutPage = () => (
           </TeamMember>
           <TeamMember
             name="Edwin Zhang"
-            title="Frontend Developer"
+            title="Full-stack Developer"
             program="Computer Science 2022"
             website="https://www.edwinzhang.me/"
             linkedIn="https://www.linkedin.com/in/edwin-zhang/"
             photo={EdwinImg}
           >
-            Edwin built many of the new frontend interfaces for Flow 2.0
-            including the new Explore Courses page and the search bar.
+            Edwin built many of the new interfaces and features for Flow 2.0
+            including the Explore Courses page and the search bar.
             <br />
             <br />
             He is interested in information retrieval and has previously worked

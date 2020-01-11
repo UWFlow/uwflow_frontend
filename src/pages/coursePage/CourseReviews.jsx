@@ -17,6 +17,8 @@ import {
   DropdownTableText,
   ProfHeader,
   ProfName,
+  NumProfReviews,
+  NameNumReviewsWrapper,
   ProfLikedMetric,
   ProfLikedPercent,
   ProfLikedPercentLabel,
@@ -52,6 +54,7 @@ import useCourseReviewsReducer, {
 /* Utils */
 import { sortReviews } from '../../utils/Review';
 import { getProfPageRoute } from '../../Routes';
+import { processRating } from '../../utils/Misc';
 
 const CourseCourseReviews = ({
   reviews,
@@ -119,29 +122,6 @@ const CourseCourseReviews = ({
   );
 };
 
-CourseCourseReviews.propTypes = {
-  reviews: PropTypes.arrayOf(
-    PropTypes.shape({
-      upvotes: PropTypes.number,
-      review: PropTypes.string,
-      author: PropTypes.shape({
-        full_name: PropTypes.string,
-        program: PropTypes.string,
-        picture_url: PropTypes.string,
-      }),
-      user: PropTypes.shape({
-        user_id: PropTypes.number,
-      }),
-      metrics: PropTypes.shape({
-        useful: PropTypes.number,
-        easy: PropTypes.number,
-        liked: PropTypes.boolean,
-      }),
-    }),
-  ).isRequired,
-  theme: PropTypes.object.isRequired,
-};
-
 const CourseProfReviews = ({
   theme,
   reviewsByProf,
@@ -165,31 +145,44 @@ const CourseProfReviews = ({
         <ReviewsForSingleProfWrapper key={idx}>
           <ReviewListWrapper>
             <ProfHeader>
-              <ProfName to={getProfPageRoute(prof.code)}>{prof.name}</ProfName>
+              <NameNumReviewsWrapper>
+                <ProfName to={getProfPageRoute(prof.code)}>
+                  {prof.name}
+                </ProfName>
+                <NumProfReviews>
+                  {prof.reviews.length > 0
+                    ? `${prof.reviews.length} review${
+                        prof.reviews.length === 1 ? '' : 's'
+                      } for this course`
+                    : `${prof.comment_count} review${
+                        prof.comment_count === 1 ? '' : 's'
+                      } for other courses`}
+                </NumProfReviews>
+              </NameNumReviewsWrapper>
               <ProfLikedMetric>
-                <ProfLikedPercent>
-                  {Math.round(prof.liked * 100)}%
-                </ProfLikedPercent>
+                <ProfLikedPercent>{processRating(prof.liked)}</ProfLikedPercent>
                 <ProfLikedPercentLabel>
                   liked this professor
                 </ProfLikedPercentLabel>
               </ProfLikedMetric>
             </ProfHeader>
-            <ReviewsOptionsWrapper>
-              <DropdownPanelWrapper>
-                <DropdownTableText>Sort by: </DropdownTableText>
-                <DropdownList
-                  color={theme.primary}
-                  selectedIndex={curSelectedSort[idx]}
-                  options={['most recent', 'most helpful']}
-                  onChange={value => {
-                    curSelectedSort[idx] = value;
-                    setSelectedSort(curSelectedSort);
-                  }}
-                  zIndex={4}
-                />
-              </DropdownPanelWrapper>
-            </ReviewsOptionsWrapper>
+            {prof.reviews.length > 0 && (
+              <ReviewsOptionsWrapper>
+                <DropdownPanelWrapper>
+                  <DropdownTableText>Sort by: </DropdownTableText>
+                  <DropdownList
+                    color={theme.primary}
+                    selectedIndex={curSelectedSort[idx]}
+                    options={['most recent', 'most helpful']}
+                    onChange={value => {
+                      curSelectedSort[idx] = value;
+                      setSelectedSort(curSelectedSort);
+                    }}
+                    zIndex={4}
+                  />
+                </DropdownPanelWrapper>
+              </ReviewsOptionsWrapper>
+            )}
             {sortReviews(prof.reviews, selectedSort[idx] === 0)
               .filter((_, i) => {
                 return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
@@ -237,39 +230,18 @@ const CourseProfReviews = ({
   );
 };
 
-CourseProfReviews.propTypes = {
-  reviewsByProf: PropTypes.arrayOf(
-    PropTypes.shape({
-      prof: PropTypes.string,
-      likes: PropTypes.number,
-      reviews: PropTypes.arrayOf(
-        PropTypes.shape({
-          upvotes: PropTypes.number,
-          review: PropTypes.string,
-          author: PropTypes.shape({
-            full_name: PropTypes.string,
-            program: PropTypes.string,
-            picture_url: PropTypes.string,
-          }).isRequired,
-          user: PropTypes.shape({
-            user_id: PropTypes.number,
-          }),
-          metrics: PropTypes.shape({
-            clear: PropTypes.number,
-            engaging: PropTypes.number,
-          }).isRequired,
-        }),
-      ),
-    }),
-  ).isRequired,
-};
-
 const mapStateToProps = state => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
   isLoggedIn: getIsLoggedIn(state),
 });
 
-const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
+const CourseReviews = ({
+  courseID,
+  profsTeaching,
+  theme,
+  isBrowserDesktop,
+  isLoggedIn,
+}) => {
   const { loading, data } = useQuery(buildCourseReviewQuery(isLoggedIn), {
     variables: { id: courseID },
   });
@@ -300,7 +272,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
 
   const courseProfFilterOptions = [
     'all professors',
-    ...reviewDataState.courseReviewProfs,
+    ...reviewDataState.courseReviewProfs.sort((a, b) => a.localeCompare(b)),
   ];
 
   const courseReviewsToShow = reviewDataState.courseReviews.filter(
@@ -309,16 +281,34 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
       review.prof === courseProfFilterOptions[courseProfFilter],
   );
 
+  // find profs who don't have reviews but are currently teaching the course
+  const profsWithReviews = reviewDataState.reviewsByProf.map(prof => prof.code);
+  const additionalProfs = profsTeaching
+    .filter(profObj => !profsWithReviews.includes(profObj.prof.code))
+    .map(profObj =>
+      Object({
+        ...profObj.prof,
+        ...profObj.prof.rating,
+        reviews: [],
+      }),
+    );
+
   const profProfFilterOptions = [
     'all professors',
-    ...reviewDataState.profReviewProfs,
+    ...[
+      ...reviewDataState.profReviewProfs,
+      ...additionalProfs.map(prof => prof.name),
+    ].sort((a, b) => a.localeCompare(b)),
   ];
 
-  const profReviewsToShow = reviewDataState.reviewsByProf.filter(
-    review =>
-      profReviewFilter === 0 ||
-      review.name === profProfFilterOptions[profReviewFilter],
-  );
+  const profReviewsToShow = reviewDataState.reviewsByProf
+    .concat(additionalProfs)
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .filter(
+      prof =>
+        profReviewFilter === 0 ||
+        prof.name === profProfFilterOptions[profReviewFilter],
+    );
 
   const numProfReviews = profReviewsToShow.reduce((total, curr) => {
     total += curr.reviews.length;
@@ -413,7 +403,7 @@ const CourseReviews = ({ courseID, theme, isBrowserDesktop, isLoggedIn }) => {
 
 CourseReviews.propTypes = {
   courseID: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired,
+  profsTeaching: PropTypes.array.isRequired,
 };
 
 export default withTheme(connect(mapStateToProps)(CourseReviews));
