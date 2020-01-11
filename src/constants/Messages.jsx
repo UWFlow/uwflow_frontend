@@ -2,9 +2,6 @@ import { MIN_PASSWORD_LENGTH } from './Auth';
 
 /* Errors */
 export const AUTH_ERRORS = {
-  email_taken_by_email: 'You’ve already signed up with this email',
-  email_taken_by_google: 'You’ve already signed up with Google',
-  email_taken_by_facebook: 'You’ve already signed up with Facebook',
   email_not_registered: 'We don’t recognize that email — try signing up',
   email_wrong_password: 'Invalid password',
   no_facebook_email: 'We were unable able to log you in through Facebook',
@@ -34,7 +31,8 @@ export const TRANSCRIPT_ERRORS = {
 export const SCHEDULE_ERRORS = {
   empty_schedule:
     'Looks like that schedule is empty. Check for copy/paste errors, and try again',
-  old_schedule: 'We are unable to add schedules from old terms',
+  old_schedule:
+    'That looks like an old schedule – try uploading one for the current or next term',
   default_schedule:
     'We were unable to process your schedule. Get in touch at info@uwflow.com if this persists',
 };
@@ -55,13 +53,13 @@ export const DEFAULT_ERROR =
   'Sorry, looks like something is wrong on our end. Try again in a few minutes';
 
 export const NOT_FOUND = {
-  page: "Sorry, that page doesn't exist!",
-  course: "Sorry, that course doesn't exist!",
-  prof: "Sorry, that professor doesn't exist!",
+  page: "Oops! That page doesn't exist.",
+  course: "That course doesn't exist!",
+  prof: "That professor doesn't exist!",
 };
 
 export const EXPLORE_COURSES_ERROR =
-  "Sorry, we couldn't load your search results. Try again in a few minutes";
+  "We couldn't load your search results. Try again in a few minutes";
 
 /* Success */
 
@@ -83,8 +81,8 @@ export const SUBSCRIPTION_SUCCESS = {
 
 export const REVIEW_SUCCESS = {
   posted: 'Posted! 🎉',
-  updated: 'Updated review!',
-  deleted: 'Deleted review!',
+  updated: 'Your review has been updated',
+  deleted: 'Your review has been deleted',
 };
 
 /* Tooltips */
@@ -99,9 +97,9 @@ export const SUBSCRIPTION_TOOLTIP = {
 export const SEO_DESCRIPTIONS = {
   /* landing, not found, welcome (course, prof pages set descriptions dynamically) */
   default:
-    'Course planning tool with reviews for courses and professors at the University of Waterloo.',
+    'Plan your courses. Read about your professors. Get the most out of your experience at the University of Waterloo.',
   about: 'About UW Flow.',
-  privacy: 'Privacy policy for UW Flow.',
+  privacy: 'Privacy policy.',
   explore: 'Explore courses and professors at the University of Waterloo.',
-  profile: 'Profile page for UW Flow.',
+  profile: 'My profile.',
 };

@@ -30,7 +30,7 @@ export const FooterContent = styled.div`
     width: 100%;
   `}
 
-  @media only screen and (max-width: 450px) {
+  @media only screen and (max-width: 500px) {
     flex-direction: column;
   }
 `;
@@ -51,6 +51,7 @@ export const FooterPageLink = styled(Link)`
   text-decoration: none;
   font-weight: 400;
   margin-right: 32px;
+  white-space: nowrap;
   ${Hover()}
 `;
 
@@ -60,9 +61,10 @@ export const FooterNormalLink = styled.a`
   text-decoration: none;
   font-weight: 400;
   margin-left: 32px;
+  white-space: nowrap;
   ${Hover()}
 
-  @media only screen and (max-width: 450px) {
+  @media only screen and (max-width: 500px) {
     margin: 16px 16px 0 0;
   }
 `;

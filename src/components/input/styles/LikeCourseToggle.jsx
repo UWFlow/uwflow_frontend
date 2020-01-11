@@ -15,6 +15,7 @@ export const LikeCourseToggleButton = styled.button`
   display: flex;
   vertical-align: middle;
   justify-content: center;
+  align-items: center;
   height: 100%;
   width: 50%;
   margin: auto;

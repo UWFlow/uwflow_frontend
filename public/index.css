@@ -40,7 +40,8 @@ html {
 }
 
 body {
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 /**
@@ -68,6 +69,33 @@ a {
   font-size: 16px;
   font-weight: 500;
   color: #006ed8;
+}
+
+/* total width */
+::-webkit-scrollbar {
+  width: 12px;
+  background: #dfe1e5;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 12px;
+}
+
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 12px 12px transparent;
+  border: solid 2px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 12px 12px #97a0af;
+  border: solid 2px transparent;
+  border-radius: 12px;
+}
+
+/* set button(top and bottom of the scrollbar) */
+::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* React Modal */
@@ -106,11 +134,11 @@ a {
 }
 
 .ReactModal__Html--open {
-  overflow: hidden; /* prevents background page from scrolling when the modal is open */
+  overflow-y: hidden;
 }
 
 .ReactModal__Body--open {
-  overflow: hidden; /* prevents background page from scrolling when the modal is open */
+  overflow-y: hidden;
 }
 
 .Toastify__toast-body {
