@@ -54,7 +54,7 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
       {shortlistCourses.length === 0 ? (
         <ShortlistCourse>
           <ShortlistCoursePlaceholder>
-            No shortlisted courses found
+            No favourite courses found
           </ShortlistCoursePlaceholder>
         </ShortlistCourse>
       ) : null}
@@ -63,12 +63,12 @@ const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
 
   return isBrowserDesktop ? (
     <ShortlistBoxWrapper>
-      <ShortlistHeading>Shortlist</ShortlistHeading>
+      <ShortlistHeading>Favourites</ShortlistHeading>
       <ShortlistContentWrapper>{shorlistContent}</ShortlistContentWrapper>
     </ShortlistBoxWrapper>
   ) : (
     <CollapsibleContainer
-      title="Shortlist"
+      title="Favourites"
       centerHeader={false}
       margin="0 0 32px 0"
     >

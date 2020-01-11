@@ -43,7 +43,7 @@ export const SUBSCRIPTION_ERROR =
   'Sorry, we couldn’t sign you up for notifications. Try again in a few minutes';
 
 export const SHORTLIST_ERROR =
-  'Sorry, we couldn’t shortlist that course. Try again in a few minutes';
+  'Sorry, we couldn’t favourite that course. Try again in a few minutes';
 
 export const REVIEW_ERROR =
   'Sorry, we couldn’t post your review. Try again in a few minutes';
