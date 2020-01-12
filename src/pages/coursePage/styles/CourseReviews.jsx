@@ -103,9 +103,6 @@ export const ProfName = styled(Link)`
   ${Heading2}
   color: ${({ theme }) => theme.professors}
 
-  ${breakpoint('mobile', 'tablet')`
-    margin: 16px;
-  `}
   ${Hover()}
 `;
 
@@ -115,7 +112,11 @@ export const NumProfReviews = styled.div`
   margin-top: 8px;
 `;
 
-export const NameNumReviewsWrapper = styled.div``;
+export const NameNumReviewsWrapper = styled.div`
+  ${breakpoint('mobile', 'tablet')`
+    margin: 16px;
+  `}
+`;
 
 export const ProfLikedMetric = styled.div`
   display: flex;

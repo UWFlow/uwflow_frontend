@@ -54,6 +54,8 @@ const AboutPage = () => (
     <Helmet>
       <title>About - UW Flow</title>
       <meta name="description" content={SEO_DESCRIPTIONS.about} />
+      <meta property="og:title" content="About - UW Flow" />
+      <meta property="og:description" content={SEO_DESCRIPTIONS.about} />
     </Helmet>
     <PageHeader>
       <HeaderText>About Flow</HeaderText>

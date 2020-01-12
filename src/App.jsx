@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import { Helmet } from 'react-helmet';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -33,6 +33,7 @@ import {
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
 import ModalMount from './components/modal/ModalMount';
+import LandingPageBg from './img/landing.svg';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from './constants/Messages';
@@ -48,7 +49,7 @@ const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
-const App = ({ isLoggedIn }) => {
+const App = ({ location, isLoggedIn }) => {
   // refresh auth token if logged in
   useEffect(() => {
     if (!isLoggedIn) {
@@ -92,6 +93,17 @@ const App = ({ isLoggedIn }) => {
       <Helmet>
         <title>UW Flow</title>
         <meta name="description" content={SEO_DESCRIPTIONS.default} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="UW Flow" />
+        <meta property="og:description" content={SEO_DESCRIPTIONS.default} />
+        <meta
+          property="og:url"
+          content={`${window.location.origin}${location.pathname}`}
+        />
+        <meta
+          property="og:image"
+          content={`${window.location.origin}${LandingPageBg}`}
+        />
       </Helmet>
       <Switch>
         <Route
@@ -142,4 +154,4 @@ const App = ({ isLoggedIn }) => {
   );
 };
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

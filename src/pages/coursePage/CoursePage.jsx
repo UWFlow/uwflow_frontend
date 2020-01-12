@@ -159,6 +159,13 @@ const CoursePage = ({
           Flow
         </title>
         <meta name="description" content={data.course[0].description} />
+        <meta
+          property="og:title"
+          content={`${formatCourseCode(data.course[0].code)} - ${
+            data.course[0].name
+          } - UW Flow`}
+        />
+        <meta property="og:description" content={data.course[0].description} />
       </Helmet>
       <CoursePageContent
         course={data.course[0]}
