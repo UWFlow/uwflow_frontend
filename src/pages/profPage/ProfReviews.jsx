@@ -41,7 +41,7 @@ import { buildProfReviewQuery } from '../../graphql/queries/prof/ProfReview.jsx'
 import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 /* Utils */
-import { formatCourseCode } from '../../utils/Misc';
+import { formatCourseCode, processRating } from '../../utils/Misc';
 import { sortReviews } from '../../utils/Review';
 import { getCoursePageRoute } from '../../Routes';
 import {
@@ -83,14 +83,18 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   const courseFilterOptions = ['show all courses', ...reviewDataState.courses];
   const courseFilterDisplayOptions = [
     'show all courses',
-    ...reviewDataState.courses.map(code => formatCourseCode(code)),
+    ...reviewDataState.courses
+      .map(code => formatCourseCode(code))
+      .sort((a, b) => a.localeCompare(b)),
   ];
 
-  const reviewsByCourseToShow = reviewDataState.reviewsByCourse.filter(
-    reviews =>
-      selectedFilter === 0 ||
-      reviews.code === courseFilterOptions[selectedFilter],
-  );
+  const reviewsByCourseToShow = reviewDataState.reviewsByCourse
+    .filter(
+      course =>
+        selectedFilter === 0 ||
+        course.code === courseFilterOptions[selectedFilter],
+    )
+    .sort((a, b) => a.code.localeCompare(b.code));
 
   const curSelectedSort =
     selectedSort.length >= reviewsByCourseToShow.length
@@ -132,7 +136,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                 </CourseNameAndCode>
                 <CourseLikedMetric>
                   <CourseLikedPercent>
-                    {Math.round(course.liked * 100)}%
+                    {processRating(course.liked)}
                   </CourseLikedPercent>
                   <CourseLikedPercentLabel>
                     liked this course

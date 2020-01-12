@@ -111,7 +111,10 @@ const CoursePageContent = ({
               </CourseReviewQuestionBox>
             )}
           </ReviewWrapper>
-          <CourseReviews courseID={course.id} />
+          <CourseReviews
+            courseID={course.id}
+            profsTeaching={course.profs_teaching}
+          />
         </Column1>
         <Column2>
           <CourseRequisites

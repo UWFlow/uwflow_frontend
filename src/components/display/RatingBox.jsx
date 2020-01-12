@@ -29,6 +29,7 @@ import { REVIEWS_DIV_ID } from '../../constants/PageConstants';
 /* Child Components */
 import ProgressBar from './ProgressBar';
 import CircularPercentage from '../statistics/CircularPercentage';
+import { processRating } from '../../utils/Misc';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
@@ -85,9 +86,7 @@ const RatingBox = ({
               <ProgressBarWrapper>
                 <ProgressBar percentComplete={metric.percent} width="100%" />
                 <ProgressNumberLabel>
-                  {metric.percent !== null
-                    ? `${Math.round(metric.percent * 100)}%`
-                    : 'N/A'}
+                  {processRating(metric.percent)}
                 </ProgressNumberLabel>
               </ProgressBarWrapper>
             </ProgressWrapper>

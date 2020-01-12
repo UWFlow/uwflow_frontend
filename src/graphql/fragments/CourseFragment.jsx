@@ -10,7 +10,12 @@ const CourseFragment = {
       profs_teaching {
         prof {
           id
+          code
           name
+          rating {
+            liked
+            comment_count
+          }
         }
       }
     }

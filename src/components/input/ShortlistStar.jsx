@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
@@ -21,7 +21,7 @@ import {
   DELETE_USER_SHORTLIST,
   INSERT_USER_SHORTLIST,
 } from '../../graphql/mutations/Shortlist';
-import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
+import { buildCourseShortlistQuery } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
 
 /* Utils */
@@ -48,8 +48,8 @@ const ShortlistStar = ({
   const userID = localStorage.getItem('user_id');
   const refetchQueries = [
     {
-      query: REFETCH_COURSE_SHORTLIST,
-      variables: { user_id: userID, course_id: courseID },
+      query: buildCourseShortlistQuery(userID),
+      variables: { code: courseCode },
     },
     { query: REFETCH_USER_SHORTLIST, variables: { id: userID } },
   ];
@@ -61,6 +61,8 @@ const ShortlistStar = ({
   const [deleteShortlist] = useMutation(DELETE_USER_SHORTLIST, {
     refetchQueries,
   });
+
+  useEffect(() => setChecked(initialState), [initialState]);
 
   const notifyDelete = () =>
     toast(`Removed ${formatCourseCode(courseCode)} from favourites`);

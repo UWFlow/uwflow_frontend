@@ -48,11 +48,12 @@ export const buildCourseQuery = (fetchUserData = false, userId = null) => {
   `;
 };
 
-export const REFETCH_COURSE_SHORTLIST = gql`
-  query REFETCH_COURSE_SHORTLIST($course_id: Int, $user_id: Int) {
-    user_shortlist(
-      where: { user_id: { _eq: $user_id }, course_id: { _eq: $course_id } }
-    ) {
+export const buildCourseShortlistQuery = userId => gql`
+  query REFETCH_COURSE_SHORTLIST($code: String) {
+    user_shortlist(where: {
+      user_id: {_eq: ${userId}},
+      course: {code: {_eq: $code}}
+    }) {
       course_id
       user_id
     }
