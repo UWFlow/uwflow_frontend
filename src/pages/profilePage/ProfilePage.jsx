@@ -113,6 +113,8 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
       <Helmet>
         <title>Profile - UW Flow</title>
         <meta name="description" content={SEO_DESCRIPTIONS.profile} />
+        <meta property="og:title" content="Profile - UW Flow" />
+        <meta property="og:description" content={SEO_DESCRIPTIONS.profile} />
       </Helmet>
       <LoadingSpinner />
     </ProfilePageWrapper>

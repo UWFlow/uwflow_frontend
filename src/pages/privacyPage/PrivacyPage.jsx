@@ -20,6 +20,8 @@ const PrivacyPage = () => (
     <Helmet>
       <title>Privacy Policy - UW Flow</title>
       <meta name="description" content={SEO_DESCRIPTIONS.privacy} />
+      <meta property="og:title" content="Privacy Policy - UW Flow" />
+      <meta property="og:description" content={SEO_DESCRIPTIONS.privacy} />
     </Helmet>
     <PageHeader>
       <HeaderText>Privacy Policy</HeaderText>

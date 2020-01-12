@@ -159,6 +159,8 @@ const ExplorePage = ({ location }) => {
       <Helmet>
         <title>Explore Courses - UW Flow</title>
         <meta name="description" content={SEO_DESCRIPTIONS.explore} />
+        <meta property="og:title" content="Explore Courses - UW Flow" />
+        <meta property="og:description" content={SEO_DESCRIPTIONS.explore} />
       </Helmet>
       <ExplorePageContent
         query={query || ''}
