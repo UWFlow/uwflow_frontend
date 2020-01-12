@@ -21,7 +21,6 @@ import {
 
 /* Child Components */
 import LoadingSpinner from '../display/LoadingSpinner';
-import { useScrollContext } from '../../data/providers/ScrollProvider';
 
 const Table = ({
   cellPadding,
@@ -37,7 +36,6 @@ const Table = ({
   fetchOffset = 400,
   showNoResults = false,
 }) => {
-  const scrollContext = useScrollContext();
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
 
@@ -73,17 +71,12 @@ const Table = ({
   const throttledSetFetchMore = throttle(setFetchMore, 100);
 
   useEffect(() => {
-    if (scrollContext === null) {
-      return;
-    }
-    scrollContext.current.parentNode.addEventListener('scroll', () =>
-      throttledSetFetchMore(),
-    );
-    return scrollContext.current.parentNode.removeEventListener('scroll', () =>
+    window.document.addEventListener('scroll', () => throttledSetFetchMore());
+    return window.document.removeEventListener('scroll', () =>
       throttledSetFetchMore(),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrollContext, loading]);
+  }, [loading]);
 
   const {
     getTableProps,

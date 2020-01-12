@@ -151,24 +151,25 @@ const getStartingTab = termsOffered => {
 };
 
 const CourseSchedule = ({
-  sections,
+  sections = [],
   courseCode,
   courseID,
   sectionSubscriptions,
   userEmail,
 }) => {
-  const [selectedTerm, setSelectedTerm] = useState(0);
-
-  if (!sections || sections.length === 0) {
-    return null;
-  }
-
   let termsOffered = sections.reduce((allTerms, curr) => {
     if (!allTerms.includes(curr.term_id)) {
       allTerms.push(curr.term_id);
     }
     return allTerms;
   }, []);
+
+  const startingTab = getStartingTab(termsOffered);
+  const [selectedTerm, setSelectedTerm] = useState(startingTab);
+
+  if (sections.length === 0) {
+    return null;
+  }
 
   const subscribedSectionIDs = sectionSubscriptions.map(
     subscription => subscription.section_id,
@@ -184,7 +185,6 @@ const CourseSchedule = ({
     });
   });
   termsOffered = termsOffered.sort().reverse();
-  const startingTab = getStartingTab(termsOffered);
 
   const sectionsCleanedData = sections
     .map(s => ({
