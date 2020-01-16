@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
+import { useQuery } from 'react-apollo';
 import { Trash2 } from 'react-feather';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
@@ -37,6 +39,7 @@ import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
 
 /* Constants */
 import { REVIEW_SUCCESS } from '../../constants/Messages';
+import { COURSE_REVIEW_PROFS } from '../../graphql/queries/course/CourseReview';
 
 const easyOptions = [
   'Difficult',
@@ -70,21 +73,39 @@ const engagingOptions = [
   'Engaging',
 ];
 
-const CourseReviewCourseBox = ({
+const mergeInNewProfsTeaching = (currProfsTeaching, newProfsTeaching) => {
+  const currIDs = currProfsTeaching.map(prof => prof.prof.id);
+  if (newProfsTeaching) {
+    newProfsTeaching.forEach(prof => {
+      if (!currIDs.includes(prof.prof.id)) {
+        currProfsTeaching.push(prof);
+      }
+    });
+  }
+};
+
+const CourseReviewCourseBoxContent = ({
   theme,
   courseList,
   initialSelectedCourseIndex = 0,
   showCourseDropdown = false,
   cancelButton = true,
   onCancel = () => {},
+  profsTeachingByCourseID,
 }) => {
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(
     initialSelectedCourseIndex,
   );
   const buildDefaultReview = (course, review) => {
+    // We need to merge profs currently teaching the course and previous profs for the course with a review
     let profsTeaching = course.profs_teaching;
+    if (profsTeachingByCourseID) {
+      mergeInNewProfsTeaching(
+        profsTeaching,
+        profsTeachingByCourseID[course.id],
+      );
+    }
     profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
-
     // add prof to dropdown if not fetched from backend
     if (review) {
       let idx = profsTeaching.findIndex(
@@ -100,8 +121,8 @@ const CourseReviewCourseBox = ({
           prof => prof.prof && prof.prof.id === review.prof_id,
         )
       : -1;
-
     return {
+      id: course.id,
       liked: review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
       useful: (review && review.course_useful) || 0,
       usefulSelected: review ? review.course_useful !== null : false,
@@ -132,6 +153,9 @@ const CourseReviewCourseBox = ({
       return states;
     }, {}),
   );
+  const [lastRenderProfsTeaching, setLastRenderProfsTeaching] = useState(
+    profsTeachingByCourseID,
+  );
 
   const {
     liked,
@@ -149,6 +173,25 @@ const CourseReviewCourseBox = ({
     selectedAnonymous,
     profsTeaching,
   } = reviewStates[course.code];
+
+  /* Effects */
+  useEffect(() => {
+    // update state if profsTeaching changes
+    if (!_.isEqual(profsTeachingByCourseID, lastRenderProfsTeaching)) {
+      let newReviewStates = _.cloneDeep(reviewStates);
+      Object.keys(reviewStates).forEach(code => {
+        mergeInNewProfsTeaching(
+          newReviewStates[code].profsTeaching,
+          profsTeachingByCourseID[reviewStates[code].id],
+        );
+        newReviewStates[code].profsTeaching = newReviewStates[
+          code
+        ].profsTeaching.sort((a, b) => a.prof.name.localeCompare(b.prof.name));
+      });
+      setLastRenderProfsTeaching(profsTeachingByCourseID);
+      setReviewStates(newReviewStates);
+    }
+  }, [profsTeachingByCourseID, reviewStates, lastRenderProfsTeaching]);
 
   /* Mutations */
   const refetchQueries = [
@@ -455,6 +498,45 @@ const CourseReviewCourseBox = ({
         </DeleteReviewModalWrapper>
       </Modal>
     </CourseReviewCourseBoxWrapper>
+  );
+};
+
+const CourseReviewCourseBox = ({ courseList, ...props }) => {
+  const courseIDs = courseList.map(course => course.course.id);
+  const { loading, data } = useQuery(COURSE_REVIEW_PROFS, {
+    variables: { id: courseIDs },
+  });
+  var profsSeenByCourseID = {};
+  const profsTeachingByCourseID = data
+    ? data.review.reduce((profs, currentProf) => {
+        if (
+          currentProf &&
+          currentProf.prof &&
+          (!profsSeenByCourseID[currentProf.course_id] ||
+            !profsSeenByCourseID[currentProf.course_id][currentProf.prof.code])
+        ) {
+          if (!profs[currentProf.course_id]) {
+            profs[currentProf.course_id] = [];
+          }
+          profs[currentProf.course_id].push({ prof: currentProf.prof });
+          if (!profsSeenByCourseID[currentProf.course_id]) {
+            profsSeenByCourseID[currentProf.course_id] = {};
+          }
+          profsSeenByCourseID[currentProf.course_id][
+            currentProf.prof.code
+          ] = true;
+        }
+        return profs;
+      }, {})
+    : null;
+  return (
+    <CourseReviewCourseBoxContent
+      {...{
+        ...props,
+        profsTeachingByCourseID: profsTeachingByCourseID,
+        courseList: courseList,
+      }}
+    />
   );
 };
 

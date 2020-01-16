@@ -88,6 +88,16 @@ const ReviewFragment = {
       }
     }
   `,
+  reviewProfs: gql`
+    fragment ReviewProfs on review {
+      prof {
+        id
+        name
+        code
+      }
+      course_id
+    }
+  `,
 };
 
 export default ReviewFragment;
