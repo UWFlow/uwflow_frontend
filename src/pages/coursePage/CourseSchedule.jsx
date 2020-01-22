@@ -164,17 +164,6 @@ const CourseSchedule = ({
     return allTerms;
   }, []);
 
-  const startingTab = getStartingTab(termsOffered);
-  const [selectedTerm, setSelectedTerm] = useState(startingTab);
-
-  if (sections.length === 0) {
-    return null;
-  }
-
-  const subscribedSectionIDs = sectionSubscriptions.map(
-    subscription => subscription.section_id,
-  );
-
   let hasBell = {};
   termsOffered.forEach(term => {
     hasBell[term] = sections.some(section => {
@@ -185,6 +174,17 @@ const CourseSchedule = ({
     });
   });
   termsOffered = termsOffered.sort().reverse();
+
+  const startingTab = getStartingTab(termsOffered);
+  const [selectedTerm, setSelectedTerm] = useState(startingTab);
+
+  if (sections.length === 0) {
+    return null;
+  }
+
+  const subscribedSectionIDs = sectionSubscriptions.map(
+    subscription => subscription.section_id,
+  );
 
   const sectionsCleanedData = sections
     .map(s => ({
