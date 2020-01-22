@@ -129,10 +129,9 @@ export const monthDayToText = day => {
 };
 
 export const processDateString = dateString => {
-  const date = new Date(dateString);
-  return `${weekdays[date.getDay()]}, ${
-    monthNames[date.getMonth()]
-  } ${monthDayToText(date.getDate())}`;
+  const date = moment(dateString, 'YYYY-MM-DD');
+  const formattedDate = `${date.format('dddd')}, ${date.format('MMM Do')}`;
+  return formattedDate;
 };
 
 export const secsToTime = secs => {
