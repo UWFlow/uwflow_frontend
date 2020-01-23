@@ -5,12 +5,11 @@ import breakpoint from 'styled-components-breakpoint';
 import { Card, BoxShadow, Body, Link, Hover } from '../../../constants/Mixins';
 
 export const ReviewWrapper = styled.div`
-  ${BoxShadow}
   margin-bottom: 32px;
-  background-color: ${({ theme }) => theme.light1};
   ${({ theme, isUserReview }) =>
-    isUserReview ? `border: 2px solid ${theme.accent};` : ''}
-
+    isUserReview
+      ? `border: 2px solid ${theme.accent};`
+      : `border: 2px solid ${theme.light2};`}
   ${breakpoint('mobile', 'desktop')`
     padding: 16px;
     align-content: center;
@@ -86,16 +85,16 @@ export const ReviewTextWrapper = styled.div`
 `;
 
 export const ReviewText = styled.div`
+  ${Body}
   word-break: break-word;
   color: ${({ theme }) => theme.dark1};
-  font-size: 15px;
 `;
 
 export const ReviewAuthor = styled.div`
-  ${Body}
   font-style: italic;
   color: ${({ theme }) => theme.dark2};
   margin-top: 16px;
+  font-size: 14px;
 `;
 
 export const ReviewMetricsWrapper = styled.table`
@@ -124,11 +123,12 @@ export const SingleMetricLabel = styled.td`
 
 export const UpvoteNumber = styled.div`
   ${Body}
-  color: ${({ selected, theme }) => (selected ? 'white' : theme.dark3)}
+  color: ${({ selected, theme }) => (selected ? 'white' : theme.dark3)};
   margin-left: 4px;
 `;
 
 export const ProfText = styled(RouterLink)`
   color: ${({ theme }) => theme.professors};
   ${Link}
+  font-size: 14px;
 `;

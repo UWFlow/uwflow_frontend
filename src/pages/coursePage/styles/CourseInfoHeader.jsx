@@ -107,6 +107,7 @@ export const Description = styled(FadeIn)`
   ${Body}
   font-weight: 500;
   color: ${({ theme }) => theme.dark2};
+  line-height: 1.5;
 
   ${breakpoint('mobile', 'tablet')`
     margin-bottom: 16px;
