@@ -21,12 +21,13 @@ import {
   DELETE_USER_SHORTLIST,
   INSERT_USER_SHORTLIST,
 } from '../../graphql/mutations/Shortlist';
-import { buildCourseShortlistQuery } from '../../graphql/queries/course/Course';
+import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
 
 /* Utils */
 import { formatCourseCode } from '../../utils/Misc';
 import withModal from '../modal/withModal';
+import { getUserId } from '../../utils/Auth';
 
 /* Constants */
 import { SHORTLIST_ERROR } from '../../constants/Messages';
@@ -45,11 +46,11 @@ const ShortlistStar = ({
   size = 32,
   openModal,
 }) => {
-  const userID = localStorage.getItem('user_id');
+  const userID = getUserId();
   const refetchQueries = [
     {
-      query: buildCourseShortlistQuery(userID),
-      variables: { code: courseCode },
+      query: REFETCH_COURSE_SHORTLIST,
+      variables: { code: courseCode, user_id: userID },
     },
     { query: REFETCH_USER_SHORTLIST, variables: { id: userID } },
   ];

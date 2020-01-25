@@ -103,6 +103,7 @@ const ProfileCourses = ({
             <LikeCourseToggle
               key={course_taken.index}
               courseID={course_taken.course.id}
+              courseCode={course_taken.course.code}
               profID={review ? review.prof_id : null}
               reviewID={review ? review.id : null}
               initialState={review ? review.liked : null}

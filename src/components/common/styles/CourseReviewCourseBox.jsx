@@ -31,6 +31,7 @@ export const SliderOptionText = styled.div`
 export const ReviewTextArea = styled.textarea`
   padding: 8px 16px;
   background: ${({ theme }) => theme.light2};
+  width: 100%;
   margin: 0 0 40px 0;
   border-radius: 4px;
   border: none;

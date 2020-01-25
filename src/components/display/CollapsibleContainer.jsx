@@ -34,7 +34,7 @@ const CollapsibleContainer = ({
           {isOpen ? <ChevronDown /> : <ChevronUp />}
         </HeaderChevronBox>
       </HeaderWrapper>
-      <Collapsible open={isOpen} transitionTime={250}>
+      <Collapsible open={isOpen} transitionTime={300} easing="ease-in-out">
         <ContentWrapper>{children}</ContentWrapper>
       </Collapsible>
     </ContainerWrapper>

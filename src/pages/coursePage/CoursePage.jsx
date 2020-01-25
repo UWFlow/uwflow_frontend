@@ -137,10 +137,10 @@ const CoursePage = ({
   closeModal,
 }) => {
   const courseCode = match.params.courseCode.toLowerCase();
-  const query = buildCourseQuery(isLoggedIn, getUserId());
+  const query = buildCourseQuery(isLoggedIn);
 
   const { loading, error, data } = useQuery(query, {
-    variables: { code: courseCode },
+    variables: { code: courseCode, user_id: getUserId() },
   });
 
   return loading ? (

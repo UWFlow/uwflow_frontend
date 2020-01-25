@@ -15,10 +15,16 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
+import {
+  REFETCH_RATINGS,
+  REFETCH_COURSE_REVIEWS,
+} from '../../graphql/queries/course/Course';
+import { REFETCH_USER_REVIEW } from '../../graphql/queries/user/User';
+import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseReview';
 
 /* Utils */
 import withModal from '../modal/withModal';
+import { getUserId } from '../../utils/Auth';
 
 /* Constants */
 import { AUTH_MODAL } from '../../constants/Modal';
@@ -31,20 +37,39 @@ const LikeCourseToggle = ({
   theme,
   isLoggedIn,
   courseID,
+  courseCode,
   profID,
   reviewID = null,
   initialState = null,
   openModal,
 }) => {
-  const userID = localStorage.getItem('user_id');
+  const userID = getUserId();
 
   const refetchQueries = [
     {
       query: REFETCH_RATINGS,
       variables: {
         course_id: courseID,
-        user_id: userID,
         prof_id: profID === null ? -1 : profID,
+      },
+    },
+    {
+      query: REFETCH_COURSE_REVIEWS,
+      variables: {
+        code: courseCode,
+        user_id: userID,
+      },
+    },
+    {
+      query: buildCourseReviewQuery(true),
+      variables: {
+        id: courseID,
+      },
+    },
+    {
+      query: REFETCH_USER_REVIEW,
+      variables: {
+        id: userID,
       },
     },
   ];

@@ -40,6 +40,8 @@ export const DropdownMenu = styled.div`
   background-color: ${({ theme }) => theme.white};
   z-index: 8;
   overflow: none;
+  margin-bottom: 32px;
+
   input {
     border-radius: 4px 4px 0 0 !important;
   }

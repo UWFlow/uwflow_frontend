@@ -36,3 +36,12 @@ export const REFETCH_USER_SHORTLIST = gql`
   }
   ${UserFragment.userShortlist}
 `;
+
+export const REFETCH_USER_REVIEW = gql`
+  query REFETCH_USER_REVIEW($id: Int) {
+    review(where: { user: { user_id: { _eq: $id } } }) {
+      ...ReviewInfoFragment
+    }
+  }
+  ${ReviewFragment.reviewInfo}
+`;
