@@ -11,7 +11,7 @@ export const SearchBarWrapper = styled.div`
   ${({ isLanding }) => isLanding && DarkBoxShadow}
   position: relative;
   width: 100%;
-  z-index: 10;
+  z-index: 1;
 `;
 
 export const SearchResultsWrapper = styled.div`
@@ -20,6 +20,7 @@ export const SearchResultsWrapper = styled.div`
   background: ${({ theme }) => theme.white};
   ${BoxShadow}
   border-radius:  0 0 4px 4px;
+  z-index: 1;
 
   ${({ maximizeWidth }) =>
     maximizeWidth
@@ -33,6 +34,7 @@ export const SearchResultsWrapper = styled.div`
 
 export const SearchResult = styled.button`
   ${Body}
+  position: relative;
   border: none;
   cursor: pointer;
   display: flex;
@@ -61,6 +63,7 @@ export const SearchResult = styled.button`
   &:hover span,
   &:focus span {
     color: ${({ theme }) => theme.light1} !important;
+    filter: brightness(100%) !important;
   }
 `;
 
@@ -89,17 +92,20 @@ const ResultText = `
 export const ExploreText = styled.span`
   color: ${({ theme }) => theme.primary};
   ${ResultText}
+  transition: 0.2s all;
 `;
 
 export const CourseText = styled.span`
   color: ${({ theme }) => theme.courses};
   ${ResultText}
+  transition: 0.2s all;
 `;
 
 export const ProfText = styled.span`
   color: ${({ theme }) => theme.professors};
   ${ResultText}
   ${Hover()}
+  transition: 0.2s all;
 `;
 
 export const Dash = styled.span`
@@ -132,4 +138,13 @@ export const ExploreProfCourses = styled.div`
   background: ${({ theme }) => theme.courses};
   color: ${({ theme }) => theme.white};
   ${ExploreSideButton}
+`;
+
+export const UnderlinedText = styled.span`
+  text-decoration: underline;
+  transition: 0.1s filter;
+`;
+
+export const BoldText = styled.span`
+  font-weight: 500;
 `;

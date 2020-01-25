@@ -15,6 +15,8 @@ export const LandingPageWrapper = styled.div`
   min-height: calc(100vh - 48px);
   margin-bottom: 48px;
   display: flex;
+  z-index: 1;
+  position: relative;
 
   @media only screen and (max-height: 800px) {
     min-height: 800px;

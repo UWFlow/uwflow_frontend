@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import FadeIn from 'react-fade-in';
 
 /* Styled Components */
 import {
@@ -10,6 +9,7 @@ import {
   FooterRight,
   FooterPageLink,
   FooterNormalLink,
+  FadeInWrapper,
 } from './styles/Footer';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from '../../Routes';
 
 const Footer = ({ location }) => (
-  <FadeIn delay={2000}>
+  <FadeInWrapper delay={1000}>
     <FooterWrapper noMargin={isOnLandingPageRoute(location)}>
       <FooterContent>
         <FooterLeft>
@@ -48,7 +48,7 @@ const Footer = ({ location }) => (
         </FooterRight>
       </FooterContent>
     </FooterWrapper>
-  </FadeIn>
+  </FadeInWrapper>
 );
 
 export default withRouter(Footer);
