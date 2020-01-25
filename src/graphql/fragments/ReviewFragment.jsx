@@ -90,6 +90,7 @@ const ReviewFragment = {
   `,
   reviewProfs: gql`
     fragment ReviewProfs on review {
+      id
       prof {
         id
         name

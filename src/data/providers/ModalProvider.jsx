@@ -22,7 +22,7 @@ const ModalProvider = ({ children }) => {
     (modal, id, props) => {
       const originalOnAfterClose = props.onAfterClose;
       props.onAfterClose = () => {
-        var newModalsById = [...currentModalsById.current];
+        let newModalsById = [...currentModalsById.current];
         newModalsById.splice(
           findIndOfModalByIdAndModal(id, modal, newModalsById),
           1,
@@ -39,7 +39,7 @@ const ModalProvider = ({ children }) => {
 
   const closeModal = useCallback(
     (modal, id) => {
-      var newModalsById = [...currentModalsById.current];
+      let newModalsById = [...currentModalsById.current];
       newModalsById[
         findIndOfModalByIdAndModal(id, modal, newModalsById)
       ].isOpen = false;
@@ -50,7 +50,7 @@ const ModalProvider = ({ children }) => {
 
   const openModal = useCallback(
     (modal, id, props) => {
-      var newModalsById = [...currentModalsById.current];
+      let newModalsById = [...currentModalsById.current];
       newModalsById.push({
         id: id,
         modal: modal,

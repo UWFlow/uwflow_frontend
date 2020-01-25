@@ -33,9 +33,9 @@ const BackgroundAnimation = ({ height, width }) => {
   };
 
   const spawnLine = (startX, startY, lifeTime) => {
-    var x = startX;
-    var y = startY;
-    var z = startY;
+    let x = startX;
+    let y = startY;
+    let z = startY;
 
     context.globalCompositeOperation = 'source-over';
     context.lineWidth = 6;
@@ -58,7 +58,7 @@ const BackgroundAnimation = ({ height, width }) => {
   };
 
   const lineGenerator = () => {
-    var intervals = [];
+    let intervals = [];
     for (let i = 0; i < 8; i++) {
       intervals.push(
         interval(() => {
@@ -94,7 +94,7 @@ const BackgroundAnimation = ({ height, width }) => {
   }, []);
 
   useLayoutEffect(() => {
-    var stopAllTimers = null;
+    let stopAllTimers = null;
 
     if (contextSet) {
       context.translate(width / 2, height / 2);
