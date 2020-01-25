@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
+import Collapsible from 'react-collapsible';
 
 import {
   CourseReviewCourseBoxWrapper,
@@ -32,14 +33,22 @@ import Modal from '../modal/Modal';
 
 /* Utils */
 import { formatCourseCode } from '../../utils/Misc';
+import { getUserId } from '../../utils/Auth';
 
 /* GraphQL */
 import { DELETE_REVIEW, UPSERT_REVIEW } from '../../graphql/mutations/Review';
-import { REFETCH_RATINGS } from '../../graphql/queries/course/Course';
+import {
+  REFETCH_RATINGS,
+  REFETCH_COURSE_REVIEWS,
+} from '../../graphql/queries/course/Course';
+import { REFETCH_USER_REVIEW } from '../../graphql/queries/user/User';
+import {
+  COURSE_REVIEW_PROFS,
+  buildCourseReviewQuery,
+} from '../../graphql/queries/course/CourseReview';
 
 /* Constants */
 import { REVIEW_SUCCESS } from '../../constants/Messages';
-import { COURSE_REVIEW_PROFS } from '../../graphql/queries/course/CourseReview';
 
 const easyOptions = [
   'Difficult',
@@ -96,6 +105,7 @@ const CourseReviewCourseBoxContent = ({
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(
     initialSelectedCourseIndex,
   );
+
   const buildDefaultReview = (course, review) => {
     // We need to merge profs currently teaching the course and previous profs for the course with a review
     let profsTeaching = course.profs_teaching;
@@ -140,7 +150,7 @@ const CourseReviewCourseBoxContent = ({
     };
   };
 
-  const userID = localStorage.getItem('user_id');
+  const userID = getUserId();
   const { course, review } = courseList[selectedCourseIndex];
 
   /* State */
@@ -199,14 +209,39 @@ const CourseReviewCourseBoxContent = ({
       query: REFETCH_RATINGS,
       variables: {
         course_id: course.id,
-        user_id: userID,
         prof_id: review ? review.prof_id : null,
+      },
+    },
+    {
+      query: REFETCH_COURSE_REVIEWS,
+      variables: {
+        code: course.code,
+        user_id: userID,
+      },
+    },
+    {
+      query: buildCourseReviewQuery(true),
+      variables: {
+        id: course.id,
+      },
+    },
+    {
+      query: REFETCH_USER_REVIEW,
+      variables: {
+        id: userID,
       },
     },
   ];
 
-  const [upsertReview] = useMutation(UPSERT_REVIEW, { refetchQueries });
-  const [deleteReview] = useMutation(DELETE_REVIEW, { refetchQueries });
+  const [upsertReview] = useMutation(UPSERT_REVIEW, {
+    refetchQueries,
+    awaitRefetchQueries: true,
+  });
+
+  const [deleteReview] = useMutation(DELETE_REVIEW, {
+    refetchQueries,
+    awaitRefetchQueries: true,
+  });
 
   const notifyDelete = () => toast(REVIEW_SUCCESS.deleted);
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
@@ -240,13 +275,15 @@ const CourseReviewCourseBoxContent = ({
         __typename: 'mutation_root',
         insert_review: {
           __typename: 'review_mutation_response',
-          returning: {
-            __typename: 'review',
-            id: review ? review.id : null,
-            ...reviewData,
-            created_at: new Date(),
-            updated_at: new Date(),
-          },
+          returning: [
+            {
+              __typename: 'review',
+              id: review ? review.id : null,
+              ...reviewData,
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          ],
         },
       },
     }).then(() => {
@@ -386,50 +423,59 @@ const CourseReviewCourseBoxContent = ({
         />
       </QuestionWrapper>
 
-      <MetricQuestionWrapper>
-        <MetricQuestionText>Clear?</MetricQuestionText>
-        <DiscreteSlider
-          numNodes={5}
-          currentNode={clear}
-          color={theme.professors}
-          onSlideEnd={value =>
-            setSliderValue('clear', value[0], 'clearSelected')
-          }
-          selected={clearSelected}
-          setSelected={value => setReviewValue('clearSelected', value)}
+      <Collapsible
+        open={selectedProf !== -1 && selectedProf !== profsTeaching.length}
+        transitionTime={200}
+        easing="ease-in-out"
+        overflowWhenOpen="visible"
+      >
+        <MetricQuestionWrapper>
+          <MetricQuestionText>Clear?</MetricQuestionText>
+          <DiscreteSlider
+            numNodes={5}
+            currentNode={clear}
+            color={theme.professors}
+            onSlideEnd={value =>
+              setSliderValue('clear', value[0], 'clearSelected')
+            }
+            selected={clearSelected}
+            setSelected={value => setReviewValue('clearSelected', value)}
+            disabled={profID === null}
+          />
+          <SliderOptionText>
+            {clearSelected && profID !== null ? clearOptions[clear] : ''}
+          </SliderOptionText>
+        </MetricQuestionWrapper>
+
+        <MetricQuestionWrapper>
+          <MetricQuestionText>Engaging?</MetricQuestionText>
+          <DiscreteSlider
+            numNodes={5}
+            currentNode={engaging}
+            color={theme.professors}
+            onSlideEnd={value =>
+              setSliderValue('engaging', value[0], 'engagingSelected')
+            }
+            selected={engagingSelected}
+            setSelected={value => setReviewValue('engagingSelected', value)}
+            disabled={profID === null}
+          />
+          <SliderOptionText>
+            {engagingSelected && profID !== null
+              ? engagingOptions[engaging]
+              : ''}
+          </SliderOptionText>
+        </MetricQuestionWrapper>
+
+        <ReviewTextArea
+          rows={5}
+          value={profComment}
+          maxLength={8192}
+          onChange={event => setReviewValue('profComment', event.target.value)}
+          placeholder="Add any comments or tips..."
           disabled={profID === null}
         />
-        <SliderOptionText>
-          {clearSelected && profID !== null ? clearOptions[clear] : ''}
-        </SliderOptionText>
-      </MetricQuestionWrapper>
-
-      <MetricQuestionWrapper>
-        <MetricQuestionText>Engaging?</MetricQuestionText>
-        <DiscreteSlider
-          numNodes={5}
-          currentNode={engaging}
-          color={theme.professors}
-          onSlideEnd={value =>
-            setSliderValue('engaging', value[0], 'engagingSelected')
-          }
-          selected={engagingSelected}
-          setSelected={value => setReviewValue('engagingSelected', value)}
-          disabled={profID === null}
-        />
-        <SliderOptionText>
-          {engagingSelected && profID !== null ? engagingOptions[engaging] : ''}
-        </SliderOptionText>
-      </MetricQuestionWrapper>
-
-      <ReviewTextArea
-        rows={5}
-        value={profComment}
-        maxLength={8192}
-        onChange={event => setReviewValue('profComment', event.target.value)}
-        placeholder="Add any comments or tips..."
-        disabled={profID === null}
-      />
+      </Collapsible>
 
       <Footer>
         <DeleteIconWrapper>
@@ -503,7 +549,7 @@ const CourseReviewCourseBoxContent = ({
 
 const CourseReviewCourseBox = ({ courseList, ...props }) => {
   const courseIDs = courseList.map(course => course.course.id);
-  const { loading, data } = useQuery(COURSE_REVIEW_PROFS, {
+  const { data } = useQuery(COURSE_REVIEW_PROFS, {
     variables: { id: courseIDs },
   });
   var profsSeenByCourseID = {};
