@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import queryString from 'query-string';
 import { Search, Layers, Square, User, Users } from 'react-feather';
 import useOnClickOutside from 'use-onclickoutside';
+import Highlighter from 'react-highlight-words';
 
 /* Child Components */
 import Tooltip from '../../components/display/Tooltip';
@@ -29,6 +30,8 @@ import {
   ExploreCourseProfs,
   ExploreProfCourses,
   ResultLeft,
+  UnderlinedText,
+  BoldText,
 } from './styles/SearchBar';
 
 import Textbox from '../input/Textbox';
@@ -36,6 +39,14 @@ import { useSearchContext } from '../../search/SearchProvider';
 
 /* Constants */
 import KeycodeConstants from '../../constants/KeycodeConstants';
+
+const Highlight = ({ children }) => <UnderlinedText>{children}</UnderlinedText>;
+
+const BoldHighlight = ({ children }) => (
+  <BoldText>
+    <UnderlinedText>{children}</UnderlinedText>
+  </BoldText>
+);
 
 const SearchBar = ({
   location,
@@ -162,6 +173,21 @@ const SearchBar = ({
     searchWorker.postMessage({ type: 'autocomplete', query: value });
   };
 
+  const queryTokens = searchText
+    .split(' ')
+    .map(term => formatCourseCode(term))
+    .join(' ')
+    .split(' ');
+
+  const highlightText = (text, bold = false) => (
+    <Highlighter
+      highlightTag={bold ? BoldHighlight : Highlight}
+      autoEscape={true}
+      searchWords={queryTokens}
+      textToHighlight={text}
+    />
+  );
+
   const exploreResult = (code = '', ref = null) => (
     <SearchResult
       onClick={() => queryExploreCourses(code, code !== '')}
@@ -195,10 +221,10 @@ const SearchBar = ({
       <ResultLeft>
         <CourseText>
           <Square />
-          {formatCourseCode(course.code.toUpperCase())}
+          {highlightText(formatCourseCode(course.code.toUpperCase()))}
         </CourseText>
         <Dash>&mdash;</Dash>
-        {course.name}
+        {highlightText(course.name, true)}
       </ResultLeft>
       <ExploreCourseProfs
         data-tip={`Explore professors that teach ${course.code}`}
@@ -219,7 +245,7 @@ const SearchBar = ({
       <ResultLeft>
         <ProfText>
           <User />
-          {prof.name}
+          {highlightText(prof.name)}
         </ProfText>
         <Dash>&mdash;</Dash>
         Professor

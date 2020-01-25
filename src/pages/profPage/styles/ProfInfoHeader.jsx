@@ -85,7 +85,6 @@ export const Description = styled.div`
   ${Heading3}
   position: relative;
   margin: auto 0;
-  max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
   vertical-align: middle;
   color: ${({ theme }) => theme.dark2};
 
@@ -109,7 +108,7 @@ export const RatingsSection = styled(FadeIn)`
   ${breakpoint('tablet')`
     position: absolute;
     right: 0;
-    bottom: 32px;
+    bottom: 50%;
   `}
 `;
 

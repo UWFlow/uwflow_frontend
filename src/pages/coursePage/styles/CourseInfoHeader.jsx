@@ -29,6 +29,7 @@ export const CourseCodeAndNameSection = styled.div`
   background-color: ${({ theme }) => theme.primaryExtraDark};
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: left center;
   will-change: transform;
   position: relative;
   min-height: 160px;
@@ -105,7 +106,9 @@ export const CourseDescriptionSection = styled.div`
 
 export const Description = styled(FadeIn)`
   ${Body}
+  position: relative;
   font-weight: 500;
+  vertical-align: middle;
   color: ${({ theme }) => theme.dark2};
   line-height: 1.5;
 
@@ -129,6 +132,6 @@ export const RatingsSection = styled(FadeIn)`
   ${breakpoint('tablet')`
     position: absolute;
     right: 0;
-    bottom: 32px;
+    bottom: 50%;
   `}
 `;
