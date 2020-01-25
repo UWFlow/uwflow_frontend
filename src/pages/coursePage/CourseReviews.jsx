@@ -293,7 +293,7 @@ const CourseReviews = ({
       }),
     );
 
-  const profProfFilterOptions = [
+  const profFilterOptions = [
     'all professors',
     ...[
       ...reviewDataState.profReviewProfs,
@@ -307,7 +307,7 @@ const CourseReviews = ({
     .filter(
       prof =>
         profReviewFilter === 0 ||
-        prof.name === profProfFilterOptions[profReviewFilter],
+        prof.name === profFilterOptions[profReviewFilter],
     );
 
   const numProfReviews = profReviewsToShow.reduce((total, curr) => {
@@ -321,7 +321,7 @@ const CourseReviews = ({
       <DropdownList
         color={theme.professors}
         selectedIndex={profReviewFilter}
-        options={profProfFilterOptions}
+        options={profFilterOptions}
         onChange={value => setProfReviewFilter(value)}
         zIndex={6}
         searchable

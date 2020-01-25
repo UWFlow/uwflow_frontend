@@ -28,7 +28,7 @@ export default (
         },
       };
     case UNREGISTER_TEXTBOX:
-      var IDMapping = {
+      let IDMapping = {
         ...state.IDMapping,
       };
       delete IDMapping[action.payload];

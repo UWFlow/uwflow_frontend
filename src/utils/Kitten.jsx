@@ -34,7 +34,7 @@ export const getKittenFromID = id => kittens[id % 13];
 export const getRandomKitten = () => kittens[randIntBetween(0, 14)];
 
 export const hashProgram = program => {
-  var hash = 0;
+  let hash = 0;
   if (!program || program.length === 0) return 0;
   for (let i = 0; i < program.length; i++) {
     const chr = program.charCodeAt(i);

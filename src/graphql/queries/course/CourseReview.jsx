@@ -29,7 +29,13 @@ export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
 
 export const COURSE_REVIEW_PROFS = gql`
   query COURSE_REVIEW_PROFS($id: [Int!]) {
-    review(where: { course_id: { _in: $id }, prof_id: { _is_null: false } }) {
+    review(
+      where: {
+        course_id: { _in: $id }
+        prof_id: { _is_null: false }
+        prof_comment: { _is_null: false }
+      }
+    ) {
       ...ReviewProfs
     }
   }
