@@ -47,6 +47,11 @@ export const SearchInput = styled.input`
     font-weight: 400;
   }
 
+  &:disabled {
+    opacity: 0.7;
+    color: ${({ theme }) => theme.dark3};
+  }
+
   @media only screen and (max-width: 800px) {
     padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};
   }
