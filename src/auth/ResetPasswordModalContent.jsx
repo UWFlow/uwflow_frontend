@@ -297,7 +297,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
         onSubmit={handleSubmitResetCode}
         loading={isLoading}
         error={errorMessage}
-        resendEmail={() => handleSendResetEmail(email)}
+        resendEmail={event => handleSendResetEmail(event, email)}
         success={successMessage}
         codeError={codeError}
         setCodeError={setCodeError}
