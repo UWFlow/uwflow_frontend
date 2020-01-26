@@ -83,7 +83,7 @@ const TimeCell = ({ cell }) => (
     {cell.value.map((cl, idx) => (
       <Fragment key={idx}>
         <ContentWrapper italics={cl.cancelled}>
-          {cl.cancelled ? 'Section Cancelled' : cl.time}
+          {cl.cancelled ? 'Cancelled' : cl.time}
         </ContentWrapper>
         {contentSpace(cl.spaces)}
         {idx < cell.value.length - 1 && <SpaceMargin />}
