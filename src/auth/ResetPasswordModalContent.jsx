@@ -28,7 +28,6 @@ import {
   GreyLink,
 } from './styles/ResetPasswordModal';
 import { validateEmail } from '../utils/Email';
-import { sleep } from '../utils/Misc';
 
 const ResetPasswordForm = ({
   onSubmit,
@@ -37,6 +36,8 @@ const ResetPasswordForm = ({
   success,
   emailError,
   setEmailError,
+  successAwaitContinue,
+  onContinue,
 }) => {
   const [email, setEmail] = useState('');
 
@@ -55,15 +56,18 @@ const ResetPasswordForm = ({
             setEmail(value);
             setEmailError(false);
           }}
+          disabled={successAwaitContinue}
         />
       </TextboxWrapper>
       <Button
         loading={loading}
         width="100%"
         type="submit"
-        handleClick={event => onSubmit(event, email)}
+        handleClick={event =>
+          successAwaitContinue ? onContinue() : onSubmit(event, email)
+        }
       >
-        Send Reset Email
+        {successAwaitContinue ? 'Continue' : 'Send Reset Email'}
       </Button>
     </FormWrapper>
   );
@@ -77,6 +81,8 @@ const EnterResetCodeForm = ({
   success,
   codeError,
   setCodeError,
+  successAwaitContinue,
+  onContinue,
 }) => {
   const [code, setCode] = useState('');
   return (
@@ -97,15 +103,18 @@ const EnterResetCodeForm = ({
             setCode(value);
             setCodeError(false);
           }}
+          disabled={successAwaitContinue}
         />
         <GreyLink onClick={(false, resendEmail)}>Send me a new code</GreyLink>
       </TextboxWrapper>
       <Button
         loading={loading}
         width="100%"
-        handleClick={event => onSubmit(event, code)}
+        handleClick={event =>
+          successAwaitContinue ? onContinue() : onSubmit(event, code)
+        }
       >
-        Submit
+        {successAwaitContinue ? 'Continue' : 'Submit'}
       </Button>
     </FormWrapper>
   );
@@ -120,6 +129,8 @@ const EnterNewPasswordForm = ({
   setPasswordError,
   confirmPasswordError,
   setConfirmPasswordError,
+  successAwaitContinue,
+  onContinue,
 }) => {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
@@ -139,6 +150,7 @@ const EnterNewPasswordForm = ({
             setPass(value);
             setPasswordError(false);
           }}
+          disabled={successAwaitContinue}
         />
       </TextboxWrapper>
       <TextboxWrapper>
@@ -151,14 +163,19 @@ const EnterNewPasswordForm = ({
             setConfirmPass(value);
             setConfirmPasswordError(false);
           }}
+          disabled={successAwaitContinue}
         />
       </TextboxWrapper>
       <Button
         loading={loading}
         width="100%"
-        handleClick={event => onSubmit(event, pass, confirmPass)}
+        handleClick={event =>
+          successAwaitContinue
+            ? onContinue()
+            : onSubmit(event, pass, confirmPass)
+        }
       >
-        Reset Password
+        {successAwaitContinue ? 'Done' : 'Reset Password'}
       </Button>
     </FormWrapper>
   );
@@ -167,7 +184,6 @@ const EnterNewPasswordForm = ({
 const RESET_PASSWORD_FORM = 'RESET_PASSWORD';
 const ENTER_RESET_CODE_FORM = 'RESET_CODE';
 const ENTER_NEW_PASSWORD_FORM = 'NEW_PASSWORD';
-const TIMEOUT_LENGTH = 800;
 
 const ResetPasswordModalContent = ({ handleClose }) => {
   const [showingForm, setShowingForm] = useState(RESET_PASSWORD_FORM);
@@ -180,6 +196,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
   const [codeError, setCodeError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [successAwaitContinue, setSuccessAwaitContinue] = useState(false);
 
   const handleSendResetEmail = async (event, email) => {
     if (event) {
@@ -208,11 +225,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
     } else {
       setEmail(email);
       setSuccessMessage('Successfully sent reset code!');
-      if (showingForm !== ENTER_RESET_CODE_FORM) {
-        await sleep(TIMEOUT_LENGTH);
-        setSuccessMessage('');
-        setShowingForm(ENTER_RESET_CODE_FORM);
-      }
+      setSuccessAwaitContinue(true);
     }
   };
 
@@ -236,9 +249,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
     } else {
       setSavedCode(code);
       setSuccessMessage('Code is valid!');
-      await sleep(TIMEOUT_LENGTH);
-      setSuccessMessage('');
-      setShowingForm(ENTER_NEW_PASSWORD_FORM);
+      setSuccessAwaitContinue(true);
     }
   };
 
@@ -274,9 +285,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
       setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
       setSuccessMessage('Password successfully reset!');
-      await sleep(TIMEOUT_LENGTH);
-      setSuccessMessage('');
-      handleClose();
+      setSuccessAwaitContinue(true);
     }
   };
 
@@ -289,6 +298,12 @@ const ResetPasswordModalContent = ({ handleClose }) => {
         success={successMessage}
         emailError={emailError}
         setEmailError={setEmailError}
+        successAwaitContinue={successAwaitContinue}
+        onContinue={() => {
+          setShowingForm(ENTER_RESET_CODE_FORM);
+          setSuccessAwaitContinue(false);
+          setSuccessMessage('');
+        }}
       />
     );
   if (showingForm === ENTER_RESET_CODE_FORM)
@@ -301,6 +316,12 @@ const ResetPasswordModalContent = ({ handleClose }) => {
         success={successMessage}
         codeError={codeError}
         setCodeError={setCodeError}
+        successAwaitContinue={successAwaitContinue}
+        onContinue={() => {
+          setShowingForm(ENTER_NEW_PASSWORD_FORM);
+          setSuccessAwaitContinue(false);
+          setSuccessMessage('');
+        }}
       />
     );
 
@@ -315,6 +336,12 @@ const ResetPasswordModalContent = ({ handleClose }) => {
         setPasswordError={setPasswordError}
         confirmPasswordError={confirmPasswordError}
         setConfirmPasswordError={setConfirmPasswordError}
+        successAwaitContinue={successAwaitContinue}
+        onContinue={() => {
+          setSuccessAwaitContinue(false);
+          setSuccessMessage('');
+          handleClose();
+        }}
       />
     );
 };
