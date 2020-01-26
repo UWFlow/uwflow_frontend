@@ -184,7 +184,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
               >
                 <ShowMoreReviewsText>
                   {showingReviewsMap[course.code]
-                    ? `Show less reviews`
+                    ? `Show fewer reviews`
                     : `Show all ${course.reviews.length} reviews`}
                 </ShowMoreReviewsText>
               </ShowMoreReviewsSection>

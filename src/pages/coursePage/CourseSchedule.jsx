@@ -42,7 +42,6 @@ const sectionOrder = {
 const getInfoGroupings = meetings => {
   let groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
     const key = `${curr.start_seconds} ${curr.end_seconds}`;
-
     if (!groupings[key]) {
       groupings[key] = {
         time: `${secsToTime(curr.start_seconds)} - ${secsToTime(
@@ -57,6 +56,7 @@ const getInfoGroupings = meetings => {
             }
           : {},
         timeRanges: [],
+        cancelled: curr.is_cancelled,
       };
     }
 
@@ -116,10 +116,13 @@ const getInfoGroupings = meetings => {
 
   infoGroups = infoGroups.sort((a, b) => a.startSeconds - b.startSeconds);
   const numDates = infoGroups.map(group => group.timeRanges.length);
-
   return {
     times: infoGroups.map((group, i) =>
-      Object({ time: group.time, spaces: numDates[i] - 1 }),
+      Object({
+        time: group.time,
+        spaces: numDates[i] - 1,
+        cancelled: group.cancelled,
+      }),
     ),
     locations: infoGroups.map((group, i) =>
       Object({ location: group.location, spaces: numDates[i] - 1 }),
@@ -202,6 +205,14 @@ const CourseSchedule = ({
         selected: subscribedSectionIDs.includes(s.id),
         userEmail: userEmail,
       },
+      cancelled: sections.reduce((isCancelled, current) => {
+        return (
+          isCancelled ||
+          current.meetings.reduce((meetingCancelled, current) => {
+            return meetingCancelled || current.is_cancelled;
+          }, false)
+        );
+      }, false),
       // Every grouping contains a single time of day, location, and instructor
       // and the classes that occur with those parameters.
       ...getInfoGroupings(s.meetings),
@@ -217,7 +228,6 @@ const CourseSchedule = ({
     });
 
   const courseExams = processSectionExams(sections, courseCode);
-
   const tabList = termsOffered.map(term => {
     return {
       title: termCodeToDate(term),
@@ -228,6 +238,11 @@ const CourseSchedule = ({
               cellPadding="4px 0"
               columns={courseScheduleTableColumns}
               data={sectionsCleanedData.filter(c => c.term === term)}
+              getRowProps={row => {
+                if (row) {
+                  return { disabled: row.original.cancelled };
+                }
+              }}
             />
           </ScheduleTableWrapper>
           <FinalExamsTableWrapper hasExams={courseExams.length > 0}>

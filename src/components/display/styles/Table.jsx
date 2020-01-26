@@ -78,6 +78,7 @@ export const Row = styled.div`
   border-radius: 4px;
   border-bottom: 1px solid ${({ theme }) => theme.light3};
   background-color: ${({ theme, odd }) => (odd ? theme.white : '#FAFBFC')};
+  ${({ disabled }) => (disabled ? 'opacity: 0.4;' : '')}
 
   &:last-child {
     border-bottom: none;

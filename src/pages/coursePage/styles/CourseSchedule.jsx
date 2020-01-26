@@ -58,6 +58,7 @@ export const ContentWrapper = styled.div`
   height: ${CELL_HEIGHT}px;
   white-space: nowrap;
   margin-bottom: -8px;
+  ${({ italics }) => (italics ? 'font-style: italic;' : '')}
 `;
 
 export const InstructorLink = styled(Link)`
