@@ -238,6 +238,11 @@ const CourseSchedule = ({
               cellPadding="4px 0"
               columns={courseScheduleTableColumns}
               data={sectionsCleanedData.filter(c => c.term === term)}
+              getRowProps={row => {
+                if (row) {
+                  return { disabled: row.original.cancelled };
+                }
+              }}
             />
           </ScheduleTableWrapper>
           <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
