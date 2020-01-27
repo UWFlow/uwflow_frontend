@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 /* Child Components */
 import Textbox from '../components/input/Textbox';
@@ -15,7 +16,11 @@ import {
   RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
 } from '../constants/Api';
 import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
-import { RESET_PASSWORD_ERRORS, DEFAULT_ERROR } from '../constants/Messages';
+import {
+  RESET_PASSWORD_ERRORS,
+  DEFAULT_ERROR,
+  PASSWORD_RESET_SUCCESS,
+} from '../constants/Messages';
 
 /* Styled Components */
 import {
@@ -28,7 +33,6 @@ import {
   GreyLink,
 } from './styles/ResetPasswordModal';
 import { validateEmail } from '../utils/Email';
-import { sleep } from '../utils/Misc';
 
 const ResetPasswordForm = ({
   onSubmit,
@@ -167,7 +171,6 @@ const EnterNewPasswordForm = ({
 const RESET_PASSWORD_FORM = 'RESET_PASSWORD';
 const ENTER_RESET_CODE_FORM = 'RESET_CODE';
 const ENTER_NEW_PASSWORD_FORM = 'NEW_PASSWORD';
-const TIMEOUT_LENGTH = 800;
 
 const ResetPasswordModalContent = ({ handleClose }) => {
   const [showingForm, setShowingForm] = useState(RESET_PASSWORD_FORM);
@@ -207,11 +210,12 @@ const ResetPasswordModalContent = ({ handleClose }) => {
       setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
       setEmail(email);
-      setSuccessMessage('Successfully sent reset code!');
+      toast(PASSWORD_RESET_SUCCESS.emailSent);
       if (showingForm !== ENTER_RESET_CODE_FORM) {
-        await sleep(TIMEOUT_LENGTH);
         setSuccessMessage('');
         setShowingForm(ENTER_RESET_CODE_FORM);
+      } else {
+        setSuccessMessage('Successfully sent reset code!');
       }
     }
   };
@@ -235,9 +239,6 @@ const ResetPasswordModalContent = ({ handleClose }) => {
       setCodeError(true);
     } else {
       setSavedCode(code);
-      setSuccessMessage('Code is valid!');
-      await sleep(TIMEOUT_LENGTH);
-      setSuccessMessage('');
       setShowingForm(ENTER_NEW_PASSWORD_FORM);
     }
   };
@@ -273,9 +274,8 @@ const ResetPasswordModalContent = ({ handleClose }) => {
     if (status >= 400) {
       setErrorMessage(RESET_PASSWORD_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
-      setSuccessMessage('Password successfully reset!');
-      await sleep(TIMEOUT_LENGTH);
       setSuccessMessage('');
+      toast(PASSWORD_RESET_SUCCESS.reset);
       handleClose();
     }
   };
