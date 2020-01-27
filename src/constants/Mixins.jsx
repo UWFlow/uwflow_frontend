@@ -17,6 +17,7 @@ export const PageWrapper = `
   display: flex;
   flex-direction: column;
   padding-bottom: 32px;
+  width: 100vw;
 `;
 
 export const PageContent = `
