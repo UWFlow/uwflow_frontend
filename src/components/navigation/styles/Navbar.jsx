@@ -6,7 +6,7 @@ import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
 export const NavbarWrapper = styled.div`
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   min-height: ${NAVBAR_HEIGHT}px;
   height: ${NAVBAR_HEIGHT}px;
   position: fixed;

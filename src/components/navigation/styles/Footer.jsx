@@ -12,6 +12,7 @@ import {
 export const FadeInWrapper = styled(FadeIn)`
   position: relative;
   z-index: 0;
+  width: 100vw;
 
   & > div {
     display: flex;
