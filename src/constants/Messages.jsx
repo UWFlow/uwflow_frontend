@@ -85,6 +85,11 @@ export const REVIEW_SUCCESS = {
   deleted: 'Your review has been deleted',
 };
 
+export const PASSWORD_RESET_SUCCESS = {
+  emailSent: 'Email sent!',
+  reset: 'Password reset!',
+};
+
 /* Tooltips */
 
 export const SUBSCRIPTION_TOOLTIP = {
