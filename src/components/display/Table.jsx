@@ -35,6 +35,7 @@ const Table = ({
   initialState = {},
   fetchOffset = 400,
   showNoResults = false,
+  getRowProps,
 }) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
   const bottomRef = useRef(null);
@@ -101,10 +102,14 @@ const Table = ({
   }, [tableState]);
 
   const renderRows = () =>
-    rows.map(
-      (row, index) =>
+    rows.map((row, index) => {
+      const additionalRowProps = getRowProps ? getRowProps(row) : {};
+      return (
         prepareRow(row) || (
-          <Row {...row.getRowProps()} odd={index % 2}>
+          <Row
+            {...{ ...row.getRowProps(), ...additionalRowProps }}
+            odd={index % 2}
+          >
             {row.cells.map(cell => (
               <Cell
                 {...cell.getCellProps()}
@@ -117,8 +122,9 @@ const Table = ({
               </Cell>
             ))}
           </Row>
-        ),
-    );
+        )
+      );
+    });
 
   const isLoading =
     (loading || shouldFetchMore) && !doneFetching && fetchMore !== null;

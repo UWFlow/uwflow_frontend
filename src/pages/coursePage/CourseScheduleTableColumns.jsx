@@ -82,7 +82,9 @@ const TimeCell = ({ cell }) => (
   <NormalCellWrapper>
     {cell.value.map((cl, idx) => (
       <Fragment key={idx}>
-        <ContentWrapper>{cl.time}</ContentWrapper>
+        <ContentWrapper italics={cl.cancelled}>
+          {cl.cancelled ? 'Cancelled' : cl.time}
+        </ContentWrapper>
         {contentSpace(cl.spaces)}
         {idx < cell.value.length - 1 && <SpaceMargin />}
       </Fragment>

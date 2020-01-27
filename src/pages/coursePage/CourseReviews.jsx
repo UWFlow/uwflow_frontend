@@ -113,7 +113,7 @@ const CourseCourseReviews = ({
         >
           <ShowMoreReviewsText>
             {showingAllReviews
-              ? `Show less reviews`
+              ? `Show fewer reviews`
               : `Show all ${reviews.length} reviews`}
           </ShowMoreReviewsText>
         </ShowMoreReviewsSection>
@@ -211,7 +211,7 @@ const CourseProfReviews = ({
             >
               <ShowMoreReviewsText>
                 {showingReviewsMap[prof.name]
-                  ? `Show less reviews`
+                  ? `Show fewer reviews`
                   : `Show all ${prof.reviews.length} reviews`}
               </ShowMoreReviewsText>
             </ShowMoreReviewsSection>
