@@ -208,9 +208,10 @@ const CourseSchedule = ({
       cancelled: sections.reduce((isCancelled, current) => {
         return (
           isCancelled ||
-          current.meetings.reduce((meetingCancelled, current) => {
-            return meetingCancelled || current.is_cancelled;
-          }, false)
+          (current.term_id == s.term_id &&
+            current.meetings.reduce((meetingCancelled, current) => {
+              return meetingCancelled || current.is_cancelled;
+            }, false))
         );
       }, false),
       // Every grouping contains a single time of day, location, and instructor
