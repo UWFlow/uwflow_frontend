@@ -10,7 +10,7 @@ import {
   MemberLinksWrapper,
 } from './styles/TeamMember';
 
-const AboutPage = ({
+const TeamMember = ({
   photo,
   name,
   title,
@@ -48,4 +48,4 @@ const AboutPage = ({
   </TeamMembersWrapper>
 );
 
-export default AboutPage;
+export default TeamMember;
