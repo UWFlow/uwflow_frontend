@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
 import Collapsible from 'react-collapsible';
 
 /* Styled Components */
@@ -8,6 +7,7 @@ import {
   HeaderWrapper,
   HeaderTitle,
   HeaderChevronBox,
+  Chevron,
   ContentWrapper,
 } from './styles/CollapsibleContainer';
 
@@ -31,7 +31,7 @@ const CollapsibleContainer = ({
           onClick={() => setIsOpen(!isOpen)}
           onMouseDown={e => e.preventDefault()}
         >
-          {isOpen ? <ChevronDown /> : <ChevronUp />}
+          <Chevron isOpen={isOpen} />
         </HeaderChevronBox>
       </HeaderWrapper>
       <Collapsible open={isOpen} transitionTime={300} easing="ease-in-out">

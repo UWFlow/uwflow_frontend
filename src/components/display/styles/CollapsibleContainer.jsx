@@ -5,6 +5,7 @@ import {
   BoxShadow,
   Hover,
 } from '../../../constants/Mixins';
+import { ChevronDown } from 'react-feather';
 
 const HEADER_HEIGHT = 64;
 
@@ -52,6 +53,11 @@ export const HeaderChevronBox = styled.button`
   background: ${({ theme }) => theme.light3};
   color: ${({ theme }) => theme.dark2};
   ${Hover()}
+`;
+
+export const Chevron = styled(ChevronDown)`
+  ${({ isOpen }) => (isOpen ? '' : 'transform: rotate(180deg);')}
+  transition: all .3s ease-in-out;
 `;
 
 export const ContentWrapper = styled.div`
