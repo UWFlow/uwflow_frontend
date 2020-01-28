@@ -204,7 +204,15 @@ const AboutPage = () => (
             program="Software Engineering 2022"
             linkedIn="https://www.linkedin.com/in/max-dai/"
             photo={MaxImg}
-          ></TeamMember>
+          >
+            Over the course of building Flow 2.0, Max has concluded that
+            frontend involves a lot more than just agonizing over CSS. That
+            isn't to say he hasn't done that though. Not at all..
+            <br />
+            <br />
+            When he does happen to be free, he enjoys swimming, playing poker
+            and watching the latest Netflix releases.
+          </TeamMember>
         </PageBodyParagraph>
         <PageBodyParagraph>
           <PageBodyHeader>Founders and Alumni (Flow 1.0)</PageBodyHeader>
