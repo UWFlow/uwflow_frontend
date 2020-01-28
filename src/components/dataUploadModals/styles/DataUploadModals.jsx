@@ -78,6 +78,7 @@ export const NumberCircle = styled.div`
   min-width: 64px;
   border-radius: 32px;
   background: ${({ theme }) => theme.accent};
+  padding: 3px 1px 0 0;
 `;
 
 export const ScheduleStepPicture = styled.img`
