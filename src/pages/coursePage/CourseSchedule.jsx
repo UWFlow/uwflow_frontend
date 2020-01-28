@@ -57,6 +57,7 @@ const getInfoGroupings = meetings => {
           : {},
         timeRanges: [],
         cancelled: curr.is_cancelled,
+        isTba: curr.is_tba,
       };
     }
 
@@ -122,6 +123,7 @@ const getInfoGroupings = meetings => {
         time: group.time,
         spaces: numDates[i] - 1,
         cancelled: group.cancelled,
+        isTba: group.isTba,
       }),
     ),
     locations: infoGroups.map((group, i) =>
@@ -208,9 +210,10 @@ const CourseSchedule = ({
       cancelled: sections.reduce((isCancelled, current) => {
         return (
           isCancelled ||
-          current.meetings.reduce((meetingCancelled, current) => {
-            return meetingCancelled || current.is_cancelled;
-          }, false)
+          (current.term_id == s.term_id &&
+            current.meetings.reduce((meetingCancelled, current) => {
+              return meetingCancelled || current.is_cancelled;
+            }, false))
         );
       }, false),
       // Every grouping contains a single time of day, location, and instructor

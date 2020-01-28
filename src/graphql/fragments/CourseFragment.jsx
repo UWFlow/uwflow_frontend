@@ -54,6 +54,7 @@ const CourseFragment = {
           }
           is_closed
           is_cancelled
+          is_tba
         }
         exams {
           date
