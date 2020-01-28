@@ -57,6 +57,7 @@ const getInfoGroupings = meetings => {
           : {},
         timeRanges: [],
         cancelled: curr.is_cancelled,
+        isTba: curr.is_tba,
       };
     }
 
@@ -122,6 +123,7 @@ const getInfoGroupings = meetings => {
         time: group.time,
         spaces: numDates[i] - 1,
         cancelled: group.cancelled,
+        isTba: group.isTba,
       }),
     ),
     locations: infoGroups.map((group, i) =>
