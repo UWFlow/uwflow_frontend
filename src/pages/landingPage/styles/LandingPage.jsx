@@ -87,7 +87,7 @@ export const Column = styled.div`
 export const TitleSearchBarWrapper = styled(FadeIn)`
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  max-width: 750px;
   align-self: center;
 `;
 

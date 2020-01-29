@@ -312,7 +312,7 @@ const SearchBar = ({
   const options = isLanding
     ? {
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: `${theme.white}`,
         color: theme.primary,
         border: `2px solid ${theme.primary}`,
         borderRadius: open ? '4px 4px 0 0' : '4px',

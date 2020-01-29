@@ -93,8 +93,8 @@ const AboutPage = () => (
             it’s a pain. Right now, students use the undergraduate calendar to
             look through thousands of courses before even knowing what’s out
             there. And that doesn’t even include opinions from people who had
-            taken those courses before. For that, we rely on friends and word
-            of mouth. But that’s both incomplete and inconvenient."
+            taken those courses before. For that, we rely on friends and word of
+            mouth. But that’s both incomplete and inconvenient."
           </b>
           <br />
           <br />
@@ -164,7 +164,10 @@ const AboutPage = () => (
             linkedIn="https://www.linkedin.com/in/derrekchow/"
             photo={DerrekImg}
           >
-            Derrek designed the new UW Flow and occasionally writes frontend code - he is interested in the intersection of software and design. <b>He loves food</b>, cooking, music, combat sports, and creative coding. He does not love writing bios in the third person.
+            Derrek designed the new UW Flow and occasionally writes frontend
+            code - he is interested in the intersection of software and design.{' '}
+            <b>He loves food</b>, cooking, music, combat sports, and creative
+            coding. He does not love writing bios in the third person.
           </TeamMember>
           <TeamMember
             name="Dmytro Shynkevych"

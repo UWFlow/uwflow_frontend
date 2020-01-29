@@ -186,7 +186,9 @@ const CourseProfReviews = ({
             )}
             {sortReviews(prof.reviews, selectedSort[idx] === 0)
               .filter((_, i) => {
-                return i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[prof.name];
+                return (
+                  i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[prof.name]
+                );
               })
               .map(review => (
                 <Review
