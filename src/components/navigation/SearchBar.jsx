@@ -312,8 +312,9 @@ const SearchBar = ({
   const options = isLanding
     ? {
         width: '100%',
-        backgroundColor: 'white',
-        color: theme.dark1,
+        backgroundColor: `${theme.white}`,
+        color: theme.primary,
+        border: `2px solid ${theme.primary}`,
         borderRadius: open ? '4px 4px 0 0' : '4px',
       }
     : { width: '100%', borderRadius: open ? '4px 4px 0 0' : '4px' };
@@ -322,7 +323,7 @@ const SearchBar = ({
     <SearchBarWrapper ref={searchBarRef} isLanding={isLanding}>
       <Textbox
         icon={
-          <Search size={20} color={isLanding ? theme.dark1 : theme.dark3} />
+          <Search size={20} color={isLanding ? theme.primary : theme.dark3} />
         }
         text={searchText}
         setText={handleKeyStroke}

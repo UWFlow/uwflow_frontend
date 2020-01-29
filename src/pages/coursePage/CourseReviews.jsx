@@ -42,7 +42,8 @@ import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseRevie
 
 /* Constants */
 import {
-  MIN_REVIEWS_SHOWN,
+  MIN_REVIEWS_SHOWN_COURSE,
+  MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from '../../constants/PageConstants';
 
@@ -71,7 +72,7 @@ const CourseCourseReviews = ({
     () =>
       sortReviews(reviews, courseSort === 0)
         .filter((_, i) => {
-          return showingAllReviews || i < MIN_REVIEWS_SHOWN;
+          return showingAllReviews || i < MIN_REVIEWS_SHOWN_COURSE;
         })
         .map(review => (
           <Review key={review.id} review={review} isCourseReview />
@@ -106,7 +107,7 @@ const CourseCourseReviews = ({
         </ReviewsOptionsWrapper>
         {renderReviews}
       </ReviewListWrapper>
-      {reviews.length > MIN_REVIEWS_SHOWN && (
+      {reviews.length > MIN_REVIEWS_SHOWN_COURSE && (
         <ShowMoreReviewsSection
           onClick={() => setShowingAllReviews(!showingAllReviews)}
           onMouseDown={e => e.preventDefault()}
@@ -185,7 +186,9 @@ const CourseProfReviews = ({
             )}
             {sortReviews(prof.reviews, selectedSort[idx] === 0)
               .filter((_, i) => {
-                return i < MIN_REVIEWS_SHOWN || showingReviewsMap[prof.name];
+                return (
+                  i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[prof.name]
+                );
               })
               .map(review => (
                 <Review
@@ -195,7 +198,7 @@ const CourseProfReviews = ({
                 />
               ))}
           </ReviewListWrapper>
-          {prof.reviews.length > MIN_REVIEWS_SHOWN && (
+          {prof.reviews.length > MIN_REVIEWS_SHOWN_PROF && (
             <ShowMoreReviewsSection
               id={prof.name}
               onClick={() => {

@@ -8,8 +8,9 @@ export const ReviewWrapper = styled.div`
   margin-bottom: 32px;
   ${({ theme, isUserReview }) =>
     isUserReview
-      ? `border: 2px solid ${theme.accent};`
-      : `border: 2px solid ${theme.light2};`}
+      ? `border: 3px solid ${theme.accent};`
+      : `border: 3px solid ${theme.light2};`}
+  border-radius: 4px;
   ${breakpoint('mobile', 'desktop')`
     padding: 16px;
     align-content: center;
@@ -65,7 +66,7 @@ export const ReviewUpvotes = styled.button`
   align-items: center;
   color: white;
   border-radius: 20px 20px 20px 20px;
-  border: 2px solid ${({ theme }) => theme.light3};
+  border: 2px solid ${({ theme }) => theme.light4};
   cursor: pointer;
   ${Hover()}
 

@@ -1,26 +1,21 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Heading1, Heading2 } from '../../../constants/Mixins';
+import { Heading1, Heading2, Body } from '../../../constants/Mixins';
 import LandingImage from '../../../img/landing.svg';
 import FadeIn from 'react-fade-in';
 
 import { PAGE_CONTENT_WIDTH } from '../../../constants/PageConstants';
 
 const MAX_PAGE_WIDTH = 1400;
-const MAX_BG_HEIGHT = 720;
 
 export const LandingPageWrapper = styled.div`
   width: 100vw;
   margin: 0;
-  min-height: calc(100vh - 48px);
-  margin-bottom: 48px;
   display: flex;
   z-index: 1;
   position: relative;
-
-  @media only screen and (max-height: 800px) {
-    min-height: 800px;
-  }
+  min-height: 100vh;
+  background-color: ${({ theme }) => theme.primaryExtraDark};
 `;
 
 export const Nav = styled(FadeIn)`
@@ -56,10 +51,6 @@ export const LogoText = styled.div`
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     left: 32px;
   }
-
-  ${breakpoint('mobile', 'mobileLarge')`
-    left: 16px;
-  `}
 `;
 
 export const TitleText = styled.div`
@@ -72,23 +63,12 @@ export const TitleText = styled.div`
   `}
 `;
 
-export const Subheading = styled.div`
-  font-size: 24px;
+export const SubtitleText = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.light4};
+  font-style: italic;
   font-weight: 300;
-  position: absolute;
-  top: 100px;
-
-  @media only screen and (max-width: 900px) {
-    max-width: 320px;
-  }
-
-  ${breakpoint('mobile', 'tablet')`
-    max-width: 100%;
-  `}
-
-  ${breakpoint('mobile', 'mobileLarge')`
-    font-size: 20px;
-  `}
+  margin-top: 16px;
 `;
 
 export const Column = styled.div`
@@ -102,47 +82,30 @@ export const Column = styled.div`
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     padding: 32px;
   }
-
-  ${breakpoint('mobile', 'mobileLarge')`
-    padding: 16px;
-  `}
 `;
 
 export const TitleSearchBarWrapper = styled(FadeIn)`
   display: flex;
   flex-direction: column;
-  max-width: 900px;
-  align-self: flex-end;
-  height: max-content;
+  max-width: 750px;
+  align-self: center;
 `;
 
 export const BackgroundImage = styled.div`
   display: flex;
-  width: 100vw;
+  min-width: 100vw;
+  min-height: 100vh;
   background-color: ${({ theme }) => theme.primaryExtraDark};
   background: url(${LandingImage});
   background-size: cover;
-  background-position: center left;
+  background-position: left center;
   background-repeat: no-repeat;
   will-change: transform;
-  height: 65vh;
-  max-height: ${MAX_BG_HEIGHT}px;
-
-  ${breakpoint('mobile', 'mobileLarge')`
-    height: 60vh;
-  `}
-
-  @media only screen and (max-height: ${MAX_BG_HEIGHT}px) {
-    min-height: calc(${Math.round(MAX_BG_HEIGHT * 0.65)}px);
-  }
 `;
 
 export const AuthContent = styled.div`
   display: flex;
   justify-content: flex-end;
-  height: 100vh;
-  margin: auto;
-  max-height: ${MAX_BG_HEIGHT + 560}px;
   min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
   ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};
 
@@ -150,9 +113,5 @@ export const AuthContent = styled.div`
     min-width: ${({ loggedIn }) => (loggedIn ? '100px' : '480px')};
     ${({ loggedIn }) => loggedIn && 'max-width: 25%;'};
     align-items: none;
-  }
-
-  @media only screen and (max-height: 800px) {
-    min-height: 800px;
   }
 `;

@@ -105,13 +105,13 @@ export const SpaceMargin = styled.div`
 
 export const GreyWeekDay = styled.span`
   color: ${({ theme }) => theme.dark3};
-  margin-right: 1px;
+  margin-right: 2px;
 `;
 
 export const BoldWeekDay = styled.span`
   color: ${({ theme }) => theme.dark1};
-  font-weight: 600;
-  margin-right: 1px;
+  font-weight: 700;
+  margin-right: 2px;
 `;
 
 export const DateText = styled.span`
