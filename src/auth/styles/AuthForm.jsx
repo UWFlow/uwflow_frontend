@@ -5,12 +5,13 @@ import {
   Heading4,
   Body,
   BoxShadow,
+  DarkBoxShadow,
   Hover,
   Link,
 } from '../../constants/Mixins';
 
 export const Wrapper = styled.div`
-  ${BoxShadow}
+  ${DarkBoxShadow}
   background: white;
   display: flex;
   flex-direction: column;

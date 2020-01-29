@@ -45,7 +45,7 @@ import { formatCourseCode, processRating } from '../../utils/Misc';
 import { sortReviews } from '../../utils/Review';
 import { getCoursePageRoute } from '../../Routes';
 import {
-  MIN_REVIEWS_SHOWN,
+  MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from '../../constants/PageConstants';
 
@@ -158,7 +158,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
               {sortReviews(course.reviews, selectedSort[idx] === 0)
                 .filter((_, i) => {
                   return (
-                    i < MIN_REVIEWS_SHOWN || showingReviewsMap[course.code]
+                    i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[course.code]
                   );
                 })
                 .map(review => (
@@ -169,7 +169,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                   />
                 ))}
             </ReviewListWrapper>
-            {course.reviews.length > MIN_REVIEWS_SHOWN && (
+            {course.reviews.length > MIN_REVIEWS_SHOWN_PROF && (
               <ShowMoreReviewsSection
                 onClick={() => {
                   setShowingReviewsMap({

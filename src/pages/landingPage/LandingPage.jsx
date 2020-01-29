@@ -10,7 +10,7 @@ import {
   Column,
   TitleSearchBarWrapper,
   TitleText,
-  Subheading,
+  SubtitleText,
   BackgroundImage,
   LogoText,
   AuthContent,
@@ -49,26 +49,21 @@ const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
               Explore thousands of course and professor reviews from UW students
             </TitleText>
             <SearchBar isLanding />
-            <Subheading>
-              Plan courses
-              <br />
-              <br />
-              Read course and professor reviews
-              <br />
-              <br />
-              Export your schedule
-            </Subheading>
+            <SubtitleText>
+              Plan courses • Read course and professor reviews • Export your
+              schedule
+            </SubtitleText>
           </TitleSearchBarWrapper>
           {isDesktop && !isLoggedIn && (
             <AuthContent>
               <AuthForm
+                margin="auto 0"
                 onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
                 onSignupComplete={() =>
                   history.push(WELCOME_PAGE_ROUTE, {
                     prevPage: PROFILE_PAGE_ROUTE,
                   })
                 }
-                margin="auto 0 auto 64px"
               />
             </AuthContent>
           )}

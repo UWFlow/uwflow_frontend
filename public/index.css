@@ -164,3 +164,7 @@ a {
   color: #97a0af !important; /* Dark 3 */
   opacity: 1 !important;
 }
+
+#root {
+  min-height: 100vh;
+}
