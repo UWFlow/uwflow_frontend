@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import { Helmet } from 'react-helmet';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
+import ReactGA from 'react-ga';
 import 'react-toastify/dist/ReactToastify.css';
 
 /* Routes */
@@ -37,13 +38,19 @@ import LandingPageBg from './img/landing.svg';
 
 /* Constants */
 import { SEO_DESCRIPTIONS } from './constants/Messages';
-import { BACKEND_ENDPOINT, AUTH_REFRESH_ENDPOINT } from './constants/Api';
+import {
+  BACKEND_ENDPOINT,
+  AUTH_REFRESH_ENDPOINT,
+  GOOGLE_ANALYTICS_ID,
+} from './constants/Api';
 
 /* Utils */
 import { makeAuthenticatedPOSTRequest } from './utils/Api';
 import { getIsLoggedIn } from './data/reducers/AuthReducer';
+import { getUserId } from './utils/Auth';
 
 Modal.setAppElement('#root');
+ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
 const mapStateToProps = state => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -71,6 +78,14 @@ const App = ({ location, isLoggedIn }) => {
 
     refreshAuth();
   });
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, [location]);
+
+  useEffect(() => {
+    ReactGA.set({ userId: getUserId() });
+  }, [isLoggedIn]);
 
   return (
     <>
