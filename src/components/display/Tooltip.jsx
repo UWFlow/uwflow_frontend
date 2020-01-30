@@ -3,8 +3,10 @@ import React from 'react';
 /* Styled Components */
 import { TooltipWrapper } from './styles/Tooltip';
 
-const Tooltip = props => (
-  <TooltipWrapper {...props} effect="solid" html={true} />
+const Tooltip = ({ children, content }) => (
+  <TooltipWrapper content={content} arrow={false} duration={200}>
+    {children}
+  </TooltipWrapper>
 );
 
 export default Tooltip;

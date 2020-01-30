@@ -99,11 +99,9 @@ const ShortlistStar = ({
   };
 
   return (
-    <>
-      <Tooltip id={`${courseID}`} />
+    <Tooltip content={`Add ${formatCourseCode(courseCode)} to your favourites`}>
       <ShortlistStarButton
         onClick={onStarClicked}
-        data-tip={`Add ${formatCourseCode(courseCode)} to your favourites`}
         data-for={`${courseID}`}
         data-offset="{'top': 70}"
         onMouseDown={e => e.preventDefault()}
@@ -115,7 +113,7 @@ const ShortlistStar = ({
           strokeWidth={2}
         />
       </ShortlistStarButton>
-    </>
+    </Tooltip>
   );
 };
 

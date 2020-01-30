@@ -59,7 +59,7 @@ const LoginContent = ({
         {passwordError && (
           <FormError>{AUTH_FORM_ERRORS.empty_password}</FormError>
         )}
-        <Error>{errorMessage}</Error>
+        {errorMessage && <Error>{errorMessage}</Error>}
         <TextboxWrapper>
           <Textbox
             options={{ width: '100%', type: 'email' }}

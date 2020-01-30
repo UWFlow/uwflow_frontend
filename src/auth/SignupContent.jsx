@@ -96,7 +96,7 @@ const SignupContent = ({
         {confirmPasswordError && (
           <FormError>{AUTH_FORM_ERRORS.passwords_dont_match}</FormError>
         )}
-        <Error>{errorMessage}</Error>
+        {errorMessage && <Error>{errorMessage}</Error>}
         <NamesSection>
           <TextboxWrapper>
             <Textbox

@@ -63,7 +63,6 @@ const ProfileCourses = ({
   let reviewModalProps = {
     showCourseDropdown: true,
     courseList: reviewModalCourseList,
-    initialSelectedCourseIndex: 0,
     onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
   };
 
@@ -75,23 +74,27 @@ const ProfileCourses = ({
       courseGroups[termCodeToDate(term)] = unorderedGroups[term];
     });
 
+  const sortedCourseList = reviewModalCourseList.sort((a, b) =>
+    a.course.code.localeCompare(b.course.code),
+  );
   const tabContent = termName =>
-    courseGroups[termName].map((course_taken, idx) => {
-      const review = reviews.find(r => r.course_id === course_taken.course_id);
+    courseGroups[termName].map(courseTaken => {
+      const review = reviews.find(r => r.course_id === courseTaken.course_id);
+      const selectedIndex = sortedCourseList.findIndex(
+        courseObj => courseObj.course.id === courseTaken.course.id,
+      );
 
       return (
-        <ProfileCoursesCourse key={idx}>
+        <ProfileCoursesCourse key={courseTaken.course.id}>
           <ProfileCourseText>
-            <ProfileCourseCode
-              to={getCoursePageRoute(course_taken.course.code)}
-            >
-              {formatCourseCode(course_taken.course.code)}
+            <ProfileCourseCode to={getCoursePageRoute(courseTaken.course.code)}>
+              {formatCourseCode(courseTaken.course.code)}
             </ProfileCourseCode>
-            <ProfileCourseName>{course_taken.course.name}</ProfileCourseName>
+            <ProfileCourseName>{courseTaken.course.name}</ProfileCourseName>
           </ProfileCourseText>
           <LikedCourseWrapper>
             <ProfileCourseLiked>
-              {processRating(course_taken.course.rating.liked)}
+              {processRating(courseTaken.course.rating.liked)}
             </ProfileCourseLiked>
             <LikedThisCourseText>
               liked this
@@ -101,22 +104,25 @@ const ProfileCourses = ({
           </LikedCourseWrapper>
           <LikeToggleWrapper>
             <LikeCourseToggle
-              key={course_taken.index}
-              courseID={course_taken.course.id}
-              courseCode={course_taken.course.code}
+              key={courseTaken.course.id}
+              courseID={courseTaken.course.id}
+              courseCode={courseTaken.course.code}
               profID={review ? review.prof_id : null}
               reviewID={review ? review.id : null}
               initialState={review ? review.liked : null}
             />
           </LikeToggleWrapper>
           <Button
+            key={courseTaken.course.id}
             margin="auto 0 auto 16px"
             padding="8px"
             height={48}
             maxHeight={48}
             handleClick={() => {
-              reviewModalProps.initialSelectedCourseIndex = course_taken.index;
-              openModal(COURSE_REVIEW_COURSE_MODAL, reviewModalProps);
+              openModal(COURSE_REVIEW_COURSE_MODAL, {
+                ...reviewModalProps,
+                initialSelectedCourseIndex: selectedIndex,
+              });
             }}
           >
             <ReviewButtonContents>

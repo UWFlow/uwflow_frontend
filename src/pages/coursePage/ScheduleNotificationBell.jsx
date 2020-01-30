@@ -119,22 +119,21 @@ const ScheduleNotificationBell = ({
   };
 
   return (
-    <>
-      <Tooltip id={`${sectionID}${courseID}`} />
+    <Tooltip
+      content={
+        selected
+          ? SUBSCRIPTION_TOOLTIP.unsubscribe
+          : SUBSCRIPTION_TOOLTIP.subscribe
+      }
+    >
       <NotificationBellWrapper
-        data-tip={
-          selected
-            ? SUBSCRIPTION_TOOLTIP.unsubscribe
-            : SUBSCRIPTION_TOOLTIP.subscribe
-        }
-        data-for={`${sectionID}${courseID}`}
         selected={selected}
         onClick={toggleOnClick}
         onMouseDown={e => e.preventDefault()}
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
       </NotificationBellWrapper>
-    </>
+    </Tooltip>
   );
 };
 

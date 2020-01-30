@@ -155,7 +155,11 @@ const Review = ({
     ? `${authorText}${user ? '' : programText}`
     : 'A student ';
 
-  const timeAgo = `${moment(created_at).fromNow()}`;
+  let timeAgo = `${moment(created_at).fromNow()}`;
+  if (moment(created_at).isBefore(moment(new Date('01-01-2012')))) {
+    timeAgo = '';
+  }
+
   const profText = prof
     ? [
         ', taught by ',
@@ -186,23 +190,25 @@ const Review = ({
       <ReviewPictureAndMetricsRow>
         <ReviewPictureAndUpvotesWrapper>
           <ReviewPicture image={userImage} />
-          <Tooltip id={`${id}`} />
-          <ReviewUpvotes
-            data-tip={userUpvoted ? `Remove vote` : `This review was helpful`}
-            data-for={id}
-            selected={userUpvoted}
-            onClick={onClickUpvote}
-            onMouseDown={e => e.preventDefault()}
+          <Tooltip
+            content={userUpvoted ? `Remove vote` : `This review was helpful`}
           >
-            <ThumbsUp
-              color={userUpvoted ? 'white' : theme.dark3}
-              size={16}
-              strokeWidth={2}
-            />
-            <UpvoteNumber selected={userUpvoted}>
-              {upvotes ? upvotes : 0}
-            </UpvoteNumber>
-          </ReviewUpvotes>
+            <ReviewUpvotes
+              data-for={id}
+              selected={userUpvoted}
+              onClick={onClickUpvote}
+              onMouseDown={e => e.preventDefault()}
+            >
+              <ThumbsUp
+                color={userUpvoted ? 'white' : theme.dark3}
+                size={16}
+                strokeWidth={2}
+              />
+              <UpvoteNumber selected={userUpvoted}>
+                {upvotes ? upvotes : 0}
+              </UpvoteNumber>
+            </ReviewUpvotes>
+          </Tooltip>
         </ReviewPictureAndUpvotesWrapper>
         {isBrowserDesktop && reviewContent}
         <ReviewMetricsWrapper>

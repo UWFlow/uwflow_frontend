@@ -41,6 +41,7 @@ export const ProfileText = styled.div`
   align-items: center;
   width: max-content;
   z-index: 1;
+  white-space: nowrap;
 
   &:hover,
   &:focus {

@@ -106,6 +106,10 @@ const CourseReviewCourseBoxContent = ({
     initialSelectedCourseIndex,
   );
 
+  useEffect(() => {
+    setSelectedCourseIndex(initialSelectedCourseIndex);
+  }, [initialSelectedCourseIndex]);
+
   const buildDefaultReview = (course, review) => {
     // We need to merge profs currently teaching the course and previous profs for the course with a review
     let profsTeaching = course.profs_teaching;
@@ -344,9 +348,9 @@ const CourseReviewCourseBoxContent = ({
           <DropdownList
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
-            options={courseList
-              .sort((a, b) => a.course.code.localeCompare(b.course.code))
-              .map(courseObject => formatCourseCode(courseObject.course.code))}
+            options={courseList.map(courseObj =>
+              formatCourseCode(courseObj.course.code),
+            )}
             color={theme.courses}
             onChange={setSelectedCourseIndex}
             zIndex={6}
@@ -578,6 +582,9 @@ const CourseReviewCourseBox = ({ courseList, ...props }) => {
         return profs;
       }, {})
     : null;
+
+  console.log(props);
+
   return (
     <CourseReviewCourseBoxContent
       {...{
