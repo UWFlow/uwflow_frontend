@@ -50,8 +50,8 @@ const LandingPage = ({ isLoggedIn, isDesktop, history }) => {
             </TitleText>
             <SearchBar isLanding />
             <SubtitleText>
-              Plan courses • Read course and professor reviews • Export your
-              schedule
+              Plan your courses • Read course and professor reviews • Export
+              your schedule
             </SubtitleText>
           </TitleSearchBarWrapper>
           {isDesktop && !isLoggedIn && (
