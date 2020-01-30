@@ -22,6 +22,8 @@ import {
   ProfCourseFilterWrapper,
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
+  CourseDropdownsWrapper,
+  SortFilterDropdownWrapper,
 } from './styles/ProfReviews';
 
 /* Child Components */
@@ -42,7 +44,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 
 /* Utils */
 import { formatCourseCode, processRating } from '../../utils/Misc';
-import { sortReviews } from '../../utils/Review';
+import { sortReviews, sortByReviews, sortByLiked } from '../../utils/Review';
 import { getCoursePageRoute } from '../../Routes';
 import {
   MIN_REVIEWS_SHOWN_PROF,
@@ -54,6 +56,7 @@ const mapStateToProps = state => ({
 });
 
 const ProfReviews = ({ profID, theme, isLoggedIn }) => {
+  const [courseSort, setCourseSort] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState(0);
   const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
   const { loading, data } = useQuery(buildProfReviewQuery(isLoggedIn), {
@@ -80,7 +83,6 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
     );
   }
 
-  const courseFilterOptions = ['show all courses', ...reviewDataState.courses];
   const courseFilterDisplayOptions = [
     'show all courses',
     ...reviewDataState.courses
@@ -88,13 +90,19 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
       .sort((a, b) => a.localeCompare(b)),
   ];
 
+  const sortCourses = (a, b) =>
+    courseSort === 0
+      ? sortByReviews(a, b, (a, b) => a.code.localeCompare(b.code))
+      : sortByLiked(a, b);
+
   const reviewsByCourseToShow = reviewDataState.reviewsByCourse
+    .sort(sortCourses)
     .filter(
       course =>
         selectedFilter === 0 ||
-        course.code === courseFilterOptions[selectedFilter],
-    )
-    .sort((a, b) => a.code.localeCompare(b.code));
+        formatCourseCode(course.code) ===
+          courseFilterDisplayOptions[selectedFilter],
+    );
 
   const curSelectedSort =
     selectedSort.length >= reviewsByCourseToShow.length
@@ -110,8 +118,18 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
 
   return (
     <ProfCourseReviewWrapper id={REVIEWS_DIV_ID}>
-      <ProfCourseFilterWrapper>
-        <DropdownPanelWrapper>
+      <CourseDropdownsWrapper>
+        <SortFilterDropdownWrapper>
+          <DropdownTableText>Sort courses: </DropdownTableText>
+          <DropdownList
+            color={theme.primary}
+            selectedIndex={courseSort}
+            options={['most reviews', 'most liked']}
+            onChange={value => setCourseSort(value)}
+            zIndex={6}
+          />
+        </SortFilterDropdownWrapper>
+        <SortFilterDropdownWrapper>
           <DropdownTableText>Filter by course: </DropdownTableText>
           <DropdownList
             color={theme.courses}
@@ -121,8 +139,8 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
             zIndex={5}
             searchable
           />
-        </DropdownPanelWrapper>
-      </ProfCourseFilterWrapper>
+        </SortFilterDropdownWrapper>
+      </CourseDropdownsWrapper>
       {reviewsByCourseToShow.map((course, idx) => {
         return (
           <ReviewsForSingleCourseWrapper key={idx}>

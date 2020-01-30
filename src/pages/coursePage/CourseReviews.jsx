@@ -24,6 +24,7 @@ import {
   ProfLikedPercentLabel,
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
+  ProfReviewDropdownsWrapper,
 } from './styles/CourseReviews';
 
 /* Child Components */
@@ -53,7 +54,7 @@ import useCourseReviewsReducer, {
 } from '../../data/hooks/UseCourseReviewsReducer';
 
 /* Utils */
-import { sortReviews } from '../../utils/Review';
+import { sortReviews, sortByReviews, sortByLiked } from '../../utils/Review';
 import { getProfPageRoute } from '../../Routes';
 import { processRating } from '../../utils/Misc';
 
@@ -125,8 +126,8 @@ const CourseCourseReviews = ({
 
 const CourseProfReviews = ({
   theme,
+  profSort,
   reviewsByProf,
-  ProfFilterDropdown,
   selectedSort,
   setSelectedSort,
 }) => {
@@ -225,12 +226,7 @@ const CourseProfReviews = ({
     [reviewsByProf, showingReviewsMap, selectedSort, curSelectedSort],
   );
 
-  return (
-    <CourseProfReviewsWrapper>
-      {ProfFilterDropdown}
-      {reviewList}
-    </CourseProfReviewsWrapper>
-  );
+  return <CourseProfReviewsWrapper>{reviewList}</CourseProfReviewsWrapper>;
 };
 
 const mapStateToProps = state => ({
@@ -253,6 +249,7 @@ const CourseReviews = ({
   const [profReviewFilter, setProfReviewFilter] = useState(0);
   const [showingProfReviews, setShowingProfReviews] = useState(false);
   const [reviewDataState, dispatchReviews] = useCourseReviewsReducer(data);
+  const [profSort, setProfSort] = useState(0);
   const [selectedProfSort, setSelectedProfSort] = useState(Array(1).fill(0));
 
   useEffect(() => {
@@ -304,9 +301,14 @@ const CourseReviews = ({
     ].sort((a, b) => a.localeCompare(b)),
   ];
 
+  const sortProfs = (a, b) =>
+    profSort === 0
+      ? sortByReviews(a, b, (a, b) => a.name.localeCompare(b.name))
+      : sortByLiked(a, b);
+
   const profReviewsToShow = reviewDataState.reviewsByProf
     .concat(additionalProfs)
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort(sortProfs)
     .filter(
       prof =>
         profReviewFilter === 0 ||
@@ -318,18 +320,30 @@ const CourseReviews = ({
     return total;
   }, 0);
 
-  const ProfFilterDropdown = (
-    <ProfDropdownPanelWrapper>
-      <DropdownTableText>Filter by professor: </DropdownTableText>
-      <DropdownList
-        color={theme.professors}
-        selectedIndex={profReviewFilter}
-        options={profFilterOptions}
-        onChange={value => setProfReviewFilter(value)}
-        zIndex={6}
-        searchable
-      />
-    </ProfDropdownPanelWrapper>
+  const ProfDropdowns = (
+    <ProfReviewDropdownsWrapper>
+      <ProfDropdownPanelWrapper>
+        <DropdownTableText>Sort by: </DropdownTableText>
+        <DropdownList
+          color={theme.primary}
+          selectedIndex={profSort}
+          options={['most reviews', 'most liked']}
+          onChange={value => setProfSort(value)}
+          zIndex={6}
+        />
+      </ProfDropdownPanelWrapper>
+      <ProfDropdownPanelWrapper>
+        <DropdownTableText>Filter by professor: </DropdownTableText>
+        <DropdownList
+          color={theme.professors}
+          selectedIndex={profReviewFilter}
+          options={profFilterOptions}
+          onChange={value => setProfReviewFilter(value)}
+          zIndex={5}
+          searchable
+        />
+      </ProfDropdownPanelWrapper>
+    </ProfReviewDropdownsWrapper>
   );
 
   const tabList = [
@@ -350,7 +364,7 @@ const CourseReviews = ({
     },
     {
       title: `Professor reviews (${numProfReviews})`,
-      render: () => ProfFilterDropdown,
+      render: () => ProfDropdowns,
       onClick: () => setShowingProfReviews(true),
     },
   ];
@@ -368,7 +382,7 @@ const CourseReviews = ({
         <CourseProfReviews
           theme={theme}
           reviewsByProf={profReviewsToShow}
-          ProfFilterDropdown={!isBrowserDesktop && ProfFilterDropdown}
+          ProfDropdowns={!isBrowserDesktop && ProfDropdowns}
           selectedSort={selectedProfSort}
           setSelectedSort={setSelectedProfSort}
         />
@@ -390,10 +404,11 @@ const CourseReviews = ({
             />
           </CollapsibleContainer>
           <CollapsibleContainer title={`Professor reviews (${numProfReviews})`}>
+            {ProfDropdowns}
             <CourseProfReviews
               theme={theme}
               reviewsByProf={profReviewsToShow}
-              ProfFilterDropdown={ProfFilterDropdown}
+              ProfDropdowns={ProfDropdowns}
               selectedSort={selectedProfSort}
               setSelectedSort={setSelectedProfSort}
             />

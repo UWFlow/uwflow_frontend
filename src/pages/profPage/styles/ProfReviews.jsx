@@ -94,6 +94,26 @@ export const CourseName = styled.div`
   `}
 `;
 
+export const SortFilterDropdownWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  margin-right: 16px;
+`;
+
+export const CourseDropdownsWrapper = styled.div`
+  ${Card(0, 0)}
+  ${BoxShadow}
+  display: flex;
+  flex-wrap: wrap;
+  padding: 32px 32px 24px 32px;
+  margin-bottom: 32px;
+
+  ${breakpoint('mobile', 'tablet')`
+    padding: 16px 16px 8px 16px;
+  `}
+`;
+
 export const DropdownPanelWrapper = styled.div`
   display: flex;
   margin: 16px 32px 32px 0;

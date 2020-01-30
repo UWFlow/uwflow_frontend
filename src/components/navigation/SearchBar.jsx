@@ -193,6 +193,7 @@ const SearchBar = ({
       onClick={() => queryExploreCourses(code, code !== '')}
       key={code}
       ref={ref}
+      isLanding={isLanding}
     >
       <ResultLeft>
         <ExploreText>
@@ -216,6 +217,7 @@ const SearchBar = ({
       }
       key={course.code}
       ref={ref}
+      isLanding={isLanding}
     >
       <ResultLeft>
         <CourseText>
@@ -239,7 +241,12 @@ const SearchBar = ({
   );
 
   const profResult = (prof, ref = null) => (
-    <SearchResult onClick={() => goToProf(prof.code)} key={prof.code} ref={ref}>
+    <SearchResult
+      onClick={() => goToProf(prof.code)}
+      key={prof.code}
+      ref={ref}
+      isLanding={isLanding}
+    >
       <ResultLeft>
         <ProfText>
           <User />
@@ -302,11 +309,6 @@ const SearchBar = ({
     );
   };
 
-  // TODO(Edwin)
-  const autocompleteResult = () => {
-    return null;
-  };
-
   const options = isLanding
     ? {
         width: '100%',
@@ -328,7 +330,6 @@ const SearchBar = ({
         handleKeyDown={handleSearch}
         options={options}
         maxLength={100}
-        autocompletePlaceholder={autocompleteResult()}
         forwardRef={inputRef}
         onFocus={() => setOpen(true)}
       />

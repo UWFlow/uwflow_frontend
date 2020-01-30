@@ -48,6 +48,13 @@ export const SearchResult = styled.button`
   animation: ${FadeInAnimation} 0.2s;
   outline: none;
 
+  ${({ isLanding, theme }) =>
+    isLanding
+      ? `&:first-child {
+    border-top: 1px solid ${theme.light3};
+  }`
+      : ''};
+
   &:last-child {
     border-radius: 0 0 4px 4px;
     border-bottom: none;
