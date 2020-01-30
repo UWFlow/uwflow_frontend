@@ -38,10 +38,10 @@ const PrivacyPage = () => (
             uwflow.com
           </a>
           , one of our main priorities is the privacy of our visitors. This
-          Privacy Policy document outlines information we collected and how we
-          use it. If you have additional questions or require more information
-          about our Privacy Policy, do not hesitate to contact us through email
-          at <a href="mailto:info@uwflow.com">info@uwflow.com</a>.
+          Privacy Policy document outlines information we collect and how we use
+          it. If you have additional questions or require more information about
+          our Privacy Policy, do not hesitate to contact us through email at{' '}
+          <a href="mailto:info@uwflow.com">info@uwflow.com</a>.
         </PageBodyParagraph>
         <PageBodyHeader>Log Files</PageBodyHeader>
         <PageBodyParagraph>
