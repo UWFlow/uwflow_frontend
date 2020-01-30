@@ -56,7 +56,7 @@ export const HeaderChevronBox = styled.button`
 `;
 
 export const Chevron = styled(ChevronDown)`
-  ${({ isOpen }) => (isOpen ? '' : 'transform: rotate(180deg);')}
+  ${({ open }) => (open ? '' : 'transform: rotate(180deg);')}
   transition: all .3s ease-in-out;
 `;
 

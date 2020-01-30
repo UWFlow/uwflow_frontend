@@ -17,3 +17,18 @@ export const sortReviews = (reviews, sortByTime) =>
       ? timeSort
       : b.upvotes - a.upvotes;
   });
+
+// used to sort profs on course prof reviews and also sort courses on prof page
+export const sortByReviews = (a, b, defaultSort = () => 0) =>
+  a.reviews.length === b.reviews.length
+    ? defaultSort(a, b)
+    : b.reviews.length - a.reviews.length;
+
+export const sortByLiked = (a, b, defaultSort = sortByReviews) =>
+  a.liked === b.liked
+    ? defaultSort(a, b)
+    : a.liked === null
+    ? 1
+    : b.liked === null
+    ? -1
+    : b.liked - a.liked;

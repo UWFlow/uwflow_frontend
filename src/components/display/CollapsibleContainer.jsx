@@ -31,7 +31,7 @@ const CollapsibleContainer = ({
           onClick={() => setIsOpen(!isOpen)}
           onMouseDown={e => e.preventDefault()}
         >
-          <Chevron isOpen={isOpen} />
+          <Chevron open={isOpen} />
         </HeaderChevronBox>
       </HeaderWrapper>
       <Collapsible open={isOpen} transitionTime={300} easing="ease-in-out">

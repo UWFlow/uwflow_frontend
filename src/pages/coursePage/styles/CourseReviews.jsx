@@ -54,12 +54,19 @@ export const DropdownPanelWrapper = styled.div`
 export const ProfDropdownPanelWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 32px;
+  margin-bottom: 8px;
+  margin-right: 16px;
+`;
+
+export const ProfReviewDropdownsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 32px 32px 24px 32px;
 
   ${breakpoint('mobile', 'tablet')`
-    padding: 24px 16px;
-    border-bottom: 1px solid ${({ theme }) => theme.light2};
-    background-color: white;
+    padding: 16px 16px 8px 16px;
+    border-bottom: 2px solid ${({ theme }) => theme.light1};
+    margin-bottom: 32px;
   `}
 `;
 
