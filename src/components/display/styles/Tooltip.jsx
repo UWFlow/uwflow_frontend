@@ -1,21 +1,22 @@
 import styled from 'styled-components';
-import ReactTooltip from 'react-tooltip';
+import Tippy from '@tippy.js/react';
+import 'tippy.js/dist/tippy.css';
 
 import { Body } from '../../../constants/Mixins';
 
-export const TooltipWrapper = styled(ReactTooltip)`
-  &.type-dark {
-    ${Body}
-    background-color: ${({ theme }) => theme.light1};
-    border: 2px solid ${({ theme }) => theme.light3};
-    padding: 8px;
-    border-radius: 4px;
-    max-width: 200px;
-    color: ${({ theme }) => theme.dark1};
-    white-space: normal;
+export const TooltipWrapper = styled(Tippy)`
+  ${Body}
+  background: ${({ theme }) => theme.light1} !important;
+  border: 2px solid ${({ theme }) => theme.light3};
+  padding: 2px;
+  border-radius: 4px !important;
+  max-width: 200px;
+  color: ${({ theme }) => theme.dark1} !important;
+  white-space: normal;
+  opacity: 0.98;
+  font-size: 16px !important;
 
-    &:after {
-      display: none;
-    }
+  &:after {
+    display: none;
   }
 `;

@@ -106,7 +106,7 @@ const SocialLoginContent = ({
 
   return (
     <>
-      {error === '' ? null : <Error>{error}</Error>}
+      {error && <Error>{error}</Error>}
       <FacebookLogin
         appId={`${FACEBOOK_APP_ID}`}
         isMobile={false}

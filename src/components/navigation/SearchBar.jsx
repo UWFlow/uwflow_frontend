@@ -217,7 +217,6 @@ const SearchBar = ({
       key={course.code}
       ref={ref}
     >
-      <Tooltip id={`${course.code}`} />
       <ResultLeft>
         <CourseText>
           <Square />
@@ -226,22 +225,21 @@ const SearchBar = ({
         <Dash>&mdash;</Dash>
         {highlightText(course.name, true)}
       </ResultLeft>
-      <ExploreCourseProfs
-        data-tip={`Explore professors that teach ${course.code}`}
-        data-for={`${course.code}`}
-        onClick={e => {
-          e.stopPropagation();
-          queryExploreCourses(course.code, false, true);
-        }}
-      >
-        <Users />
-      </ExploreCourseProfs>
+      <Tooltip content={`Explore professors that teach ${course.code}`}>
+        <ExploreCourseProfs
+          onClick={e => {
+            e.stopPropagation();
+            queryExploreCourses(course.code, false, true);
+          }}
+        >
+          <Users />
+        </ExploreCourseProfs>
+      </Tooltip>
     </SearchResult>
   );
 
   const profResult = (prof, ref = null) => (
     <SearchResult onClick={() => goToProf(prof.code)} key={prof.code} ref={ref}>
-      <Tooltip id={`${prof.code}`} />
       <ResultLeft>
         <ProfText>
           <User />
@@ -250,16 +248,16 @@ const SearchBar = ({
         <Dash>&mdash;</Dash>
         Professor
       </ResultLeft>
-      <ExploreProfCourses
-        data-tip={`Explore courses taught by ${prof.name}`}
-        data-for={`${prof.code}`}
-        onClick={e => {
-          e.stopPropagation();
-          queryExploreCourses(prof.name);
-        }}
-      >
-        <Layers />
-      </ExploreProfCourses>
+      <Tooltip content={`Explore courses taught by ${prof.name}`}>
+        <ExploreProfCourses
+          onClick={e => {
+            e.stopPropagation();
+            queryExploreCourses(prof.name);
+          }}
+        >
+          <Layers />
+        </ExploreProfCourses>
+      </Tooltip>
     </SearchResult>
   );
 
@@ -314,7 +312,6 @@ const SearchBar = ({
         width: '100%',
         backgroundColor: `${theme.white}`,
         color: theme.primary,
-        border: `2px solid ${theme.primary}`,
         borderRadius: open ? '4px 4px 0 0' : '4px',
       }
     : { width: '100%', borderRadius: open ? '4px 4px 0 0' : '4px' };

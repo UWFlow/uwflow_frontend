@@ -116,9 +116,12 @@ export const SwapModalLink = styled.button`
 
 export const Error = styled.div`
   ${Body}
-  color: ${({ theme }) => theme.red};
-  margin-bottom: 16px;
   width: 100%;
+  background: ${({ theme }) => theme.red};
+  color: ${({ theme }) => theme.white};
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
 `;
 
 export const FacebookButton = styled.button`
