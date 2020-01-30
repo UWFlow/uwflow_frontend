@@ -210,7 +210,7 @@ const CourseSchedule = ({
       cancelled: sections.reduce((isCancelled, current) => {
         return (
           isCancelled ||
-          (current.term_id == s.term_id &&
+          (current.term_id === s.term_id &&
             current.meetings.reduce((meetingCancelled, current) => {
               return meetingCancelled || current.is_cancelled;
             }, false))

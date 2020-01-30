@@ -29,3 +29,5 @@ export const RESET_PASSWORD_VERIFY_KEY_ENDPOINT =
   '/auth/forgot-password/verify';
 export const RESET_PASSWORD_RESET_PASSWORD_ENDPOINT =
   '/auth/forgot-password/reset';
+
+export const GOOGLE_ANALYTICS_ID = 'UA-35073503-1';
