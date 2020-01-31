@@ -205,6 +205,7 @@ const AboutPage = () => (
             name="Max Dai"
             title="Frontend Developer"
             program="Software Engineering 2022"
+            website="http://www.maxd.ai/"
             linkedIn="https://www.linkedin.com/in/max-dai/"
             photo={MaxImg}
           >
