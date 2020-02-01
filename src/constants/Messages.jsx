@@ -76,7 +76,7 @@ export const AUTH_SUCCESS = {
 export const SUBSCRIPTION_SUCCESS = {
   unsubscribed: 'Unsubscribed!',
   subscribed:
-    'Subscribed! You’ll receive an email from us when a one spot opens up in this section.',
+    'Subscribed! You’ll receive an email from us when a spot opens up in this section.',
 };
 
 export const REVIEW_SUCCESS = {
