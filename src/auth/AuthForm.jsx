@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
 /* Styled Components */
@@ -53,6 +52,18 @@ export const AuthForm = ({
     localStorage.setItem('user_id', response.user_id);
   };
 
+  const onAuthSuccess = response => {
+    setJWT(response);
+    dispatch({ type: LOGGED_IN });
+    if (response.is_new) {
+      toast(AUTH_SUCCESS.signup);
+      onSignupComplete();
+    } else {
+      toast(AUTH_SUCCESS.login);
+      onLoginComplete();
+    }
+  };
+
   const handleAuth = async (
     event,
     endpoint,
@@ -69,19 +80,7 @@ export const AuthForm = ({
     if (status >= 400) {
       setErrorMessage(AUTH_ERRORS[response.error] || DEFAULT_ERROR);
     } else {
-      setJWT(response);
-      dispatch({ type: LOGGED_IN });
-      if (showLoginForm) {
-        toast(AUTH_SUCCESS.login);
-        if (onLoginComplete) {
-          onLoginComplete();
-        }
-      } else {
-        toast(AUTH_SUCCESS.signup);
-        if (onSignupComplete) {
-          onSignupComplete();
-        }
-      }
+      onAuthSuccess(response);
     }
   };
 
@@ -123,12 +122,7 @@ export const AuthForm = ({
             />
           )}
           <OrWrapper>OR</OrWrapper>
-          <SocialLoginContent
-            setJWT={setJWT}
-            onLoginComplete={onLoginComplete}
-            onSignupComplete={onSignupComplete}
-            isLoggingIn={showLoginForm}
-          />
+          <SocialLoginContent onAuthSuccess={onAuthSuccess} />
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
             <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE} onClick={closeAuthModal}>
@@ -148,11 +142,6 @@ export const AuthForm = ({
       </Wrapper>
     </>
   );
-};
-
-AuthForm.propTypes = {
-  onLoginComplete: PropTypes.func,
-  onSignupComplete: PropTypes.func,
 };
 
 export default withModal(AuthForm);

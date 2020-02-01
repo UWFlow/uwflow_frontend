@@ -4,6 +4,7 @@ import { MIN_PASSWORD_LENGTH } from './Auth';
 export const AUTH_ERRORS = {
   email_not_registered: 'We don’t recognize that email.',
   email_wrong_password: 'Invalid password.',
+  email_taken: 'That email has already been registered.',
   no_facebook_email: 'We were unable able to log you in through Facebook.',
   no_google_email: 'We were unable able to log you in through Google.',
 };

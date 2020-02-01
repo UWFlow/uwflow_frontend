@@ -19,7 +19,6 @@ import {
   CourseLikedMetric,
   CourseLikedPercent,
   CourseLikedPercentLabel,
-  ProfCourseFilterWrapper,
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
   CourseDropdownsWrapper,

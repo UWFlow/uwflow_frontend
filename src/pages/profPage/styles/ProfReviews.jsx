@@ -20,18 +20,6 @@ export const ProfCourseReviewWrapper = styled.div`
   color: ${({ theme }) => theme.dark2};
 `;
 
-export const ProfCourseFilterWrapper = styled.div`
-  ${Card()}
-  ${BoxShadow}
-  padding-bottom: 0;
-  padding-top: 16px;
-  margin-bottom: 32px;
-
-  ${breakpoint('mobile', 'tablet')`
-    padding: 32px 0 0 0;
-  `}
-`;
-
 export const NoReviewsBox = styled.div`
   ${Card()}
   align-items: center;
