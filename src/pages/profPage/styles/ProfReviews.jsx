@@ -50,7 +50,7 @@ export const CourseHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 24px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 0;
@@ -67,7 +67,7 @@ export const CourseCode = styled(Link)`
   color: ${({ theme }) => theme.courses};
   margin-bottom: 16px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin: 16px 16px 0 16px;
   `}
   ${Hover()}
@@ -77,7 +77,7 @@ export const CourseName = styled.div`
   ${Heading2}
   font-size: 24px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin: 16px 16px 0 16px;
   `}
 `;
@@ -97,7 +97,7 @@ export const CourseDropdownsWrapper = styled.div`
   padding: 32px 32px 24px 32px;
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px 16px 8px 16px;
   `}
 `;
@@ -107,7 +107,7 @@ export const DropdownPanelWrapper = styled.div`
   margin: 16px 32px 32px 0;
   align-items: center;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 24px 16px;
     border-bottom: 1px solid ${({ theme }) => theme.light2};
     background-color: white;
@@ -125,7 +125,7 @@ export const CourseLikedMetric = styled.div`
   display: flex;
   align-items: center;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin: 8px 16px 0 16px;
   `}
 `;
@@ -133,7 +133,7 @@ export const CourseLikedMetric = styled.div`
 export const CourseLikedPercent = styled.div`
   ${Heading1}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     font-size: 32px;
   `}
 `;
@@ -143,7 +143,7 @@ export const CourseLikedPercentLabel = styled.div`
   width: 128px;
   margin-left: 16px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
   `}
 `;

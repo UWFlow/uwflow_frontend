@@ -43,7 +43,7 @@ export const ProgressWrapper = styled.div`
     margin-top: 16px;
   }
 
-  ${breakpoint('mobile', 'desktop')`
+  ${breakpoint('zero', 'desktop')`
     margin: 0 8px 8px 0;
   `}
 `;
@@ -69,7 +69,7 @@ export const NumCommentsAndRatingsWrapper = styled.div`
   display: flex;
   margin: 8px;
 
-  ${breakpoint('mobile', 'desktop')`
+  ${breakpoint('zero', 'desktop')`
     flex-direction: column;
     margin: 0 0 16px 0;
   `}

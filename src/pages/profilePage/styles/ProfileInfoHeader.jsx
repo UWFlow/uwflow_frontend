@@ -51,7 +51,7 @@ export const UserPicture = styled.div`
   background-size: 208px;
   background-repeat: no-repeat;
   will-change: transform;
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 96px;
     height: 96px;
     background-size: 96px;
@@ -62,7 +62,7 @@ export const UserPicture = styled.div`
 export const UserInfoWrapper = styled.div`
   margin: 48px 0;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin: 0;
   `}
 `;
@@ -86,7 +86,7 @@ export const UserEmailWrapper = styled(FadeIn)`
   margin-top: 16px;
   align-items: center;
 
-  ${breakpoint('mobile', 'mobileLarge')`
+  ${breakpoint('zero', 'mobileLarge')`
     flex-direction: column;
     align-items: flex-start;
   `}

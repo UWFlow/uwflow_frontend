@@ -11,6 +11,7 @@ export const CheckedItem = styled.div`
   flex-direction: row;
   width: 100%;
   margin: 32px 0;
+  transition: 0.2s all;
 `;
 
 export const CheckedText = styled.div`
@@ -18,4 +19,5 @@ export const CheckedText = styled.div`
   margin-left: 16px;
   ${Heading4}
   color: ${({ theme, checked }) => (checked ? theme.dark3 : theme.dark2)};
+  transition: 0.2s all;
 `;

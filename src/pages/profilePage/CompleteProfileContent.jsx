@@ -18,12 +18,22 @@ const CompleteProfileContent = ({ theme, user, coursesTaken, reviews }) => {
   const hasCoursesReviewed =
     reviews &&
     reviews.length > 0 &&
-    !!reviews.find(r => r.liked || r.course_comment);
+    !!reviews.find(
+      r =>
+        r.liked !== null ||
+        r.course_easy !== null ||
+        r.course_useful !== null ||
+        r.course_comment !== null,
+    );
   const hasProfsReviewed =
     reviews &&
     reviews.length > 0 &&
     !!reviews.find(
-      r => r.prof_id && (r.prof_clear || r.prof_engaging || r.prof_comment),
+      r =>
+        r.prof_id !== null &&
+        (r.prof_clear !== null ||
+          r.prof_engaging !== null ||
+          r.prof_comment !== null),
     );
 
   return (

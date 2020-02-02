@@ -35,7 +35,7 @@ export const ProfNameSection = styled.div`
   min-height: 120px;
   padding: 16px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 24px 16px;
   `}
 
@@ -49,7 +49,7 @@ export const ProfNameWrapper = styled(FadeIn)`
   margin: auto;
   margin-bottom: 16px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin-bottom: 0;
   `}
 `;
@@ -58,7 +58,7 @@ export const ProfName = styled.div`
   color: ${({ theme }) => theme.white};
   ${Heading1}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 0 16px;
     min-width: 100%;
   `}
@@ -88,7 +88,7 @@ export const Description = styled.div`
   vertical-align: middle;
   color: ${({ theme }) => theme.dark2};
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin-bottom: 16px;
     padding: 0 16px;
     min-width: 100%;
@@ -101,7 +101,7 @@ export const Description = styled.div`
 `;
 
 export const RatingsSection = styled(FadeIn)`
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
   `}
 

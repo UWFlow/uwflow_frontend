@@ -7,7 +7,7 @@ export const LastUpdatedText = styled.div`
   color: ${({ theme }) => theme.dark3};
   margin: ${({ margin }) => margin};
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 0 16px;
   `}
 `;

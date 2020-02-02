@@ -16,12 +16,13 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: ${({ margin }) => margin};
-  width: 400px;
+  width: 380px;
   border-radius: 4px;
   height: fit-content;
 
-  @media only screen and (max-width: 420px) {
-    width: 95vw;
+  @media only screen and (max-width: 400px) {
+    max-width: 90vw;
+    min-width: 320px;
   }
 `;
 

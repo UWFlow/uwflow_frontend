@@ -9,6 +9,8 @@ export const EmailInputFormWrapper = styled.form`
   background: white;
   width: 400px;
   border-radius: 4px;
+  max-width: 95vw;
+  min-width: 300px;
 `;
 
 export const FormTitle = styled.div`

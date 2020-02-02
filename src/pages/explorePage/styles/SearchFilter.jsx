@@ -14,7 +14,7 @@ export const SearchFilterWrapper = styled.div`
   ${BoxShadow}
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 24px 16px;
   `}
 `;
@@ -48,6 +48,7 @@ export const CourseFilterDropdown = styled.span`
 export const NumRatingsText = styled.span`
   ${Body}
   color: ${({ theme }) => theme.dark3};
+  white-space: nowrap;
 `;
 
 export const NumRatingsWrapper = styled.div`

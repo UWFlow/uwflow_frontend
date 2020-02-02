@@ -65,7 +65,7 @@ export const CourseCode = styled(FadeIn)`
   color: white;
   text-transform: uppercase;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin-right: 16px;
   `}
 
@@ -112,7 +112,7 @@ export const Description = styled(FadeIn)`
   color: ${({ theme }) => theme.dark2};
   line-height: 1.5;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin-bottom: 16px;
     padding: 0 16px;
     min-width: 100%;
@@ -125,7 +125,7 @@ export const Description = styled(FadeIn)`
 `;
 
 export const RatingsSection = styled(FadeIn)`
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
   `}
 

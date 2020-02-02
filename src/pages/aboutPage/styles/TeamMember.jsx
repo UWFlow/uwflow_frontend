@@ -34,7 +34,7 @@ export const MemberWrapper = styled.div`
         flex: 1;
         padding-left: 32px;
     `}
-    ${breakpoint('mobile', 'tablet')`
+    ${breakpoint('zero', 'tablet')`
         width: 100%;
     `}
 `;

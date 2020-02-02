@@ -23,15 +23,14 @@ import {
   SearchResultsWrapper,
   SearchBarWrapper,
   SearchResult,
-  ExploreText,
-  CourseText,
-  ProfText,
+  ColoredResultText,
   Dash,
-  ExploreCourseProfs,
-  ExploreProfCourses,
-  ResultLeft,
+  ResultIcon,
   UnderlinedText,
   BoldText,
+  ResultText,
+  ExploreSideButton,
+  EllipsisSpan,
 } from './styles/SearchBar';
 
 import Textbox from '../input/Textbox';
@@ -195,12 +194,16 @@ const SearchBar = ({
       ref={ref}
       isLanding={isLanding}
     >
-      <ResultLeft>
-        <ExploreText>
-          <Layers />
-          {`Explore all ${code.toUpperCase()} courses and professors`}
-        </ExploreText>
-      </ResultLeft>
+      <ResultIcon color={theme.primary}>
+        <Layers />
+      </ResultIcon>
+      <ResultText>
+        <EllipsisSpan>
+          <ColoredResultText color={theme.primary}>
+            {`Explore all ${code.toUpperCase()} courses and professors`}
+          </ColoredResultText>
+        </EllipsisSpan>
+      </ResultText>
     </SearchResult>
   );
 
@@ -219,23 +222,26 @@ const SearchBar = ({
       ref={ref}
       isLanding={isLanding}
     >
-      <ResultLeft>
-        <CourseText>
-          <Square />
+      <ResultIcon color={theme.courses}>
+        <Square />
+      </ResultIcon>
+      <ResultText>
+        <ColoredResultText color={theme.courses}>
           {highlightText(formatCourseCode(course.code.toUpperCase()))}
-        </CourseText>
+        </ColoredResultText>
         <Dash>&mdash;</Dash>
-        {highlightText(course.name, true)}
-      </ResultLeft>
+        <EllipsisSpan>{highlightText(course.name, true)}</EllipsisSpan>
+      </ResultText>
       <Tooltip content={`Explore professors that teach ${course.code}`}>
-        <ExploreCourseProfs
+        <ExploreSideButton
+          color={theme.professors}
           onClick={e => {
             e.stopPropagation();
             queryExploreCourses(course.code, false, true);
           }}
         >
           <Users />
-        </ExploreCourseProfs>
+        </ExploreSideButton>
       </Tooltip>
     </SearchResult>
   );
@@ -247,23 +253,26 @@ const SearchBar = ({
       ref={ref}
       isLanding={isLanding}
     >
-      <ResultLeft>
-        <ProfText>
-          <User />
+      <ResultIcon color={theme.professors}>
+        <User />
+      </ResultIcon>
+      <ResultText>
+        <ColoredResultText color={theme.professors}>
           {highlightText(prof.name)}
-        </ProfText>
+        </ColoredResultText>
         <Dash>&mdash;</Dash>
-        Professor
-      </ResultLeft>
+        <EllipsisSpan>Professor</EllipsisSpan>
+      </ResultText>
       <Tooltip content={`Explore courses taught by ${prof.name}`}>
-        <ExploreProfCourses
+        <ExploreSideButton
+          color={theme.courses}
           onClick={e => {
             e.stopPropagation();
             queryExploreCourses(prof.name);
           }}
         >
           <Layers />
-        </ExploreProfCourses>
+        </ExploreSideButton>
       </Tooltip>
     </SearchResult>
   );

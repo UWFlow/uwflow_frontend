@@ -485,7 +485,7 @@ const CourseReviewCourseBoxContent = ({
       </Collapsible>
 
       <Footer>
-        <DeleteIconWrapper>
+        <DeleteIconWrapper onMouseDown={e => e.preventDefault()}>
           <Trash2
             onClick={() => setDeleteReviewModalOpen(true)}
             color={theme.red}

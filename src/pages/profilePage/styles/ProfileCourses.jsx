@@ -23,7 +23,7 @@ export const ProfileCoursesCourse = styled.div`
     border: none;
   }
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px;
   `}
 `;
@@ -117,7 +117,7 @@ export const YourCoursesWrapper = styled.div`
   justify-content: space-between;
   padding: 24px 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px;
   `}
 

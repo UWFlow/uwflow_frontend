@@ -15,7 +15,7 @@ export const ProfileDropdownWrapper = styled.div`
   border: none;
   margin-left: 40px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin-left: 24px;
   `}
 `;

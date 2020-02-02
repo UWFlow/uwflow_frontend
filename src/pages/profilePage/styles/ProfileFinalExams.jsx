@@ -13,7 +13,7 @@ export const ProfileFinalExamsHeader = styled.div`
   ${Heading3}
   color: ${({ theme }) => theme.dark1};
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px;
   `}
 `;

@@ -5,6 +5,7 @@ import {
   Heading3,
   Heading4,
   Body,
+  Hover,
 } from '../../../constants/Mixins';
 
 const MODAL_WIDTH = 660;
@@ -72,12 +73,14 @@ export const Footer = styled.div`
   align-items: center;
 `;
 
-export const DeleteIconWrapper = styled.div`
+export const DeleteIconWrapper = styled.button`
   display: flex;
   border-radius: 4px;
   padding: 4px;
+  background: ${({ theme }) => theme.white};
   border: 2px solid ${({ theme }) => theme.red};
   cursor: pointer;
+  ${Hover()}
 `;
 
 export const FooterQuestionWrapper = styled.div`
@@ -94,11 +97,13 @@ export const LightText = styled.div`
 
 export const DeleteReviewModalWrapper = styled.div`
   ${Card()}
+  padding-right: 40px;
   color: ${({ theme }) => theme.dark1};
   ${Heading3}
 `;
 
 export const DeleteConfirmButtons = styled.div`
   display: flex;
+  flex-direction: flex-end;
   margin-top: 16px;
 `;
