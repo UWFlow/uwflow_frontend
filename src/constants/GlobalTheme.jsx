@@ -33,7 +33,7 @@ export default {
   transparent: 'rgba(0,0,0,0)',
 
   breakpoints: {
-    mobile: 0,
+    zero: 0,
     mobileLarge: 600,
     tablet: BREAKPOINT_WIDTH,
     desktop: PAGE_CONTENT_WIDTH,

@@ -21,7 +21,7 @@ export const CalendarNavWrapper = styled.div`
   padding: 16px 32px;
   border-bottom: 2px solid ${({ theme }) => theme.light3};
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px 16px;
   `}
 `;

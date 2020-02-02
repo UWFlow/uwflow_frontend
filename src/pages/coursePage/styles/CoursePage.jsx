@@ -25,7 +25,7 @@ export const ColumnWrapper = styled.div`
 export const Column1 = styled.div`
   ${WideColumn}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     padding: 0;
     order: 2;
@@ -35,7 +35,7 @@ export const Column1 = styled.div`
 export const Column2 = styled.div`
   ${ThinColumn}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     order: 1;
   `}
@@ -55,7 +55,7 @@ export const CourseReviewQuestionBox = styled.div`
   align-items: center;
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     flex-direction: column;
   `}
 `;
@@ -65,7 +65,7 @@ export const CourseQuestionTextAndToggle = styled.div`
   align-items: center;
   margin-right: 24px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     margin-right: 0;
     margin-bottom: 16px;
@@ -77,7 +77,7 @@ export const CourseReviewQuestionText = styled.div`
   ${Heading3}
   margin-right: 24px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     max-width: 60%;
   `}
 `;

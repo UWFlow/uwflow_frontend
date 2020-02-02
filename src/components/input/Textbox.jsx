@@ -2,18 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
-import {
-  SearchInput,
-  SearchInputWrapper,
-  AutocompleteInput,
-  Icon,
-} from './styles/Textbox';
+import { SearchInput, SearchInputWrapper, Icon } from './styles/Textbox';
 
 const Textbox = ({
   text,
   setText,
   placeholder,
-  autocompletePlaceholder,
   icon,
   error = false,
   handleKeyDown = () => {},
@@ -32,14 +26,6 @@ const Textbox = ({
 
   return (
     <SearchInputWrapper>
-      {autocompletePlaceholder && (
-        <AutocompleteInput
-          value={autocompletePlaceholder}
-          options={options}
-          hasIcon={!!icon}
-          disabled
-        />
-      )}
       {icon && <Icon>{icon}</Icon>}
       <SearchInput
         type={options.type ? options.type : 'text'}
@@ -52,7 +38,6 @@ const Textbox = ({
         maxLength={`${maxLength}`}
         error={error}
         hasIcon={!!icon}
-        autocompleteActive={!!autocompletePlaceholder}
         ref={forwardRef}
       />
     </SearchInputWrapper>
@@ -63,7 +48,6 @@ Textbox.propTypes = {
   text: PropTypes.string.isRequired,
   setText: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
-  autocompletePlaceholder: PropTypes.string,
   icon: PropTypes.any,
   error: PropTypes.bool,
   handleKeyDown: PropTypes.func,

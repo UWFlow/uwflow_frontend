@@ -29,6 +29,16 @@ export const SearchInput = styled.input`
     options ? options.backgroundColor : ''};
   padding-left: ${({ hasIcon }) => (hasIcon ? '48px' : 'auto')};
 
+  // ellipsis for long placeholder
+  ${({ value }) =>
+    value === ''
+      ? `
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `
+      : ''}
+
   &:-ms-input-placeholder {
     color: ${({ error, options, theme }) =>
       error ? theme.red : options ? options.color : theme.dark3};
@@ -46,28 +56,6 @@ export const SearchInput = styled.input`
       error ? theme.red : options ? options.color : theme.dark3};
     font-weight: 400;
   }
-
-  @media only screen and (max-width: 800px) {
-    padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};
-  }
-`;
-
-export const AutocompleteInput = styled.input`
-  position: absolute;
-  top: 0;
-  left: 0;
-  border: ${({ error, theme }) => (error ? `1px solid ${theme.red}` : 'none')};
-  width: ${({ options }) => (options.width ? options.width : '400px')};
-  padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
-  font-size: ${({ options }) =>
-    options.fontSize ? options.fontSize : 'inherit'};
-  border-radius: ${({ options }) =>
-    options.borderRadius ? options.borderRadius : '4px'};
-  background: ${({ theme }) => theme.light2};
-  height: 48px;
-  color: ${({ theme }) => theme.dark3};
-  z-index: 1;
-  padding-left: ${({ hasIcon }) => (hasIcon ? '72px' : 'auto')};
 
   @media only screen and (max-width: 800px) {
     padding-left: ${({ hasIcon }) => (hasIcon ? '56px' : 'auto')};

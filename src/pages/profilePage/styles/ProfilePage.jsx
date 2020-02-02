@@ -22,7 +22,7 @@ export const ColumnWrapper = styled.div`
 export const Column1 = styled(FadeIn)`
   ${WideColumn}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     padding: 0;
     order: 2;
@@ -32,7 +32,7 @@ export const Column1 = styled(FadeIn)`
 export const Column2 = styled(FadeIn)`
   ${ThinColumn}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     order: 1;
   `}

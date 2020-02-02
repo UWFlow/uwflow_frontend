@@ -29,7 +29,7 @@ export const PageHeader = styled.div`
   padding-bottom: 32px;
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     height: auto;
     padding: 32px 16px;
   `}
@@ -47,7 +47,7 @@ export const PageContentWrapper = styled(FadeIn)`
   max-width: 800px;
   margin: auto;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 0 16px 16px 16px;
   `}
 `;

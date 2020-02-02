@@ -28,7 +28,7 @@ export const NavbarContent = styled.div`
   align-items: center;
   margin: auto;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 0 16px;
     width: 100%;
   `}

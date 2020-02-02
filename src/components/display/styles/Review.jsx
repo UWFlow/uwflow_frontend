@@ -11,7 +11,7 @@ export const ReviewWrapper = styled.div`
       ? `border: 3px solid ${theme.accent};`
       : `border: 3px solid ${theme.light2};`}
   border-radius: 4px;
-  ${breakpoint('mobile', 'desktop')`
+  ${breakpoint('zero', 'desktop')`
     padding: 16px;
     align-content: center;
   `}
@@ -34,7 +34,7 @@ export const ReviewPictureAndUpvotesWrapper = styled.div`
   display: flex;
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     align-items: center;
   `}
 
@@ -50,7 +50,7 @@ export const ReviewPicture = styled.div`
   background-color: ${({ theme }) => theme.light3};
   background-image: ${({ image }) => `url(${image})`};
   background-size: 64px;
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin-right: 8px;
   `};
 `;

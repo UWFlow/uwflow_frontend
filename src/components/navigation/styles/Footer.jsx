@@ -36,7 +36,7 @@ export const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px;
     width: 100%;
   `}

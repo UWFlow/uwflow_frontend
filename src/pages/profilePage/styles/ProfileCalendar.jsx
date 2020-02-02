@@ -13,7 +13,7 @@ export const ProfileCalendarWrapper = styled.div`
   ${BoxShadow}
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 24px 16px;
   `}
 `;
@@ -45,7 +45,7 @@ export const ExportCalendarWrapper = styled.div`
   padding: 32px;
   border-bottom: 2px solid ${({ theme }) => theme.light3};
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 32px 16px;
   `}
 `;
@@ -62,7 +62,7 @@ export const RecentCalendarWrapper = styled.div`
   justify-content: space-between;
   padding: 24px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 24px 16px;
   `}
 

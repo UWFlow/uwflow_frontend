@@ -14,7 +14,7 @@ export const LandingPageWrapper = styled.div`
   display: flex;
   z-index: 1;
   position: relative;
-  min-height: 100vh;
+  min-height: 600px;
   background-color: ${({ theme }) => theme.primaryExtraDark};
 `;
 
@@ -36,7 +36,7 @@ export const ProfileWrapper = styled.div`
   top: 0;
   margin: 32px;
 
-  ${breakpoint('mobile', 'mobileLarge')`
+  ${breakpoint('zero', 'mobileLarge')`
     margin-right: 16px;
   `}
 `;
@@ -58,7 +58,7 @@ export const TitleText = styled.div`
   ${Heading1}
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'mobileLarge')`
+  ${breakpoint('zero', 'tablet')`
     ${Heading2}
   `}
 `;
@@ -78,6 +78,7 @@ export const Column = styled.div`
   padding: 64px;
   max-width: ${MAX_PAGE_WIDTH}px;
   margin: 0 auto;
+  align-items: center;
 
   @media only screen and (max-width: ${PAGE_CONTENT_WIDTH}px) {
     padding: 32px;
@@ -87,8 +88,7 @@ export const Column = styled.div`
 export const TitleSearchBarWrapper = styled(FadeIn)`
   display: flex;
   flex-direction: column;
-  max-width: 750px;
-  align-self: center;
+  max-width: 720px;
 `;
 
 export const BackgroundImage = styled.div`
@@ -106,12 +106,7 @@ export const BackgroundImage = styled.div`
 export const AuthContent = styled.div`
   display: flex;
   justify-content: flex-end;
-  min-width: ${({ loggedIn }) => (loggedIn ? '0' : '500px')};
+  margin-left: 32px;
+  min-width: ${({ loggedIn }) => (loggedIn ? '0' : '380px')};
   ${({ loggedIn }) => loggedIn && 'max-width: 320px;'};
-
-  @media only screen and (max-width: 1024px) {
-    min-width: ${({ loggedIn }) => (loggedIn ? '100px' : '480px')};
-    ${({ loggedIn }) => loggedIn && 'max-width: 25%;'};
-    align-items: none;
-  }
 `;

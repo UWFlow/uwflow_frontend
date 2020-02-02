@@ -32,7 +32,7 @@ export const ReviewsOptionsWrapper = styled.div`
   flex-wrap: wrap;
   margin-bottom: 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     flex-direction: column;
     margin: 16px;
   `}
@@ -44,7 +44,7 @@ export const DropdownPanelWrapper = styled.div`
   margin-bottom: 8px;
   align-items: center;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     :last-child{
       margin-bottom: 16px;
     }
@@ -63,7 +63,7 @@ export const ProfReviewDropdownsWrapper = styled.div`
   flex-wrap: wrap;
   padding: 32px 32px 24px 32px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 16px 16px 8px 16px;
     border-bottom: 2px solid ${({ theme }) => theme.light1};
     margin-bottom: 32px;
@@ -98,7 +98,7 @@ export const ProfHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 24px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     flex-direction: column;
     justfiy-content: flex-start;
     align-items: flex-start;
@@ -120,7 +120,7 @@ export const NumProfReviews = styled.div`
 `;
 
 export const NameNumReviewsWrapper = styled.div`
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin: 16px;
   `}
 `;
@@ -129,7 +129,7 @@ export const ProfLikedMetric = styled.div`
   display: flex;
   align-items: center;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     margin: 8px 16px 16px 16px;
   `}
 `;
@@ -137,7 +137,7 @@ export const ProfLikedMetric = styled.div`
 export const ProfLikedPercent = styled.div`
   ${Heading1}
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     font-size: 32px;
   `}
 `;
@@ -147,7 +147,7 @@ export const ProfLikedPercentLabel = styled.div`
   width: 128px;
   margin-left: 12px;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
   `}
 `;

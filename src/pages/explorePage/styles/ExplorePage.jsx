@@ -31,7 +31,7 @@ export const ExploreHeaderWrapper = styled.div`
   flex-direction: column;
   position: relative;
 
-  ${breakpoint('mobile', 'tablet')`
+  ${breakpoint('zero', 'tablet')`
     padding: 0 16px;
   `}
 `;
@@ -60,7 +60,11 @@ export const ColumnWrapper = styled.div`
 export const Column1 = styled(FadeIn)`
   ${WideColumn}
 
-  ${breakpoint('mobile', 'tablet')`
+  @media only screen and (max-width: 960px) {
+    width: 65%;
+  }
+
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     padding: 0;
     order: 2;
@@ -70,7 +74,11 @@ export const Column1 = styled(FadeIn)`
 export const Column2 = styled(FadeIn)`
   ${ThinColumn}
 
-  ${breakpoint('mobile', 'tablet')`
+  @media only screen and (max-width: 960px) {
+    width: 35%;
+  }
+
+  ${breakpoint('zero', 'tablet')`
     width: 100%;
     order: 1;
   `}
