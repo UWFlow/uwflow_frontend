@@ -10,41 +10,61 @@ import {
   GreyText,
 } from './styles/CircularPercentage';
 
-function sector(center, inner, outer, percent, largeArc, sweep) {
-    const angle = (percent / 100) * 2 * Math.PI;
-    const cf = Math.cos(angle), sf = Math.sin(angle);
-    const outerEnd = {x: sf * outer, y: cf * outer};
-    const innerEnd = {x: sf * inner, y: cf * inner};
-    const startPos = `M ${center} ${center - inner}`;
-    const outerPos = `L ${center} ${center - outer}`;
-    const outerArc = `A ${outer} ${outer} 0 ${largeArc} ${1-sweep} ${center - outerEnd.x} ${center - outerEnd.y}`;
-    const innerPos = `L ${center - innerEnd.x} ${center - innerEnd.y}`;
-    const innerArc = `A ${inner} ${inner} 0 ${largeArc} ${sweep} ${center} ${center - inner}`;
-    return startPos + outerPos + outerArc + innerPos + innerArc;
-}
-
 function donut(theme, sidelength, percent, barThickness) {
-    const outerRadius = sidelength / 2;
-    const innerRadius = outerRadius - barThickness;
-    // Arc paths cannot form a closed circle
-    if (percent === 100) {
-      return (
-        <g>
-          <circle cx="50%" cy="50%" r={outerRadius} stroke="none" fill={theme.primary}/>
-          <circle cx="50%" cy="50%" r={innerRadius} stroke="none" fill={theme.white}/>
-        </g>
-      );
-    } else {
-      const largeArc = (percent >= 50) ? 1 : 0;
-      const outerPath = sector(outerRadius, outerRadius, innerRadius, percent, largeArc, 1);
-      const innerPath = sector(outerRadius, outerRadius, innerRadius, percent, 1-largeArc, 0);
-      return (
-        <g>
-          <path d={outerPath} stroke="none" fill={theme.primary}/>
-          <path d={innerPath} stroke="none" fill={theme.light3}/>
-        </g>
-      )
-    }
+  const outerRadius = sidelength / 2;
+  const innerRadius = outerRadius - barThickness;
+  // Arc paths cannot form a closed circle
+  if (percent === 100) {
+    return (
+      <g>
+        <circle
+          cx="50%"
+          cy="50%"
+          r={outerRadius}
+          stroke="none"
+          fill={theme.primary}
+        />
+        <circle
+          cx="50%"
+          cy="50%"
+          r={innerRadius}
+          stroke="none"
+          fill={theme.white}
+        />
+      </g>
+    );
+  } else {
+    const center = outerRadius;
+    const angle = (percent / 100) * 2 * Math.PI;
+    const cf = Math.cos(angle);
+    const sf = Math.sin(angle);
+    const outerEnd = { x: sf * outerRadius, y: cf * outerRadius };
+    const innerEnd = { x: sf * innerRadius, y: cf * innerRadius };
+    const largeArc = percent >= 50 ? 1 : 0;
+
+    const start = `M ${center} ${center - innerRadius}`;
+    const moveOut = `L ${center} ${center - outerRadius}`;
+    const outerArcStart = `A ${outerRadius} ${outerRadius} 0`;
+    const outerArcEnd = `${center - outerEnd.x} ${center - outerEnd.y}`;
+    const moveIn = `L ${center - innerEnd.x} ${center - innerEnd.y}`;
+    const innerArcStart = `A ${innerRadius} ${innerRadius} 0`;
+    const innerArcEnd = `${center} ${center - innerRadius}`;
+
+    const outerFill = `${outerArcStart} ${largeArc} 0 ${outerArcEnd}`;
+    const outerClear = `${outerArcStart} ${1-largeArc} 1 ${outerArcEnd}`;
+    const innerFill = `${innerArcStart} ${largeArc} 1 ${innerArcEnd}`;
+    const innerClear = `${innerArcStart} ${1-largeArc} 0 ${innerArcEnd}`;
+
+    const fill = `${start} ${moveOut} ${outerFill} ${moveIn} ${innerFill}`;
+    const clear = `${start} ${moveOut} ${outerClear} ${moveIn} ${innerClear}`;
+
+    return (
+      <g>
+        <path d={fill} stroke="none" fill={theme.primary} />
+        <path d={clear} stroke="none" fill={theme.light3} />
+      </g>
+    );
+  }
 }
 
 //Contained within a square tho
