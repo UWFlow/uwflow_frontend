@@ -30,6 +30,7 @@ const CircularPercentage = ({
         endAngle={450}
         outerRadius={height / 2}
         innerRadius={height / 2 - barThickness}
+        blendStroke={true}
       >
         <Cell fill={theme.primary} />
         <Cell fill={theme.light3} />
