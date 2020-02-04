@@ -17,7 +17,7 @@ function donut(theme, sidelength, percent, barThickness) {
   // Arc paths cannot form a closed circle
   if (percent === 100) {
     return (
-      <g stoke="none">
+      <g stroke="none">
         <circle cx="50%" cy="50%" r={outerRadius} fill={theme.primary} />
         <circle cx="50%" cy="50%" r={innerRadius} fill={theme.white} />
       </g>
