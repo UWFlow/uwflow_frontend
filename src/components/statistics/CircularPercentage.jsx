@@ -51,9 +51,9 @@ function donut(theme, sidelength, percent, barThickness) {
     const innerArcEnd = `${center} ${center - innerRadius}`;
 
     const outerFill = `${outerArcStart} ${largeArc} 0 ${outerArcEnd}`;
-    const outerClear = `${outerArcStart} ${1-largeArc} 1 ${outerArcEnd}`;
+    const outerClear = `${outerArcStart} ${1 - largeArc} 1 ${outerArcEnd}`;
     const innerFill = `${innerArcStart} ${largeArc} 1 ${innerArcEnd}`;
-    const innerClear = `${innerArcStart} ${1-largeArc} 0 ${innerArcEnd}`;
+    const innerClear = `${innerArcStart} ${1 - largeArc} 0 ${innerArcEnd}`;
 
     const fill = `${start} ${moveOut} ${outerFill} ${moveIn} ${innerFill}`;
     const clear = `${start} ${moveOut} ${outerClear} ${moveIn} ${innerClear}`;
