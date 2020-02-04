@@ -50,13 +50,13 @@ function donut(theme, sidelength, percent, barThickness) {
     const innerArcStart = `A ${innerRadius} ${innerRadius} 0`;
     const innerArcEnd = `${center} ${center - innerRadius}`;
 
-    const outerFill = `${outerArcStart} ${largeArc} 0 ${outerArcEnd}`;
-    const outerClear = `${outerArcStart} ${1 - largeArc} 1 ${outerArcEnd}`;
-    const innerFill = `${innerArcStart} ${largeArc} 1 ${innerArcEnd}`;
-    const innerClear = `${innerArcStart} ${1 - largeArc} 0 ${innerArcEnd}`;
+    const outerDark = `${outerArcStart} ${largeArc} 0 ${outerArcEnd}`;
+    const outerLight = `${outerArcStart} ${1 - largeArc} 1 ${outerArcEnd}`;
+    const innerDark = `${innerArcStart} ${largeArc} 1 ${innerArcEnd}`;
+    const innerLight = `${innerArcStart} ${1 - largeArc} 0 ${innerArcEnd}`;
 
-    const fill = `${start} ${moveOut} ${outerFill} ${moveIn} ${innerFill}`;
-    const clear = `${start} ${moveOut} ${outerClear} ${moveIn} ${innerClear}`;
+    const dark = `${start} ${moveOut} ${outerDark} ${moveIn} ${innerDark}`;
+    const light = `${start} ${moveOut} ${outerLight} ${moveIn} ${innerLight}`;
 
     return (
       <g>
