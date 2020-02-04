@@ -1,6 +1,5 @@
 import React from 'react';
 import { withTheme } from 'styled-components';
-import { PieChart, Pie, Cell } from 'recharts';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
@@ -11,6 +10,43 @@ import {
   GreyText,
 } from './styles/CircularPercentage';
 
+function sector(center, inner, outer, percent, largeArc, sweep) {
+    const angle = (percent / 100) * 2 * Math.PI;
+    const cf = Math.cos(angle), sf = Math.sin(angle);
+    const outerEnd = {x: sf * outer, y: cf * outer};
+    const innerEnd = {x: sf * inner, y: cf * inner};
+    const startPos = `M ${center} ${center - inner}`;
+    const outerPos = `L ${center} ${center - outer}`;
+    const outerArc = `A ${outer} ${outer} 0 ${largeArc} ${1-sweep} ${center - outerEnd.x} ${center - outerEnd.y}`;
+    const innerPos = `L ${center - innerEnd.x} ${center - innerEnd.y}`;
+    const innerArc = `A ${inner} ${inner} 0 ${largeArc} ${sweep} ${center} ${center - inner}`;
+    return startPos + outerPos + outerArc + innerPos + innerArc;
+}
+
+function donut(theme, sidelength, percent, barThickness) {
+    const outerRadius = sidelength / 2;
+    const innerRadius = outerRadius - barThickness;
+    // Arc paths cannot form a closed circle
+    if (percent === 100) {
+      return (
+        <g>
+          <circle cx="50%" cy="50%" r={outerRadius} stroke="none" fill={theme.primary}/>
+          <circle cx="50%" cy="50%" r={innerRadius} stroke="none" fill={theme.white}/>
+        </g>
+      );
+    } else {
+      const largeArc = (percent >= 50) ? 1 : 0;
+      const outerPath = sector(outerRadius, outerRadius, innerRadius, percent, largeArc, 1);
+      const innerPath = sector(outerRadius, outerRadius, innerRadius, percent, 1-largeArc, 0);
+      return (
+        <g>
+          <path d={outerPath} stroke="none" fill={theme.primary}/>
+          <path d={innerPath} stroke="none" fill={theme.light3}/>
+        </g>
+      )
+    }
+}
+
 //Contained within a square tho
 const CircularPercentage = ({
   theme,
@@ -20,21 +56,9 @@ const CircularPercentage = ({
   label,
 }) => (
   <CircleWrapper>
-    <PieChart width={height} height={height}>
-      <Pie
-        dataKey="value"
-        data={[{ value: percent }, { value: 100 - percent }]}
-        cx="50%"
-        cy="50%"
-        startAngle={90}
-        endAngle={450}
-        outerRadius={height / 2}
-        innerRadius={height / 2 - barThickness}
-      >
-        <Cell fill={theme.primary} />
-        <Cell fill={theme.light3} />
-      </Pie>
-    </PieChart>
+    <svg width={height} height={height}>
+      {donut(theme, height, percent, barThickness)}
+    </svg>
     <NumbersInCircle height={height}>
       <LargePercentage>
         {percent !== null ? `${percent}%` : 'N/A'}
