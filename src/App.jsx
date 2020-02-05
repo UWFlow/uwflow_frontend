@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import { Helmet } from 'react-helmet';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 import ReactGA from 'react-ga';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +17,7 @@ import {
   ABOUT_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
+  SHORT_PROF_PAGE_ROUTE,
 } from './Routes';
 
 /* Child Components */
@@ -136,6 +137,7 @@ const App = ({ location, isLoggedIn }) => {
           path={COURSE_PAGE_ROUTE}
           component={() => <LoadableCoursePage />}
         />
+        <Redirect from={SHORT_PROF_PAGE_ROUTE} to={PROF_PAGE_ROUTE} />
         <Route
           exact
           path={PROF_PAGE_ROUTE}
