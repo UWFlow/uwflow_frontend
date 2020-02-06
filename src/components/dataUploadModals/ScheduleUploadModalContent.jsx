@@ -83,7 +83,7 @@ const ScheduleUploadModalContent = ({
         text: event.currentTarget.value,
       },
     );
-    if (status === 200) {
+    if (status === 200 && !response.failed_classes) {
       await sleep(500);
       setUploadState(UPLOAD_SUCCESSFUL);
       toast(DATA_UPLOAD_SUCCESS);
@@ -93,7 +93,16 @@ const ScheduleUploadModalContent = ({
       onSkip();
     } else {
       setUploadState(UPLOAD_FAILED);
-      setUploadError(response.error);
+      if (response.error) {
+        setUploadError(
+          SCHEDULE_ERRORS[response.error] || SCHEDULE_ERRORS.default_schedule,
+        );
+      } else {
+        setUploadError(
+          SCHEDULE_ERRORS.classes_failed(response.failed_classes.length),
+        );
+        onAfterUploadSuccess();
+      }
     }
   };
 
@@ -133,9 +142,7 @@ const ScheduleUploadModalContent = ({
           error={uploadState === UPLOAD_FAILED}
         />
         {uploadState === UPLOAD_FAILED && (
-          <ErrorMessage>
-            {SCHEDULE_ERRORS[uploadError] || SCHEDULE_ERRORS.default_schedule}
-          </ErrorMessage>
+          <ErrorMessage>{uploadError}</ErrorMessage>
         )}
         <Clipboard height={100} width={60} color={theme.dark3} />
         <GreyText>Paste here! (Ctrl+V)</GreyText>
