@@ -93,6 +93,13 @@ const mergeInNewProfsTeaching = (currProfsTeaching, newProfsTeaching) => {
   }
 };
 
+const getProfIndex = (review, profsTeaching) =>
+  review
+    ? profsTeaching.findIndex(
+        prof => prof.prof && prof.prof.id === review.prof_id,
+      )
+    : -1;
+
 const CourseReviewCourseBoxContent = ({
   theme,
   courseList,
@@ -113,12 +120,14 @@ const CourseReviewCourseBoxContent = ({
   const buildDefaultReview = (course, review) => {
     // We need to merge profs currently teaching the course and previous profs for the course with a review
     let profsTeaching = course.profs_teaching;
+
     if (profsTeachingByCourseID) {
       mergeInNewProfsTeaching(
         profsTeaching,
         profsTeachingByCourseID[course.id],
       );
     }
+
     profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
     // add prof to dropdown if not fetched from backend
     if (review) {
@@ -130,11 +139,11 @@ const CourseReviewCourseBoxContent = ({
       }
     }
 
-    const profIndex = review
-      ? profsTeaching.findIndex(
-          prof => prof.prof && prof.prof.id === review.prof_id,
-        )
-      : -1;
+    profsTeaching = profsTeaching.sort((a, b) =>
+      a.prof.name.localeCompare(b.prof.name),
+    );
+
+    const profIndex = getProfIndex(review, profsTeaching);
 
     return {
       id: course.id,
@@ -202,6 +211,10 @@ const CourseReviewCourseBoxContent = ({
         newReviewStates[code].profsTeaching = newReviewStates[
           code
         ].profsTeaching.sort((a, b) => a.prof.name.localeCompare(b.prof.name));
+        newReviewStates[code].selectedProf = getProfIndex(
+          review,
+          newReviewStates[code].profsTeaching,
+        );
       });
       setLastRenderProfsTeaching(profsTeachingByCourseID);
       setReviewStates(newReviewStates);
