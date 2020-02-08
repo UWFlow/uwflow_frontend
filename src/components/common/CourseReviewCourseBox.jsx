@@ -219,7 +219,7 @@ const CourseReviewCourseBoxContent = ({
       setLastRenderProfsTeaching(profsTeachingByCourseID);
       setReviewStates(newReviewStates);
     }
-  }, [profsTeachingByCourseID, reviewStates, lastRenderProfsTeaching]);
+  }, [profsTeachingByCourseID, reviewStates, lastRenderProfsTeaching, review]);
 
   /* Mutations */
   const refetchQueries = [
