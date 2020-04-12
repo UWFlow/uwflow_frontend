@@ -121,6 +121,7 @@ const CoursePageContent = ({
             courseCode={course.code}
             prereqs={course.prereqs}
             antireqs={course.antireqs}
+            coreqs={course.coreqs}
             postreqs={course.postrequisites}
           />
         </Column2>

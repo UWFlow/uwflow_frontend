@@ -46,3 +46,12 @@ export const ReqText = styled.div`
   color: ${({ theme }) => theme.dark2};
   margin-bottom: 16px;
 `;
+
+export const ReqInfo = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.dark3};
+  font-weight: 400;
+  margin-bottom: 16px;
+  font-style: italic;
+  font-size: 14px;
+`;
