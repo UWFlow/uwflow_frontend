@@ -8,12 +8,19 @@ import {
   GreyText,
   ReqText,
   CourseRequisitesWrapper,
+  ReqInfo,
 } from './styles/CourseRequisites';
 
 import { formatCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
-const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
+const CourseRequisites = ({
+  prereqs,
+  antireqs,
+  coreqs,
+  postreqs,
+  courseCode,
+}) => {
   const parsedRequisites = requisites => {
     if (!requisites) {
       return '';
@@ -55,6 +62,21 @@ const CourseRequisites = ({ prereqs, antireqs, postreqs, courseCode }) => {
       ) : (
         <LineOfText>
           <GreyText>No prerequisites</GreyText>
+        </LineOfText>
+      )}
+      <br />
+      <Header>{`${formatCourseCode(courseCode)} corequisites`}</Header>
+      {coreqs ? (
+        <>
+          <ReqInfo>
+            Courses required to be taken concurrently with, or prior to, this
+            course.
+          </ReqInfo>
+          <ReqText>{parsedRequisites(coreqs)}</ReqText>
+        </>
+      ) : (
+        <LineOfText>
+          <GreyText>No corequisites</GreyText>
         </LineOfText>
       )}
       <br />

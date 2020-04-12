@@ -73,13 +73,7 @@ const CourseFragment = {
       id
       antireqs
       prereqs
-      prerequisites {
-        prerequisite {
-          id
-          code
-          name
-        }
-      }
+      coreqs
       postrequisites {
         postrequisite {
           id
