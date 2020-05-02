@@ -1,10 +1,11 @@
-import moment from 'moment';
+import moment from 'moment/moment';
 
 export const sortReviews = (reviews, sortByTime) =>
   reviews.sort((a, b) => {
     if (b.user) {
       return 1;
-    } else if (a.user) {
+    }
+    if (a.user) {
       return -1;
     }
 

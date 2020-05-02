@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { ThumbsUp } from 'react-feather';
 import { useMutation } from 'react-apollo';
-import moment from 'moment';
+import moment from 'moment/moment';
 
 /* Styled Components */
 import {
@@ -53,35 +53,35 @@ import { getKittenFromID } from '../../utils/Kitten';
 /* Constants */
 import { AUTH_MODAL } from '../../constants/Modal';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
   isLoggedIn: getIsLoggedIn(state),
 });
 
 const MetricIfExists = (metrics, metric) => {
   const metricText = metric.charAt(0).toUpperCase() + metric.slice(1);
-
-  if (metrics[metric] !== null && metrics[metric] !== undefined) {
-    if (metrics[metric] === true || metrics[metric] === false) {
-      return (
-        <SingleMetricWrapper>
-          <SingleMetricSquares>
-            <BubbleRatings boolRating={metrics[metric]} />
-          </SingleMetricSquares>
-          <SingleMetricLabel>{metricText}</SingleMetricLabel>
-        </SingleMetricWrapper>
-      );
-    } else {
-      return (
-        <SingleMetricWrapper>
-          <SingleMetricSquares>
-            <BubbleRatings total={5} rating={metrics[metric]} />
-          </SingleMetricSquares>
-          <SingleMetricLabel> {metricText}</SingleMetricLabel>
-        </SingleMetricWrapper>
-      );
-    }
+  if (metrics[metric] === null && metrics[metric] === undefined) {
+    return null;
   }
+
+  if (metrics[metric] === true || metrics[metric] === false) {
+    return (
+      <SingleMetricWrapper>
+        <SingleMetricSquares>
+          <BubbleRatings boolRating={metrics[metric]} />
+        </SingleMetricSquares>
+        <SingleMetricLabel>{metricText}</SingleMetricLabel>
+      </SingleMetricWrapper>
+    );
+  }
+  return (
+    <SingleMetricWrapper>
+      <SingleMetricSquares>
+        <BubbleRatings total={5} rating={metrics[metric]} />
+      </SingleMetricSquares>
+      <SingleMetricLabel> {metricText}</SingleMetricLabel>
+    </SingleMetricWrapper>
+  );
 };
 
 const Review = ({
@@ -197,16 +197,14 @@ const Review = ({
               data-for={id}
               selected={userUpvoted}
               onClick={onClickUpvote}
-              onMouseDown={e => e.preventDefault()}
+              onMouseDown={(e) => e.preventDefault()}
             >
               <ThumbsUp
                 color={userUpvoted ? 'white' : theme.dark3}
                 size={16}
                 strokeWidth={2}
               />
-              <UpvoteNumber selected={userUpvoted}>
-                {upvotes ? upvotes : 0}
-              </UpvoteNumber>
+              <UpvoteNumber selected={userUpvoted}>{upvotes || 0}</UpvoteNumber>
             </ReviewUpvotes>
           </Tooltip>
         </ReviewPictureAndUpvotesWrapper>
@@ -240,9 +238,9 @@ Review.propTypes = {
       user_id: PropTypes.number,
     }),
     metrics: PropTypes.shape({
-      useful: PropTypes.number, //not all these metrics have to exist, we should only display the ones that do
-      easy: PropTypes.number, //for example course review only has useful, easy liked,
-      liked: PropTypes.bool, //prof review only has liked, clear and engagin
+      useful: PropTypes.number, // not all these metrics have to exist, we should only display the ones that do
+      easy: PropTypes.number, // for example course review only has useful, easy liked,
+      liked: PropTypes.bool, // prof review only has liked, clear and engagin
       clear: PropTypes.number,
       engaging: PropTypes.number,
     }).isRequired,

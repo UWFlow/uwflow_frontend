@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'moment/moment';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
@@ -36,13 +36,13 @@ import {
 import DropdownList from '../../components/input/DropdownList';
 import { SCHEDULE_UPLOAD_MODAL } from '../../constants/Modal';
 
-const getScheduleRange = schedule => {
+const getScheduleRange = (schedule) => {
   let minTime = new Date();
   let maxTime = new Date();
 
-  schedule.forEach(curr => {
-    const section = curr.section;
-    section.exams.forEach(exam => {
+  schedule.forEach((curr) => {
+    const { section } = curr;
+    section.exams.forEach((exam) => {
       const examDate = new Date(exam.date);
       if (examDate < minTime) {
         minTime = examDate;
@@ -51,7 +51,7 @@ const getScheduleRange = schedule => {
       }
     });
 
-    section.meetings.forEach(meeting => {
+    section.meetings.forEach((meeting) => {
       const meetingStart = new Date(meeting.start_date);
       const meetingEnd = new Date(meeting.end_date);
       if (meetingStart < minTime) {
@@ -74,8 +74,8 @@ const getScheduleRange = schedule => {
 
 // start and end inclusive
 const getMomentsWithinRange = (start, end, dayOfWeek) => {
-  let currentMoment = start.clone();
-  let daysToReturn = [];
+  const currentMoment = start.clone();
+  const daysToReturn = [];
   while (currentMoment.isSameOrBefore(end)) {
     if (weekDayLetters[currentMoment.weekday() - 1] === dayOfWeek) {
       daysToReturn.push(currentMoment.clone().startOf('day'));
@@ -87,8 +87,8 @@ const getMomentsWithinRange = (start, end, dayOfWeek) => {
 
 const getEventIntervals = (startDate, calendarDayRange, schedule) =>
   schedule.reduce((allIntv, curr) => {
-    const section = curr.section;
-    section.exams.forEach(exam => {
+    const { section } = curr;
+    section.exams.forEach((exam) => {
       allIntv.push({
         start: getDateWithSeconds(exam.date, exam.start_seconds),
         end: getDateWithSeconds(exam.date, exam.end_seconds),
@@ -98,16 +98,16 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
       });
     });
 
-    section.meetings.forEach(meeting => {
+    section.meetings.forEach((meeting) => {
       const meetingStart = moment(meeting.start_date);
       const meetingEnd = moment(meeting.end_date);
-      meeting.days.forEach(day => {
+      meeting.days.forEach((day) => {
         const momentsOfWeekForDay = getMomentsWithinRange(
           startDate.clone(),
           startDate.clone().add(calendarDayRange, 'days'),
           day,
         );
-        momentsOfWeekForDay.forEach(momentOfWeekForDay => {
+        momentsOfWeekForDay.forEach((momentOfWeekForDay) => {
           if (
             momentOfWeekForDay.isSameOrAfter(meetingStart, 'days') &&
             momentOfWeekForDay.isSameOrBefore(meetingEnd, 'days')
@@ -130,9 +130,9 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
     return allIntv;
   }, []);
 
-const getEventsByDate = events => {
-  let eventsByDate = {};
-  events.forEach(event => {
+const getEventsByDate = (events) => {
+  const eventsByDate = {};
+  events.forEach((event) => {
     const dateString = event.start.format('YYYY-MM-DD');
     if (!eventsByDate[dateString]) {
       eventsByDate[dateString] = [event];
@@ -143,7 +143,7 @@ const getEventsByDate = events => {
   return eventsByDate;
 };
 
-const getInitialMonday = eventsByDate => {
+const getInitialMonday = (eventsByDate) => {
   const currentDate = moment();
   const dates = Object.keys(eventsByDate).sort((a, b) =>
     moment(a, 'YYYY-MM-DD').isBefore(moment(b, 'YYYY-MM-DD')) ? -1 : 1,
@@ -155,9 +155,8 @@ const getInitialMonday = eventsByDate => {
   const scheduleFirstDay = moment(dates[0], 'YYYY-MM-DD');
   if (currentDate.isBefore(scheduleFirstDay)) {
     return scheduleFirstDay.startOf('isoWeek');
-  } else {
-    return currentWeekMonday;
   }
+  return currentWeekMonday;
 };
 
 const ProfileCalendar = ({
@@ -168,7 +167,7 @@ const ProfileCalendar = ({
   openModal,
   closeModal,
 }) => {
-  const handleCalendarExport = async download => {
+  const handleCalendarExport = async (download) => {
     const response = await fetch(
       `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretID)}`,
     );
@@ -225,7 +224,7 @@ const ProfileCalendar = ({
           selectedIndex={-1}
           options={['Google', 'iCalendar']}
           margin="auto 0"
-          onChange={value => {
+          onChange={(value) => {
             if (value === 0) {
               handleCalendarExport(false);
             } else {
