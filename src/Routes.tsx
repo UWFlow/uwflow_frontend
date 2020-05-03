@@ -23,28 +23,28 @@ export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const WELCOME_PAGE_TESTER = pathToRegexp(WELCOME_PAGE_ROUTE);
 
 /* Page Testers */
-export const isOnLandingPageRoute = location =>
+export const isOnLandingPageRoute = (location: Location) =>
   LANDING_PAGE_TESTER.test(location.pathname);
 
-export const isOnProfilePageRoute = location =>
+export const isOnProfilePageRoute = (location: Location) =>
   PROFILE_PAGE_TESTER.test(location.pathname);
 
-export const isOnCoursePageRoute = location =>
+export const isOnCoursePageRoute = (location: Location) =>
   COURSE_PAGE_TESTER.test(location.pathname);
 
-export const isOnProfPageRoute = location =>
+export const isOnProfPageRoute = (location: Location) =>
   PROF_PAGE_TESTER.test(location.pathname);
 
-export const isOnExplorePageRoute = location =>
+export const isOnExplorePageRoute = (location: Location) =>
   EXPLORE_PAGE_TESTER.test(location.pathname);
 
-export const isOnAboutPageRoute = location =>
+export const isOnAboutPageRoute = (location: Location) =>
   ABOUT_PAGE_TESTER.test(location.pathname);
 
-export const isOnPrivacyPageRoute = location =>
+export const isOnPrivacyPageRoute = (location: Location) =>
   PRIVACY_PAGE_TESTER.test(location.pathname);
 
-export const isOnWelcomePageRoute = location => {
+export const isOnWelcomePageRoute = (location: Location) => {
   WELCOME_PAGE_TESTER.test(location.pathname);
 };
 
@@ -53,6 +53,7 @@ export const toCoursePageRoute = compile(COURSE_PAGE_ROUTE);
 export const toProfPageRoute = compile(PROF_PAGE_ROUTE);
 
 /* Route Getters */
-export const getCoursePageRoute = courseCode =>
+export const getCoursePageRoute = (courseCode: string) =>
   toCoursePageRoute({ courseCode });
-export const getProfPageRoute = profCode => toProfPageRoute({ profCode });
+export const getProfPageRoute = (profCode: string) =>
+  toProfPageRoute({ profCode });

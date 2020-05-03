@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
-import moment from 'moment';
+import moment from 'moment/moment';
 
 /* Styled components */
 import {
@@ -30,14 +30,14 @@ import { LEC, LAB, TUT } from '../../constants/PageConstants';
 const getDateRangeString = (start, end) => {
   if (start.year() !== end.year()) {
     return `${start.format('MMM Do, YYYY')} - ${end.format('MMM Do, YYYY')}`;
-  } else if (start.month() !== end.month()) {
-    return `${start.format('MMM Do')} - ${end.format('MMM Do, YYYY')}`;
-  } else {
-    return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
   }
+  if (start.month() !== end.month()) {
+    return `${start.format('MMM Do')} - ${end.format('MMM Do, YYYY')}`;
+  }
+  return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
 };
 
-const parseEventOverlap = events => {
+const parseEventOverlap = (events) => {
   if (events.length < 2) {
     return events;
   }
@@ -46,9 +46,9 @@ const parseEventOverlap = events => {
     (a, b) => a.start.valueOf() - b.start.valueOf(),
   );
 
-  let prevEvent = sortedEvents[0];
-  for (let i = 1; i < sortedEvents.length; i++) {
-    let curEvent = sortedEvents[i];
+  const prevEvent = sortedEvents[0];
+  for (let i = 1; i < sortedEvents.length; i += 1) {
+    const curEvent = sortedEvents[i];
 
     // alternate between left and right for overlapping events
     if (prevEvent.end.valueOf() > curEvent.start.valueOf()) {
@@ -109,12 +109,9 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
   const saturdayOfWeek = currentWeek.clone().add(5, 'days');
 
   // get events for every day of week
-  let currentWeekEvents = {};
-  for (let i = 0; i < 6; i++) {
-    const curDate = currentWeek
-      .clone()
-      .add(i, 'days')
-      .format('YYYY-MM-DD');
+  const currentWeekEvents = {};
+  for (let i = 0; i < 6; i += 1) {
+    const curDate = currentWeek.clone().add(i, 'days').format('YYYY-MM-DD');
     currentWeekEvents[curDate] = eventsByDate[curDate];
   }
 
@@ -123,9 +120,9 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
   let maxHour = 17;
   let totalMinutes = 0;
 
-  Object.values(currentWeekEvents).forEach(events => {
+  Object.values(currentWeekEvents).forEach((events) => {
     if (events !== undefined) {
-      events.forEach(event => {
+      events.forEach((event) => {
         if (event.start.hour() <= minHour) {
           minHour = event.start.hour();
           if (event.start.minutes() === 0) {
@@ -150,8 +147,8 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
   });
 
   const hoursToDisplay = () => {
-    let hours = [];
-    for (let i = minHour; i <= maxHour; i++) {
+    const hours = [];
+    for (let i = minHour; i <= maxHour; i += 1) {
       hours.push(i < 13 ? `${i} am` : `${i - 12} pm`);
     }
     return hours;
@@ -160,10 +157,10 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
   const includeSaturday =
     currentWeekEvents[saturdayOfWeek.format('YYYY-MM-DD')] === undefined;
   const daysToDisplay = () => {
-    let days = [];
+    const days = [];
     // display saturday if there is an event
-    let numDays = includeSaturday ? 5 : 6;
-    for (let i = 0; i < numDays; i++) {
+    const numDays = includeSaturday ? 5 : 6;
+    for (let i = 0; i < numDays; i += 1) {
       days.push(currentWeek.clone().add(i, 'days'));
     }
     return days;
@@ -187,7 +184,7 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
           <NavButton
             hideSmall={true}
             onClick={() => setCurrentWeek(nearestMonday)}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
           >
             Current Week
           </NavButton>
@@ -195,13 +192,13 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
             onClick={() =>
               setCurrentWeek(currentWeek.clone().subtract(7, 'days'))
             }
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
           >
             <ChevronLeft />
           </NavButton>
           <NavButton
             onClick={() => setCurrentWeek(currentWeek.clone().add(7, 'days'))}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
           >
             <ChevronRight />
           </NavButton>
@@ -210,7 +207,7 @@ const Calendar = ({ eventsByDate, initialStartDate }) => {
       <CalendarContentWrapper>
         <CalendarHeader />
         <div>
-          {hoursToDisplay().map(hour => (
+          {hoursToDisplay().map((hour) => (
             <HourRow key={hour}>
               <HourText>{hour}</HourText>
             </HourRow>

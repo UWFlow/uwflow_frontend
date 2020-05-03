@@ -1,8 +1,8 @@
 FROM node:alpine AS builder
 
 COPY . .
-RUN npm install
-RUN npm run build
+RUN yarn install
+RUN yarn build
 
 FROM nginx:alpine
 

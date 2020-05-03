@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'moment/moment';
 import { useQuery } from 'react-apollo';
 
 /* Styled Components */
@@ -20,7 +20,7 @@ const LastUpdatedSchedule = ({
 
   let updatedTime = null;
   if (!loading && data) {
-    data.update_time.forEach(update => {
+    data.update_time.forEach((update) => {
       if (!updatedTime || moment(update.time).isAfter(moment(updatedTime))) {
         updatedTime = update.time;
       }

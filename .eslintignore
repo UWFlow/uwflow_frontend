@@ -1,0 +1,8 @@
+**/node_modules/**
+public/**
+build/**
+
+Dockerfile
+*.lock
+*.json
+*.md

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import moment from 'moment/moment';
 
 /* Child Components */
 import TabContainer from '../../components/display/TabContainer';
@@ -39,8 +39,8 @@ const sectionOrder = {
  * is sorted by date.
  */
 
-const getInfoGroupings = meetings => {
-  let groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
+const getInfoGroupings = (meetings) => {
+  const groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
     const key = `${curr.start_seconds} ${curr.end_seconds}`;
     if (!groupings[key]) {
       groupings[key] = {
@@ -72,14 +72,14 @@ const getInfoGroupings = meetings => {
   let infoGroups = [];
 
   // Sort timeRanges for each group
-  Object.entries(groupedByTimeOfDay).forEach(entry => {
+  Object.entries(groupedByTimeOfDay).forEach((entry) => {
     entry[1].timeRanges.sort((a, b) => a.startDate > b.startDate);
     infoGroups.push(entry[1]);
   });
 
   // Merge and sort days of week for timeRanges that occur in the same date range
-  infoGroups.forEach(entry => {
-    let newTimeRanges = [];
+  infoGroups.forEach((entry) => {
+    const newTimeRanges = [];
     let newDays = [];
     entry.timeRanges.forEach((currRange, i) => {
       if (i < entry.timeRanges.length - 1) {
@@ -88,20 +88,21 @@ const getInfoGroupings = meetings => {
           currRange.startDate === nextRange.startDate &&
           currRange.endDate === nextRange.endDate
         ) {
-          for (let day of currRange.days) {
+          currRange.days.forEach((day) => {
             if (!newDays.includes(day)) {
               newDays.push(day);
             }
-          }
+          });
           return;
         }
       }
 
-      for (let day of currRange.days) {
+      currRange.days.forEach((day) => {
         if (!newDays.includes(day) && weekDayLetters.includes(day)) {
           newDays.push(day);
         }
-      }
+      });
+
       newDays.sort(
         (a, b) => weekDayLetters.indexOf(a) - weekDayLetters.indexOf(b),
       );
@@ -116,7 +117,7 @@ const getInfoGroupings = meetings => {
   });
 
   infoGroups = infoGroups.sort((a, b) => a.startSeconds - b.startSeconds);
-  const numDates = infoGroups.map(group => group.timeRanges.length);
+  const numDates = infoGroups.map((group) => group.timeRanges.length);
   return {
     times: infoGroups.map((group, i) =>
       Object({
@@ -132,12 +133,12 @@ const getInfoGroupings = meetings => {
     profs: infoGroups.map((group, i) =>
       Object({ prof: group.prof, spaces: numDates[i] - 1 }),
     ),
-    dates: infoGroups.map(group => group.timeRanges),
+    dates: infoGroups.map((group) => group.timeRanges),
   };
 };
 
-const getStartingTab = termsOffered => {
-  for (let i in termsOffered) {
+const getStartingTab = (termsOffered) => {
+  for (let i = 0; i < termsOffered.length; i += 1) {
     const term = termsOffered[i];
     const monthInt = term % 10;
     const year = 1900 + Math.floor(term / 10);
@@ -149,7 +150,7 @@ const getStartingTab = termsOffered => {
       'month',
     );
     if (currentTime.isAfter(termStart) && currentTime.isBefore(termEnd)) {
-      return parseInt(i);
+      return parseInt(i, 10);
     }
   }
   return 0;
@@ -169,9 +170,9 @@ const CourseSchedule = ({
     return allTerms;
   }, []);
 
-  let hasBell = {};
-  termsOffered.forEach(term => {
-    hasBell[term] = sections.some(section => {
+  const hasBell = {};
+  termsOffered.forEach((term) => {
+    hasBell[term] = sections.some((section) => {
       return (
         section.enrollment_total >= section.enrollment_capacity &&
         section.term_id === term
@@ -188,11 +189,11 @@ const CourseSchedule = ({
   }
 
   const subscribedSectionIDs = sectionSubscriptions.map(
-    subscription => subscription.section_id,
+    (subscription) => subscription.section_id,
   );
 
   const sectionsCleanedData = sections
-    .map(s => ({
+    .map((s) => ({
       section: s.section_name,
       campus: s.campus,
       class: s.class_number,
@@ -205,14 +206,14 @@ const CourseSchedule = ({
         capacity: s.enrollment_capacity,
         hasBell: hasBell[s.term_id],
         selected: subscribedSectionIDs.includes(s.id),
-        userEmail: userEmail,
+        userEmail,
       },
       cancelled: sections.reduce((isCancelled, current) => {
         return (
           isCancelled ||
           (current.term_id === s.term_id &&
-            current.meetings.reduce((meetingCancelled, current) => {
-              return meetingCancelled || current.is_cancelled;
+            current.meetings.reduce((cancelled, cur) => {
+              return cancelled || cur.is_cancelled;
             }, false))
         );
       }, false),
@@ -225,27 +226,25 @@ const CourseSchedule = ({
       const sectionTypeB = b.section.split(' ')[0];
       if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
         return a.section.localeCompare(b.section);
-      } else {
-        return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
       }
+      return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
     });
 
   const courseExams = processSectionExams(sections, courseCode);
-  const tabList = termsOffered.map(term => {
+  const tabList = termsOffered.map((term) => {
     return {
       title: termCodeToDate(term),
+      // eslint-disable-next-line react/display-name
       render: () => (
         <>
           <ScheduleTableWrapper>
             <Table
               cellPadding="4px 0"
               columns={courseScheduleTableColumns}
-              data={sectionsCleanedData.filter(c => c.term === term)}
-              getRowProps={row => {
-                if (row) {
-                  return { disabled: row.original.cancelled };
-                }
-              }}
+              data={sectionsCleanedData.filter((c) => c.term === term)}
+              getRowProps={(row) =>
+                row ? { disabled: row.original.cancelled } : {}
+              }
             />
           </ScheduleTableWrapper>
           <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
