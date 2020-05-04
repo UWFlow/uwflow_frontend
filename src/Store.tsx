@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux';
-import { createStore, applyMiddleware } from 'redux';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+
 import { debounce } from 'lodash';
 
 /* Middleware */

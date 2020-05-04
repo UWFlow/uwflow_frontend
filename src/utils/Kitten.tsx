@@ -13,7 +13,7 @@ import kitten_12 from '../img/kittens/kitten_12.jpg';
 import kitten_13 from '../img/kittens/kitten_13.jpg';
 import { randIntBetween } from './Random';
 
-const kittens = [
+const kittens: any[] = [
   kitten_1,
   kitten_2,
   kitten_3,
@@ -29,22 +29,26 @@ const kittens = [
   kitten_13,
 ];
 
-export const getKittenFromID = id => kittens[id % 13];
+export const getKittenFromID = (id: number): any => kittens[id % 13];
 
-export const getRandomKitten = () => kittens[randIntBetween(0, 14)];
+export const getRandomKitten = (): any => kittens[randIntBetween(0, 14)];
 
-export const hashProgram = program => {
+export const hashProgram = (program: string): number => {
   let hash = 0;
   if (!program || program.length === 0) return 0;
-  for (let i = 0; i < program.length; i++) {
+  for (let i = 0; i < program.length; i += 1) {
     const chr = program.charCodeAt(i);
+
+    /* eslint-disable-next-line no-bitwise */
     hash = (hash << 5) - hash + chr;
+
+    /* eslint-disable-next-line no-bitwise */
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
 };
 
-export const getKittenFromProgram = program => {
+export const getKittenFromProgram = (program: string): any => {
   if (!program) return getRandomKitten();
   return kittens[Math.abs(hashProgram(program)) % 13];
 };

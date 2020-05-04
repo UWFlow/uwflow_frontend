@@ -1,4 +1,5 @@
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory, History } from 'history';
+import { Store } from 'redux';
 
 /* Actions */
 import {
@@ -9,7 +10,7 @@ import {
 } from '../data/actions/HistoryActions';
 
 // Export a function, when called creates a history object
-export default () => {
+export default (): History<History.PoorMansUnknown> => {
   const history = createBrowserHistory();
 
   // clear the initial state
@@ -18,9 +19,11 @@ export default () => {
   return history;
 };
 
-export const syncReduxHistory = (store, history) => {
+export const syncReduxHistory = (
+  store: Store,
+  history: History<History.PoorMansUnknown>,
+): void => {
   history.listen((location, action) => {
-    // action: 'POP', 'PUSH'
     if (action === NATIVE_HISTORY_POP) {
       store.dispatch(historyBack());
     } else if (action === NATIVE_HISTORY_PUSH) {
