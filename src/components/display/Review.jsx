@@ -60,7 +60,7 @@ const mapStateToProps = (state) => ({
 
 const MetricIfExists = (metrics, metric) => {
   const metricText = metric.charAt(0).toUpperCase() + metric.slice(1);
-  if (metrics[metric] === null && metrics[metric] === undefined) {
+  if (metrics[metric] === null || metrics[metric] === undefined) {
     return null;
   }
 

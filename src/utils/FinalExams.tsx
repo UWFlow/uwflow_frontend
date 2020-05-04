@@ -1,11 +1,11 @@
 import { isCurrentTerm, secsToTime, processDateString } from './Misc';
 
-export const processSectionExams = (sections, courseCode) => {
-  const groupedExams = sections.reduce((groups, section) => {
+export const processSectionExams = (sections: any, courseCode: any): any => {
+  const groupedExams = sections.reduce((groups: any, section: any) => {
     if (!isCurrentTerm(section.term_id)) {
       return groups;
     }
-    section.exams.forEach(exam => {
+    section.exams.forEach((exam: any) => {
       const examKey = `${courseCode}${exam.is_tba}${exam.location}${exam.date}${exam.start_seconds}${exam.end_seconds}`;
       if (examKey in groups) {
         groups[examKey].sections.push(section.section_name);
@@ -26,11 +26,11 @@ export const processSectionExams = (sections, courseCode) => {
   return Object.values(groupedExams);
 };
 
-export const processMultipleCourseExams = courses =>
-  courses.reduce((allExams, course) => {
+export const processMultipleCourseExams = (courses: any) =>
+  courses.reduce((allExams: any, course: any) => {
     if (course.sections && course.sections.length > 0) {
       const groupedExams = processSectionExams(course.sections, course.code);
-      groupedExams.map(exam => allExams.push(exam));
+      groupedExams.map((exam: any) => allExams.push(exam));
     }
     return allExams;
   }, []);
