@@ -253,6 +253,8 @@ const CourseSchedule = ({
     };
   });
 
+  const updatedAt = moment.max(sections.map((s) => moment(s.updated_at)));
+
   return (
     <CourseScheduleWrapper>
       <CollapsibleContainer
@@ -275,6 +277,7 @@ const CourseSchedule = ({
           margin={'8px 0 32px 0'}
           courseCode={courseCode}
           term={termsOffered[selectedTerm]}
+          updatedAt={updatedAt}
         />
       )}
     </CourseScheduleWrapper>

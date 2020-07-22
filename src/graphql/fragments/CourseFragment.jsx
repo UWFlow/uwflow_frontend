@@ -40,6 +40,7 @@ const CourseFragment = {
         campus
         section_name
         term_id
+        updated_at
         meetings {
           days
           start_date
