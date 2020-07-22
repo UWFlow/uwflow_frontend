@@ -140,17 +140,14 @@ const getInfoGroupings = (meetings) => {
 const getStartingTab = (termsOffered) => {
   for (let i = 0; i < termsOffered.length; i += 1) {
     const term = termsOffered[i];
-    const monthInt = term % 10;
+    const month = term % 10;
     const year = 1900 + Math.floor(term / 10);
     const currentTime = moment();
-    const termStart = moment(`0${monthInt}-${year}`, 'MM-YYYY').startOf(
-      'month',
-    );
-    const termEnd = moment(`0${monthInt + 4}-${year}`, 'MM-YYYY').endOf(
-      'month',
-    );
-    if (currentTime.isAfter(termStart) && currentTime.isBefore(termEnd)) {
-      return parseInt(i, 10);
+    const termStart = moment(`${month}-${year}`, 'MM-YYYY');
+    const displayStart = termStart.clone().subtract(2, 'months');
+    const displayEnd = termStart.clone().add(2, 'months');
+    if (currentTime.isBetween(displayStart, displayEnd)) {
+      return i;
     }
   }
   return 0;
