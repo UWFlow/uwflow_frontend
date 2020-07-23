@@ -26,7 +26,7 @@ const LastUpdatedSchedule = ({
 
   return (
     <LastUpdatedText margin={margin}>
-      Last updated {updatedAt.fromNow()} from{' '}
+      Last updated {updatedAt?.fromNow()} from{' '}
       <LastUpdatedLink href={link} target="_blank">
         adm.uwaterloo.ca
       </LastUpdatedLink>
