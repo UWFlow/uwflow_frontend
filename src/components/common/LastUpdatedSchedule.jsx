@@ -1,12 +1,7 @@
 import React from 'react';
-import moment from 'moment/moment';
-import { useQuery } from 'react-apollo';
 
 /* Styled Components */
 import { LastUpdatedText, LastUpdatedLink } from './styles/LastUpdatedSchedule';
-
-/* GraphQL */
-import { UPDATE_TIME_QUERY } from '../../graphql/queries/common/UpdateTime';
 
 /* Utils */
 import { splitCourseCode } from '../../utils/Misc';
@@ -15,18 +10,8 @@ const LastUpdatedSchedule = ({
   margin = '8px 0 0 0',
   courseCode = null,
   term = null,
+  updatedAt = null,
 }) => {
-  const { data, loading } = useQuery(UPDATE_TIME_QUERY);
-
-  let updatedTime = null;
-  if (!loading && data) {
-    data.update_time.forEach((update) => {
-      if (!updatedTime || moment(update.time).isAfter(moment(updatedTime))) {
-        updatedTime = update.time;
-      }
-    });
-  }
-
   const defaultLink = 'http://www.adm.uwaterloo.ca/infocour/CIR/SA/index.html';
   const [courseLetters, courseNum] = splitCourseCode(courseCode);
   const courseLevel =
@@ -41,8 +26,7 @@ const LastUpdatedSchedule = ({
 
   return (
     <LastUpdatedText margin={margin}>
-      Last updated {updatedTime && moment(data.update_time[0].time).fromNow()}{' '}
-      from{' '}
+      Last updated {updatedAt?.fromNow()} from{' '}
       <LastUpdatedLink href={link} target="_blank">
         adm.uwaterloo.ca
       </LastUpdatedLink>
