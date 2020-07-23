@@ -1,6 +1,4 @@
 import React from 'react';
-import moment from 'moment/moment';
-import { useQuery } from 'react-apollo';
 
 /* Styled Components */
 import { LastUpdatedText, LastUpdatedLink } from './styles/LastUpdatedSchedule';

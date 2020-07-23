@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment/moment';
 
 /* Styled Components */
 import {
@@ -15,6 +16,11 @@ import { processMultipleCourseExams } from '../../utils/FinalExams';
 
 const ProfileFinalExams = ({ courses }) => {
   const exams = processMultipleCourseExams(courses);
+  const updatedAt = moment.max(
+    courses.map((c) =>
+      moment.max(c.course.sections.map((s) => moment(s.updated_at))),
+    ),
+  );
   return (
     <>
       <ProfileFinalExamsWrapper>
@@ -23,7 +29,7 @@ const ProfileFinalExams = ({ courses }) => {
           <FinalExamTable courses={exams} />
         </ProfileFinalExamsContent>
       </ProfileFinalExamsWrapper>
-      <LastUpdatedSchedule />
+      <LastUpdatedSchedule updatedAt={updatedAt} />
     </>
   );
 };
