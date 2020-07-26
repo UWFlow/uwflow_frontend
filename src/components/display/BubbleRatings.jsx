@@ -23,7 +23,7 @@ const Thumbs = ({ boolRating }) => (
 
 const Circles = ({ rating, total }) => (
   <>
-    {Array(...total).map((_, ind) => {
+    {Array.apply(null, Array(total)).map((_, ind) => {
       return <UnitCircle key={ind} filled={ind < rating} diameter={16} />;
     })}
   </>

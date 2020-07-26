@@ -163,22 +163,22 @@ const CourseReviewCourseBoxContent = ({
     };
   };
 
-  const userID = getUserId();
-  const { course, review } = courseList[selectedCourseIndex];
-
   /* State */
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
   const [reviewUpdating, setReviewUpdating] = useState(false);
   const [reviewDeleting, setReviewDeleting] = useState(false);
   const [reviewStates, setReviewStates] = useState(
-    courseList.reduce((states, { c, r }) => {
-      states[c.code] = buildDefaultReview(c, r);
+    courseList.reduce((states, { course, review }) => {
+      states[course.code] = buildDefaultReview(course, review);
       return states;
     }, {}),
   );
   const [lastRenderProfsTeaching, setLastRenderProfsTeaching] = useState(
     profsTeachingByCourseID,
   );
+
+  const userID = getUserId();
+  const { course, review } = courseList[selectedCourseIndex];
 
   const {
     liked,
