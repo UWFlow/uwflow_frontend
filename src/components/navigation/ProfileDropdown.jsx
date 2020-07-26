@@ -6,32 +6,32 @@ import { withTheme } from 'styled-components';
 import { Query } from 'react-apollo';
 
 /* Styled Components */
+
+/* Child Components */
+import DropdownList from 'components/input/DropdownList';
+
+/* Routes */
+import { PROFILE_PAGE_ROUTE, isOnLandingPageRoute } from 'Routes';
+
+/* GraphQL Queries */
+import { GET_USER } from 'graphql/queries/user/User';
+
+/* Utils */
+import { getKittenFromID } from 'utils/Kitten';
+import withModal from 'components/modal/withModal';
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { logOut } from 'utils/Auth';
+
+/* Constants */
+import { AUTH_MODAL } from 'constants/Modal';
 import {
   ProfileDropdownWrapper,
   ProfilePicture,
   ProfileText,
 } from './styles/ProfileDropdown';
-
-/* Child Components */
-import DropdownList from '../input/DropdownList';
-
-/* Routes */
-import { PROFILE_PAGE_ROUTE, isOnLandingPageRoute } from '../../Routes';
-
-/* GraphQL Queries */
-import { GET_USER } from '../../graphql/queries/user/User';
-
-/* Utils */
-import { getKittenFromID } from '../../utils/Kitten';
-import withModal from '../modal/withModal';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { logOut } from '../../utils/Auth';
-
-/* Constants */
-import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

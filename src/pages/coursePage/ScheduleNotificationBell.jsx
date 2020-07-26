@@ -5,34 +5,31 @@ import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 /* Child Components */
-import Tooltip from '../../components/display/Tooltip';
+import Tooltip from 'components/display/Tooltip';
 
 /* Styled Components */
-import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
 /* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
 
 /* GraphQL */
 import {
   DELETE_SECTION_SUBSCRIPTION,
   INSERT_SECTION_SUBSCRIPTION,
-} from '../../graphql/mutations/SectionSubscription';
-import { REFETCH_SECTION_SUBSCRIPTIONS } from '../../graphql/queries/course/Course';
+} from 'graphql/mutations/SectionSubscription';
+import { REFETCH_SECTION_SUBSCRIPTIONS } from 'graphql/queries/course/Course';
 
 /* Utils */
-import withModal from '../../components/modal/withModal';
+import withModal from 'components/modal/withModal';
 
 /* Constants */
 import {
   SUBSCRIPTION_ERROR,
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_TOOLTIP,
-} from '../../constants/Messages';
-import {
-  AUTH_MODAL,
-  COURSE_NOTIFICATION_EMAIL_MODAL,
-} from '../../constants/Modal';
+} from 'constants/Messages';
+import { AUTH_MODAL, COURSE_NOTIFICATION_EMAIL_MODAL } from 'constants/Modal';
+import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
 const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),

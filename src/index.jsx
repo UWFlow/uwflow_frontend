@@ -6,19 +6,19 @@ import { ThemeProvider } from 'styled-components';
 import { ApolloProvider } from 'react-apollo';
 
 /* eslint-disable-next-line */
-import SearchWorker from './search/search.worker.js';
+import SearchWorker from 'search/search.worker.js';
 
-import { configureStore } from './Store';
-import Theme from './constants/GlobalTheme';
-import client from './graphql/apollo.js';
+import { configureStore } from 'Store';
+import Theme from 'constants/GlobalTheme';
+import client from 'graphql/apollo.js';
 
 /* Util */
-import createHistory, { syncReduxHistory } from './utils/History';
+import createHistory, { syncReduxHistory } from 'utils/History';
 
 /* Child Components */
-import App from './App';
-import SearchProvider from './search/SearchProvider';
-import ModalProvider from './data/providers/ModalProvider.jsx';
+import App from 'App';
+import SearchProvider from 'search/SearchProvider';
+import ModalProvider from 'data/providers/ModalProvider.jsx';
 
 const StartApp = (store, history) => {
   syncReduxHistory(store, history);

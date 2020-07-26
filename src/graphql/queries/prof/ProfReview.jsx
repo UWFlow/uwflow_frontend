@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import ReviewFragment from '../../fragments/ReviewFragment';
+import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const buildProfReviewQuery = (loggedIn) => gql`
   query PROF_REVIEWS($id: Int) {

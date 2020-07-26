@@ -9,12 +9,12 @@ import {
   Heading4,
   Body,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 import {
   AWAITING_UPLOAD,
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
-} from '../../../constants/DataUploadStates';
+} from 'constants/DataUploadStates';
 
 export const ContentWrapper = styled(FadeIn)`
   display: flex;

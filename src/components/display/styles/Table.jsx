@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link, Hover } from '../../../constants/Mixins';
+import { Link, Hover } from 'constants/Mixins';
 
 export const TableWrapper = styled.div`
   display: table;

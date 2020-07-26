@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
 import FadeIn from 'react-fade-in';
-import ExploreHeader from '../../../img/explore.svg';
+import ExploreHeader from 'img/explore.svg';
 
 /* Mixins */
 import {
@@ -13,7 +13,7 @@ import {
   Link,
   PageWrapper,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const ExplorePageWrapper = styled.div`
   ${PageWrapper}

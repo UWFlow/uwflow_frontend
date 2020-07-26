@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
+
+/* Child Components */
+import Textbox from 'components/input/Textbox';
+import Button from 'components/input/Button';
+
+import { validateEmail } from 'utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from 'constants/Api';
+import { AUTH_FORM_ERRORS } from 'constants/Messages';
 import {
   Header,
   ForgotPasswordWrapper,
@@ -11,14 +19,6 @@ import {
   Error,
   FormError,
 } from './styles/AuthForm';
-
-/* Child Components */
-import Textbox from '../components/input/Textbox';
-import Button from '../components/input/Button';
-
-import { validateEmail } from '../utils/Email';
-import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../constants/Api';
-import { AUTH_FORM_ERRORS } from '../constants/Messages';
 
 const LoginContent = ({
   handleAuth,

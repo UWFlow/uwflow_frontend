@@ -2,9 +2,27 @@ import React, { useState } from 'react';
 import { withTheme } from 'styled-components';
 import { ArrowRight, Clipboard } from 'react-feather';
 import { toast } from 'react-toastify';
-import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 
 /* Styled Components */
+
+/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import Step1Image from 'img/upload/calendar-step-1.png';
+import Step2Image from 'img/upload/calendar-step-2.png';
+
+/* Constants */
+import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from 'constants/Api';
+import {
+  UPLOAD_PENDING,
+  AWAITING_UPLOAD,
+  UPLOAD_FAILED,
+  UPLOAD_SUCCESSFUL,
+} from 'constants/DataUploadStates';
+import { SCHEDULE_ERRORS, DATA_UPLOAD_SUCCESS } from 'constants/Messages';
+
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { sleep } from 'utils/Misc';
 import {
   ContentWrapper,
   ContentSteps,
@@ -26,24 +44,6 @@ import {
   SkipStepWrapper,
   ErrorMessage,
 } from './styles/DataUploadModals';
-
-/* Child Components */
-import LoadingSpinner from '../display/LoadingSpinner';
-import Step1Image from '../../img/upload/calendar-step-1.png';
-import Step2Image from '../../img/upload/calendar-step-2.png';
-
-/* Constants */
-import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from '../../constants/Api';
-import {
-  UPLOAD_PENDING,
-  AWAITING_UPLOAD,
-  UPLOAD_FAILED,
-  UPLOAD_SUCCESSFUL,
-} from '../../constants/DataUploadStates';
-import { SCHEDULE_ERRORS, DATA_UPLOAD_SUCCESS } from '../../constants/Messages';
-
-import { PRIVACY_PAGE_ROUTE } from '../../Routes';
-import { sleep } from '../../utils/Misc';
 
 // keys for only allowing copy paste / deletion
 const clipboardKeys = {

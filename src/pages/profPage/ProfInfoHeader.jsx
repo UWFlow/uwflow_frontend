@@ -2,6 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
+
+/* Child Components */
+import RatingBox, {
+  RATING_BOX_HEIGHT,
+  RATING_BOX_WIDTH,
+} from 'components/display/RatingBox';
+
+import { formatCourseCode } from 'utils/Misc';
+import { getCoursePageRoute } from 'Routes';
 import {
   ProfInfoHeaderWrapper,
   ProfNameSection,
@@ -12,15 +21,6 @@ import {
   RatingsSection,
   CourseLink,
 } from './styles/ProfInfoHeader';
-
-/* Child Components */
-import RatingBox, {
-  RATING_BOX_HEIGHT,
-  RATING_BOX_WIDTH,
-} from '../../components/display/RatingBox';
-
-import { formatCourseCode } from '../../utils/Misc';
-import { getCoursePageRoute } from '../../Routes';
 
 const ProfInfoHeader = ({ prof }) => {
   const { liked, clear, engaging, filled_count, comment_count } = prof.rating;

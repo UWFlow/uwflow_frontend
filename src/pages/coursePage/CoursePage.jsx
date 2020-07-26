@@ -6,20 +6,28 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 /* Child Components */
-import CourseInfoHeader from './CourseInfoHeader';
-import CourseSchedule from './CourseSchedule';
-import CourseRequisites from './CourseRequisites';
-import CourseReviews from './CourseReviews';
-import Button from '../../components/input/Button';
-import LikeCourseToggle from '../../components/input/LikeCourseToggle';
-import LoadingSpinner from '../../components/display/LoadingSpinner';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
+import Button from 'components/input/Button';
+import LikeCourseToggle from 'components/input/LikeCourseToggle';
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 
 /* Queries */
-import { buildCourseQuery } from '../../graphql/queries/course/Course';
-import { getUserId } from '../../utils/Auth';
+import { buildCourseQuery } from 'graphql/queries/course/Course';
+import { getUserId } from 'utils/Auth';
 
 /* Styled Components */
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+
+/* Utils */
+import { formatCourseCode } from 'utils/Misc';
+import withModal from 'components/modal/withModal';
+
+/* Constants */
+import { NOT_FOUND, DEFAULT_ERROR } from 'constants/Messages';
+import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from 'constants/Modal';
 import {
   CoursePageWrapper,
   ColumnWrapper,
@@ -30,18 +38,10 @@ import {
   CourseQuestionTextAndToggle,
   CourseReviewQuestionText,
 } from './styles/CoursePage';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
-/* Utils */
-import { formatCourseCode } from '../../utils/Misc';
-import withModal from '../../components/modal/withModal';
-
-/* Constants */
-import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
-import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from '../../constants/Modal';
+import CourseReviews from './CourseReviews';
+import CourseRequisites from './CourseRequisites';
+import CourseSchedule from './CourseSchedule';
+import CourseInfoHeader from './CourseInfoHeader';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

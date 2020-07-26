@@ -2,15 +2,10 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
 import FadeIn from 'react-fade-in';
-import ProfHeader from '../../../img/prof.svg';
+import ProfHeader from 'img/prof.svg';
 
 /* Mixins */
-import {
-  Heading1,
-  Heading3,
-  PageContent,
-  Hover,
-} from '../../../constants/Mixins';
+import { Heading1, Heading3, PageContent, Hover } from 'constants/Mixins';
 
 export const ProfInfoHeaderWrapper = styled.div`
   width: 100%;

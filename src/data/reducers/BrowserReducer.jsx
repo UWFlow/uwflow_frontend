@@ -1,5 +1,5 @@
-import { BROWSER_WINDOW_RESIZED } from '../actions/BrowserActions';
-import { BREAKPOINT_WIDTH } from '../../constants/PageConstants';
+import { BROWSER_WINDOW_RESIZED } from 'data/actions/BrowserActions';
+import { BREAKPOINT_WIDTH } from 'constants/PageConstants';
 
 /* Selectors */
 import { getDataState } from './DataReducer';

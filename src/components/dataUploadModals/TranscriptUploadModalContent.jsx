@@ -2,9 +2,27 @@ import React, { useEffect, useState, useRef } from 'react';
 import { withTheme } from 'styled-components';
 import { ArrowRight, Upload } from 'react-feather';
 import { toast } from 'react-toastify';
-import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 
 /* Styled Components */
+
+/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import TranscriptUploadVideoMP4 from 'img/upload/transcript-import-chrome.mp4';
+import TranscriptUploadVideoWebm from 'img/upload/transcript-import-chrome.webm';
+
+/* Constants */
+import { BACKEND_ENDPOINT, TRANSCRIPT_PARSE_ENDPOINT } from 'constants/Api';
+import {
+  AWAITING_UPLOAD,
+  UPLOAD_PENDING,
+  UPLOAD_SUCCESSFUL,
+  UPLOAD_FAILED,
+} from 'constants/DataUploadStates';
+import { TRANSCRIPT_ERRORS, DATA_UPLOAD_SUCCESS } from 'constants/Messages';
+
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { sleep } from 'utils/Misc';
 import {
   ContentWrapper,
   Header,
@@ -26,30 +44,6 @@ import {
   SkipStepWrapper,
   ErrorMessage,
 } from './styles/DataUploadModals';
-
-/* Child Components */
-import LoadingSpinner from '../display/LoadingSpinner';
-import TranscriptUploadVideoMP4 from '../../img/upload/transcript-import-chrome.mp4';
-import TranscriptUploadVideoWebm from '../../img/upload/transcript-import-chrome.webm';
-
-/* Constants */
-import {
-  BACKEND_ENDPOINT,
-  TRANSCRIPT_PARSE_ENDPOINT,
-} from '../../constants/Api';
-import {
-  AWAITING_UPLOAD,
-  UPLOAD_PENDING,
-  UPLOAD_SUCCESSFUL,
-  UPLOAD_FAILED,
-} from '../../constants/DataUploadStates';
-import {
-  TRANSCRIPT_ERRORS,
-  DATA_UPLOAD_SUCCESS,
-} from '../../constants/Messages';
-
-import { PRIVACY_PAGE_ROUTE } from '../../Routes';
-import { sleep } from '../../utils/Misc';
 
 const privacyText = `
   Flow only uses your transcript so you can easily import your course

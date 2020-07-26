@@ -5,6 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 
 /* Styled Components */
+
+import {
+  BACKEND_ENDPOINT,
+  GOOGLE_AUTH_ENDPOINT,
+  FACEBOOK_AUTH_ENDPOINT,
+  GOOGLE_APP_ID,
+  FACEBOOK_APP_ID,
+} from 'constants/Api';
+import { makePOSTRequest } from 'utils/Api';
+
+/* Constants */
+import { AUTH_ERRORS } from 'constants/Messages';
 import {
   Error,
   ButtonText,
@@ -13,18 +25,6 @@ import {
   GoogleIcon,
   FacebookIcon,
 } from './styles/AuthForm';
-
-import {
-  BACKEND_ENDPOINT,
-  GOOGLE_AUTH_ENDPOINT,
-  FACEBOOK_AUTH_ENDPOINT,
-  GOOGLE_APP_ID,
-  FACEBOOK_APP_ID,
-} from '../constants/Api';
-import { makePOSTRequest } from '../utils/Api';
-
-/* Constants */
-import { AUTH_ERRORS } from '../constants/Messages';
 
 const SocialLoginContent = ({ onAuthSuccess }) => {
   const [error, setError] = useState('');

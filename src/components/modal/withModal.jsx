@@ -1,9 +1,9 @@
 import React, { useState, useCallback, memo } from 'react';
 import _ from 'lodash';
-import { ModalContext } from '../../data/providers/ModalProvider';
+import { ModalContext } from 'data/providers/ModalProvider';
 
 /* Utils */
-import { randString } from '../../utils/Random';
+import { randString } from 'utils/Random';
 
 const ModalComponentInner = memo(
   ({ Child, id, childProps, openModal, closeModal }) => {

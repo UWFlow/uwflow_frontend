@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import {
-  Card,
-  BoxShadow,
-  Body,
-  Heading2,
-  Heading3,
-} from '../../../constants/Mixins';
+import { Card, BoxShadow, Body, Heading2, Heading3 } from 'constants/Mixins';
 
 export const ProfileCalendarWrapper = styled.div`
   ${Card()}

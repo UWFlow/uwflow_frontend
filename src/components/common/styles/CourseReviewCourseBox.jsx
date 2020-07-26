@@ -6,7 +6,7 @@ import {
   Heading4,
   Body,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 const MODAL_WIDTH = 660;
 

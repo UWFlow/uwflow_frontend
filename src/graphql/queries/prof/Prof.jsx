@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import ProfFragment from '../../fragments/ProfFragment.jsx';
+import ProfFragment from 'graphql/fragments/ProfFragment.jsx';
 
 export const GET_PROF = gql`
   query GET_PROF($code: String) {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { CourseCode, ProfName } from './styles/ExplorePage';
 
-import { formatCourseCode, processRating } from '../../utils/Misc';
-import { getCoursePageRoute, getProfPageRoute } from '../../Routes';
+import { formatCourseCode, processRating } from 'utils/Misc';
+import { getCoursePageRoute, getProfPageRoute } from 'Routes';
+import { CourseCode, ProfName } from './styles/ExplorePage';
 
 export const courseColumns = [
   {

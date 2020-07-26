@@ -8,6 +8,31 @@ import { withTheme } from 'styled-components';
 import { toast } from 'react-toastify';
 import Collapsible from 'react-collapsible';
 
+/* Child Components */
+import RadioButton from 'components/input/RadioButton';
+import DropdownList from 'components/input/DropdownList';
+import Button from 'components/input/Button';
+import DiscreteSlider from 'components/input/DiscreteSlider';
+import Modal from 'components/modal/Modal';
+
+/* Utils */
+import { formatCourseCode } from 'utils/Misc';
+import { getUserId } from 'utils/Auth';
+
+/* GraphQL */
+import { DELETE_REVIEW, UPSERT_REVIEW } from 'graphql/mutations/Review';
+import {
+  REFETCH_RATINGS,
+  REFETCH_COURSE_REVIEWS,
+} from 'graphql/queries/course/Course';
+import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import {
+  COURSE_REVIEW_PROFS,
+  buildCourseReviewQuery,
+} from 'graphql/queries/course/CourseReview';
+
+/* Constants */
+import { REVIEW_SUCCESS } from 'constants/Messages';
 import {
   CourseReviewCourseBoxWrapper,
   QuestionText,
@@ -23,32 +48,6 @@ import {
   DeleteReviewModalWrapper,
   DeleteConfirmButtons,
 } from './styles/CourseReviewCourseBox';
-
-/* Child Components */
-import RadioButton from '../input/RadioButton';
-import DropdownList from '../input/DropdownList';
-import Button from '../input/Button';
-import DiscreteSlider from '../input/DiscreteSlider';
-import Modal from '../modal/Modal';
-
-/* Utils */
-import { formatCourseCode } from '../../utils/Misc';
-import { getUserId } from '../../utils/Auth';
-
-/* GraphQL */
-import { DELETE_REVIEW, UPSERT_REVIEW } from '../../graphql/mutations/Review';
-import {
-  REFETCH_RATINGS,
-  REFETCH_COURSE_REVIEWS,
-} from '../../graphql/queries/course/Course';
-import { REFETCH_USER_REVIEW } from '../../graphql/queries/user/User';
-import {
-  COURSE_REVIEW_PROFS,
-  buildCourseReviewQuery,
-} from '../../graphql/queries/course/CourseReview';
-
-/* Constants */
-import { REVIEW_SUCCESS } from '../../constants/Messages';
 
 const easyOptions = [
   'Difficult',

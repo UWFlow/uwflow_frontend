@@ -55,6 +55,7 @@ const Table = ({
         });
       }
     }
+    // eslint-disable-next-line
   }, [shouldFetchMore]);
 
   const setFetchMore = () => {
@@ -75,6 +76,7 @@ const Table = ({
     return window.document.removeEventListener('scroll', () =>
       throttledSetFetchMore(),
     );
+    // eslint-disable-next-line
   }, [loading]);
 
   const {
@@ -96,6 +98,7 @@ const Table = ({
 
   useEffect(() => {
     setTableState(tableState);
+    // eslint-disable-next-line
   }, [tableState]);
 
   const renderRows = () =>

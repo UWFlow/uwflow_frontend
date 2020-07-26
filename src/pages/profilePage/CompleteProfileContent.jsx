@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import CheckCircle from '../../components/input/CheckCircle';
+import CheckCircle from 'components/input/CheckCircle';
 
 /* Styled Components */
 import {

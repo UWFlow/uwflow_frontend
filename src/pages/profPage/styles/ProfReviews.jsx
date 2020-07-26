@@ -11,7 +11,7 @@ import {
   BoxShadow,
   Heading3,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const ProfCourseReviewWrapper = styled.div`
   display: flex;

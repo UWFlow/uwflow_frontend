@@ -7,6 +7,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import FadeIn from 'react-fade-in';
 
 /* Styled Components */
+import KeycodeConstants from 'constants/KeycodeConstants';
 import {
   DropdownWrapper,
   DropdownControl,
@@ -15,7 +16,6 @@ import {
   MenuSearch,
   ITEM_HEIGHT,
 } from './styles/DropdownList';
-import KeycodeConstants from '../../constants/KeycodeConstants';
 import Textbox from './Textbox';
 
 const DropdownList = ({

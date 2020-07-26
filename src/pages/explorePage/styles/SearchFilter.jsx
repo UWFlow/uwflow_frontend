@@ -7,7 +7,7 @@ import {
   Heading4,
   Body,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
   ${Card('40px 32px')}

@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import { Edit } from 'react-feather';
 
 /* Styled Components */
+
+/* Utils */
+import { getKittenFromID } from 'utils/Kitten';
+import withModal from 'components/modal/withModal';
+
+/* Constants */
+import { EDIT_EMAIL_MODAL } from 'constants/Modal';
 import {
   ProfileInfoHeaderWrapper,
   ProfileInfoSection,
@@ -15,13 +22,6 @@ import {
   UserEmail,
   EditWrapper,
 } from './styles/ProfileInfoHeader';
-
-/* Utils */
-import { getKittenFromID } from '../../utils/Kitten';
-import withModal from '../../components/modal/withModal';
-
-/* Constants */
-import { EDIT_EMAIL_MODAL } from '../../constants/Modal';
 
 const ProfileInfoHeader = ({ user, openModal }) => (
   <ProfileInfoHeaderWrapper>

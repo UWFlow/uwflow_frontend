@@ -4,11 +4,22 @@ import { PlusSquare, Edit } from 'react-feather';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import TabContainer from '../../components/display/TabContainer';
-import Button from '../../components/input/Button';
-import LikeCourseToggle from '../../components/input/LikeCourseToggle';
+import TabContainer from 'components/display/TabContainer';
+import Button from 'components/input/Button';
+import LikeCourseToggle from 'components/input/LikeCourseToggle';
 
 /* Styled Components */
+
+/* Routes */
+import { getCoursePageRoute } from 'Routes';
+
+/* Utils */
+import { termCodeToDate, formatCourseCode, processRating } from 'utils/Misc';
+import withModal from 'components/modal/withModal';
+import {
+  TRANSCRIPT_UPLOAD_MODAL,
+  COURSE_REVIEW_COURSE_MODAL,
+} from 'constants/Modal';
 import {
   ProfileCoursesWrapper,
   ProfileCoursesCourse,
@@ -25,21 +36,6 @@ import {
   YourCoursesWrapper,
   HeaderText,
 } from './styles/ProfileCourses';
-
-/* Routes */
-import { getCoursePageRoute } from '../../Routes';
-
-/* Utils */
-import {
-  termCodeToDate,
-  formatCourseCode,
-  processRating,
-} from '../../utils/Misc';
-import withModal from '../../components/modal/withModal';
-import {
-  TRANSCRIPT_UPLOAD_MODAL,
-  COURSE_REVIEW_COURSE_MODAL,
-} from '../../constants/Modal';
 
 const ProfileCourses = ({
   theme,

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link as RouterLink } from 'react-router-dom';
-import { Heading1, Body, Link, Heading2 } from '../../../constants/Mixins';
+import { Heading1, Body, Link, Heading2 } from 'constants/Mixins';
 
 export const ProfileCoursesWrapper = styled.div`
   display: flex;

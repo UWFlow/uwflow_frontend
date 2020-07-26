@@ -1,14 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { courseNotificationEmailModalClose } from 'data/actions/ModalActions';
+import { PROFILE_PAGE_ROUTE } from 'Routes';
 import EmailInputForm from './EmailInputForm';
 import { FormText, FormLink } from './styles/EmailInputForm';
 
 /* Selectors */
-import { courseNotificationEmailModalClose } from '../../data/actions/ModalActions';
 
 /* Routes */
-import { PROFILE_PAGE_ROUTE } from '../../Routes';
 
 const renderText = (history, dispatch) => () => (
   <FormText>

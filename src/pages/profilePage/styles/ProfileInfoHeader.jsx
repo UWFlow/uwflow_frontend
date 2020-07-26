@@ -1,16 +1,10 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import FadeIn from 'react-fade-in';
-import ProfileHeader from '../../../img/user.svg';
+import ProfileHeader from 'img/user.svg';
 
 /* Mixins */
-import {
-  Heading1,
-  PageContent,
-  Heading2,
-  Body,
-  Hover,
-} from '../../../constants/Mixins';
+import { Heading1, PageContent, Heading2, Body, Hover } from 'constants/Mixins';
 
 export const ProfileInfoHeaderWrapper = styled.div`
   width: 100%;

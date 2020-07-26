@@ -7,7 +7,7 @@ import {
   PageContent,
   BoxShadow,
   PageWrapper,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`
   ${PageWrapper}

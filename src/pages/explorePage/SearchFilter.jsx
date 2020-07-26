@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { X } from 'react-feather';
 
-import RadioButton from '../../components/input/RadioButton';
-import MultiSelectButton from '../../components/input/MultiSelectButton';
-import DiscreteSlider from '../../components/input/DiscreteSlider';
-import DropdownList from '../../components/input/DropdownList';
+import RadioButton from 'components/input/RadioButton';
+import MultiSelectButton from 'components/input/MultiSelectButton';
+import DiscreteSlider from 'components/input/DiscreteSlider';
+import DropdownList from 'components/input/DropdownList';
 
 /* Styled Components */
+import {
+  termCodeToDate,
+  getCurrentTermCode,
+  getNextTermCode,
+  formatCourseCode,
+} from 'utils/Misc';
 import {
   SearchFilterWrapper,
   SearchFilterHeader,
@@ -23,12 +29,6 @@ import {
   HeaderButtonWrapper,
   XWrapper,
 } from './styles/SearchFilter';
-import {
-  termCodeToDate,
-  getCurrentTermCode,
-  getNextTermCode,
-  formatCourseCode,
-} from '../../utils/Misc';
 
 const courseNumberOptions = [1, 2, 3, 4].map((num) => (
   <span key={num}>

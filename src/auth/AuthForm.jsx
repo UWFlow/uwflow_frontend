@@ -3,6 +3,18 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 /* Styled Components */
+
+/* Child Components */
+
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { makePOSTRequest } from 'utils/Api';
+import { LOGGED_IN } from 'data/actions/AuthActions';
+import { AUTH_ERRORS, DEFAULT_ERROR, AUTH_SUCCESS } from 'constants/Messages';
+import withModal from 'components/modal/withModal';
+import { RESET_PASSWORD_MODAL } from 'constants/Modal';
+import SocialLoginContent from './SocialLoginContent';
+import SignupContent from './SignupContent';
+import LoginContent from './LoginContent';
 import {
   Wrapper,
   ContentWrapper,
@@ -13,22 +25,6 @@ import {
   SwapModalWrapper,
   SwapModalLink,
 } from './styles/AuthForm';
-
-/* Child Components */
-import LoginContent from './LoginContent';
-import SignupContent from './SignupContent';
-import SocialLoginContent from './SocialLoginContent';
-
-import { PRIVACY_PAGE_ROUTE } from '../Routes';
-import { makePOSTRequest } from '../utils/Api';
-import { LOGGED_IN } from '../data/actions/AuthActions';
-import {
-  AUTH_ERRORS,
-  DEFAULT_ERROR,
-  AUTH_SUCCESS,
-} from '../constants/Messages';
-import withModal from '../components/modal/withModal';
-import { RESET_PASSWORD_MODAL } from '../constants/Modal';
 
 export const AuthForm = ({
   onLoginComplete,

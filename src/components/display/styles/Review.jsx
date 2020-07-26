@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
 import breakpoint from 'styled-components-breakpoint';
 
-import { Card, Body, Link, Hover } from '../../../constants/Mixins';
+import { Card, Body, Link, Hover } from 'constants/Mixins';
 
 export const ReviewWrapper = styled.div`
   margin-bottom: 32px;

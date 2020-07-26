@@ -4,24 +4,24 @@ import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 
 /* Styled Components */
+
+/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
+import ProfInfoHeader from 'pages/profPage/ProfInfoHeader';
+import ProfReviews from 'pages/profPage/ProfReviews';
+
+/* Queries */
+import { GET_PROF } from 'graphql/queries/prof/Prof';
+
+/* Constants */
+import { NOT_FOUND, DEFAULT_ERROR } from 'constants/Messages';
 import {
   ProfPageWrapper,
   ColumnWrapper,
   Column1,
   Column2,
 } from './styles/ProfPage';
-
-/* Child Components */
-import LoadingSpinner from '../../components/display/LoadingSpinner';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
-import ProfInfoHeader from './ProfInfoHeader';
-import ProfReviews from './ProfReviews';
-
-/* Queries */
-import { GET_PROF } from '../../graphql/queries/prof/Prof';
-
-/* Constants */
-import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
 
 const ProfPageContent = ({ prof }) => {
   return (

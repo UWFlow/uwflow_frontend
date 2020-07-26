@@ -3,6 +3,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
+
+/* Child Components */
+import CollapsibleContainer from 'components/display/CollapsibleContainer';
+import ShortlistStar from 'components/input/ShortlistStar';
+
+/* Selectors */
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+
+import { formatCourseCode } from 'utils/Misc';
+import { getCoursePageRoute } from 'Routes';
 import {
   ShortlistBoxWrapper,
   ShortlistHeading,
@@ -13,16 +23,6 @@ import {
   ShortlistCourseName,
   ShortlistCoursePlaceholder,
 } from './styles/ShortlistBox';
-
-/* Child Components */
-import CollapsibleContainer from '../../components/display/CollapsibleContainer';
-import ShortlistStar from '../../components/input/ShortlistStar';
-
-/* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
-import { formatCourseCode } from '../../utils/Misc';
-import { getCoursePageRoute } from '../../Routes';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

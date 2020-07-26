@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
-import { WelcomePageWrapper } from './styles/WelcomePage';
 
 /* Child Components */
-import TranscriptUploadModalContent from '../../components/dataUploadModals/TranscriptUploadModalContent';
-import ScheduleUploadModalContent from '../../components/dataUploadModals/ScheduleUploadModalContent';
+import TranscriptUploadModalContent from 'components/dataUploadModals/TranscriptUploadModalContent';
+import ScheduleUploadModalContent from 'components/dataUploadModals/ScheduleUploadModalContent';
 
 /* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
 
 /* Constants */
-import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../Routes';
+import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from 'Routes';
+import { WelcomePageWrapper } from './styles/WelcomePage';
 
 const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),

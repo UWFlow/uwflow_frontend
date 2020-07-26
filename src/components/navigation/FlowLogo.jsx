@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { LANDING_PAGE_ROUTE } from 'Routes';
 import { FlowLogoWrapper, BlueText } from './styles/FlowLogo';
-import { LANDING_PAGE_ROUTE } from '../../Routes';
 
 const FlowLogo = () => (
   <FlowLogoWrapper to={LANDING_PAGE_ROUTE}>

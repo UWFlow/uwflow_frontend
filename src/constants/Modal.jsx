@@ -1,13 +1,13 @@
 import React from 'react';
 
 /* Modal Content */
-import AuthModalContent from '../auth/AuthModalContent';
-import ScheduleUploadModalContent from '../components/dataUploadModals/ScheduleUploadModalContent';
-import TranscriptUploadModalContent from '../components/dataUploadModals/TranscriptUploadModalContent';
-import CourseReviewCourseBox from '../components/common/CourseReviewCourseBox';
-import CourseNotificationEmailModalContent from '../components/emailInputModals/CourseNotificationEmailModalContent';
-import EditEmailModalContent from '../components/emailInputModals/EditEmailModalContent';
-import ResetPasswordModalContent from '../auth/ResetPasswordModalContent';
+import AuthModalContent from 'auth/AuthModalContent';
+import ScheduleUploadModalContent from 'components/dataUploadModals/ScheduleUploadModalContent';
+import TranscriptUploadModalContent from 'components/dataUploadModals/TranscriptUploadModalContent';
+import CourseReviewCourseBox from 'components/common/CourseReviewCourseBox';
+import CourseNotificationEmailModalContent from 'components/emailInputModals/CourseNotificationEmailModalContent';
+import EditEmailModalContent from 'components/emailInputModals/EditEmailModalContent';
+import ResetPasswordModalContent from 'auth/ResetPasswordModalContent';
 
 /* Modal Constants */
 export const AUTH_MODAL = 'AUTH_MODAL';

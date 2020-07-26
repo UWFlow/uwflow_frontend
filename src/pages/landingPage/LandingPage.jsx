@@ -3,6 +3,18 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+
+/* Constants */
+import { PROFILE_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from 'Routes';
+
+/* Child Components */
+import AuthForm from 'auth/AuthForm';
+import SearchBar from 'components/navigation/SearchBar';
+import ProfileDropdown from 'components/navigation/ProfileDropdown';
 import {
   ProfileWrapper,
   Nav,
@@ -15,18 +27,6 @@ import {
   LogoText,
   AuthContent,
 } from './styles/LandingPage';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
-/* Constants */
-import { PROFILE_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from '../../Routes';
-
-/* Child Components */
-import AuthForm from '../../auth/AuthForm';
-import SearchBar from '../../components/navigation/SearchBar';
-import ProfileDropdown from '../../components/navigation/ProfileDropdown';
 
 const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),

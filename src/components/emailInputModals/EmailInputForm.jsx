@@ -4,23 +4,23 @@ import { useMutation } from 'react-apollo';
 
 /* Styled Components */
 import { toast } from 'react-toastify';
+
+/* Child Components */
+import Button from 'components/input/Button';
+import Textbox from 'components/input/Textbox';
+
+/* GraphQL */
+import { UPDATE_USER_EMAIL } from 'graphql/mutations/Email';
+
+/* Utils */
+import { validateEmail } from 'utils/Email';
+import { EMAIL_ERROR, EMAIL_UPDATE_SUCCESS } from 'constants/Messages';
 import {
   EmailInputFormWrapper,
   FormTitle,
   TextboxWrapper,
   ButtonsWrapper,
 } from './styles/EmailInputForm';
-
-/* Child Components */
-import Button from '../input/Button';
-import Textbox from '../input/Textbox';
-
-/* GraphQL */
-import { UPDATE_USER_EMAIL } from '../../graphql/mutations/Email';
-
-/* Utils */
-import { validateEmail } from '../../utils/Email';
-import { EMAIL_ERROR, EMAIL_UPDATE_SUCCESS } from '../../constants/Messages';
 
 const EmailInputForm = ({
   email,

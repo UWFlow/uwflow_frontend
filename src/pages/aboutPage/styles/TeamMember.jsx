@@ -7,7 +7,7 @@ import {
   BoxShadow,
   Link,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const TeamMembersWrapper = styled.div`
   display: flex;

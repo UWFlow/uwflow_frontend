@@ -5,6 +5,31 @@ import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
+
+/* Child Components */
+import Review from 'components/display/Review';
+import DropdownList from 'components/input/DropdownList';
+import LoadingSpinner from 'components/display/LoadingSpinner';
+
+/* Hooks */
+import useProfReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from 'data/hooks/UseProfReviewsReducer';
+
+/* GraphQL Queries */
+import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview.jsx';
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+
+/* Utils */
+import { formatCourseCode, processRating } from 'utils/Misc';
+import { sortReviews, sortByReviews, sortByLiked } from 'utils/Review';
+import { getCoursePageRoute } from 'Routes';
+import {
+  MIN_REVIEWS_SHOWN_PROF,
+  REVIEWS_DIV_ID,
+} from 'constants/PageConstants';
 import {
   ProfCourseReviewWrapper,
   ReviewsForSingleCourseWrapper,
@@ -24,31 +49,6 @@ import {
   CourseDropdownsWrapper,
   SortFilterDropdownWrapper,
 } from './styles/ProfReviews';
-
-/* Child Components */
-import Review from '../../components/display/Review';
-import DropdownList from '../../components/input/DropdownList';
-import LoadingSpinner from '../../components/display/LoadingSpinner';
-
-/* Hooks */
-import useProfReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from '../../data/hooks/UseProfReviewsReducer';
-
-/* GraphQL Queries */
-import { buildProfReviewQuery } from '../../graphql/queries/prof/ProfReview.jsx';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-
-/* Utils */
-import { formatCourseCode, processRating } from '../../utils/Misc';
-import { sortReviews, sortByReviews, sortByLiked } from '../../utils/Review';
-import { getCoursePageRoute } from '../../Routes';
-import {
-  MIN_REVIEWS_SHOWN_PROF,
-  REVIEWS_DIV_ID,
-} from '../../constants/PageConstants';
 
 const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
@@ -71,6 +71,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
         payload: data,
       });
     }
+    // eslint-disable-next-line
   }, [data]);
 
   if (loading) {

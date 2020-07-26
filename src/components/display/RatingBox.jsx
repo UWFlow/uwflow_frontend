@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 /* Selectors */
-import {
-  getWidth,
-  getIsBrowserDesktop,
-} from '../../data/reducers/BrowserReducer';
+import { getWidth, getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
 
 /* Styled Components */
+
+/* Constants */
+import { REVIEWS_DIV_ID } from 'constants/PageConstants';
+
+/* Child Components */
+import ProgressBar from 'components/display/ProgressBar';
+import CircularPercentage from 'components/statistics/CircularPercentage';
+import { processRating } from 'utils/Misc';
 import {
   RatingBoxWrapper,
   CircularPercentageWrapper,
@@ -22,14 +27,6 @@ import {
   NumCommentsWrapper,
   NumRatingsWrapper,
 } from './styles/RatingBox';
-
-/* Constants */
-import { REVIEWS_DIV_ID } from '../../constants/PageConstants';
-
-/* Child Components */
-import ProgressBar from './ProgressBar';
-import CircularPercentage from '../statistics/CircularPercentage';
-import { processRating } from '../../utils/Misc';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;

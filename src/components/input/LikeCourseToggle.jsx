@@ -5,29 +5,29 @@ import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
 
 /* Styled Components */
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+
+/* GraphQL */
+import { UPSERT_LIKED_REVIEW } from 'graphql/mutations/Review';
+import {
+  REFETCH_RATINGS,
+  REFETCH_COURSE_REVIEWS,
+} from 'graphql/queries/course/Course';
+import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
+
+/* Utils */
+import withModal from 'components/modal/withModal';
+import { getUserId } from 'utils/Auth';
+
+/* Constants */
+import { AUTH_MODAL } from 'constants/Modal';
 import {
   LikeCourseToggleWrapper,
   LikeCourseToggleButton,
 } from './styles/LikeCourseToggle';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-
-/* GraphQL */
-import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import {
-  REFETCH_RATINGS,
-  REFETCH_COURSE_REVIEWS,
-} from '../../graphql/queries/course/Course';
-import { REFETCH_USER_REVIEW } from '../../graphql/queries/user/User';
-import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseReview';
-
-/* Utils */
-import withModal from '../modal/withModal';
-import { getUserId } from '../../utils/Auth';
-
-/* Constants */
-import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),

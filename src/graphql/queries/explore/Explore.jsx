@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-import SearchFragment from '../../fragments/SearchFragment';
+import SearchFragment from 'graphql/fragments/SearchFragment';
 
-import { MAX_SEARCH_TERMS } from '../../../constants/Search';
+import { MAX_SEARCH_TERMS } from 'constants/Search';
 
 const exploreAllQuery = gql`
   query EXPLORE_ALL {

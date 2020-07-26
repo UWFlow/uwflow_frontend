@@ -8,17 +8,22 @@ import useOnClickOutside from 'use-onclickoutside';
 import Highlighter from 'react-highlight-words';
 
 /* Child Components */
-import Tooltip from '../display/Tooltip';
+import Tooltip from 'components/display/Tooltip';
 
 /* Routes */
 import {
   EXPLORE_PAGE_ROUTE,
   getCoursePageRoute,
   getProfPageRoute,
-} from '../../Routes';
+} from 'Routes';
 
-import { formatCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from 'utils/Misc';
 
+import Textbox from 'components/input/Textbox';
+import { useSearchContext } from 'search/SearchProvider';
+
+/* Constants */
+import KeycodeConstants from 'constants/KeycodeConstants';
 import {
   SearchResultsWrapper,
   SearchBarWrapper,
@@ -32,12 +37,6 @@ import {
   ExploreSideButton,
   EllipsisSpan,
 } from './styles/SearchBar';
-
-import Textbox from '../input/Textbox';
-import { useSearchContext } from '../../search/SearchProvider';
-
-/* Constants */
-import KeycodeConstants from '../../constants/KeycodeConstants';
 
 const Highlight = ({ children }) => <UnderlinedText>{children}</UnderlinedText>;
 

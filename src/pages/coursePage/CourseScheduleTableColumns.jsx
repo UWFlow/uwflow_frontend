@@ -1,5 +1,9 @@
 import React, { Fragment } from 'react';
 
+import { getProfPageRoute } from 'Routes';
+import { processDateString, weekDayLetters } from 'utils/Misc';
+import { LEC, LAB, TUT } from 'constants/PageConstants';
+import ScheduleNotificationBell from './ScheduleNotificationBell';
 import {
   SectionCellWrapper,
   SectionContentWrapper,
@@ -13,12 +17,6 @@ import {
   BoldWeekDay,
   DateText,
 } from './styles/CourseSchedule';
-
-import ScheduleNotificationBell from './ScheduleNotificationBell';
-
-import { getProfPageRoute } from '../../Routes';
-import { processDateString, weekDayLetters } from '../../utils/Misc';
-import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
 const contentSpace = (spaces) => {
   const content = [];

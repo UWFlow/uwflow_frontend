@@ -9,7 +9,7 @@ import {
   Body,
   BoxShadow,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const CourseReviewWrapper = styled.div`
   display: flex;

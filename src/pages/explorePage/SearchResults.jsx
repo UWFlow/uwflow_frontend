@@ -2,19 +2,19 @@ import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
-import { SearchResultsContent, ResultsError } from './styles/SearchResults';
 
 /* Child Components */
-import Table from '../../components/display/Table';
-import TabContainer from '../../components/display/TabContainer';
-import { courseColumns, profColumns } from './ExploreTableData';
+import Table from 'components/display/Table';
+import TabContainer from 'components/display/TabContainer';
 
 /* Utils */
-import { getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
+import { getCurrentTermCode, getNextTermCode } from 'utils/Misc';
 
 /* Constants */
-import { SEARCH_RESULTS_PER_PAGE } from '../../constants/Search';
-import { EXPLORE_COURSES_ERROR } from '../../constants/Messages';
+import { SEARCH_RESULTS_PER_PAGE } from 'constants/Search';
+import { EXPLORE_COURSES_ERROR } from 'constants/Messages';
+import { courseColumns, profColumns } from './ExploreTableData';
+import { SearchResultsContent, ResultsError } from './styles/SearchResults';
 
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();

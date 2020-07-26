@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 /* Child Components */
-import Textbox from '../components/input/Textbox';
-import Button from '../components/input/Button';
+import Textbox from 'components/input/Textbox';
+import Button from 'components/input/Button';
 
 /* Utils */
-import { makePOSTRequest } from '../utils/Api';
+import { makePOSTRequest } from 'utils/Api';
 
 /* Constants */
 import {
@@ -14,15 +14,16 @@ import {
   RESET_PASSWORD_KEY_EMAIL_ENDPOINT,
   RESET_PASSWORD_VERIFY_KEY_ENDPOINT,
   RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
-} from '../constants/Api';
-import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
+} from 'constants/Api';
+import { MIN_PASSWORD_LENGTH } from 'constants/Auth';
 import {
   RESET_PASSWORD_ERRORS,
   DEFAULT_ERROR,
   PASSWORD_RESET_SUCCESS,
-} from '../constants/Messages';
+} from 'constants/Messages';
 
 /* Styled Components */
+import { validateEmail } from 'utils/Email';
 import {
   FormWrapper,
   Header,
@@ -32,7 +33,6 @@ import {
   TextboxWrapper,
   GreyLink,
 } from './styles/ResetPasswordModal';
-import { validateEmail } from '../utils/Email';
 
 const ResetPasswordForm = ({
   onSubmit,

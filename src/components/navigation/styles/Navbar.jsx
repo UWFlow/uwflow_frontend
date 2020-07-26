@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { PageContent, BottomBoxShadow } from '../../../constants/Mixins';
-import { NAVBAR_HEIGHT } from '../../../constants/PageConstants';
+import { PageContent, BottomBoxShadow } from 'constants/Mixins';
+import { NAVBAR_HEIGHT } from 'constants/PageConstants';
 
 export const NavbarWrapper = styled.div`
   top: 0;

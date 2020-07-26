@@ -3,6 +3,10 @@ import { ChevronLeft, ChevronRight } from 'react-feather';
 import moment from 'moment/moment';
 
 /* Styled components */
+
+import { getCoursePageRoute } from 'Routes';
+import { formatCourseCode } from 'utils/Misc';
+import { LEC, LAB, TUT } from 'constants/PageConstants';
 import {
   CalendarWrapper,
   CalendarNavWrapper,
@@ -22,10 +26,6 @@ import {
   CourseCode,
   HOUR_HEIGHT,
 } from './styles/Calendar';
-
-import { getCoursePageRoute } from '../../Routes';
-import { formatCourseCode } from '../../utils/Misc';
-import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
 const getDateRangeString = (start, end) => {
   if (start.year() !== end.year()) {

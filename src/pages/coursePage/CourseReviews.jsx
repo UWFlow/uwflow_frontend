@@ -5,6 +5,37 @@ import { useQuery } from 'react-apollo';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
+
+/* Child Components */
+import TabContainer from 'components/display/TabContainer';
+import Review from 'components/display/Review';
+import DropdownList from 'components/input/DropdownList';
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import CollapsibleContainer from 'components/display/CollapsibleContainer';
+
+/* Selectors */
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+
+/* GraphQL Queries */
+import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview.jsx';
+
+/* Constants */
+import {
+  MIN_REVIEWS_SHOWN_COURSE,
+  MIN_REVIEWS_SHOWN_PROF,
+  REVIEWS_DIV_ID,
+} from 'constants/PageConstants';
+
+/* Hooks */
+import useCourseReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from 'data/hooks/UseCourseReviewsReducer';
+
+/* Utils */
+import { sortReviews, sortByReviews, sortByLiked } from 'utils/Review';
+import { getProfPageRoute } from 'Routes';
+import { processRating } from 'utils/Misc';
 import {
   CourseReviewWrapper,
   CourseCourseReviewsWrapper,
@@ -26,37 +57,6 @@ import {
   ShowMoreReviewsText,
   ProfReviewDropdownsWrapper,
 } from './styles/CourseReviews';
-
-/* Child Components */
-import TabContainer from '../../components/display/TabContainer';
-import Review from '../../components/display/Review';
-import DropdownList from '../../components/input/DropdownList';
-import LoadingSpinner from '../../components/display/LoadingSpinner';
-import CollapsibleContainer from '../../components/display/CollapsibleContainer';
-
-/* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-
-/* GraphQL Queries */
-import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseReview.jsx';
-
-/* Constants */
-import {
-  MIN_REVIEWS_SHOWN_COURSE,
-  MIN_REVIEWS_SHOWN_PROF,
-  REVIEWS_DIV_ID,
-} from '../../constants/PageConstants';
-
-/* Hooks */
-import useCourseReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from '../../data/hooks/UseCourseReviewsReducer';
-
-/* Utils */
-import { sortReviews, sortByReviews, sortByLiked } from '../../utils/Review';
-import { getProfPageRoute } from '../../Routes';
-import { processRating } from '../../utils/Misc';
 
 const CourseCourseReviews = ({
   reviews,
@@ -222,6 +222,7 @@ const CourseProfReviews = ({
           )}
         </ReviewsForSingleProfWrapper>
       )),
+    // eslint-disable-next-line
     [reviewsByProf, showingReviewsMap, selectedSort, curSelectedSort],
   );
 
@@ -258,6 +259,7 @@ const CourseReviews = ({
         payload: data,
       });
     }
+    // eslint-disable-next-line
   }, [data]);
 
   if (loading) {

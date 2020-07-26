@@ -5,8 +5,8 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 
-import { GRAPHQL_ENDPOINT } from '../constants/Api';
-import { logOut } from '../utils/Auth';
+import { GRAPHQL_ENDPOINT } from 'constants/Api';
+import { logOut } from 'utils/Auth';
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

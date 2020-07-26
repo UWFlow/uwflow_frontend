@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import FadeIn from 'react-fade-in';
-import PageHeaderBackground from '../../../img/generic.svg';
+import PageHeaderBackground from 'img/generic.svg';
 import {
   PageContent,
   Heading2,
   Heading3,
   Body,
   PageWrapper as _PageWrapper,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const PageWrapper = styled.div`
   ${_PageWrapper}

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Body, Link, Hover } from '../../../constants/Mixins';
+import { Body, Link, Hover } from 'constants/Mixins';
 
 export const LastUpdatedText = styled.div`
   ${Body}

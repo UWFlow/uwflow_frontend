@@ -2,21 +2,22 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 /* Images */
-import AyushImg from '../../img/about/ayush.jpg';
-import BobImg from '../../img/about/bob.jpg';
-import DerrekImg from '../../img/about/derrek.jpg';
-import DmytroImg from '../../img/about/dmytro.jpg';
-import EdwinImg from '../../img/about/edwin.jpg';
-import MaxImg from '../../img/about/max.jpg';
-import DavidImg from '../../img/about/david.jpg';
-import MackImg from '../../img/about/mack.jpg';
-import SandyImg from '../../img/about/sandy.jpg';
-import JamieImg from '../../img/about/jamie.jpg';
-import JeffImg from '../../img/about/jeff.jpg';
-import TerranceImg from '../../img/about/terrance.jpg';
-import ShubhamImg from '../../img/about/shubham.jpg';
+import AyushImg from 'img/about/ayush.jpg';
+import BobImg from 'img/about/bob.jpg';
+import DerrekImg from 'img/about/derrek.jpg';
+import DmytroImg from 'img/about/dmytro.jpg';
+import EdwinImg from 'img/about/edwin.jpg';
+import MaxImg from 'img/about/max.jpg';
+import DavidImg from 'img/about/david.jpg';
+import MackImg from 'img/about/mack.jpg';
+import SandyImg from 'img/about/sandy.jpg';
+import JamieImg from 'img/about/jamie.jpg';
+import JeffImg from 'img/about/jeff.jpg';
+import TerranceImg from 'img/about/terrance.jpg';
+import ShubhamImg from 'img/about/shubham.jpg';
 
 /* Styled Components */
+import { SEO_DESCRIPTIONS } from 'constants/Messages.jsx';
 import {
   PageWrapper,
   PageHeader,
@@ -32,7 +33,6 @@ import {
 import TeamMember from './TeamMember.jsx';
 
 /* Constants */
-import { SEO_DESCRIPTIONS } from '../../constants/Messages.jsx';
 
 const Contributor = ({ name, about, gh }) => (
   <li>

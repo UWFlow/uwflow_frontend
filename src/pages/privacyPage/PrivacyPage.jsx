@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 /* Styled Components */
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import {
   PageWrapper,
   PageHeader,
@@ -13,7 +14,6 @@ import {
 } from './styles/PrivacyPage';
 
 /* Constants */
-import { SEO_DESCRIPTIONS } from '../../constants/Messages';
 
 const PrivacyPage = () => (
   <PageWrapper>
