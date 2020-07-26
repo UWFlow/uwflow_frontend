@@ -21,8 +21,7 @@ import { getKittenFromID } from 'utils/Kitten';
 import withModal from 'components/modal/withModal';
 
 /* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 import { logOut } from 'utils/Auth';
 
 /* Constants */
@@ -35,7 +34,7 @@ import {
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const renderProfilePicture = (data, dispatch, isLanding) => {

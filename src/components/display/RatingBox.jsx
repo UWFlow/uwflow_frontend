@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 /* Selectors */
-import { getWidth, getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 
 /* Styled Components */
 
@@ -32,7 +32,7 @@ export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
 
 const mapStateToProps = (state) => ({
-  width: getWidth(state),
+  width: state.browser.width,
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 

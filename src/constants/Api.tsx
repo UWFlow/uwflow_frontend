@@ -17,7 +17,7 @@ export const SCHEDULE_PARSE_ENDPOINT = '/parse/schedule';
 export const TRANSCRIPT_PARSE_ENDPOINT = '/parse/transcript';
 
 export const SEARCH_DATA_ENDPOINT = '/data/search';
-export const CALENDAR_EXPORT_ENDPOINT = (secretID) =>
+export const CALENDAR_EXPORT_ENDPOINT = (secretID: string) =>
   `/calendar/${secretID}.ics`;
 export const GOOGLE_CALENDAR_URL = `https://calendar.google.com/calendar/r?cid=`;
 

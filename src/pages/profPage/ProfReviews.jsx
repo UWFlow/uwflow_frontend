@@ -17,10 +17,7 @@ import useProfReviewsReducer, {
 } from 'data/hooks/UseProfReviewsReducer';
 
 /* GraphQL Queries */
-import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview.jsx';
-
-/* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview';
 
 /* Utils */
 import { formatCourseCode, processRating } from 'utils/Misc';
@@ -51,7 +48,7 @@ import {
 } from './styles/ProfReviews';
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const ProfReviews = ({ profID, theme, isLoggedIn }) => {

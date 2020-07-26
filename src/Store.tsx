@@ -1,4 +1,4 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
 import { debounce } from 'lodash';
 
@@ -7,14 +7,10 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
 /* Reducers */
-import DataReducer from './data/reducers/DataReducer';
+import rootReducer from './data/reducers/RootReducer';
 
 /* Actions */
 import { BrowserWindowResized } from './data/actions/BrowserActions';
-
-const rootReducer = combineReducers({
-  data: DataReducer,
-});
 
 const loggerMiddleware = createLogger({
   predicate: () => process.env.NODE_ENV === 'development',

@@ -2,14 +2,17 @@ interface POSTRequestFlags {
   noStringify?: boolean;
 }
 
-// makes POST request to endpoint
-// returns response body and status as array
+/*
+ * Makes POST request to endpoint and
+ * returns the response body and status
+ */
+// TODO add a return type
 export const makePOSTRequest = async (
   endpoint: string,
   data: any,
   options: Record<string, string> = {},
   flags: POSTRequestFlags = {},
-): Promise<[JSON, number]> => {
+): Promise<[any, number]> => {
   const processedData = flags.noStringify ? data : JSON.stringify(data);
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -19,8 +22,10 @@ export const makePOSTRequest = async (
     },
     body: processedData,
   });
+
   const text = await res.text();
   const status = await res.status;
+
   let respJSON: JSON;
   try {
     respJSON = JSON.parse(text);
@@ -33,9 +38,9 @@ export const makePOSTRequest = async (
 export const makeAuthenticatedPOSTRequest = async (
   endpoint: string,
   data: any,
-  options: Record<string, string>,
-  flags: POSTRequestFlags,
-): Promise<[JSON, number]> => {
+  options: Record<string, string> = {},
+  flags: POSTRequestFlags = { noStringify: false },
+): Promise<[any, number]> => {
   return makePOSTRequest(
     endpoint,
     data,

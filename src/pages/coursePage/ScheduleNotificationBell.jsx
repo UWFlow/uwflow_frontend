@@ -7,11 +7,6 @@ import { toast } from 'react-toastify';
 /* Child Components */
 import Tooltip from 'components/display/Tooltip';
 
-/* Styled Components */
-
-/* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-
 /* GraphQL */
 import {
   DELETE_SECTION_SUBSCRIPTION,
@@ -28,11 +23,11 @@ import {
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_TOOLTIP,
 } from 'constants/Messages';
-import { AUTH_MODAL, COURSE_NOTIFICATION_EMAIL_MODAL } from 'constants/Modal';
+import { AUTH_MODAL, NOTIFICATION_EMAIL_MODAL } from 'constants/Modal';
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const ScheduleNotificationBell = ({
@@ -102,7 +97,7 @@ const ScheduleNotificationBell = ({
       // TODO: chain insertSubscription and setSelected to fire after user has entered email
       // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
       // TODO: Find way to pass callbacks to top level modal
-      openModal(COURSE_NOTIFICATION_EMAIL_MODAL, emailModalProps);
+      openModal(NOTIFICATION_EMAIL_MODAL, emailModalProps);
     } else {
       insertSubscription({
         variables: { user_id: userID, section_id: sectionID },

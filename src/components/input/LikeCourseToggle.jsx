@@ -6,9 +6,6 @@ import { useMutation } from 'react-apollo';
 
 /* Styled Components */
 
-/* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from 'graphql/mutations/Review';
 import {
@@ -30,7 +27,7 @@ import {
 } from './styles/LikeCourseToggle';
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const LikeCourseToggle = ({

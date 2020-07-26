@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
-export const buildCourseReviewQuery = (loggedIn) => gql`
+export const buildCourseReviewQuery = (loggedIn: boolean) => gql`
   query COURSE_REVIEWS($id: Int) {
     review(where: {
       course_id: { _eq: $id },

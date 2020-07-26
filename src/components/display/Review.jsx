@@ -11,8 +11,7 @@ import moment from 'moment/moment';
 /* Child Components */
 
 /* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 
 /* GraphQL */
 import {
@@ -55,7 +54,7 @@ import {
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const MetricIfExists = (metrics, metric) => {

@@ -11,8 +11,7 @@ import LoadingSpinner from 'components/display/LoadingSpinner';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 
 /* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 
 /* Queries */
 import { GET_USER } from 'graphql/queries/user/User';
@@ -39,7 +38,7 @@ import {
 } from './styles/ProfilePage';
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 

@@ -9,7 +9,7 @@ import CollapsibleContainer from 'components/display/CollapsibleContainer';
 import ShortlistStar from 'components/input/ShortlistStar';
 
 /* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 
 import { formatCourseCode } from 'utils/Misc';
 import { getCoursePageRoute } from 'Routes';
