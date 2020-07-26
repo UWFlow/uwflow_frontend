@@ -28,7 +28,7 @@ export const HeaderRow = styled.div`
 
 export const HeaderCell = styled.div`
   display: table-cell;
-  text-align: ${({ align }) => (align ? align : 'left')};
+  text-align: ${({ align }) => align || 'left'};
   padding-top: 16px;
   padding-bottom: 16px;
   vertical-align: top;
@@ -87,12 +87,12 @@ export const Row = styled.div`
 
 export const Cell = styled.div`
   display: table-cell;
-  padding: ${({ padding }) => (padding ? padding : '8px 0')};
+  padding: ${({ padding }) => padding || '8px 0'};
   padding-left: ${({ align }) => (align === 'right' ? '8px' : '0')};
   padding-right: ${({ align }) => (align === 'right' ? '0' : '8px')};
   max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : '100%')};
 
-  text-align: ${({ align }) => (align ? align : 'left')};
+  text-align: ${({ align }) => align || 'left'};
   vertical-align: top;
   height: 0;
 

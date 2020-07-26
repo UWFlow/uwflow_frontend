@@ -24,7 +24,7 @@ import { getCoursePageRoute } from '../../Routes';
 
 const ProfInfoHeader = ({ prof }) => {
   const { liked, clear, engaging, filled_count, comment_count } = prof.rating;
-  const profCourses = prof.prof_courses.map(course => course.course.code);
+  const profCourses = prof.prof_courses.map((course) => course.course.code);
   const profCourseLinks = profCourses.map((courseCode, i) => (
     <span key={courseCode}>
       <CourseLink to={getCoursePageRoute(courseCode)}>

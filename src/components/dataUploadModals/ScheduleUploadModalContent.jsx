@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { withTheme } from 'styled-components';
-import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Clipboard } from 'react-feather';
 import { toast } from 'react-toastify';
+import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 
 /* Styled Components */
 import {
@@ -67,7 +67,7 @@ const ScheduleUploadModalContent = ({
   const [scheduleText, setScheduleText] = useState('');
   const [uploadError, setUploadError] = useState('');
 
-  const handleSchedulePaste = async event => {
+  const handleSchedulePaste = async (event) => {
     setScheduleText(event.currentTarget.value);
 
     if (event.currentTarget.value === '') {
@@ -106,7 +106,7 @@ const ScheduleUploadModalContent = ({
     }
   };
 
-  const handleKeyPress = event => {
+  const handleKeyPress = (event) => {
     const charCode = event.which;
     if (
       !(
@@ -123,7 +123,6 @@ const ScheduleUploadModalContent = ({
     ) {
       event.preventDefault();
       event.stopPropagation();
-      return;
     }
   };
 
@@ -165,7 +164,7 @@ const ScheduleUploadModalContent = ({
               >
                 Login to Quest
               </Link>
-              and click "Enroll"
+              and click &quot;Enroll&quot;
             </InstructionText>
           </InstructionWrapper>
           <ScheduleStepPicture
@@ -214,7 +213,7 @@ const ScheduleUploadModalContent = ({
         </StepWrapper>
       </ContentSteps>
       {showSkipStepButton && (
-        <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+        <SkipStepWrapper onClick={onSkip}>skip this step &gt;</SkipStepWrapper>
       )}
     </ContentWrapper>
   );

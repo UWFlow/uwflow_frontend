@@ -30,8 +30,8 @@ import {
   formatCourseCode,
 } from '../../utils/Misc';
 
-let courseNumberOptions = [1, 2, 3, 4].map(num => (
-  <span>
+const courseNumberOptions = [1, 2, 3, 4].map((num) => (
+  <span key={num}>
     <BoldText>{num}</BoldText>XX
   </span>
 ));
@@ -74,7 +74,7 @@ const SearchFilter = ({
         numNodes={ratingFilters.length}
         currentNode={numRatings}
         color={theme.primary}
-        onUpdate={value => setNumRatings(value[0])}
+        onUpdate={(value) => setNumRatings(value[0])}
         showTicks={false}
         fullWidthMobile
       />
@@ -93,7 +93,7 @@ const SearchFilter = ({
             <MultiSelectButton
               options={courseNumberOptions}
               selected={filterState.courseCodes}
-              onClick={idx => {
+              onClick={(idx) => {
                 setCourseCodes([
                   ...filterState.courseCodes.slice(0, idx),
                   !filterState.courseCodes[idx],
@@ -136,11 +136,11 @@ const SearchFilter = ({
               <CourseFilterDropdown>
                 <DropdownList
                   selectedIndex={filterState.courseTaught}
-                  options={profCourses.map(code =>
+                  options={profCourses.map((code) =>
                     code === 'all courses' ? code : formatCourseCode(code),
                   )}
                   color={theme.courses}
-                  onChange={idx => setCourseTaught(idx)}
+                  onChange={(idx) => setCourseTaught(idx)}
                   searchable
                 />
               </CourseFilterDropdown>
@@ -148,7 +148,10 @@ const SearchFilter = ({
           </SearchFilterSection>
         </>
       )}
-      <ResetButton onClick={resetFilters} onMouseDown={e => e.preventDefault()}>
+      <ResetButton
+        onClick={resetFilters}
+        onMouseDown={(e) => e.preventDefault()}
+      >
         <XWrapper>
           <X size={16} />
         </XWrapper>

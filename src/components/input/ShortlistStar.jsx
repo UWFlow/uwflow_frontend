@@ -33,7 +33,7 @@ import { getUserId } from '../../utils/Auth';
 import { SHORTLIST_ERROR } from '../../constants/Messages';
 import { AUTH_MODAL } from '../../constants/Modal';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -104,7 +104,7 @@ const ShortlistStar = ({
         onClick={onStarClicked}
         data-for={`${courseID}`}
         data-offset="{'top': 70}"
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <ShortlistStarWrapper
           checked={checked}

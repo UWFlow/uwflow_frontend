@@ -29,5 +29,5 @@ export default (
 };
 
 // Selectors
-export const getAuthState = state => getDataState(state).auth;
-export const getIsLoggedIn = state => getAuthState(state).loggedIn;
+export const getAuthState = (state) => getDataState(state).auth;
+export const getIsLoggedIn = (state) => getAuthState(state).loggedIn;

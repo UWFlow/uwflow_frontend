@@ -45,7 +45,7 @@ const ResetPasswordForm = ({
   const [email, setEmail] = useState('');
 
   return (
-    <FormWrapper onSubmit={event => onSubmit(event, email)}>
+    <FormWrapper onSubmit={(event) => onSubmit(event, email)}>
       <Header>Reset Password</Header>
       {error !== '' && <Error>{error}</Error>}
       {success !== '' && <Success>{success}</Success>}
@@ -55,7 +55,7 @@ const ResetPasswordForm = ({
           placeholder="Email"
           error={emailError}
           text={email}
-          setText={value => {
+          setText={(value) => {
             setEmail(value);
             setEmailError(false);
           }}
@@ -65,7 +65,7 @@ const ResetPasswordForm = ({
         loading={loading}
         width="100%"
         type="submit"
-        handleClick={event => onSubmit(event, email)}
+        handleClick={(event) => onSubmit(event, email)}
       >
         Send Reset Email
       </Button>
@@ -84,7 +84,7 @@ const EnterResetCodeForm = ({
 }) => {
   const [code, setCode] = useState('');
   return (
-    <FormWrapper onSubmit={event => onSubmit(event, code)}>
+    <FormWrapper onSubmit={(event) => onSubmit(event, code)}>
       <Header>Enter reset code</Header>
       <Text>
         We just sent you an email with a reset code, please enter it below:
@@ -97,7 +97,7 @@ const EnterResetCodeForm = ({
           placeholder="Code"
           error={codeError}
           text={code}
-          setText={value => {
+          setText={(value) => {
             setCode(value);
             setCodeError(false);
           }}
@@ -107,7 +107,7 @@ const EnterResetCodeForm = ({
       <Button
         loading={loading}
         width="100%"
-        handleClick={event => onSubmit(event, code)}
+        handleClick={(event) => onSubmit(event, code)}
       >
         Submit
       </Button>
@@ -129,7 +129,7 @@ const EnterNewPasswordForm = ({
   const [confirmPass, setConfirmPass] = useState('');
 
   return (
-    <FormWrapper onSubmit={event => onSubmit(event, pass, confirmPass)}>
+    <FormWrapper onSubmit={(event) => onSubmit(event, pass, confirmPass)}>
       <Header>Enter new password</Header>
       {error !== '' && <Error>{error}</Error>}
       {success !== '' && <Success>{success}</Success>}
@@ -139,7 +139,7 @@ const EnterNewPasswordForm = ({
           placeholder="New password"
           error={passwordError}
           text={pass}
-          setText={value => {
+          setText={(value) => {
             setPass(value);
             setPasswordError(false);
           }}
@@ -151,7 +151,7 @@ const EnterNewPasswordForm = ({
           placeholder="Confirm new password"
           error={confirmPasswordError}
           text={confirmPass}
-          setText={value => {
+          setText={(value) => {
             setConfirmPass(value);
             setConfirmPasswordError(false);
           }}
@@ -160,7 +160,7 @@ const EnterNewPasswordForm = ({
       <Button
         loading={loading}
         width="100%"
-        handleClick={event => onSubmit(event, pass, confirmPass)}
+        handleClick={(event) => onSubmit(event, pass, confirmPass)}
       >
         Reset Password
       </Button>
@@ -184,7 +184,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const handleSendResetEmail = async (event, email) => {
+  const handleSendResetEmail = async (event) => {
     if (event) {
       event.preventDefault();
     }
@@ -203,7 +203,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
       status,
     ] = await makePOSTRequest(
       `${BACKEND_ENDPOINT}${RESET_PASSWORD_KEY_EMAIL_ENDPOINT}`,
-      { email: email },
+      { email },
     );
     setIsLoading(false);
     if (status >= 400) {
@@ -297,7 +297,7 @@ const ResetPasswordModalContent = ({ handleClose }) => {
         onSubmit={handleSubmitResetCode}
         loading={isLoading}
         error={errorMessage}
-        resendEmail={event => handleSendResetEmail(event, email)}
+        resendEmail={handleSendResetEmail}
         success={successMessage}
         codeError={codeError}
         setCodeError={setCodeError}
@@ -317,6 +317,8 @@ const ResetPasswordModalContent = ({ handleClose }) => {
         setConfirmPasswordError={setConfirmPasswordError}
       />
     );
+
+  return null;
 };
 
 export default ResetPasswordModalContent;

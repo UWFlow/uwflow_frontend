@@ -59,7 +59,7 @@ export const MenuItem = styled.button`
   height: ${ITEM_HEIGHT}px;
 
   color: ${({ theme, selected, itemColor }) =>
-    itemColor ? itemColor : selected ? theme.white : theme.dark2};
+    itemColor || (selected ? theme.white : theme.dark2)};
   background-color: ${({ theme, selected }) =>
     selected ? theme.primary : theme.white};
   padding: 16px;

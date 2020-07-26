@@ -50,7 +50,7 @@ import {
   REVIEWS_DIV_ID,
 } from '../../constants/PageConstants';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -71,7 +71,6 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
         payload: data,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) {
@@ -85,19 +84,19 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   const courseFilterDisplayOptions = [
     'show all courses',
     ...reviewDataState.courses
-      .map(code => formatCourseCode(code))
+      .map((code) => formatCourseCode(code))
       .sort((a, b) => a.localeCompare(b)),
   ];
 
   const sortCourses = (a, b) =>
     courseSort === 0
-      ? sortByReviews(a, b, (a, b) => a.code.localeCompare(b.code))
+      ? sortByReviews(a, b, (x, y) => x.code.localeCompare(y.code))
       : sortByLiked(a, b);
 
   const reviewsByCourseToShow = reviewDataState.reviewsByCourse
     .sort(sortCourses)
     .filter(
-      course =>
+      (course) =>
         selectedFilter === 0 ||
         formatCourseCode(course.code) ===
           courseFilterDisplayOptions[selectedFilter],
@@ -124,7 +123,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
             color={theme.primary}
             selectedIndex={courseSort}
             options={['most reviews', 'most liked']}
-            onChange={value => setCourseSort(value)}
+            onChange={(value) => setCourseSort(value)}
             zIndex={6}
           />
         </SortFilterDropdownWrapper>
@@ -134,7 +133,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
             color={theme.courses}
             selectedIndex={selectedFilter}
             options={courseFilterDisplayOptions}
-            onChange={value => setSelectedFilter(value)}
+            onChange={(value) => setSelectedFilter(value)}
             zIndex={5}
             searchable
           />
@@ -166,7 +165,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                   color={theme.primary}
                   selectedIndex={curSelectedSort[idx]}
                   options={['most recent', 'most helpful']}
-                  onChange={value => {
+                  onChange={(value) => {
                     curSelectedSort[idx] = value;
                     setSelectedSort(curSelectedSort);
                   }}
@@ -178,7 +177,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                     i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[course.code]
                   );
                 })
-                .map(review => (
+                .map((review) => (
                   <Review
                     key={review.id}
                     review={review}
@@ -197,7 +196,7 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
                     document.getElementById(course.code).scrollIntoView();
                   }
                 }}
-                onMouseDown={e => e.preventDefault()}
+                onMouseDown={(e) => e.preventDefault()}
               >
                 <ShowMoreReviewsText>
                   {showingReviewsMap[course.code]

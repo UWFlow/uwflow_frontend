@@ -1,8 +1,8 @@
 import React from 'react';
-import EmailInputForm from './EmailInputForm';
-import { FormText, FormLink } from './styles/EmailInputForm';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import EmailInputForm from './EmailInputForm';
+import { FormText, FormLink } from './styles/EmailInputForm';
 
 /* Selectors */
 import { courseNotificationEmailModalClose } from '../../data/actions/ModalActions';

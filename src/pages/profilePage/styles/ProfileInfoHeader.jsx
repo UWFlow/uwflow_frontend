@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import ProfileHeader from '../../../img/user.svg';
 import FadeIn from 'react-fade-in';
+import ProfileHeader from '../../../img/user.svg';
 
 /* Mixins */
 import {

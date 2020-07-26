@@ -30,6 +30,6 @@ export default (
 };
 
 // Selectors
-export const getModalState = state => getDataState(state).modal;
-export const getIsCourseNotificationEmailModalOpen = state =>
+export const getModalState = (state) => getDataState(state).modal;
+export const getIsCourseNotificationEmailModalOpen = (state) =>
   getModalState(state).courseNotificationEmailModalOpen;

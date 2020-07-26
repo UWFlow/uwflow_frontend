@@ -39,7 +39,7 @@ import { SEO_DESCRIPTIONS } from '../../constants/Messages';
 /* Utils */
 import { logOut } from '../../utils/Auth';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
@@ -51,10 +51,10 @@ const ProfilePageContent = ({
   isBrowserDesktop,
   refetchAll,
 }) => {
-  const shortlist = user.shortlist;
-  const reviewModalCourseList = coursesTaken.map(course => {
+  const { shortlist } = user;
+  const reviewModalCourseList = coursesTaken.map((course) => {
     const curReview = reviews.find(
-      review => review.course_id === course.course.id,
+      (review) => review.course_id === course.course.id,
     );
     return { course: course.course, review: curReview };
   });
@@ -75,7 +75,7 @@ const ProfilePageContent = ({
             reviews={reviews}
             refetchAll={refetchAll}
           />
-          <ProfileFinalExams courses={coursesTaken} />
+          {/* <ProfileFinalExams courses={coursesTaken} /> */}
         </Column1>
         <Column2>
           {isBrowserDesktop && (

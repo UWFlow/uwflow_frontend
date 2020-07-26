@@ -23,7 +23,7 @@ const Thumbs = ({ boolRating }) => (
 
 const Circles = ({ rating, total }) => (
   <>
-    {Array.apply(null, Array(total)).map((_, ind) => {
+    {Array(...total).map((_, ind) => {
       return <UnitCircle key={ind} filled={ind < rating} diameter={16} />;
     })}
   </>
@@ -44,7 +44,7 @@ const BubbleRatings = ({ total, rating, boolRating }) => {
 BubbleRatings.propTypes = {
   total: PropTypes.number, // int total that the rating is out of (5 for us rn)
   rating: PropTypes.number, // int rating that is given (out of 5)
-  boolRating: PropTypes.bool, //This will be not null/undefined if we want to use this intead of a number out of 5
+  boolRating: PropTypes.bool, // This will be not null/undefined if we want to use this intead of a number out of 5
 };
 
 export default BubbleRatings;

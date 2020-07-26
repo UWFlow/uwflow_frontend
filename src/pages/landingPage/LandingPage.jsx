@@ -28,7 +28,7 @@ import AuthForm from '../../auth/AuthForm';
 import SearchBar from '../../components/navigation/SearchBar';
 import ProfileDropdown from '../../components/navigation/ProfileDropdown';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
   isDesktop: getIsBrowserDesktop(state),
 });

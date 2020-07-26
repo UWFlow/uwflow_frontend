@@ -75,7 +75,7 @@ const CourseCourseReviews = ({
         .filter((_, i) => {
           return showingAllReviews || i < MIN_REVIEWS_SHOWN_COURSE;
         })
-        .map(review => (
+        .map((review) => (
           <Review key={review.id} review={review} isCourseReview />
         )),
     [reviews, showingAllReviews, courseSort],
@@ -91,7 +91,7 @@ const CourseCourseReviews = ({
               color={theme.primary}
               selectedIndex={courseSort}
               options={['most recent', 'most helpful']}
-              onChange={value => setCourseSort(value)}
+              onChange={(value) => setCourseSort(value)}
               zIndex={6}
             />
           </DropdownPanelWrapper>
@@ -101,7 +101,7 @@ const CourseCourseReviews = ({
               color={theme.professors}
               selectedIndex={courseProfFilter}
               options={courseProfFilterOptions}
-              onChange={value => setCourseProfFilter(value)}
+              onChange={(value) => setCourseProfFilter(value)}
               searchable
             />
           </DropdownPanelWrapper>
@@ -111,7 +111,7 @@ const CourseCourseReviews = ({
       {reviews.length > MIN_REVIEWS_SHOWN_COURSE && (
         <ShowMoreReviewsSection
           onClick={() => setShowingAllReviews(!showingAllReviews)}
-          onMouseDown={e => e.preventDefault()}
+          onMouseDown={(e) => e.preventDefault()}
         >
           <ShowMoreReviewsText>
             {showingAllReviews
@@ -176,7 +176,7 @@ const CourseProfReviews = ({
                     color={theme.primary}
                     selectedIndex={curSelectedSort[idx]}
                     options={['most recent', 'most helpful']}
-                    onChange={value => {
+                    onChange={(value) => {
                       curSelectedSort[idx] = value;
                       setSelectedSort(curSelectedSort);
                     }}
@@ -191,7 +191,7 @@ const CourseProfReviews = ({
                   i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[prof.name]
                 );
               })
-              .map(review => (
+              .map((review) => (
                 <Review
                   key={review.id}
                   review={review}
@@ -211,7 +211,7 @@ const CourseProfReviews = ({
                   document.getElementById(prof.name).scrollIntoView();
                 }
               }}
-              onMouseDown={e => e.preventDefault()}
+              onMouseDown={(e) => e.preventDefault()}
             >
               <ShowMoreReviewsText>
                 {showingReviewsMap[prof.name]
@@ -222,14 +222,13 @@ const CourseProfReviews = ({
           )}
         </ReviewsForSingleProfWrapper>
       )),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [reviewsByProf, showingReviewsMap, selectedSort, curSelectedSort],
   );
 
   return <CourseProfReviewsWrapper>{reviewList}</CourseProfReviewsWrapper>;
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
   isLoggedIn: getIsLoggedIn(state),
 });
@@ -259,7 +258,6 @@ const CourseReviews = ({
         payload: data,
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (loading) {
@@ -276,16 +274,18 @@ const CourseReviews = ({
   ];
 
   const courseReviewsToShow = reviewDataState.courseReviews.filter(
-    review =>
+    (review) =>
       courseProfFilter === 0 ||
       review.prof === courseProfFilterOptions[courseProfFilter],
   );
 
   // find profs who don't have reviews but are currently teaching the course
-  const profsWithReviews = reviewDataState.reviewsByProf.map(prof => prof.code);
+  const profsWithReviews = reviewDataState.reviewsByProf.map(
+    (prof) => prof.code,
+  );
   const additionalProfs = profsTeaching
-    .filter(profObj => !profsWithReviews.includes(profObj.prof.code))
-    .map(profObj =>
+    .filter((profObj) => !profsWithReviews.includes(profObj.prof.code))
+    .map((profObj) =>
       Object({
         ...profObj.prof,
         ...profObj.prof.rating,
@@ -297,20 +297,20 @@ const CourseReviews = ({
     'all professors',
     ...[
       ...reviewDataState.profReviewProfs,
-      ...additionalProfs.map(prof => prof.name),
+      ...additionalProfs.map((prof) => prof.name),
     ].sort((a, b) => a.localeCompare(b)),
   ];
 
   const sortProfs = (a, b) =>
     profSort === 0
-      ? sortByReviews(a, b, (a, b) => a.name.localeCompare(b.name))
+      ? sortByReviews(a, b, (x, y) => x.name.localeCompare(y.name))
       : sortByLiked(a, b);
 
   const profReviewsToShow = reviewDataState.reviewsByProf
     .concat(additionalProfs)
     .sort(sortProfs)
     .filter(
-      prof =>
+      (prof) =>
         profReviewFilter === 0 ||
         prof.name === profFilterOptions[profReviewFilter],
     );
@@ -328,7 +328,7 @@ const CourseReviews = ({
           color={theme.primary}
           selectedIndex={profSort}
           options={['most reviews', 'most liked']}
-          onChange={value => setProfSort(value)}
+          onChange={(value) => setProfSort(value)}
           zIndex={6}
         />
       </ProfDropdownPanelWrapper>
@@ -338,7 +338,7 @@ const CourseReviews = ({
           color={theme.professors}
           selectedIndex={profReviewFilter}
           options={profFilterOptions}
-          onChange={value => setProfReviewFilter(value)}
+          onChange={(value) => setProfReviewFilter(value)}
           zIndex={5}
           searchable
         />

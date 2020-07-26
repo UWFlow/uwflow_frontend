@@ -24,7 +24,7 @@ import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
 import { formatCourseCode } from '../../utils/Misc';
 import { getCoursePageRoute } from '../../Routes';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
 

@@ -17,7 +17,7 @@ const SearchProvider = ({ searchWorker, children }) => {
       lastIndexedDate: localStorage.getItem(LAST_INDEXED_ID),
     });
 
-    searchWorker.addEventListener('message', event => {
+    searchWorker.addEventListener('message', (event) => {
       const { type } = event.data;
       if (type === 'data') {
         const { searchData, lastIndexedDate } = event.data;
@@ -56,7 +56,7 @@ const SearchProvider = ({ searchWorker, children }) => {
     <SearchContext.Consumer>
       {(context = {}) => {
         if (context.searchWorker !== searchWorker) {
-          context = Object.assign({}, context, { searchWorker });
+          context = { ...context, searchWorker };
         }
 
         return (

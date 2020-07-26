@@ -47,12 +47,12 @@ export const AuthForm = ({
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const setJWT = response => {
+  const setJWT = (response) => {
     localStorage.setItem('token', response.token);
     localStorage.setItem('user_id', response.user_id);
   };
 
-  const onAuthSuccess = response => {
+  const onAuthSuccess = (response) => {
     setJWT(response);
     dispatch({ type: LOGGED_IN });
     if (response.is_new) {
@@ -85,11 +85,11 @@ export const AuthForm = ({
   };
 
   const formState = {
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: password,
-    confirmPassword: confirmPassword,
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPassword,
   };
 
   return (
@@ -134,7 +134,7 @@ export const AuthForm = ({
           New to UW Flow?
           <SwapModalLink
             onClick={() => setShowLoginForm(!showLoginForm)}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
           >
             {showLoginForm ? 'Sign up' : 'Log in'}
           </SwapModalLink>

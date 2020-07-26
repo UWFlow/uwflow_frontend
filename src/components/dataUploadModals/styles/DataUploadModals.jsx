@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
+import FadeIn from 'react-fade-in';
 import {
   Heading1,
   Heading2,
@@ -14,7 +15,6 @@ import {
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
 } from '../../../constants/DataUploadStates';
-import FadeIn from 'react-fade-in';
 
 export const ContentWrapper = styled(FadeIn)`
   display: flex;

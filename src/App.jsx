@@ -53,7 +53,7 @@ import { getUserId } from './utils/Auth';
 Modal.setAppElement('#root');
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 

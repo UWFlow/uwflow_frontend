@@ -15,7 +15,7 @@ import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
 /* Constants */
 import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from '../../Routes';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 

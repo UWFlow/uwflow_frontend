@@ -57,7 +57,7 @@ const DiscreteSlider = ({
   }, [currentNode]);
 
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
-  let percentages = [];
+  const percentages = [];
   for (let i = 0; i < 100; i += percentGap) {
     percentages.push(i);
   }
@@ -71,13 +71,13 @@ const DiscreteSlider = ({
           mode={2}
           domain={[0, numNodes - 1]}
           disabled={disabled}
-          onSlideEnd={value => {
+          onSlideEnd={(value) => {
             if (disabled) {
               return;
             }
             onSlideEnd(value);
           }}
-          onUpdate={value => {
+          onUpdate={(value) => {
             if (disabled) {
               return;
             }
@@ -120,7 +120,7 @@ const DiscreteSlider = ({
                   }
                 }}
               >
-                {handles.map(handle => (
+                {handles.map((handle) => (
                   <Handle
                     key={handle.id}
                     handle={handle}

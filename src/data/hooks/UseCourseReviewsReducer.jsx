@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const UPDATE_REVIEW_DATA = 'update_review_data';
 export const SORT_COURSE_REVIEWS_BY_PROF = 'sort_by_prof';
 
-const convertInputToState = data => {
+const convertInputToState = (data) => {
   if (!data) {
     return {
       courseReviews: [],
@@ -14,12 +14,12 @@ const convertInputToState = data => {
   }
 
   const courseReviews = data.review
-    .filter(r => r.course_comment)
-    .map(r => ({
+    .filter((r) => r.course_comment)
+    .map((r) => ({
       id: r.id,
       upvotes: r.course_review_rating ? r.course_review_rating.upvote_count : 0,
       upvote_users: r.course_review_upvotes
-        ? r.course_review_upvotes.map(vote => Number(vote.user_id))
+        ? r.course_review_upvotes.map((vote) => Number(vote.user_id))
         : [],
       review: r.course_comment,
       author: r.author,
@@ -43,7 +43,7 @@ const convertInputToState = data => {
       return allProfs;
     }
 
-    for (let i of allProfs) {
+    for (const i of allProfs) {
       if (current.prof && current.prof.name === i.name) {
         profObject = i;
         foundProfObject = true;
@@ -69,7 +69,7 @@ const convertInputToState = data => {
         ? current.prof_review_rating.upvote_count
         : 0,
       upvote_users: current.prof_review_upvotes
-        ? current.prof_review_upvotes.map(vote => Number(vote.user_id))
+        ? current.prof_review_upvotes.map((vote) => Number(vote.user_id))
         : [],
       review: current.prof_comment,
       author: current.author,
@@ -91,7 +91,7 @@ const convertInputToState = data => {
     return allProfs;
   }, []);
 
-  const profReviewProfs = reviewsByProf.map(obj => obj.name);
+  const profReviewProfs = reviewsByProf.map((obj) => obj.name);
 
   return {
     courseReviews,
@@ -110,10 +110,10 @@ const processDispatch = (currentState, action) => {
   }
 };
 
-const useCourseReviewsReducer = initialState => {
+const useCourseReviewsReducer = (initialState) => {
   const [state, setState] = useState(convertInputToState(initialState));
 
-  const dispatch = action => {
+  const dispatch = (action) => {
     const newState = processDispatch(state, action);
     setState(newState);
   };

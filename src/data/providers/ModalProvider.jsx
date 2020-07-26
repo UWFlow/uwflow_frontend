@@ -3,7 +3,7 @@ import React, { useState, createContext, useRef, useCallback } from 'react';
 export const ModalContext = createContext(null);
 
 const findIndOfModalByIdAndModal = (id, modal, modals) => {
-  for (let i = modals.length - 1; i >= 0; i--) {
+  for (let i = modals.length - 1; i >= 0; i -= 1) {
     if (modals[i].id === id && modals[i].modal === modal) {
       return i;
     }
@@ -22,7 +22,7 @@ const ModalProvider = ({ children }) => {
     (modal, id, props) => {
       const originalOnAfterClose = props.onAfterClose;
       props.onAfterClose = () => {
-        let newModalsById = [...currentModalsById.current];
+        const newModalsById = [...currentModalsById.current];
         newModalsById.splice(
           findIndOfModalByIdAndModal(id, modal, newModalsById),
           1,
@@ -39,7 +39,7 @@ const ModalProvider = ({ children }) => {
 
   const closeModal = useCallback(
     (modal, id) => {
-      let newModalsById = [...currentModalsById.current];
+      const newModalsById = [...currentModalsById.current];
       newModalsById[
         findIndOfModalByIdAndModal(id, modal, newModalsById)
       ].isOpen = false;
@@ -50,10 +50,10 @@ const ModalProvider = ({ children }) => {
 
   const openModal = useCallback(
     (modal, id, props) => {
-      let newModalsById = [...currentModalsById.current];
+      const newModalsById = [...currentModalsById.current];
       newModalsById.push({
-        id: id,
-        modal: modal,
+        id,
+        modal,
         props: {
           onRequestClose: () => closeModal(modal, id), // default onRequestClose is just close modal, can be overridden with props
           ...injectOnAfterCloseIntoProps(modal, id, props),
@@ -68,9 +68,9 @@ const ModalProvider = ({ children }) => {
   return (
     <ModalContext.Provider
       value={{
-        openModal: openModal,
-        closeModal: closeModal,
-        modalsById: modalsById,
+        openModal,
+        closeModal,
+        modalsById,
       }}
     >
       {children}

@@ -51,7 +51,7 @@ const link = ApolloLink.from([
 ]);
 
 const cache = new InMemoryCache({
-  dataIdFromObject: object => {
+  dataIdFromObject: (object) => {
     switch (object.__typename) {
       case 'course_search_index':
         return `${object.course_id}`;

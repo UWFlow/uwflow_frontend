@@ -28,13 +28,13 @@ export const buildExploreQuery = (query = '', codeOnly = false) => {
     // remove all special characters for postgres ts_query
     .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '')
     .split(' ')
-    .map(term => term.trim())
-    .filter(term => term.length > 0)
+    .map((term) => term.trim())
+    .filter((term) => term.length > 0)
     .slice(0, MAX_SEARCH_TERMS);
 
   const parsedQuery = codeOnly
     ? query
-    : queryTerms.map(term => term + ':*').join(' & ');
+    : queryTerms.map((term) => `${term}:*`).join(' & ');
 
   return gql`
     query EXPLORE_QUERY {

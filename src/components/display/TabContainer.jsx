@@ -31,11 +31,11 @@ const TabContainer = ({
             first={index === 0}
             last={index === tabList.length - 1}
             onClick={() => {
-              tab.onClick && tab.onClick(index);
+              tab.onClick();
               setSelectedTab(index);
               onChange(index);
             }}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             borderRadius={borderRadius}
           >
             {tab.title}

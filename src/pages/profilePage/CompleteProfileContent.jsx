@@ -19,7 +19,7 @@ const CompleteProfileContent = ({ theme, user, coursesTaken, reviews }) => {
     reviews &&
     reviews.length > 0 &&
     !!reviews.find(
-      r =>
+      (r) =>
         r.liked !== null ||
         r.course_easy !== null ||
         r.course_useful !== null ||
@@ -29,7 +29,7 @@ const CompleteProfileContent = ({ theme, user, coursesTaken, reviews }) => {
     reviews &&
     reviews.length > 0 &&
     !!reviews.find(
-      r =>
+      (r) =>
         r.prof_id !== null &&
         (r.prof_clear !== null ||
           r.prof_engaging !== null ||

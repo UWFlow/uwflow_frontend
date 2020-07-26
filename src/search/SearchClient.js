@@ -14,7 +14,7 @@ const searchOptions = {
 const courseOptions = {
   ...searchOptions,
   keys: ['fullText', 'code', 'profs'],
-  scoreFn: a =>
+  scoreFn: (a) =>
     Math.max(
       a[0] ? a[0].score : -10000,
       a[1] ? a[1].score : -10000,
@@ -25,7 +25,7 @@ const courseOptions = {
 const profOptions = {
   ...searchOptions,
   keys: ['name', 'courses'],
-  scoreFn: a =>
+  scoreFn: (a) =>
     Math.max(a[0] ? a[0].score : -10000, a[1] ? a[1].score - 50 : -10000),
 };
 
@@ -34,7 +34,7 @@ const courseCodeOptions = {
   key: 'code',
 };
 
-const weightByRatings = results =>
+const weightByRatings = (results) =>
   results.sort((a, b) => {
     const ratingDifference = b.obj.rating_count - a.obj.rating_count;
     return a.score === b.score
@@ -60,7 +60,7 @@ class SearchClient {
 
     const parsedQuery = query
       .split(' ')
-      .map(term => formatCourseCode(term))
+      .map((term) => formatCourseCode(term))
       .join(' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -87,9 +87,9 @@ class SearchClient {
     courseCodeResults = weightByRatings(courseCodeResults).slice(0, 2);
 
     return {
-      courseResults: courseResults.map(res => res.obj),
-      profResults: profResults.map(res => res.obj),
-      courseCodeResults: courseCodeResults.map(res => res.obj),
+      courseResults: courseResults.map((res) => res.obj),
+      profResults: profResults.map((res) => res.obj),
+      courseCodeResults: courseCodeResults.map((res) => res.obj),
     };
   }
 
@@ -109,15 +109,17 @@ class SearchClient {
     }
 
     // parse data
-    let courseCodeSet = new Set([]);
-    let courseCodeRatings = {};
+    const courseCodeSet = new Set([]);
+    const courseCodeRatings = {};
 
-    const courses = parsedSearchData.courses.map(course => {
+    const courses = parsedSearchData.courses.map((course) => {
       const courseLetters = formatCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
 
       // total number of ratings for reranking during search
-      if (!courseCodeRatings.hasOwnProperty(courseLetters)) {
+      if (
+        !Object.prototype.hasOwnProperty.call(courseCodeRatings, courseLetters)
+      ) {
         courseCodeRatings[courseLetters] = 0;
       }
       courseCodeRatings[courseLetters] += course.rating_count;
@@ -130,17 +132,17 @@ class SearchClient {
       };
     });
 
-    const profs = parsedSearchData.profs.map(prof => {
+    const profs = parsedSearchData.profs.map((prof) => {
       return {
         ...prof,
         courses:
           prof.courses === null
             ? ''
-            : prof.courses.map(course => formatCourseCode(course)).join(' '),
+            : prof.courses.map((course) => formatCourseCode(course)).join(' '),
       };
     });
 
-    const courseCodes = Array.from(courseCodeSet).map(code =>
+    const courseCodes = Array.from(courseCodeSet).map((code) =>
       Object({ code, rating_count: courseCodeRatings[code] }),
     );
 

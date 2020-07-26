@@ -13,7 +13,7 @@ import {
 
 /* Child Components */
 import LoadingSpinner from '../../components/display/LoadingSpinner';
-import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
+import NotFoundPage from '../notFoundPage/NotFoundPage';
 import ProfInfoHeader from './ProfInfoHeader';
 import ProfReviews from './ProfReviews';
 

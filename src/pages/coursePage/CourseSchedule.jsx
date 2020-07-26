@@ -231,7 +231,6 @@ const CourseSchedule = ({
   const tabList = termsOffered.map((term) => {
     return {
       title: termCodeToDate(term),
-      // eslint-disable-next-line react/display-name
       render: () => (
         <>
           <ScheduleTableWrapper>
@@ -244,12 +243,13 @@ const CourseSchedule = ({
               }
             />
           </ScheduleTableWrapper>
-          <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
+          {/* <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
             <FinalExamsText>Final Exams</FinalExamsText>
             <FinalExamTable courses={courseExams} includeCode={false} />
-          </FinalExamsTableWrapper>
+          </FinalExamsTableWrapper> */}
         </>
       ),
+      onClick: () => null,
     };
   });
 

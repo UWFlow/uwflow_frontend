@@ -19,13 +19,7 @@ export const UnitCircle = styled.div`
   height: ${({ diameter }) => diameter}px;
   border-radius: ${({ diameter }) => diameter / 2}px;
   background-color: ${({ filledColor, emptyColor, theme, filled }) =>
-    filled
-      ? filledColor
-        ? filledColor
-        : theme.primary
-      : emptyColor
-      ? emptyColor
-      : 'white'};
+    filled ? filledColor || theme.primary : emptyColor || 'white'};
   border: 2px solid
     ${({ filled, theme }) => (filled ? theme.primaryDark : theme.light4)};
   margin: 0 1px;

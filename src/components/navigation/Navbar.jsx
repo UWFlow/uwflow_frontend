@@ -18,7 +18,7 @@ import ProfileDropdown from './ProfileDropdown';
 /* Selectors */
 import { getWidth } from '../../data/reducers/BrowserReducer';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   width: getWidth(state),
 });
 

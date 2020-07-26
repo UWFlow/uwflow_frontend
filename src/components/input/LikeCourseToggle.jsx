@@ -29,7 +29,7 @@ import { getUserId } from '../../utils/Auth';
 /* Constants */
 import { AUTH_MODAL } from '../../constants/Modal';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -78,7 +78,7 @@ const LikeCourseToggle = ({
 
   useEffect(() => setLiked(initialState), [initialState]);
 
-  const toggleOnClick = targetState => {
+  const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
       openModal(AUTH_MODAL);
       return;
@@ -88,7 +88,7 @@ const LikeCourseToggle = ({
       return;
     }
 
-    let likedValue = liked === targetState ? null : targetState;
+    const likedValue = liked === targetState ? null : targetState;
     setLiked(likedValue);
 
     upsertLiked({
@@ -114,7 +114,7 @@ const LikeCourseToggle = ({
         noneSelected={liked === null}
         selected={liked === 1}
         onClick={() => toggleOnClick(1)}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <ThumbsUp
           color={liked === 1 ? theme.white : theme.dark3}
@@ -127,7 +127,7 @@ const LikeCourseToggle = ({
         noneSelected={liked === null}
         selected={liked === 0}
         onClick={() => toggleOnClick(0)}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <ThumbsDown
           color={liked === 0 ? theme.white : theme.dark3}

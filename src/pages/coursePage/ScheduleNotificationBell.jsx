@@ -34,7 +34,7 @@ import {
   COURSE_NOTIFICATION_EMAIL_MODAL,
 } from '../../constants/Modal';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -96,25 +96,27 @@ const ScheduleNotificationBell = ({
           toast(SUBSCRIPTION_ERROR);
         });
       setSelected(false);
-    } else {
+    } else if (
+      userEmail === '' ||
+      userEmail === null ||
+      userEmail === undefined
+    ) {
       // Assume user data will be loaded by the time a notification bell is clicked
-      if (userEmail === '' || userEmail === null || userEmail === undefined) {
-        // TODO: chain insertSubscription and setSelected to fire after user has entered email
-        // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
-        // TODO: Find way to pass callbacks to top level modal
-        openModal(COURSE_NOTIFICATION_EMAIL_MODAL, emailModalProps);
-      } else {
-        insertSubscription({
-          variables: { user_id: userID, section_id: sectionID },
+      // TODO: chain insertSubscription and setSelected to fire after user has entered email
+      // dispatch(courseNotificationEmailModalOpen()); this is rekt rn we can't pass callbacks to the modal
+      // TODO: Find way to pass callbacks to top level modal
+      openModal(COURSE_NOTIFICATION_EMAIL_MODAL, emailModalProps);
+    } else {
+      insertSubscription({
+        variables: { user_id: userID, section_id: sectionID },
+      })
+        .then(() => {
+          notifyInsert(userEmail);
+          setSelected(true);
         })
-          .then(() => {
-            notifyInsert(userEmail);
-            setSelected(true);
-          })
-          .catch(() => {
-            toast(SUBSCRIPTION_ERROR);
-          });
-      }
+        .catch(() => {
+          toast(SUBSCRIPTION_ERROR);
+        });
     }
   };
 
@@ -129,7 +131,7 @@ const ScheduleNotificationBell = ({
       <NotificationBellWrapper
         selected={selected}
         onClick={toggleOnClick}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <Bell size={16} selected={selected} strokeWidth={3} />
       </NotificationBellWrapper>

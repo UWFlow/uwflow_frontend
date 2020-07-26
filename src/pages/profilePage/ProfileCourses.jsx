@@ -50,7 +50,7 @@ const ProfileCourses = ({
   closeModal,
   refetchAll,
 }) => {
-  const groupByTerm = courses => {
+  const groupCoursesByTerm = () => {
     return courses.reduce((groups, course, idx) => {
       groups[course.term_id] = groups[course.term_id] || [];
       groups[course.term_id].push({ ...course, index: idx });
@@ -58,9 +58,9 @@ const ProfileCourses = ({
     }, {});
   };
 
-  const unorderedGroups = groupByTerm(courses);
+  const unorderedGroups = groupCoursesByTerm(courses);
   const courseGroups = {};
-  let reviewModalProps = {
+  const reviewModalProps = {
     showCourseDropdown: true,
     courseList: reviewModalCourseList,
     onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
@@ -70,18 +70,18 @@ const ProfileCourses = ({
   Object.keys(unorderedGroups)
     .sort()
     .reverse()
-    .forEach(term => {
+    .forEach((term) => {
       courseGroups[termCodeToDate(term)] = unorderedGroups[term];
     });
 
   const sortedCourseList = reviewModalCourseList.sort((a, b) =>
     a.course.code.localeCompare(b.course.code),
   );
-  const tabContent = termName =>
-    courseGroups[termName].map(courseTaken => {
-      const review = reviews.find(r => r.course_id === courseTaken.course_id);
+  const tabContent = (termName) =>
+    courseGroups[termName].map((courseTaken) => {
+      const review = reviews.find((r) => r.course_id === courseTaken.course_id);
       const selectedIndex = sortedCourseList.findIndex(
-        courseObj => courseObj.course.id === courseTaken.course.id,
+        (courseObj) => courseObj.course.id === courseTaken.course.id,
       );
 
       return (
@@ -142,10 +142,11 @@ const ProfileCourses = ({
       );
     });
 
-  const tabList = Object.keys(courseGroups).map(termName => {
+  const tabList = Object.keys(courseGroups).map((termName) => {
     return {
       title: termName,
       render: () => tabContent(termName),
+      onClick: () => null,
     };
   });
 

@@ -34,7 +34,7 @@ import { processRating } from '../../utils/Misc';
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   width: getWidth(state),
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
@@ -98,12 +98,10 @@ const RatingBox = ({
               onClick={scrollToReviews}
               hasComments={Boolean(numComments)}
             >
-              {numComments ? numComments : 0}{' '}
-              {numComments === 1 ? 'comment' : 'comments'}
+              {numComments || 0} {numComments === 1 ? 'comment' : 'comments'}
             </NumCommentsWrapper>
             <NumRatingsWrapper>
-              {numRatings ? numRatings : 0}{' '}
-              {numRatings === 1 ? 'rating' : 'ratings'}
+              {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
             </NumRatingsWrapper>
           </NumCommentsAndRatingsWrapper>
           {/* Graph button goes here */}

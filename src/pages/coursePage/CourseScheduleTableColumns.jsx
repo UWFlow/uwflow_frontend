@@ -20,16 +20,16 @@ import { getProfPageRoute } from '../../Routes';
 import { processDateString, weekDayLetters } from '../../utils/Misc';
 import { LEC, LAB, TUT } from '../../constants/PageConstants';
 
-const contentSpace = spaces => {
-  let content = [];
-  for (let i = 0; i < spaces; i++) {
+const contentSpace = (spaces) => {
+  const content = [];
+  for (let i = 0; i < spaces; i += 1) {
     content.push(<ContentWrapper key={i} compressed></ContentWrapper>);
   }
   return content;
 };
 
-const processWeekDays = days =>
-  weekDayLetters.map(day =>
+const processWeekDays = (days) =>
+  weekDayLetters.map((day) =>
     days.includes(day) ? (
       <BoldWeekDay key={day}>{day}</BoldWeekDay>
     ) : (

@@ -53,15 +53,15 @@ const ExplorePageContent = ({
       return;
     }
 
-    let seenCourses = new Set();
+    const seenCourses = new Set();
     const allProfCourses = data[
       exploreAll ? 'prof_search_index' : 'search_profs'
     ]
       .reduce((acc, result) => {
         return acc.concat(
           result.course_codes
-            .filter(code => !seenCourses.has(code))
-            .map(code => {
+            .filter((code) => !seenCourses.has(code))
+            .map((code) => {
               seenCourses.add(code);
               return code;
             }),

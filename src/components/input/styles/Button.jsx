@@ -18,7 +18,7 @@ export const ButtonWrapper = styled.button`
     disabled ? theme.light4 : color};
   ${({ hasShadow }) => hasShadow && BoxShadow}
   max-width: 100%;
-  width: ${({ width }) => (width ? width : 'auto')};
+  width: ${({ width }) => width || 'auto'};
 
   ${Hover()} :hover {
     background: ${({ theme, disabled = false }) => disabled && theme.light4};

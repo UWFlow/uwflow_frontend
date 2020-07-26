@@ -21,7 +21,7 @@ const CourseRequisites = ({
   postreqs,
   courseCode,
 }) => {
-  const parsedRequisites = requisites => {
+  const parsedRequisites = (requisites) => {
     if (!requisites) {
       return '';
     }

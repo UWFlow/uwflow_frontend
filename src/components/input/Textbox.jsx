@@ -16,11 +16,11 @@ const Textbox = ({
   maxLength = 524288, // default browser maxLength,
   forwardRef = null,
 }) => {
-  const onKeyDown = event => {
+  const onKeyDown = (event) => {
     handleKeyDown(event, text);
   };
 
-  const onChange = event => {
+  const onChange = (event) => {
     setText(event.currentTarget.value);
   };
 

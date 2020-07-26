@@ -84,17 +84,18 @@ const AboutPage = () => (
           students in Software Engineering at UWaterloo. You can find our
           founders below. Launching Flow in 2012, they addressed a real need at
           the University: students did not have nearly enough information about
-          courses to choose them. Here’s Sandy Wu (one of our founders) on
+          courses to choose them. Here&apos;s Sandy Wu (one of our founders) on
           selecting courses before Flow:
           <br />
           <br />
           <b>
-            "It’s like doing taxes. Each time, it’s inevitable, and each time,
-            it’s a pain. Right now, students use the undergraduate calendar to
-            look through thousands of courses before even knowing what’s out
-            there. And that doesn’t even include opinions from people who had
-            taken those courses before. For that, we rely on friends and word of
-            mouth. But that’s both incomplete and inconvenient."
+            &quot;It&apos;s like doing taxes. Each time, it&apos;s inevitable,
+            and each time, it&apos;s a pain. Right now, students use the
+            undergraduate calendar to look through thousands of courses before
+            even knowing what&apos;s out there. And that doesn&apos;t even
+            include opinions from people who had taken those courses before. For
+            that, we rely on friends and word of mouth. But that&apos;s both
+            incomplete and inconvenient.&quot;
           </b>
           <br />
           <br />
@@ -110,10 +111,10 @@ const AboutPage = () => (
           <br />
           <br />
           We built UW Flow 2.0 in 2019 to modernize and hone in on functionality
-          you care about. As you navigate UW Flow 2.0, you’ll notice new
-          features, better response times, and plenty more. What hasn’t changed
-          is our commitment to the UWaterloo community and our drive to empower
-          you.
+          you care about. As you navigate UW Flow 2.0, you&apos;ll notice new
+          features, better response times, and plenty more. What hasn&apos;t
+          changed is our commitment to the UWaterloo community and our drive to
+          empower you.
           <br />
           <br />
           Sincerely,
@@ -188,18 +189,17 @@ const AboutPage = () => (
           <TeamMember
             name="Edwin Zhang"
             title="Full-stack Developer"
-            program="Computer Science 2022"
+            program="Computer Science 2021"
             website="https://www.edwinzhang.me/"
             linkedIn="https://www.linkedin.com/in/edwin-zhang/"
             photo={EdwinImg}
           >
-            Edwin built many of the new interfaces and features for Flow 2.0
-            including the Explore Courses page and the search bar.
+            Edwin built many of the new interfaces and features in Flow 2.0,
+            including the search bar and Explore Courses page.
             <br />
             <br />
-            He is interested in information retrieval and has previously worked
-            on the search teams at LinkedIn and Shopify. In his spare time, he
-            enjoys playing underwater hockey and practicing the trombone.
+            He loves building products and exploring new ideas through tech. In
+            his spare time, he sometimes plays music and underwater hockey.
           </TeamMember>
           <TeamMember
             name="Max Dai"
@@ -211,7 +211,7 @@ const AboutPage = () => (
           >
             Over the course of building Flow 2.0, Max has concluded that
             frontend involves a lot more than just agonizing over CSS. That
-            isn't to say he hasn't done that though. Not at all...
+            isn&apos;t to say he hasn&apos;t done that though. Not at all...
             <br />
             <br />
             When he does happen to be free, he enjoys swimming, playing poker
@@ -230,7 +230,7 @@ const AboutPage = () => (
             David is a human being currently living on Earth.
             <br />
             <br />
-            Since David complains a lot about bad user experience, he's the
+            Since David complains a lot about bad user experience, he&apos;s the
             chief UX nitpicker at Flow. He also does system administration and
             takes out the garbage.
             <br />
@@ -284,7 +284,7 @@ const AboutPage = () => (
             occasionally writes some code for Flow.
             <br />
             <br />
-            He also wrote Flow's very{' '}
+            He also wrote Flow&apos;s very{' '}
             <a
               href="https://github.com/phleet/flask_debugtoolbar_lineprofilerpanel"
               target="_blank"
@@ -294,8 +294,8 @@ const AboutPage = () => (
             </a>
             <br />
             <br />
-            He's worked at Facebook and Khan Academy where he learned to ride a
-            ripstik and learned to juggle respectively.
+            He&apos;s worked at Facebook and Khan Academy where he learned to
+            ride a ripstik and learned to juggle respectively.
           </TeamMember>
           <TeamMember
             name="Jeff Gulbronson"
