@@ -1,10 +1,5 @@
 import styled from 'styled-components';
-import {
-  Heading3,
-  BoxShadow,
-  BottomBoxShadow,
-  Hover,
-} from '../../../constants/Mixins';
+import { Heading3, BoxShadow, BottomBoxShadow, Hover } from 'constants/Mixins';
 
 export const ContainerWrapper = styled.div`
   width: ${({ width }) => width || '100%'};

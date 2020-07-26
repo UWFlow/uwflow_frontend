@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading1, Small } from '../../../constants/Mixins';
+import { Heading1, Small } from 'constants/Mixins';
 
 export const CircleWrapper = styled.div`
   position: relative;

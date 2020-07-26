@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
+import LoadingSpinner from 'components/display/LoadingSpinner';
 import { ButtonWrapper, ButtonText } from './styles/Button';
-import LoadingSpinner from '../display/LoadingSpinner';
 
 const Button = ({
   theme,
@@ -36,7 +36,7 @@ const Button = ({
       width={width}
       maxHeight={maxHeight}
       type={type}
-      onMouseDown={e => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
     >
       {loading ? (
         <LoadingSpinner

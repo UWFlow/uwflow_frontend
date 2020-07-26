@@ -5,6 +5,31 @@ import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 
 /* Styled Components */
+
+/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+
+/* Queries */
+import { GET_USER } from 'graphql/queries/user/User';
+
+/* Routes */
+import { LANDING_PAGE_ROUTE } from 'Routes';
+
+/* Constants */
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
+
+/* Utils */
+import { logOut } from 'utils/Auth';
+import CompleteProfileContent from './CompleteProfileContent';
+import ProfileCourses from './ProfileCourses';
+import ProfileCalendar from './ProfileCalendar';
+import ShortlistBox from './ShortlistBox';
+import ProfileInfoHeader from './ProfileInfoHeader';
 import {
   ProfilePageWrapper,
   CompleteProfileWrapper,
@@ -13,33 +38,7 @@ import {
   Column2,
 } from './styles/ProfilePage';
 
-/* Child Components */
-import ProfileInfoHeader from './ProfileInfoHeader';
-import ShortlistBox from './ShortlistBox';
-import ProfileCalendar from './ProfileCalendar';
-import ProfileCourses from './ProfileCourses';
-import ProfileFinalExams from './ProfileFinalExams';
-import LoadingSpinner from '../../components/display/LoadingSpinner';
-import CompleteProfileContent from './CompleteProfileContent';
-import NotFoundPage from '../notFoundPage/NotFoundPage';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
-/* Queries */
-import { GET_USER } from '../../graphql/queries/user/User';
-
-/* Routes */
-import { LANDING_PAGE_ROUTE } from '../../Routes';
-
-/* Constants */
-import { SEO_DESCRIPTIONS } from '../../constants/Messages';
-
-/* Utils */
-import { logOut } from '../../utils/Auth';
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
   isBrowserDesktop: getIsBrowserDesktop(state),
 });
@@ -51,10 +50,10 @@ const ProfilePageContent = ({
   isBrowserDesktop,
   refetchAll,
 }) => {
-  const shortlist = user.shortlist;
-  const reviewModalCourseList = coursesTaken.map(course => {
+  const { shortlist } = user;
+  const reviewModalCourseList = coursesTaken.map((course) => {
     const curReview = reviews.find(
-      review => review.course_id === course.course.id,
+      (review) => review.course_id === course.course.id,
     );
     return { course: course.course, review: curReview };
   });
@@ -75,7 +74,6 @@ const ProfilePageContent = ({
             reviews={reviews}
             refetchAll={refetchAll}
           />
-          <ProfileFinalExams courses={coursesTaken} />
         </Column1>
         <Column2>
           {isBrowserDesktop && (

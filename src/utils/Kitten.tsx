@@ -1,16 +1,16 @@
-import kitten_2 from '../img/kittens/kitten_2.jpg';
-import kitten_3 from '../img/kittens/kitten_3.jpg';
-import kitten_4 from '../img/kittens/kitten_4.jpg';
-import kitten_5 from '../img/kittens/kitten_5.jpg';
-import kitten_6 from '../img/kittens/kitten_6.jpg';
-import kitten_1 from '../img/kittens/kitten_1.jpg';
-import kitten_7 from '../img/kittens/kitten_7.jpg';
-import kitten_8 from '../img/kittens/kitten_8.jpg';
-import kitten_9 from '../img/kittens/kitten_9.jpg';
-import kitten_10 from '../img/kittens/kitten_10.jpg';
-import kitten_11 from '../img/kittens/kitten_11.jpg';
-import kitten_12 from '../img/kittens/kitten_12.jpg';
-import kitten_13 from '../img/kittens/kitten_13.jpg';
+import kitten_1 from 'img/kittens/kitten_1.jpg';
+import kitten_2 from 'img/kittens/kitten_2.jpg';
+import kitten_3 from 'img/kittens/kitten_3.jpg';
+import kitten_4 from 'img/kittens/kitten_4.jpg';
+import kitten_5 from 'img/kittens/kitten_5.jpg';
+import kitten_6 from 'img/kittens/kitten_6.jpg';
+import kitten_7 from 'img/kittens/kitten_7.jpg';
+import kitten_8 from 'img/kittens/kitten_8.jpg';
+import kitten_9 from 'img/kittens/kitten_9.jpg';
+import kitten_10 from 'img/kittens/kitten_10.jpg';
+import kitten_11 from 'img/kittens/kitten_11.jpg';
+import kitten_12 from 'img/kittens/kitten_12.jpg';
+import kitten_13 from 'img/kittens/kitten_13.jpg';
 import { randIntBetween } from './Random';
 
 const kittens: any[] = [

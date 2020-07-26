@@ -1,7 +1,7 @@
 import {
   COURSE_NOTIFICATION_EMAIL_MODAL_OPEN,
   COURSE_NOTIFICATION_EMAIL_MODAL_CLOSE,
-} from '../actions/ModalActions';
+} from 'data/actions/ModalActions';
 
 /* Selectors */
 import { getDataState } from './DataReducer';
@@ -30,6 +30,6 @@ export default (
 };
 
 // Selectors
-export const getModalState = state => getDataState(state).modal;
-export const getIsCourseNotificationEmailModalOpen = state =>
+export const getModalState = (state) => getDataState(state).modal;
+export const getIsCourseNotificationEmailModalOpen = (state) =>
   getModalState(state).courseNotificationEmailModalOpen;

@@ -1,13 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
-import { useQuery } from 'react-apollo';
+import { useQuery, useMutation } from 'react-apollo';
 import { Trash2 } from 'react-feather';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
-import { useMutation } from 'react-apollo';
+
 import { toast } from 'react-toastify';
 import Collapsible from 'react-collapsible';
 
+/* Child Components */
+import RadioButton from 'components/input/RadioButton';
+import DropdownList from 'components/input/DropdownList';
+import Button from 'components/input/Button';
+import DiscreteSlider from 'components/input/DiscreteSlider';
+import Modal from 'components/modal/Modal';
+
+/* Utils */
+import { formatCourseCode } from 'utils/Misc';
+import { getUserId } from 'utils/Auth';
+
+/* GraphQL */
+import { DELETE_REVIEW, UPSERT_REVIEW } from 'graphql/mutations/Review';
+import {
+  REFETCH_RATINGS,
+  REFETCH_COURSE_REVIEWS,
+} from 'graphql/queries/course/Course';
+import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import {
+  COURSE_REVIEW_PROFS,
+  buildCourseReviewQuery,
+} from 'graphql/queries/course/CourseReview';
+
+/* Constants */
+import { REVIEW_SUCCESS } from 'constants/Messages';
 import {
   CourseReviewCourseBoxWrapper,
   QuestionText,
@@ -23,32 +48,6 @@ import {
   DeleteReviewModalWrapper,
   DeleteConfirmButtons,
 } from './styles/CourseReviewCourseBox';
-
-/* Child Components */
-import RadioButton from '../input/RadioButton';
-import DropdownList from '../input/DropdownList';
-import Button from '../input/Button';
-import DiscreteSlider from '../input/DiscreteSlider';
-import Modal from '../modal/Modal';
-
-/* Utils */
-import { formatCourseCode } from '../../utils/Misc';
-import { getUserId } from '../../utils/Auth';
-
-/* GraphQL */
-import { DELETE_REVIEW, UPSERT_REVIEW } from '../../graphql/mutations/Review';
-import {
-  REFETCH_RATINGS,
-  REFETCH_COURSE_REVIEWS,
-} from '../../graphql/queries/course/Course';
-import { REFETCH_USER_REVIEW } from '../../graphql/queries/user/User';
-import {
-  COURSE_REVIEW_PROFS,
-  buildCourseReviewQuery,
-} from '../../graphql/queries/course/CourseReview';
-
-/* Constants */
-import { REVIEW_SUCCESS } from '../../constants/Messages';
 
 const easyOptions = [
   'Difficult',
@@ -83,9 +82,9 @@ const engagingOptions = [
 ];
 
 const mergeInNewProfsTeaching = (currProfsTeaching, newProfsTeaching) => {
-  const currIDs = currProfsTeaching.map(prof => prof.prof.id);
+  const currIDs = currProfsTeaching.map((prof) => prof.prof.id);
   if (newProfsTeaching) {
-    newProfsTeaching.forEach(prof => {
+    newProfsTeaching.forEach((prof) => {
       if (!currIDs.includes(prof.prof.id)) {
         currProfsTeaching.push(prof);
       }
@@ -96,7 +95,7 @@ const mergeInNewProfsTeaching = (currProfsTeaching, newProfsTeaching) => {
 const getProfIndex = (review, profsTeaching) =>
   review
     ? profsTeaching.findIndex(
-        prof => prof.prof && prof.prof.id === review.prof_id,
+        (prof) => prof.prof && prof.prof.id === review.prof_id,
       )
     : -1;
 
@@ -128,11 +127,11 @@ const CourseReviewCourseBoxContent = ({
       );
     }
 
-    profsTeaching = profsTeaching.filter(prof => prof.prof !== null);
+    profsTeaching = profsTeaching.filter((prof) => prof.prof !== null);
     // add prof to dropdown if not fetched from backend
     if (review) {
       const profExists = profsTeaching.some(
-        prof => prof.prof && prof.prof.id === review.prof_id,
+        (prof) => prof.prof && prof.prof.id === review.prof_id,
       );
       if (!profExists && review.prof_id !== null) {
         profsTeaching.push({ prof: review.prof });
@@ -164,9 +163,6 @@ const CourseReviewCourseBoxContent = ({
     };
   };
 
-  const userID = getUserId();
-  const { course, review } = courseList[selectedCourseIndex];
-
   /* State */
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
   const [reviewUpdating, setReviewUpdating] = useState(false);
@@ -180,6 +176,9 @@ const CourseReviewCourseBoxContent = ({
   const [lastRenderProfsTeaching, setLastRenderProfsTeaching] = useState(
     profsTeachingByCourseID,
   );
+
+  const userID = getUserId();
+  const { course, review } = courseList[selectedCourseIndex];
 
   const {
     liked,
@@ -202,8 +201,8 @@ const CourseReviewCourseBoxContent = ({
   useEffect(() => {
     // update state if profsTeaching changes
     if (!_.isEqual(profsTeachingByCourseID, lastRenderProfsTeaching)) {
-      let newReviewStates = _.cloneDeep(reviewStates);
-      Object.keys(reviewStates).forEach(code => {
+      const newReviewStates = _.cloneDeep(reviewStates);
+      Object.keys(reviewStates).forEach((code) => {
         mergeInNewProfsTeaching(
           newReviewStates[code].profsTeaching,
           profsTeachingByCourseID[reviewStates[code].id],
@@ -278,7 +277,7 @@ const CourseReviewCourseBoxContent = ({
       course_id: course.id,
       prof_id: profID,
       liked: 1 - liked,
-      public: selectedAnonymous === 0 ? false : true,
+      public: selectedAnonymous !== 0,
       course_easy: easy,
       course_useful: useful,
       course_comment: courseComment !== '' ? courseComment : null,
@@ -361,7 +360,7 @@ const CourseReviewCourseBoxContent = ({
           <DropdownList
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
-            options={courseList.map(courseObj =>
+            options={courseList.map((courseObj) =>
               formatCourseCode(courseObj.course.code),
             )}
             color={theme.courses}
@@ -381,11 +380,11 @@ const CourseReviewCourseBoxContent = ({
           numNodes={5}
           currentNode={useful}
           color={theme.courses}
-          onSlideEnd={value =>
+          onSlideEnd={(value) =>
             setSliderValue('useful', value[0], 'usefulSelected')
           }
           selected={usefulSelected}
-          setSelected={value => setReviewValue('usefulSelected', value)}
+          setSelected={(value) => setReviewValue('usefulSelected', value)}
         />
         <SliderOptionText>
           {usefulSelected ? usefulOptions[useful] : ''}
@@ -398,9 +397,11 @@ const CourseReviewCourseBoxContent = ({
           numNodes={5}
           currentNode={easy}
           color={theme.courses}
-          onSlideEnd={value => setSliderValue('easy', value[0], 'easySelected')}
+          onSlideEnd={(value) =>
+            setSliderValue('easy', value[0], 'easySelected')
+          }
           selected={easySelected}
-          setSelected={value => setReviewValue('easySelected', value)}
+          setSelected={(value) => setReviewValue('easySelected', value)}
         />
         <SliderOptionText>
           {easySelected ? easyOptions[easy] : ''}
@@ -413,7 +414,7 @@ const CourseReviewCourseBoxContent = ({
           selected={liked}
           options={['Yes', 'No']}
           color={theme.courses}
-          onClick={value => setReviewValue('liked', value)}
+          onClick={(value) => setReviewValue('liked', value)}
         />
       </MetricQuestionWrapper>
 
@@ -421,7 +422,9 @@ const CourseReviewCourseBoxContent = ({
         rows={5}
         value={courseComment}
         maxLength={8192}
-        onChange={event => setReviewValue('courseComment', event.target.value)}
+        onChange={(event) =>
+          setReviewValue('courseComment', event.target.value)
+        }
         placeholder="Add any comments or tips..."
       />
 
@@ -433,11 +436,11 @@ const CourseReviewCourseBoxContent = ({
           options={[
             ...profsTeaching
               .sort((a, b) => a.prof.name.localeCompare(b.prof.name))
-              .map(prof => prof.prof.name),
+              .map((prof) => prof.prof.name),
             "my professor isn't here",
           ]}
           color={theme.professors}
-          onChange={value => setReviewValue('selectedProf', value)}
+          onChange={(value) => setReviewValue('selectedProf', value)}
           zIndex={5}
           searchable
         />
@@ -455,11 +458,11 @@ const CourseReviewCourseBoxContent = ({
             numNodes={5}
             currentNode={clear}
             color={theme.professors}
-            onSlideEnd={value =>
+            onSlideEnd={(value) =>
               setSliderValue('clear', value[0], 'clearSelected')
             }
             selected={clearSelected}
-            setSelected={value => setReviewValue('clearSelected', value)}
+            setSelected={(value) => setReviewValue('clearSelected', value)}
             disabled={profID === null}
           />
           <SliderOptionText>
@@ -473,11 +476,11 @@ const CourseReviewCourseBoxContent = ({
             numNodes={5}
             currentNode={engaging}
             color={theme.professors}
-            onSlideEnd={value =>
+            onSlideEnd={(value) =>
               setSliderValue('engaging', value[0], 'engagingSelected')
             }
             selected={engagingSelected}
-            setSelected={value => setReviewValue('engagingSelected', value)}
+            setSelected={(value) => setReviewValue('engagingSelected', value)}
             disabled={profID === null}
           />
           <SliderOptionText>
@@ -491,14 +494,16 @@ const CourseReviewCourseBoxContent = ({
           rows={5}
           value={profComment}
           maxLength={8192}
-          onChange={event => setReviewValue('profComment', event.target.value)}
+          onChange={(event) =>
+            setReviewValue('profComment', event.target.value)
+          }
           placeholder="Add any comments or tips..."
           disabled={profID === null}
         />
       </Collapsible>
 
       <Footer>
-        <DeleteIconWrapper onMouseDown={e => e.preventDefault()}>
+        <DeleteIconWrapper onMouseDown={(e) => e.preventDefault()}>
           <Trash2
             onClick={() => setDeleteReviewModalOpen(true)}
             color={theme.red}
@@ -510,7 +515,7 @@ const CourseReviewCourseBoxContent = ({
             selectedIndex={selectedAnonymous}
             options={['anonymously', 'as yourself']}
             color={theme.primary}
-            onChange={value => setReviewValue('selectedAnonymous', value)}
+            onChange={(value) => setReviewValue('selectedAnonymous', value)}
             margin="auto 16px auto auto"
             zIndex={2}
           />
@@ -568,11 +573,11 @@ const CourseReviewCourseBoxContent = ({
 };
 
 const CourseReviewCourseBox = ({ courseList, ...props }) => {
-  const courseIDs = courseList.map(course => course.course.id);
+  const courseIDs = courseList.map((course) => course.course.id);
   const { data } = useQuery(COURSE_REVIEW_PROFS, {
     variables: { id: courseIDs },
   });
-  var profsSeenByCourseID = {};
+  const profsSeenByCourseID = {};
   const profsTeachingByCourseID = data
     ? data.review.reduce((profs, currentProf) => {
         if (
@@ -602,8 +607,8 @@ const CourseReviewCourseBox = ({ courseList, ...props }) => {
     <CourseReviewCourseBoxContent
       {...{
         ...props,
-        profsTeachingByCourseID: profsTeachingByCourseID,
-        courseList: courseList,
+        profsTeachingByCourseID,
+        courseList,
       }}
     />
   );

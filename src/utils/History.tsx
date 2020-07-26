@@ -7,7 +7,7 @@ import {
   NATIVE_HISTORY_PUSH,
   historyBack,
   historyForward,
-} from '../data/actions/HistoryActions';
+} from 'data/actions/HistoryActions';
 
 // Export a function, when called creates a history object
 export default (): History<History.PoorMansUnknown> => {

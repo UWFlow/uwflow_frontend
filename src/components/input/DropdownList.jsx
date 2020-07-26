@@ -7,6 +7,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import FadeIn from 'react-fade-in';
 
 /* Styled Components */
+import KeycodeConstants from 'constants/KeycodeConstants';
 import {
   DropdownWrapper,
   DropdownControl,
@@ -15,7 +16,6 @@ import {
   MenuSearch,
   ITEM_HEIGHT,
 } from './styles/DropdownList';
-import KeycodeConstants from '../../constants/KeycodeConstants';
 import Textbox from './Textbox';
 
 const DropdownList = ({
@@ -38,7 +38,7 @@ const DropdownList = ({
   const [searchText, setSearchText] = useState('');
   useOnClickOutside(ref, () => setOpen(false));
 
-  const handleUserKeyPress = useCallback(event => {
+  const handleUserKeyPress = useCallback((event) => {
     const { keyCode } = event;
     if (keyCode === KeycodeConstants.ESCAPE) {
       setOpen(false);
@@ -72,22 +72,22 @@ const DropdownList = ({
       )}
       {options
         .map((opt, idx) => Object({ value: opt, index: idx }))
-        .filter(opt => {
+        .filter((opt) => {
           const lowercaseOpt = opt.value.toLowerCase();
           const lowercaseSearchText = searchText.toLowerCase();
           return (
             lowercaseOpt
               .split(' ')
-              .some(val => val.startsWith(lowercaseSearchText)) ||
+              .some((val) => val.startsWith(lowercaseSearchText)) ||
             lowercaseOpt.startsWith(lowercaseSearchText)
           );
         })
-        .map(opt => (
+        .map((opt) => (
           <MenuItem
             key={opt.index}
             selected={opt.index === selectedIndex}
             itemColor={itemColor}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
               onChange(opt.index);
               setOpen(false);
@@ -105,7 +105,7 @@ const DropdownList = ({
         open={open}
         color={color}
         onClick={() => setOpen(!open)}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         {selectedIndex !== -1 ? options[selectedIndex] : placeholder}
         <ChevronDown />

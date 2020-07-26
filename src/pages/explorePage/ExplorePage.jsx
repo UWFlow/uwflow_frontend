@@ -5,6 +5,8 @@ import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
 
 /* Styled Components */
+import { buildExploreQuery } from 'graphql/queries/explore/Explore';
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import {
   ExplorePageWrapper,
   ExploreHeaderWrapper,
@@ -19,10 +21,8 @@ import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
 
 /* GraphQL */
-import { buildExploreQuery } from '../../graphql/queries/explore/Explore';
 
 /* Constants */
-import { SEO_DESCRIPTIONS } from '../../constants/Messages';
 
 const NUM_COURSE_CODE_FILTERS = 5;
 const RATING_FILTERS = [0, 1, 5, 10, 20, 50, 75, 100, 200, 500];
@@ -53,15 +53,15 @@ const ExplorePageContent = ({
       return;
     }
 
-    let seenCourses = new Set();
+    const seenCourses = new Set();
     const allProfCourses = data[
       exploreAll ? 'prof_search_index' : 'search_profs'
     ]
       .reduce((acc, result) => {
         return acc.concat(
           result.course_codes
-            .filter(code => !seenCourses.has(code))
-            .map(code => {
+            .filter((code) => !seenCourses.has(code))
+            .map((code) => {
               seenCourses.add(code);
               return code;
             }),

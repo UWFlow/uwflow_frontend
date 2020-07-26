@@ -6,35 +6,34 @@ import { withTheme } from 'styled-components';
 import { Query } from 'react-apollo';
 
 /* Styled Components */
+
+/* Child Components */
+import DropdownList from 'components/input/DropdownList';
+
+/* Routes */
+import { PROFILE_PAGE_ROUTE, isOnLandingPageRoute } from 'Routes';
+
+/* GraphQL Queries */
+import { GET_USER } from 'graphql/queries/user/User';
+
+/* Utils */
+import { getKittenFromID } from 'utils/Kitten';
+import withModal from 'components/modal/withModal';
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { logOut } from 'utils/Auth';
+
+/* Constants */
+import { AUTH_MODAL } from 'constants/Modal';
 import {
   ProfileDropdownWrapper,
   ProfilePicture,
   ProfileText,
 } from './styles/ProfileDropdown';
 
-/* Child Components */
-import DropdownList from '../input/DropdownList';
-
-/* Routes */
-import { PROFILE_PAGE_ROUTE } from '../../Routes';
-import { isOnLandingPageRoute } from '../../Routes';
-
-/* GraphQL Queries */
-import { GET_USER } from '../../graphql/queries/user/User';
-
-/* Utils */
-import { getKittenFromID } from '../../utils/Kitten';
-import withModal from '../modal/withModal';
-
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { logOut } from '../../utils/Auth';
-
-/* Constants */
-import { AUTH_MODAL } from '../../constants/Modal';
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
   isLoggedIn: getIsLoggedIn(state),
 });
@@ -43,7 +42,7 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
   let user = { picture_url: null };
   if (data && data.user) {
     if (data.user.length > 0) {
-      user = data.user[0];
+      [user] = data.user;
     } else {
       logOut(dispatch);
     }
@@ -59,7 +58,7 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
           : null
       }
       isLanding={isLanding}
-      onMouseDown={e => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
     />
   );
 };
@@ -74,9 +73,8 @@ const ProfileDropdown = ({
   const dispatch = useDispatch();
   const isLanding = isOnLandingPageRoute(location);
 
-  const handleProfileButtonClick = () => {
+  const handleProfileButtonClick = () =>
     isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : openModal(AUTH_MODAL);
-  };
 
   return (
     <ProfileDropdownWrapper>
@@ -100,7 +98,7 @@ const ProfileDropdown = ({
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
             options={['View profile', 'Log out']}
-            onChange={idx => {
+            onChange={(idx) => {
               if (idx === 0) {
                 handleProfileButtonClick();
               } else {

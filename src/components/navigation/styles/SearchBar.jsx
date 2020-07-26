@@ -5,7 +5,7 @@ import {
   DarkBoxShadow,
   Hover,
   FadeInAnimation,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const SearchBarWrapper = styled.div`
   ${({ isLanding }) => isLanding && DarkBoxShadow}

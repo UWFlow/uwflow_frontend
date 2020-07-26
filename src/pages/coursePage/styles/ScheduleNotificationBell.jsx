@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BoxShadow, Hover } from '../../../constants/Mixins';
+import { BoxShadow, Hover } from 'constants/Mixins';
 
 export const NotificationBellWrapper = styled.button`
   border-radius: 50%;

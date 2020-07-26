@@ -5,31 +5,31 @@ import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
 
 /* Styled Components */
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+
+/* GraphQL */
+import { UPSERT_LIKED_REVIEW } from 'graphql/mutations/Review';
+import {
+  REFETCH_RATINGS,
+  REFETCH_COURSE_REVIEWS,
+} from 'graphql/queries/course/Course';
+import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
+
+/* Utils */
+import withModal from 'components/modal/withModal';
+import { getUserId } from 'utils/Auth';
+
+/* Constants */
+import { AUTH_MODAL } from 'constants/Modal';
 import {
   LikeCourseToggleWrapper,
   LikeCourseToggleButton,
 } from './styles/LikeCourseToggle';
 
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-
-/* GraphQL */
-import { UPSERT_LIKED_REVIEW } from '../../graphql/mutations/Review';
-import {
-  REFETCH_RATINGS,
-  REFETCH_COURSE_REVIEWS,
-} from '../../graphql/queries/course/Course';
-import { REFETCH_USER_REVIEW } from '../../graphql/queries/user/User';
-import { buildCourseReviewQuery } from '../../graphql/queries/course/CourseReview';
-
-/* Utils */
-import withModal from '../modal/withModal';
-import { getUserId } from '../../utils/Auth';
-
-/* Constants */
-import { AUTH_MODAL } from '../../constants/Modal';
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -78,7 +78,7 @@ const LikeCourseToggle = ({
 
   useEffect(() => setLiked(initialState), [initialState]);
 
-  const toggleOnClick = targetState => {
+  const toggleOnClick = (targetState) => {
     if (!isLoggedIn) {
       openModal(AUTH_MODAL);
       return;
@@ -88,7 +88,7 @@ const LikeCourseToggle = ({
       return;
     }
 
-    let likedValue = liked === targetState ? null : targetState;
+    const likedValue = liked === targetState ? null : targetState;
     setLiked(likedValue);
 
     upsertLiked({
@@ -114,7 +114,7 @@ const LikeCourseToggle = ({
         noneSelected={liked === null}
         selected={liked === 1}
         onClick={() => toggleOnClick(1)}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <ThumbsUp
           color={liked === 1 ? theme.white : theme.dark3}
@@ -127,7 +127,7 @@ const LikeCourseToggle = ({
         noneSelected={liked === null}
         selected={liked === 0}
         onClick={() => toggleOnClick(0)}
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <ThumbsDown
           color={liked === 0 ? theme.white : theme.dark3}

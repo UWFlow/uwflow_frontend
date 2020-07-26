@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
+
+/* Child Components */
+import Textbox from 'components/input/Textbox';
+import Button from 'components/input/Button';
+
+import { validateEmail } from 'utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from 'constants/Api';
+import { AUTH_FORM_ERRORS } from 'constants/Messages';
 import {
   Header,
   ForgotPasswordWrapper,
@@ -11,14 +19,6 @@ import {
   Error,
   FormError,
 } from './styles/AuthForm';
-
-/* Child Components */
-import Textbox from '../components/input/Textbox';
-import Button from '../components/input/Button';
-
-import { validateEmail } from '../utils/Email';
-import { BACKEND_ENDPOINT, EMAIL_AUTH_LOGIN_ENDPOINT } from '../constants/Api';
-import { AUTH_FORM_ERRORS } from '../constants/Messages';
 
 const LoginContent = ({
   handleAuth,
@@ -38,7 +38,7 @@ const LoginContent = ({
     return emailValid && formState.password !== '';
   };
 
-  const handleLogin = async event => {
+  const handleLogin = async (event) => {
     await handleAuth(
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_LOGIN_ENDPOINT}`,
@@ -66,7 +66,7 @@ const LoginContent = ({
             placeholder="Email"
             error={emailError}
             text={formState.email}
-            setText={value => {
+            setText={(value) => {
               setEmail(value);
               setEmailError(false);
             }}
@@ -78,7 +78,7 @@ const LoginContent = ({
             placeholder="Password"
             error={passwordError}
             text={formState.password}
-            setText={value => {
+            setText={(value) => {
               setPassword(value);
               setPasswordError(false);
             }}

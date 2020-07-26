@@ -1,6 +1,9 @@
 import React from 'react';
 
 /* Styled Components */
+
+import { formatCourseCode, COURSE_CODE_REGEX } from 'utils/Misc';
+import { getCoursePageRoute } from 'Routes';
 import {
   Header,
   LineOfText,
@@ -11,9 +14,6 @@ import {
   ReqInfo,
 } from './styles/CourseRequisites';
 
-import { formatCourseCode, COURSE_CODE_REGEX } from '../../utils/Misc';
-import { getCoursePageRoute } from '../../Routes';
-
 const CourseRequisites = ({
   prereqs,
   antireqs,
@@ -21,7 +21,7 @@ const CourseRequisites = ({
   postreqs,
   courseCode,
 }) => {
-  const parsedRequisites = requisites => {
+  const parsedRequisites = (requisites) => {
     if (!requisites) {
       return '';
     }

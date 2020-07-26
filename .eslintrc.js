@@ -22,17 +22,23 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    'linebreak-style': ['error', 'unix'],
     'max-len': [0, 80, 2],
+    'no-case-declarations': 'off',
     'no-console': 'off',
     'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
+    'no-restricted-syntax': 'off',
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
+    'prefer-spread': 'off',
+    'react/display-name': 'off',
     'react/prefer-default-export': 'off',
     'react/prop-types': 'off',
   },
   settings: {
     'import/resolver': {
+      'typescript': {},
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },

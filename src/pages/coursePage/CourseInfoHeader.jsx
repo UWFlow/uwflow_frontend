@@ -2,6 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
+
+/* Child Components */
+import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
+import ShortlistStar from 'components/input/ShortlistStar';
+
+import { formatCourseCode } from 'utils/Misc';
 import {
   CourseInfoHeaderWrapper,
   CourseCodeAndNameSection,
@@ -14,14 +20,6 @@ import {
   CourseCodeAndStar,
   StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
-
-/* Child Components */
-import RatingBox, {
-  RATING_BOX_WIDTH,
-} from '../../components/display/RatingBox';
-import ShortlistStar from '../../components/input/ShortlistStar';
-
-import { formatCourseCode } from '../../utils/Misc';
 
 const CourseInfoHeader = ({ course, shortlisted }) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating;

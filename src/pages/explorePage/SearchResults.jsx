@@ -2,19 +2,19 @@ import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
-import { SearchResultsContent, ResultsError } from './styles/SearchResults';
 
 /* Child Components */
-import Table from '../../components/display/Table';
-import TabContainer from '../../components/display/TabContainer';
-import { courseColumns, profColumns } from './ExploreTableData';
+import Table from 'components/display/Table';
+import TabContainer from 'components/display/TabContainer';
 
 /* Utils */
-import { getCurrentTermCode, getNextTermCode } from '../../utils/Misc';
+import { getCurrentTermCode, getNextTermCode } from 'utils/Misc';
 
 /* Constants */
-import { SEARCH_RESULTS_PER_PAGE } from '../../constants/Search';
-import { EXPLORE_COURSES_ERROR } from '../../constants/Messages';
+import { SEARCH_RESULTS_PER_PAGE } from 'constants/Search';
+import { EXPLORE_COURSES_ERROR } from 'constants/Messages';
+import { courseColumns, profColumns } from './ExploreTableData';
+import { SearchResultsContent, ResultsError } from './styles/SearchResults';
 
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
@@ -22,11 +22,11 @@ const nextTermCode = getNextTermCode();
 const compareNull = (a, b) => {
   if (a === null && b === null) {
     return 0;
-  } else if (a === null) {
-    return 1;
-  } else if (b === null) {
-    return -1;
   }
+  if (a === null) {
+    return 1;
+  }
+  return -1;
 };
 
 const numberSort = (a, b, desc) => {
@@ -72,7 +72,7 @@ const SearchResults = ({
 
     const newCourses = data[
       exploreAll ? 'course_search_index' : 'search_courses'
-    ].map(result =>
+    ].map((result) =>
       Object({
         id: result.course_id,
         code: result.code,
@@ -87,7 +87,7 @@ const SearchResults = ({
 
     const newProfs = data[
       exploreAll ? 'prof_search_index' : 'search_profs'
-    ].map(result =>
+    ].map((result) =>
       Object({
         id: result.prof_id,
         code_name: {
@@ -108,7 +108,7 @@ const SearchResults = ({
 
   const courseCodeRegex = useMemo(() => {
     let regexStr = '';
-    for (let i = filterState.courseCodes.length - 1; i >= 0; i--) {
+    for (let i = filterState.courseCodes.length - 1; i >= 0; i -= 1) {
       if (filterState.courseCodes[i]) {
         regexStr += `|${
           i < filterState.courseCodes.length - 1 ? i + 1 : '[5-8]'
@@ -122,21 +122,21 @@ const SearchResults = ({
 
   const filteredCourses = courses
     ? courses.filter(
-        course =>
+        (course) =>
           courseCodeRegex.test(course.code) &&
           course.ratings >= ratingFilters[filterState.numCourseRatings] &&
           (!filterState.currentTerm ||
             (filterState.currentTerm &&
-              course.terms.some(term => Number(term) === currentTermCode))) &&
+              course.terms.some((term) => Number(term) === currentTermCode))) &&
           (!filterState.nextTerm ||
             (filterState.nextTerm &&
-              course.terms.some(term => Number(term) === nextTermCode))),
+              course.terms.some((term) => Number(term) === nextTermCode))),
       )
     : [];
 
   const filteredProfs = profs
     ? profs.filter(
-        prof =>
+        (prof) =>
           prof.ratings >= ratingFilters[filterState.numProfRatings] &&
           (filterState.courseTaught === 0 ||
             prof.courses.has(profCourses[filterState.courseTaught])),
@@ -165,7 +165,7 @@ const SearchResults = ({
     loading: loading || courses === null || profs === null,
     sortable: true,
     manualSortBy: true,
-    setTableState: state => {
+    setTableState: (state) => {
       setNumRendered(50);
       setTableState(state);
     },
@@ -176,9 +176,7 @@ const SearchResults = ({
       ? courseSearch
         ? filteredCourses.length <= numRendered
         : filteredProfs.length <= numRendered
-      : error
-      ? true
-      : false;
+      : !!error;
 
   const results = () => (
     <SearchResultsContent>

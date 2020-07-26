@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading3, Heading4 } from '../../../constants/Mixins';
+import { Heading3, Heading4 } from 'constants/Mixins';
 
 export const CompleteProfileHeading = styled.div`
   ${Heading3}

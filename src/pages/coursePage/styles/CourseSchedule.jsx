@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Heading3, Hover } from '../../../constants/Mixins';
-import { LEC, LAB } from '../../../constants/PageConstants';
+import { Hover } from 'constants/Mixins';
+import { LEC, LAB } from 'constants/PageConstants';
 
 const CELL_HEIGHT = 28;
 
@@ -77,11 +77,6 @@ export const ScheduleTableWrapper = styled.div`
   overflow-y: hidden;
 `;
 
-export const FinalExamsTableWrapper = styled.div`
-  overflow-x: auto;
-  padding: ${({ hasExams }) => (hasExams ? '32px 0' : '32px 0 0 0')};
-`;
-
 export const EnrollmentText = styled.div`
   display: flex;
   align-items: center;
@@ -89,13 +84,6 @@ export const EnrollmentText = styled.div`
     !filled && hasBell ? 36 : 0}px;
   height: ${CELL_HEIGHT}px;
   color: ${({ theme, filled }) => (filled ? theme.red : 'inherit')};
-`;
-
-export const FinalExamsText = styled.div`
-  padding-bottom: 8px;
-  padding-left: 16px;
-  ${Heading3}
-  color: ${({ theme }) => theme.dark1};
 `;
 
 export const SpaceMargin = styled.div`

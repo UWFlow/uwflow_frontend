@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { LOGGED_OUT } from '../data/actions/AuthActions';
+import { LOGGED_OUT } from 'data/actions/AuthActions';
 
 // returns if a user is logged in or not
 export const isLoggedIn = (): boolean => {

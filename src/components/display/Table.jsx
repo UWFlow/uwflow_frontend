@@ -20,7 +20,7 @@ import {
 } from './styles/Table';
 
 /* Child Components */
-import LoadingSpinner from '../display/LoadingSpinner';
+import LoadingSpinner from './LoadingSpinner';
 
 const Table = ({
   cellPadding,
@@ -55,7 +55,7 @@ const Table = ({
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [shouldFetchMore]);
 
   const setFetchMore = () => {
@@ -63,7 +63,7 @@ const Table = ({
       return;
     }
 
-    const top = bottomRef.current.getBoundingClientRect().top;
+    const { top } = bottomRef.current.getBoundingClientRect();
     const inView =
       top + fetchOffset >= 0 && top - fetchOffset <= window.innerHeight;
     setShouldFetchMore(inView);
@@ -76,7 +76,7 @@ const Table = ({
     return window.document.removeEventListener('scroll', () =>
       throttledSetFetchMore(),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [loading]);
 
   const {
@@ -98,7 +98,7 @@ const Table = ({
 
   useEffect(() => {
     setTableState(tableState);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [tableState]);
 
   const renderRows = () =>
@@ -110,13 +110,14 @@ const Table = ({
             {...{ ...row.getRowProps(), ...additionalRowProps }}
             odd={index % 2}
           >
-            {row.cells.map(cell => (
+            {row.cells.map((cell, idx) => (
               <Cell
                 {...cell.getCellProps()}
                 padding={cellPadding}
                 align={cell.column.align}
                 style={cell.column.style}
                 maxWidth={cell.column.maxWidth}
+                key={idx}
               >
                 {cell.render('Cell')}
               </Cell>
@@ -132,14 +133,15 @@ const Table = ({
   return (
     <TableWrapper {...getTableProps()}>
       <TableHeader>
-        {headerGroups.map(headerGroup => (
-          <HeaderRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column, i) => (
+        {headerGroups.map((headerGroup, groupIdx) => (
+          <HeaderRow {...headerGroup.getHeaderGroupProps()} key={groupIdx}>
+            {headerGroup.headers.map((column, idx) => (
               <HeaderCell
                 align={column.align}
                 minWidth={column.minWidth}
                 maxWidth={column.maxWidth}
                 {...column.getHeaderProps()}
+                key={idx}
               >
                 <HeaderText
                   sortable={sortable}

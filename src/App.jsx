@@ -18,7 +18,7 @@ import {
   PRIVACY_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
   SHORT_PROF_PAGE_ROUTE,
-} from './Routes';
+} from 'Routes';
 
 /* Child Components */
 import {
@@ -31,29 +31,29 @@ import {
   LoadableNotFoundPage,
   LoadablePrivacyPage,
   LoadableWelcomePage,
-} from './LoadableComponents';
-import Navbar from './components/navigation/Navbar';
-import Footer from './components/navigation/Footer';
-import ModalMount from './components/modal/ModalMount';
-import LandingPageBg from './img/landing.svg';
+} from 'LoadableComponents';
+import Navbar from 'components/navigation/Navbar';
+import Footer from 'components/navigation/Footer';
+import ModalMount from 'components/modal/ModalMount';
+import LandingPageBg from 'img/landing.svg';
 
 /* Constants */
-import { SEO_DESCRIPTIONS } from './constants/Messages';
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import {
   BACKEND_ENDPOINT,
   AUTH_REFRESH_ENDPOINT,
   GOOGLE_ANALYTICS_ID,
-} from './constants/Api';
+} from 'constants/Api';
 
 /* Utils */
-import { makeAuthenticatedPOSTRequest } from './utils/Api';
-import { getIsLoggedIn } from './data/reducers/AuthReducer';
-import { getUserId } from './utils/Auth';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getUserId } from 'utils/Auth';
 
 Modal.setAppElement('#root');
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 

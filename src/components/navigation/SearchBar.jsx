@@ -8,17 +8,22 @@ import useOnClickOutside from 'use-onclickoutside';
 import Highlighter from 'react-highlight-words';
 
 /* Child Components */
-import Tooltip from '../../components/display/Tooltip';
+import Tooltip from 'components/display/Tooltip';
 
 /* Routes */
 import {
   EXPLORE_PAGE_ROUTE,
   getCoursePageRoute,
   getProfPageRoute,
-} from '../../Routes';
+} from 'Routes';
 
-import { formatCourseCode } from '../../utils/Misc';
+import { formatCourseCode } from 'utils/Misc';
 
+import Textbox from 'components/input/Textbox';
+import { useSearchContext } from 'search/SearchProvider';
+
+/* Constants */
+import KeycodeConstants from 'constants/KeycodeConstants';
 import {
   SearchResultsWrapper,
   SearchBarWrapper,
@@ -32,12 +37,6 @@ import {
   ExploreSideButton,
   EllipsisSpan,
 } from './styles/SearchBar';
-
-import Textbox from '../input/Textbox';
-import { useSearchContext } from '../../search/SearchProvider';
-
-/* Constants */
-import KeycodeConstants from '../../constants/KeycodeConstants';
 
 const Highlight = ({ children }) => <UnderlinedText>{children}</UnderlinedText>;
 
@@ -62,7 +61,7 @@ const SearchBar = ({
 
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  const [searchText, setSearchText] = useState(query ? query : '');
+  const [searchText, setSearchText] = useState(query || '');
   const [searchResults, setSearchResults] = useState({
     courseCodeResults: [],
     courseResults: [],
@@ -70,10 +69,10 @@ const SearchBar = ({
   });
   const { searchWorker } = useSearchContext();
 
-  const performSearch = event => {
+  const performSearch = (event) => {
     const { type } = event.data;
     if (type === 'autocomplete') {
-      const results = event.data.results;
+      const { results } = event.data;
       setSearchResults(results);
       setSelectedResultIndex(-1);
       if (inputRef.current) {
@@ -83,7 +82,7 @@ const SearchBar = ({
   };
 
   const handleUserKeyPress = useCallback(
-    event => {
+    (event) => {
       const { keyCode } = event;
       if (keyCode === KeycodeConstants.ESCAPE) {
         setOpen(false);
@@ -103,11 +102,11 @@ const SearchBar = ({
   );
 
   useEffect(() => {
-    searchWorker.addEventListener('message', event => performSearch(event));
+    searchWorker.addEventListener('message', (event) => performSearch(event));
     window.addEventListener('keydown', handleUserKeyPress);
 
     return () => {
-      searchWorker.removeEventListener('message', event =>
+      searchWorker.removeEventListener('message', (event) =>
         performSearch(event),
       );
       window.removeEventListener('keydown', handleUserKeyPress);
@@ -131,12 +130,8 @@ const SearchBar = ({
 
   useOnClickOutside(searchBarRef, () => setOpen(false));
 
-  const queryExploreCourses = (
-    query,
-    codeSearch = false,
-    profSearch = false,
-  ) => {
-    if (query === '' || !query) {
+  const queryExploreCourses = (q, codeSearch = false, profSearch = false) => {
+    if (q === '' || !q) {
       history.push(EXPLORE_PAGE_ROUTE);
     }
 
@@ -144,18 +139,16 @@ const SearchBar = ({
     const profTerm = profSearch ? '&t=p' : '';
     setOpen(false);
     history.push(
-      `${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(
-        query,
-      )}${codeTerm}${profTerm}`,
+      `${EXPLORE_PAGE_ROUTE}?q=${encodeURIComponent(q)}${codeTerm}${profTerm}`,
     );
   };
 
-  const goToCourse = code => {
+  const goToCourse = (code) => {
     setOpen(false);
     history.push(getCoursePageRoute(code));
   };
 
-  const goToProf = code => {
+  const goToProf = (code) => {
     setOpen(false);
     history.push(getProfPageRoute(code));
   };
@@ -166,7 +159,7 @@ const SearchBar = ({
     }
   };
 
-  const handleKeyStroke = value => {
+  const handleKeyStroke = (value) => {
     setSearchText(value);
     setOpen(true);
     searchWorker.postMessage({ type: 'autocomplete', query: value });
@@ -174,7 +167,7 @@ const SearchBar = ({
 
   const queryTokens = searchText
     .split(' ')
-    .map(term => formatCourseCode(term))
+    .map((term) => formatCourseCode(term))
     .join(' ')
     .split(' ');
 
@@ -211,12 +204,7 @@ const SearchBar = ({
     <SearchResult
       onClick={() =>
         // convert back to raw code
-        goToCourse(
-          course.code
-            .split(' ')
-            .join('')
-            .toLowerCase(),
-        )
+        goToCourse(course.code.split(' ').join('').toLowerCase())
       }
       key={course.code}
       ref={ref}
@@ -235,7 +223,7 @@ const SearchBar = ({
       <Tooltip content={`Explore professors that teach ${course.code}`}>
         <ExploreSideButton
           color={theme.professors}
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             queryExploreCourses(course.code, false, true);
           }}
@@ -266,7 +254,7 @@ const SearchBar = ({
       <Tooltip content={`Explore courses taught by ${prof.name}`}>
         <ExploreSideButton
           color={theme.courses}
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             queryExploreCourses(prof.name);
           }}

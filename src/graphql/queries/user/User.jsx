@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-import UserFragment from '../../fragments/UserFragment.jsx';
-import ReviewFragment from '../../fragments/ReviewFragment.jsx';
+import UserFragment from 'graphql/fragments/UserFragment.jsx';
+import ReviewFragment from 'graphql/fragments/ReviewFragment.jsx';
 
 // review and course taken were split up to improve Apollo cache performance
 // this way when refetching reviews when a review is updated, the data structure

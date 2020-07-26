@@ -1,9 +1,8 @@
-import { LOGGED_IN, LOGGED_OUT } from '../actions/AuthActions';
+import { LOGGED_IN, LOGGED_OUT } from 'data/actions/AuthActions';
 
 /* Selectors */
+import { isLoggedIn } from 'utils/Auth';
 import { getDataState } from './DataReducer';
-
-import { isLoggedIn } from '../../utils/Auth';
 
 export default (
   state = {
@@ -29,5 +28,5 @@ export default (
 };
 
 // Selectors
-export const getAuthState = state => getDataState(state).auth;
-export const getIsLoggedIn = state => getAuthState(state).loggedIn;
+export const getAuthState = (state) => getDataState(state).auth;
+export const getIsLoggedIn = (state) => getAuthState(state).loggedIn;

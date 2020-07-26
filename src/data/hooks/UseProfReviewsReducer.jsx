@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export const UPDATE_REVIEW_DATA = 'update review data';
 
-const convertInputToState = data => {
+const convertInputToState = (data) => {
   if (!data) {
     return {
       reviewsByCourse: [],
@@ -12,7 +12,7 @@ const convertInputToState = data => {
   const reviewsByCourse = data.review.reduce((allCourses, current) => {
     let courseObject;
     let foundCourseObject = false;
-    for (let i of allCourses) {
+    for (const i of allCourses) {
       if (current.course && current.course.id === i.id) {
         courseObject = i;
         foundCourseObject = true;
@@ -38,7 +38,7 @@ const convertInputToState = data => {
         ? current.prof_review_rating.upvote_count
         : 0,
       upvote_users: current.prof_review_upvotes
-        ? current.prof_review_upvotes.map(vote => Number(vote.user_id))
+        ? current.prof_review_upvotes.map((vote) => Number(vote.user_id))
         : [],
       review: current.prof_comment,
       author: current.author,
@@ -53,7 +53,7 @@ const convertInputToState = data => {
     return allCourses;
   }, []);
 
-  const courses = reviewsByCourse.map(obj => obj.code);
+  const courses = reviewsByCourse.map((obj) => obj.code);
 
   return {
     reviewsByCourse,
@@ -70,10 +70,10 @@ const processDispatch = (currentState, action) => {
   }
 };
 
-const useProfReviewsReducer = initialState => {
+const useProfReviewsReducer = (initialState) => {
   const [state, setState] = useState(convertInputToState(initialState));
 
-  const dispatch = action => {
+  const dispatch = (action) => {
     const newState = processDispatch(state, action);
     setState(newState);
   };

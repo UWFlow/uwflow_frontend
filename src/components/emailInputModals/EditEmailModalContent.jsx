@@ -5,7 +5,7 @@ import { FormText } from './styles/EmailInputForm';
 const renderText = () => (
   <FormText>
     We will send an alert to the following email when a spot opens up in a
-    course section you've subscribed to.
+    course section you&apos;ve subscribed to.
   </FormText>
 );
 

@@ -36,7 +36,7 @@ export const SCHEDULE_ERRORS = {
     'That looks like an old schedule – try uploading one for the current or next term.',
   default_schedule:
     'We were unable to process your schedule. Get in touch at info@uwflow.com if this persists.',
-  classes_failed: numClasses =>
+  classes_failed: (numClasses) =>
     `We were unable to add ${numClasses} ${
       numClasses === 1 ? 'class' : 'classes'
     } to your schedule.

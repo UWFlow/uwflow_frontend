@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-import CourseFragment from '../../fragments/CourseFragment';
-import ProfFragment from '../../fragments/ProfFragment';
-import ReviewFragment from '../../fragments/ReviewFragment';
+import CourseFragment from 'graphql/fragments/CourseFragment';
+import ProfFragment from 'graphql/fragments/ProfFragment';
+import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const buildCourseQuery = (fetchUserData = false) => {
   return gql`

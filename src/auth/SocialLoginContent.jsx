@@ -5,6 +5,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
 
 /* Styled Components */
+
+import {
+  BACKEND_ENDPOINT,
+  GOOGLE_AUTH_ENDPOINT,
+  FACEBOOK_AUTH_ENDPOINT,
+  GOOGLE_APP_ID,
+  FACEBOOK_APP_ID,
+} from 'constants/Api';
+import { makePOSTRequest } from 'utils/Api';
+
+/* Constants */
+import { AUTH_ERRORS } from 'constants/Messages';
 import {
   Error,
   ButtonText,
@@ -14,23 +26,11 @@ import {
   FacebookIcon,
 } from './styles/AuthForm';
 
-import {
-  BACKEND_ENDPOINT,
-  GOOGLE_AUTH_ENDPOINT,
-  FACEBOOK_AUTH_ENDPOINT,
-  GOOGLE_APP_ID,
-  FACEBOOK_APP_ID,
-} from '../constants/Api';
-import { makePOSTRequest } from '../utils/Api';
-
-/* Constants */
-import { AUTH_ERRORS } from '../constants/Messages';
-
 const SocialLoginContent = ({ onAuthSuccess }) => {
   const [error, setError] = useState('');
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  const handleFacebookLogin = async res => {
+  const handleFacebookLogin = async (res) => {
     if (!res.accessToken) {
       setError(AUTH_ERRORS.no_facebook_email);
       return;
@@ -52,7 +52,7 @@ const SocialLoginContent = ({ onAuthSuccess }) => {
     }
   };
 
-  const handleGoogleSuccess = async res => {
+  const handleGoogleSuccess = async (res) => {
     const { accessToken } = res;
 
     setGoogleLoading(true);
@@ -71,7 +71,7 @@ const SocialLoginContent = ({ onAuthSuccess }) => {
     }
   };
 
-  const handleGoogleFailure = res => {
+  const handleGoogleFailure = (res) => {
     const errorMessage =
       res.error === 'popup_closed_by_user' ? '' : AUTH_ERRORS.no_google_email;
 
@@ -88,10 +88,10 @@ const SocialLoginContent = ({ onAuthSuccess }) => {
         isMobile={false}
         fields="name,email,picture"
         callback={handleFacebookLogin}
-        render={renderProps => (
+        render={(renderProps) => (
           <FacebookButton
             onClick={renderProps.onClick}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             isLoading={renderProps.isProcessing}
           >
             <FacebookIcon>
@@ -105,10 +105,10 @@ const SocialLoginContent = ({ onAuthSuccess }) => {
         clientId={`${GOOGLE_APP_ID}.apps.googleusercontent.com`}
         onSuccess={handleGoogleSuccess}
         onFailure={handleGoogleFailure}
-        render={renderProps => (
+        render={(renderProps) => (
           <GoogleButton
             onClick={renderProps.onClick}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
             isLoading={googleLoading}
           >
             <GoogleIcon>

@@ -7,6 +7,34 @@ import { useMutation } from 'react-apollo';
 import moment from 'moment/moment';
 
 /* Styled Components */
+
+/* Child Components */
+
+/* Selectors */
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+
+/* GraphQL */
+import {
+  DELETE_COURSE_REVIEW_VOTE,
+  DELETE_PROF_REVIEW_VOTE,
+  INSERT_COURSE_REVIEW_VOTE,
+  INSERT_PROF_REVIEW_VOTE,
+} from 'graphql/mutations/Upvote';
+import { REFETCH_COURSE_REVIEW_UPVOTE } from 'graphql/queries/course/CourseReview';
+import { REFETCH_PROF_REVIEW_UPVOTE } from 'graphql/queries/prof/ProfReview';
+
+/* Routes */
+import { getProfPageRoute } from 'Routes';
+
+/* Utils */
+import withModal from 'components/modal/withModal';
+import { getKittenFromID } from 'utils/Kitten';
+
+/* Constants */
+import { AUTH_MODAL } from 'constants/Modal';
+import Tooltip from './Tooltip';
+import BubbleRatings from './BubbleRatings';
 import {
   ReviewWrapper,
   ReviewPictureAndMetricsRow,
@@ -24,34 +52,6 @@ import {
   SingleMetricLabel,
   ProfText,
 } from './styles/Review';
-
-/* Child Components */
-import BubbleRatings from './BubbleRatings';
-import Tooltip from './Tooltip';
-
-/* Selectors */
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-
-/* GraphQL */
-import {
-  DELETE_COURSE_REVIEW_VOTE,
-  DELETE_PROF_REVIEW_VOTE,
-  INSERT_COURSE_REVIEW_VOTE,
-  INSERT_PROF_REVIEW_VOTE,
-} from '../../graphql/mutations/Upvote';
-import { REFETCH_COURSE_REVIEW_UPVOTE } from '../../graphql/queries/course/CourseReview';
-import { REFETCH_PROF_REVIEW_UPVOTE } from '../../graphql/queries/prof/ProfReview';
-
-/* Routes */
-import { getProfPageRoute } from '../../Routes';
-
-/* Utils */
-import withModal from '../modal/withModal';
-import { getKittenFromID } from '../../utils/Kitten';
-
-/* Constants */
-import { AUTH_MODAL } from '../../constants/Modal';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

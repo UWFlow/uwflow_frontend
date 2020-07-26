@@ -3,6 +3,18 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 /* Styled Components */
+
+/* Child Components */
+
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { makePOSTRequest } from 'utils/Api';
+import { LOGGED_IN } from 'data/actions/AuthActions';
+import { AUTH_ERRORS, DEFAULT_ERROR, AUTH_SUCCESS } from 'constants/Messages';
+import withModal from 'components/modal/withModal';
+import { RESET_PASSWORD_MODAL } from 'constants/Modal';
+import SocialLoginContent from './SocialLoginContent';
+import SignupContent from './SignupContent';
+import LoginContent from './LoginContent';
 import {
   Wrapper,
   ContentWrapper,
@@ -13,22 +25,6 @@ import {
   SwapModalWrapper,
   SwapModalLink,
 } from './styles/AuthForm';
-
-/* Child Components */
-import LoginContent from './LoginContent';
-import SignupContent from './SignupContent';
-import SocialLoginContent from './SocialLoginContent';
-
-import { PRIVACY_PAGE_ROUTE } from '../Routes';
-import { makePOSTRequest } from '../utils/Api';
-import { LOGGED_IN } from '../data/actions/AuthActions';
-import {
-  AUTH_ERRORS,
-  DEFAULT_ERROR,
-  AUTH_SUCCESS,
-} from '../constants/Messages';
-import withModal from '../components/modal/withModal';
-import { RESET_PASSWORD_MODAL } from '../constants/Modal';
 
 export const AuthForm = ({
   onLoginComplete,
@@ -47,12 +43,12 @@ export const AuthForm = ({
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const setJWT = response => {
+  const setJWT = (response) => {
     localStorage.setItem('token', response.token);
     localStorage.setItem('user_id', response.user_id);
   };
 
-  const onAuthSuccess = response => {
+  const onAuthSuccess = (response) => {
     setJWT(response);
     dispatch({ type: LOGGED_IN });
     if (response.is_new) {
@@ -85,11 +81,11 @@ export const AuthForm = ({
   };
 
   const formState = {
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: password,
-    confirmPassword: confirmPassword,
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPassword,
   };
 
   return (
@@ -134,7 +130,7 @@ export const AuthForm = ({
           New to UW Flow?
           <SwapModalLink
             onClick={() => setShowLoginForm(!showLoginForm)}
-            onMouseDown={e => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
           >
             {showLoginForm ? 'Sign up' : 'Log in'}
           </SwapModalLink>

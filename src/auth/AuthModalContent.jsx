@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 /* Child Components */
+import { WELCOME_PAGE_ROUTE } from 'Routes';
 import AuthForm from './AuthForm';
 
 /* Routes */
-import { WELCOME_PAGE_ROUTE } from '../Routes';
 
 const AuthModalContent = ({
   onAfterLogin,

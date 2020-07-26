@@ -7,7 +7,7 @@ import {
   BoxShadow,
   Link,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const TeamMembersWrapper = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ export const MemberPhoto = styled.div`
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(${props => props.img});
+  background-image: url(${(props) => props.img});
   ${BoxShadow}
 `;
 

@@ -7,7 +7,7 @@ import {
   ThinColumn,
   PageContent,
   PageWrapper,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const ProfPageWrapper = styled.div`
   ${PageWrapper}

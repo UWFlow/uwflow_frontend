@@ -6,20 +6,28 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 /* Child Components */
-import CourseInfoHeader from './CourseInfoHeader';
-import CourseSchedule from './CourseSchedule';
-import CourseRequisites from './CourseRequisites';
-import CourseReviews from './CourseReviews';
-import Button from '../../components/input/Button';
-import LikeCourseToggle from '../../components/input/LikeCourseToggle';
-import LoadingSpinner from '../../components/display/LoadingSpinner';
-import NotFoundPage from '../../pages/notFoundPage/NotFoundPage';
+import Button from 'components/input/Button';
+import LikeCourseToggle from 'components/input/LikeCourseToggle';
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 
 /* Queries */
-import { buildCourseQuery } from '../../graphql/queries/course/Course';
-import { getUserId } from '../../utils/Auth';
+import { buildCourseQuery } from 'graphql/queries/course/Course';
+import { getUserId } from 'utils/Auth';
 
 /* Styled Components */
+
+/* Selectors */
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+
+/* Utils */
+import { formatCourseCode } from 'utils/Misc';
+import withModal from 'components/modal/withModal';
+
+/* Constants */
+import { NOT_FOUND, DEFAULT_ERROR } from 'constants/Messages';
+import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from 'constants/Modal';
 import {
   CoursePageWrapper,
   ColumnWrapper,
@@ -30,20 +38,12 @@ import {
   CourseQuestionTextAndToggle,
   CourseReviewQuestionText,
 } from './styles/CoursePage';
+import CourseReviews from './CourseReviews';
+import CourseRequisites from './CourseRequisites';
+import CourseSchedule from './CourseSchedule';
+import CourseInfoHeader from './CourseInfoHeader';
 
-/* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from '../../data/reducers/BrowserReducer';
-
-/* Utils */
-import { formatCourseCode } from '../../utils/Misc';
-import withModal from '../../components/modal/withModal';
-
-/* Constants */
-import { NOT_FOUND, DEFAULT_ERROR } from '../../constants/Messages';
-import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from '../../constants/Modal';
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
   isLoggedIn: getIsLoggedIn(state),
 });
@@ -60,14 +60,13 @@ const CoursePageContent = ({
   openModal,
   closeModal,
 }) => {
-  const handleReviewClick = () => {
+  const handleReviewClick = () =>
     isLoggedIn
       ? openModal(COURSE_REVIEW_COURSE_MODAL, {
-          courseList: [{ course: course, review: userReview }],
+          courseList: [{ course, review: userReview }],
           onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
         })
       : openModal(AUTH_MODAL);
-  };
 
   const Schedule = (
     <CourseSchedule
@@ -173,9 +172,7 @@ const CoursePage = ({
         userReview={
           isLoggedIn && data.review.length > 0 ? data.review[0] : null
         }
-        userCourseTaken={
-          isLoggedIn && data.user_course_taken.length > 0 ? true : false
-        }
+        userCourseTaken={!!(isLoggedIn && data.user_course_taken.length > 0)}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         sectionSubscriptions={data.queue_section_subscribed || []}
         isLoggedIn={isLoggedIn}

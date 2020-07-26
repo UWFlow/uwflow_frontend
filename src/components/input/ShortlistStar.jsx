@@ -5,35 +5,35 @@ import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
 
 /* Styled Components */
-import {
-  ShortlistStarWrapper,
-  ShortlistStarButton,
-} from './styles/ShortlistStar';
 
 /* Child Components */
-import Tooltip from '../display/Tooltip';
+import Tooltip from 'components/display/Tooltip';
 
 /* Selectors */
-import { getIsLoggedIn } from '../../data/reducers/AuthReducer';
+import { getIsLoggedIn } from 'data/reducers/AuthReducer';
 
 /* GraphQL */
 import {
   DELETE_USER_SHORTLIST,
   INSERT_USER_SHORTLIST,
-} from '../../graphql/mutations/Shortlist';
-import { REFETCH_COURSE_SHORTLIST } from '../../graphql/queries/course/Course';
-import { REFETCH_USER_SHORTLIST } from '../../graphql/queries/user/User';
+} from 'graphql/mutations/Shortlist';
+import { REFETCH_COURSE_SHORTLIST } from 'graphql/queries/course/Course';
+import { REFETCH_USER_SHORTLIST } from 'graphql/queries/user/User';
 
 /* Utils */
-import { formatCourseCode } from '../../utils/Misc';
-import withModal from '../modal/withModal';
-import { getUserId } from '../../utils/Auth';
+import { formatCourseCode } from 'utils/Misc';
+import withModal from 'components/modal/withModal';
+import { getUserId } from 'utils/Auth';
 
 /* Constants */
-import { SHORTLIST_ERROR } from '../../constants/Messages';
-import { AUTH_MODAL } from '../../constants/Modal';
+import { SHORTLIST_ERROR } from 'constants/Messages';
+import { AUTH_MODAL } from 'constants/Modal';
+import {
+  ShortlistStarWrapper,
+  ShortlistStarButton,
+} from './styles/ShortlistStar';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: getIsLoggedIn(state),
 });
 
@@ -104,7 +104,7 @@ const ShortlistStar = ({
         onClick={onStarClicked}
         data-for={`${courseID}`}
         data-offset="{'top': 70}"
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         <ShortlistStarWrapper
           checked={checked}

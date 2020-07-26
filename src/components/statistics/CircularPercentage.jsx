@@ -11,7 +11,7 @@ import {
   GreyText,
 } from './styles/CircularPercentage';
 
-//Contained within a square tho
+// Contained within a square tho
 const CircularPercentage = ({
   theme,
   height,
@@ -47,7 +47,7 @@ const CircularPercentage = ({
 
 CircularPercentage.propTypes = {
   height: PropTypes.number,
-  percent: PropTypes.number, //Out of 100, not as a decimal
+  percent: PropTypes.number, // Out of 100, not as a decimal
   barThickness: PropTypes.number,
   label: PropTypes.string,
 };

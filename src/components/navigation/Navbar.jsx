@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
+import { getWidth } from 'data/reducers/BrowserReducer';
 import {
   NavbarWrapper,
   NavbarContent,
@@ -16,9 +17,8 @@ import FlowLogo from './FlowLogo';
 import ProfileDropdown from './ProfileDropdown';
 
 /* Selectors */
-import { getWidth } from '../../data/reducers/BrowserReducer';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   width: getWidth(state),
 });
 

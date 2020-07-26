@@ -8,7 +8,7 @@ import {
   DarkBoxShadow,
   Hover,
   Link,
-} from '../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const Wrapper = styled.div`
   ${DarkBoxShadow}

@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 /* Styled Components */
+
+/* Child Components */
+import Button from 'components/input/Button';
+
+import { LANDING_PAGE_ROUTE } from 'Routes';
+import { NOT_FOUND } from 'constants/Messages';
 import {
   NotFoundPageWrapper,
   NotFoundImage,
   PageHeader,
   HeaderText,
 } from './styles/NotFoundPage';
-
-/* Child Components */
-import Button from '../../components/input/Button';
-
-import { LANDING_PAGE_ROUTE } from '../../Routes';
-import { NOT_FOUND } from '../../constants/Messages';
 
 const NotFoundPage = ({
   text = NOT_FOUND.page,

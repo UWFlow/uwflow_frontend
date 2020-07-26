@@ -3,24 +3,20 @@ import PropTypes from 'prop-types';
 import moment from 'moment/moment';
 
 /* Child Components */
-import TabContainer from '../../components/display/TabContainer';
-import Table from '../../components/display/Table';
-import FinalExamTable from '../../components/common/FinalExamTable';
-import LastUpdatedSchedule from '../../components/common/LastUpdatedSchedule';
+import TabContainer from 'components/display/TabContainer';
+import Table from 'components/display/Table';
+import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
+import { termCodeToDate, secsToTime, weekDayLetters } from 'utils/Misc';
+import CollapsibleContainer from 'components/display/CollapsibleContainer';
 import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 /* Styled Components */
 import {
   CourseScheduleWrapper,
   ScheduleTableWrapper,
-  FinalExamsTableWrapper,
-  FinalExamsText,
 } from './styles/CourseSchedule';
 
 /* Utils */
-import { termCodeToDate, secsToTime, weekDayLetters } from '../../utils/Misc';
-import { processSectionExams } from '../../utils/FinalExams';
-import CollapsibleContainer from '../../components/display/CollapsibleContainer';
 
 // sectionCodes are all the section codes that exist at UW,
 // in the order they should appear in a course schedule.
@@ -256,11 +252,9 @@ const CourseSchedule = ({
       return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
     });
 
-  const courseExams = processSectionExams(sections, courseCode);
   const tabList = termsOffered.map((term) => {
     return {
       title: termCodeToDate(term),
-      // eslint-disable-next-line react/display-name
       render: () => (
         <>
           <ScheduleTableWrapper>
@@ -273,12 +267,9 @@ const CourseSchedule = ({
               }
             />
           </ScheduleTableWrapper>
-          <FinalExamsTableWrapper hasExams={courseExams.length > 0}>
-            <FinalExamsText>Final Exams</FinalExamsText>
-            <FinalExamTable courses={courseExams} includeCode={false} />
-          </FinalExamsTableWrapper>
         </>
       ),
+      onClick: () => null,
     };
   });
 

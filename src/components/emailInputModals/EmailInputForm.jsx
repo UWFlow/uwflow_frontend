@@ -3,24 +3,24 @@ import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
 
 /* Styled Components */
+import { toast } from 'react-toastify';
+
+/* Child Components */
+import Button from 'components/input/Button';
+import Textbox from 'components/input/Textbox';
+
+/* GraphQL */
+import { UPDATE_USER_EMAIL } from 'graphql/mutations/Email';
+
+/* Utils */
+import { validateEmail } from 'utils/Email';
+import { EMAIL_ERROR, EMAIL_UPDATE_SUCCESS } from 'constants/Messages';
 import {
   EmailInputFormWrapper,
   FormTitle,
   TextboxWrapper,
   ButtonsWrapper,
 } from './styles/EmailInputForm';
-
-/* Child Components */
-import Button from '../input/Button';
-import Textbox from '../input/Textbox';
-
-/* GraphQL */
-import { UPDATE_USER_EMAIL } from '../../graphql/mutations/Email';
-
-/* Utils */
-import { validateEmail } from '../../utils/Email';
-import { toast } from 'react-toastify';
-import { EMAIL_ERROR, EMAIL_UPDATE_SUCCESS } from '../../constants/Messages';
 
 const EmailInputForm = ({
   email,
@@ -32,18 +32,17 @@ const EmailInputForm = ({
   onSuccess = () => {},
 }) => {
   const userID = localStorage.getItem('user_id');
-  const [emailText, setEmailText] = useState(email ? email : '');
+  const [emailText, setEmailText] = useState(email || '');
   const [emailError, setEmailError] = useState(false);
   const [updateEmail] = useMutation(UPDATE_USER_EMAIL);
 
   const notifyUpdate = () => toast(EMAIL_UPDATE_SUCCESS);
   const notifyError = () => toast(EMAIL_ERROR);
 
-  const onSubmit = event => {
+  const onSubmit = (event) => {
     event.preventDefault();
     if (!validateEmail(emailText)) {
       setEmailError(true);
-      return;
     } else {
       updateEmail({ variables: { user_id: userID, email: emailText } })
         .then(() => {
@@ -62,7 +61,7 @@ const EmailInputForm = ({
       <TextboxWrapper>
         <Textbox
           text={emailText}
-          setText={value => {
+          setText={(value) => {
             setEmailText(value);
             setEmailError(false);
           }}

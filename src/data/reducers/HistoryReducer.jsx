@@ -1,5 +1,5 @@
 /* Actions */
-import { HISTORY_FORWARD, HISTORY_BACK } from '../actions/HistoryActions';
+import { HISTORY_FORWARD, HISTORY_BACK } from 'data/actions/HistoryActions';
 
 const DEFAULT_STATE = { histories: [] };
 

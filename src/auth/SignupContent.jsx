@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 /* Styled Components */
+
+/* Child Components */
+import Textbox from 'components/input/Textbox';
+import Button from 'components/input/Button';
+
+import { validateEmail } from 'utils/Email';
+import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from 'constants/Api';
+import { MIN_PASSWORD_LENGTH } from 'constants/Auth';
+import { AUTH_FORM_ERRORS } from 'constants/Messages';
 import {
   Header,
   NamesSection,
@@ -11,18 +20,6 @@ import {
   Error,
   FormError,
 } from './styles/AuthForm';
-
-/* Child Components */
-import Textbox from '../components/input/Textbox';
-import Button from '../components/input/Button';
-
-import { validateEmail } from '../utils/Email';
-import {
-  BACKEND_ENDPOINT,
-  EMAIL_AUTH_REGISTER_ENDPOINT,
-} from '../constants/Api';
-import { MIN_PASSWORD_LENGTH } from '../constants/Auth';
-import { AUTH_FORM_ERRORS } from '../constants/Messages';
 
 const SignupContent = ({
   handleAuth,
@@ -40,7 +37,7 @@ const SignupContent = ({
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-  const transformName = name => {
+  const transformName = (name) => {
     if (name === '') {
       return name;
     }
@@ -64,7 +61,7 @@ const SignupContent = ({
     );
   };
 
-  const handleSignUp = async event => {
+  const handleSignUp = async (event) => {
     await handleAuth(
       event,
       `${BACKEND_ENDPOINT}${EMAIL_AUTH_REGISTER_ENDPOINT}`,
@@ -104,7 +101,7 @@ const SignupContent = ({
               placeholder="First Name"
               error={firstNameError}
               text={formState.firstName}
-              setText={value => {
+              setText={(value) => {
                 setFirstName(value);
                 setFirstNameError(false);
               }}
@@ -117,7 +114,7 @@ const SignupContent = ({
               placeholder="Last Name"
               error={lastNameError}
               text={formState.lastName}
-              setText={value => {
+              setText={(value) => {
                 setLastName(value);
                 setLastNameError(false);
               }}
@@ -130,7 +127,7 @@ const SignupContent = ({
             placeholder="Email"
             error={emailError}
             text={formState.email}
-            setText={value => {
+            setText={(value) => {
               setEmail(value);
               setEmailError(false);
             }}
@@ -142,7 +139,7 @@ const SignupContent = ({
             placeholder="Password"
             error={passwordError}
             text={formState.password}
-            setText={value => {
+            setText={(value) => {
               setPassword(value);
               setPasswordError(
                 passwordError &&
@@ -157,7 +154,7 @@ const SignupContent = ({
             placeholder="Confirm Password"
             error={confirmPasswordError}
             text={formState.confirmPassword}
-            setText={value => {
+            setText={(value) => {
               setConfirmPassword(value);
               setConfirmPasswordError(
                 confirmPasswordError && value !== formState.password,

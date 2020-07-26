@@ -1,5 +1,5 @@
-import { BROWSER_WINDOW_RESIZED } from '../actions/BrowserActions';
-import { BREAKPOINT_WIDTH } from '../../constants/PageConstants';
+import { BROWSER_WINDOW_RESIZED } from 'data/actions/BrowserActions';
+import { BREAKPOINT_WIDTH } from 'constants/PageConstants';
 
 /* Selectors */
 import { getDataState } from './DataReducer';
@@ -24,8 +24,8 @@ export default (
 };
 
 // Selectors
-export const getBrowserState = state => getDataState(state).browser;
-export const getWidth = state => getBrowserState(state).width;
-export const getHeight = state => getBrowserState(state).height;
-export const getIsBrowserDesktop = state =>
+export const getBrowserState = (state) => getDataState(state).browser;
+export const getWidth = (state) => getBrowserState(state).width;
+export const getHeight = (state) => getBrowserState(state).height;
+export const getIsBrowserDesktop = (state) =>
   getBrowserState(state).width >= BREAKPOINT_WIDTH;

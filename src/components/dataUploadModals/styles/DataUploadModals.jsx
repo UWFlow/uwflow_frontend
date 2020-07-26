@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
+import FadeIn from 'react-fade-in';
 import {
   Heading1,
   Heading2,
@@ -8,13 +9,12 @@ import {
   Heading4,
   Body,
   Hover,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 import {
   AWAITING_UPLOAD,
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
-} from '../../../constants/DataUploadStates';
-import FadeIn from 'react-fade-in';
+} from 'constants/DataUploadStates';
 
 export const ContentWrapper = styled(FadeIn)`
   display: flex;

@@ -3,10 +3,26 @@ import moment from 'moment/moment';
 import { withTheme } from 'styled-components';
 
 /* Child Components */
-import Button from '../../components/input/Button';
-import Calendar from './Calendar';
+import Button from 'components/input/Button';
 
 /* Styled Components */
+
+/* Utils */
+import {
+  getDateWithSeconds,
+  millisecondsPerDay,
+  weekDayLetters,
+} from 'utils/Misc';
+import withModal from 'components/modal/withModal';
+
+/* Constants */
+import {
+  CALENDAR_EXPORT_ENDPOINT,
+  BACKEND_ENDPOINT,
+  GOOGLE_CALENDAR_URL,
+} from 'constants/Api';
+import DropdownList from 'components/input/DropdownList';
+import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import {
   ProfileCalendarWrapper,
   ProfileCalendarHeading,
@@ -18,23 +34,7 @@ import {
   ExportCalendarText,
   ButtonWrapper,
 } from './styles/ProfileCalendar';
-
-/* Utils */
-import {
-  getDateWithSeconds,
-  millisecondsPerDay,
-  weekDayLetters,
-} from '../../utils/Misc';
-import withModal from '../../components/modal/withModal';
-
-/* Constants */
-import {
-  CALENDAR_EXPORT_ENDPOINT,
-  BACKEND_ENDPOINT,
-  GOOGLE_CALENDAR_URL,
-} from '../../constants/Api';
-import DropdownList from '../../components/input/DropdownList';
-import { SCHEDULE_UPLOAD_MODAL } from '../../constants/Modal';
+import Calendar from './Calendar';
 
 const getScheduleRange = (schedule) => {
   let minTime = new Date();

@@ -10,7 +10,7 @@ import {
   BoxShadow,
   Heading3,
   PageWrapper,
-} from '../../../constants/Mixins';
+} from 'constants/Mixins';
 
 export const CoursePageWrapper = styled.div`
   ${PageWrapper}

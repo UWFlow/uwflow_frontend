@@ -3,6 +3,12 @@ import { withRouter } from 'react-router-dom';
 
 /* Styled Components */
 import {
+  LANDING_PAGE_ROUTE,
+  ABOUT_PAGE_ROUTE,
+  PRIVACY_PAGE_ROUTE,
+  isOnLandingPageRoute,
+} from 'Routes';
+import {
   FooterWrapper,
   FooterContent,
   FooterLeft,
@@ -11,13 +17,6 @@ import {
   FooterNormalLink,
   FadeInWrapper,
 } from './styles/Footer';
-
-import {
-  LANDING_PAGE_ROUTE,
-  ABOUT_PAGE_ROUTE,
-  PRIVACY_PAGE_ROUTE,
-  isOnLandingPageRoute,
-} from '../../Routes';
 
 const Footer = ({ location }) => (
   <FadeInWrapper delay={1000}>

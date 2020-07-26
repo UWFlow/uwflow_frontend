@@ -1,10 +1,28 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { withTheme } from 'styled-components';
-import { makeAuthenticatedPOSTRequest } from '../../utils/Api';
 import { ArrowRight, Upload } from 'react-feather';
 import { toast } from 'react-toastify';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 
 /* Styled Components */
+
+/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import TranscriptUploadVideoMP4 from 'img/upload/transcript-import-chrome.mp4';
+import TranscriptUploadVideoWebm from 'img/upload/transcript-import-chrome.webm';
+
+/* Constants */
+import { BACKEND_ENDPOINT, TRANSCRIPT_PARSE_ENDPOINT } from 'constants/Api';
+import {
+  AWAITING_UPLOAD,
+  UPLOAD_PENDING,
+  UPLOAD_SUCCESSFUL,
+  UPLOAD_FAILED,
+} from 'constants/DataUploadStates';
+import { TRANSCRIPT_ERRORS, DATA_UPLOAD_SUCCESS } from 'constants/Messages';
+
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { sleep } from 'utils/Misc';
 import {
   ContentWrapper,
   Header,
@@ -27,37 +45,13 @@ import {
   ErrorMessage,
 } from './styles/DataUploadModals';
 
-/* Child Components */
-import LoadingSpinner from '../display/LoadingSpinner';
-import TranscriptUploadVideoMP4 from '../../img/upload/transcript-import-chrome.mp4';
-import TranscriptUploadVideoWebm from '../../img/upload/transcript-import-chrome.webm';
-
-/* Constants */
-import {
-  BACKEND_ENDPOINT,
-  TRANSCRIPT_PARSE_ENDPOINT,
-} from '../../constants/Api';
-import {
-  AWAITING_UPLOAD,
-  UPLOAD_PENDING,
-  UPLOAD_SUCCESSFUL,
-  UPLOAD_FAILED,
-} from '../../constants/DataUploadStates';
-import {
-  TRANSCRIPT_ERRORS,
-  DATA_UPLOAD_SUCCESS,
-} from '../../constants/Messages';
-
-import { PRIVACY_PAGE_ROUTE } from '../../Routes';
-import { sleep } from '../../utils/Misc';
-
 const privacyText = `
   Flow only uses your transcript so you can easily import your course
   history and leave reviews for courses you have taken. See our`;
 
-const preventDefault = event => event.preventDefault();
+const preventDefault = (event) => event.preventDefault();
 
-const onDragOver = event => {
+const onDragOver = (event) => {
   event.stopPropagation();
   event.preventDefault();
 };
@@ -78,7 +72,7 @@ const TranscriptUploadModalContent = ({
     }
   };
 
-  const makeTranscriptRequest = async file => {
+  const makeTranscriptRequest = async (file) => {
     setFileSizeError(false);
 
     if (!file) {
@@ -92,7 +86,7 @@ const TranscriptUploadModalContent = ({
       return;
     }
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
     setUploadState(UPLOAD_PENDING);
     const [, status] = await makeAuthenticatedPOSTRequest(
@@ -115,13 +109,13 @@ const TranscriptUploadModalContent = ({
     }
   };
 
-  const handleFileInputChange = async event => {
+  const handleFileInputChange = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     await makeTranscriptRequest(fileInputRef.current.files[0]);
   };
 
-  const handleTranscriptDrop = async event => {
+  const handleTranscriptDrop = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     await makeTranscriptRequest(event.dataTransfer.files[0]);
@@ -225,7 +219,7 @@ const TranscriptUploadModalContent = ({
         </StepWrapper>
       </ContentSteps>
       {showSkipStepButton && (
-        <SkipStepWrapper onClick={onSkip}>skip this step ></SkipStepWrapper>
+        <SkipStepWrapper onClick={onSkip}>skip this step &gt;</SkipStepWrapper>
       )}
     </ContentWrapper>
   );
