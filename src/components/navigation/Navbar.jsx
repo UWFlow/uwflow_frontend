@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withTheme } from 'styled-components';
 
 /* Styled Components */
-import { getWidth } from 'data/reducers/BrowserReducer';
 import {
   NavbarWrapper,
   NavbarContent,
@@ -19,7 +18,7 @@ import ProfileDropdown from './ProfileDropdown';
 /* Selectors */
 
 const mapStateToProps = (state) => ({
-  width: getWidth(state),
+  width: state.browser.width,
 });
 
 const Navbar = ({ width, theme }) => (

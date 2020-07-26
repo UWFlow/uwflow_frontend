@@ -5,8 +5,7 @@ import { withRouter } from 'react-router-dom';
 /* Styled Components */
 
 /* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 
 /* Constants */
 import { PROFILE_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from 'Routes';
@@ -29,7 +28,7 @@ import {
 } from './styles/LandingPage';
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
   isDesktop: getIsBrowserDesktop(state),
 });
 

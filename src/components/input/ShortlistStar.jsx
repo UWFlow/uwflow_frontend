@@ -9,9 +9,6 @@ import { toast } from 'react-toastify';
 /* Child Components */
 import Tooltip from 'components/display/Tooltip';
 
-/* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-
 /* GraphQL */
 import {
   DELETE_USER_SHORTLIST,
@@ -34,7 +31,7 @@ import {
 } from './styles/ShortlistStar';
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const ShortlistStar = ({

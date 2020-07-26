@@ -18,8 +18,7 @@ import { getUserId } from 'utils/Auth';
 /* Styled Components */
 
 /* Selectors */
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
-import { getIsBrowserDesktop } from 'data/reducers/BrowserReducer';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 
 /* Utils */
 import { formatCourseCode } from 'utils/Misc';
@@ -45,7 +44,7 @@ import CourseInfoHeader from './CourseInfoHeader';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: getIsLoggedIn(state),
+  isLoggedIn: state.auth.loggedIn,
 });
 
 const CoursePageContent = ({

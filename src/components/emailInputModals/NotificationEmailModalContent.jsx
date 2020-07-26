@@ -1,10 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { courseNotificationEmailModalClose } from 'data/actions/ModalActions';
+
+/* Styles */
+import { notificationEmailModalClose } from 'data/actions/ModalActions';
 import { PROFILE_PAGE_ROUTE } from 'Routes';
-import EmailInputForm from './EmailInputForm';
 import { FormText, FormLink } from './styles/EmailInputForm';
+
+/* Components */
+import EmailInputForm from './EmailInputForm';
 
 /* Selectors */
 
@@ -15,7 +19,7 @@ const renderText = (history, dispatch) => () => (
     You can change this email anytime in your{' '}
     <FormLink
       onClick={() => {
-        dispatch(courseNotificationEmailModalClose());
+        dispatch(notificationEmailModalClose());
         history.push(PROFILE_PAGE_ROUTE);
       }}
     >
@@ -24,7 +28,7 @@ const renderText = (history, dispatch) => () => (
   </FormText>
 );
 
-const CourseNotificationEmailModalContent = ({
+const NotificationEmailModalContent = ({
   onRequestClose,
   history,
   onSuccess,
@@ -41,4 +45,4 @@ const CourseNotificationEmailModalContent = ({
   );
 };
 
-export default withRouter(CourseNotificationEmailModalContent);
+export default withRouter(NotificationEmailModalContent);

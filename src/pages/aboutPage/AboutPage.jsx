@@ -17,7 +17,7 @@ import TerranceImg from 'img/about/terrance.jpg';
 import ShubhamImg from 'img/about/shubham.jpg';
 
 /* Styled Components */
-import { SEO_DESCRIPTIONS } from 'constants/Messages.jsx';
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import {
   PageWrapper,
   PageHeader,
@@ -30,7 +30,7 @@ import {
 } from './styles/AboutPage';
 
 /* Child Components */
-import TeamMember from './TeamMember.jsx';
+import TeamMember from './TeamMember';
 
 /* Constants */
 

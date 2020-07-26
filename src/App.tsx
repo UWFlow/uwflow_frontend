@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import Modal from 'react-modal';
 import { Helmet } from 'react-helmet';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import {
+  Route,
+  Switch,
+  Redirect,
+  withRouter,
+  RouteComponentProps,
+} from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 import ReactGA from 'react-ga';
 import 'react-toastify/dist/ReactToastify.css';
@@ -47,18 +53,24 @@ import {
 
 /* Utils */
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
-import { getIsLoggedIn } from 'data/reducers/AuthReducer';
+import { RootState } from 'data/reducers/RootReducer';
 import { getUserId } from 'utils/Auth';
 
 Modal.setAppElement('#root');
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: getIsLoggedIn(state),
+const mapStateToProps = (state: RootState) => ({
+  isLoggedIn: state.auth.loggedIn,
 });
 
-const App = ({ location, isLoggedIn }) => {
-  // refresh auth token if logged in
+const connector = connect(mapStateToProps);
+
+type ReduxStateProps = ConnectedProps<typeof connector>;
+
+type AppProps = ReduxStateProps & RouteComponentProps;
+
+const App = ({ location, isLoggedIn }: AppProps) => {
+  // Refresh auth token if logged in
   useEffect(() => {
     if (!isLoggedIn) {
       return;
@@ -97,7 +109,6 @@ const App = ({ location, isLoggedIn }) => {
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnVisibilityChange
         draggable
         pauseOnHover
         transition={Bounce}
