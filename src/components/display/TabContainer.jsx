@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-/* Styled Components */
 import {
   ContainerWrapper,
-  TabsWrapper,
-  Tab,
   ContentContainer,
+  Tab,
+  TabsWrapper,
 } from './styles/TabContainer';
 
 const TabContainer = ({

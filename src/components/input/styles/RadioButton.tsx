@@ -1,7 +1,8 @@
-import { Body } from 'constants/Mixins';
 import styled from 'styled-components';
 
-export const RadioButtonWrapper = styled.div`
+import { Body } from 'constants/Mixins';
+
+export const RadioButtonWrapper = styled.div<{ margin: string }>`
   display: flex;
   flex-direction: row;
   margin: ${({ margin }) => margin};

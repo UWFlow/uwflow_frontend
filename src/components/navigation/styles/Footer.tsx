@@ -1,9 +1,10 @@
-import { Body, Hover, PageContent } from 'constants/Mixins';
-import { FOOTER_HEIGHT, FOOTER_MARGIN_TOP } from 'constants/PageConstants';
 import FadeIn from 'react-fade-in';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+
+import { Body, Hover, PageContent } from 'constants/Mixins';
+import { FOOTER_HEIGHT, FOOTER_MARGIN_TOP } from 'constants/PageConstants';
 
 export const FadeInWrapper = styled(FadeIn)`
   position: relative;
@@ -15,7 +16,7 @@ export const FadeInWrapper = styled(FadeIn)`
   }
 `;
 
-export const FooterWrapper = styled.div`
+export const FooterWrapper = styled.div<{ noMargin: boolean }>`
   background: ${({ theme }) => theme.primaryExtraDark};
   height: fit-content;
   min-height: ${FOOTER_HEIGHT}px;

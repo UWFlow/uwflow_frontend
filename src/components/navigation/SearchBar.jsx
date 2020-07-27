@@ -1,20 +1,20 @@
-import Tooltip from 'components/display/Tooltip';
-import Textbox from 'components/input/Textbox';
-import KeycodeConstants from 'constants/KeycodeConstants';
-import queryString from 'query-string';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Layers, Search, Square, User, Users } from 'react-feather';
 import Highlighter from 'react-highlight-words';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import {
   EXPLORE_PAGE_ROUTE,
   getCoursePageRoute,
   getProfPageRoute,
 } from 'Routes';
-import { useSearchContext } from 'search/SearchProvider';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import useOnClickOutside from 'use-onclickoutside';
+
+import Tooltip from 'components/display/Tooltip';
+import Textbox from 'components/input/Textbox';
+import KeycodeConstants from 'constants/KeycodeConstants';
+import { useSearchContext } from 'search/SearchProvider';
 import { formatCourseCode } from 'utils/Misc';
 
 import {
@@ -39,13 +39,11 @@ const BoldHighlight = ({ children }) => (
   </BoldText>
 );
 
-const SearchBar = ({
-  location,
-  history,
-  theme,
-  isLanding = false,
-  maximizeWidth = false,
-}) => {
+const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
+  const location = useLocation();
+  const history = useHistory();
+  const theme = useTheme();
+
   const { q: query } = queryString.parse(location.search);
 
   const searchBarRef = useRef();
@@ -328,4 +326,4 @@ const SearchBar = ({
   );
 };
 
-export default compose(withTheme, withRouter)(SearchBar);
+export default SearchBar;

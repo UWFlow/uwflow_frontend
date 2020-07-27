@@ -1,48 +1,43 @@
 import React, { useState } from 'react';
-import { withTheme } from 'styled-components';
 import { ArrowRight, Clipboard } from 'react-feather';
 import { toast } from 'react-toastify';
-import { makeAuthenticatedPOSTRequest } from 'utils/Api';
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { withTheme } from 'styled-components';
 
-/* Styled Components */
-
-/* Child Components */
 import LoadingSpinner from 'components/display/LoadingSpinner';
-import Step1Image from 'img/upload/calendar-step-1.png';
-import Step2Image from 'img/upload/calendar-step-2.png';
-
-/* Constants */
-import { SCHEDULE_PARSE_ENDPOINT, BACKEND_ENDPOINT } from 'constants/Api';
+import { BACKEND_ENDPOINT, SCHEDULE_PARSE_ENDPOINT } from 'constants/Api';
 import {
-  UPLOAD_PENDING,
   AWAITING_UPLOAD,
   UPLOAD_FAILED,
+  UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
 } from 'constants/DataUploadStates';
-import { SCHEDULE_ERRORS, DATA_UPLOAD_SUCCESS } from 'constants/Messages';
-
-import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { DATA_UPLOAD_SUCCESS, SCHEDULE_ERRORS } from 'constants/Messages';
+import Step1Image from 'img/upload/calendar-step-1.png';
+import Step2Image from 'img/upload/calendar-step-2.png';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { sleep } from 'utils/Misc';
+
 import {
-  ContentWrapper,
-  ContentSteps,
-  StepWrapper,
-  Header,
   ArrowWrapper,
-  InstructionWrapper,
-  NumberCircle,
-  InstructionText,
-  Link,
-  ScheduleStepPicture,
-  ScheduleStep3Wrapper,
-  SchedulePasteBoxWrapper,
-  SchedulePasteBox,
-  GreyText,
-  PrivacyPolicyWrapper,
-  PrivacyPolicyText,
-  PrivacyPolicyLink,
-  SkipStepWrapper,
+  ContentSteps,
+  ContentWrapper,
   ErrorMessage,
+  GreyText,
+  Header,
+  InstructionText,
+  InstructionWrapper,
+  Link,
+  NumberCircle,
+  PrivacyPolicyLink,
+  PrivacyPolicyText,
+  PrivacyPolicyWrapper,
+  SchedulePasteBox,
+  SchedulePasteBoxWrapper,
+  ScheduleStep3Wrapper,
+  ScheduleStepPicture,
+  SkipStepWrapper,
+  StepWrapper,
 } from './styles/DataUploadModals';
 
 // keys for only allowing copy paste / deletion
@@ -61,7 +56,7 @@ const ScheduleUploadModalContent = ({
   onSkip,
   theme,
   showSkipStepButton = false,
-  onAfterUploadSuccess,
+  onAfterUploadSuccess = () => {},
 }) => {
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);
   const [scheduleText, setScheduleText] = useState('');

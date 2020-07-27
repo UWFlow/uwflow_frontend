@@ -1,31 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
-/* Styled Components */
-
-/* Constants */
-import { REVIEWS_DIV_ID } from 'constants/PageConstants';
-
-/* Child Components */
 import ProgressBar from 'components/display/ProgressBar';
 import CircularPercentage from 'components/statistics/CircularPercentage';
+import { REVIEWS_DIV_ID } from 'constants/PageConstants';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 import { processRating } from 'utils/Misc';
+
 import {
-  RatingBoxWrapper,
   CircularPercentageWrapper,
-  RatingBarsColumn,
-  ProgressWrapper,
-  ProgressTextLabel,
-  ProgressBarWrapper,
-  ProgressNumberLabel,
-  ReviewsAndGraphButtonWrapper,
   NumCommentsAndRatingsWrapper,
   NumCommentsWrapper,
   NumRatingsWrapper,
+  ProgressBarWrapper,
+  ProgressNumberLabel,
+  ProgressTextLabel,
+  ProgressWrapper,
+  RatingBarsColumn,
+  RatingBoxWrapper,
+  ReviewsAndGraphButtonWrapper,
 } from './styles/RatingBox';
 
 export const RATING_BOX_HEIGHT = 244;
@@ -101,7 +95,6 @@ const RatingBox = ({
               {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
             </NumRatingsWrapper>
           </NumCommentsAndRatingsWrapper>
-          {/* Graph button goes here */}
         </ReviewsAndGraphButtonWrapper>
       </RatingBarsColumn>
     </RatingBoxWrapper>

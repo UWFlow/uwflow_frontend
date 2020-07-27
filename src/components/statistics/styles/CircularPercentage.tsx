@@ -1,11 +1,12 @@
-import { Heading1, Small } from 'constants/Mixins';
 import styled from 'styled-components';
+
+import { Heading1, Small } from 'constants/Mixins';
 
 export const CircleWrapper = styled.div`
   position: relative;
 `;
 
-export const NumbersInCircle = styled.div`
+export const NumbersInCircle = styled.div<{ height: number }>`
   position: absolute;
   display: flex;
   flex-direction: column;

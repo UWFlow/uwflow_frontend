@@ -1,13 +1,14 @@
-import { Body, BoxShadow, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
 
-export const MultiSelectButtonWrapper = styled.div`
+import { Body, BoxShadow, Hover } from 'constants/Mixins';
+
+export const MultiSelectButtonWrapper = styled.div<{ margin: string }>`
   width: 100%;
   display: block;
   margin: ${({ margin }) => margin};
 `;
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div<{ selected: boolean }>`
   display: inline-block;
   height: 24px;
   border-radius: 12px;

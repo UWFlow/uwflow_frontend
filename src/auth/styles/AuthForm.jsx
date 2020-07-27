@@ -1,11 +1,12 @@
-import styled from 'styled-components';
 import { Link as _Link } from 'react-router-dom';
+import styled from 'styled-components';
+
 import {
-  Heading2,
-  Heading4,
   Body,
   BoxShadow,
   DarkBoxShadow,
+  Heading2,
+  Heading4,
   Hover,
   Link,
 } from 'constants/Mixins';

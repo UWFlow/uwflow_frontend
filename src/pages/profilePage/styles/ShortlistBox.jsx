@@ -1,6 +1,7 @@
-import styled from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
-import { Body, Link, Card, BoxShadow, Heading3 } from 'constants/Mixins';
+import styled from 'styled-components';
+
+import { Body, BoxShadow, Card, Heading3, Link } from 'constants/Mixins';
 
 export const ShortlistBoxWrapper = styled.div`
   ${Card('0')}

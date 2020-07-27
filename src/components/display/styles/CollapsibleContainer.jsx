@@ -1,6 +1,7 @@
-import styled from 'styled-components';
 import { ChevronDown } from 'react-feather';
-import { Heading2, Heading3, BoxShadow, Hover } from 'constants/Mixins';
+import styled from 'styled-components';
+
+import { BoxShadow, Heading2, Heading3, Hover } from 'constants/Mixins';
 
 const HEADER_HEIGHT = 64;
 

@@ -1,52 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
-import { useQuery, useMutation } from 'react-apollo';
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from 'react-apollo';
+import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 
-import { toast } from 'react-toastify';
-import Collapsible from 'react-collapsible';
-
-/* Child Components */
-import RadioButton from 'components/input/RadioButton';
-import DropdownList from 'components/input/DropdownList';
 import Button from 'components/input/Button';
 import DiscreteSlider from 'components/input/DiscreteSlider';
+import DropdownList from 'components/input/DropdownList';
+import RadioButton from 'components/input/RadioButton';
 import Modal from 'components/modal/Modal';
-
-/* Utils */
-import { formatCourseCode } from 'utils/Misc';
-import { getUserId } from 'utils/Auth';
-
-/* GraphQL */
+import { REVIEW_SUCCESS } from 'constants/Messages';
 import { DELETE_REVIEW, UPSERT_REVIEW } from 'graphql/mutations/Review';
 import {
-  REFETCH_RATINGS,
   REFETCH_COURSE_REVIEWS,
+  REFETCH_RATINGS,
 } from 'graphql/queries/course/Course';
-import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import {
-  COURSE_REVIEW_PROFS,
   buildCourseReviewQuery,
+  COURSE_REVIEW_PROFS,
 } from 'graphql/queries/course/CourseReview';
+import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import { getUserId } from 'utils/Auth';
+import { formatCourseCode } from 'utils/Misc';
 
-/* Constants */
-import { REVIEW_SUCCESS } from 'constants/Messages';
 import {
   CourseReviewCourseBoxWrapper,
-  QuestionText,
-  MetricQuestionWrapper,
-  MetricQuestionText,
-  ReviewTextArea,
-  QuestionWrapper,
-  Footer,
-  DeleteIconWrapper,
-  LightText,
-  FooterQuestionWrapper,
-  SliderOptionText,
-  DeleteReviewModalWrapper,
   DeleteConfirmButtons,
+  DeleteIconWrapper,
+  DeleteReviewModalWrapper,
+  Footer,
+  FooterQuestionWrapper,
+  LightText,
+  MetricQuestionText,
+  MetricQuestionWrapper,
+  QuestionText,
+  QuestionWrapper,
+  ReviewTextArea,
+  SliderOptionText,
 } from './styles/CourseReviewCourseBox';
 
 const easyOptions = [
@@ -522,7 +515,6 @@ const CourseReviewCourseBoxContent = ({
           {cancelButton && (
             <Button
               color={theme.dark3}
-              hoverColor={theme.dark2}
               handleClick={onCancel}
               margin="auto 16px auto auto"
             >
@@ -549,7 +541,6 @@ const CourseReviewCourseBoxContent = ({
           <DeleteConfirmButtons>
             <Button
               color={theme.dark3}
-              hoverColor={theme.dark2}
               margin="auto 16px auto 0"
               width="120px"
               handleClick={() => setDeleteReviewModalOpen(false)}
@@ -558,7 +549,6 @@ const CourseReviewCourseBoxContent = ({
             </Button>
             <Button
               color={theme.red}
-              hoverColor={theme.darkRed}
               loading={reviewDeleting}
               width="120px"
               handleClick={handleDelete}

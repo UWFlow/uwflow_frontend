@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+
 import { Body, BoxShadow, Hover, Link } from 'constants/Mixins';
 
 export const RatingBoxWrapper = styled.div`

@@ -1,47 +1,47 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-/* Images */
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import AyushImg from 'img/about/ayush.jpg';
 import BobImg from 'img/about/bob.jpg';
+import DavidImg from 'img/about/david.jpg';
 import DerrekImg from 'img/about/derrek.jpg';
 import DmytroImg from 'img/about/dmytro.jpg';
 import EdwinImg from 'img/about/edwin.jpg';
-import MaxImg from 'img/about/max.jpg';
-import DavidImg from 'img/about/david.jpg';
-import MackImg from 'img/about/mack.jpg';
-import SandyImg from 'img/about/sandy.jpg';
 import JamieImg from 'img/about/jamie.jpg';
 import JeffImg from 'img/about/jeff.jpg';
-import TerranceImg from 'img/about/terrance.jpg';
+import MackImg from 'img/about/mack.jpg';
+import MaxImg from 'img/about/max.jpg';
+import SandyImg from 'img/about/sandy.jpg';
 import ShubhamImg from 'img/about/shubham.jpg';
+import TerranceImg from 'img/about/terrance.jpg';
 
-/* Styled Components */
-import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import {
-  PageWrapper,
-  PageHeader,
-  HeaderText,
-  PageContentWrapper,
-  PageBodyHeader,
-  PageBody,
-  PageBodyParagraph,
   ContributorLink,
+  HeaderText,
+  PageBody,
+  PageBodyHeader,
+  PageBodyParagraph,
+  PageContentWrapper,
+  PageHeader,
+  PageWrapper,
 } from './styles/AboutPage';
-
-/* Child Components */
 import TeamMember from './TeamMember';
 
-/* Constants */
+type ContributorProps = {
+  name: string;
+  about: string;
+  github: string;
+};
 
-const Contributor = ({ name, about, gh }) => (
+const Contributor = ({ name, about, github }: ContributorProps) => (
   <li>
     <ContributorLink href={about} target="_blank">
       {name}
     </ContributorLink>{' '}
     —{' '}
     <ContributorLink
-      href={`https://github.com/UWFlow/rmc/commits/master?author=${gh}`}
+      href={`https://github.com/UWFlow/rmc/commits/master?author=${github}`}
       target="_blank"
     >
       contributions
@@ -192,6 +192,7 @@ const AboutPage = () => (
             program="Computer Science 2021"
             website="https://www.edwinzhang.me/"
             linkedIn="https://www.linkedin.com/in/edwin-zhang/"
+            twitter="http://twitter.com/edwinzhng"
             photo={EdwinImg}
           >
             Edwin built many of the new interfaces and features in Flow 2.0,
@@ -302,7 +303,7 @@ const AboutPage = () => (
             title="Maintainer (Flow 1.0)"
             program="Software Engineering 2018"
             website="http://jgulbronson.github.io/"
-            linkedin="https://ca.linkedin.com/in/jgulbronson"
+            linkedIn="https://ca.linkedin.com/in/jgulbronson"
             photo={JeffImg}
           >
             Jeff enjoys juggling and getting involved in the Waterloo
@@ -317,7 +318,7 @@ const AboutPage = () => (
             name="Terrance Kwok"
             title="Accounting and Finance (Flow 1.0)"
             twitter="http://twitter.com/terrancekwok"
-            linkedin="http://www.linkedin.com/in/terrancekwok"
+            linkedIn="http://www.linkedin.com/in/terrancekwok"
             photo={TerranceImg}
           >
             Terrance Kwok suffers from exercise induced asthma, but enjoys
@@ -334,7 +335,7 @@ const AboutPage = () => (
           <TeamMember
             name="Shubham Datta"
             title="Accounting and Finance (Flow 1.0)"
-            linkedin="http://www.linkedin.com/in/shubhamdatta"
+            linkedIn="http://www.linkedin.com/in/shubhamdatta"
             twitter="https://twitter.com/shubham"
             photo={ShubhamImg}
           >
@@ -355,67 +356,67 @@ const AboutPage = () => (
           <Contributor
             name="Kartik Talwar"
             about="http://kartikt.com/"
-            gh="KartikTalwar"
+            github="KartikTalwar"
           />
           <Contributor
             name="Ted Ying"
             about="https://github.com/yingted"
-            gh="yingted"
+            github="yingted"
           />
           <Contributor
             name="Gabriel Wong"
             about="https://www.gabrielwong.net/"
-            gh="gabrielwong"
+            github="gabrielwong"
           />
           <Contributor
             name="Konrad Listwan-Ciesielski"
             about="https://github.com/klistwan/"
-            gh="klistwan"
+            github="klistwan"
           />
           <Contributor
             name="Andy Zhang"
             about="http://andyzhang.net/"
-            gh="andyzg"
+            github="andyzg"
           />
           <Contributor
             name="Mario Lamontagne"
             about="http://andyzhang.net/"
-            gh="mario54"
+            github="mario54"
           />
           <Contributor
             name="Jeff Gulbronson"
             about="https://github.com/JGulbronson"
-            gh="JGulbronson"
+            github="JGulbronson"
           />
           <Contributor
             name="Ryan De Villa"
             about="https://github.com/ryandv"
-            gh="ryandv"
+            github="ryandv"
           />
           <Contributor
             name="Joshua Kalpin"
             about="https://github.com/ryandv"
-            gh="Kapin"
+            github="Kapin"
           />
           <Contributor
             name="Theo Belaire"
             about="https://github.com/ryandv"
-            gh="tbelaire"
+            github="tbelaire"
           />
           <Contributor
             name="George Ke"
             about="https://georgeke.github.io/"
-            gh="georgeke"
+            github="georgeke"
           />
           <Contributor
             name="Charles Qi"
             about="https://github.com/ccqi"
-            gh="ccqi"
+            github="ccqi"
           />
           <Contributor
             name="Saksham Sachdev"
             about="https://github.com/sachdevs"
-            gh="sachdevs"
+            github="sachdevs"
           />
         </ul>
       </PageBody>

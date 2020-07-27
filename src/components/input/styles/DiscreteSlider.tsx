@@ -1,9 +1,13 @@
-import { BoxShadow } from 'constants/Mixins';
+import { SliderItem } from 'react-compound-slider';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
-export const DiscreteSliderWrapper = styled.div`
-  color: ${({ color }) => color};
+import { BoxShadow } from 'constants/Mixins';
+
+export const DiscreteSliderWrapper = styled.div<{
+  margin: string;
+  fullWidthMobile: boolean;
+}>`
   display: flex;
   flex-direction: row;
   margin: ${({ margin }) => margin};
@@ -11,7 +15,7 @@ export const DiscreteSliderWrapper = styled.div`
   max-width: 100%;
 
   ${breakpoint('zero', 'tablet')`
-    ${({ fullWidthMobile }) =>
+    ${({ fullWidthMobile }: any) =>
       fullWidthMobile ? 'width: calc(100% - 16px);' : ''}
   `}
 `;
@@ -21,7 +25,7 @@ export const SliderBarWrapper = styled.div`
   margin: auto 0;
 `;
 
-export const SliderRail = styled.div`
+export const SliderRail = styled.div<{ disabled: boolean }>`
   margin: auto;
   width: 100%;
   height: 8px;
@@ -31,7 +35,7 @@ export const SliderRail = styled.div`
   ${BoxShadow}
 `;
 
-export const SliderHandle = styled.div`
+export const SliderHandle = styled.div<{ disabled: boolean; percent: number }>`
   left: ${({ percent }) => percent}%;
   position: absolute;
   margin-left: -16px;
@@ -48,7 +52,11 @@ export const SliderHandle = styled.div`
   transition: 0.1s all;
 `;
 
-export const SliderTrack = styled.div`
+export const SliderTrack = styled.div<{
+  disabled: boolean;
+  source: SliderItem;
+  target: SliderItem;
+}>`
   position: absolute;
   height: 8px;
   z-index: 1;
@@ -62,7 +70,7 @@ export const SliderTrack = styled.div`
   transition: 0.2s all;
 `;
 
-export const SliderTick = styled.div`
+export const SliderTick = styled.div<{ disabled: boolean; percent: number }>`
   position: absolute;
   margin-left: -8px;
   margin-top: -11px;

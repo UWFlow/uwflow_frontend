@@ -5,7 +5,11 @@ export const SearchInputWrapper = styled.div`
   position: relative;
 `;
 
-export const SearchInput = styled.input`
+export const SearchInput = styled.input<{
+  options: any;
+  error: boolean;
+  hasIcon: boolean;
+}>`
   position: relative;
   border: ${({ options, error, theme }) =>
     error
@@ -20,8 +24,7 @@ export const SearchInput = styled.input`
     options.fontSize ? options.fontSize : 'inherit'};
   border-radius: ${({ options }) =>
     options.borderRadius ? options.borderRadius : '4px'};
-  background: ${({ autocompleteActive, theme }) =>
-    autocompleteActive ? 'transparent' : theme.light2};
+  background: ${({ theme }) => theme.light2};
   height: 48px;
   z-index: 2;
   color: ${({ error, theme }) => (error ? theme.red : theme.dark1)};

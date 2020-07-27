@@ -1,7 +1,18 @@
-import { BoxShadow, Heading4, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
 
-export const ButtonWrapper = styled.button`
+import { BoxShadow, Heading4, Hover } from 'constants/Mixins';
+
+export const ButtonWrapper = styled.button<{
+  disabled: boolean;
+  hasShadow: boolean;
+  height: number;
+  margin: string;
+  maxHeight: string;
+  padding: string;
+  width: string;
+  borderColor?: string;
+  color?: string;
+}>`
   cursor: ${({ disabled }) => (disabled ? 'auto' : 'pointer')};
   display: flex;
   align-items: center;
@@ -20,8 +31,10 @@ export const ButtonWrapper = styled.button`
   max-width: 100%;
   width: ${({ width }) => width || 'auto'};
 
-  ${Hover()} :hover {
-    background: ${({ theme, disabled = false }) => disabled && theme.light4};
+  ${Hover()}
+
+  :hover {
+    background: ${({ theme, disabled }) => disabled && theme.light4};
   }
 
   :focus {

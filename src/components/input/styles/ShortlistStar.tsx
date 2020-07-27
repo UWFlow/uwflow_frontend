@@ -1,8 +1,12 @@
-import { Hover } from 'constants/Mixins';
 import { Star } from 'react-feather';
 import styled from 'styled-components';
 
-export const ShortlistStarWrapper = styled(Star)`
+import { Hover } from 'constants/Mixins';
+
+export const ShortlistStarWrapper = styled(Star)<{
+  width: number;
+  checked: boolean;
+}>`
   width: ${({ width }) => width}px;
   min-width: ${({ width }) => width}px;
   height: ${({ width }) => width}px;

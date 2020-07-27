@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import {
   Body,
   BoxShadow,
@@ -5,16 +7,15 @@ import {
   FadeInAnimation,
   Hover,
 } from 'constants/Mixins';
-import styled from 'styled-components';
 
-export const SearchBarWrapper = styled.div`
+export const SearchBarWrapper = styled.div<{ isLanding: boolean }>`
   ${({ isLanding }) => isLanding && DarkBoxShadow}
   position: relative;
   width: 100%;
   z-index: 1;
 `;
 
-export const SearchResultsWrapper = styled.div`
+export const SearchResultsWrapper = styled.div<{ maximizeWidth: boolean }>`
   position: absolute;
   width: 100%;
   background: ${({ theme }) => theme.white};
@@ -32,7 +33,7 @@ export const SearchResultsWrapper = styled.div`
       : ''}
 `;
 
-export const SearchResult = styled.button`
+export const SearchResult = styled.button<{ isLanding: boolean }>`
   ${Body}
   position: relative;
   border: none;
@@ -74,7 +75,7 @@ export const SearchResult = styled.button`
   }
 `;
 
-export const ResultIcon = styled.div`
+export const ResultIcon = styled.div<{ color: string }>`
   display: flex;
   flex: 1;
   align-items: center;
@@ -97,7 +98,7 @@ export const EllipsisSpan = styled.span`
   white-space: nowrap;
 `;
 
-export const ColoredResultText = styled.span`
+export const ColoredResultText = styled.span<{ color: string }>`
   color: ${({ color }) => color};
   font-weight: 600;
   width: max-content;
@@ -109,7 +110,7 @@ export const Dash = styled.span`
   margin: 0 4px;
 `;
 
-export const ExploreSideButton = styled.div`
+export const ExploreSideButton = styled.div<{ color: string }>`
   display: flex;
   cursor: pointer;
   border-radius: 50%;

@@ -1,8 +1,9 @@
+import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Link as RouterLink } from 'react-router-dom';
+
 import { Body, Heading3, Hover, Link } from 'constants/Mixins';
-import { LEC, LAB } from 'constants/PageConstants';
+import { LAB, LEC } from 'constants/PageConstants';
 
 export const HOUR_HEIGHT = 64;
 const TIME_WIDTH = 64;

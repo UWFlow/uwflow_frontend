@@ -1,7 +1,13 @@
-import { BoxShadow, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
 
-export const CheckCircleWrapper = styled.div`
+import { BoxShadow, Hover } from 'constants/Mixins';
+
+export const CheckCircleWrapper = styled.div<{
+  checked: boolean;
+  color: string;
+  disabled: boolean;
+  width: number;
+}>`
   width: ${({ width }) => width}px;
   min-width: ${({ width }) => width}px;
   height: ${({ width }) => width}px;

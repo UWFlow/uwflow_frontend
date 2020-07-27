@@ -1,49 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getCoursePageRoute } from 'Routes';
 import { withTheme } from 'styled-components';
 
-/* Styled Components */
-
-/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
 import Review from 'components/display/Review';
 import DropdownList from 'components/input/DropdownList';
-import LoadingSpinner from 'components/display/LoadingSpinner';
-
-/* Hooks */
-import useProfReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from 'data/hooks/UseProfReviewsReducer';
-
-/* GraphQL Queries */
-import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview';
-
-/* Utils */
-import { formatCourseCode, processRating } from 'utils/Misc';
-import { sortReviews, sortByReviews, sortByLiked } from 'utils/Review';
-import { getCoursePageRoute } from 'Routes';
 import {
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
+import useProfReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from 'data/hooks/UseProfReviewsReducer';
+import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview';
+import { formatCourseCode, processRating } from 'utils/Misc';
+import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
+
 import {
-  ProfCourseReviewWrapper,
-  ReviewsForSingleCourseWrapper,
-  ReviewListWrapper,
-  NoReviewsBox,
-  CourseHeader,
-  CourseNameAndCode,
   CourseCode,
-  CourseName,
-  DropdownPanelWrapper,
-  DropdownTableText,
+  CourseDropdownsWrapper,
+  CourseHeader,
   CourseLikedMetric,
   CourseLikedPercent,
   CourseLikedPercentLabel,
+  CourseName,
+  CourseNameAndCode,
+  DropdownPanelWrapper,
+  DropdownTableText,
+  NoReviewsBox,
+  ProfCourseReviewWrapper,
+  ReviewListWrapper,
+  ReviewsForSingleCourseWrapper,
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
-  CourseDropdownsWrapper,
   SortFilterDropdownWrapper,
 } from './styles/ProfReviews';
 

@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Check } from 'react-feather';
 
-/* Styled Components */
 import { CheckCircleWrapper, CheckIcon } from './styles/CheckCircle';
+
+type CheckCircleProps = {
+  checked: boolean;
+  color: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  width?: number;
+};
 
 const CheckCircle = ({
   color,
@@ -11,7 +17,7 @@ const CheckCircle = ({
   width = 32,
   disabled = true,
   onClick = () => {},
-}) => {
+}: CheckCircleProps) => {
   return (
     <CheckCircleWrapper
       onClick={() => (disabled ? null : onClick())}
@@ -27,14 +33,6 @@ const CheckCircle = ({
       ) : null}
     </CheckCircleWrapper>
   );
-};
-
-CheckCircle.propTypes = {
-  color: PropTypes.string.isRequired,
-  checked: PropTypes.bool,
-  width: PropTypes.number,
-  disabled: PropTypes.bool,
-  onClick: PropTypes.func,
 };
 
 export default CheckCircle;

@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+
 import {
-  Heading2,
-  Heading4,
   Body,
   BoxShadow,
-  Link,
+  Heading2,
+  Heading4,
   Hover,
+  Link,
 } from 'constants/Mixins';
 
 export const TeamMembersWrapper = styled.div`
@@ -16,7 +17,7 @@ export const TeamMembersWrapper = styled.div`
   margin: 100px 0;
 `;
 
-export const MemberPhoto = styled.div`
+export const MemberPhoto = styled.div<{ img: string }>`
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -24,7 +25,7 @@ export const MemberPhoto = styled.div`
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(${(props) => props.img});
+  background-image: url(${({ img }) => img});
   ${BoxShadow}
 `;
 
@@ -57,5 +58,5 @@ export const MemberLinksWrapper = styled.div`
 export const MemberLink = styled.a`
   ${Link}
   margin-right: 16px;
-  ${Hover(true, true)};
+  ${Hover(true)};
 `;

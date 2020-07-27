@@ -1,19 +1,18 @@
+import FadeIn from 'react-fade-in';
+import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Link as RouterLink } from 'react-router-dom';
-import FadeIn from 'react-fade-in';
-import ExploreHeader from 'img/explore.svg';
 
-/* Mixins */
 import {
   Heading2,
-  PageContent,
-  WideColumn,
-  ThinColumn,
-  Link,
-  PageWrapper,
   Hover,
+  Link,
+  PageContent,
+  PageWrapper,
+  ThinColumn,
+  WideColumn,
 } from 'constants/Mixins';
+import ExploreHeader from 'img/explore.svg';
 
 export const ExplorePageWrapper = styled.div`
   ${PageWrapper}

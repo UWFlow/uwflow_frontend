@@ -1,10 +1,9 @@
 import {
-  LOGGED_IN,
-  LOGGED_OUT,
   AuthAction,
   AuthState,
+  LOGGED_IN,
+  LOGGED_OUT,
 } from 'data/actions/AuthActions';
-
 import { isLoggedIn } from 'utils/Auth';
 
 const DEFAULT_STATE: AuthState = {

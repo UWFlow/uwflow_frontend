@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { Card, BoxShadow, Heading3, Body, Hover } from 'constants/Mixins';
+import { Body, BoxShadow, Card, Heading3, Hover } from 'constants/Mixins';
 
 export const CourseRequisitesWrapper = styled.div`
 ${Card('32px 24px')}

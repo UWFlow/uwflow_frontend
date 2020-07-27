@@ -1,6 +1,7 @@
-import { Heading4, Hover } from 'constants/Mixins';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { Heading4, Hover } from 'constants/Mixins';
 
 export const FlowLogoWrapper = styled(Link)`
   user-select: none;

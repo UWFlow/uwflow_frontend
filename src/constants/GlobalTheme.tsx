@@ -1,4 +1,4 @@
-import { PAGE_CONTENT_WIDTH, BREAKPOINT_WIDTH } from './PageConstants';
+import { BREAKPOINT_WIDTH, PAGE_CONTENT_WIDTH } from './PageConstants';
 
 export default {
   /* Colours */

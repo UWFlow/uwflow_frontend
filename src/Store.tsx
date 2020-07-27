@@ -1,16 +1,11 @@
-import { createStore, applyMiddleware } from 'redux';
-
 import { debounce } from 'lodash';
-
+import { applyMiddleware, createStore } from 'redux';
+import { createLogger } from 'redux-logger';
 /* Middleware */
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
 
-/* Reducers */
-import rootReducer from './data/reducers/RootReducer';
-
-/* Actions */
 import { BrowserWindowResized } from './data/actions/BrowserActions';
+import rootReducer from './data/reducers/RootReducer';
 
 const loggerMiddleware = createLogger({
   predicate: () => process.env.NODE_ENV === 'development',

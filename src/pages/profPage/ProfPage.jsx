@@ -1,26 +1,20 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 
-/* Styled Components */
-
-/* Child Components */
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
+import { GET_PROF } from 'graphql/queries/prof/Prof';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import ProfInfoHeader from 'pages/profPage/ProfInfoHeader';
 import ProfReviews from 'pages/profPage/ProfReviews';
 
-/* Queries */
-import { GET_PROF } from 'graphql/queries/prof/Prof';
-
-/* Constants */
-import { NOT_FOUND, DEFAULT_ERROR } from 'constants/Messages';
 import {
-  ProfPageWrapper,
-  ColumnWrapper,
   Column1,
   Column2,
+  ColumnWrapper,
+  ProfPageWrapper,
 } from './styles/ProfPage';
 
 const ProfPageContent = ({ prof }) => {

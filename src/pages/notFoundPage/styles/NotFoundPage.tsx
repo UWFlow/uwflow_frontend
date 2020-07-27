@@ -1,9 +1,9 @@
+import FadeIn from 'react-fade-in';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import FadeIn from 'react-fade-in';
-import NotFound from 'img/404.svg';
 
 import { Heading2, PageContent, PageWrapper } from 'constants/Mixins';
+import NotFound from 'img/404.svg';
 
 export const NotFoundPageWrapper = styled.div`
   ${PageWrapper}

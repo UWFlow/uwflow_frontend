@@ -1,32 +1,31 @@
 import React from 'react';
+import { X } from 'react-feather';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
-import { X } from 'react-feather';
 
-import RadioButton from 'components/input/RadioButton';
-import MultiSelectButton from 'components/input/MultiSelectButton';
 import DiscreteSlider from 'components/input/DiscreteSlider';
 import DropdownList from 'components/input/DropdownList';
-
-/* Styled Components */
+import MultiSelectButton from 'components/input/MultiSelectButton';
+import RadioButton from 'components/input/RadioButton';
 import {
-  termCodeToDate,
+  formatCourseCode,
   getCurrentTermCode,
   getNextTermCode,
-  formatCourseCode,
+  termCodeToDate,
 } from 'utils/Misc';
+
 import {
-  SearchFilterWrapper,
-  SearchFilterHeader,
-  SearchFilterText,
-  SearchFilterSection,
-  RadioButtonWrapper,
-  CourseFilterDropdown,
-  NumRatingsWrapper,
-  NumRatingsText,
   BoldText,
-  ResetButton,
+  CourseFilterDropdown,
   HeaderButtonWrapper,
+  NumRatingsText,
+  NumRatingsWrapper,
+  RadioButtonWrapper,
+  ResetButton,
+  SearchFilterHeader,
+  SearchFilterSection,
+  SearchFilterText,
+  SearchFilterWrapper,
   XWrapper,
 } from './styles/SearchFilter';
 
@@ -74,7 +73,7 @@ const SearchFilter = ({
         numNodes={ratingFilters.length}
         currentNode={numRatings}
         color={theme.primary}
-        onUpdate={(value) => setNumRatings(value[0])}
+        onUpdate={(values) => setNumRatings(values[0])}
         showTicks={false}
         fullWidthMobile
       />

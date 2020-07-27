@@ -1,9 +1,14 @@
-import { BoxShadow, Heading4, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
+
+import { BoxShadow, Heading4, Hover } from 'constants/Mixins';
 
 export const ITEM_HEIGHT = 56;
 
-export const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled.div<{
+  zIndex: number;
+  width: string;
+  margin: string;
+}>`
   color: ${({ color }) => color};
   z-index: ${({ zIndex }) => zIndex};
   width: ${({ width }) => width};
@@ -16,7 +21,7 @@ export const DropdownWrapper = styled.div`
   user-select: none;
 `;
 
-export const DropdownControl = styled.button`
+export const DropdownControl = styled.button<{ open: boolean }>`
   background: none;
   border: none;
   position: relative;
@@ -25,10 +30,10 @@ export const DropdownControl = styled.button`
   align-items: center;
   color: ${({ theme, open, color }) => (open ? theme.light3 : color)};
   ${Heading4}
-  ${Hover(true, true)}
+  ${Hover(true)}
 `;
 
-export const DropdownMenu = styled.div`
+export const DropdownMenu = styled.div<{ open: boolean; menuOffset: number }>`
   display: flex;
   display: ${({ open }) => (open ? 'block' : 'none')};
   position: absolute;
@@ -49,7 +54,10 @@ export const DropdownMenu = styled.div`
   ${BoxShadow}
 `;
 
-export const MenuItem = styled.button`
+export const MenuItem = styled.button<{
+  selected: boolean;
+  itemColor?: string;
+}>`
   outline: none;
   border: none;
   display: block;
@@ -79,7 +87,7 @@ export const MenuItem = styled.button`
     border-radius: 4px;
   }
 
-  ${Hover(true, true)}
+  ${Hover(true)}
 `;
 
 export const MenuSearch = styled.div`

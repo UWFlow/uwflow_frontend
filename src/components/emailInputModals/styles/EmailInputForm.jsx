@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Heading2, BoxShadow } from 'constants/Mixins';
+
+import { BoxShadow, Heading2 } from 'constants/Mixins';
 
 export const EmailInputFormWrapper = styled.form`
   ${BoxShadow}

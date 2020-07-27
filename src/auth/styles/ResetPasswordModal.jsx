@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Heading2, Body } from 'constants/Mixins';
+
+import { Body, Heading2 } from 'constants/Mixins';
 
 export const FormWrapper = styled.form`
   padding: 24px 16px;

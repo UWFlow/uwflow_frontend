@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
-  TeamMembersWrapper,
-  MemberPhoto,
-  MemberTitle,
-  MemberWrapper,
   MemberBio,
   MemberLink,
   MemberLinksWrapper,
+  MemberPhoto,
+  MemberTitle,
+  MemberWrapper,
+  TeamMembersWrapper,
 } from './styles/TeamMember';
+
+type TeamMemberProps = {
+  children: ReactNode;
+  name: string;
+  photo: string;
+  title: string;
+  linkedIn?: string;
+  program?: string;
+  twitter?: string;
+  website?: string;
+};
 
 const TeamMember = ({
   photo,
@@ -19,7 +30,7 @@ const TeamMember = ({
   website,
   twitter,
   children,
-}) => (
+}: TeamMemberProps) => (
   <TeamMembersWrapper>
     <MemberPhoto img={photo} />
     <MemberWrapper>

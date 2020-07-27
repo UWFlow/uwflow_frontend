@@ -1,7 +1,14 @@
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Handles, Rail, Slider, Tracks } from 'react-compound-slider';
-import { withTheme } from 'styled-components';
+import {
+  GetHandleProps,
+  GetTrackProps,
+  Handles,
+  Rail,
+  Slider,
+  SliderItem,
+  Tracks,
+} from 'react-compound-slider';
+import { useTheme } from 'styled-components';
 
 import {
   DiscreteSliderWrapper,
@@ -12,21 +19,37 @@ import {
   SliderTrack,
 } from './styles/DiscreteSlider';
 
-const Handle = ({
-  handle: { id, percent },
-  getHandleProps,
-  color,
-  disabled,
-}) => (
+type HandleProps = {
+  color: string;
+  disabled: boolean;
+  getHandleProps: GetHandleProps;
+  handle: SliderItem;
+};
+
+const Handle = ({ color, disabled, getHandleProps, handle }: HandleProps) => (
   <SliderHandle
-    percent={percent}
+    percent={handle.percent}
     color={color}
     disabled={disabled}
-    {...getHandleProps(id)}
+    {...getHandleProps(handle.id)}
   />
 );
 
-const Track = ({ source, target, color, getTrackProps, disabled }) => (
+type TrackProps = {
+  color: string;
+  disabled: boolean;
+  getTrackProps: GetTrackProps;
+  source: SliderItem;
+  target: SliderItem;
+};
+
+const Track = ({
+  source,
+  target,
+  color,
+  getTrackProps,
+  disabled,
+}: TrackProps) => (
   <SliderTrack
     target={target}
     source={source}
@@ -36,11 +59,25 @@ const Track = ({ source, target, color, getTrackProps, disabled }) => (
   />
 );
 
+type DiscreteSliderProps = {
+  color: string;
+  currentNode: number;
+  numNodes: number;
+  disabled?: boolean;
+  fullWidthMobile?: boolean;
+  margin?: string;
+  // Divides into numNodes including 0, for example 6 for [0 20 40 60 80 100]
+  onSlideEnd?: (values: readonly number[]) => void;
+  onUpdate?: (values: readonly number[]) => void;
+  selected?: boolean;
+  setSelected?: (selected: boolean) => void;
+  showTicks?: boolean;
+};
+
 const DiscreteSlider = ({
-  theme,
-  numNodes,
-  currentNode,
   color,
+  currentNode,
+  numNodes,
   margin = '0 0 40px 0',
   showTicks = true,
   selected = true,
@@ -49,7 +86,8 @@ const DiscreteSlider = ({
   onSlideEnd = () => {},
   onUpdate = () => {},
   setSelected = () => {},
-}) => {
+}: DiscreteSliderProps) => {
+  const theme = useTheme();
   const [updateValue, setUpdateValue] = useState(currentNode);
 
   useEffect(() => {
@@ -57,7 +95,7 @@ const DiscreteSlider = ({
   }, [currentNode]);
 
   const percentGap = numNodes > 1 ? 100 / (numNodes - 1) : 100;
-  const percentages = [];
+  const percentages: number[] = [];
   for (let i = 0; i < 100; i += percentGap) {
     percentages.push(i);
   }
@@ -71,18 +109,19 @@ const DiscreteSlider = ({
           mode={2}
           domain={[0, numNodes - 1]}
           disabled={disabled}
-          onSlideEnd={(value) => {
+          onSlideEnd={(values) => {
             if (disabled) {
               return;
             }
-            onSlideEnd(value);
+            onSlideEnd(values);
           }}
-          onUpdate={(value) => {
+          onUpdate={(values) => {
             if (disabled) {
               return;
             }
-            setUpdateValue(value);
-            onUpdate(value);
+            const newVal = values[0];
+            setUpdateValue(newVal);
+            onUpdate(values);
           }}
           values={[currentNode]}
           rootStyle={{
@@ -154,13 +193,4 @@ const DiscreteSlider = ({
   );
 };
 
-DiscreteSlider.propTypes = {
-  theme: PropTypes.object.isRequired,
-  margin: PropTypes.string,
-  numNodes: PropTypes.number.isRequired, // includes 0 so 6 for 0 20 40 60 80 100
-  currentNode: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired,
-  showTicks: PropTypes.bool,
-};
-
-export default withTheme(DiscreteSlider);
+export default DiscreteSlider;

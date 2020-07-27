@@ -1,17 +1,16 @@
 import React from 'react';
-
-/* Styled Components */
-
-import { formatCourseCode, COURSE_CODE_REGEX } from 'utils/Misc';
 import { getCoursePageRoute } from 'Routes';
+
+import { COURSE_CODE_REGEX, formatCourseCode } from 'utils/Misc';
+
 import {
-  Header,
-  LineOfText,
+  CourseRequisitesWrapper,
   CourseText,
   GreyText,
-  ReqText,
-  CourseRequisitesWrapper,
+  Header,
+  LineOfText,
   ReqInfo,
+  ReqText,
 } from './styles/CourseRequisites';
 
 const CourseRequisites = ({

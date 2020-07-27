@@ -1,6 +1,7 @@
-import { BoxShadow, DarkBoxShadow, Heading4, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
+
+import { BoxShadow, DarkBoxShadow, Heading4, Hover } from 'constants/Mixins';
 
 export const ProfileDropdownWrapper = styled.div`
   display: flex;
@@ -15,7 +16,10 @@ export const ProfileDropdownWrapper = styled.div`
   `}
 `;
 
-export const ProfilePicture = styled.button`
+export const ProfilePicture = styled.button<{
+  isLanding: boolean;
+  image: string;
+}>`
   border: none;
   width: 40px;
   height: 40px;
@@ -27,7 +31,7 @@ export const ProfilePicture = styled.button`
   ${Hover()}
 `;
 
-export const ProfileText = styled.div`
+export const ProfileText = styled.div<{ isLanding: boolean }>`
   ${Heading4}
   color: white;
   color: ${({ theme, isLanding }) => (isLanding ? theme.white : theme.dark1)};

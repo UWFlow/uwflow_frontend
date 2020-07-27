@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
-/* Mixins */
 import {
-  PageContent,
-  Card,
-  WideColumn,
-  ThinColumn,
   BoxShadow,
+  Card,
   Heading3,
+  PageContent,
   PageWrapper,
+  ThinColumn,
+  WideColumn,
 } from 'constants/Mixins';
 
 export const CoursePageWrapper = styled.div`

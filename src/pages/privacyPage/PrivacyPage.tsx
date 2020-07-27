@@ -1,19 +1,17 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-/* Styled Components */
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
+
 import {
-  PageWrapper,
-  PageHeader,
   HeaderText,
-  PageContentWrapper,
   PageBody,
   PageBodyHeader,
   PageBodyParagraph,
+  PageContentWrapper,
+  PageHeader,
+  PageWrapper,
 } from './styles/PrivacyPage';
-
-/* Constants */
 
 const PrivacyPage = () => (
   <PageWrapper>

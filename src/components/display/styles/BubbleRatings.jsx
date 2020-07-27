@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { Body } from 'constants/Mixins';
 
 export const BubbleRatingsWrapper = styled.div`

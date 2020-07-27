@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 import moment from 'moment/moment';
-
-/* Styled components */
-
 import { getCoursePageRoute } from 'Routes';
+
+import { LAB, LEC, TUT } from 'constants/PageConstants';
 import { formatCourseCode } from 'utils/Misc';
-import { LEC, LAB, TUT } from 'constants/PageConstants';
+
 import {
-  CalendarWrapper,
+  CalendarContentWrapper,
+  CalendarEvents,
+  CalendarHeader,
   CalendarNavWrapper,
+  CalendarWrapper,
+  CourseCode,
   DateHoursWrapper,
   DateRangeText,
-  TotalHours,
-  NavButtonWrapper,
-  NavButton,
-  CalendarContentWrapper,
-  CalendarHeader,
-  HourRow,
-  HourText,
-  CalendarEvents,
   DayColumn,
   DayHeader,
   EventWrapper,
-  CourseCode,
   HOUR_HEIGHT,
+  HourRow,
+  HourText,
+  NavButton,
+  NavButtonWrapper,
+  TotalHours,
 } from './styles/Calendar';
 
 const getDateRangeString = (start, end) => {

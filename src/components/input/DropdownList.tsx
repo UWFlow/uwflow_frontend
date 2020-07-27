@@ -1,12 +1,11 @@
-/* Styled Components */
-import KeycodeConstants from 'constants/KeycodeConstants';
-import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import FadeIn from 'react-fade-in';
 import { ChevronDown, Search } from 'react-feather';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import useOnClickOutside from 'use-onclickoutside';
+
+import KeycodeConstants from 'constants/KeycodeConstants';
 
 import {
   DropdownControl,
@@ -18,24 +17,40 @@ import {
 } from './styles/DropdownList';
 import Textbox from './Textbox';
 
+type DropdownListProps = {
+  color: string;
+  options: string[];
+  selectedIndex: number;
+  maxItems?: number;
+  menuOffset?: number;
+  itemColor?: string;
+  margin?: string;
+  onChange?: (index: number) => void;
+  placeholder?: string;
+  searchable?: boolean;
+  width?: string;
+  zIndex?: number;
+};
+
 const DropdownList = ({
-  theme,
-  selectedIndex,
-  options,
   color,
+  options,
+  selectedIndex,
   onChange = () => {},
   placeholder = 'select an option',
   zIndex = 4,
   width = 'fit-content',
   margin = 'auto',
-  itemColor = null,
+  itemColor = undefined,
   menuOffset = 8,
   searchable = false,
   maxItems = 5,
-}) => {
-  const ref = useRef();
+}: DropdownListProps) => {
+  const theme = useTheme();
+  const ref = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+
   useOnClickOutside(ref, () => setOpen(false));
 
   const handleUserKeyPress = useCallback((event) => {
@@ -72,13 +87,13 @@ const DropdownList = ({
       )}
       {options
         .map((opt, idx) => Object({ value: opt, index: idx }))
-        .filter((opt) => {
+        .filter((opt: { value: string; index: number }) => {
           const lowercaseOpt = opt.value.toLowerCase();
           const lowercaseSearchText = searchText.toLowerCase();
           return (
             lowercaseOpt
               .split(' ')
-              .some((val) => val.startsWith(lowercaseSearchText)) ||
+              .some((val: string) => val.startsWith(lowercaseSearchText)) ||
             lowercaseOpt.startsWith(lowercaseSearchText)
           );
         })
@@ -129,16 +144,4 @@ const DropdownList = ({
   );
 };
 
-DropdownList.propTypes = {
-  selectedIndex: PropTypes.number.isRequired,
-  color: PropTypes.string,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func,
-  zIndex: PropTypes.number, // callback function that takes the index of the clicked element in the list
-  placeholder: PropTypes.string,
-  width: PropTypes.string,
-  margin: PropTypes.string,
-  itemColor: PropTypes.string,
-};
-
-export default withTheme(DropdownList);
+export default DropdownList;

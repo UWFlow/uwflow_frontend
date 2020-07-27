@@ -1,29 +1,23 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Bell } from 'react-feather';
 import { useMutation } from 'react-apollo';
+import { Bell } from 'react-feather';
+import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
-/* Child Components */
 import Tooltip from 'components/display/Tooltip';
-
-/* GraphQL */
-import {
-  DELETE_SECTION_SUBSCRIPTION,
-  INSERT_SECTION_SUBSCRIPTION,
-} from 'graphql/mutations/SectionSubscription';
-import { REFETCH_SECTION_SUBSCRIPTIONS } from 'graphql/queries/course/Course';
-
-/* Utils */
 import withModal from 'components/modal/withModal';
-
-/* Constants */
 import {
   SUBSCRIPTION_ERROR,
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_TOOLTIP,
 } from 'constants/Messages';
 import { AUTH_MODAL, NOTIFICATION_EMAIL_MODAL } from 'constants/Modal';
+import {
+  DELETE_SECTION_SUBSCRIPTION,
+  INSERT_SECTION_SUBSCRIPTION,
+} from 'graphql/mutations/SectionSubscription';
+import { REFETCH_SECTION_SUBSCRIPTIONS } from 'graphql/queries/course/Course';
+
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
 const mapStateToProps = (state) => ({

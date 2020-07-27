@@ -1,18 +1,23 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-/* Styled Components */
 import {
   ButtonWrapper,
   MultiSelectButtonWrapper,
 } from './styles/MultiSelectButton';
 
+type MultiSelectButtonProps = {
+  options: ReactNode[];
+  selected: boolean[];
+  margin?: string;
+  onClick?: (selectedIndex: number) => void;
+};
+
 const MultiSelectButton = ({
   options,
   selected,
   margin = '0 0 32px 0',
-  onClick = () => {},
-}) => {
+  onClick = () => null,
+}: MultiSelectButtonProps) => {
   return (
     <MultiSelectButtonWrapper margin={margin}>
       {options.map((option, idx) => (
@@ -26,12 +31,6 @@ const MultiSelectButton = ({
       ))}
     </MultiSelectButtonWrapper>
   );
-};
-
-MultiSelectButton.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.any).isRequired,
-  selected: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  onClick: PropTypes.func,
 };
 
 export default MultiSelectButton;

@@ -1,11 +1,9 @@
 import React from 'react';
+
+import { modalNameToModal } from 'constants/Modal';
 import { ModalContext } from 'data/providers/ModalProvider';
 
-/* Child Components */
-import { modalNameToModal } from 'constants/Modal';
 import Modal from './Modal';
-
-/* Constants */
 
 const ModalMountInner = ({ modalsById }) => (
   <>

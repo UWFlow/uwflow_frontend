@@ -1,12 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-
-/* Child Components */
+import PropTypes from 'prop-types';
 import { WELCOME_PAGE_ROUTE } from 'Routes';
-import AuthForm from './AuthForm';
 
-/* Routes */
+import AuthForm from './AuthForm';
 
 const AuthModalContent = ({
   onAfterLogin,

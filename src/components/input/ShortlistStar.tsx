@@ -1,24 +1,21 @@
-/* Styled Components */
-/* Child Components */
+import React, { useEffect, useState } from 'react';
+import { useMutation } from 'react-apollo';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTheme } from 'styled-components';
+
 import Tooltip from 'components/display/Tooltip';
 import withModal from 'components/modal/withModal';
-/* Constants */
 import { SHORTLIST_ERROR } from 'constants/Messages';
 import { AUTH_MODAL } from 'constants/Modal';
-/* GraphQL */
+import { RootState } from 'data/reducers/RootReducer';
 import {
   DELETE_USER_SHORTLIST,
   INSERT_USER_SHORTLIST,
 } from 'graphql/mutations/Shortlist';
 import { REFETCH_COURSE_SHORTLIST } from 'graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from 'graphql/queries/user/User';
-import React, { useEffect, useState } from 'react';
-import { useMutation } from 'react-apollo';
-import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
-import { withTheme } from 'styled-components';
 import { getUserId } from 'utils/Auth';
-/* Utils */
 import { formatCourseCode } from 'utils/Misc';
 
 import {
@@ -26,19 +23,23 @@ import {
   ShortlistStarWrapper,
 } from './styles/ShortlistStar';
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.auth.loggedIn,
-});
+type ShortlistStarProps = {
+  courseID: number;
+  courseCode: string;
+  openModal: any;
+  initialState?: boolean;
+  size?: number;
+};
 
 const ShortlistStar = ({
-  theme,
   courseID,
   courseCode,
-  isLoggedIn,
   initialState = false,
   size = 32,
   openModal,
-}) => {
+}: ShortlistStarProps) => {
+  const theme = useTheme();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const userID = getUserId();
   const refetchQueries = [
     {
@@ -110,4 +111,4 @@ const ShortlistStar = ({
   );
 };
 
-export default withModal(withTheme(connect(mapStateToProps)(ShortlistStar)));
+export default withModal(ShortlistStar);

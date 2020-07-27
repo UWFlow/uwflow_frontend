@@ -1,20 +1,21 @@
-import styled from 'styled-components';
-import { Link as RouterLink } from 'react-router-dom';
 import FadeIn from 'react-fade-in';
-import {
-  Heading1,
-  Heading2,
-  Heading3,
-  BoxShadow,
-  Heading4,
-  Body,
-  Hover,
-} from 'constants/Mixins';
+import { Link as RouterLink } from 'react-router-dom';
+import styled from 'styled-components';
+
 import {
   AWAITING_UPLOAD,
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
 } from 'constants/DataUploadStates';
+import {
+  Body,
+  BoxShadow,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Hover,
+} from 'constants/Mixins';
 
 export const ContentWrapper = styled(FadeIn)`
   display: flex;
@@ -166,7 +167,7 @@ export const SkipStepWrapper = styled.div`
   color: ${({ theme }) => theme.primary};
   margin-top: 48px;
   cursor: pointer;
-  ${Hover(true, true)}
+  ${Hover(true)}
 `;
 
 export const LongInstructionWrapper = styled.div`

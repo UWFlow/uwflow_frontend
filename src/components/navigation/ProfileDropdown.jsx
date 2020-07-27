@@ -1,23 +1,15 @@
-/* Styled Components */
-/* Child Components */
-import DropdownList from 'components/input/DropdownList';
-import withModal from 'components/modal/withModal';
-/* Constants */
-import { AUTH_MODAL } from 'constants/Modal';
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-/* GraphQL Queries */
-import { GET_USER } from 'graphql/queries/user/User';
 import React from 'react';
 import { Query } from 'react-apollo';
-import { connect, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-/* Routes */
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { isOnLandingPageRoute, PROFILE_PAGE_ROUTE } from 'Routes';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
+
+import DropdownList from 'components/input/DropdownList';
+import withModal from 'components/modal/withModal';
+import { AUTH_MODAL } from 'constants/Modal';
+import { GET_USER } from 'graphql/queries/user/User';
 import { logOut } from 'utils/Auth';
-/* Utils */
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
@@ -25,11 +17,6 @@ import {
   ProfilePicture,
   ProfileText,
 } from './styles/ProfileDropdown';
-
-const mapStateToProps = (state) => ({
-  isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: state.auth.loggedIn,
-});
 
 const renderProfilePicture = (data, dispatch, isLanding) => {
   let user = { picture_url: null };
@@ -56,14 +43,13 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
   );
 };
 
-const ProfileDropdown = ({
-  history,
-  theme,
-  isLoggedIn,
-  location,
-  openModal,
-}) => {
+const ProfileDropdown = ({ openModal }) => {
+  const location = useLocation();
+  const history = useHistory();
+  const theme = useTheme();
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+
   const isLanding = isOnLandingPageRoute(location);
 
   const handleProfileButtonClick = () =>
@@ -112,6 +98,4 @@ const ProfileDropdown = ({
   );
 };
 
-export default connect(mapStateToProps)(
-  compose(withTheme, withRouter, withModal)(ProfileDropdown),
-);
+export default withModal(ProfileDropdown);

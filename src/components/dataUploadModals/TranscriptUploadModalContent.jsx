@@ -1,48 +1,43 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { withTheme } from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Upload } from 'react-feather';
 import { toast } from 'react-toastify';
-import { makeAuthenticatedPOSTRequest } from 'utils/Api';
+import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { withTheme } from 'styled-components';
 
-/* Styled Components */
-
-/* Child Components */
 import LoadingSpinner from 'components/display/LoadingSpinner';
-import TranscriptUploadVideoMP4 from 'img/upload/transcript-import-chrome.mp4';
-import TranscriptUploadVideoWebm from 'img/upload/transcript-import-chrome.webm';
-
-/* Constants */
 import { BACKEND_ENDPOINT, TRANSCRIPT_PARSE_ENDPOINT } from 'constants/Api';
 import {
   AWAITING_UPLOAD,
+  UPLOAD_FAILED,
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
-  UPLOAD_FAILED,
 } from 'constants/DataUploadStates';
-import { TRANSCRIPT_ERRORS, DATA_UPLOAD_SUCCESS } from 'constants/Messages';
-
-import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { DATA_UPLOAD_SUCCESS, TRANSCRIPT_ERRORS } from 'constants/Messages';
+import TranscriptUploadVideoMP4 from 'img/upload/transcript-import-chrome.mp4';
+import TranscriptUploadVideoWebm from 'img/upload/transcript-import-chrome.webm';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { sleep } from 'utils/Misc';
+
 import {
-  ContentWrapper,
-  Header,
-  ContentSteps,
-  StepWrapper,
   ArrowWrapper,
-  LongInstructionWrapper,
-  NumberCircle,
+  ContentSteps,
+  ContentWrapper,
+  ErrorMessage,
+  GreyText,
+  Header,
   InstructionText,
   Link,
-  TranscriptStep1Video,
-  ScheduleStep3Wrapper,
-  TranscriptUploadBox,
-  GreyText,
-  TranscriptPrivacyPolicyWrapper,
+  LongInstructionWrapper,
+  NumberCircle,
   PrivacyPolicyHeader,
-  PrivacyPolicyText,
   PrivacyPolicyLink,
+  PrivacyPolicyText,
+  ScheduleStep3Wrapper,
   SkipStepWrapper,
-  ErrorMessage,
+  StepWrapper,
+  TranscriptPrivacyPolicyWrapper,
+  TranscriptStep1Video,
+  TranscriptUploadBox,
 } from './styles/DataUploadModals';
 
 const privacyText = `
@@ -60,7 +55,7 @@ const TranscriptUploadModalContent = ({
   onSkip,
   theme,
   showSkipStepButton,
-  onAfterUploadSuccess,
+  onAfterUploadSuccess = () => {},
 }) => {
   const fileInputRef = useRef();
   const [uploadState, setUploadState] = useState(AWAITING_UPLOAD);

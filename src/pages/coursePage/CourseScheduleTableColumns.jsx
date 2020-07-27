@@ -1,22 +1,23 @@
 import React, { Fragment } from 'react';
-
 import { getProfPageRoute } from 'Routes';
+
+import { LAB, LEC, TUT } from 'constants/PageConstants';
 import { processDateString, weekDayLetters } from 'utils/Misc';
-import { LEC, LAB, TUT } from 'constants/PageConstants';
-import ScheduleNotificationBell from './ScheduleNotificationBell';
+
 import {
+  BoldWeekDay,
+  ColorBar,
+  ContentWrapper,
+  DateText,
+  EnrollmentText,
+  GreyWeekDay,
+  InstructorLink,
+  NormalCellWrapper,
   SectionCellWrapper,
   SectionContentWrapper,
-  NormalCellWrapper,
-  ContentWrapper,
-  InstructorLink,
-  ColorBar,
-  EnrollmentText,
   SpaceMargin,
-  GreyWeekDay,
-  BoldWeekDay,
-  DateText,
 } from './styles/CourseSchedule';
+import ScheduleNotificationBell from './ScheduleNotificationBell';
 
 const contentSpace = (spaces) => {
   const content = [];

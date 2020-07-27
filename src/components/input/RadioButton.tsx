@@ -1,22 +1,29 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
-import CheckCircle from './CheckCircle';
-/* Styled Components */
 import {
   RadioButtonOption,
   RadioButtonText,
   RadioButtonWrapper,
 } from './styles/RadioButton';
+import CheckCircle from './CheckCircle';
+
+type RadioButtonProps = {
+  color: string;
+  options: string[];
+  selected: number | boolean;
+  margin?: string;
+  onClick?: (selectedIndex: number) => void;
+  toggle?: boolean;
+};
 
 const RadioButton = ({
   color,
-  selected,
   options,
+  selected,
   margin = '0 0 40px 0',
   toggle = false,
   onClick = () => {},
-}) => {
+}: RadioButtonProps) => {
   return (
     <RadioButtonWrapper margin={margin}>
       {options.map((opt, idx) => (
@@ -24,7 +31,10 @@ const RadioButton = ({
           <CheckCircle
             color={color}
             disabled={false}
-            checked={(toggle && selected) || (!toggle && idx === selected)}
+            checked={
+              Boolean(toggle && selected) ||
+              Boolean(!toggle && idx === selected)
+            }
             onClick={() => onClick(idx)}
           />
           <RadioButtonText>{opt}</RadioButtonText>
@@ -32,15 +42,6 @@ const RadioButton = ({
       ))}
     </RadioButtonWrapper>
   );
-};
-
-RadioButton.propTypes = {
-  color: PropTypes.string,
-  selected: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  margin: PropTypes.string,
-  toggle: PropTypes.bool,
-  onClick: PropTypes.func,
 };
 
 export default RadioButton;

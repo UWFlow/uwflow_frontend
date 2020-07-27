@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-
-/* Styled Components */
-
-/* Child Components */
-import TranscriptUploadModalContent from 'components/dataUploadModals/TranscriptUploadModalContent';
-import ScheduleUploadModalContent from 'components/dataUploadModals/ScheduleUploadModalContent';
-
-/* Constants */
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from 'Routes';
+
+import ScheduleUploadModalContent from 'components/dataUploadModals/ScheduleUploadModalContent';
+import TranscriptUploadModalContent from 'components/dataUploadModals/TranscriptUploadModalContent';
+import { RootState } from 'data/reducers/RootReducer';
+
 import { WelcomePageWrapper } from './styles/WelcomePage';
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.auth.loggedIn,
-});
+const WelcomePage = () => {
+  const history = useHistory();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
 
-const WelcomePage = ({ history, isLoggedIn }) => {
   const [isUploadingTranscript, setIsUploadingTranscript] = useState(true);
   const [isUploadingSchedule, setIsUploadingSchedule] = useState(false);
 
@@ -39,11 +35,7 @@ const WelcomePage = ({ history, isLoggedIn }) => {
         <ScheduleUploadModalContent
           onSkip={() => {
             setIsUploadingSchedule(false);
-            history.push(
-              history.location.state && history.location.state.prevPath
-                ? history.location.state.prevPath
-                : PROFILE_PAGE_ROUTE,
-            );
+            history.push(PROFILE_PAGE_ROUTE);
           }}
           showSkipStepButton={true}
         />
@@ -52,4 +44,4 @@ const WelcomePage = ({ history, isLoggedIn }) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(WelcomePage));
+export default WelcomePage;

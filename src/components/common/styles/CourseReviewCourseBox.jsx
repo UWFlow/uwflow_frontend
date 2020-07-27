@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+
 import {
-  Card,
+  Body,
   BoxShadow,
+  Card,
   Heading3,
   Heading4,
-  Body,
   Hover,
 } from 'constants/Mixins';
 

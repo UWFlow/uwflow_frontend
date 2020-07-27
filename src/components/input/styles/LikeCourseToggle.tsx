@@ -1,5 +1,6 @@
-import { Hover } from 'constants/Mixins';
 import styled from 'styled-components';
+
+import { Hover } from 'constants/Mixins';
 
 export const LikeCourseToggleWrapper = styled.div`
   width: 72px;
@@ -10,7 +11,11 @@ export const LikeCourseToggleWrapper = styled.div`
   margin: auto 0;
 `;
 
-export const LikeCourseToggleButton = styled.button`
+export const LikeCourseToggleButton = styled.button<{
+  left: boolean;
+  selected: boolean;
+  noneSelected: boolean;
+}>`
   cursor: pointer;
   display: flex;
   vertical-align: middle;

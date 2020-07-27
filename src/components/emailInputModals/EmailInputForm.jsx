@@ -1,25 +1,19 @@
 import React, { useState } from 'react';
-import { withTheme } from 'styled-components';
 import { useMutation } from 'react-apollo';
-
-/* Styled Components */
 import { toast } from 'react-toastify';
+import { withTheme } from 'styled-components';
 
-/* Child Components */
 import Button from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
-
-/* GraphQL */
-import { UPDATE_USER_EMAIL } from 'graphql/mutations/Email';
-
-/* Utils */
-import { validateEmail } from 'utils/Email';
 import { EMAIL_ERROR, EMAIL_UPDATE_SUCCESS } from 'constants/Messages';
+import { UPDATE_USER_EMAIL } from 'graphql/mutations/Email';
+import { validateEmail } from 'utils/Email';
+
 import {
+  ButtonsWrapper,
   EmailInputFormWrapper,
   FormTitle,
   TextboxWrapper,
-  ButtonsWrapper,
 } from './styles/EmailInputForm';
 
 const EmailInputForm = ({
@@ -72,12 +66,7 @@ const EmailInputForm = ({
         />
       </TextboxWrapper>
       <ButtonsWrapper>
-        <Button
-          color={theme.dark3}
-          hoverColor={theme.dark2}
-          handleClick={onClose}
-          margin="0 16px 0 0"
-        >
+        <Button color={theme.dark3} handleClick={onClose} margin="0 16px 0 0">
           Cancel
         </Button>
         <Button handleClick={onSubmit} type="submit">

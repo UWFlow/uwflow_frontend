@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactModal from 'react-modal';
 import { X } from 'react-feather';
+import ReactModal from 'react-modal';
 
 import { ModalChildren, ModalX } from './styles/Modal';
 

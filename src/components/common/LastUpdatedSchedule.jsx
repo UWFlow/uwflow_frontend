@@ -1,10 +1,8 @@
 import React from 'react';
 
-/* Styled Components */
 import { splitCourseCode } from 'utils/Misc';
-import { LastUpdatedText, LastUpdatedLink } from './styles/LastUpdatedSchedule';
 
-/* Utils */
+import { LastUpdatedLink, LastUpdatedText } from './styles/LastUpdatedSchedule';
 
 const LastUpdatedSchedule = ({
   margin = '8px 0 0 0',

@@ -1,6 +1,6 @@
 import {
-  NOTIFICATION_EMAIL_MODAL_OPEN,
   NOTIFICATION_EMAIL_MODAL_CLOSE,
+  NOTIFICATION_EMAIL_MODAL_OPEN,
   NotificationEmailModalAction,
   NotificationEmailModalState,
 } from 'data/actions/ModalActions';

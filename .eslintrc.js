@@ -21,6 +21,9 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'import/extensions': 'off',
+    'import/first': 'error',
+    'import/newline-after-import': 'error',
+    'import/no-duplicates': 'error',
     'import/prefer-default-export': 'off',
     'linebreak-style': ['error', 'unix'],
     'max-len': [0, 80, 2],
@@ -35,7 +38,25 @@ module.exports = {
     'react/display-name': 'off',
     'react/prefer-default-export': 'off',
     'react/prop-types': 'off',
-    'simple-import-sort/sort': 'error',
+    'simple-import-sort/sort': [
+      'error',
+      {
+        groups: [
+          // Packages, `react` related packages come first.
+          ['^react', '^@?\\w'],
+          // Internal packages
+          ['^(@|auth|constants|components|data|graphql|img|pages|search|utils)(/.*|$)'],
+          // Side effect imports
+          ['^\\u0000'],
+          // Parent imports, put `..` last
+          ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          // Other relative imports, put same-folder imports and `.` last
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+          // Style imports
+          ['^.+\\.s?css$'],
+        ],
+      },
+    ],
     'sort-imports': 'off',
   },
   settings: {

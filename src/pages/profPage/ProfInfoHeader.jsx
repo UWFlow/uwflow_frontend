@@ -1,25 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getCoursePageRoute } from 'Routes';
 
-/* Styled Components */
-
-/* Child Components */
 import RatingBox, {
   RATING_BOX_HEIGHT,
   RATING_BOX_WIDTH,
 } from 'components/display/RatingBox';
-
 import { formatCourseCode } from 'utils/Misc';
-import { getCoursePageRoute } from 'Routes';
+
 import {
+  CourseLink,
+  Description,
+  ProfDescriptionSection,
   ProfInfoHeaderWrapper,
+  ProfName,
   ProfNameSection,
   ProfNameWrapper,
-  ProfDescriptionSection,
-  ProfName,
-  Description,
   RatingsSection,
-  CourseLink,
 } from './styles/ProfInfoHeader';
 
 const ProfInfoHeader = ({ prof }) => {

@@ -1,15 +1,15 @@
+import FadeIn from 'react-fade-in';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import FadeIn from 'react-fade-in';
-import PageHeaderBackground from 'img/generic.svg';
+
 import {
-  PageContent,
-  Heading1,
-  Heading2,
   Body,
+  Heading2,
+  Heading3,
+  PageContent,
   PageWrapper as _PageWrapper,
-  Link,
 } from 'constants/Mixins';
+import PageHeaderBackground from 'img/generic.svg';
 
 export const PageWrapper = styled.div`
   ${_PageWrapper}
@@ -37,9 +37,9 @@ export const PageHeader = styled.div`
 
 export const HeaderText = styled(FadeIn)`
   ${PageContent}
-  ${Heading1}
+  ${Heading2}
   max-width: 800px;
-  color: ${({ theme }) => theme.white};
+  color: white;
 `;
 
 export const PageContentWrapper = styled(FadeIn)`
@@ -58,22 +58,15 @@ export const PageBody = styled.div`
   align-items: flex-start;
   width: 100%;
   height: 100%;
-  margin-top: 16px;
 `;
 
 export const PageBodyHeader = styled.div`
-  ${Heading2}
-  font-size: 30px;
-  margin-bottom: 16px;
+  ${Heading3}
+  margin: 8px 0;
 `;
 
 export const PageBodyParagraph = styled.div`
   ${Body}
   line-height: 1.5;
-  margin-bottom: 64px;
-`;
-
-export const ContributorLink = styled.a`
-  ${Link}
-  line-height: 2;
+  margin-bottom: 32px;
 `;

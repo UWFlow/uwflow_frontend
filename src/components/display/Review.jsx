@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
-import { ThumbsUp } from 'react-feather';
 import { useMutation } from 'react-apollo';
+import { ThumbsUp } from 'react-feather';
+import { connect } from 'react-redux';
 import moment from 'moment/moment';
+import PropTypes from 'prop-types';
+import { getProfPageRoute } from 'Routes';
+import { withTheme } from 'styled-components';
 
-/* Styled Components */
-
-/* Child Components */
-
-/* Selectors */
+import withModal from 'components/modal/withModal';
+import { AUTH_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
-/* GraphQL */
 import {
   DELETE_COURSE_REVIEW_VOTE,
   DELETE_PROF_REVIEW_VOTE,
@@ -22,35 +18,27 @@ import {
 } from 'graphql/mutations/Upvote';
 import { REFETCH_COURSE_REVIEW_UPVOTE } from 'graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from 'graphql/queries/prof/ProfReview';
-
-/* Routes */
-import { getProfPageRoute } from 'Routes';
-
-/* Utils */
-import withModal from 'components/modal/withModal';
 import { getKittenFromID } from 'utils/Kitten';
 
-/* Constants */
-import { AUTH_MODAL } from 'constants/Modal';
-import Tooltip from './Tooltip';
-import BubbleRatings from './BubbleRatings';
 import {
-  ReviewWrapper,
-  ReviewPictureAndMetricsRow,
-  ReviewTextWrapper,
-  ReviewMetricsWrapper,
-  ReviewMetricsBody,
-  ReviewPictureAndUpvotesWrapper,
-  ReviewPicture,
-  ReviewUpvotes,
-  ReviewText,
-  ReviewAuthor,
-  UpvoteNumber,
-  SingleMetricWrapper,
-  SingleMetricSquares,
-  SingleMetricLabel,
   ProfText,
+  ReviewAuthor,
+  ReviewMetricsBody,
+  ReviewMetricsWrapper,
+  ReviewPicture,
+  ReviewPictureAndMetricsRow,
+  ReviewPictureAndUpvotesWrapper,
+  ReviewText,
+  ReviewTextWrapper,
+  ReviewUpvotes,
+  ReviewWrapper,
+  SingleMetricLabel,
+  SingleMetricSquares,
+  SingleMetricWrapper,
+  UpvoteNumber,
 } from './styles/Review';
+import BubbleRatings from './BubbleRatings';
+import Tooltip from './Tooltip';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

@@ -1,8 +1,28 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, {
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEvent,
+  ReactNode,
+  RefObject,
+} from 'react';
 
-/* Styled Components */
 import { Icon, SearchInput, SearchInputWrapper } from './styles/Textbox';
+
+type TextboxProps = {
+  placeholder: string;
+  icon: ReactNode;
+  setText: (text: string) => void;
+  text: string;
+  error?: boolean;
+  forwardRef?: RefObject<any>;
+  handleKeyDown?: (
+    event: KeyboardEvent<HTMLInputElement>,
+    text: string,
+  ) => void;
+  maxLength?: number;
+  onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
+  options?: any;
+};
 
 const Textbox = ({
   text,
@@ -14,13 +34,13 @@ const Textbox = ({
   onFocus = () => {},
   options = {},
   maxLength = 524288, // default browser maxLength,
-  forwardRef = null,
-}) => {
-  const onKeyDown = (event) => {
+  forwardRef = undefined,
+}: TextboxProps) => {
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     handleKeyDown(event, text);
   };
 
-  const onChange = (event) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setText(event.currentTarget.value);
   };
 
@@ -35,24 +55,13 @@ const Textbox = ({
         onFocus={onFocus}
         onKeyDown={onKeyDown}
         options={options}
-        maxLength={`${maxLength}`}
+        maxLength={maxLength}
         error={error}
         hasIcon={!!icon}
         ref={forwardRef}
       />
     </SearchInputWrapper>
   );
-};
-
-Textbox.propTypes = {
-  text: PropTypes.string.isRequired,
-  setText: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  icon: PropTypes.any,
-  error: PropTypes.bool,
-  handleKeyDown: PropTypes.func,
-  options: PropTypes.object,
-  maxLength: PropTypes.number,
 };
 
 export default Textbox;
