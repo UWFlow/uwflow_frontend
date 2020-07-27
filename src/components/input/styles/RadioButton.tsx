@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Body } from 'constants/Mixins';
+import styled from 'styled-components';
 
 export const RadioButtonWrapper = styled.div`
   display: flex;

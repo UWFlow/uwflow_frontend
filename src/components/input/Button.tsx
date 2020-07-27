@@ -1,9 +1,9 @@
-import React from 'react';
+import LoadingSpinner from 'components/display/LoadingSpinner';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withTheme } from 'styled-components';
 
-import LoadingSpinner from 'components/display/LoadingSpinner';
-import { ButtonWrapper, ButtonText } from './styles/Button';
+import { ButtonText, ButtonWrapper } from './styles/Button';
 
 const Button = ({
   theme,

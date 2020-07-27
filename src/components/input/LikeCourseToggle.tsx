@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { ThumbsUp, ThumbsDown } from 'react-feather';
-import { withTheme } from 'styled-components';
-import { useMutation } from 'react-apollo';
-
+import withModal from 'components/modal/withModal';
+import { AUTH_MODAL } from 'constants/Modal';
 /* Styled Components */
-
 /* GraphQL */
 import { UPSERT_LIKED_REVIEW } from 'graphql/mutations/Review';
 import {
-  REFETCH_RATINGS,
   REFETCH_COURSE_REVIEWS,
+  REFETCH_RATINGS,
 } from 'graphql/queries/course/Course';
-import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
-
-/* Utils */
-import withModal from 'components/modal/withModal';
+import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import React, { useEffect, useState } from 'react';
+import { useMutation } from 'react-apollo';
+import { ThumbsDown, ThumbsUp } from 'react-feather';
+import { connect } from 'react-redux';
+import { withTheme } from 'styled-components';
 import { getUserId } from 'utils/Auth';
 
-/* Constants */
-import { AUTH_MODAL } from 'constants/Modal';
 import {
-  LikeCourseToggleWrapper,
   LikeCourseToggleButton,
+  LikeCourseToggleWrapper,
 } from './styles/LikeCourseToggle';
 
 const mapStateToProps = (state) => ({

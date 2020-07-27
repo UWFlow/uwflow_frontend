@@ -1,17 +1,16 @@
-import React from 'react';
-import { withTheme } from 'styled-components';
-import { PieChart, Pie, Cell } from 'recharts';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { Cell, Pie, PieChart } from 'recharts';
+import { withTheme } from 'styled-components';
 
 /* Styled Components */
 import {
   CircleWrapper,
-  NumbersInCircle,
-  LargePercentage,
   GreyText,
+  LargePercentage,
+  NumbersInCircle,
 } from './styles/CircularPercentage';
 
-// Contained within a square tho
 const CircularPercentage = ({
   theme,
   height,

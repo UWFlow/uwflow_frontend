@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Slider, Rail, Handles, Tracks } from 'react-compound-slider';
+import React, { useEffect, useState } from 'react';
+import { Handles, Rail, Slider, Tracks } from 'react-compound-slider';
 import { withTheme } from 'styled-components';
 
 import {
   DiscreteSliderWrapper,
   SliderBarWrapper,
-  SliderRail,
   SliderHandle,
+  SliderRail,
   SliderTick,
   SliderTrack,
 } from './styles/DiscreteSlider';

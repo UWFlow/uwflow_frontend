@@ -1,21 +1,21 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-
 /* Styled Components */
 import {
-  LANDING_PAGE_ROUTE,
   ABOUT_PAGE_ROUTE,
-  PRIVACY_PAGE_ROUTE,
   isOnLandingPageRoute,
+  LANDING_PAGE_ROUTE,
+  PRIVACY_PAGE_ROUTE,
 } from 'Routes';
+
 import {
-  FooterWrapper,
+  FadeInWrapper,
   FooterContent,
   FooterLeft,
-  FooterRight,
-  FooterPageLink,
   FooterNormalLink,
-  FadeInWrapper,
+  FooterPageLink,
+  FooterRight,
+  FooterWrapper,
 } from './styles/Footer';
 
 const Footer = ({ location }) => (

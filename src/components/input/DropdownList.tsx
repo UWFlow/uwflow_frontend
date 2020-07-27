@@ -1,20 +1,20 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import useOnClickOutside from 'use-onclickoutside';
-import { ChevronDown, Search } from 'react-feather';
-import { withTheme } from 'styled-components';
-import { Scrollbars } from 'react-custom-scrollbars';
-import FadeIn from 'react-fade-in';
-
 /* Styled Components */
 import KeycodeConstants from 'constants/KeycodeConstants';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
+import FadeIn from 'react-fade-in';
+import { ChevronDown, Search } from 'react-feather';
+import { withTheme } from 'styled-components';
+import useOnClickOutside from 'use-onclickoutside';
+
 import {
-  DropdownWrapper,
   DropdownControl,
   DropdownMenu,
+  DropdownWrapper,
+  ITEM_HEIGHT,
   MenuItem,
   MenuSearch,
-  ITEM_HEIGHT,
 } from './styles/DropdownList';
 import Textbox from './Textbox';
 

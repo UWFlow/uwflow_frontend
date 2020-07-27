@@ -1,14 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-/* Child Components */
 import CheckCircle from './CheckCircle';
-
 /* Styled Components */
 import {
-  RadioButtonWrapper,
   RadioButtonOption,
   RadioButtonText,
+  RadioButtonWrapper,
 } from './styles/RadioButton';
 
 const RadioButton = ({

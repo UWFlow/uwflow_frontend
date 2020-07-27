@@ -1,5 +1,5 @@
+import { BoxShadow, Heading4, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
-import { Heading4, BoxShadow, Hover } from 'constants/Mixins';
 
 export const ButtonWrapper = styled.button`
   cursor: ${({ disabled }) => (disabled ? 'auto' : 'pointer')};

@@ -1,6 +1,6 @@
+import { BoxShadow, DarkBoxShadow, Heading4, Hover } from 'constants/Mixins';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Heading4, BoxShadow, DarkBoxShadow, Hover } from 'constants/Mixins';
 
 export const ProfileDropdownWrapper = styled.div`
   display: flex;

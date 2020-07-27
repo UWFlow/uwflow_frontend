@@ -1,31 +1,25 @@
+/* Styled Components */
+/* Child Components */
+import DropdownList from 'components/input/DropdownList';
+import withModal from 'components/modal/withModal';
+/* Constants */
+import { AUTH_MODAL } from 'constants/Modal';
+/* Selectors */
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+/* GraphQL Queries */
+import { GET_USER } from 'graphql/queries/user/User';
 import React from 'react';
+import { Query } from 'react-apollo';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { withTheme } from 'styled-components';
-import { Query } from 'react-apollo';
-
-/* Styled Components */
-
-/* Child Components */
-import DropdownList from 'components/input/DropdownList';
-
 /* Routes */
-import { PROFILE_PAGE_ROUTE, isOnLandingPageRoute } from 'Routes';
-
-/* GraphQL Queries */
-import { GET_USER } from 'graphql/queries/user/User';
-
+import { isOnLandingPageRoute, PROFILE_PAGE_ROUTE } from 'Routes';
+import { withTheme } from 'styled-components';
+import { logOut } from 'utils/Auth';
 /* Utils */
 import { getKittenFromID } from 'utils/Kitten';
-import withModal from 'components/modal/withModal';
 
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-import { logOut } from 'utils/Auth';
-
-/* Constants */
-import { AUTH_MODAL } from 'constants/Modal';
 import {
   ProfileDropdownWrapper,
   ProfilePicture,

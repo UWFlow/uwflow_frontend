@@ -35,10 +35,12 @@ module.exports = {
     'react/display-name': 'off',
     'react/prefer-default-export': 'off',
     'react/prop-types': 'off',
+    'simple-import-sort/sort': 'error',
+    'sort-imports': 'off',
   },
   settings: {
     'import/resolver': {
-      'typescript': {},
+      typescript: {},
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
@@ -50,4 +52,5 @@ module.exports = {
   env: {
     browser: true,
   },
+  plugins: ['simple-import-sort'],
 };

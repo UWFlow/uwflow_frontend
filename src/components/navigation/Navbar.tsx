@@ -1,19 +1,18 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { withTheme } from 'styled-components';
 
-/* Styled Components */
-import {
-  NavbarWrapper,
-  NavbarContent,
-  NavbarPlaceholder,
-} from './styles/Navbar';
-
-/* Child Components */
-import SearchBar from './SearchBar';
 import FlowLogo from './FlowLogo';
 import ProfileDropdown from './ProfileDropdown';
+/* Child Components */
+import SearchBar from './SearchBar';
+/* Styled Components */
+import {
+  NavbarContent,
+  NavbarPlaceholder,
+  NavbarWrapper,
+} from './styles/Navbar';
 
 /* Selectors */
 

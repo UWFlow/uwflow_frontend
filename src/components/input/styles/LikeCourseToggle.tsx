@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Hover } from 'constants/Mixins';
+import styled from 'styled-components';
 
 export const LikeCourseToggleWrapper = styled.div`
   width: 72px;

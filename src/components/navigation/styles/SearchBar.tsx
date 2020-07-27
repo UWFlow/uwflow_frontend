@@ -1,11 +1,11 @@
-import styled from 'styled-components';
 import {
-  BoxShadow,
   Body,
+  BoxShadow,
   DarkBoxShadow,
-  Hover,
   FadeInAnimation,
+  Hover,
 } from 'constants/Mixins';
+import styled from 'styled-components';
 
 export const SearchBarWrapper = styled.div`
   ${({ isLanding }) => isLanding && DarkBoxShadow}

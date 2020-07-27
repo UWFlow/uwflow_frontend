@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 /* Styled Components */
-import { SearchInput, SearchInputWrapper, Icon } from './styles/Textbox';
+import { Icon, SearchInput, SearchInputWrapper } from './styles/Textbox';
 
 const Textbox = ({
   text,

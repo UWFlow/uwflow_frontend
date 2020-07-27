@@ -1,41 +1,34 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { withRouter } from 'react-router-dom';
-import { withTheme } from 'styled-components';
-import { compose } from 'redux';
-import queryString from 'query-string';
-import { Search, Layers, Square, User, Users } from 'react-feather';
-import useOnClickOutside from 'use-onclickoutside';
-import Highlighter from 'react-highlight-words';
-
-/* Child Components */
 import Tooltip from 'components/display/Tooltip';
-
-/* Routes */
+import Textbox from 'components/input/Textbox';
+import KeycodeConstants from 'constants/KeycodeConstants';
+import queryString from 'query-string';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Layers, Search, Square, User, Users } from 'react-feather';
+import Highlighter from 'react-highlight-words';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import {
   EXPLORE_PAGE_ROUTE,
   getCoursePageRoute,
   getProfPageRoute,
 } from 'Routes';
-
+import { useSearchContext } from 'search/SearchProvider';
+import { withTheme } from 'styled-components';
+import useOnClickOutside from 'use-onclickoutside';
 import { formatCourseCode } from 'utils/Misc';
 
-import Textbox from 'components/input/Textbox';
-import { useSearchContext } from 'search/SearchProvider';
-
-/* Constants */
-import KeycodeConstants from 'constants/KeycodeConstants';
 import {
-  SearchResultsWrapper,
-  SearchBarWrapper,
-  SearchResult,
+  BoldText,
   ColoredResultText,
   Dash,
-  ResultIcon,
-  UnderlinedText,
-  BoldText,
-  ResultText,
-  ExploreSideButton,
   EllipsisSpan,
+  ExploreSideButton,
+  ResultIcon,
+  ResultText,
+  SearchBarWrapper,
+  SearchResult,
+  SearchResultsWrapper,
+  UnderlinedText,
 } from './styles/SearchBar';
 
 const Highlight = ({ children }) => <UnderlinedText>{children}</UnderlinedText>;
