@@ -1,6 +1,7 @@
 import React from 'react';
-import EmailInputForm from './EmailInputForm';
+
 import { FormText } from './styles/EmailInputForm';
+import EmailInputForm from './EmailInputForm';
 
 const renderText = () => (
   <FormText>

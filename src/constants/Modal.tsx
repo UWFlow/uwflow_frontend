@@ -2,12 +2,12 @@ import React from 'react';
 
 /* Modal Content */
 import AuthModalContent from 'auth/AuthModalContent';
+import ResetPasswordModalContent from 'auth/ResetPasswordModalContent';
+import CourseReviewCourseBox from 'components/common/CourseReviewCourseBox';
 import ScheduleUploadModalContent from 'components/dataUploadModals/ScheduleUploadModalContent';
 import TranscriptUploadModalContent from 'components/dataUploadModals/TranscriptUploadModalContent';
-import CourseReviewCourseBox from 'components/common/CourseReviewCourseBox';
-import NotificationEmailModalContent from 'components/emailInputModals/NotificationEmailModalContent';
 import EditEmailModalContent from 'components/emailInputModals/EditEmailModalContent';
-import ResetPasswordModalContent from 'auth/ResetPasswordModalContent';
+import NotificationEmailModalContent from 'components/emailInputModals/NotificationEmailModalContent';
 
 /* Modal Constants */
 export const AUTH_MODAL = 'AUTH_MODAL';

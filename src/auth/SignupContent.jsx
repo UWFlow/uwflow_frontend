@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-/* Styled Components */
-
-/* Child Components */
-import Textbox from 'components/input/Textbox';
 import Button from 'components/input/Button';
-
-import { validateEmail } from 'utils/Email';
+import Textbox from 'components/input/Textbox';
 import { BACKEND_ENDPOINT, EMAIL_AUTH_REGISTER_ENDPOINT } from 'constants/Api';
 import { MIN_PASSWORD_LENGTH } from 'constants/Auth';
 import { AUTH_FORM_ERRORS } from 'constants/Messages';
+import { validateEmail } from 'utils/Email';
+
 import {
+  Error,
+  Form,
+  FormError,
   Header,
   NamesSection,
   Spacer,
   TextboxWrapper,
-  Form,
-  Error,
-  FormError,
 } from './styles/AuthForm';
 
 const SignupContent = ({

@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
-import queryString from 'query-string';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 
-/* Styled Components */
-import { buildExploreQuery } from 'graphql/queries/explore/Explore';
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
+import { buildExploreQuery } from 'graphql/queries/explore/Explore';
+
 import {
-  ExplorePageWrapper,
-  ExploreHeaderWrapper,
-  ExploreHeaderText,
-  ColumnWrapper,
   Column1,
   Column2,
+  ColumnWrapper,
+  ExploreHeaderText,
+  ExploreHeaderWrapper,
+  ExplorePageWrapper,
 } from './styles/ExplorePage';
-
-/* Child Components */
-import SearchResults from './SearchResults';
 import SearchFilter from './SearchFilter';
-
-/* GraphQL */
-
-/* Constants */
+import SearchResults from './SearchResults';
 
 const NUM_COURSE_CODE_FILTERS = 5;
 const RATING_FILTERS = [0, 1, 5, 10, 20, 50, 75, 100, 200, 500];

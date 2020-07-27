@@ -1,18 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
-/* Styles */
-import { notificationEmailModalClose } from 'data/actions/ModalActions';
 import { PROFILE_PAGE_ROUTE } from 'Routes';
-import { FormText, FormLink } from './styles/EmailInputForm';
 
-/* Components */
+import { notificationEmailModalClose } from 'data/actions/ModalActions';
+
+import { FormLink, FormText } from './styles/EmailInputForm';
 import EmailInputForm from './EmailInputForm';
-
-/* Selectors */
-
-/* Routes */
 
 const renderText = (history, dispatch) => () => (
   <FormText>

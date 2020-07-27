@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 
 import { BREAKPOINT_WIDTH } from 'constants/PageConstants';
-import BrowserReducer from './BrowserReducer';
+
 import AuthReducer from './AuthReducer';
+import BrowserReducer from './BrowserReducer';
 import ModalReducer from './ModalReducer';
 
 const rootReducer = combineReducers({

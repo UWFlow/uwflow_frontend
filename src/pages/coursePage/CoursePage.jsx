@@ -1,46 +1,36 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { useQuery } from 'react-apollo';
+import { Helmet } from 'react-helmet';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 
-/* Child Components */
+import LoadingSpinner from 'components/display/LoadingSpinner';
 import Button from 'components/input/Button';
 import LikeCourseToggle from 'components/input/LikeCourseToggle';
-import LoadingSpinner from 'components/display/LoadingSpinner';
-import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
-
-/* Queries */
-import { buildCourseQuery } from 'graphql/queries/course/Course';
-import { getUserId } from 'utils/Auth';
-
-/* Styled Components */
-
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
-/* Utils */
-import { formatCourseCode } from 'utils/Misc';
 import withModal from 'components/modal/withModal';
-
-/* Constants */
-import { NOT_FOUND, DEFAULT_ERROR } from 'constants/Messages';
+import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
 import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from 'constants/Modal';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+import { buildCourseQuery } from 'graphql/queries/course/Course';
+import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
+import { getUserId } from 'utils/Auth';
+import { formatCourseCode } from 'utils/Misc';
+
 import {
-  CoursePageWrapper,
-  ColumnWrapper,
   Column1,
   Column2,
-  ReviewWrapper,
-  CourseReviewQuestionBox,
+  ColumnWrapper,
+  CoursePageWrapper,
   CourseQuestionTextAndToggle,
+  CourseReviewQuestionBox,
   CourseReviewQuestionText,
+  ReviewWrapper,
 } from './styles/CoursePage';
-import CourseReviews from './CourseReviews';
-import CourseRequisites from './CourseRequisites';
-import CourseSchedule from './CourseSchedule';
 import CourseInfoHeader from './CourseInfoHeader';
+import CourseRequisites from './CourseRequisites';
+import CourseReviews from './CourseReviews';
+import CourseSchedule from './CourseSchedule';
 
 const mapStateToProps = (state) => ({
   isBrowserDesktop: getIsBrowserDesktop(state),

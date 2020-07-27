@@ -1,6 +1,5 @@
 import React from 'react';
 
-/* Styled Components */
 import { TooltipWrapper } from './styles/Tooltip';
 
 const Tooltip = ({ children, content }) => (

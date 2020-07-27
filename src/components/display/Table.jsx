@@ -1,25 +1,22 @@
-import React, { useRef, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useTable, useSortBy } from 'react-table';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronDown, ChevronUp } from 'react-feather';
+import { useSortBy, useTable } from 'react-table';
 import { throttle } from 'lodash';
-import { ChevronUp, ChevronDown } from 'react-feather';
+import PropTypes from 'prop-types';
 
-/* Styled Components */
 import {
-  TableWrapper,
-  TableHeader,
-  TableBody,
-  HeaderRow,
-  Row,
   Cell,
   HeaderCell,
-  SortArrow,
+  HeaderRow,
   HeaderText,
   LoadingRow,
   NoResultsRow,
+  Row,
+  SortArrow,
+  TableBody,
+  TableHeader,
+  TableWrapper,
 } from './styles/Table';
-
-/* Child Components */
 import LoadingSpinner from './LoadingSpinner';
 
 const Table = ({

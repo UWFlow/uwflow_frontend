@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Card, BoxShadow } from 'constants/Mixins';
+
+import { BoxShadow, Card } from 'constants/Mixins';
 
 export const SearchResultsContent = styled.div`
   overflow-x: auto;

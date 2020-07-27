@@ -1,27 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getCoursePageRoute } from 'Routes';
 
-/* Styled Components */
-
-/* Child Components */
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
 import ShortlistStar from 'components/input/ShortlistStar';
-
-/* Selectors */
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
 import { formatCourseCode } from 'utils/Misc';
-import { getCoursePageRoute } from 'Routes';
+
 import {
   ShortlistBoxWrapper,
-  ShortlistHeading,
   ShortlistContentWrapper,
   ShortlistCourse,
-  ShortListCourseText,
   ShortlistCourseCode,
   ShortlistCourseName,
   ShortlistCoursePlaceholder,
+  ShortListCourseText,
+  ShortlistHeading,
 } from './styles/ShortlistBox';
 
 const mapStateToProps = (state) => ({

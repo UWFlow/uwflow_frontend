@@ -1,60 +1,48 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useQuery } from 'react-apollo';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-apollo';
+import { getProfPageRoute } from 'Routes';
 import { withTheme } from 'styled-components';
 
-/* Styled Components */
-
-/* Child Components */
-import TabContainer from 'components/display/TabContainer';
-import Review from 'components/display/Review';
-import DropdownList from 'components/input/DropdownList';
-import LoadingSpinner from 'components/display/LoadingSpinner';
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
-
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
-/* GraphQL Queries */
-import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
-
-/* Constants */
+import LoadingSpinner from 'components/display/LoadingSpinner';
+import Review from 'components/display/Review';
+import TabContainer from 'components/display/TabContainer';
+import DropdownList from 'components/input/DropdownList';
 import {
   MIN_REVIEWS_SHOWN_COURSE,
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
-
-/* Hooks */
 import useCourseReviewsReducer, {
   UPDATE_REVIEW_DATA,
 } from 'data/hooks/UseCourseReviewsReducer';
-
-/* Utils */
-import { sortReviews, sortByReviews, sortByLiked } from 'utils/Review';
-import { getProfPageRoute } from 'Routes';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
 import { processRating } from 'utils/Misc';
+import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
+
 import {
-  CourseReviewWrapper,
   CourseCourseReviewsWrapper,
   CourseProfReviewsWrapper,
-  ReviewsForSingleProfWrapper,
-  ReviewListWrapper,
-  ReviewsOptionsWrapper,
+  CourseReviewWrapper,
   DropdownPanelWrapper,
-  ProfDropdownPanelWrapper,
   DropdownTableText,
-  ProfHeader,
-  ProfName,
-  NumProfReviews,
   NameNumReviewsWrapper,
+  NumProfReviews,
+  ProfDropdownPanelWrapper,
+  ProfHeader,
   ProfLikedMetric,
   ProfLikedPercent,
   ProfLikedPercentLabel,
+  ProfName,
+  ProfReviewDropdownsWrapper,
+  ReviewListWrapper,
+  ReviewsForSingleProfWrapper,
+  ReviewsOptionsWrapper,
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
-  ProfReviewDropdownsWrapper,
 } from './styles/CourseReviews';
 
 const CourseCourseReviews = ({

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { ProgressBarWrapper, Complete } from './styles/ProgressBar';
+import { Complete, ProgressBarWrapper } from './styles/ProgressBar';
 
 const ProgressBar = ({ percentComplete, width = 188, height = 16 }) => {
   const [percentWidth, setPercentWidth] = useState(0);

@@ -1,8 +1,9 @@
-import styled from 'styled-components';
 import Tippy from '@tippy.js/react';
-import 'tippy.js/dist/tippy.css';
+import styled from 'styled-components';
 
 import { Body } from 'constants/Mixins';
+
+import 'tippy.js/dist/tippy.css';
 
 export const TooltipWrapper = styled(Tippy)`
   ${Body}

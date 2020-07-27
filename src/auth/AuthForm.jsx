@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-
-/* Styled Components */
-
-/* Child Components */
-
 import { PRIVACY_PAGE_ROUTE } from 'Routes';
-import { makePOSTRequest } from 'utils/Api';
-import { LOGGED_IN } from 'data/actions/AuthActions';
-import { AUTH_ERRORS, DEFAULT_ERROR, AUTH_SUCCESS } from 'constants/Messages';
+
 import withModal from 'components/modal/withModal';
+import { AUTH_ERRORS, AUTH_SUCCESS, DEFAULT_ERROR } from 'constants/Messages';
 import { RESET_PASSWORD_MODAL } from 'constants/Modal';
-import SocialLoginContent from './SocialLoginContent';
-import SignupContent from './SignupContent';
-import LoginContent from './LoginContent';
+import { LOGGED_IN } from 'data/actions/AuthActions';
+import { makePOSTRequest } from 'utils/Api';
+
 import {
-  Wrapper,
   ContentWrapper,
-  OrWrapper,
-  PrivacyWrapper,
-  PrivacyPolicyText,
   GreyText,
-  SwapModalWrapper,
+  OrWrapper,
+  PrivacyPolicyText,
+  PrivacyWrapper,
   SwapModalLink,
+  SwapModalWrapper,
+  Wrapper,
 } from './styles/AuthForm';
+import LoginContent from './LoginContent';
+import SignupContent from './SignupContent';
+import SocialLoginContent from './SocialLoginContent';
 
 export const AuthForm = ({
   onLoginComplete,

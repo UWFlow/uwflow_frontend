@@ -1,11 +1,11 @@
 import { keyframes } from 'styled-components';
 
+import theme from './GlobalTheme';
 import {
-  PAGE_CONTENT_WIDTH,
   FOOTER_HEIGHT,
   FOOTER_MARGIN_TOP,
+  PAGE_CONTENT_WIDTH,
 } from './PageConstants';
-import theme from './GlobalTheme';
 
 export const InterFont = `Inter, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Helvetica Neue, sans-serif`;
 export const AndersonFont = `'Anderson Grotesk', -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Helvetica Neue, sans-serif`;
@@ -120,7 +120,7 @@ export const BoxShadow = `
 `;
 
 export const DarkBoxShadow = `
-  box-shadow: 0px 0px 10px ${theme.primaryExtraDark}
+  box-shadow: 0px 0px 10px ${theme.primaryExtraDark};
 `;
 
 export const BottomBoxShadow = `

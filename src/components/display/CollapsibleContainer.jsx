@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import Collapsible from 'react-collapsible';
 
-/* Styled Components */
 import {
-  ContainerWrapper,
-  HeaderWrapper,
-  HeaderTitle,
-  HeaderChevronBox,
   Chevron,
+  ContainerWrapper,
   ContentWrapper,
+  HeaderChevronBox,
+  HeaderTitle,
+  HeaderWrapper,
 } from './styles/CollapsibleContainer';
 
 const CollapsibleContainer = ({

@@ -2,37 +2,31 @@ import React from 'react';
 import moment from 'moment/moment';
 import { withTheme } from 'styled-components';
 
-/* Child Components */
 import Button from 'components/input/Button';
-
-/* Styled Components */
-
-/* Utils */
+import DropdownList from 'components/input/DropdownList';
+import withModal from 'components/modal/withModal';
+import {
+  BACKEND_ENDPOINT,
+  CALENDAR_EXPORT_ENDPOINT,
+  GOOGLE_CALENDAR_URL,
+} from 'constants/Api';
+import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import {
   getDateWithSeconds,
   millisecondsPerDay,
   weekDayLetters,
 } from 'utils/Misc';
-import withModal from 'components/modal/withModal';
 
-/* Constants */
 import {
-  CALENDAR_EXPORT_ENDPOINT,
-  BACKEND_ENDPOINT,
-  GOOGLE_CALENDAR_URL,
-} from 'constants/Api';
-import DropdownList from 'components/input/DropdownList';
-import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
-import {
-  ProfileCalendarWrapper,
-  ProfileCalendarHeading,
-  ProfileCalendarText,
-  ExportCalendarWrapper,
-  RecentCalendarWrapper,
-  RecentCalendarText,
+  ButtonWrapper,
   CalendarWithButtonsWrapper,
   ExportCalendarText,
-  ButtonWrapper,
+  ExportCalendarWrapper,
+  ProfileCalendarHeading,
+  ProfileCalendarText,
+  ProfileCalendarWrapper,
+  RecentCalendarText,
+  RecentCalendarWrapper,
 } from './styles/ProfileCalendar';
 import Calendar from './Calendar';
 

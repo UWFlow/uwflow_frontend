@@ -1,12 +1,13 @@
+import FadeIn from 'react-fade-in';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import FadeIn from 'react-fade-in';
+
 import {
-  WideColumn,
-  ThinColumn,
-  PageContent,
   BoxShadow,
+  PageContent,
   PageWrapper,
+  ThinColumn,
+  WideColumn,
 } from 'constants/Mixins';
 
 export const ProfilePageWrapper = styled.div`

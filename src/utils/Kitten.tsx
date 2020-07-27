@@ -11,6 +11,7 @@ import kitten_10 from 'img/kittens/kitten_10.jpg';
 import kitten_11 from 'img/kittens/kitten_11.jpg';
 import kitten_12 from 'img/kittens/kitten_12.jpg';
 import kitten_13 from 'img/kittens/kitten_13.jpg';
+
 import { randIntBetween } from './Random';
 
 const kittens: any[] = [

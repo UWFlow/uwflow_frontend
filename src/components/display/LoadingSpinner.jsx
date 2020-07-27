@@ -1,11 +1,10 @@
 import React from 'react';
 
-/* Styled Components */
 import {
-  LoadingSpinnerWrapper,
-  CircularSvg,
   CircleSvgBackground,
   CircleSvgSpinner,
+  CircularSvg,
+  LoadingSpinnerWrapper,
 } from './styles/LoadingSpinner';
 
 const LoadingSpinner = ({

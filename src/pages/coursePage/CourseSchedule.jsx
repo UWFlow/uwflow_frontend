@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment/moment';
+import PropTypes from 'prop-types';
 
-/* Child Components */
+import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
+import CollapsibleContainer from 'components/display/CollapsibleContainer';
 import TabContainer from 'components/display/TabContainer';
 import Table from 'components/display/Table';
-import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
-import { termCodeToDate, secsToTime, weekDayLetters } from 'utils/Misc';
-import CollapsibleContainer from 'components/display/CollapsibleContainer';
-import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
+import { secsToTime, termCodeToDate, weekDayLetters } from 'utils/Misc';
 
-/* Styled Components */
 import {
   CourseScheduleWrapper,
   ScheduleTableWrapper,
 } from './styles/CourseSchedule';
-
-/* Utils */
+import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
 
 // sectionCodes are all the section codes that exist at UW,
 // in the order they should appear in a course schedule.

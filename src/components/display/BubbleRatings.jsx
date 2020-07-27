@@ -1,13 +1,12 @@
 import React from 'react';
+import { ThumbsDown, ThumbsUp } from 'react-feather';
 import PropTypes from 'prop-types';
-import { ThumbsUp, ThumbsDown } from 'react-feather';
 
-/* Styled Components */
 import {
   BubbleRatingsWrapper,
-  UnitCircle,
-  ThumbsWrapper,
   Thumb,
+  ThumbsWrapper,
+  UnitCircle,
 } from './styles/BubbleRatings';
 
 const Thumbs = ({ boolRating }) => (

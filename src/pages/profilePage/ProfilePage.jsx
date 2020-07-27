@@ -1,41 +1,29 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-
-/* Styled Components */
-
-/* Child Components */
-import LoadingSpinner from 'components/display/LoadingSpinner';
-import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
-
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
-/* Queries */
-import { GET_USER } from 'graphql/queries/user/User';
-
-/* Routes */
+import { connect, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { LANDING_PAGE_ROUTE } from 'Routes';
 
-/* Constants */
+import LoadingSpinner from 'components/display/LoadingSpinner';
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
-
-/* Utils */
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+import { GET_USER } from 'graphql/queries/user/User';
+import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { logOut } from 'utils/Auth';
-import CompleteProfileContent from './CompleteProfileContent';
-import ProfileCourses from './ProfileCourses';
-import ProfileCalendar from './ProfileCalendar';
-import ShortlistBox from './ShortlistBox';
-import ProfileInfoHeader from './ProfileInfoHeader';
+
 import {
-  ProfilePageWrapper,
-  CompleteProfileWrapper,
-  ColumnWrapper,
   Column1,
   Column2,
+  ColumnWrapper,
+  CompleteProfileWrapper,
+  ProfilePageWrapper,
 } from './styles/ProfilePage';
+import CompleteProfileContent from './CompleteProfileContent';
+import ProfileCalendar from './ProfileCalendar';
+import ProfileCourses from './ProfileCourses';
+import ProfileInfoHeader from './ProfileInfoHeader';
+import ShortlistBox from './ShortlistBox';
 
 const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.loggedIn,

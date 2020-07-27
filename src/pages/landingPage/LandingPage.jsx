@@ -1,30 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
-/* Styled Components */
-
-/* Selectors */
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-
-/* Constants */
 import { PROFILE_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from 'Routes';
 
-/* Child Components */
 import AuthForm from 'auth/AuthForm';
-import SearchBar from 'components/navigation/SearchBar';
 import ProfileDropdown from 'components/navigation/ProfileDropdown';
+import SearchBar from 'components/navigation/SearchBar';
+import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+
 import {
-  ProfileWrapper,
-  Nav,
-  LandingPageWrapper,
+  AuthContent,
+  BackgroundImage,
   Column,
+  LandingPageWrapper,
+  LogoText,
+  Nav,
+  ProfileWrapper,
+  SubtitleText,
   TitleSearchBarWrapper,
   TitleText,
-  SubtitleText,
-  BackgroundImage,
-  LogoText,
-  AuthContent,
 } from './styles/LandingPage';
 
 const mapStateToProps = (state) => ({

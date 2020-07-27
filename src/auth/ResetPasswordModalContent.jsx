@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-/* Child Components */
-import Textbox from 'components/input/Textbox';
 import Button from 'components/input/Button';
-
-/* Utils */
-import { makePOSTRequest } from 'utils/Api';
-
-/* Constants */
+import Textbox from 'components/input/Textbox';
 import {
   BACKEND_ENDPOINT,
   RESET_PASSWORD_KEY_EMAIL_ENDPOINT,
-  RESET_PASSWORD_VERIFY_KEY_ENDPOINT,
   RESET_PASSWORD_RESET_PASSWORD_ENDPOINT,
+  RESET_PASSWORD_VERIFY_KEY_ENDPOINT,
 } from 'constants/Api';
 import { MIN_PASSWORD_LENGTH } from 'constants/Auth';
 import {
-  RESET_PASSWORD_ERRORS,
   DEFAULT_ERROR,
   PASSWORD_RESET_SUCCESS,
+  RESET_PASSWORD_ERRORS,
 } from 'constants/Messages';
-
-/* Styled Components */
+import { makePOSTRequest } from 'utils/Api';
 import { validateEmail } from 'utils/Email';
+
 import {
-  FormWrapper,
-  Header,
-  Text,
   Error,
-  Success,
-  TextboxWrapper,
+  FormWrapper,
   GreyLink,
+  Header,
+  Success,
+  Text,
+  TextboxWrapper,
 } from './styles/ResetPasswordModal';
 
 const ResetPasswordForm = ({

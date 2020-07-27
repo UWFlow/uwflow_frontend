@@ -1,26 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Edit } from 'react-feather';
+import PropTypes from 'prop-types';
 
-/* Styled Components */
-
-/* Utils */
-import { getKittenFromID } from 'utils/Kitten';
 import withModal from 'components/modal/withModal';
-
-/* Constants */
 import { EDIT_EMAIL_MODAL } from 'constants/Modal';
+import { getKittenFromID } from 'utils/Kitten';
+
 import {
+  EditWrapper,
   ProfileInfoHeaderWrapper,
   ProfileInfoSection,
-  UserInfoWrapper,
-  UserPicture,
-  UserName,
-  UserProgram,
-  UserEmailWrapper,
-  UserEmailText,
   UserEmail,
-  EditWrapper,
+  UserEmailText,
+  UserEmailWrapper,
+  UserInfoWrapper,
+  UserName,
+  UserPicture,
+  UserProgram,
 } from './styles/ProfileInfoHeader';
 
 const ProfileInfoHeader = ({ user, openModal }) => (

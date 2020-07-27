@@ -1,40 +1,34 @@
 import React from 'react';
+import { Edit, PlusSquare } from 'react-feather';
 import PropTypes from 'prop-types';
-import { PlusSquare, Edit } from 'react-feather';
+import { getCoursePageRoute } from 'Routes';
 import { withTheme } from 'styled-components';
 
-/* Child Components */
 import TabContainer from 'components/display/TabContainer';
 import Button from 'components/input/Button';
 import LikeCourseToggle from 'components/input/LikeCourseToggle';
-
-/* Styled Components */
-
-/* Routes */
-import { getCoursePageRoute } from 'Routes';
-
-/* Utils */
-import { termCodeToDate, formatCourseCode, processRating } from 'utils/Misc';
 import withModal from 'components/modal/withModal';
 import {
-  TRANSCRIPT_UPLOAD_MODAL,
   COURSE_REVIEW_COURSE_MODAL,
+  TRANSCRIPT_UPLOAD_MODAL,
 } from 'constants/Modal';
+import { formatCourseCode, processRating, termCodeToDate } from 'utils/Misc';
+
 import {
-  ProfileCoursesWrapper,
-  ProfileCoursesCourse,
-  ProfileCourseText,
-  ProfileCourseCode,
-  ProfileCourseName,
-  ProfileCourseLiked,
-  LikedThisCourseText,
   AddReviewIcon,
-  ProfileCourseReviewButtonText,
-  ReviewButtonContents,
-  LikeToggleWrapper,
-  LikedCourseWrapper,
-  YourCoursesWrapper,
   HeaderText,
+  LikedCourseWrapper,
+  LikedThisCourseText,
+  LikeToggleWrapper,
+  ProfileCourseCode,
+  ProfileCourseLiked,
+  ProfileCourseName,
+  ProfileCourseReviewButtonText,
+  ProfileCoursesCourse,
+  ProfileCoursesWrapper,
+  ProfileCourseText,
+  ReviewButtonContents,
+  YourCoursesWrapper,
 } from './styles/ProfileCourses';
 
 const ProfileCourses = ({
@@ -113,7 +107,7 @@ const ProfileCourses = ({
             margin="auto 0 auto 16px"
             padding="8px"
             height={48}
-            maxHeight={48}
+            maxHeight={'48px'}
             handleClick={() => {
               openModal(COURSE_REVIEW_COURSE_MODAL, {
                 ...reviewModalProps,

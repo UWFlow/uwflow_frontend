@@ -1,15 +1,15 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Link } from 'react-router-dom';
 
 import {
-  Card,
-  Heading2,
   Body,
-  Heading4,
-  Heading1,
   BoxShadow,
+  Card,
+  Heading1,
+  Heading2,
   Heading3,
+  Heading4,
   Hover,
 } from 'constants/Mixins';
 

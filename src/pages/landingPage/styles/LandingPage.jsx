@@ -1,10 +1,10 @@
+import FadeIn from 'react-fade-in';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import FadeIn from 'react-fade-in';
-import { Heading1, Heading2, Body } from 'constants/Mixins';
-import LandingImage from 'img/landing.svg';
 
+import { Body, Heading1, Heading2 } from 'constants/Mixins';
 import { PAGE_CONTENT_WIDTH } from 'constants/PageConstants';
+import LandingImage from 'img/landing.svg';
 
 const MAX_PAGE_WIDTH = 1400;
 

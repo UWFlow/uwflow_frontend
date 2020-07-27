@@ -1,75 +1,56 @@
 import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import Modal from 'react-modal';
-import { Helmet } from 'react-helmet';
-import {
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-  RouteComponentProps,
-} from 'react-router-dom';
-import { ToastContainer, Bounce } from 'react-toastify';
 import ReactGA from 'react-ga';
-import 'react-toastify/dist/ReactToastify.css';
-
-/* Routes */
+import { Helmet } from 'react-helmet';
+import Modal from 'react-modal';
+import { useSelector } from 'react-redux';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { Bounce, ToastContainer } from 'react-toastify';
 import {
-  LANDING_PAGE_ROUTE,
-  PROFILE_PAGE_ROUTE,
-  COURSE_PAGE_ROUTE,
-  EXPLORE_PAGE_ROUTE,
-  PROF_PAGE_ROUTE,
-  ABOUT_PAGE_ROUTE,
-  PRIVACY_PAGE_ROUTE,
-  WELCOME_PAGE_ROUTE,
-  SHORT_PROF_PAGE_ROUTE,
-} from 'Routes';
-
-/* Child Components */
-import {
-  LoadableLandingPage,
-  LoadableProfilePage,
+  LoadableAboutPage,
   LoadableCoursePage,
   LoadableExplorePage,
-  LoadableProfPage,
-  LoadableAboutPage,
+  LoadableLandingPage,
   LoadableNotFoundPage,
   LoadablePrivacyPage,
+  LoadableProfilePage,
+  LoadableProfPage,
   LoadableWelcomePage,
 } from 'LoadableComponents';
-import Navbar from 'components/navigation/Navbar';
-import Footer from 'components/navigation/Footer';
-import ModalMount from 'components/modal/ModalMount';
-import LandingPageBg from 'img/landing.svg';
-
-/* Constants */
-import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import {
-  BACKEND_ENDPOINT,
+  ABOUT_PAGE_ROUTE,
+  COURSE_PAGE_ROUTE,
+  EXPLORE_PAGE_ROUTE,
+  LANDING_PAGE_ROUTE,
+  PRIVACY_PAGE_ROUTE,
+  PROF_PAGE_ROUTE,
+  PROFILE_PAGE_ROUTE,
+  SHORT_PROF_PAGE_ROUTE,
+  WELCOME_PAGE_ROUTE,
+} from 'Routes';
+
+import ModalMount from 'components/modal/ModalMount';
+import Footer from 'components/navigation/Footer';
+import Navbar from 'components/navigation/Navbar';
+import {
   AUTH_REFRESH_ENDPOINT,
+  BACKEND_ENDPOINT,
   GOOGLE_ANALYTICS_ID,
 } from 'constants/Api';
-
-/* Utils */
-import { makeAuthenticatedPOSTRequest } from 'utils/Api';
+import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { RootState } from 'data/reducers/RootReducer';
+import LandingPageBg from 'img/landing.svg';
+import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { getUserId } from 'utils/Auth';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
-const mapStateToProps = (state: RootState) => ({
-  isLoggedIn: state.auth.loggedIn,
-});
+const App = () => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+  const location = useLocation();
 
-const connector = connect(mapStateToProps);
-
-type ReduxStateProps = ConnectedProps<typeof connector>;
-
-type AppProps = ReduxStateProps & RouteComponentProps;
-
-const App = ({ location, isLoggedIn }: AppProps) => {
   // Refresh auth token if logged in
   useEffect(() => {
     if (!isLoggedIn) {
@@ -182,4 +163,4 @@ const App = ({ location, isLoggedIn }: AppProps) => {
   );
 };
 
-export default withRouter(connect(mapStateToProps)(App));
+export default App;

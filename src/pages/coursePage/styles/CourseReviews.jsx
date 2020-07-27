@@ -1,13 +1,14 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
-import { Link } from 'react-router-dom';
+
 import {
-  Card,
-  Heading1,
-  Heading4,
-  Heading2,
   Body,
   BoxShadow,
+  Card,
+  Heading1,
+  Heading2,
+  Heading4,
   Hover,
 } from 'constants/Mixins';
 
@@ -108,7 +109,7 @@ export const ProfHeader = styled.div`
 
 export const ProfName = styled(Link)`
   ${Heading2}
-  color: ${({ theme }) => theme.professors}
+  color: ${({ theme }) => theme.professors};
 
   ${Hover()}
 `;

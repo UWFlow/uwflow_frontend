@@ -1,9 +1,9 @@
+import { defaultDataIdFromObject, InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
+import { onError } from 'apollo-link-error';
+import { HttpLink } from 'apollo-link-http';
 
 import { GRAPHQL_ENDPOINT } from 'constants/Api';
 import { logOut } from 'utils/Auth';

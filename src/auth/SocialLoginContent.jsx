@@ -1,29 +1,26 @@
 import React, { useState } from 'react';
-import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import GoogleLogin from 'react-google-login';
+import { faFacebookSquare, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle, faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
-
-/* Styled Components */
 
 import {
   BACKEND_ENDPOINT,
-  GOOGLE_AUTH_ENDPOINT,
+  FACEBOOK_APP_ID,
   FACEBOOK_AUTH_ENDPOINT,
   GOOGLE_APP_ID,
-  FACEBOOK_APP_ID,
+  GOOGLE_AUTH_ENDPOINT,
 } from 'constants/Api';
+import { AUTH_ERRORS } from 'constants/Messages';
 import { makePOSTRequest } from 'utils/Api';
 
-/* Constants */
-import { AUTH_ERRORS } from 'constants/Messages';
 import {
-  Error,
   ButtonText,
-  GoogleButton,
+  Error,
   FacebookButton,
-  GoogleIcon,
   FacebookIcon,
+  GoogleButton,
+  GoogleIcon,
 } from './styles/AuthForm';
 
 const SocialLoginContent = ({ onAuthSuccess }) => {
