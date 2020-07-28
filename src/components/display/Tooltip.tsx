@@ -8,7 +8,12 @@ type TooltipProps = {
 };
 
 const Tooltip = ({ children, content }: TooltipProps) => (
-  <TooltipWrapper content={content} arrow={false} duration={200}>
+  <TooltipWrapper
+    content={content}
+    arrow={false}
+    duration={[150, 50]}
+    offset={'0,8'}
+  >
     {children}
   </TooltipWrapper>
 );

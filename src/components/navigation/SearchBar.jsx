@@ -178,7 +178,7 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
       ref={ref}
       isLanding={isLanding}
     >
-      <ResultIcon color={theme.primary}>
+      <ResultIcon color={theme.primary} className="primaryicon">
         <Layers />
       </ResultIcon>
       <ResultText>

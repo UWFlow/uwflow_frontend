@@ -73,6 +73,10 @@ export const SearchResult = styled.button<{ isLanding: boolean }>`
     color: ${({ theme }) => theme.light1} !important;
     filter: brightness(100%) !important;
   }
+
+  &:hover .primaryicon {
+    color: ${({ theme }) => theme.light1} !important;
+  }
 `;
 
 export const ResultIcon = styled.div<{ color: string }>`
