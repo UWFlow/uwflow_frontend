@@ -15,7 +15,7 @@ export const CheckedItem = styled.div`
   transition: 0.2s all;
 `;
 
-export const CheckedText = styled.div`
+export const CheckedText = styled.div<{ checked: boolean }>`
   margin: auto;
   margin-left: 16px;
   ${Heading4}

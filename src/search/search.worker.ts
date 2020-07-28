@@ -1,22 +1,24 @@
-import SearchClient from './SearchClient.js';
+import SearchClient from './SearchClient';
 
 const client = new SearchClient();
 
 // eslint-disable-next-line no-restricted-globals
-self.onmessage = async (event) => {
+const ctx: Worker = self as any;
+
+ctx.onmessage = async (event: MessageEvent) => {
   const { type } = event.data;
   switch (type) {
     case 'autocomplete':
       const { query } = event.data;
       const results = client.autocomplete(query);
-      postMessage({ type: 'autocomplete', results });
+      ctx.postMessage({ type: 'autocomplete', results });
       break;
     case 'build':
       const [searchData, lastIndexedDate] = await client.buildIndices(
         event.data.searchData,
         event.data.lastIndexedDate,
       );
-      postMessage({ type: 'data', searchData, lastIndexedDate });
+      ctx.postMessage({ type: 'data', searchData, lastIndexedDate });
       break;
     default:
       break;

@@ -1,6 +1,7 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import {
+  Column,
   PluginHook,
   Row,
   TableInstance,
@@ -13,7 +14,6 @@ import {
 import { throttle } from 'lodash';
 
 import {
-  Cell,
   HeaderCell,
   HeaderRow,
   HeaderText,
@@ -21,6 +21,7 @@ import {
   NoResultsRow,
   SortArrow,
   TableBody,
+  TableCell,
   TableHeader,
   TableRow,
   TableWrapper,
@@ -35,16 +36,15 @@ type UseTableOverride = {
   ): TableInstance<object>;
 };
 
+// Override type definition due to missing fields
+export type ColumnOverride = {
+  align?: 'left' | 'right';
+  style?: object;
+} & Column;
+
 type TableProps = {
   cellPadding: string;
-  columns: {
-    Header: string;
-    accessor: string;
-    align: string;
-    maxWidth: number;
-    id: string;
-    Cell: () => ReactNode;
-  }[];
+  columns: Column[];
   data: object[];
   sortable: boolean;
   manualSortBy?: boolean;
@@ -153,7 +153,7 @@ const Table = ({
             odd={index % 2 === 1}
           >
             {row.cells.map((cell: any, idx: number) => (
-              <Cell
+              <TableCell
                 {...cell.getCellProps()}
                 padding={cellPadding}
                 align={cell.column.align}
@@ -162,7 +162,7 @@ const Table = ({
                 key={idx}
               >
                 {cell.render('Cell')}
-              </Cell>
+              </TableCell>
             ))}
           </TableRow>
         )

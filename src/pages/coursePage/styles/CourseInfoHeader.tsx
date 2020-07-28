@@ -54,7 +54,7 @@ export const StarAlignmentWrapper = styled(FadeIn)`
   `}
 `;
 
-export const CourseCode = styled(FadeIn)`
+export const CourseCode = styled(FadeIn)<{ ratingBoxWidth: number }>`
   ${Heading1}
   color: white;
   text-transform: uppercase;
@@ -64,7 +64,8 @@ export const CourseCode = styled(FadeIn)`
   `}
 
   ${breakpoint('tablet')`
-    max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
+      ratingBoxWidth}px);
   `}
 `;
 
@@ -81,7 +82,8 @@ export const CourseName = styled.div`
   font-weight: 400;
 
   ${breakpoint('tablet')`
-    max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
+      ratingBoxWidth}px);
   `}
 `;
 
@@ -114,7 +116,8 @@ export const Description = styled(FadeIn)`
 
   ${breakpoint('tablet')`
     margin-top: 48px;
-    max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
+      ratingBoxWidth}px);
   `}
 `;
 

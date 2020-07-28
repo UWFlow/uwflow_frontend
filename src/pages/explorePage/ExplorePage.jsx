@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
@@ -135,7 +135,9 @@ const ExplorePageContent = ({
   );
 };
 
-const ExplorePage = ({ location }) => {
+const ExplorePage = () => {
+  const location = useLocation();
+
   const { q: query, t: type, c: code } = queryString.parse(location.search);
   const courseTab = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
@@ -168,4 +170,4 @@ const ExplorePage = ({ location }) => {
   );
 };
 
-export default withRouter(ExplorePage);
+export default ExplorePage;

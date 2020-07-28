@@ -58,7 +58,8 @@ export const ProfName = styled.div`
   `}
 
   ${breakpoint('tablet')`
-    max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
+      ratingBoxWidth}px);
   `}
 `;
 
@@ -90,7 +91,8 @@ export const Description = styled.div`
 
   ${breakpoint('tablet')`
     margin-top: 48px;
-    max-width: calc(100% - ${({ ratingBoxWidth }) => ratingBoxWidth}px);
+    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
+      ratingBoxWidth}px);
   `}
 `;
 

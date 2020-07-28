@@ -47,6 +47,28 @@ export type ResetPasswordNewPasswordBody = {
   password: string;
 };
 
+/* Search data */
+export type SearchDataCourse = {
+  id: number;
+  code: string;
+  name: string;
+  profs: string[];
+  rating_count: number;
+};
+
+export type SearchDataProf = {
+  id: number;
+  code: string;
+  name: string;
+  courses: string[];
+  rating_count: number;
+};
+
+export type SearchDataResponse = {
+  courses: SearchDataCourse[];
+  profs: SearchDataProf[];
+};
+
 /* Data upload */
 export type ScheduleParseBody = {
   text: string;

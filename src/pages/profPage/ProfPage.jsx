@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-import { withRouter } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
@@ -31,7 +31,9 @@ const ProfPageContent = ({ prof }) => {
   );
 };
 
-export const ProfPage = ({ match }) => {
+export const ProfPage = () => {
+  const match = useRouteMatch();
+
   const profCode = match.params.profCode.toLowerCase();
   const { loading, error, data } = useQuery(GET_PROF, {
     variables: { code: profCode },
@@ -59,4 +61,4 @@ export const ProfPage = ({ match }) => {
   );
 };
 
-export default withRouter(ProfPage);
+export default ProfPage;

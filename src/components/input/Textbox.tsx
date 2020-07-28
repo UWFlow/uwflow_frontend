@@ -6,6 +6,8 @@ import React, {
   RefObject,
 } from 'react';
 
+import { TextBoxOptions } from 'types/Common';
+
 import { Icon, SearchInput, SearchInputWrapper } from './styles/Textbox';
 
 type TextboxProps = {
@@ -13,7 +15,7 @@ type TextboxProps = {
   setText: (text: string) => void;
   text: string;
   error?: boolean;
-  forwardRef?: RefObject<any>;
+  forwardRef?: RefObject<HTMLInputElement>;
   handleKeyDown?: (
     event: KeyboardEvent<HTMLInputElement>,
     text: string,
@@ -21,7 +23,7 @@ type TextboxProps = {
   icon?: ReactNode;
   maxLength?: number;
   onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
-  options?: any;
+  options?: TextBoxOptions;
 };
 
 const Textbox = ({

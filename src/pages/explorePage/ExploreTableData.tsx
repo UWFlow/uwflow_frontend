@@ -1,11 +1,12 @@
 import React from 'react';
 import { getCoursePageRoute, getProfPageRoute } from 'Routes';
 
+import { ColumnOverride } from 'components/display/Table';
 import { formatCourseCode, processRating } from 'utils/Misc';
 
 import { CourseCode, ProfName } from './styles/ExplorePage';
 
-export const courseColumns = [
+export const courseColumns: ColumnOverride[] = [
   {
     Header: 'Course code',
     accessor: 'code',
@@ -54,7 +55,7 @@ export const courseColumns = [
   },
 ];
 
-export const profColumns = [
+export const profColumns: ColumnOverride[] = [
   {
     Header: 'Professor name',
     accessor: 'code_name',

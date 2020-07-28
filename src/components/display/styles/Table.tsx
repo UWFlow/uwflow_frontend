@@ -90,7 +90,7 @@ export const TableRow = styled.div<{ disabled?: boolean; odd: boolean }>`
   }
 `;
 
-export const Cell = styled.div<{
+export const TableCell = styled.div<{
   padding: string;
   align: string;
   maxWidth: number;

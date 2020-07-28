@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
 import {
@@ -66,7 +66,8 @@ export const ProfReviewDropdownsWrapper = styled.div`
 
   ${breakpoint('zero', 'tablet')`
     padding: 16px 16px 8px 16px;
-    border-bottom: 2px solid ${({ theme }) => theme.light1};
+    border-bottom: 2px solid ${({ theme }: { theme: DefaultTheme }) =>
+      theme.light1};
     margin-bottom: 32px;
   `}
 `;

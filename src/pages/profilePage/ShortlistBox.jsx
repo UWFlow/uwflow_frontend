@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getCoursePageRoute } from 'Routes';
 
@@ -19,11 +19,9 @@ import {
   ShortlistHeading,
 } from './styles/ShortlistBox';
 
-const mapStateToProps = (state) => ({
-  isBrowserDesktop: getIsBrowserDesktop(state),
-});
+const ShortlistBox = ({ shortlistCourses }) => {
+  const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
-const ShortlistBox = ({ shortlistCourses, isBrowserDesktop }) => {
   const sortedShortlist = shortlistCourses.sort(
     (a, b) => (a.course.code > b.course.code) - (a.course.code < b.course.code),
   );
@@ -82,4 +80,4 @@ ShortlistBox.propTypes = {
   ).isRequired,
 };
 
-export default connect(mapStateToProps)(ShortlistBox);
+export default ShortlistBox;

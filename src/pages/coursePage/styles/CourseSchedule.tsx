@@ -11,7 +11,7 @@ export const CourseScheduleWrapper = styled.div`
   width: 100%;
 `;
 
-export const SectionCellWrapper = styled.div`
+export const SectionCellWrapper = styled.div<{ numRows: number }>`
   display: flex;
   position: relative;
   height: calc(
@@ -52,7 +52,7 @@ export const SectionContentWrapper = styled.div`
   top: 4px;
 `;
 
-export const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div<{ italics: boolean }>`
   display: flex;
   align-items: center;
   width: 100%;
@@ -78,7 +78,7 @@ export const ScheduleTableWrapper = styled.div`
   overflow-y: hidden;
 `;
 
-export const EnrollmentText = styled.div`
+export const EnrollmentText = styled.div<{ hasBell: boolean; filled: boolean }>`
   display: flex;
   align-items: center;
   margin-left: ${({ hasBell = true, filled }) =>

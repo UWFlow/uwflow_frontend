@@ -2,17 +2,49 @@ import fuzzysort from 'fuzzysort';
 import LZString from 'lz-string';
 
 import { BACKEND_ENDPOINT, SEARCH_DATA_ENDPOINT } from 'constants/Api';
+import {
+  SearchDataCourse,
+  SearchDataProf,
+  SearchDataResponse,
+} from 'types/Api';
+import { makeGETRequest } from 'utils/Api';
 import { formatCourseCode } from 'utils/Misc';
 
 const RATING_MULTIPLIER = 0.1;
 const MAX_AUTOCOMPLETE_LENGTH = 50;
+
+export type IndexedCourse = Omit<SearchDataCourse, 'profs'> & {
+  code: string;
+  fullText: string;
+  profs: string;
+};
+
+export type IndexedProf = Omit<SearchDataProf, 'courses'> & {
+  courses: string;
+};
+
+export type IndexedCourseCode = {
+  code: string;
+  rating_count: number;
+};
+
+export type AutocompleteResponse = {
+  courseResults: IndexedCourse[];
+  profResults: IndexedProf[];
+  courseCodeResults: IndexedCourseCode[];
+};
+
+type SearchResultTypes =
+  | Fuzzysort.KeysResult<IndexedCourse>
+  | Fuzzysort.KeysResult<IndexedProf>
+  | Fuzzysort.KeyResult<IndexedCourseCode>;
 
 const searchOptions = {
   threshold: -1000,
   allowTypo: true,
 };
 
-const courseOptions = {
+const courseOptions: Fuzzysort.KeysOptions<IndexedCourse> = {
   ...searchOptions,
   keys: ['fullText', 'code', 'profs'],
   scoreFn: (a) =>
@@ -23,34 +55,44 @@ const courseOptions = {
     ),
 };
 
-const profOptions = {
+const profOptions: Fuzzysort.KeysOptions<IndexedProf> = {
   ...searchOptions,
   keys: ['name', 'courses'],
   scoreFn: (a) =>
     Math.max(a[0] ? a[0].score : -10000, a[1] ? a[1].score - 50 : -10000),
 };
 
-const courseCodeOptions = {
+const courseCodeOptions: Fuzzysort.KeyOptions = {
   ...searchOptions,
   key: 'code',
 };
 
-const weightByRatings = (results) =>
-  results.sort((a, b) => {
+const weightByRatings = <D extends SearchResultTypes>(
+  results: ReadonlyArray<D>,
+): D[] => {
+  const clonedResults = [...results];
+  return clonedResults.sort((a, b) => {
     const ratingDifference = b.obj.rating_count - a.obj.rating_count;
     return a.score === b.score
       ? ratingDifference
       : b.score - a.score + ratingDifference * RATING_MULTIPLIER;
   });
+};
 
 class SearchClient {
+  courses: IndexedCourse[];
+
+  profs: IndexedProf[];
+
+  courseCodes: IndexedCourseCode[];
+
   constructor() {
     this.courses = [];
     this.profs = [];
     this.courseCodes = [];
   }
 
-  autocomplete(query = '') {
+  autocomplete(query = ''): AutocompleteResponse {
     if (query.length === 0) {
       return { courseResults: [], profResults: [], courseCodeResults: [] };
     }
@@ -66,8 +108,13 @@ class SearchClient {
       .replace(/\s+/g, ' ')
       .trim();
 
-    let courseResults = fuzzysort.go(parsedQuery, this.courses, courseOptions);
-    let profResults = fuzzysort.go(parsedQuery, this.profs, profOptions);
+    const courseResults = fuzzysort.go(
+      parsedQuery,
+      this.courses,
+      courseOptions,
+    );
+    const profResults = fuzzysort.go(parsedQuery, this.profs, profOptions);
+
     let courseCodeResults = fuzzysort.go(
       parsedQuery,
       this.courseCodes,
@@ -82,42 +129,49 @@ class SearchClient {
       );
     }
 
-    // reranking by rating count
-    courseResults = weightByRatings(courseResults).slice(0, 4);
-    profResults = weightByRatings(profResults).slice(0, 2);
-    courseCodeResults = weightByRatings(courseCodeResults).slice(0, 2);
+    // Reranking by rating count
+    const sortedCourses = weightByRatings(courseResults).slice(0, 4);
+
+    const sortedProfs = weightByRatings(profResults).slice(0, 2);
+
+    const sortedCourseCodes = weightByRatings(courseCodeResults).slice(0, 2);
 
     return {
-      courseResults: courseResults.map((res) => res.obj),
-      profResults: profResults.map((res) => res.obj),
-      courseCodeResults: courseCodeResults.map((res) => res.obj),
+      courseResults: sortedCourses.map((res) => res.obj),
+      profResults: sortedProfs.map((res) => res.obj),
+      courseCodeResults: sortedCourseCodes.map((res) => res.obj),
     };
   }
 
-  async buildIndices(searchData, lastIndexedDate) {
-    let parsedSearchData;
-    let indexedDate = lastIndexedDate;
+  async buildIndices(
+    searchData: string | null,
+    lastIndexedDate: string,
+  ): Promise<[string, string]> {
+    let parsedSearchData: SearchDataResponse | null = null;
+    let indexedDate: string = lastIndexedDate;
 
-    // fetch data if not passed in from localstorage
-    if (searchData === null) {
-      const response = await fetch(
-        `${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`,
-      );
-      parsedSearchData = await response.json();
-      indexedDate = Date();
-    } else {
-      parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData));
+    if (searchData !== null) {
+      parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData)!);
     }
 
-    // parse data
-    const courseCodeSet = new Set([]);
-    const courseCodeRatings = {};
+    // Fetch data if not available from local storage
+    if (parsedSearchData === null) {
+      [parsedSearchData] = await makeGETRequest<SearchDataResponse>(
+        `${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`,
+        {},
+      );
+      indexedDate = Date();
+    }
+
+    // Parse data
+    const courseCodeSet = new Set<string>([]);
+    const courseCodeRatings: { [key: string]: number } = {};
 
     const courses = parsedSearchData.courses.map((course) => {
       const courseLetters = formatCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
 
-      // total number of ratings for reranking during search
+      // Track total number of ratings for reranking by popularity
       if (
         !Object.prototype.hasOwnProperty.call(courseCodeRatings, courseLetters)
       ) {
@@ -147,12 +201,12 @@ class SearchClient {
       Object({ code, rating_count: courseCodeRatings[code] }),
     );
 
-    // swap old indices with new
+    // Swap old indices with new
     this.courses = courses;
     this.profs = profs;
     this.courseCodes = courseCodes;
 
-    // return compressed raw data for localstorage
+    // Return compressed raw data for local storage
     return [
       LZString.compressToUTF16(JSON.stringify(parsedSearchData)),
       indexedDate,

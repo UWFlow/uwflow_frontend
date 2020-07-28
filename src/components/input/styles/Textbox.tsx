@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
+import { TextBoxOptions } from 'types/Common';
+
 export const SearchInputWrapper = styled.div`
   display: block;
   position: relative;
 `;
 
 export const SearchInput = styled.input<{
-  options: any;
+  options: TextBoxOptions;
   error: boolean;
   hasIcon: boolean;
 }>`
@@ -19,9 +21,8 @@ export const SearchInput = styled.input<{
       : 'none'};
   width: ${({ options }) => (options.width ? options.width : '400px')};
   min-width: 152px;
+  font-size: inherit;
   padding: ${({ options }) => (options.padding ? options.padding : '8px 16px')};
-  font-size: ${({ options }) =>
-    options.fontSize ? options.fontSize : 'inherit'};
   border-radius: ${({ options }) =>
     options.borderRadius ? options.borderRadius : '4px'};
   background: ${({ theme }) => theme.light2};

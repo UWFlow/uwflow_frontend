@@ -112,7 +112,7 @@ export const LikedCourseWrapper = styled.span`
   }
 `;
 
-export const YourCoursesWrapper = styled.div`
+export const YourCoursesWrapper = styled.div<{ columnBreak: number }>`
   ${Heading2}
   display: flex;
   justify-content: space-between;
@@ -127,7 +127,7 @@ export const YourCoursesWrapper = styled.div`
   }
 `;
 
-export const HeaderText = styled.div`
+export const HeaderText = styled.div<{ columnBreak: number }>`
   @media only screen and (max-width: ${({ columnBreak }) => columnBreak}px) {
     margin-bottom: 16px;
   }

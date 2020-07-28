@@ -1,4 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  ReactNode,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Layers, Search, Square, User, Users } from 'react-feather';
 import Highlighter from 'react-highlight-words';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -14,6 +22,11 @@ import useOnClickOutside from 'use-onclickoutside';
 import Tooltip from 'components/display/Tooltip';
 import Textbox from 'components/input/Textbox';
 import KeycodeConstants from 'constants/KeycodeConstants';
+import {
+  AutocompleteResponse,
+  IndexedCourse,
+  IndexedProf,
+} from 'search/SearchClient';
 import { useSearchContext } from 'search/SearchProvider';
 import { formatCourseCode } from 'utils/Misc';
 
@@ -31,47 +44,64 @@ import {
   UnderlinedText,
 } from './styles/SearchBar';
 
-const Highlight = ({ children }) => <UnderlinedText>{children}</UnderlinedText>;
+type HighlightProps = {
+  children: ReactNode;
+};
 
-const BoldHighlight = ({ children }) => (
+const Highlight = ({ children }: HighlightProps) => (
+  <UnderlinedText>{children}</UnderlinedText>
+);
+
+const BoldHighlight = ({ children }: HighlightProps) => (
   <BoldText>
     <UnderlinedText>{children}</UnderlinedText>
   </BoldText>
 );
 
-const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
+type SearchBarProps = {
+  isLanding?: boolean;
+  maximizeWidth?: boolean;
+};
+
+const SearchBar = ({
+  isLanding = false,
+  maximizeWidth = false,
+}: SearchBarProps) => {
   const location = useLocation();
   const history = useHistory();
   const theme = useTheme();
 
   const { q: query } = queryString.parse(location.search);
 
-  const searchBarRef = useRef();
-  const selectedResultRef = useRef();
-  const inputRef = useRef();
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  const selectedResultRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
   const [open, setOpen] = useState(false);
-  const [searchText, setSearchText] = useState(query || '');
-  const [searchResults, setSearchResults] = useState({
-    courseCodeResults: [],
+  const [searchText, setSearchText] = useState((query as string) || '');
+  const [searchResults, setSearchResults] = useState<AutocompleteResponse>({
     courseResults: [],
     profResults: [],
+    courseCodeResults: [],
   });
   const { searchWorker } = useSearchContext();
 
-  const performSearch = (event) => {
+  // Handle search result data from search worker message
+  const performSearch = (event: MessageEvent) => {
     const { type } = event.data;
     if (type === 'autocomplete') {
       const { results } = event.data;
       setSearchResults(results);
       setSelectedResultIndex(-1);
-      if (inputRef.current) {
+
+      if (inputRef && inputRef.current) {
         inputRef.current.focus();
       }
     }
   };
 
+  // Arrow key functionality for search result dropdown
   const handleUserKeyPress = useCallback(
     (event) => {
       const { keyCode } = event;
@@ -121,9 +151,14 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
 
   useOnClickOutside(searchBarRef, () => setOpen(false));
 
-  const queryExploreCourses = (q, codeSearch = false, profSearch = false) => {
+  const queryExploreCourses = (
+    q?: string,
+    codeSearch = false,
+    profSearch = false,
+  ) => {
     if (q === '' || !q) {
       history.push(EXPLORE_PAGE_ROUTE);
+      return;
     }
 
     const codeTerm = codeSearch ? '&c=t' : '';
@@ -134,23 +169,28 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
     );
   };
 
-  const goToCourse = (code) => {
+  const goToCourse = (code: string) => {
     setOpen(false);
     history.push(getCoursePageRoute(code));
   };
 
-  const goToProf = (code) => {
+  const goToProf = (code: string) => {
     setOpen(false);
     history.push(getProfPageRoute(code));
   };
 
-  const handleSearch = (event, text) => {
+  // Route user to explore courses page
+  const handleSearch = (
+    event: KeyboardEvent<HTMLInputElement>,
+    text: string,
+  ) => {
     if (event.keyCode === KeycodeConstants.ENTER) {
       queryExploreCourses(text);
     }
   };
 
-  const handleKeyStroke = (value) => {
+  // Make request to search worker for autocomplete results
+  const handleKeyStroke = (value: string) => {
     setSearchText(value);
     setOpen(true);
     searchWorker.postMessage({ type: 'autocomplete', query: value });
@@ -162,7 +202,7 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
     .join(' ')
     .split(' ');
 
-  const highlightText = (text, bold = false) => (
+  const highlightText = (text: string, bold = false) => (
     <Highlighter
       highlightTag={bold ? BoldHighlight : Highlight}
       autoEscape={true}
@@ -171,7 +211,10 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
     />
   );
 
-  const exploreResult = (code = '', ref = null) => (
+  const exploreResult = (
+    code = '',
+    ref: RefObject<HTMLButtonElement> | null = null,
+  ) => (
     <SearchResult
       onClick={() => queryExploreCourses(code, code !== '')}
       key={code}
@@ -191,7 +234,10 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
     </SearchResult>
   );
 
-  const courseResult = (course, ref = null) => (
+  const courseResult = (
+    course: IndexedCourse,
+    ref: RefObject<HTMLButtonElement> | null = null,
+  ) => (
     <SearchResult
       onClick={() =>
         // convert back to raw code
@@ -225,7 +271,10 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
     </SearchResult>
   );
 
-  const profResult = (prof, ref = null) => (
+  const profResult = (
+    prof: IndexedProf,
+    ref: RefObject<HTMLButtonElement> | null = null,
+  ) => (
     <SearchResult
       onClick={() => goToProf(prof.code)}
       key={prof.code}
@@ -273,6 +322,7 @@ const SearchBar = ({ isLanding = false, maximizeWidth = false }) => {
     });
 
     offset += profResults.length;
+
     const courseCodeResults =
       searchResults.courseCodeResults.length > 0
         ? searchResults.courseCodeResults.map((result, i) =>

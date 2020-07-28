@@ -1,16 +1,35 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import SearchWorker from 'worker-loader!search/search.worker';
 
 import { LAST_INDEXED_ID, SEARCH_DATA_ID } from 'constants/Search';
 import { millisecondsPerDay } from 'utils/Misc';
 
-export const SearchContext = createContext();
+type SearchContextType = {
+  searchWorker: Worker;
+};
+
+export const SearchContext = createContext<SearchContextType>({
+  searchWorker: new SearchWorker(),
+});
 export const useSearchContext = () => useContext(SearchContext);
 
-const SearchProvider = ({ searchWorker, children }) => {
+type SearchProviderProps = {
+  searchWorker: Worker;
+  children: ReactNode;
+};
+
+const SearchProvider = ({ searchWorker, children }: SearchProviderProps) => {
   const [shouldReindex, setShouldReindex] = useState(false);
 
   useEffect(() => {
-    // build indices
+    // Build indices
     searchWorker.postMessage({
       type: 'build',
       searchData: localStorage.getItem(SEARCH_DATA_ID),
@@ -25,10 +44,10 @@ const SearchProvider = ({ searchWorker, children }) => {
         localStorage.setItem(SEARCH_DATA_ID, searchData);
         localStorage.setItem(LAST_INDEXED_ID, indexedDate);
 
-        // reload if index is more than 1 day old
+        // Reload if index is more than 12 hours old
         if (
           new Date().getTime() - new Date(indexedDate).getTime() >
-          millisecondsPerDay
+          millisecondsPerDay / 2
         ) {
           setShouldReindex(true);
         }
@@ -54,7 +73,7 @@ const SearchProvider = ({ searchWorker, children }) => {
 
   return (
     <SearchContext.Consumer>
-      {(context = {}) => {
+      {(context) => {
         if (context.searchWorker !== searchWorker) {
           context = { ...context, searchWorker };
         }

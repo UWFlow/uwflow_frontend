@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext", "WebWorker"],
     "allowJs": true,
     "baseUrl": "./src",
     "skipLibCheck": true,
@@ -20,8 +16,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": [
-    "src",
-    "config-overrides.js"
-  ]
+  "include": ["src", "config-overrides.js"]
 }

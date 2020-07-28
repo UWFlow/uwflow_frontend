@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { getCoursePageRoute } from 'Routes';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Review from 'components/display/Review';
@@ -39,11 +38,10 @@ import {
   SortFilterDropdownWrapper,
 } from './styles/ProfReviews';
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.auth.loggedIn,
-});
+const ProfReviews = ({ profID }) => {
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const theme = useTheme();
 
-const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   const [courseSort, setCourseSort] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState(0);
   const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
@@ -202,9 +200,4 @@ const ProfReviews = ({ profID, theme, isLoggedIn }) => {
   );
 };
 
-ProfReviews.propTypes = {
-  profID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  theme: PropTypes.object.isRequired,
-};
-
-export default connect(mapStateToProps)(withTheme(ProfReviews));
+export default ProfReviews;

@@ -52,7 +52,7 @@ export const NavButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const NavButton = styled.button`
+export const NavButton = styled.button<{ hideSmall: boolean }>`
   ${Body}
   max-height: 48px;
   font-weight: 600;
@@ -142,7 +142,12 @@ export const DayHeader = styled.div`
   justify-content: center;
 `;
 
-export const EventWrapper = styled.div`
+export const EventWrapper = styled.div<{
+  color: string;
+  height: number;
+  top: number;
+  truncate: 'left' | 'right' | false;
+}>`
   ${Body}
   z-index: 1
   position: absolute;

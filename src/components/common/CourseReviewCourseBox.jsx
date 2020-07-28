@@ -591,8 +591,6 @@ const CourseReviewCourseBox = ({ courseList, ...props }) => {
       }, {})
     : null;
 
-  console.log(props);
-
   return (
     <CourseReviewCourseBoxContent
       {...{
