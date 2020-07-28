@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import { useTheme } from 'styled-components';
 
 import Tooltip from 'components/display/Tooltip';
-import withModal from 'components/modal/withModal';
 import { SHORTLIST_ERROR } from 'constants/Messages';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
@@ -15,6 +14,7 @@ import {
 } from 'graphql/mutations/Shortlist';
 import { REFETCH_COURSE_SHORTLIST } from 'graphql/queries/course/Course';
 import { REFETCH_USER_SHORTLIST } from 'graphql/queries/user/User';
+import useModal from 'hooks/useModal';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
 
@@ -26,7 +26,6 @@ import {
 type ShortlistStarProps = {
   courseID: number;
   courseCode: string;
-  openModal: any;
   initialState?: boolean;
   size?: number;
 };
@@ -36,8 +35,8 @@ const ShortlistStar = ({
   courseCode,
   initialState = false,
   size = 32,
-  openModal,
 }: ShortlistStarProps) => {
+  const [openModal] = useModal();
   const theme = useTheme();
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const userID = getUserId();
@@ -111,4 +110,4 @@ const ShortlistStar = ({
   );
 };
 
-export default withModal(ShortlistStar);
+export default ShortlistStar;

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { ThumbsUp } from 'react-feather';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment/moment';
-import PropTypes from 'prop-types';
 import { getProfPageRoute } from 'Routes';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
-import withModal from 'components/modal/withModal';
 import { AUTH_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 import {
@@ -18,6 +16,7 @@ import {
 } from 'graphql/mutations/Upvote';
 import { REFETCH_COURSE_REVIEW_UPVOTE } from 'graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from 'graphql/queries/prof/ProfReview';
+import useModal from 'hooks/useModal';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
@@ -39,11 +38,6 @@ import {
 } from './styles/Review';
 import BubbleRatings from './BubbleRatings';
 import Tooltip from './Tooltip';
-
-const mapStateToProps = (state) => ({
-  isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: state.auth.loggedIn,
-});
 
 const MetricIfExists = (metrics, metric) => {
   const metricText = metric.charAt(0).toUpperCase() + metric.slice(1);
@@ -71,14 +65,12 @@ const MetricIfExists = (metrics, metric) => {
   );
 };
 
-const Review = ({
-  review,
-  theme,
-  isBrowserDesktop,
-  isLoggedIn,
-  isCourseReview,
-  openModal,
-}) => {
+const Review = ({ review, isCourseReview }) => {
+  const [openModal] = useModal();
+  const theme = useTheme();
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const isBrowserDesktop = useSelector(getIsBrowserDesktop);
+
   const {
     id,
     upvotes,
@@ -211,27 +203,4 @@ const Review = ({
   );
 };
 
-Review.propTypes = {
-  upvotes: PropTypes.number,
-  review: PropTypes.shape({
-    upvotes: PropTypes.number,
-    review: PropTypes.string.isRequired,
-    author: PropTypes.shape({
-      full_name: PropTypes.string,
-      program: PropTypes.string,
-      picture_url: PropTypes.string,
-    }).isRequired,
-    user: PropTypes.shape({
-      user_id: PropTypes.number,
-    }),
-    metrics: PropTypes.shape({
-      useful: PropTypes.number, // not all these metrics have to exist, we should only display the ones that do
-      easy: PropTypes.number, // for example course review only has useful, easy liked,
-      liked: PropTypes.bool, // prof review only has liked, clear and engagin
-      clear: PropTypes.number,
-      engaging: PropTypes.number,
-    }).isRequired,
-  }).isRequired,
-};
-
-export default withModal(withTheme(connect(mapStateToProps)(Review)));
+export default Review;

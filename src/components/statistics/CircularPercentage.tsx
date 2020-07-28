@@ -13,7 +13,7 @@ type CircularPercentageProps = {
   barThickness: number;
   height: number;
   label: string;
-  percent: number;
+  percent: number | null;
 };
 
 const CircularPercentage = ({
@@ -23,13 +23,14 @@ const CircularPercentage = ({
   label,
 }: CircularPercentageProps) => {
   const theme = useTheme();
+  const pieValue = percent === null ? 0 : 100 - percent;
 
   return (
     <CircleWrapper>
       <PieChart width={height} height={height}>
         <Pie
           dataKey="value"
-          data={[{ value: percent }, { value: 100 - percent }]}
+          data={[{ value: percent }, { value: pieValue }]}
           cx="50%"
           cy="50%"
           startAngle={90}

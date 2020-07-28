@@ -4,7 +4,6 @@ import { ThumbsDown, ThumbsUp } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
 
-import withModal from 'components/modal/withModal';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { UPSERT_LIKED_REVIEW } from 'graphql/mutations/Review';
@@ -14,6 +13,7 @@ import {
 } from 'graphql/queries/course/Course';
 import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import useModal from 'hooks/useModal';
 import { getUserId } from 'utils/Auth';
 
 import {
@@ -36,8 +36,8 @@ const LikeCourseToggle = ({
   profID,
   reviewID = null,
   initialState = null,
-  openModal,
 }: LikeCourseToggleProps) => {
+  const [openModal] = useModal();
   const theme = useTheme();
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const userID = getUserId();
@@ -136,4 +136,4 @@ const LikeCourseToggle = ({
   );
 };
 
-export default withModal(LikeCourseToggle);
+export default LikeCourseToggle;

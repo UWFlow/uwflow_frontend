@@ -1,17 +1,16 @@
 import React from 'react';
 import { Edit, PlusSquare } from 'react-feather';
-import PropTypes from 'prop-types';
 import { getCoursePageRoute } from 'Routes';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import TabContainer from 'components/display/TabContainer';
 import Button from 'components/input/Button';
 import LikeCourseToggle from 'components/input/LikeCourseToggle';
-import withModal from 'components/modal/withModal';
 import {
   COURSE_REVIEW_COURSE_MODAL,
   TRANSCRIPT_UPLOAD_MODAL,
 } from 'constants/Modal';
+import useModal from 'hooks/useModal';
 import { formatCourseCode, processRating, termCodeToDate } from 'utils/Misc';
 
 import {
@@ -32,14 +31,14 @@ import {
 } from './styles/ProfileCourses';
 
 const ProfileCourses = ({
-  theme,
   courses,
   reviewModalCourseList,
   reviews,
-  openModal,
-  closeModal,
   refetchAll,
 }) => {
+  const [openModal, closeModal] = useModal();
+  const theme = useTheme();
+
   const groupCoursesByTerm = () => {
     return courses.reduce((groups, course, idx) => {
       groups[course.term_id] = groups[course.term_id] || [];
@@ -177,10 +176,4 @@ const ProfileCourses = ({
   );
 };
 
-ProfileCourses.propTypes = {
-  theme: PropTypes.object.isRequired,
-  courses: PropTypes.arrayOf(PropTypes.object).isRequired,
-  openModal: PropTypes.func.isRequired,
-};
-
-export default withModal(withTheme(ProfileCourses));
+export default ProfileCourses;

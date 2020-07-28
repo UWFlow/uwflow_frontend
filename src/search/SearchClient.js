@@ -1,8 +1,8 @@
 import fuzzysort from 'fuzzysort';
 import LZString from 'lz-string';
 
-import { BACKEND_ENDPOINT, SEARCH_DATA_ENDPOINT } from '../constants/Api';
-import { formatCourseCode } from '../utils/Misc';
+import { BACKEND_ENDPOINT, SEARCH_DATA_ENDPOINT } from 'constants/Api';
+import { formatCourseCode } from 'utils/Misc';
 
 const RATING_MULTIPLIER = 0.1;
 const MAX_AUTOCOMPLETE_LENGTH = 50;

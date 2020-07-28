@@ -1,19 +1,12 @@
-interface POSTRequestFlags {
-  noStringify?: boolean;
-}
-
 /*
- * Makes POST request to endpoint and
- * returns the response body and status
+ * Makes POST request to endpoint, returns the response body and status
  */
-// TODO add a return type
-export const makePOSTRequest = async (
+export const makePOSTRequest = async <R, T>(
   endpoint: string,
-  data: any,
+  data: R,
   options: Record<string, string> = {},
-  flags: POSTRequestFlags = {},
-): Promise<[any, number]> => {
-  const processedData = flags.noStringify ? data : JSON.stringify(data);
+): Promise<[T, number]> => {
+  const processedData = data instanceof FormData ? data : JSON.stringify(data);
   const res = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -23,31 +16,19 @@ export const makePOSTRequest = async (
     body: processedData,
   });
 
-  const text = await res.text();
-  const status = await res.status;
-
-  let respJSON: JSON;
-  try {
-    respJSON = JSON.parse(text);
-  } catch (err) {
-    respJSON = JSON.parse('{}');
-  }
-  return [respJSON, status];
+  // Return empty object if response body is empty
+  const json = await res.json().catch(() => [{}, res.status]);
+  const { status } = res;
+  return [json, status];
 };
 
-export const makeAuthenticatedPOSTRequest = async (
+export const makeAuthenticatedPOSTRequest = async <R, T>(
   endpoint: string,
-  data: any,
+  data: R,
   options: Record<string, string> = {},
-  flags: POSTRequestFlags = { noStringify: false },
-): Promise<[any, number]> => {
-  return makePOSTRequest(
-    endpoint,
-    data,
-    {
-      ...options,
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    flags,
-  );
+): Promise<[T, number]> => {
+  return makePOSTRequest(endpoint, data, {
+    ...options,
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  });
 };

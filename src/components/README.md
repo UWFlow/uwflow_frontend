@@ -2,7 +2,7 @@
 
 ## Using Modals
 
-- Wrapping your component with "withModal" will provide it with openModal and closeModal functions.
+- The "useModal" hook will provide openModal and closeModal functions.
 - openModal(MODAL_NAME, props) opens a modal with the provided props
 - the onRequestClose prop is automatically provided to the modal content and defaults to just closing the modal but can be overridden from props
 - the onAfterClose prop for the modal itself can be set from props as well
