@@ -1,4 +1,4 @@
-import React, { ComponentProps, ReactNode } from 'react';
+import React, { ComponentProps, MouseEvent, ReactNode } from 'react';
 import { useTheme } from 'styled-components';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -9,7 +9,7 @@ type ButtonProps = ComponentProps<'button'> & {
   children: ReactNode;
   borderColor?: string;
   color?: string;
-  handleClick?: () => void;
+  handleClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   hasShadow?: boolean;
   height?: number;
   loading?: boolean;

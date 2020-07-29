@@ -6,9 +6,9 @@ import { isOnLandingPageRoute, PROFILE_PAGE_ROUTE } from 'Routes';
 import { useTheme } from 'styled-components';
 
 import DropdownList from 'components/input/DropdownList';
-import withModal from 'components/modal/withModal';
 import { AUTH_MODAL } from 'constants/Modal';
 import { GET_USER } from 'graphql/queries/user/User';
+import useModal from 'hooks/useModal';
 import { logOut } from 'utils/Auth';
 import { getKittenFromID } from 'utils/Kitten';
 
@@ -43,7 +43,8 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
   );
 };
 
-const ProfileDropdown = ({ openModal }) => {
+const ProfileDropdown = () => {
+  const [openModal] = useModal();
   const location = useLocation();
   const history = useHistory();
   const theme = useTheme();
@@ -98,4 +99,4 @@ const ProfileDropdown = ({ openModal }) => {
   );
 };
 
-export default withModal(ProfileDropdown);
+export default ProfileDropdown;

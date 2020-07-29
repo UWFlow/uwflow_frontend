@@ -39,6 +39,7 @@ import {
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { RootState } from 'data/reducers/RootReducer';
 import LandingPageBg from 'img/landing.svg';
+import { AuthRefreshResponse } from 'types/Api';
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { getUserId } from 'utils/Auth';
 
@@ -58,10 +59,10 @@ const App = () => {
     }
 
     const refreshAuth = async () => {
-      const [response, status] = await makeAuthenticatedPOSTRequest(
-        `${BACKEND_ENDPOINT}${AUTH_REFRESH_ENDPOINT}`,
-        {},
-      );
+      const [response, status] = await makeAuthenticatedPOSTRequest<
+        object,
+        AuthRefreshResponse
+      >(`${BACKEND_ENDPOINT}${AUTH_REFRESH_ENDPOINT}`, {});
 
       if (status >= 400) {
         return;

@@ -8,11 +8,11 @@ import PropTypes from 'prop-types';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Button from 'components/input/Button';
 import LikeCourseToggle from 'components/input/LikeCourseToggle';
-import withModal from 'components/modal/withModal';
 import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
 import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 import { buildCourseQuery } from 'graphql/queries/course/Course';
+import useModal from 'hooks/useModal';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
@@ -46,9 +46,9 @@ const CoursePageContent = ({
   isLoggedIn,
   isBrowserDesktop,
   userEmail,
-  openModal,
-  closeModal,
 }) => {
+  const [openModal, closeModal] = useModal();
+
   const handleReviewClick = () =>
     isLoggedIn
       ? openModal(COURSE_REVIEW_COURSE_MODAL, {
@@ -118,13 +118,7 @@ const CoursePageContent = ({
   );
 };
 
-const CoursePage = ({
-  match,
-  isLoggedIn,
-  isBrowserDesktop,
-  openModal,
-  closeModal,
-}) => {
+const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn);
 
@@ -167,8 +161,6 @@ const CoursePage = ({
         isLoggedIn={isLoggedIn}
         isBrowserDesktop={isBrowserDesktop}
         userEmail={isLoggedIn && data.user[0].email}
-        openModal={openModal}
-        closeModal={closeModal}
       />
     </CoursePageWrapper>
   );
@@ -178,4 +170,4 @@ CoursePage.propTypes = {
   data: PropTypes.object,
 };
 
-export default withModal(withRouter(connect(mapStateToProps)(CoursePage)));
+export default withRouter(connect(mapStateToProps)(CoursePage));

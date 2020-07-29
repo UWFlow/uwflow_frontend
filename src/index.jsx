@@ -8,8 +8,8 @@ import { createBrowserHistory } from 'history';
 import { configureStore } from 'Store';
 import { ThemeProvider } from 'styled-components';
 
+import ModalProvider from 'components/modal/ModalProvider';
 import Theme from 'constants/GlobalTheme';
-import ModalProvider from 'data/providers/ModalProvider';
 import client from 'graphql/apollo.js';
 /* eslint-disable-next-line */
 import SearchWorker from 'search/search.worker.js';

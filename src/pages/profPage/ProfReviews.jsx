@@ -12,10 +12,10 @@ import {
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
+import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview';
 import useProfReviewsReducer, {
   UPDATE_REVIEW_DATA,
-} from 'data/hooks/UseProfReviewsReducer';
-import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview';
+} from 'hooks/useProfReviewsReducer';
 import { formatCourseCode, processRating } from 'utils/Misc';
 import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
 

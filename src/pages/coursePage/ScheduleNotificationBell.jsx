@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Tooltip from 'components/display/Tooltip';
-import withModal from 'components/modal/withModal';
 import {
   SUBSCRIPTION_ERROR,
   SUBSCRIPTION_SUCCESS,
@@ -17,6 +16,7 @@ import {
   INSERT_SECTION_SUBSCRIPTION,
 } from 'graphql/mutations/SectionSubscription';
 import { REFETCH_SECTION_SUBSCRIPTIONS } from 'graphql/queries/course/Course';
+import useModal from 'hooks/useModal';
 
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
@@ -30,8 +30,9 @@ const ScheduleNotificationBell = ({
   courseID,
   initialState = false,
   userEmail,
-  openModal,
 }) => {
+  const [openModal] = useModal();
+
   const userID = localStorage.getItem('user_id');
 
   const refetchQueries = [
@@ -125,4 +126,4 @@ const ScheduleNotificationBell = ({
   );
 };
 
-export default withModal(connect(mapStateToProps)(ScheduleNotificationBell));
+export default connect(mapStateToProps)(ScheduleNotificationBell);

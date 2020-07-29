@@ -15,11 +15,11 @@ import {
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
-import useCourseReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from 'data/hooks/UseCourseReviewsReducer';
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
 import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
+import useCourseReviewsReducer, {
+  UPDATE_REVIEW_DATA,
+} from 'hooks/useCourseReviewsReducer';
 import { processRating } from 'utils/Misc';
 import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
 

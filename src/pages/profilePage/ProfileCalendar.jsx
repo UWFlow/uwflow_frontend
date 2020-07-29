@@ -1,16 +1,16 @@
 import React from 'react';
 import moment from 'moment/moment';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
 import DropdownList from 'components/input/DropdownList';
-import withModal from 'components/modal/withModal';
 import {
   BACKEND_ENDPOINT,
   CALENDAR_EXPORT_ENDPOINT,
   GOOGLE_CALENDAR_URL,
 } from 'constants/Api';
 import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
+import useModal from 'hooks/useModal';
 import {
   getDateWithSeconds,
   millisecondsPerDay,
@@ -153,14 +153,10 @@ const getInitialMonday = (eventsByDate) => {
   return currentWeekMonday;
 };
 
-const ProfileCalendar = ({
-  schedule,
-  secretID,
-  theme,
-  refetchAll,
-  openModal,
-  closeModal,
-}) => {
+const ProfileCalendar = ({ schedule, secretID, refetchAll }) => {
+  const [openModal, closeModal] = useModal();
+  const theme = useTheme();
+
   const handleCalendarExport = async (download) => {
     const response = await fetch(
       `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretID)}`,
@@ -241,4 +237,4 @@ const ProfileCalendar = ({
   );
 };
 
-export default withModal(withTheme(ProfileCalendar));
+export default ProfileCalendar;

@@ -10,7 +10,6 @@ import { Icon, SearchInput, SearchInputWrapper } from './styles/Textbox';
 
 type TextboxProps = {
   placeholder: string;
-  icon: ReactNode;
   setText: (text: string) => void;
   text: string;
   error?: boolean;
@@ -19,6 +18,7 @@ type TextboxProps = {
     event: KeyboardEvent<HTMLInputElement>,
     text: string,
   ) => void;
+  icon?: ReactNode;
   maxLength?: number;
   onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
   options?: any;
@@ -34,7 +34,7 @@ const Textbox = ({
   onFocus = () => {},
   options = {},
   maxLength = 524288, // default browser maxLength,
-  forwardRef = undefined,
+  forwardRef,
 }: TextboxProps) => {
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     handleKeyDown(event, text);

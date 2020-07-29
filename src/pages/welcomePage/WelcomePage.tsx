@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from 'Routes';
 
-import ScheduleUploadModalContent from 'components/dataUploadModals/ScheduleUploadModalContent';
-import TranscriptUploadModalContent from 'components/dataUploadModals/TranscriptUploadModalContent';
+import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
+import TranscriptUploadModalContent from 'components/upload/TranscriptUploadModalContent';
 import { RootState } from 'data/reducers/RootReducer';
 
 import { WelcomePageWrapper } from './styles/WelcomePage';
