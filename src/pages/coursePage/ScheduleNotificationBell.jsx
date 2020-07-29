@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { Bell } from 'react-feather';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Tooltip from 'components/display/Tooltip';
@@ -20,17 +20,13 @@ import useModal from 'hooks/useModal';
 
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.auth.loggedIn,
-});
-
 const ScheduleNotificationBell = ({
-  isLoggedIn,
   sectionID,
   courseID,
   initialState = false,
   userEmail,
 }) => {
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
   const [openModal] = useModal();
 
   const userID = localStorage.getItem('user_id');
@@ -126,4 +122,4 @@ const ScheduleNotificationBell = ({
   );
 };
 
-export default connect(mapStateToProps)(ScheduleNotificationBell);
+export default ScheduleNotificationBell;

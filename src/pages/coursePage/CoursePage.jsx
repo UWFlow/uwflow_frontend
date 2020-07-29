@@ -1,9 +1,8 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useRouteMatch } from 'react-router-dom';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Button from 'components/input/Button';
@@ -32,22 +31,17 @@ import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
 import CourseSchedule from './CourseSchedule';
 
-const mapStateToProps = (state) => ({
-  isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: state.auth.loggedIn,
-});
-
 const CoursePageContent = ({
   course,
   shortlisted,
   userReview,
   userCourseTaken,
   sectionSubscriptions,
-  isLoggedIn,
-  isBrowserDesktop,
   userEmail,
 }) => {
   const [openModal, closeModal] = useModal();
+  const isBrowserDesktop = useSelector(getIsBrowserDesktop);
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
   const handleReviewClick = () =>
     isLoggedIn
@@ -118,7 +112,10 @@ const CoursePageContent = ({
   );
 };
 
-const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
+const CoursePage = () => {
+  const match = useRouteMatch();
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+
   const courseCode = match.params.courseCode.toLowerCase();
   const query = buildCourseQuery(isLoggedIn);
 
@@ -158,16 +155,10 @@ const CoursePage = ({ match, isLoggedIn, isBrowserDesktop }) => {
         userCourseTaken={!!(isLoggedIn && data.user_course_taken.length > 0)}
         shortlisted={isLoggedIn && data.user_shortlist.length > 0}
         sectionSubscriptions={data.queue_section_subscribed || []}
-        isLoggedIn={isLoggedIn}
-        isBrowserDesktop={isBrowserDesktop}
         userEmail={isLoggedIn && data.user[0].email}
       />
     </CoursePageWrapper>
   );
 };
 
-CoursePage.propTypes = {
-  data: PropTypes.object,
-};
-
-export default withRouter(connect(mapStateToProps)(CoursePage));
+export default CoursePage;

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
 import {
@@ -90,7 +90,7 @@ export const SortFilterDropdownWrapper = styled.div`
 `;
 
 export const CourseDropdownsWrapper = styled.div`
-  ${Card(0, 0)}
+  ${Card('0', '0')}
   ${BoxShadow}
   display: flex;
   flex-wrap: wrap;
@@ -109,7 +109,8 @@ export const DropdownPanelWrapper = styled.div`
 
   ${breakpoint('zero', 'tablet')`
     padding: 24px 16px;
-    border-bottom: 1px solid ${({ theme }) => theme.light2};
+    border-bottom: 1px solid ${({ theme }: { theme: DefaultTheme }) =>
+      theme.light2};
     background-color: white;
     margin: 0 0 32px 0;
   `}

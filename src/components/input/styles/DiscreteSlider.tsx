@@ -15,7 +15,7 @@ export const DiscreteSliderWrapper = styled.div<{
   max-width: 100%;
 
   ${breakpoint('zero', 'tablet')`
-    ${({ fullWidthMobile }: any) =>
+    ${({ fullWidthMobile }: { fullWidthMobile: boolean }) =>
       fullWidthMobile ? 'width: calc(100% - 16px);' : ''}
   `}
 `;

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import kitten_1 from 'img/kittens/kitten_1.jpg';
 import kitten_2 from 'img/kittens/kitten_2.jpg';
 import kitten_3 from 'img/kittens/kitten_3.jpg';
@@ -14,7 +16,7 @@ import kitten_13 from 'img/kittens/kitten_13.jpg';
 
 import { randIntBetween } from './Random';
 
-const kittens: any[] = [
+const kittens: ReactNode[] = [
   kitten_1,
   kitten_2,
   kitten_3,
@@ -30,9 +32,9 @@ const kittens: any[] = [
   kitten_13,
 ];
 
-export const getKittenFromID = (id: number): any => kittens[id % 13];
+export const getKittenFromID = (id: number): ReactNode => kittens[id % 13];
 
-export const getRandomKitten = (): any => kittens[randIntBetween(0, 14)];
+export const getRandomKitten = (): ReactNode => kittens[randIntBetween(0, 14)];
 
 export const hashProgram = (program: string): number => {
   let hash = 0;
@@ -40,16 +42,16 @@ export const hashProgram = (program: string): number => {
   for (let i = 0; i < program.length; i += 1) {
     const chr = program.charCodeAt(i);
 
-    /* eslint-disable-next-line no-bitwise */
+    // eslint-disable-next-line no-bitwise
     hash = (hash << 5) - hash + chr;
 
-    /* eslint-disable-next-line no-bitwise */
+    // eslint-disable-next-line no-bitwise
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
 };
 
-export const getKittenFromProgram = (program: string): any => {
+export const getKittenFromProgram = (program: string): ReactNode => {
   if (!program) return getRandomKitten();
   return kittens[Math.abs(hashProgram(program)) % 13];
 };

@@ -24,7 +24,7 @@ import {
   NavButton,
   NavButtonWrapper,
   TotalHours,
-} from './styles/Calendar';
+} from './styles/Calendar.tsx';
 
 const getDateRangeString = (start, end) => {
   if (start.year() !== end.year()) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { X } from 'react-feather';
 import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import DiscreteSlider from 'components/input/DiscreteSlider';
 import DropdownList from 'components/input/DropdownList';
@@ -54,8 +54,9 @@ const SearchFilter = ({
   resetFilters,
   ratingFilters,
   courseSearch,
-  theme,
 }) => {
+  const theme = useTheme();
+
   const numRatings = courseSearch
     ? filterState.numCourseRatings
     : filterState.numProfRatings;
@@ -171,7 +172,6 @@ SearchFilter.propTypes = {
   resetFilters: PropTypes.func.isRequired,
   ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
   courseSearch: PropTypes.bool.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
-export default withTheme(SearchFilter);
+export default SearchFilter;

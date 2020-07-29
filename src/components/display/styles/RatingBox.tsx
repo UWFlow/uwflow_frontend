@@ -7,7 +7,7 @@ type RatingBoxWidth = {
   ratingBoxWidth: number;
 };
 
-type ratingBoxHeight = {
+type RatingBoxHeight = {
   ratingBoxHeight: number;
 };
 
@@ -21,11 +21,11 @@ export const RatingBoxWrapper = styled.div<{
 
   ${breakpoint('tablet')`
     width: ${({ ratingBoxWidth }: RatingBoxWidth) => ratingBoxWidth}px;
-    height: ${({ ratingBoxHeight }: ratingBoxHeight) => ratingBoxHeight}px;
+    height: ${({ ratingBoxHeight }: RatingBoxHeight) => ratingBoxHeight}px;
     background-color: white;
-    border-radius: ${({ ratingBoxHeight }: ratingBoxHeight) =>
+    border-radius: ${({ ratingBoxHeight }: RatingBoxHeight) =>
       ratingBoxHeight / 2}px 5px 5px
-      ${({ ratingBoxHeight }: ratingBoxHeight) => ratingBoxHeight / 2}px;
+      ${({ ratingBoxHeight }: RatingBoxHeight) => ratingBoxHeight / 2}px;
     position: relative;
     ${BoxShadow}
     margin-right: 32px;

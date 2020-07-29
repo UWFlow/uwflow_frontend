@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-apollo';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getProfPageRoute } from 'Routes';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -216,18 +216,11 @@ const CourseProfReviews = ({
   return <CourseProfReviewsWrapper>{reviewList}</CourseProfReviewsWrapper>;
 };
 
-const mapStateToProps = (state) => ({
-  isBrowserDesktop: getIsBrowserDesktop(state),
-  isLoggedIn: state.auth.loggedIn,
-});
+const CourseReviews = ({ courseID, profsTeaching }) => {
+  const theme = useTheme();
+  const isBrowserDesktop = useSelector(getIsBrowserDesktop);
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
-const CourseReviews = ({
-  courseID,
-  profsTeaching,
-  theme,
-  isBrowserDesktop,
-  isLoggedIn,
-}) => {
   const { loading, data } = useQuery(buildCourseReviewQuery(isLoggedIn), {
     variables: { id: courseID },
   });
@@ -413,4 +406,4 @@ CourseReviews.propTypes = {
   profsTeaching: PropTypes.array.isRequired,
 };
 
-export default withTheme(connect(mapStateToProps)(CourseReviews));
+export default CourseReviews;

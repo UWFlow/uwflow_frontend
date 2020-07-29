@@ -7,12 +7,12 @@ import App from 'App';
 import { createBrowserHistory } from 'history';
 import { configureStore } from 'Store';
 import { ThemeProvider } from 'styled-components';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import SearchWorker from 'worker-loader!search/search.worker';
 
 import ModalProvider from 'components/modal/ModalProvider';
 import Theme from 'constants/GlobalTheme';
 import client from 'graphql/apollo.js';
-/* eslint-disable-next-line */
-import SearchWorker from 'search/search.worker.js';
 import SearchProvider from 'search/SearchProvider';
 
 const StartApp = () => {

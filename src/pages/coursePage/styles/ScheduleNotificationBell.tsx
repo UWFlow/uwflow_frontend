@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { BoxShadow, Hover } from 'constants/Mixins';
 
-export const NotificationBellWrapper = styled.button`
+export const NotificationBellWrapper = styled.button<{ selected: boolean }>`
   border-radius: 50%;
   height: 28px;
   width: 28px;

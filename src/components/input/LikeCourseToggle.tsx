@@ -27,7 +27,6 @@ type LikeCourseToggleProps = {
   profID: number;
   reviewID: number | null;
   initialState: number | null;
-  openModal: any;
 };
 
 const LikeCourseToggle = ({

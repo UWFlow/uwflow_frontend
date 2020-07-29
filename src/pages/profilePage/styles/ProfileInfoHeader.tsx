@@ -33,7 +33,7 @@ export const ProfileInfoSection = styled.div`
   `}
 `;
 
-export const UserPicture = styled.div`
+export const UserPicture = styled.div<{ image: string }>`
   width: 208px;
   height: 208px;
   border-radius: 50%;

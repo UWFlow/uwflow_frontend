@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-import { connect, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { LANDING_PAGE_ROUTE } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -25,18 +25,9 @@ import ProfileCourses from './ProfileCourses';
 import ProfileInfoHeader from './ProfileInfoHeader';
 import ShortlistBox from './ShortlistBox';
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.auth.loggedIn,
-  isBrowserDesktop: getIsBrowserDesktop(state),
-});
+const ProfilePageContent = ({ user, reviews, coursesTaken, refetchAll }) => {
+  const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
-const ProfilePageContent = ({
-  user,
-  reviews,
-  coursesTaken,
-  isBrowserDesktop,
-  refetchAll,
-}) => {
   const { shortlist } = user;
   const reviewModalCourseList = coursesTaken.map((course) => {
     const curReview = reviews.find(
@@ -79,8 +70,11 @@ const ProfilePageContent = ({
   );
 };
 
-export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
+export const ProfilePage = () => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const history = useHistory();
+
   const { loading, error, data, refetch } = useQuery(GET_USER, {
     variables: { id: localStorage.getItem('user_id') },
   });
@@ -115,10 +109,9 @@ export const ProfilePage = ({ history, isLoggedIn, isBrowserDesktop }) => {
         reviews={data.review}
         refetchAll={refetch}
         coursesTaken={data.user_course_taken}
-        isBrowserDesktop={isBrowserDesktop}
       />
     </ProfilePageWrapper>
   );
 };
 
-export default withRouter(connect(mapStateToProps)(ProfilePage));
+export default ProfilePage;
