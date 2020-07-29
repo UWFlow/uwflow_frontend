@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const UserFragment = {
   userInfo: gql`
-    fragment UserInfoFragment on user {
+    fragment UserInfo on user {
       id
       full_name
       program
@@ -12,7 +12,7 @@ const UserFragment = {
     }
   `,
   userShortlist: gql`
-    fragment UserShortlistFragment on user {
+    fragment UserShortlist on user {
       id
       shortlist {
         course_id
@@ -26,7 +26,7 @@ const UserFragment = {
     }
   `,
   userSchedule: gql`
-    fragment UserScheduleFragment on user {
+    fragment UserSchedule on user {
       id
       schedule {
         section {
@@ -63,7 +63,7 @@ const UserFragment = {
     }
   `,
   userCoursesTaken: gql`
-    fragment UserCoursesTakenFragment on user_course_taken {
+    fragment UserCoursesTaken on user_course_taken {
       term_id
       course_id
       course {

@@ -2,12 +2,27 @@ import gql from 'graphql-tag';
 
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
-export const buildProfReviewQuery = (loggedIn: boolean) => gql`
+export const PROF_REVIEWS = gql`
   query PROF_REVIEWS($id: Int) {
-    review(where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }) {
-      ...ReviewInfoFragment
-      ...ReviewVoteCountsFragment
-      ${loggedIn ? `...UserReviewFieldsFragment` : ''}
+    review(
+      where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }
+    ) {
+      ...ReviewInfo
+      ...ReviewVoteCounts
+    }
+  }
+  ${ReviewFragment.reviewInfo}
+  ${ReviewFragment.reviewVoteCounts}
+`;
+
+export const PROF_REVIEWS_WITH_USER_DATA = gql`
+  query PROF_REVIEWS_WITH_USER_DATA($id: Int) {
+    review(
+      where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }
+    ) {
+      ...ReviewInfo
+      ...ReviewVoteCounts
+      ...UserReviewFields
     }
   }
   ${ReviewFragment.reviewInfo}
@@ -18,7 +33,7 @@ export const buildProfReviewQuery = (loggedIn: boolean) => gql`
 export const REFETCH_PROF_REVIEW_UPVOTE = gql`
   query REFETCH_PROF_REVIEW_UPVOTE($review_id: Int) {
     review(where: { id: { _eq: $review_id } }) {
-      ...ReviewVoteCountsFragment
+      ...ReviewVoteCounts
     }
   }
   ${ReviewFragment.reviewVoteCounts}

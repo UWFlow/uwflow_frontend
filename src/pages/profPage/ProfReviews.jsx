@@ -11,7 +11,10 @@ import {
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
-import { buildProfReviewQuery } from 'graphql/queries/prof/ProfReview';
+import {
+  PROF_REVIEWS,
+  PROF_REVIEWS_WITH_USER_DATA,
+} from 'graphql/queries/prof/ProfReview';
 import useProfReviewsReducer, {
   UPDATE_REVIEW_DATA,
 } from 'hooks/useProfReviewsReducer';
@@ -45,9 +48,14 @@ const ProfReviews = ({ profID }) => {
   const [courseSort, setCourseSort] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState(0);
   const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
-  const { loading, data } = useQuery(buildProfReviewQuery(isLoggedIn), {
+
+  const profReviewsQuery = isLoggedIn
+    ? PROF_REVIEWS_WITH_USER_DATA
+    : PROF_REVIEWS;
+  const { loading, data } = useQuery(profReviewsQuery, {
     variables: { id: profID },
   });
+
   const [reviewDataState, dispatchReviews] = useProfReviewsReducer(data);
   const [showingReviewsMap, setShowingReviewsMap] = useState({});
 

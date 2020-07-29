@@ -4,7 +4,6 @@ import React, {
   SyntheticEvent,
   useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import Button from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
@@ -112,13 +111,6 @@ const LoginContent = ({
       </Form>
     </>
   );
-};
-
-LoginContent.propTypes = {
-  handleAuth: PropTypes.func.isRequired,
-  formState: PropTypes.object.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
 };
 
 export default LoginContent;

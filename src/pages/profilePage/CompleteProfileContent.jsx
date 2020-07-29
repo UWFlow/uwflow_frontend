@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import CheckCircle from 'components/input/CheckCircle';
 
@@ -10,7 +9,9 @@ import {
   CompleteProfileHeading,
 } from './styles/CompleteProfileContent';
 
-const CompleteProfileContent = ({ theme, user, coursesTaken, reviews }) => {
+const CompleteProfileContent = ({ user, coursesTaken, reviews }) => {
+  const theme = useTheme();
+
   const hasScheduleUploaded = user.schedule && user.schedule.length > 0;
   const hasCourseInfo = coursesTaken && coursesTaken.length > 0;
   const hasCoursesReviewed =
@@ -65,9 +66,4 @@ const CompleteProfileContent = ({ theme, user, coursesTaken, reviews }) => {
   );
 };
 
-CompleteProfileContent.propTypes = {
-  theme: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-};
-
-export default withTheme(CompleteProfileContent);
+export default CompleteProfileContent;

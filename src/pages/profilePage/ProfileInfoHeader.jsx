@@ -1,6 +1,5 @@
 import React from 'react';
 import { Edit } from 'react-feather';
-import PropTypes from 'prop-types';
 
 import { EDIT_EMAIL_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
@@ -46,10 +45,6 @@ const ProfileInfoHeader = ({ user }) => {
       </ProfileInfoSection>
     </ProfileInfoHeaderWrapper>
   );
-};
-
-ProfileInfoHeader.propTypes = {
-  user: PropTypes.object.isRequired,
 };
 
 export default ProfileInfoHeader;

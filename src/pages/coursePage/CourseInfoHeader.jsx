@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
@@ -70,10 +69,6 @@ const CourseInfoHeader = ({ course, shortlisted }) => {
       </CourseDescriptionSection>
     </CourseInfoHeaderWrapper>
   );
-};
-
-CourseInfoHeader.propTypes = {
-  course: PropTypes.object.isRequired,
 };
 
 export default CourseInfoHeader;

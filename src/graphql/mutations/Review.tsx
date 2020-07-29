@@ -46,7 +46,7 @@ export const UPSERT_REVIEW = gql`
       }
     ) {
       returning {
-        ...ReviewUpdateInfoFragment
+        ...ReviewUpdateInfo
       }
     }
   }
@@ -57,7 +57,7 @@ export const DELETE_REVIEW = gql`
   mutation DELETE_REVIEW($review_id: Int) {
     delete_review(where: { id: { _eq: $review_id } }) {
       returning {
-        ...ReviewUpdateInfoFragment
+        ...ReviewUpdateInfo
       }
     }
   }

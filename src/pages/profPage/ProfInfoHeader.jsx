@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { getCoursePageRoute } from 'Routes';
 
 import RatingBox, {
@@ -68,10 +67,6 @@ const ProfInfoHeader = ({ prof }) => {
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>
   );
-};
-
-ProfInfoHeader.propTypes = {
-  prof: PropTypes.object,
 };
 
 export default ProfInfoHeader;

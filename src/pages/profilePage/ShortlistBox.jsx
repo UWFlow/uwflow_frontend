@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { getCoursePageRoute } from 'Routes';
 
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
@@ -68,16 +67,6 @@ const ShortlistBox = ({ shortlistCourses }) => {
       {shorlistContent}
     </CollapsibleContainer>
   );
-};
-
-ShortlistBox.propTypes = {
-  shortlistCourses: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      code: PropTypes.string,
-      name: PropTypes.string,
-    }).isRequired,
-  ).isRequired,
 };
 
 export default ShortlistBox;
