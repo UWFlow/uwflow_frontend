@@ -11,7 +11,7 @@ import {
   REFETCH_COURSE_REVIEWS,
   REFETCH_RATINGS,
 } from 'graphql/queries/course/Course';
-import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
+import { COURSE_REVIEWS_WITH_USER_DATA } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
 import { getUserId } from 'utils/Auth';
@@ -57,7 +57,7 @@ const LikeCourseToggle = ({
       },
     },
     {
-      query: buildCourseReviewQuery(true),
+      query: COURSE_REVIEWS_WITH_USER_DATA,
       variables: {
         id: courseID,
       },

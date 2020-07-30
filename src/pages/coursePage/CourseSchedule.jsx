@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import moment from 'moment/moment';
-import PropTypes from 'prop-types';
 
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
@@ -298,35 +297,6 @@ const CourseSchedule = ({
       )}
     </CourseScheduleWrapper>
   );
-};
-
-CourseSchedule.propTypes = {
-  sections: PropTypes.arrayOf(
-    PropTypes.shape({
-      campus: PropTypes.string,
-      class_number: PropTypes.number,
-      enrollment_capacity: PropTypes.number,
-      enrollment_total: PropTypes.number,
-      meetings: PropTypes.arrayOf(
-        PropTypes.shape({
-          days: PropTypes.arrayOf(PropTypes.string),
-          end_date: PropTypes.string,
-          end_seconds: PropTypes.number,
-          is_cancelled: PropTypes.bool,
-          is_closed: PropTypes.bool,
-          location: PropTypes.string,
-          prof: PropTypes.shape({
-            id: PropTypes.number,
-            name: PropTypes.string,
-          }),
-          start_date: PropTypes.string,
-          start_seconds: PropTypes.number,
-        }),
-      ),
-      section_name: PropTypes.string,
-      term_id: PropTypes.number,
-    }),
-  ),
 };
 
 export default CourseSchedule;

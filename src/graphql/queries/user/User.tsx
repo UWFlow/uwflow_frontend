@@ -3,21 +3,21 @@ import gql from 'graphql-tag';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 import UserFragment from 'graphql/fragments/UserFragment';
 
-// review and course taken were split up to improve Apollo cache performance
-// this way when refetching reviews when a review is updated, the data structure
-// is consistent across course, prof and profile pages for fast updates
+// The review and course_taken fields are split up for Apollo cache performance
+// When refetching data after mutating a review, the data is consistent across
+// the course, prof and profile pages for fast updates
 export const GET_USER = gql`
   query GET_USER($id: Int) {
     user(where: { id: { _eq: $id } }) {
-      ...UserInfoFragment
-      ...UserShortlistFragment
-      ...UserScheduleFragment
+      ...UserInfo
+      ...UserShortlist
+      ...UserSchedule
     }
     user_course_taken(where: { user_id: { _eq: $id } }) {
-      ...UserCoursesTakenFragment
+      ...UserCoursesTaken
     }
     review(where: { user: { user_id: { _eq: $id } } }) {
-      ...ReviewInfoFragment
+      ...ReviewInfo
     }
   }
   ${UserFragment.userInfo}
@@ -31,7 +31,7 @@ export const REFETCH_USER_SHORTLIST = gql`
   query REFETCH_USER_SHORTLIST($id: Int) {
     user(where: { id: { _eq: $id } }) {
       id
-      ...UserShortlistFragment
+      ...UserShortlist
     }
   }
   ${UserFragment.userShortlist}
@@ -40,7 +40,7 @@ export const REFETCH_USER_SHORTLIST = gql`
 export const REFETCH_USER_REVIEW = gql`
   query REFETCH_USER_REVIEW($id: Int) {
     review(where: { user: { user_id: { _eq: $id } } }) {
-      ...ReviewInfoFragment
+      ...ReviewInfo
     }
   }
   ${ReviewFragment.reviewInfo}

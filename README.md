@@ -25,8 +25,10 @@
 ## 📚 Documentation 📚
 
 - [Code style guide](docs/style-guide.md)
+- [GraphQL usage and TypeScript code generation](docs/graphql.md)
 - [Using and creating modals](docs/modals.md)
 - [Creating new pages](docs/pages.md)
+- [Explanation of client-side search](docs/search.md)
 
 #### Important External Docs
 

@@ -2,14 +2,14 @@ import gql from 'graphql-tag';
 
 const ProfFragment = {
   profInfo: gql`
-    fragment ProfInfoFragment on prof {
+    fragment ProfInfo on prof {
       id
       name
       code
     }
   `,
   profCoursesTaught: gql`
-    fragment ProfCoursesTaughtFragment on prof {
+    fragment ProfCoursesTaught on prof {
       id
       prof_courses {
         course {
@@ -20,7 +20,7 @@ const ProfFragment = {
     }
   `,
   profRating: gql`
-    fragment ProfRatingFragment on prof {
+    fragment ProfRating on prof {
       id
       rating {
         liked

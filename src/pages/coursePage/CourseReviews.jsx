@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
@@ -16,7 +15,10 @@ import {
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-import { buildCourseReviewQuery } from 'graphql/queries/course/CourseReview';
+import {
+  COURSE_REVIEWS,
+  COURSE_REVIEWS_WITH_USER_DATA,
+} from 'graphql/queries/course/CourseReview';
 import useCourseReviewsReducer, {
   UPDATE_REVIEW_DATA,
 } from 'hooks/useCourseReviewsReducer';
@@ -221,9 +223,13 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
-  const { loading, data } = useQuery(buildCourseReviewQuery(isLoggedIn), {
+  const courseReviewQuery = isLoggedIn
+    ? COURSE_REVIEWS_WITH_USER_DATA
+    : COURSE_REVIEWS;
+  const { loading, data } = useQuery(courseReviewQuery, {
     variables: { id: courseID },
   });
+
   const [courseSort, setCourseSort] = useState(0);
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);
@@ -399,11 +405,6 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
       )}
     </CourseReviewWrapper>
   );
-};
-
-CourseReviews.propTypes = {
-  courseID: PropTypes.number.isRequired,
-  profsTeaching: PropTypes.array.isRequired,
 };
 
 export default CourseReviews;

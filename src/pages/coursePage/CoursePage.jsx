@@ -10,7 +10,10 @@ import LikeCourseToggle from 'components/input/LikeCourseToggle';
 import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
 import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
-import { buildCourseQuery } from 'graphql/queries/course/Course';
+import {
+  GET_COURSE,
+  GET_COURSE_WITH_USER_DATA,
+} from 'graphql/queries/course/Course';
 import useModal from 'hooks/useModal';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { getUserId } from 'utils/Auth';
@@ -117,7 +120,7 @@ const CoursePage = () => {
   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
   const courseCode = match.params.courseCode.toLowerCase();
-  const query = buildCourseQuery(isLoggedIn);
+  const query = isLoggedIn ? GET_COURSE_WITH_USER_DATA : GET_COURSE;
 
   const { loading, error, data } = useQuery(query, {
     variables: { code: courseCode, user_id: getUserId() },

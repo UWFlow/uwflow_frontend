@@ -5,7 +5,11 @@ import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
-import { buildExploreQuery } from 'graphql/queries/explore/Explore';
+import { MAX_SEARCH_TERMS } from 'constants/Search';
+import {
+  EXPLORE_ALL_QUERY,
+  EXPLORE_QUERY,
+} from 'graphql/queries/explore/Explore';
 
 import {
   Column1,
@@ -135,6 +139,24 @@ const ExplorePageContent = ({
   );
 };
 
+const processRawQuery = (query = '', codeOnly = false) => {
+  if (query === '') {
+    return '';
+  }
+
+  const queryTerms = query
+    .toLowerCase()
+    .replace('-', ' ')
+    // remove all special characters for postgres ts_query
+    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '')
+    .split(' ')
+    .map((term) => term.trim())
+    .filter((term) => term.length > 0)
+    .slice(0, MAX_SEARCH_TERMS);
+
+  return codeOnly ? query : queryTerms.map((term) => `${term}:*`).join(' & ');
+};
+
 const ExplorePage = () => {
   const location = useLocation();
 
@@ -142,9 +164,19 @@ const ExplorePage = () => {
   const courseTab = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
 
+  const processedQueryText = processRawQuery(query, codeSearch);
+  const queryVariables =
+    processedQueryText === ''
+      ? {}
+      : {
+          query: processedQueryText,
+          code_only: codeSearch,
+        };
+
   const { data, error, loading } = useQuery(
-    buildExploreQuery(query, codeSearch),
+    processedQueryText === '' ? EXPLORE_ALL_QUERY : EXPLORE_QUERY,
     {
+      variables: queryVariables,
       notifyOnNetworkStatusChange: true,
       fetchPolicy: !query || query === '' ? 'no-cache' : 'cache-and-network',
     },

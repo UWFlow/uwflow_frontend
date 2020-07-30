@@ -74,7 +74,7 @@ const Table = ({
   getRowProps,
 }: TableProps) => {
   const [shouldFetchMore, setShouldFetchMore] = useState(false);
-  const bottomRef = useRef<any>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!shouldFetchMore || !fetchMore || loading || doneFetching) {

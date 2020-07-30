@@ -4,7 +4,6 @@ import React, {
   SyntheticEvent,
   useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import Button from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
@@ -186,16 +185,6 @@ const SignupContent = ({
       </Form>
     </>
   );
-};
-
-SignupContent.propTypes = {
-  handleAuth: PropTypes.func.isRequired,
-  formState: PropTypes.object.isRequired,
-  setFirstName: PropTypes.func.isRequired,
-  setLastName: PropTypes.func.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  setConfirmPassword: PropTypes.func.isRequired,
 };
 
 export default SignupContent;

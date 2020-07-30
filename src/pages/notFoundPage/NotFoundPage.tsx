@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { LANDING_PAGE_ROUTE } from 'Routes';
 
 import Button from 'components/input/Button';
@@ -41,12 +40,6 @@ const NotFoundPage = ({
       <Button handleClick={handleClick}>Home</Button>
     </NotFoundPageWrapper>
   );
-};
-
-NotFoundPage.propTypes = {
-  text: PropTypes.string,
-  title: PropTypes.string,
-  history: PropTypes.object.isRequired,
 };
 
 export default NotFoundPage;

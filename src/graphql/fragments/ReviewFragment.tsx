@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const ReviewFragment = {
   reviewInfo: gql`
-    fragment ReviewInfoFragment on review {
+    fragment ReviewInfo on review {
       id
       created_at
       updated_at
@@ -47,7 +47,7 @@ const ReviewFragment = {
     }
   `,
   reviewUpdateInfo: gql`
-    fragment ReviewUpdateInfoFragment on review {
+    fragment ReviewUpdateInfo on review {
       id
       created_at
       updated_at
@@ -64,7 +64,7 @@ const ReviewFragment = {
     }
   `,
   reviewVoteCounts: gql`
-    fragment ReviewVoteCountsFragment on review {
+    fragment ReviewVoteCounts on review {
       id
       course_review_rating {
         upvote_count
@@ -75,7 +75,7 @@ const ReviewFragment = {
     }
   `,
   userReviewFields: gql`
-    fragment UserReviewFieldsFragment on review {
+    fragment UserReviewFields on review {
       id
       course_review_upvotes {
         user_id

@@ -4,8 +4,7 @@ import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
 import DiscreteSlider from 'components/input/DiscreteSlider';
@@ -19,8 +18,8 @@ import {
   REFETCH_RATINGS,
 } from 'graphql/queries/course/Course';
 import {
-  buildCourseReviewQuery,
   COURSE_REVIEW_PROFS,
+  COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import { getUserId } from 'utils/Auth';
@@ -93,7 +92,6 @@ const getProfIndex = (review, profsTeaching) =>
     : -1;
 
 const CourseReviewCourseBoxContent = ({
-  theme,
   courseList,
   initialSelectedCourseIndex = 0,
   showCourseDropdown = false,
@@ -101,6 +99,8 @@ const CourseReviewCourseBoxContent = ({
   onCancel = () => {},
   profsTeachingByCourseID,
 }) => {
+  const theme = useTheme();
+
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(
     initialSelectedCourseIndex,
   );
@@ -230,7 +230,7 @@ const CourseReviewCourseBoxContent = ({
       },
     },
     {
-      query: buildCourseReviewQuery(true),
+      query: COURSE_REVIEWS_WITH_USER_DATA,
       variables: {
         id: course.id,
       },
@@ -602,19 +602,4 @@ const CourseReviewCourseBox = ({ courseList, ...props }) => {
   );
 };
 
-CourseReviewCourseBox.propTypes = {
-  courseList: PropTypes.arrayOf(
-    PropTypes.shape({
-      course: PropTypes.object.isRequired,
-      review: PropTypes.object,
-    }),
-  ).isRequired,
-  theme: PropTypes.object.isRequired,
-  selectedCourseIndex: PropTypes.number,
-  setSelectedCourseIndex: PropTypes.func,
-  showCourseDropdown: PropTypes.bool,
-  cancelButton: PropTypes.bool,
-  onCancel: PropTypes.func,
-};
-
-export default withTheme(CourseReviewCourseBox);
+export default CourseReviewCourseBox;

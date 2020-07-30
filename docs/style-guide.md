@@ -29,6 +29,10 @@ File names should reflect these rules as well.
 
 - Data related functions such as Redux reducers and actions
 
+`generated`
+
+- Generated GraphQL types
+
 `graphql`
 
 - GraphQL fragments, queries and mutations

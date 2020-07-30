@@ -1,50 +1,29 @@
 import gql from 'graphql-tag';
 
-import { MAX_SEARCH_TERMS } from 'constants/Search';
 import SearchFragment from 'graphql/fragments/SearchFragment';
 
-const exploreAllQuery = gql`
+export const EXPLORE_ALL_QUERY = gql`
   query EXPLORE_ALL {
     course_search_index {
-      ...CourseSearchFragment
+      ...CourseSearch
     }
     prof_search_index {
-      ...ProfSearchFragment
+      ...ProfSearch
     }
   }
   ${SearchFragment.courseSearch}
   ${SearchFragment.profSearch}
 `;
 
-export const buildExploreQuery = (query = '', codeOnly = false) => {
-  if (query === '') {
-    return exploreAllQuery;
-  }
-
-  const queryTerms = query
-    .toLowerCase()
-    .replace('-', ' ')
-    // remove all special characters for postgres ts_query
-    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/gi, '')
-    .split(' ')
-    .map((term) => term.trim())
-    .filter((term) => term.length > 0)
-    .slice(0, MAX_SEARCH_TERMS);
-
-  const parsedQuery = codeOnly
-    ? query
-    : queryTerms.map((term) => `${term}:*`).join(' & ');
-
-  return gql`
-    query EXPLORE_QUERY {
-      search_courses(args: {query: "${parsedQuery}", code_only: ${codeOnly}}) {
-      ...CourseSearchFragment
-      }
-      search_profs(args: {query: "${parsedQuery}", code_only: ${codeOnly}}) {
-        ...ProfSearchFragment
-      }
+export const EXPLORE_QUERY = gql`
+  query EXPLORE_QUERY($query: String, $code_only: Boolean) {
+    search_courses(args: { query: $query, code_only: $code_only }) {
+      ...CourseSearch
     }
-    ${SearchFragment.courseSearch}
-    ${SearchFragment.profSearch}
-  `;
-};
+    search_profs(args: { query: $query, code_only: $code_only }) {
+      ...ProfSearch
+    }
+  }
+  ${SearchFragment.courseSearch}
+  ${SearchFragment.profSearch}
+`;

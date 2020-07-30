@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const SearchFragment = {
   courseSearch: gql`
-    fragment CourseSearchFragment on course_search_index {
+    fragment CourseSearch on course_search_index {
       course_id
       name
       code
@@ -15,7 +15,7 @@ const SearchFragment = {
     }
   `,
   profSearch: gql`
-    fragment ProfSearchFragment on prof_search_index {
+    fragment ProfSearch on prof_search_index {
       prof_id
       name
       code

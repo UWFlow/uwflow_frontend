@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const CourseFragment = {
   courseInfo: gql`
-    fragment CourseInfoFragment on course {
+    fragment CourseInfo on course {
       id
       code
       name
@@ -21,7 +21,7 @@ const CourseFragment = {
     }
   `,
   courseTerm: gql`
-    fragment CourseTermFragment on course {
+    fragment CourseTerm on course {
       id
       sections {
         id
@@ -30,7 +30,7 @@ const CourseFragment = {
     }
   `,
   courseSchedule: gql`
-    fragment CourseScheduleFragment on course {
+    fragment CourseSchedule on course {
       id
       sections {
         id
@@ -70,7 +70,7 @@ const CourseFragment = {
     }
   `,
   courseRequirements: gql`
-    fragment CourseRequirementsFragment on course {
+    fragment CourseRequirements on course {
       id
       antireqs
       prereqs
@@ -85,7 +85,7 @@ const CourseFragment = {
     }
   `,
   courseRating: gql`
-    fragment CourseRatingFragment on course {
+    fragment CourseRating on course {
       id
       rating {
         liked

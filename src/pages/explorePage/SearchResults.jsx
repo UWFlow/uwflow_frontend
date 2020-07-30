@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import TabContainer from 'components/display/TabContainer';
 import Table from 'components/display/Table';
@@ -217,13 +216,6 @@ const SearchResults = ({
       {error && <ResultsError>{EXPLORE_COURSES_ERROR}</ResultsError>}
     </>
   );
-};
-
-SearchResults.propTypes = {
-  filterState: PropTypes.object.isRequired,
-  results: PropTypes.arrayOf(PropTypes.object),
-  ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
-  profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default SearchResults;

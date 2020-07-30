@@ -1,6 +1,5 @@
 import React from 'react';
 import { X } from 'react-feather';
-import PropTypes from 'prop-types';
 import { useTheme } from 'styled-components';
 
 import DiscreteSlider from 'components/input/DiscreteSlider';
@@ -159,19 +158,6 @@ const SearchFilter = ({
       </ResetButton>
     </SearchFilterWrapper>
   );
-};
-
-SearchFilter.propTypes = {
-  profCourses: PropTypes.arrayOf(PropTypes.string).isRequired,
-  filterState: PropTypes.object.isRequired,
-  setCourseCodes: PropTypes.func.isRequired,
-  setCurrentTerm: PropTypes.func.isRequired,
-  setNextTerm: PropTypes.func.isRequired,
-  setNumRatings: PropTypes.func.isRequired,
-  setCourseTaught: PropTypes.func.isRequired,
-  resetFilters: PropTypes.func.isRequired,
-  ratingFilters: PropTypes.arrayOf(PropTypes.number).isRequired,
-  courseSearch: PropTypes.bool.isRequired,
 };
 
 export default SearchFilter;
