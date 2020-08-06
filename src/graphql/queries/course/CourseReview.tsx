@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const COURSE_REVIEWS = gql`
-  query COURSE_REVIEWS($id: Int) {
+  query courseReviews($id: Int) {
     review(
       where: {
         course_id: { _eq: $id }
@@ -22,7 +22,7 @@ export const COURSE_REVIEWS = gql`
 `;
 
 export const COURSE_REVIEWS_WITH_USER_DATA = gql`
-  query COURSE_REVIEWS_WITH_USER_DATA($id: Int) {
+  query courseReviewsWithUserData($id: Int) {
     review(
       where: {
         course_id: { _eq: $id }
@@ -43,7 +43,7 @@ export const COURSE_REVIEWS_WITH_USER_DATA = gql`
 `;
 
 export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
-  query REFETCH_COURSE_REVIEW_UPVOTE($review_id: Int) {
+  query refetchCourseReviewUpvote($review_id: Int) {
     review(where: { id: { _eq: $review_id } }) {
       ...ReviewVoteCounts
     }
@@ -52,7 +52,7 @@ export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
 `;
 
 export const COURSE_REVIEW_PROFS = gql`
-  query COURSE_REVIEW_PROFS($id: [Int!]) {
+  query courseReviewProfs($id: [Int!]) {
     review(
       where: {
         course_id: { _in: $id }

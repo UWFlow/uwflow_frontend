@@ -16,9 +16,15 @@ import {
   RatingsSection,
   StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
+import { Course } from 'generated/graphql';
 
-const CourseInfoHeader = ({ course, shortlisted }) => {
-  const { liked, easy, useful, filled_count, comment_count } = course.rating;
+type CourseInfoHeaderProps = {
+  course: Pick<Course, 'id' | 'code' | 'description' | 'name' | 'rating'>;
+  shortlisted: boolean;
+};
+
+const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
+  const { liked, easy, useful, filled_count, comment_count } = course.rating!;
 
   return (
     <CourseInfoHeaderWrapper>
@@ -31,7 +37,7 @@ const CourseInfoHeader = ({ course, shortlisted }) => {
             <ShortlistStar
               size={36}
               initialState={shortlisted}
-              courseID={course.id}
+              courseId={course.id}
               courseCode={course.code}
             />
           </StarAlignmentWrapper>

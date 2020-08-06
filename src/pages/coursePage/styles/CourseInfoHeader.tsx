@@ -76,7 +76,7 @@ export const CourseNameWrapper = styled(FadeIn)`
   `}
 `;
 
-export const CourseName = styled.div`
+export const CourseName = styled.div<{ ratingBoxWidth: number }>`
   ${Heading2}
   color: ${({ theme }) => theme.light1};
   font-weight: 400;
@@ -100,7 +100,7 @@ export const CourseDescriptionSection = styled.div`
   `}
 `;
 
-export const Description = styled(FadeIn)`
+export const Description = styled(FadeIn)<{ ratingBoxWidth: number }>`
   ${Body}
   position: relative;
   font-weight: 500;

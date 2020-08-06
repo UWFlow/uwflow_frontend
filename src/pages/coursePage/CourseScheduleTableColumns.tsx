@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { getProfPageRoute } from 'Routes';
 
-import { LAB, LEC, TUT } from 'constants/PageConstants';
+import { LAB, LEC, TUT } from 'constants/CourseSection';
 import { processDateString, weekDayLetters } from 'utils/Misc';
 
 import {
@@ -18,16 +18,21 @@ import {
   SpaceMargin,
 } from './styles/CourseSchedule';
 import ScheduleNotificationBell from './ScheduleNotificationBell';
+import { Cell } from 'react-table';
 
-const contentSpace = (spaces) => {
+type CellProps = {
+  cell: Cell<{}, any>;
+};
+
+const contentSpace = (spaces: number) => {
   const content = [];
   for (let i = 0; i < spaces; i += 1) {
-    content.push(<ContentWrapper key={i} compressed></ContentWrapper>);
+    content.push(<ContentWrapper key={i} />);
   }
   return content;
 };
 
-const processWeekDays = (days) =>
+const processWeekDays = (days: string[]) =>
   weekDayLetters.map((day) =>
     days.includes(day) ? (
       <BoldWeekDay key={day}>{day}</BoldWeekDay>
@@ -36,7 +41,7 @@ const processWeekDays = (days) =>
     ),
   );
 
-const SectionCell = ({ cell }) => (
+const SectionCell = ({ cell }: CellProps) => (
   <SectionCellWrapper numRows={cell.value.numRows}>
     <ColorBar
       color={
@@ -47,20 +52,20 @@ const SectionCell = ({ cell }) => (
   </SectionCellWrapper>
 );
 
-const ClassCell = ({ cell }) => (
+const ClassCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
     <ContentWrapper>{cell.value}</ContentWrapper>
   </NormalCellWrapper>
 );
 
-const EnrolledCell = ({ cell }) => (
+const EnrolledCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
     <ContentWrapper>
       {(cell.value.filled >= cell.value.capacity || cell.value.selected) && (
         <ScheduleNotificationBell
           key={cell.value.section_id}
-          sectionID={cell.value.section_id}
-          courseID={cell.value.course_id}
+          sectionId={cell.value.section_id}
+          courseId={cell.value.course_id}
           initialState={cell.value.selected}
           userEmail={cell.value.userEmail}
         />
@@ -75,11 +80,13 @@ const EnrolledCell = ({ cell }) => (
   </NormalCellWrapper>
 );
 
-const CampusCell = ({ cell }) => <ContentWrapper>{cell.value}</ContentWrapper>;
+const CampusCell = ({ cell }: CellProps) => (
+  <ContentWrapper>{cell.value}</ContentWrapper>
+);
 
-const TimeCell = ({ cell }) => (
+const TimeCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, idx) => (
+    {cell.value.map((cl: any, idx: number) => (
       <Fragment key={idx}>
         <ContentWrapper italics={cl.cancelled || cl.isTba}>
           {cl.cancelled ? 'Cancelled' : cl.isTba ? 'TBA' : cl.time}
@@ -91,12 +98,12 @@ const TimeCell = ({ cell }) => (
   </NormalCellWrapper>
 );
 
-const DateCell = ({ cell }) => (
+const DateCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
     {cell.value.length === 0 && <ContentWrapper />}
-    {cell.value.map((timeRanges, timeRangeIdx) => (
+    {cell.value.map((timeRanges: any, timeRangeIdx: number) => (
       <Fragment key={timeRangeIdx}>
-        {timeRanges.map((date, idx) => {
+        {timeRanges.map((date: any, idx: number) => {
           const processedDate =
             date.startDate === date.endDate
               ? processDateString(date.startDate).split(', ')[1]
@@ -114,9 +121,9 @@ const DateCell = ({ cell }) => (
   </NormalCellWrapper>
 );
 
-const LocationCell = ({ cell }) => (
+const LocationCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, idx) => (
+    {cell.value.map((cl: any, idx: number) => (
       <Fragment key={idx}>
         <ContentWrapper>{cl.location}</ContentWrapper>
         {contentSpace(cl.spaces)}
@@ -126,9 +133,9 @@ const LocationCell = ({ cell }) => (
   </NormalCellWrapper>
 );
 
-const InstructorCell = ({ cell }) => (
+const InstructorCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
-    {cell.value.map((cl, idx) =>
+    {cell.value.map((cl: any, idx: number) =>
       cl.prof.code ? (
         <Fragment key={idx}>
           <InstructorLink to={getProfPageRoute(cl.prof.code)} key={idx}>

@@ -9,6 +9,13 @@ import { GET_PROF } from 'graphql/queries/prof/Prof';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import ProfInfoHeader from 'pages/profPage/ProfInfoHeader';
 import ProfReviews from 'pages/profPage/ProfReviews';
+import {
+  GetProfQuery,
+  ProfInfoFragment,
+  ProfCoursesTaughtFragment,
+  ProfRatingFragment,
+  GetProfQueryVariables,
+} from 'generated/graphql';
 
 import {
   Column1,
@@ -17,13 +24,17 @@ import {
   ProfPageWrapper,
 } from './styles/ProfPage';
 
-const ProfPageContent = ({ prof }) => {
+type ProfPageContentProps = {
+  prof: ProfInfoFragment & ProfCoursesTaughtFragment & ProfRatingFragment;
+};
+
+const ProfPageContent = ({ prof }: ProfPageContentProps) => {
   return (
     <>
       <ProfInfoHeader prof={prof} />
       <ColumnWrapper>
         <Column1>
-          <ProfReviews profID={prof.id} />
+          <ProfReviews profId={prof.id} />
         </Column1>
         <Column2 />
       </ColumnWrapper>
@@ -32,10 +43,13 @@ const ProfPageContent = ({ prof }) => {
 };
 
 export const ProfPage = () => {
-  const match = useRouteMatch();
+  const match = useRouteMatch<{ profCode: string }>();
 
   const profCode = match.params.profCode.toLowerCase();
-  const { loading, error, data } = useQuery(GET_PROF, {
+  const { loading, error, data } = useQuery<
+    GetProfQuery,
+    GetProfQueryVariables
+  >(GET_PROF, {
     variables: { code: profCode },
   });
 

@@ -22,50 +22,50 @@ import {
 } from './styles/LikeCourseToggle';
 
 type LikeCourseToggleProps = {
-  courseID: number;
+  courseId: number;
   courseCode: string;
-  profID: number;
-  reviewID: number | null;
-  initialState: number | null;
+  initialState?: number | null;
+  profId?: number | null;
+  reviewId?: number | null;
 };
 
 const LikeCourseToggle = ({
-  courseID,
+  courseId,
   courseCode,
-  profID,
-  reviewID = null,
+  reviewId = null,
   initialState = null,
+  profId = null,
 }: LikeCourseToggleProps) => {
   const [openModal] = useModal();
   const theme = useTheme();
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const userID = getUserId();
+  const userId = getUserId();
 
   const refetchQueries = [
     {
       query: REFETCH_RATINGS,
       variables: {
-        course_id: courseID,
-        prof_id: profID === null ? -1 : profID,
+        course_id: courseId,
+        prof_id: profId === null ? -1 : profId,
       },
     },
     {
       query: REFETCH_COURSE_REVIEWS,
       variables: {
         code: courseCode,
-        user_id: userID,
+        user_id: userId,
       },
     },
     {
       query: COURSE_REVIEWS_WITH_USER_DATA,
       variables: {
-        id: courseID,
+        id: courseId,
       },
     },
     {
       query: REFETCH_USER_REVIEW,
       variables: {
-        id: userID,
+        id: userId,
       },
     },
   ];
@@ -80,7 +80,7 @@ const LikeCourseToggle = ({
       return;
     }
 
-    if (!courseID) {
+    if (!courseId) {
       return;
     }
 
@@ -88,14 +88,14 @@ const LikeCourseToggle = ({
     setLiked(likedValue);
 
     upsertLiked({
-      variables: { user_id: userID, course_id: courseID, liked: likedValue },
+      variables: { user_id: userId, course_id: courseId, liked: likedValue },
       optimisticResponse: {
         __typename: 'mutation_root',
         insert_review: {
           __typename: 'review_mutation_response',
           returning: {
             __typename: 'review',
-            id: reviewID,
+            id: reviewId,
             liked: likedValue,
           },
         },

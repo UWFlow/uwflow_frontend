@@ -7,7 +7,7 @@ import UserFragment from 'graphql/fragments/UserFragment';
 // When refetching data after mutating a review, the data is consistent across
 // the course, prof and profile pages for fast updates
 export const GET_USER = gql`
-  query GET_USER($id: Int) {
+  query getUser($id: Int) {
     user(where: { id: { _eq: $id } }) {
       ...UserInfo
       ...UserShortlist
@@ -28,7 +28,7 @@ export const GET_USER = gql`
 `;
 
 export const REFETCH_USER_SHORTLIST = gql`
-  query REFETCH_USER_SHORTLIST($id: Int) {
+  query refetchUserShortlist($id: Int) {
     user(where: { id: { _eq: $id } }) {
       id
       ...UserShortlist
@@ -38,7 +38,7 @@ export const REFETCH_USER_SHORTLIST = gql`
 `;
 
 export const REFETCH_USER_REVIEW = gql`
-  query REFETCH_USER_REVIEW($id: Int) {
+  query refetchUserReview($id: Int) {
     review(where: { user: { user_id: { _eq: $id } } }) {
       ...ReviewInfo
     }

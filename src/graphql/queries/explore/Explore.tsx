@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import SearchFragment from 'graphql/fragments/SearchFragment';
 
 export const EXPLORE_ALL_QUERY = gql`
-  query EXPLORE_ALL {
+  query exploreAll {
     course_search_index {
       ...CourseSearch
     }
@@ -16,7 +16,7 @@ export const EXPLORE_ALL_QUERY = gql`
 `;
 
 export const EXPLORE_QUERY = gql`
-  query EXPLORE_QUERY($query: String, $code_only: Boolean) {
+  query explore($query: String, $code_only: Boolean) {
     search_courses(args: { query: $query, code_only: $code_only }) {
       ...CourseSearch
     }

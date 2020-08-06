@@ -6,8 +6,4 @@ export const NAVBAR_HEIGHT = 80;
 export const FOOTER_HEIGHT = 70;
 export const FOOTER_MARGIN_TOP = 32;
 
-export const LEC = 'LEC';
-export const LAB = 'LAB';
-export const TUT = 'TUT';
-
 export const REVIEWS_DIV_ID = 'reviews';

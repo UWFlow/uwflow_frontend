@@ -24,14 +24,14 @@ import {
 } from './styles/ShortlistStar';
 
 type ShortlistStarProps = {
-  courseID: number;
+  courseId: number;
   courseCode: string;
   initialState?: boolean;
   size?: number;
 };
 
 const ShortlistStar = ({
-  courseID,
+  courseId,
   courseCode,
   initialState = false,
   size = 32,
@@ -39,13 +39,13 @@ const ShortlistStar = ({
   const [openModal] = useModal();
   const theme = useTheme();
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const userID = getUserId();
+  const userId = getUserId();
   const refetchQueries = [
     {
       query: REFETCH_COURSE_SHORTLIST,
-      variables: { code: courseCode, user_id: userID },
+      variables: { code: courseCode, user_id: userId },
     },
-    { query: REFETCH_USER_SHORTLIST, variables: { id: userID } },
+    { query: REFETCH_USER_SHORTLIST, variables: { id: userId } },
   ];
 
   const [checked, setChecked] = useState(initialState);
@@ -69,19 +69,19 @@ const ShortlistStar = ({
       return;
     }
 
-    if (!courseID) {
+    if (!courseId) {
       return;
     }
 
     if (checked) {
-      deleteShortlist({ variables: { course_id: courseID } })
+      deleteShortlist({ variables: { course_id: courseId } })
         .then(() => notifyDelete())
         .catch(() => {
           toast(SHORTLIST_ERROR);
         });
     } else {
       insertShortlist({
-        variables: { user_id: userID, course_id: courseID },
+        variables: { user_id: userId, course_id: courseId },
       })
         .then(() => notifyInsert())
         .catch(() => {
@@ -95,7 +95,7 @@ const ShortlistStar = ({
     <Tooltip content={`Add ${formatCourseCode(courseCode)} to your favourites`}>
       <ShortlistStarButton
         onClick={onStarClicked}
-        data-for={`${courseID}`}
+        data-for={`${courseId}`}
         data-offset="{'top': 70}"
         onMouseDown={(e) => e.preventDefault()}
       >

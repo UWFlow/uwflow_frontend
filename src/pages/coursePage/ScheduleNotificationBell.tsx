@@ -19,22 +19,30 @@ import { REFETCH_SECTION_SUBSCRIPTIONS } from 'graphql/queries/course/Course';
 import useModal from 'hooks/useModal';
 
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
+import { RootState } from 'data/reducers/RootReducer';
+
+type ScheduleNotificationBellProps = {
+  sectionId: number;
+  courseId: number;
+  initialState?: boolean;
+  userEmail?: string | null;
+};
 
 const ScheduleNotificationBell = ({
-  sectionID,
-  courseID,
+  sectionId,
+  courseId,
   initialState = false,
-  userEmail,
-}) => {
-  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  userEmail = null,
+}: ScheduleNotificationBellProps) => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const [openModal] = useModal();
 
-  const userID = localStorage.getItem('user_id');
+  const userId = localStorage.getItem('user_id');
 
   const refetchQueries = [
     {
       query: REFETCH_SECTION_SUBSCRIPTIONS,
-      variables: { course_id: courseID, user_id: userID },
+      variables: { course_id: courseId, user_id: userId },
     },
   ];
 
@@ -51,7 +59,7 @@ const ScheduleNotificationBell = ({
   const emailModalProps = {
     onSuccess: () =>
       insertSubscription({
-        variables: { user_id: userID, section_id: sectionID },
+        variables: { user_id: userId, section_id: sectionId },
       })
         .then(() => {
           notifyInsert();
@@ -68,12 +76,12 @@ const ScheduleNotificationBell = ({
       return;
     }
 
-    if (!sectionID) {
+    if (!sectionId) {
       return;
     }
 
     if (selected) {
-      deleteSubscription({ variables: { section_id: sectionID } })
+      deleteSubscription({ variables: { section_id: sectionId } })
         .then(() => notifyDelete())
         .catch(() => {
           toast(SUBSCRIPTION_ERROR);
@@ -91,10 +99,10 @@ const ScheduleNotificationBell = ({
       openModal(NOTIFICATION_EMAIL_MODAL, emailModalProps);
     } else {
       insertSubscription({
-        variables: { user_id: userID, section_id: sectionID },
+        variables: { user_id: userId, section_id: sectionId },
       })
         .then(() => {
-          notifyInsert(userEmail);
+          notifyInsert();
           setSelected(true);
         })
         .catch(() => {
@@ -116,7 +124,7 @@ const ScheduleNotificationBell = ({
         onClick={toggleOnClick}
         onMouseDown={(e) => e.preventDefault()}
       >
-        <Bell size={16} selected={selected} strokeWidth={3} />
+        <Bell size={16} strokeWidth={3} />
       </NotificationBellWrapper>
     </Tooltip>
   );

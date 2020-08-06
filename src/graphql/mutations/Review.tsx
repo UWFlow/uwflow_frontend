@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const UPSERT_REVIEW = gql`
-  mutation UPSERT_REVIEW(
+  mutation upsertReview(
     $user_id: Int
     $course_id: Int
     $prof_id: Int
@@ -54,7 +54,7 @@ export const UPSERT_REVIEW = gql`
 `;
 
 export const DELETE_REVIEW = gql`
-  mutation DELETE_REVIEW($review_id: Int) {
+  mutation deleteReview($review_id: Int) {
     delete_review(where: { id: { _eq: $review_id } }) {
       returning {
         ...ReviewUpdateInfo
@@ -65,11 +65,7 @@ export const DELETE_REVIEW = gql`
 `;
 
 export const UPSERT_LIKED_REVIEW = gql`
-  mutation UPSERT_LIKED_REVIEW(
-    $user_id: Int
-    $course_id: Int
-    $liked: smallint
-  ) {
+  mutation upsertLikedReview($user_id: Int, $course_id: Int, $liked: smallint) {
     insert_review(
       objects: {
         user_id: $user_id

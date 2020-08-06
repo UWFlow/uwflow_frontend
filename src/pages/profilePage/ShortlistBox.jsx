@@ -32,7 +32,7 @@ const ShortlistBox = ({ shortlistCourses }) => {
           <ShortlistStar
             key={entry.course.id}
             initialState={true}
-            courseID={entry.course.id}
+            courseId={entry.course.id}
             courseCode={entry.course.code}
           />
           <ShortListCourseText>

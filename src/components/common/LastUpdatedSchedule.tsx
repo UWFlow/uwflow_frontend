@@ -10,7 +10,7 @@ const admLink = 'http://www.adm.uwaterloo.ca/infocour/CIR/SA/index.html';
 type LastUpdatedScheduleProps = {
   margin?: string;
   courseCode?: string;
-  term?: string;
+  term?: number;
   updatedAt?: Moment;
 };
 

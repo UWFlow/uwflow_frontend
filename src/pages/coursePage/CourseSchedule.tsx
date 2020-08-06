@@ -12,41 +12,13 @@ import {
   ScheduleTableWrapper,
 } from './styles/CourseSchedule';
 import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
-
-// sectionCodes are all the section codes that exist at UW,
-// in the order they should appear in a course schedule.
-const sectionCodes = [
-  // theoretical components
-  'LEC', // lecture: the usual lecture format.
-  'OLN', // online: rare term for online lectures. [ACINTY]
-  'RDG', // reading: independent study under ~1-1 supervision. [CS 690B in 1201]
-  // interactive components
-  'CLN', // clinic: analysis of cases. [OPTOM, PHARM]
-  'DIS', // discussion: group discussions under supervision. [PSCI 231]
-  'ORL', // oral conversation: practicing a foreign language. [FR 192]
-  'SEM', // seminar: less format lecture + project/paper presentations. [SE 101]
-  // practical components
-  'ESS', // essay: just writing essays, apparently... [ENGL 495]
-  'FLD', // field studies: work with primary materials in the field. [EARTH 260]
-  'FLT', // flight training: planes! [AVIA]
-  'LAB', // laboratory: practical tasks, often with special equipment. [ECE 240]
-  'PRA', // practicum: supervised placement in a work setting. [SWREN]
-  'PRJ', // project: the student independently produces a deliverable. [WKRPT]
-  'STU', // studio: coaching based on applied skill execution. [FINE 100]
-  'WRK', // work term: co-op. [COOP]
-  'WSP', // workshop: independent project work under supervision [SVENT]
-  // supplementary components
-  'TUT', // tutorial: usually a TA going over sample problems.
-  // examination components
-  'ENS', // ensemble: evaluation of musical performance. [MUSIC]
-  'TST', // test: usually mid-term exam.
-];
-
-// sectionOrder maps each section code to its index in sectionCodes.
-const sectionOrder = sectionCodes.reduce((map, type, i) => {
-  map[type] = i;
-  return map;
-}, {});
+import { SECTION_ORDER } from 'constants/CourseSection';
+import {
+  CourseScheduleFragment,
+  GetCourseWithUserDataQuery,
+  Section_Meeting,
+  Prof,
+} from 'generated/graphql';
 
 /*
  * We first group the data by time of day range (start and end time) Now, each group should have
@@ -59,48 +31,82 @@ const sectionOrder = sectionCodes.reduce((map, type, i) => {
  * is sorted by date.
  */
 
-const getInfoGroupings = (meetings) => {
-  const groupedByTimeOfDay = meetings.reduce((groupings, curr) => {
-    const key = `${curr.start_seconds} ${curr.end_seconds}`;
-    if (!groupings[key]) {
-      groupings[key] = {
-        time: `${secsToTime(curr.start_seconds)} - ${secsToTime(
-          curr.end_seconds,
-        )}`,
-        location: curr.location,
-        prof: curr.prof
-          ? {
-              id: curr.prof.id,
-              code: curr.prof.code,
-              name: curr.prof.name,
-            }
-          : {},
-        timeRanges: [],
-        cancelled: curr.is_cancelled,
-        isTba: curr.is_tba,
-      };
-    }
+type Meeting = Pick<
+  Section_Meeting,
+  | 'days'
+  | 'start_date'
+  | 'end_date'
+  | 'start_seconds'
+  | 'end_seconds'
+  | 'location'
+  | 'is_closed'
+  | 'is_cancelled'
+  | 'is_tba'
+> & {
+  prof?: Pick<Prof, 'id' | 'code' | 'name'> | null;
+};
 
-    groupings[key].timeRanges.push({
-      days: curr.days,
-      startDate: curr.start_date,
-      endDate: curr.end_date,
-    });
-    return groupings;
-  }, {});
+type TimeRange = {
+  days: string[];
+  startDate: any;
+  endDate: any;
+};
 
-  let infoGroups = [];
+type InfoGroup = {
+  time: string;
+  location?: string | null;
+  prof?: Pick<Prof, 'id' | 'code' | 'name'> | {};
+  timeRanges: TimeRange[];
+  cancelled: boolean;
+  isTba: boolean;
+};
+
+const getInfoGroupings = (meetings: Meeting[]) => {
+  const groupedByTimeOfDay = meetings.reduce(
+    (groupings: { [key: string]: InfoGroup }, curr) => {
+      const key = `${curr.start_seconds} ${curr.end_seconds}`;
+      if (!groupings[key]) {
+        groupings[key] = {
+          time: `${secsToTime(curr.start_seconds!)} - ${secsToTime(
+            curr.end_seconds!,
+          )}`,
+          location: curr.location,
+          prof: curr.prof
+            ? {
+                id: curr.prof.id,
+                code: curr.prof.code,
+                name: curr.prof.name,
+              }
+            : {},
+          timeRanges: [],
+          cancelled: curr.is_cancelled,
+          isTba: curr.is_tba,
+        };
+      }
+
+      groupings[key].timeRanges.push({
+        days: curr.days,
+        startDate: curr.start_date,
+        endDate: curr.end_date,
+      });
+      return groupings;
+    },
+    {},
+  );
+
+  let infoGroups: InfoGroup[] = [];
 
   // Sort timeRanges for each group
   Object.entries(groupedByTimeOfDay).forEach((entry) => {
-    entry[1].timeRanges.sort((a, b) => a.startDate > b.startDate);
+    entry[1].timeRanges.sort((a, b) => a.startDate - b.startDate);
     infoGroups.push(entry[1]);
   });
 
   // Merge and sort days of week for timeRanges that occur in the same date range
   infoGroups.forEach((entry) => {
-    const newTimeRanges = [];
-    let newDays = [];
+    const newTimeRanges: TimeRange[] = [];
+    let newDays: string[] = [];
+
     entry.timeRanges.forEach((currRange, i) => {
       if (i < entry.timeRanges.length - 1) {
         const nextRange = entry.timeRanges[i + 1];
@@ -136,8 +142,8 @@ const getInfoGroupings = (meetings) => {
     entry.timeRanges = newTimeRanges;
   });
 
-  infoGroups = infoGroups.sort((a, b) => a.startSeconds - b.startSeconds);
   const numDates = infoGroups.map((group) => group.timeRanges.length);
+
   return {
     times: infoGroups.map((group, i) =>
       Object({
@@ -157,7 +163,7 @@ const getInfoGroupings = (meetings) => {
   };
 };
 
-const getStartingTab = (termsOffered) => {
+const getStartingTab = (termsOffered: number[]) => {
   for (let i = 0; i < termsOffered.length; i += 1) {
     const term = termsOffered[i];
     const month = term % 10;
@@ -173,21 +179,29 @@ const getStartingTab = (termsOffered) => {
   return 0;
 };
 
+type CourseScheduleProps = {
+  courseCode: string;
+  courseId: number;
+  sections?: CourseScheduleFragment['sections'];
+  sectionSubscriptions?: GetCourseWithUserDataQuery['queue_section_subscribed'];
+  userEmail?: string | null;
+};
+
 const CourseSchedule = ({
-  sections = [],
   courseCode,
-  courseID,
-  sectionSubscriptions,
-  userEmail,
-}) => {
-  let termsOffered = sections.reduce((allTerms, curr) => {
+  courseId,
+  sections = [],
+  sectionSubscriptions = [],
+  userEmail = null,
+}: CourseScheduleProps) => {
+  let termsOffered = sections.reduce((allTerms: number[], curr) => {
     if (!allTerms.includes(curr.term_id)) {
       allTerms.push(curr.term_id);
     }
     return allTerms;
   }, []);
 
-  const hasBell = {};
+  const hasBell: { [key: number]: boolean } = {};
   termsOffered.forEach((term) => {
     hasBell[term] = sections.some((section) => {
       return (
@@ -216,7 +230,7 @@ const CourseSchedule = ({
       class: s.class_number,
       term: s.term_id,
       enrolled: {
-        course_id: courseID,
+        course_id: courseId,
         course_code: courseCode,
         section_id: s.id,
         filled: s.enrollment_total,
@@ -241,10 +255,10 @@ const CourseSchedule = ({
     .sort((a, b) => {
       const sectionTypeA = a.section.split(' ')[0];
       const sectionTypeB = b.section.split(' ')[0];
-      if (sectionOrder[sectionTypeA] === sectionOrder[sectionTypeB]) {
+      if (SECTION_ORDER[sectionTypeA] === SECTION_ORDER[sectionTypeB]) {
         return a.section.localeCompare(b.section);
       }
-      return sectionOrder[sectionTypeA] - sectionOrder[sectionTypeB];
+      return SECTION_ORDER[sectionTypeA] - SECTION_ORDER[sectionTypeB];
     });
 
   const tabList = termsOffered.map((term) => {
@@ -257,7 +271,7 @@ const CourseSchedule = ({
               cellPadding="4px 0"
               columns={courseScheduleTableColumns}
               data={sectionsCleanedData.filter((c) => c.term === term)}
-              getRowProps={(row) =>
+              getRowProps={(row: any) =>
                 row ? { disabled: row.original.cancelled } : {}
               }
             />

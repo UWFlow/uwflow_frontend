@@ -5,7 +5,7 @@ import ProfFragment from 'graphql/fragments/ProfFragment';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const GET_COURSE = gql`
-  query GET_COURSE($code: String, $user_id: Int) {
+  query getCourse($code: String, $user_id: Int) {
     course(where: { code: { _eq: $code } }) {
       ...CourseInfo
       ...CourseSchedule
@@ -20,7 +20,7 @@ export const GET_COURSE = gql`
 `;
 
 export const GET_COURSE_WITH_USER_DATA = gql`
-  query GET_COURSE_WITH_USER_DATA($code: String, $user_id: Int) {
+  query getCourseWithUserData($code: String, $user_id: Int) {
     course(where: { code: { _eq: $code } }) {
       ...CourseInfo
       ...CourseSchedule
@@ -68,7 +68,7 @@ export const GET_COURSE_WITH_USER_DATA = gql`
 `;
 
 export const REFETCH_COURSE_SHORTLIST = gql`
-  query REFETCH_COURSE_SHORTLIST($code: String, $user_id: Int) {
+  query refetchCourseShortlist($code: String, $user_id: Int) {
     user_shortlist(
       where: { user_id: { _eq: $user_id }, course: { code: { _eq: $code } } }
     ) {
@@ -79,7 +79,7 @@ export const REFETCH_COURSE_SHORTLIST = gql`
 `;
 
 export const REFETCH_RATINGS = gql`
-  query REFETCH_RATINGS($course_id: Int, $prof_id: Int) {
+  query refetchRatings($course_id: Int, $prof_id: Int) {
     course(where: { id: { _eq: $course_id } }) {
       ...CourseRating
     }
@@ -92,7 +92,7 @@ export const REFETCH_RATINGS = gql`
 `;
 
 export const REFETCH_SECTION_SUBSCRIPTIONS = gql`
-  query REFETCH_SECTION_SUBSCRIPTIONS($course_id: Int, $user_id: Int) {
+  query refetchSectionSubscriptions($course_id: Int, $user_id: Int) {
     queue_section_subscribed(
       where: {
         section: { course_id: { _eq: $course_id } }
@@ -106,7 +106,7 @@ export const REFETCH_SECTION_SUBSCRIPTIONS = gql`
 `;
 
 export const REFETCH_COURSE_REVIEWS = gql`
-  query REFETCH_COURSE_REVIEWS($code: String, $user_id: Int) {
+  query refetchCourseReviews($code: String, $user_id: Int) {
     review(
       where: {
         course: { code: { _eq: $code } }

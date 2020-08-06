@@ -83,7 +83,7 @@ const Review = ({ review, isCourseReview }) => {
     prof_code,
     user,
   } = review;
-  const userID = localStorage.getItem('user_id');
+  const userId = localStorage.getItem('user_id');
 
   const refetchQueries = [
     {
@@ -95,7 +95,7 @@ const Review = ({ review, isCourseReview }) => {
   ];
 
   const [userUpvoted, setUserUpvoted] = useState(
-    upvote_users.includes(Number(userID)),
+    upvote_users.includes(Number(userId)),
   );
   const [insertReviewVote] = useMutation(
     isCourseReview ? INSERT_COURSE_REVIEW_VOTE : INSERT_PROF_REVIEW_VOTE,
@@ -114,11 +114,11 @@ const Review = ({ review, isCourseReview }) => {
 
     if (userUpvoted) {
       deleteReviewVote({
-        variables: { review_id: review.id, user_id: userID },
+        variables: { review_id: review.id, user_id: userId },
       });
     } else {
       insertReviewVote({
-        variables: { review_id: review.id, user_id: userID },
+        variables: { review_id: review.id, user_id: userId },
       });
     }
     setUserUpvoted(!userUpvoted);
