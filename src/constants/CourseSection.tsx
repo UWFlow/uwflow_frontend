@@ -2,7 +2,7 @@ export const LEC = 'LEC';
 export const LAB = 'LAB';
 export const TUT = 'TUT';
 
-// All section codes that exist at in the order they should appear in a course schedule.
+// All section codes that exist in the order they should appear in a course schedule.
 export const SECTION_CODES = [
   // theoretical components
   'LEC', // lecture: the usual lecture format.
@@ -12,7 +12,7 @@ export const SECTION_CODES = [
   'CLN', // clinic: analysis of cases. [OPTOM, PHARM]
   'DIS', // discussion: group discussions under supervision. [PSCI 231]
   'ORL', // oral conversation: practicing a foreign language. [FR 192]
-  'SEM', // seminar: less format lecture + project/paper presentations. [SE 101]
+  'SEM', // seminar: less formal lecture + project/paper presentations. [SE 101]
   // practical components
   'ESS', // essay: just writing essays, apparently... [ENGL 495]
   'FLD', // field studies: work with primary materials in the field. [EARTH 260]
@@ -30,7 +30,7 @@ export const SECTION_CODES = [
   'TST', // test: usually mid-term exam.
 ];
 
-// Maps each section code to its index in sectionCodes.
+// Maps each section code to its index in SECTION_CODES.
 export const SECTION_ORDER = SECTION_CODES.reduce(
   (map: { [key: string]: number }, type, i) => {
     map[type] = i;
