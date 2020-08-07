@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { X } from 'react-feather';
 import { useTheme } from 'styled-components';
 
@@ -6,6 +6,7 @@ import DiscreteSlider from 'components/input/DiscreteSlider';
 import DropdownList from 'components/input/DropdownList';
 import MultiSelectButton from 'components/input/MultiSelectButton';
 import RadioButton from 'components/input/RadioButton';
+import { SearchFilterState } from 'types/Common';
 import {
   formatCourseCode,
   getCurrentTermCode,
@@ -28,19 +29,33 @@ import {
   XWrapper,
 } from './styles/SearchFilter';
 
-const courseNumberOptions = [1, 2, 3, 4].map((num) => (
-  <span key={num}>
-    <BoldText>{num}</BoldText>XX
-  </span>
-));
-courseNumberOptions.push(
-  <span>
-    <BoldText>5</BoldText>XX+
-  </span>,
-);
+const courseNumberOptions = [1, 2, 3, 4]
+  .map((num) => (
+    <span key={num}>
+      <BoldText>{num}</BoldText>XX
+    </span>
+  ))
+  .concat(
+    <span>
+      <BoldText>5</BoldText>XX+
+    </span>,
+  );
 
 const currentTermString = termCodeToDate(getCurrentTermCode());
 const nextTermString = termCodeToDate(getNextTermCode());
+
+type SearchFilterProps = {
+  profCourses: string[];
+  filterState: SearchFilterState;
+  setCourseCodes: Dispatch<SetStateAction<boolean[]>>;
+  setCurrentTerm: Dispatch<SetStateAction<boolean>>;
+  setNextTerm: Dispatch<SetStateAction<boolean>>;
+  setNumRatings: Dispatch<SetStateAction<number>>;
+  setCourseTaught: Dispatch<SetStateAction<number>>;
+  resetFilters: () => void;
+  ratingFilters: number[];
+  courseSearch: boolean;
+};
 
 const SearchFilter = ({
   profCourses,
@@ -53,7 +68,7 @@ const SearchFilter = ({
   resetFilters,
   ratingFilters,
   courseSearch,
-}) => {
+}: SearchFilterProps) => {
   const theme = useTheme();
 
   const numRatings = courseSearch

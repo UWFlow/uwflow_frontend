@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { useSelector } from 'react-redux';
+import {
+  CourseReviewsQuery,
+  CourseReviewsQueryVariables,
+  CourseReviewsWithUserDataQuery,
+} from 'generated/graphql';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
@@ -44,11 +49,6 @@ import {
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
 } from './styles/CourseReviews';
-import {
-  CourseReviewsQuery,
-  CourseReviewsQueryVariables,
-  CourseReviewsWithUserDataQuery,
-} from 'generated/graphql';
 
 type CourseCourseReviewsProps = {
   reviews: any;

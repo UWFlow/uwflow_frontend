@@ -7,7 +7,7 @@ import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
 import { AUTH_MODAL } from 'constants/Modal';
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 import {
   DELETE_COURSE_REVIEW_VOTE,
   DELETE_PROF_REVIEW_VOTE,
@@ -36,39 +36,53 @@ import {
   SingleMetricWrapper,
   UpvoteNumber,
 } from './styles/Review';
-import BubbleRatings from './BubbleRatings';
+import { CircleRatings, ThumbsRatings } from './BubbleRatings';
 import Tooltip from './Tooltip';
 
-const MetricIfExists = (metrics, metric) => {
+const MetricIfExists = (
+  metrics: { [key: string]: null | undefined | boolean | number },
+  metric: string,
+) => {
+  const metricValue = metrics[metric];
   const metricText = metric.charAt(0).toUpperCase() + metric.slice(1);
-  if (metrics[metric] === null || metrics[metric] === undefined) {
+
+  // Don't render metric if unavailable
+  if (metricValue === null || metricValue === undefined) {
     return null;
   }
 
-  if (metrics[metric] === true || metrics[metric] === false) {
+  // Render boolean rating
+  if (metricValue === true || metricValue === false) {
     return (
       <SingleMetricWrapper>
         <SingleMetricSquares>
-          <BubbleRatings boolRating={metrics[metric]} />
+          <ThumbsRatings boolRating={metricValue} />
         </SingleMetricSquares>
         <SingleMetricLabel>{metricText}</SingleMetricLabel>
       </SingleMetricWrapper>
     );
   }
+
+  // Otherwise, render numerical rating
   return (
     <SingleMetricWrapper>
       <SingleMetricSquares>
-        <BubbleRatings total={5} rating={metrics[metric]} />
+        <CircleRatings total={5} rating={Number(metrics[metric])} />
       </SingleMetricSquares>
       <SingleMetricLabel> {metricText}</SingleMetricLabel>
     </SingleMetricWrapper>
   );
 };
 
-const Review = ({ review, isCourseReview }) => {
+type ReviewProps = {
+  review: any;
+  isCourseReview: boolean;
+};
+
+const Review = ({ review, isCourseReview }: ReviewProps) => {
   const [openModal] = useModal();
   const theme = useTheme();
-  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
   const {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Course } from 'generated/graphql';
 
 import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
@@ -16,7 +17,6 @@ import {
   RatingsSection,
   StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
-import { Course } from 'generated/graphql';
 
 type CourseInfoHeaderProps = {
   course: Pick<Course, 'id' | 'code' | 'description' | 'name' | 'rating'>;

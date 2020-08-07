@@ -11,7 +11,7 @@ import {
 
 const MODAL_WIDTH = 660;
 
-export const CourseReviewCourseBoxWrapper = styled.div`
+export const CourseReviewBoxWrapper = styled.div`
   ${Card('24px', '0')}
   ${BoxShadow}
   width: ${MODAL_WIDTH}px;
@@ -30,7 +30,7 @@ export const SliderOptionText = styled.div`
   margin-bottom: 40px;
 `;
 
-export const ReviewTextArea = styled.textarea`
+export const ReviewTextArea = styled.textarea<{ rows: number }>`
   padding: 8px 16px;
   background: ${({ theme }) => theme.light2};
   width: 100%;
@@ -53,7 +53,7 @@ export const MetricQuestionWrapper = styled.div`
   align-items: center;
 `;
 
-export const MetricQuestionText = styled.div`
+export const MetricQuestionText = styled.div<{ width?: number }>`
   ${Body}
   width: ${({ width = 112 }) => width}px;
   min-width: ${({ width = 112 }) => width}px;

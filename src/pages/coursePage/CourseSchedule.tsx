@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
+import {
+  CourseScheduleFragment,
+  GetCourseWithUserDataQuery,
+  Prof,
+  Section_Meeting,
+} from 'generated/graphql';
 import moment from 'moment/moment';
 
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
 import TabContainer from 'components/display/TabContainer';
 import Table from 'components/display/Table';
+import { SECTION_ORDER } from 'constants/CourseSection';
 import { secsToTime, termCodeToDate, weekDayLetters } from 'utils/Misc';
 
 import {
@@ -12,13 +19,6 @@ import {
   ScheduleTableWrapper,
 } from './styles/CourseSchedule';
 import { courseScheduleTableColumns } from './CourseScheduleTableColumns';
-import { SECTION_ORDER } from 'constants/CourseSection';
-import {
-  CourseScheduleFragment,
-  GetCourseWithUserDataQuery,
-  Section_Meeting,
-  Prof,
-} from 'generated/graphql';
 
 /*
  * We first group the data by time of day range (start and end time) Now, each group should have
@@ -94,7 +94,7 @@ const getInfoGroupings = (meetings: Meeting[]) => {
     {},
   );
 
-  let infoGroups: InfoGroup[] = [];
+  const infoGroups: InfoGroup[] = [];
 
   // Sort timeRanges for each group
   Object.entries(groupedByTimeOfDay).forEach((entry) => {

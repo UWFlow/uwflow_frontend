@@ -8,19 +8,21 @@ import {
   UnitCircle,
 } from './styles/BubbleRatings';
 
-type ThumbsProps = {
+type ThumbsRatingsProps = {
   boolRating: boolean;
 };
 
-const Thumbs = ({ boolRating }: ThumbsProps) => (
-  <ThumbsWrapper>
-    <Thumb colored={boolRating === true}>
-      <ThumbsUp width={20} height={20} strokeWidth={3} fill="white" />
-    </Thumb>
-    <Thumb colored={boolRating === false}>
-      <ThumbsDown width={20} height={20} strokeWidth={3} fill="white" />
-    </Thumb>
-  </ThumbsWrapper>
+export const ThumbsRatings = ({ boolRating }: ThumbsRatingsProps) => (
+  <BubbleRatingsWrapper>
+    <ThumbsWrapper>
+      <Thumb colored={boolRating === true}>
+        <ThumbsUp width={20} height={20} strokeWidth={3} fill="white" />
+      </Thumb>
+      <Thumb colored={boolRating === false}>
+        <ThumbsDown width={20} height={20} strokeWidth={3} fill="white" />
+      </Thumb>
+    </ThumbsWrapper>
+  </BubbleRatingsWrapper>
 );
 
 type CirclesProps = {
@@ -28,30 +30,10 @@ type CirclesProps = {
   total: number;
 };
 
-const Circles = ({ rating, total }: CirclesProps) => (
-  <>
+export const CircleRatings = ({ rating, total }: CirclesProps) => (
+  <BubbleRatingsWrapper>
     {Array.apply(null, Array(total)).map((_, ind) => {
       return <UnitCircle key={ind} filled={ind < rating} diameter={16} />;
     })}
-  </>
+  </BubbleRatingsWrapper>
 );
-
-type BubbleRatingsProps = {
-  total: number;
-  rating: number;
-  boolRating?: boolean;
-};
-
-const BubbleRatings = ({ total, rating, boolRating }: BubbleRatingsProps) => {
-  return (
-    <BubbleRatingsWrapper>
-      {boolRating === true || boolRating === false ? (
-        <Thumbs boolRating={boolRating} />
-      ) : (
-        <Circles rating={rating + 1} total={total} />
-      )}
-    </BubbleRatingsWrapper>
-  );
-};
-
-export default BubbleRatings;

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Cell } from 'react-table';
 import { getProfPageRoute } from 'Routes';
 
 import { LAB, LEC, TUT } from 'constants/CourseSection';
@@ -18,7 +19,6 @@ import {
   SpaceMargin,
 } from './styles/CourseSchedule';
 import ScheduleNotificationBell from './ScheduleNotificationBell';
-import { Cell } from 'react-table';
 
 type CellProps = {
   cell: Cell<{}, any>;

@@ -9,9 +9,9 @@ import {
   CourseRequirementsFragment,
   CourseScheduleFragment,
   GetCourseQuery,
-  ReviewInfoFragment,
   GetCourseQueryVariables,
   GetCourseWithUserDataQuery,
+  ReviewInfoFragment,
 } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -168,9 +168,8 @@ const CoursePage = () => {
           sectionSubscriptions={dataWithUser.queue_section_subscribed}
         />
       );
-    } else {
-      return <CoursePageContent course={queryData.course[0]} />;
     }
+    return <CoursePageContent course={queryData.course[0]} />;
   };
 
   return loading ? (

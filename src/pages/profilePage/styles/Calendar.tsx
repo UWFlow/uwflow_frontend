@@ -2,8 +2,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
-import { Body, Heading3, Hover, Link } from 'constants/Mixins';
 import { LAB, LEC } from 'constants/CourseSection';
+import { Body, Heading3, Hover, Link } from 'constants/Mixins';
 
 export const HOUR_HEIGHT = 64;
 const TIME_WIDTH = 64;
