@@ -48,7 +48,7 @@ export const ProfNameWrapper = styled(FadeIn)`
   `}
 `;
 
-export const ProfName = styled.div`
+export const ProfName = styled.div<{ ratingBoxWidth: number }>`
   color: ${({ theme }) => theme.white};
   ${Heading1}
 
@@ -76,7 +76,7 @@ export const ProfDescriptionSection = styled.div`
   `}
 `;
 
-export const Description = styled.div`
+export const Description = styled.div<{ ratingBoxWidth: number }>`
   ${Heading3}
   position: relative;
   margin: auto 0;
@@ -96,7 +96,7 @@ export const Description = styled.div`
   `}
 `;
 
-export const RatingsSection = styled(FadeIn)`
+export const RatingsSection = styled(FadeIn)<{ ratingBoxHeight: number }>`
   ${breakpoint('zero', 'tablet')`
     width: 100%;
   `}

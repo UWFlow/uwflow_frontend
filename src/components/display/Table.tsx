@@ -6,7 +6,6 @@ import {
   Row,
   TableInstance,
   TableOptions,
-  TableRowProps,
   TableState,
   useSortBy,
   useTable,
@@ -46,7 +45,7 @@ type TableProps = {
   cellPadding: string;
   columns: Column[];
   data: object[];
-  sortable: boolean;
+  sortable?: boolean;
   manualSortBy?: boolean;
   setTableState?: (state: TableState) => void;
   loading?: boolean;
@@ -55,7 +54,7 @@ type TableProps = {
   initialState?: TableState;
   fetchOffset?: number;
   showNoResults?: boolean;
-  getRowProps?: (row: Row) => TableRowProps;
+  getRowProps?: (row: Row) => { [key: string]: any };
 };
 
 const Table = ({

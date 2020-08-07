@@ -94,10 +94,10 @@ const ProfileCourses = ({
           <LikeToggleWrapper>
             <LikeCourseToggle
               key={courseTaken.course.id}
-              courseID={courseTaken.course.id}
+              courseId={courseTaken.course.id}
               courseCode={courseTaken.course.code}
-              profID={review ? review.prof_id : null}
-              reviewID={review ? review.id : null}
+              profId={review ? review.prof_id : null}
+              reviewId={review ? review.id : null}
               initialState={review ? review.liked : null}
             />
           </LikeToggleWrapper>

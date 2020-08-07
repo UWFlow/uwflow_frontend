@@ -17,10 +17,20 @@ import {
   ProfNameWrapper,
   RatingsSection,
 } from './styles/ProfInfoHeader';
+import {
+  ProfInfoFragment,
+  ProfCoursesTaughtFragment,
+  ProfRatingFragment,
+} from 'generated/graphql';
 
-const ProfInfoHeader = ({ prof }) => {
-  const { liked, clear, engaging, filled_count, comment_count } = prof.rating;
-  const profCourses = prof.prof_courses.map((course) => course.course.code);
+type ProfInfoHeaderProps = {
+  prof: ProfInfoFragment & ProfCoursesTaughtFragment & ProfRatingFragment;
+};
+
+const ProfInfoHeader = ({ prof }: ProfInfoHeaderProps) => {
+  const { liked, clear, engaging, filled_count, comment_count } = prof.rating!;
+
+  const profCourses = prof.prof_courses.map((courseObj) => courseObj.course!.code);
   const profCourseLinks = profCourses.map((courseCode, i) => (
     <span key={courseCode}>
       <CourseLink to={getCoursePageRoute(courseCode)}>

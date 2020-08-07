@@ -170,7 +170,7 @@ const CourseReviewCourseBoxContent = ({
     profsTeachingByCourseID,
   );
 
-  const userID = getUserId();
+  const userId = getUserId();
   const { course, review } = courseList[selectedCourseIndex];
 
   const {
@@ -226,7 +226,7 @@ const CourseReviewCourseBoxContent = ({
       query: REFETCH_COURSE_REVIEWS,
       variables: {
         code: course.code,
-        user_id: userID,
+        user_id: userId,
       },
     },
     {
@@ -238,7 +238,7 @@ const CourseReviewCourseBoxContent = ({
     {
       query: REFETCH_USER_REVIEW,
       variables: {
-        id: userID,
+        id: userId,
       },
     },
   ];
@@ -257,7 +257,7 @@ const CourseReviewCourseBoxContent = ({
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
-  const profID =
+  const profId =
     selectedProf === -1 || selectedProf === profsTeaching.length
       ? null
       : profsTeaching[selectedProf].prof.id;
@@ -266,17 +266,17 @@ const CourseReviewCourseBoxContent = ({
     setReviewUpdating(true);
 
     const reviewData = {
-      user_id: userID,
+      user_id: userId,
       course_id: course.id,
-      prof_id: profID,
+      prof_id: profId,
       liked: 1 - liked,
       public: selectedAnonymous !== 0,
       course_easy: easy,
       course_useful: useful,
       course_comment: courseComment !== '' ? courseComment : null,
-      prof_clear: profID && clearSelected ? clear : null,
-      prof_engaging: profID && engagingSelected ? engaging : null,
-      prof_comment: profID && profComment !== '' ? profComment : null,
+      prof_clear: profId && clearSelected ? clear : null,
+      prof_engaging: profId && engagingSelected ? engaging : null,
+      prof_comment: profId && profComment !== '' ? profComment : null,
     };
 
     upsertReview({
@@ -456,10 +456,10 @@ const CourseReviewCourseBoxContent = ({
             }
             selected={clearSelected}
             setSelected={(value) => setReviewValue('clearSelected', value)}
-            disabled={profID === null}
+            disabled={profId === null}
           />
           <SliderOptionText>
-            {clearSelected && profID !== null ? clearOptions[clear] : ''}
+            {clearSelected && profId !== null ? clearOptions[clear] : ''}
           </SliderOptionText>
         </MetricQuestionWrapper>
 
@@ -474,10 +474,10 @@ const CourseReviewCourseBoxContent = ({
             }
             selected={engagingSelected}
             setSelected={(value) => setReviewValue('engagingSelected', value)}
-            disabled={profID === null}
+            disabled={profId === null}
           />
           <SliderOptionText>
-            {engagingSelected && profID !== null
+            {engagingSelected && profId !== null
               ? engagingOptions[engaging]
               : ''}
           </SliderOptionText>
@@ -491,7 +491,7 @@ const CourseReviewCourseBoxContent = ({
             setReviewValue('profComment', event.target.value)
           }
           placeholder="Add any comments or tips..."
-          disabled={profID === null}
+          disabled={profId === null}
         />
       </Collapsible>
 
@@ -563,9 +563,9 @@ const CourseReviewCourseBoxContent = ({
 };
 
 const CourseReviewCourseBox = ({ courseList, ...props }) => {
-  const courseIDs = courseList.map((course) => course.course.id);
+  const courseIds = courseList.map((course) => course.course.id);
   const { data } = useQuery(COURSE_REVIEW_PROFS, {
-    variables: { id: courseIDs },
+    variables: { id: courseIds },
   });
   const profsSeenByCourseID = {};
   const profsTeachingByCourseID = data

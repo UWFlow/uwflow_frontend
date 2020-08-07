@@ -1,3 +1,4 @@
+/* Textbox */
 export type TextBoxOptions = {
   backgroundColor?: string;
   border?: string;

@@ -2032,6 +2032,7 @@ export type Course = {
   antirequisites: Array<Course_Antirequisite>;
   /** An aggregated array relationship */
   antirequisites_aggregate: Course_Antirequisite_Aggregate;
+  authoritative: Scalars['Boolean'];
   code: Scalars['String'];
   coreqs?: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -2556,6 +2557,7 @@ export type Course_Bool_Exp = {
   _or?: Maybe<Array<Maybe<Course_Bool_Exp>>>;
   antireqs?: Maybe<String_Comparison_Exp>;
   antirequisites?: Maybe<Course_Antirequisite_Bool_Exp>;
+  authoritative?: Maybe<Boolean_Comparison_Exp>;
   code?: Maybe<String_Comparison_Exp>;
   coreqs?: Maybe<String_Comparison_Exp>;
   course_easy_buckets?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
@@ -2589,6 +2591,7 @@ export type Course_Inc_Input = {
 export type Course_Insert_Input = {
   antireqs?: Maybe<Scalars['String']>;
   antirequisites?: Maybe<Course_Antirequisite_Arr_Rel_Insert_Input>;
+  authoritative?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -2673,6 +2676,7 @@ export type Course_On_Conflict = {
 export type Course_Order_By = {
   antireqs?: Maybe<Order_By>;
   antirequisites_aggregate?: Maybe<Course_Antirequisite_Aggregate_Order_By>;
+  authoritative?: Maybe<Order_By>;
   code?: Maybe<Order_By>;
   coreqs?: Maybe<Order_By>;
   course_easy_buckets_aggregate?: Maybe<
@@ -4314,6 +4318,8 @@ export enum Course_Select_Column {
   /** column name */
   Antireqs = 'antireqs',
   /** column name */
+  Authoritative = 'authoritative',
+  /** column name */
   Code = 'code',
   /** column name */
   Coreqs = 'coreqs',
@@ -4330,6 +4336,7 @@ export enum Course_Select_Column {
 /** input type for updating data in table "course" */
 export type Course_Set_Input = {
   antireqs?: Maybe<Scalars['String']>;
+  authoritative?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -4386,6 +4393,8 @@ export type Course_Sum_Order_By = {
 export enum Course_Update_Column {
   /** column name */
   Antireqs = 'antireqs',
+  /** column name */
+  Authoritative = 'authoritative',
   /** column name */
   Code = 'code',
   /** column name */
@@ -11657,12 +11666,12 @@ export type UserCoursesTakenFragment = {
     >;
   };
 
-export type Update_User_EmailMutationVariables = Exact<{
+export type UpdateUserEmailMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   email?: Maybe<Scalars['String']>;
 }>;
 
-export type Update_User_EmailMutation = { __typename?: 'mutation_root' } & {
+export type UpdateUserEmailMutation = { __typename?: 'mutation_root' } & {
   update_user?: Maybe<
     { __typename?: 'user_mutation_response' } & Pick<
       User_Mutation_Response,
@@ -11673,7 +11682,7 @@ export type Update_User_EmailMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type Upsert_ReviewMutationVariables = Exact<{
+export type UpsertReviewMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
   prof_id?: Maybe<Scalars['Int']>;
@@ -11687,7 +11696,7 @@ export type Upsert_ReviewMutationVariables = Exact<{
   prof_comment?: Maybe<Scalars['String']>;
 }>;
 
-export type Upsert_ReviewMutation = { __typename?: 'mutation_root' } & {
+export type UpsertReviewMutation = { __typename?: 'mutation_root' } & {
   insert_review?: Maybe<
     { __typename?: 'review_mutation_response' } & {
       returning: Array<{ __typename?: 'review' } & ReviewUpdateInfoFragment>;
@@ -11695,11 +11704,11 @@ export type Upsert_ReviewMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type Delete_ReviewMutationVariables = Exact<{
+export type DeleteReviewMutationVariables = Exact<{
   review_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Delete_ReviewMutation = { __typename?: 'mutation_root' } & {
+export type DeleteReviewMutation = { __typename?: 'mutation_root' } & {
   delete_review?: Maybe<
     { __typename?: 'review_mutation_response' } & {
       returning: Array<{ __typename?: 'review' } & ReviewUpdateInfoFragment>;
@@ -11707,13 +11716,13 @@ export type Delete_ReviewMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type Upsert_Liked_ReviewMutationVariables = Exact<{
+export type UpsertLikedReviewMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
   liked?: Maybe<Scalars['smallint']>;
 }>;
 
-export type Upsert_Liked_ReviewMutation = { __typename?: 'mutation_root' } & {
+export type UpsertLikedReviewMutation = { __typename?: 'mutation_root' } & {
   insert_review?: Maybe<
     { __typename?: 'review_mutation_response' } & {
       returning: Array<
@@ -11723,12 +11732,12 @@ export type Upsert_Liked_ReviewMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type Insert_Section_SubscriptionMutationVariables = Exact<{
+export type InsertSectionSubscriptionMutationVariables = Exact<{
   section_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Insert_Section_SubscriptionMutation = {
+export type InsertSectionSubscriptionMutation = {
   __typename?: 'mutation_root';
 } & {
   insert_queue_section_subscribed?: Maybe<
@@ -11739,11 +11748,11 @@ export type Insert_Section_SubscriptionMutation = {
   >;
 };
 
-export type Delete_Section_SubscriptionMutationVariables = Exact<{
+export type DeleteSectionSubscriptionMutationVariables = Exact<{
   section_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Delete_Section_SubscriptionMutation = {
+export type DeleteSectionSubscriptionMutation = {
   __typename?: 'mutation_root';
 } & {
   delete_queue_section_subscribed?: Maybe<
@@ -11754,12 +11763,12 @@ export type Delete_Section_SubscriptionMutation = {
   >;
 };
 
-export type Insert_User_ShortlistMutationVariables = Exact<{
+export type InsertUserShortlistMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Insert_User_ShortlistMutation = { __typename?: 'mutation_root' } & {
+export type InsertUserShortlistMutation = { __typename?: 'mutation_root' } & {
   insert_user_shortlist?: Maybe<
     { __typename?: 'user_shortlist_mutation_response' } & Pick<
       User_Shortlist_Mutation_Response,
@@ -11768,11 +11777,11 @@ export type Insert_User_ShortlistMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type Delete_User_ShortlistMutationVariables = Exact<{
+export type DeleteUserShortlistMutationVariables = Exact<{
   course_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Delete_User_ShortlistMutation = { __typename?: 'mutation_root' } & {
+export type DeleteUserShortlistMutation = { __typename?: 'mutation_root' } & {
   delete_user_shortlist?: Maybe<
     { __typename?: 'user_shortlist_mutation_response' } & Pick<
       User_Shortlist_Mutation_Response,
@@ -11781,12 +11790,12 @@ export type Delete_User_ShortlistMutation = { __typename?: 'mutation_root' } & {
   >;
 };
 
-export type Insert_Course_Review_VoteMutationVariables = Exact<{
+export type InsertCourseReviewVoteMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   review_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Insert_Course_Review_VoteMutation = {
+export type InsertCourseReviewVoteMutation = {
   __typename?: 'mutation_root';
 } & {
   insert_course_review_upvote?: Maybe<
@@ -11797,12 +11806,12 @@ export type Insert_Course_Review_VoteMutation = {
   >;
 };
 
-export type Delete_Course_Review_VoteMutationVariables = Exact<{
+export type DeleteCourseReviewVoteMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   review_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Delete_Course_Review_VoteMutation = {
+export type DeleteCourseReviewVoteMutation = {
   __typename?: 'mutation_root';
 } & {
   delete_course_review_upvote?: Maybe<
@@ -11813,14 +11822,12 @@ export type Delete_Course_Review_VoteMutation = {
   >;
 };
 
-export type Insert_Prof_Review_VoteMutationVariables = Exact<{
+export type InsertProfReviewVoteMutationVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
   review_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Insert_Prof_Review_VoteMutation = {
-  __typename?: 'mutation_root';
-} & {
+export type InsertProfReviewVoteMutation = { __typename?: 'mutation_root' } & {
   insert_prof_review_upvote?: Maybe<
     { __typename?: 'prof_review_upvote_mutation_response' } & Pick<
       Prof_Review_Upvote_Mutation_Response,
@@ -11845,12 +11852,12 @@ export type Delete_Prof_Review_VoteMutation = {
   >;
 };
 
-export type Get_CourseQueryVariables = Exact<{
+export type GetCourseQueryVariables = Exact<{
   code?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Get_CourseQuery = { __typename?: 'query_root' } & {
+export type GetCourseQuery = { __typename?: 'query_root' } & {
   course: Array<
     { __typename?: 'course' } & CourseInfoFragment &
       CourseScheduleFragment &
@@ -11859,12 +11866,12 @@ export type Get_CourseQuery = { __typename?: 'query_root' } & {
   >;
 };
 
-export type Get_Course_With_User_DataQueryVariables = Exact<{
+export type GetCourseWithUserDataQueryVariables = Exact<{
   code?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Get_Course_With_User_DataQuery = { __typename?: 'query_root' } & {
+export type GetCourseWithUserDataQuery = { __typename?: 'query_root' } & {
   course: Array<
     { __typename?: 'course' } & CourseInfoFragment &
       CourseScheduleFragment &
@@ -11893,12 +11900,12 @@ export type Get_Course_With_User_DataQuery = { __typename?: 'query_root' } & {
   user: Array<{ __typename?: 'user' } & Pick<User, 'email'>>;
 };
 
-export type Refetch_Course_ShortlistQueryVariables = Exact<{
+export type RefetchCourseShortlistQueryVariables = Exact<{
   code?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_Course_ShortlistQuery = { __typename?: 'query_root' } & {
+export type RefetchCourseShortlistQuery = { __typename?: 'query_root' } & {
   user_shortlist: Array<
     { __typename?: 'user_shortlist' } & Pick<
       User_Shortlist,
@@ -11907,24 +11914,22 @@ export type Refetch_Course_ShortlistQuery = { __typename?: 'query_root' } & {
   >;
 };
 
-export type Refetch_RatingsQueryVariables = Exact<{
+export type RefetchRatingsQueryVariables = Exact<{
   course_id?: Maybe<Scalars['Int']>;
   prof_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_RatingsQuery = { __typename?: 'query_root' } & {
+export type RefetchRatingsQuery = { __typename?: 'query_root' } & {
   course: Array<{ __typename?: 'course' } & CourseRatingFragment>;
   prof: Array<{ __typename?: 'prof' } & ProfRatingFragment>;
 };
 
-export type Refetch_Section_SubscriptionsQueryVariables = Exact<{
+export type RefetchSectionSubscriptionsQueryVariables = Exact<{
   course_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_Section_SubscriptionsQuery = {
-  __typename?: 'query_root';
-} & {
+export type RefetchSectionSubscriptionsQuery = { __typename?: 'query_root' } & {
   queue_section_subscribed: Array<
     { __typename?: 'queue_section_subscribed' } & Pick<
       Queue_Section_Subscribed,
@@ -11933,32 +11938,30 @@ export type Refetch_Section_SubscriptionsQuery = {
   >;
 };
 
-export type Refetch_Course_ReviewsQueryVariables = Exact<{
+export type RefetchCourseReviewsQueryVariables = Exact<{
   code?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_Course_ReviewsQuery = { __typename?: 'query_root' } & {
+export type RefetchCourseReviewsQuery = { __typename?: 'query_root' } & {
   review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
 };
 
-export type Course_ReviewsQueryVariables = Exact<{
+export type CourseReviewsQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Course_ReviewsQuery = { __typename?: 'query_root' } & {
+export type CourseReviewsQuery = { __typename?: 'query_root' } & {
   review: Array<
     { __typename?: 'review' } & ReviewInfoFragment & ReviewVoteCountsFragment
   >;
 };
 
-export type Course_Reviews_With_User_DataQueryVariables = Exact<{
+export type CourseReviewsWithUserDataQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Course_Reviews_With_User_DataQuery = {
-  __typename?: 'query_root';
-} & {
+export type CourseReviewsWithUserDataQuery = { __typename?: 'query_root' } & {
   review: Array<
     { __typename?: 'review' } & ReviewInfoFragment &
       ReviewVoteCountsFragment &
@@ -11966,25 +11969,25 @@ export type Course_Reviews_With_User_DataQuery = {
   >;
 };
 
-export type Refetch_Course_Review_UpvoteQueryVariables = Exact<{
+export type RefetchCourseReviewUpvoteQueryVariables = Exact<{
   review_id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_Course_Review_UpvoteQuery = {
-  __typename?: 'query_root';
-} & { review: Array<{ __typename?: 'review' } & ReviewVoteCountsFragment> };
+export type RefetchCourseReviewUpvoteQuery = { __typename?: 'query_root' } & {
+  review: Array<{ __typename?: 'review' } & ReviewVoteCountsFragment>;
+};
 
-export type Course_Review_ProfsQueryVariables = Exact<{
+export type CourseReviewProfsQueryVariables = Exact<{
   id?: Maybe<Array<Scalars['Int']>>;
 }>;
 
-export type Course_Review_ProfsQuery = { __typename?: 'query_root' } & {
+export type CourseReviewProfsQuery = { __typename?: 'query_root' } & {
   review: Array<{ __typename?: 'review' } & ReviewProfsFragment>;
 };
 
-export type Explore_AllQueryVariables = Exact<{ [key: string]: never }>;
+export type ExploreAllQueryVariables = Exact<{ [key: string]: never }>;
 
-export type Explore_AllQuery = { __typename?: 'query_root' } & {
+export type ExploreAllQuery = { __typename?: 'query_root' } & {
   course_search_index: Array<
     { __typename?: 'course_search_index' } & CourseSearchFragment
   >;
@@ -11993,12 +11996,12 @@ export type Explore_AllQuery = { __typename?: 'query_root' } & {
   >;
 };
 
-export type Explore_QueryQueryVariables = Exact<{
+export type ExploreQueryVariables = Exact<{
   query?: Maybe<Scalars['String']>;
   code_only?: Maybe<Scalars['Boolean']>;
 }>;
 
-export type Explore_QueryQuery = { __typename?: 'query_root' } & {
+export type ExploreQuery = { __typename?: 'query_root' } & {
   search_courses: Array<
     { __typename?: 'course_search_index' } & CourseSearchFragment
   >;
@@ -12007,11 +12010,11 @@ export type Explore_QueryQuery = { __typename?: 'query_root' } & {
   >;
 };
 
-export type Get_ProfQueryVariables = Exact<{
+export type GetProfQueryVariables = Exact<{
   code?: Maybe<Scalars['String']>;
 }>;
 
-export type Get_ProfQuery = { __typename?: 'query_root' } & {
+export type GetProfQuery = { __typename?: 'query_root' } & {
   prof: Array<
     { __typename?: 'prof' } & ProfInfoFragment &
       ProfCoursesTaughtFragment &
@@ -12019,21 +12022,21 @@ export type Get_ProfQuery = { __typename?: 'query_root' } & {
   >;
 };
 
-export type Prof_ReviewsQueryVariables = Exact<{
+export type ProfReviewsQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Prof_ReviewsQuery = { __typename?: 'query_root' } & {
+export type ProfReviewsQuery = { __typename?: 'query_root' } & {
   review: Array<
     { __typename?: 'review' } & ReviewInfoFragment & ReviewVoteCountsFragment
   >;
 };
 
-export type Prof_Reviews_With_User_DataQueryVariables = Exact<{
+export type ProfReviewsWithUserDataQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Prof_Reviews_With_User_DataQuery = { __typename?: 'query_root' } & {
+export type ProfReviewsWithUserDataQuery = { __typename?: 'query_root' } & {
   review: Array<
     { __typename?: 'review' } & ReviewInfoFragment &
       ReviewVoteCountsFragment &
@@ -12049,11 +12052,11 @@ export type Refetch_Prof_Review_UpvoteQuery = { __typename?: 'query_root' } & {
   review: Array<{ __typename?: 'review' } & ReviewVoteCountsFragment>;
 };
 
-export type Get_UserQueryVariables = Exact<{
+export type GetUserQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Get_UserQuery = { __typename?: 'query_root' } & {
+export type GetUserQuery = { __typename?: 'query_root' } & {
   user: Array<
     { __typename?: 'user' } & UserInfoFragment &
       UserShortlistFragment &
@@ -12065,21 +12068,21 @@ export type Get_UserQuery = { __typename?: 'query_root' } & {
   review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
 };
 
-export type Refetch_User_ShortlistQueryVariables = Exact<{
+export type RefetchUserShortlistQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_User_ShortlistQuery = { __typename?: 'query_root' } & {
+export type RefetchUserShortlistQuery = { __typename?: 'query_root' } & {
   user: Array<
     { __typename?: 'user' } & Pick<User, 'id'> & UserShortlistFragment
   >;
 };
 
-export type Refetch_User_ReviewQueryVariables = Exact<{
+export type RefetchUserReviewQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
 
-export type Refetch_User_ReviewQuery = { __typename?: 'query_root' } & {
+export type RefetchUserReviewQuery = { __typename?: 'query_root' } & {
   review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
 };
 
@@ -12428,8 +12431,8 @@ export const UserCoursesTakenFragmentDoc = gql`
     }
   }
 `;
-export const Update_User_EmailDocument = gql`
-  mutation UPDATE_USER_EMAIL($user_id: Int, $email: String) {
+export const UpdateUserEmailDocument = gql`
+  mutation updateUserEmail($user_id: Int, $email: String) {
     update_user(where: { id: { _eq: $user_id } }, _set: { email: $email }) {
       affected_rows
       returning {
@@ -12439,52 +12442,52 @@ export const Update_User_EmailDocument = gql`
     }
   }
 `;
-export type Update_User_EmailMutationFn = ApolloReactCommon.MutationFunction<
-  Update_User_EmailMutation,
-  Update_User_EmailMutationVariables
+export type UpdateUserEmailMutationFn = ApolloReactCommon.MutationFunction<
+  UpdateUserEmailMutation,
+  UpdateUserEmailMutationVariables
 >;
 
 /**
- * __useUpdate_User_EmailMutation__
+ * __useUpdateUserEmailMutation__
  *
- * To run a mutation, you first call `useUpdate_User_EmailMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdate_User_EmailMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateUserEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserEmailMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateUserEmailMutation, { data, loading, error }] = useUpdate_User_EmailMutation({
+ * const [updateUserEmailMutation, { data, loading, error }] = useUpdateUserEmailMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      email: // value for 'email'
  *   },
  * });
  */
-export function useUpdate_User_EmailMutation(
+export function useUpdateUserEmailMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Update_User_EmailMutation,
-    Update_User_EmailMutationVariables
+    UpdateUserEmailMutation,
+    UpdateUserEmailMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Update_User_EmailMutation,
-    Update_User_EmailMutationVariables
-  >(Update_User_EmailDocument, baseOptions);
+    UpdateUserEmailMutation,
+    UpdateUserEmailMutationVariables
+  >(UpdateUserEmailDocument, baseOptions);
 }
-export type Update_User_EmailMutationHookResult = ReturnType<
-  typeof useUpdate_User_EmailMutation
+export type UpdateUserEmailMutationHookResult = ReturnType<
+  typeof useUpdateUserEmailMutation
 >;
-export type Update_User_EmailMutationResult = ApolloReactCommon.MutationResult<
-  Update_User_EmailMutation
+export type UpdateUserEmailMutationResult = ApolloReactCommon.MutationResult<
+  UpdateUserEmailMutation
 >;
-export type Update_User_EmailMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Update_User_EmailMutation,
-  Update_User_EmailMutationVariables
+export type UpdateUserEmailMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateUserEmailMutation,
+  UpdateUserEmailMutationVariables
 >;
-export const Upsert_ReviewDocument = gql`
-  mutation UPSERT_REVIEW(
+export const UpsertReviewDocument = gql`
+  mutation upsertReview(
     $user_id: Int
     $course_id: Int
     $prof_id: Int
@@ -12533,23 +12536,23 @@ export const Upsert_ReviewDocument = gql`
   }
   ${ReviewUpdateInfoFragmentDoc}
 `;
-export type Upsert_ReviewMutationFn = ApolloReactCommon.MutationFunction<
-  Upsert_ReviewMutation,
-  Upsert_ReviewMutationVariables
+export type UpsertReviewMutationFn = ApolloReactCommon.MutationFunction<
+  UpsertReviewMutation,
+  UpsertReviewMutationVariables
 >;
 
 /**
- * __useUpsert_ReviewMutation__
+ * __useUpsertReviewMutation__
  *
- * To run a mutation, you first call `useUpsert_ReviewMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsert_ReviewMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpsertReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertReviewMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [upsertReviewMutation, { data, loading, error }] = useUpsert_ReviewMutation({
+ * const [upsertReviewMutation, { data, loading, error }] = useUpsertReviewMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      course_id: // value for 'course_id'
@@ -12565,29 +12568,29 @@ export type Upsert_ReviewMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useUpsert_ReviewMutation(
+export function useUpsertReviewMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Upsert_ReviewMutation,
-    Upsert_ReviewMutationVariables
+    UpsertReviewMutation,
+    UpsertReviewMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Upsert_ReviewMutation,
-    Upsert_ReviewMutationVariables
-  >(Upsert_ReviewDocument, baseOptions);
+    UpsertReviewMutation,
+    UpsertReviewMutationVariables
+  >(UpsertReviewDocument, baseOptions);
 }
-export type Upsert_ReviewMutationHookResult = ReturnType<
-  typeof useUpsert_ReviewMutation
+export type UpsertReviewMutationHookResult = ReturnType<
+  typeof useUpsertReviewMutation
 >;
-export type Upsert_ReviewMutationResult = ApolloReactCommon.MutationResult<
-  Upsert_ReviewMutation
+export type UpsertReviewMutationResult = ApolloReactCommon.MutationResult<
+  UpsertReviewMutation
 >;
-export type Upsert_ReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Upsert_ReviewMutation,
-  Upsert_ReviewMutationVariables
+export type UpsertReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpsertReviewMutation,
+  UpsertReviewMutationVariables
 >;
-export const Delete_ReviewDocument = gql`
-  mutation DELETE_REVIEW($review_id: Int) {
+export const DeleteReviewDocument = gql`
+  mutation deleteReview($review_id: Int) {
     delete_review(where: { id: { _eq: $review_id } }) {
       returning {
         ...ReviewUpdateInfo
@@ -12596,55 +12599,51 @@ export const Delete_ReviewDocument = gql`
   }
   ${ReviewUpdateInfoFragmentDoc}
 `;
-export type Delete_ReviewMutationFn = ApolloReactCommon.MutationFunction<
-  Delete_ReviewMutation,
-  Delete_ReviewMutationVariables
+export type DeleteReviewMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteReviewMutation,
+  DeleteReviewMutationVariables
 >;
 
 /**
- * __useDelete_ReviewMutation__
+ * __useDeleteReviewMutation__
  *
- * To run a mutation, you first call `useDelete_ReviewMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDelete_ReviewMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteReviewMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteReviewMutation, { data, loading, error }] = useDelete_ReviewMutation({
+ * const [deleteReviewMutation, { data, loading, error }] = useDeleteReviewMutation({
  *   variables: {
  *      review_id: // value for 'review_id'
  *   },
  * });
  */
-export function useDelete_ReviewMutation(
+export function useDeleteReviewMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Delete_ReviewMutation,
-    Delete_ReviewMutationVariables
+    DeleteReviewMutation,
+    DeleteReviewMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Delete_ReviewMutation,
-    Delete_ReviewMutationVariables
-  >(Delete_ReviewDocument, baseOptions);
+    DeleteReviewMutation,
+    DeleteReviewMutationVariables
+  >(DeleteReviewDocument, baseOptions);
 }
-export type Delete_ReviewMutationHookResult = ReturnType<
-  typeof useDelete_ReviewMutation
+export type DeleteReviewMutationHookResult = ReturnType<
+  typeof useDeleteReviewMutation
 >;
-export type Delete_ReviewMutationResult = ApolloReactCommon.MutationResult<
-  Delete_ReviewMutation
+export type DeleteReviewMutationResult = ApolloReactCommon.MutationResult<
+  DeleteReviewMutation
 >;
-export type Delete_ReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Delete_ReviewMutation,
-  Delete_ReviewMutationVariables
+export type DeleteReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteReviewMutation,
+  DeleteReviewMutationVariables
 >;
-export const Upsert_Liked_ReviewDocument = gql`
-  mutation UPSERT_LIKED_REVIEW(
-    $user_id: Int
-    $course_id: Int
-    $liked: smallint
-  ) {
+export const UpsertLikedReviewDocument = gql`
+  mutation upsertLikedReview($user_id: Int, $course_id: Int, $liked: smallint) {
     insert_review(
       objects: {
         user_id: $user_id
@@ -12664,23 +12663,23 @@ export const Upsert_Liked_ReviewDocument = gql`
     }
   }
 `;
-export type Upsert_Liked_ReviewMutationFn = ApolloReactCommon.MutationFunction<
-  Upsert_Liked_ReviewMutation,
-  Upsert_Liked_ReviewMutationVariables
+export type UpsertLikedReviewMutationFn = ApolloReactCommon.MutationFunction<
+  UpsertLikedReviewMutation,
+  UpsertLikedReviewMutationVariables
 >;
 
 /**
- * __useUpsert_Liked_ReviewMutation__
+ * __useUpsertLikedReviewMutation__
  *
- * To run a mutation, you first call `useUpsert_Liked_ReviewMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsert_Liked_ReviewMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpsertLikedReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertLikedReviewMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [upsertLikedReviewMutation, { data, loading, error }] = useUpsert_Liked_ReviewMutation({
+ * const [upsertLikedReviewMutation, { data, loading, error }] = useUpsertLikedReviewMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      course_id: // value for 'course_id'
@@ -12688,29 +12687,29 @@ export type Upsert_Liked_ReviewMutationFn = ApolloReactCommon.MutationFunction<
  *   },
  * });
  */
-export function useUpsert_Liked_ReviewMutation(
+export function useUpsertLikedReviewMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Upsert_Liked_ReviewMutation,
-    Upsert_Liked_ReviewMutationVariables
+    UpsertLikedReviewMutation,
+    UpsertLikedReviewMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Upsert_Liked_ReviewMutation,
-    Upsert_Liked_ReviewMutationVariables
-  >(Upsert_Liked_ReviewDocument, baseOptions);
+    UpsertLikedReviewMutation,
+    UpsertLikedReviewMutationVariables
+  >(UpsertLikedReviewDocument, baseOptions);
 }
-export type Upsert_Liked_ReviewMutationHookResult = ReturnType<
-  typeof useUpsert_Liked_ReviewMutation
+export type UpsertLikedReviewMutationHookResult = ReturnType<
+  typeof useUpsertLikedReviewMutation
 >;
-export type Upsert_Liked_ReviewMutationResult = ApolloReactCommon.MutationResult<
-  Upsert_Liked_ReviewMutation
+export type UpsertLikedReviewMutationResult = ApolloReactCommon.MutationResult<
+  UpsertLikedReviewMutation
 >;
-export type Upsert_Liked_ReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Upsert_Liked_ReviewMutation,
-  Upsert_Liked_ReviewMutationVariables
+export type UpsertLikedReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpsertLikedReviewMutation,
+  UpsertLikedReviewMutationVariables
 >;
-export const Insert_Section_SubscriptionDocument = gql`
-  mutation INSERT_SECTION_SUBSCRIPTION($section_id: Int, $user_id: Int) {
+export const InsertSectionSubscriptionDocument = gql`
+  mutation insertSectionSubscription($section_id: Int, $user_id: Int) {
     insert_queue_section_subscribed(
       objects: { section_id: $section_id, user_id: $user_id }
     ) {
@@ -12718,52 +12717,52 @@ export const Insert_Section_SubscriptionDocument = gql`
     }
   }
 `;
-export type Insert_Section_SubscriptionMutationFn = ApolloReactCommon.MutationFunction<
-  Insert_Section_SubscriptionMutation,
-  Insert_Section_SubscriptionMutationVariables
+export type InsertSectionSubscriptionMutationFn = ApolloReactCommon.MutationFunction<
+  InsertSectionSubscriptionMutation,
+  InsertSectionSubscriptionMutationVariables
 >;
 
 /**
- * __useInsert_Section_SubscriptionMutation__
+ * __useInsertSectionSubscriptionMutation__
  *
- * To run a mutation, you first call `useInsert_Section_SubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsert_Section_SubscriptionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertSectionSubscriptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertSectionSubscriptionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertSectionSubscriptionMutation, { data, loading, error }] = useInsert_Section_SubscriptionMutation({
+ * const [insertSectionSubscriptionMutation, { data, loading, error }] = useInsertSectionSubscriptionMutation({
  *   variables: {
  *      section_id: // value for 'section_id'
  *      user_id: // value for 'user_id'
  *   },
  * });
  */
-export function useInsert_Section_SubscriptionMutation(
+export function useInsertSectionSubscriptionMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Insert_Section_SubscriptionMutation,
-    Insert_Section_SubscriptionMutationVariables
+    InsertSectionSubscriptionMutation,
+    InsertSectionSubscriptionMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Insert_Section_SubscriptionMutation,
-    Insert_Section_SubscriptionMutationVariables
-  >(Insert_Section_SubscriptionDocument, baseOptions);
+    InsertSectionSubscriptionMutation,
+    InsertSectionSubscriptionMutationVariables
+  >(InsertSectionSubscriptionDocument, baseOptions);
 }
-export type Insert_Section_SubscriptionMutationHookResult = ReturnType<
-  typeof useInsert_Section_SubscriptionMutation
+export type InsertSectionSubscriptionMutationHookResult = ReturnType<
+  typeof useInsertSectionSubscriptionMutation
 >;
-export type Insert_Section_SubscriptionMutationResult = ApolloReactCommon.MutationResult<
-  Insert_Section_SubscriptionMutation
+export type InsertSectionSubscriptionMutationResult = ApolloReactCommon.MutationResult<
+  InsertSectionSubscriptionMutation
 >;
-export type Insert_Section_SubscriptionMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Insert_Section_SubscriptionMutation,
-  Insert_Section_SubscriptionMutationVariables
+export type InsertSectionSubscriptionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  InsertSectionSubscriptionMutation,
+  InsertSectionSubscriptionMutationVariables
 >;
-export const Delete_Section_SubscriptionDocument = gql`
-  mutation DELETE_SECTION_SUBSCRIPTION($section_id: Int) {
+export const DeleteSectionSubscriptionDocument = gql`
+  mutation deleteSectionSubscription($section_id: Int) {
     delete_queue_section_subscribed(
       where: { section_id: { _eq: $section_id } }
     ) {
@@ -12771,51 +12770,51 @@ export const Delete_Section_SubscriptionDocument = gql`
     }
   }
 `;
-export type Delete_Section_SubscriptionMutationFn = ApolloReactCommon.MutationFunction<
-  Delete_Section_SubscriptionMutation,
-  Delete_Section_SubscriptionMutationVariables
+export type DeleteSectionSubscriptionMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteSectionSubscriptionMutation,
+  DeleteSectionSubscriptionMutationVariables
 >;
 
 /**
- * __useDelete_Section_SubscriptionMutation__
+ * __useDeleteSectionSubscriptionMutation__
  *
- * To run a mutation, you first call `useDelete_Section_SubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDelete_Section_SubscriptionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteSectionSubscriptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSectionSubscriptionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteSectionSubscriptionMutation, { data, loading, error }] = useDelete_Section_SubscriptionMutation({
+ * const [deleteSectionSubscriptionMutation, { data, loading, error }] = useDeleteSectionSubscriptionMutation({
  *   variables: {
  *      section_id: // value for 'section_id'
  *   },
  * });
  */
-export function useDelete_Section_SubscriptionMutation(
+export function useDeleteSectionSubscriptionMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Delete_Section_SubscriptionMutation,
-    Delete_Section_SubscriptionMutationVariables
+    DeleteSectionSubscriptionMutation,
+    DeleteSectionSubscriptionMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Delete_Section_SubscriptionMutation,
-    Delete_Section_SubscriptionMutationVariables
-  >(Delete_Section_SubscriptionDocument, baseOptions);
+    DeleteSectionSubscriptionMutation,
+    DeleteSectionSubscriptionMutationVariables
+  >(DeleteSectionSubscriptionDocument, baseOptions);
 }
-export type Delete_Section_SubscriptionMutationHookResult = ReturnType<
-  typeof useDelete_Section_SubscriptionMutation
+export type DeleteSectionSubscriptionMutationHookResult = ReturnType<
+  typeof useDeleteSectionSubscriptionMutation
 >;
-export type Delete_Section_SubscriptionMutationResult = ApolloReactCommon.MutationResult<
-  Delete_Section_SubscriptionMutation
+export type DeleteSectionSubscriptionMutationResult = ApolloReactCommon.MutationResult<
+  DeleteSectionSubscriptionMutation
 >;
-export type Delete_Section_SubscriptionMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Delete_Section_SubscriptionMutation,
-  Delete_Section_SubscriptionMutationVariables
+export type DeleteSectionSubscriptionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteSectionSubscriptionMutation,
+  DeleteSectionSubscriptionMutationVariables
 >;
-export const Insert_User_ShortlistDocument = gql`
-  mutation INSERT_USER_SHORTLIST($user_id: Int, $course_id: Int) {
+export const InsertUserShortlistDocument = gql`
+  mutation insertUserShortlist($user_id: Int, $course_id: Int) {
     insert_user_shortlist(
       objects: { course_id: $course_id, user_id: $user_id }
     ) {
@@ -12823,102 +12822,102 @@ export const Insert_User_ShortlistDocument = gql`
     }
   }
 `;
-export type Insert_User_ShortlistMutationFn = ApolloReactCommon.MutationFunction<
-  Insert_User_ShortlistMutation,
-  Insert_User_ShortlistMutationVariables
+export type InsertUserShortlistMutationFn = ApolloReactCommon.MutationFunction<
+  InsertUserShortlistMutation,
+  InsertUserShortlistMutationVariables
 >;
 
 /**
- * __useInsert_User_ShortlistMutation__
+ * __useInsertUserShortlistMutation__
  *
- * To run a mutation, you first call `useInsert_User_ShortlistMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsert_User_ShortlistMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertUserShortlistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertUserShortlistMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertUserShortlistMutation, { data, loading, error }] = useInsert_User_ShortlistMutation({
+ * const [insertUserShortlistMutation, { data, loading, error }] = useInsertUserShortlistMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      course_id: // value for 'course_id'
  *   },
  * });
  */
-export function useInsert_User_ShortlistMutation(
+export function useInsertUserShortlistMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Insert_User_ShortlistMutation,
-    Insert_User_ShortlistMutationVariables
+    InsertUserShortlistMutation,
+    InsertUserShortlistMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Insert_User_ShortlistMutation,
-    Insert_User_ShortlistMutationVariables
-  >(Insert_User_ShortlistDocument, baseOptions);
+    InsertUserShortlistMutation,
+    InsertUserShortlistMutationVariables
+  >(InsertUserShortlistDocument, baseOptions);
 }
-export type Insert_User_ShortlistMutationHookResult = ReturnType<
-  typeof useInsert_User_ShortlistMutation
+export type InsertUserShortlistMutationHookResult = ReturnType<
+  typeof useInsertUserShortlistMutation
 >;
-export type Insert_User_ShortlistMutationResult = ApolloReactCommon.MutationResult<
-  Insert_User_ShortlistMutation
+export type InsertUserShortlistMutationResult = ApolloReactCommon.MutationResult<
+  InsertUserShortlistMutation
 >;
-export type Insert_User_ShortlistMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Insert_User_ShortlistMutation,
-  Insert_User_ShortlistMutationVariables
+export type InsertUserShortlistMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  InsertUserShortlistMutation,
+  InsertUserShortlistMutationVariables
 >;
-export const Delete_User_ShortlistDocument = gql`
-  mutation DELETE_USER_SHORTLIST($course_id: Int) {
+export const DeleteUserShortlistDocument = gql`
+  mutation deleteUserShortlist($course_id: Int) {
     delete_user_shortlist(where: { course_id: { _eq: $course_id } }) {
       affected_rows
     }
   }
 `;
-export type Delete_User_ShortlistMutationFn = ApolloReactCommon.MutationFunction<
-  Delete_User_ShortlistMutation,
-  Delete_User_ShortlistMutationVariables
+export type DeleteUserShortlistMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteUserShortlistMutation,
+  DeleteUserShortlistMutationVariables
 >;
 
 /**
- * __useDelete_User_ShortlistMutation__
+ * __useDeleteUserShortlistMutation__
  *
- * To run a mutation, you first call `useDelete_User_ShortlistMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDelete_User_ShortlistMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteUserShortlistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserShortlistMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteUserShortlistMutation, { data, loading, error }] = useDelete_User_ShortlistMutation({
+ * const [deleteUserShortlistMutation, { data, loading, error }] = useDeleteUserShortlistMutation({
  *   variables: {
  *      course_id: // value for 'course_id'
  *   },
  * });
  */
-export function useDelete_User_ShortlistMutation(
+export function useDeleteUserShortlistMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Delete_User_ShortlistMutation,
-    Delete_User_ShortlistMutationVariables
+    DeleteUserShortlistMutation,
+    DeleteUserShortlistMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Delete_User_ShortlistMutation,
-    Delete_User_ShortlistMutationVariables
-  >(Delete_User_ShortlistDocument, baseOptions);
+    DeleteUserShortlistMutation,
+    DeleteUserShortlistMutationVariables
+  >(DeleteUserShortlistDocument, baseOptions);
 }
-export type Delete_User_ShortlistMutationHookResult = ReturnType<
-  typeof useDelete_User_ShortlistMutation
+export type DeleteUserShortlistMutationHookResult = ReturnType<
+  typeof useDeleteUserShortlistMutation
 >;
-export type Delete_User_ShortlistMutationResult = ApolloReactCommon.MutationResult<
-  Delete_User_ShortlistMutation
+export type DeleteUserShortlistMutationResult = ApolloReactCommon.MutationResult<
+  DeleteUserShortlistMutation
 >;
-export type Delete_User_ShortlistMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Delete_User_ShortlistMutation,
-  Delete_User_ShortlistMutationVariables
+export type DeleteUserShortlistMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteUserShortlistMutation,
+  DeleteUserShortlistMutationVariables
 >;
-export const Insert_Course_Review_VoteDocument = gql`
-  mutation INSERT_COURSE_REVIEW_VOTE($user_id: Int, $review_id: Int) {
+export const InsertCourseReviewVoteDocument = gql`
+  mutation insertCourseReviewVote($user_id: Int, $review_id: Int) {
     insert_course_review_upvote(
       objects: { review_id: $review_id, user_id: $user_id }
     ) {
@@ -12926,52 +12925,52 @@ export const Insert_Course_Review_VoteDocument = gql`
     }
   }
 `;
-export type Insert_Course_Review_VoteMutationFn = ApolloReactCommon.MutationFunction<
-  Insert_Course_Review_VoteMutation,
-  Insert_Course_Review_VoteMutationVariables
+export type InsertCourseReviewVoteMutationFn = ApolloReactCommon.MutationFunction<
+  InsertCourseReviewVoteMutation,
+  InsertCourseReviewVoteMutationVariables
 >;
 
 /**
- * __useInsert_Course_Review_VoteMutation__
+ * __useInsertCourseReviewVoteMutation__
  *
- * To run a mutation, you first call `useInsert_Course_Review_VoteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsert_Course_Review_VoteMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertCourseReviewVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertCourseReviewVoteMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertCourseReviewVoteMutation, { data, loading, error }] = useInsert_Course_Review_VoteMutation({
+ * const [insertCourseReviewVoteMutation, { data, loading, error }] = useInsertCourseReviewVoteMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      review_id: // value for 'review_id'
  *   },
  * });
  */
-export function useInsert_Course_Review_VoteMutation(
+export function useInsertCourseReviewVoteMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Insert_Course_Review_VoteMutation,
-    Insert_Course_Review_VoteMutationVariables
+    InsertCourseReviewVoteMutation,
+    InsertCourseReviewVoteMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Insert_Course_Review_VoteMutation,
-    Insert_Course_Review_VoteMutationVariables
-  >(Insert_Course_Review_VoteDocument, baseOptions);
+    InsertCourseReviewVoteMutation,
+    InsertCourseReviewVoteMutationVariables
+  >(InsertCourseReviewVoteDocument, baseOptions);
 }
-export type Insert_Course_Review_VoteMutationHookResult = ReturnType<
-  typeof useInsert_Course_Review_VoteMutation
+export type InsertCourseReviewVoteMutationHookResult = ReturnType<
+  typeof useInsertCourseReviewVoteMutation
 >;
-export type Insert_Course_Review_VoteMutationResult = ApolloReactCommon.MutationResult<
-  Insert_Course_Review_VoteMutation
+export type InsertCourseReviewVoteMutationResult = ApolloReactCommon.MutationResult<
+  InsertCourseReviewVoteMutation
 >;
-export type Insert_Course_Review_VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Insert_Course_Review_VoteMutation,
-  Insert_Course_Review_VoteMutationVariables
+export type InsertCourseReviewVoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  InsertCourseReviewVoteMutation,
+  InsertCourseReviewVoteMutationVariables
 >;
-export const Delete_Course_Review_VoteDocument = gql`
-  mutation DELETE_COURSE_REVIEW_VOTE($user_id: Int, $review_id: Int) {
+export const DeleteCourseReviewVoteDocument = gql`
+  mutation deleteCourseReviewVote($user_id: Int, $review_id: Int) {
     delete_course_review_upvote(
       where: { user_id: { _eq: $user_id }, review_id: { _eq: $review_id } }
     ) {
@@ -12979,52 +12978,52 @@ export const Delete_Course_Review_VoteDocument = gql`
     }
   }
 `;
-export type Delete_Course_Review_VoteMutationFn = ApolloReactCommon.MutationFunction<
-  Delete_Course_Review_VoteMutation,
-  Delete_Course_Review_VoteMutationVariables
+export type DeleteCourseReviewVoteMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteCourseReviewVoteMutation,
+  DeleteCourseReviewVoteMutationVariables
 >;
 
 /**
- * __useDelete_Course_Review_VoteMutation__
+ * __useDeleteCourseReviewVoteMutation__
  *
- * To run a mutation, you first call `useDelete_Course_Review_VoteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDelete_Course_Review_VoteMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteCourseReviewVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCourseReviewVoteMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteCourseReviewVoteMutation, { data, loading, error }] = useDelete_Course_Review_VoteMutation({
+ * const [deleteCourseReviewVoteMutation, { data, loading, error }] = useDeleteCourseReviewVoteMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      review_id: // value for 'review_id'
  *   },
  * });
  */
-export function useDelete_Course_Review_VoteMutation(
+export function useDeleteCourseReviewVoteMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Delete_Course_Review_VoteMutation,
-    Delete_Course_Review_VoteMutationVariables
+    DeleteCourseReviewVoteMutation,
+    DeleteCourseReviewVoteMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Delete_Course_Review_VoteMutation,
-    Delete_Course_Review_VoteMutationVariables
-  >(Delete_Course_Review_VoteDocument, baseOptions);
+    DeleteCourseReviewVoteMutation,
+    DeleteCourseReviewVoteMutationVariables
+  >(DeleteCourseReviewVoteDocument, baseOptions);
 }
-export type Delete_Course_Review_VoteMutationHookResult = ReturnType<
-  typeof useDelete_Course_Review_VoteMutation
+export type DeleteCourseReviewVoteMutationHookResult = ReturnType<
+  typeof useDeleteCourseReviewVoteMutation
 >;
-export type Delete_Course_Review_VoteMutationResult = ApolloReactCommon.MutationResult<
-  Delete_Course_Review_VoteMutation
+export type DeleteCourseReviewVoteMutationResult = ApolloReactCommon.MutationResult<
+  DeleteCourseReviewVoteMutation
 >;
-export type Delete_Course_Review_VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Delete_Course_Review_VoteMutation,
-  Delete_Course_Review_VoteMutationVariables
+export type DeleteCourseReviewVoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteCourseReviewVoteMutation,
+  DeleteCourseReviewVoteMutationVariables
 >;
-export const Insert_Prof_Review_VoteDocument = gql`
-  mutation INSERT_PROF_REVIEW_VOTE($user_id: Int, $review_id: Int) {
+export const InsertProfReviewVoteDocument = gql`
+  mutation insertProfReviewVote($user_id: Int, $review_id: Int) {
     insert_prof_review_upvote(
       objects: { review_id: $review_id, user_id: $user_id }
     ) {
@@ -13032,49 +13031,49 @@ export const Insert_Prof_Review_VoteDocument = gql`
     }
   }
 `;
-export type Insert_Prof_Review_VoteMutationFn = ApolloReactCommon.MutationFunction<
-  Insert_Prof_Review_VoteMutation,
-  Insert_Prof_Review_VoteMutationVariables
+export type InsertProfReviewVoteMutationFn = ApolloReactCommon.MutationFunction<
+  InsertProfReviewVoteMutation,
+  InsertProfReviewVoteMutationVariables
 >;
 
 /**
- * __useInsert_Prof_Review_VoteMutation__
+ * __useInsertProfReviewVoteMutation__
  *
- * To run a mutation, you first call `useInsert_Prof_Review_VoteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsert_Prof_Review_VoteMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useInsertProfReviewVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertProfReviewVoteMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [insertProfReviewVoteMutation, { data, loading, error }] = useInsert_Prof_Review_VoteMutation({
+ * const [insertProfReviewVoteMutation, { data, loading, error }] = useInsertProfReviewVoteMutation({
  *   variables: {
  *      user_id: // value for 'user_id'
  *      review_id: // value for 'review_id'
  *   },
  * });
  */
-export function useInsert_Prof_Review_VoteMutation(
+export function useInsertProfReviewVoteMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    Insert_Prof_Review_VoteMutation,
-    Insert_Prof_Review_VoteMutationVariables
+    InsertProfReviewVoteMutation,
+    InsertProfReviewVoteMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    Insert_Prof_Review_VoteMutation,
-    Insert_Prof_Review_VoteMutationVariables
-  >(Insert_Prof_Review_VoteDocument, baseOptions);
+    InsertProfReviewVoteMutation,
+    InsertProfReviewVoteMutationVariables
+  >(InsertProfReviewVoteDocument, baseOptions);
 }
-export type Insert_Prof_Review_VoteMutationHookResult = ReturnType<
-  typeof useInsert_Prof_Review_VoteMutation
+export type InsertProfReviewVoteMutationHookResult = ReturnType<
+  typeof useInsertProfReviewVoteMutation
 >;
-export type Insert_Prof_Review_VoteMutationResult = ApolloReactCommon.MutationResult<
-  Insert_Prof_Review_VoteMutation
+export type InsertProfReviewVoteMutationResult = ApolloReactCommon.MutationResult<
+  InsertProfReviewVoteMutation
 >;
-export type Insert_Prof_Review_VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  Insert_Prof_Review_VoteMutation,
-  Insert_Prof_Review_VoteMutationVariables
+export type InsertProfReviewVoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  InsertProfReviewVoteMutation,
+  InsertProfReviewVoteMutationVariables
 >;
 export const Delete_Prof_Review_VoteDocument = gql`
   mutation DELETE_PROF_REVIEW_VOTE($user_id: Int, $review_id: Int) {
@@ -13129,8 +13128,8 @@ export type Delete_Prof_Review_VoteMutationOptions = ApolloReactCommon.BaseMutat
   Delete_Prof_Review_VoteMutation,
   Delete_Prof_Review_VoteMutationVariables
 >;
-export const Get_CourseDocument = gql`
-  query GET_COURSE($code: String, $user_id: Int) {
+export const GetCourseDocument = gql`
+  query getCourse($code: String, $user_id: Int) {
     course(where: { code: { _eq: $code } }) {
       ...CourseInfo
       ...CourseSchedule
@@ -13145,54 +13144,54 @@ export const Get_CourseDocument = gql`
 `;
 
 /**
- * __useGet_CourseQuery__
+ * __useGetCourseQuery__
  *
- * To run a query within a React component, call `useGet_CourseQuery` and pass it any options that fit your needs.
- * When your component renders, `useGet_CourseQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetCourseQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCourseQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGet_CourseQuery({
+ * const { data, loading, error } = useGetCourseQuery({
  *   variables: {
  *      code: // value for 'code'
  *      user_id: // value for 'user_id'
  *   },
  * });
  */
-export function useGet_CourseQuery(
+export function useGetCourseQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Get_CourseQuery,
-    Get_CourseQueryVariables
+    GetCourseQuery,
+    GetCourseQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<Get_CourseQuery, Get_CourseQueryVariables>(
-    Get_CourseDocument,
+  return ApolloReactHooks.useQuery<GetCourseQuery, GetCourseQueryVariables>(
+    GetCourseDocument,
     baseOptions,
   );
 }
-export function useGet_CourseLazyQuery(
+export function useGetCourseLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Get_CourseQuery,
-    Get_CourseQueryVariables
+    GetCourseQuery,
+    GetCourseQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    Get_CourseQuery,
-    Get_CourseQueryVariables
-  >(Get_CourseDocument, baseOptions);
+  return ApolloReactHooks.useLazyQuery<GetCourseQuery, GetCourseQueryVariables>(
+    GetCourseDocument,
+    baseOptions,
+  );
 }
-export type Get_CourseQueryHookResult = ReturnType<typeof useGet_CourseQuery>;
-export type Get_CourseLazyQueryHookResult = ReturnType<
-  typeof useGet_CourseLazyQuery
+export type GetCourseQueryHookResult = ReturnType<typeof useGetCourseQuery>;
+export type GetCourseLazyQueryHookResult = ReturnType<
+  typeof useGetCourseLazyQuery
 >;
-export type Get_CourseQueryResult = ApolloReactCommon.QueryResult<
-  Get_CourseQuery,
-  Get_CourseQueryVariables
+export type GetCourseQueryResult = ApolloReactCommon.QueryResult<
+  GetCourseQuery,
+  GetCourseQueryVariables
 >;
-export const Get_Course_With_User_DataDocument = gql`
-  query GET_COURSE_WITH_USER_DATA($code: String, $user_id: Int) {
+export const GetCourseWithUserDataDocument = gql`
+  query getCourseWithUserData($code: String, $user_id: Int) {
     course(where: { code: { _eq: $code } }) {
       ...CourseInfo
       ...CourseSchedule
@@ -13240,56 +13239,56 @@ export const Get_Course_With_User_DataDocument = gql`
 `;
 
 /**
- * __useGet_Course_With_User_DataQuery__
+ * __useGetCourseWithUserDataQuery__
  *
- * To run a query within a React component, call `useGet_Course_With_User_DataQuery` and pass it any options that fit your needs.
- * When your component renders, `useGet_Course_With_User_DataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetCourseWithUserDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCourseWithUserDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGet_Course_With_User_DataQuery({
+ * const { data, loading, error } = useGetCourseWithUserDataQuery({
  *   variables: {
  *      code: // value for 'code'
  *      user_id: // value for 'user_id'
  *   },
  * });
  */
-export function useGet_Course_With_User_DataQuery(
+export function useGetCourseWithUserDataQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Get_Course_With_User_DataQuery,
-    Get_Course_With_User_DataQueryVariables
+    GetCourseWithUserDataQuery,
+    GetCourseWithUserDataQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Get_Course_With_User_DataQuery,
-    Get_Course_With_User_DataQueryVariables
-  >(Get_Course_With_User_DataDocument, baseOptions);
+    GetCourseWithUserDataQuery,
+    GetCourseWithUserDataQueryVariables
+  >(GetCourseWithUserDataDocument, baseOptions);
 }
-export function useGet_Course_With_User_DataLazyQuery(
+export function useGetCourseWithUserDataLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Get_Course_With_User_DataQuery,
-    Get_Course_With_User_DataQueryVariables
+    GetCourseWithUserDataQuery,
+    GetCourseWithUserDataQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Get_Course_With_User_DataQuery,
-    Get_Course_With_User_DataQueryVariables
-  >(Get_Course_With_User_DataDocument, baseOptions);
+    GetCourseWithUserDataQuery,
+    GetCourseWithUserDataQueryVariables
+  >(GetCourseWithUserDataDocument, baseOptions);
 }
-export type Get_Course_With_User_DataQueryHookResult = ReturnType<
-  typeof useGet_Course_With_User_DataQuery
+export type GetCourseWithUserDataQueryHookResult = ReturnType<
+  typeof useGetCourseWithUserDataQuery
 >;
-export type Get_Course_With_User_DataLazyQueryHookResult = ReturnType<
-  typeof useGet_Course_With_User_DataLazyQuery
+export type GetCourseWithUserDataLazyQueryHookResult = ReturnType<
+  typeof useGetCourseWithUserDataLazyQuery
 >;
-export type Get_Course_With_User_DataQueryResult = ApolloReactCommon.QueryResult<
-  Get_Course_With_User_DataQuery,
-  Get_Course_With_User_DataQueryVariables
+export type GetCourseWithUserDataQueryResult = ApolloReactCommon.QueryResult<
+  GetCourseWithUserDataQuery,
+  GetCourseWithUserDataQueryVariables
 >;
-export const Refetch_Course_ShortlistDocument = gql`
-  query REFETCH_COURSE_SHORTLIST($code: String, $user_id: Int) {
+export const RefetchCourseShortlistDocument = gql`
+  query refetchCourseShortlist($code: String, $user_id: Int) {
     user_shortlist(
       where: { user_id: { _eq: $user_id }, course: { code: { _eq: $code } } }
     ) {
@@ -13300,56 +13299,56 @@ export const Refetch_Course_ShortlistDocument = gql`
 `;
 
 /**
- * __useRefetch_Course_ShortlistQuery__
+ * __useRefetchCourseShortlistQuery__
  *
- * To run a query within a React component, call `useRefetch_Course_ShortlistQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_Course_ShortlistQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchCourseShortlistQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchCourseShortlistQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_Course_ShortlistQuery({
+ * const { data, loading, error } = useRefetchCourseShortlistQuery({
  *   variables: {
  *      code: // value for 'code'
  *      user_id: // value for 'user_id'
  *   },
  * });
  */
-export function useRefetch_Course_ShortlistQuery(
+export function useRefetchCourseShortlistQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_Course_ShortlistQuery,
-    Refetch_Course_ShortlistQueryVariables
+    RefetchCourseShortlistQuery,
+    RefetchCourseShortlistQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_Course_ShortlistQuery,
-    Refetch_Course_ShortlistQueryVariables
-  >(Refetch_Course_ShortlistDocument, baseOptions);
+    RefetchCourseShortlistQuery,
+    RefetchCourseShortlistQueryVariables
+  >(RefetchCourseShortlistDocument, baseOptions);
 }
-export function useRefetch_Course_ShortlistLazyQuery(
+export function useRefetchCourseShortlistLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_Course_ShortlistQuery,
-    Refetch_Course_ShortlistQueryVariables
+    RefetchCourseShortlistQuery,
+    RefetchCourseShortlistQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_Course_ShortlistQuery,
-    Refetch_Course_ShortlistQueryVariables
-  >(Refetch_Course_ShortlistDocument, baseOptions);
+    RefetchCourseShortlistQuery,
+    RefetchCourseShortlistQueryVariables
+  >(RefetchCourseShortlistDocument, baseOptions);
 }
-export type Refetch_Course_ShortlistQueryHookResult = ReturnType<
-  typeof useRefetch_Course_ShortlistQuery
+export type RefetchCourseShortlistQueryHookResult = ReturnType<
+  typeof useRefetchCourseShortlistQuery
 >;
-export type Refetch_Course_ShortlistLazyQueryHookResult = ReturnType<
-  typeof useRefetch_Course_ShortlistLazyQuery
+export type RefetchCourseShortlistLazyQueryHookResult = ReturnType<
+  typeof useRefetchCourseShortlistLazyQuery
 >;
-export type Refetch_Course_ShortlistQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_Course_ShortlistQuery,
-  Refetch_Course_ShortlistQueryVariables
+export type RefetchCourseShortlistQueryResult = ApolloReactCommon.QueryResult<
+  RefetchCourseShortlistQuery,
+  RefetchCourseShortlistQueryVariables
 >;
-export const Refetch_RatingsDocument = gql`
-  query REFETCH_RATINGS($course_id: Int, $prof_id: Int) {
+export const RefetchRatingsDocument = gql`
+  query refetchRatings($course_id: Int, $prof_id: Int) {
     course(where: { id: { _eq: $course_id } }) {
       ...CourseRating
     }
@@ -13362,56 +13361,56 @@ export const Refetch_RatingsDocument = gql`
 `;
 
 /**
- * __useRefetch_RatingsQuery__
+ * __useRefetchRatingsQuery__
  *
- * To run a query within a React component, call `useRefetch_RatingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_RatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_RatingsQuery({
+ * const { data, loading, error } = useRefetchRatingsQuery({
  *   variables: {
  *      course_id: // value for 'course_id'
  *      prof_id: // value for 'prof_id'
  *   },
  * });
  */
-export function useRefetch_RatingsQuery(
+export function useRefetchRatingsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_RatingsQuery,
-    Refetch_RatingsQueryVariables
+    RefetchRatingsQuery,
+    RefetchRatingsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_RatingsQuery,
-    Refetch_RatingsQueryVariables
-  >(Refetch_RatingsDocument, baseOptions);
+    RefetchRatingsQuery,
+    RefetchRatingsQueryVariables
+  >(RefetchRatingsDocument, baseOptions);
 }
-export function useRefetch_RatingsLazyQuery(
+export function useRefetchRatingsLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_RatingsQuery,
-    Refetch_RatingsQueryVariables
+    RefetchRatingsQuery,
+    RefetchRatingsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_RatingsQuery,
-    Refetch_RatingsQueryVariables
-  >(Refetch_RatingsDocument, baseOptions);
+    RefetchRatingsQuery,
+    RefetchRatingsQueryVariables
+  >(RefetchRatingsDocument, baseOptions);
 }
-export type Refetch_RatingsQueryHookResult = ReturnType<
-  typeof useRefetch_RatingsQuery
+export type RefetchRatingsQueryHookResult = ReturnType<
+  typeof useRefetchRatingsQuery
 >;
-export type Refetch_RatingsLazyQueryHookResult = ReturnType<
-  typeof useRefetch_RatingsLazyQuery
+export type RefetchRatingsLazyQueryHookResult = ReturnType<
+  typeof useRefetchRatingsLazyQuery
 >;
-export type Refetch_RatingsQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_RatingsQuery,
-  Refetch_RatingsQueryVariables
+export type RefetchRatingsQueryResult = ApolloReactCommon.QueryResult<
+  RefetchRatingsQuery,
+  RefetchRatingsQueryVariables
 >;
-export const Refetch_Section_SubscriptionsDocument = gql`
-  query REFETCH_SECTION_SUBSCRIPTIONS($course_id: Int, $user_id: Int) {
+export const RefetchSectionSubscriptionsDocument = gql`
+  query refetchSectionSubscriptions($course_id: Int, $user_id: Int) {
     queue_section_subscribed(
       where: {
         section: { course_id: { _eq: $course_id } }
@@ -13425,56 +13424,56 @@ export const Refetch_Section_SubscriptionsDocument = gql`
 `;
 
 /**
- * __useRefetch_Section_SubscriptionsQuery__
+ * __useRefetchSectionSubscriptionsQuery__
  *
- * To run a query within a React component, call `useRefetch_Section_SubscriptionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_Section_SubscriptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchSectionSubscriptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchSectionSubscriptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_Section_SubscriptionsQuery({
+ * const { data, loading, error } = useRefetchSectionSubscriptionsQuery({
  *   variables: {
  *      course_id: // value for 'course_id'
  *      user_id: // value for 'user_id'
  *   },
  * });
  */
-export function useRefetch_Section_SubscriptionsQuery(
+export function useRefetchSectionSubscriptionsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_Section_SubscriptionsQuery,
-    Refetch_Section_SubscriptionsQueryVariables
+    RefetchSectionSubscriptionsQuery,
+    RefetchSectionSubscriptionsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_Section_SubscriptionsQuery,
-    Refetch_Section_SubscriptionsQueryVariables
-  >(Refetch_Section_SubscriptionsDocument, baseOptions);
+    RefetchSectionSubscriptionsQuery,
+    RefetchSectionSubscriptionsQueryVariables
+  >(RefetchSectionSubscriptionsDocument, baseOptions);
 }
-export function useRefetch_Section_SubscriptionsLazyQuery(
+export function useRefetchSectionSubscriptionsLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_Section_SubscriptionsQuery,
-    Refetch_Section_SubscriptionsQueryVariables
+    RefetchSectionSubscriptionsQuery,
+    RefetchSectionSubscriptionsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_Section_SubscriptionsQuery,
-    Refetch_Section_SubscriptionsQueryVariables
-  >(Refetch_Section_SubscriptionsDocument, baseOptions);
+    RefetchSectionSubscriptionsQuery,
+    RefetchSectionSubscriptionsQueryVariables
+  >(RefetchSectionSubscriptionsDocument, baseOptions);
 }
-export type Refetch_Section_SubscriptionsQueryHookResult = ReturnType<
-  typeof useRefetch_Section_SubscriptionsQuery
+export type RefetchSectionSubscriptionsQueryHookResult = ReturnType<
+  typeof useRefetchSectionSubscriptionsQuery
 >;
-export type Refetch_Section_SubscriptionsLazyQueryHookResult = ReturnType<
-  typeof useRefetch_Section_SubscriptionsLazyQuery
+export type RefetchSectionSubscriptionsLazyQueryHookResult = ReturnType<
+  typeof useRefetchSectionSubscriptionsLazyQuery
 >;
-export type Refetch_Section_SubscriptionsQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_Section_SubscriptionsQuery,
-  Refetch_Section_SubscriptionsQueryVariables
+export type RefetchSectionSubscriptionsQueryResult = ApolloReactCommon.QueryResult<
+  RefetchSectionSubscriptionsQuery,
+  RefetchSectionSubscriptionsQueryVariables
 >;
-export const Refetch_Course_ReviewsDocument = gql`
-  query REFETCH_COURSE_REVIEWS($code: String, $user_id: Int) {
+export const RefetchCourseReviewsDocument = gql`
+  query refetchCourseReviews($code: String, $user_id: Int) {
     review(
       where: {
         course: { code: { _eq: $code } }
@@ -13488,56 +13487,56 @@ export const Refetch_Course_ReviewsDocument = gql`
 `;
 
 /**
- * __useRefetch_Course_ReviewsQuery__
+ * __useRefetchCourseReviewsQuery__
  *
- * To run a query within a React component, call `useRefetch_Course_ReviewsQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_Course_ReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchCourseReviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchCourseReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_Course_ReviewsQuery({
+ * const { data, loading, error } = useRefetchCourseReviewsQuery({
  *   variables: {
  *      code: // value for 'code'
  *      user_id: // value for 'user_id'
  *   },
  * });
  */
-export function useRefetch_Course_ReviewsQuery(
+export function useRefetchCourseReviewsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_Course_ReviewsQuery,
-    Refetch_Course_ReviewsQueryVariables
+    RefetchCourseReviewsQuery,
+    RefetchCourseReviewsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_Course_ReviewsQuery,
-    Refetch_Course_ReviewsQueryVariables
-  >(Refetch_Course_ReviewsDocument, baseOptions);
+    RefetchCourseReviewsQuery,
+    RefetchCourseReviewsQueryVariables
+  >(RefetchCourseReviewsDocument, baseOptions);
 }
-export function useRefetch_Course_ReviewsLazyQuery(
+export function useRefetchCourseReviewsLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_Course_ReviewsQuery,
-    Refetch_Course_ReviewsQueryVariables
+    RefetchCourseReviewsQuery,
+    RefetchCourseReviewsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_Course_ReviewsQuery,
-    Refetch_Course_ReviewsQueryVariables
-  >(Refetch_Course_ReviewsDocument, baseOptions);
+    RefetchCourseReviewsQuery,
+    RefetchCourseReviewsQueryVariables
+  >(RefetchCourseReviewsDocument, baseOptions);
 }
-export type Refetch_Course_ReviewsQueryHookResult = ReturnType<
-  typeof useRefetch_Course_ReviewsQuery
+export type RefetchCourseReviewsQueryHookResult = ReturnType<
+  typeof useRefetchCourseReviewsQuery
 >;
-export type Refetch_Course_ReviewsLazyQueryHookResult = ReturnType<
-  typeof useRefetch_Course_ReviewsLazyQuery
+export type RefetchCourseReviewsLazyQueryHookResult = ReturnType<
+  typeof useRefetchCourseReviewsLazyQuery
 >;
-export type Refetch_Course_ReviewsQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_Course_ReviewsQuery,
-  Refetch_Course_ReviewsQueryVariables
+export type RefetchCourseReviewsQueryResult = ApolloReactCommon.QueryResult<
+  RefetchCourseReviewsQuery,
+  RefetchCourseReviewsQueryVariables
 >;
-export const Course_ReviewsDocument = gql`
-  query COURSE_REVIEWS($id: Int) {
+export const CourseReviewsDocument = gql`
+  query courseReviews($id: Int) {
     review(
       where: {
         course_id: { _eq: $id }
@@ -13556,55 +13555,55 @@ export const Course_ReviewsDocument = gql`
 `;
 
 /**
- * __useCourse_ReviewsQuery__
+ * __useCourseReviewsQuery__
  *
- * To run a query within a React component, call `useCourse_ReviewsQuery` and pass it any options that fit your needs.
- * When your component renders, `useCourse_ReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCourseReviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourseReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useCourse_ReviewsQuery({
+ * const { data, loading, error } = useCourseReviewsQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useCourse_ReviewsQuery(
+export function useCourseReviewsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Course_ReviewsQuery,
-    Course_ReviewsQueryVariables
+    CourseReviewsQuery,
+    CourseReviewsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Course_ReviewsQuery,
-    Course_ReviewsQueryVariables
-  >(Course_ReviewsDocument, baseOptions);
+    CourseReviewsQuery,
+    CourseReviewsQueryVariables
+  >(CourseReviewsDocument, baseOptions);
 }
-export function useCourse_ReviewsLazyQuery(
+export function useCourseReviewsLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Course_ReviewsQuery,
-    Course_ReviewsQueryVariables
+    CourseReviewsQuery,
+    CourseReviewsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Course_ReviewsQuery,
-    Course_ReviewsQueryVariables
-  >(Course_ReviewsDocument, baseOptions);
+    CourseReviewsQuery,
+    CourseReviewsQueryVariables
+  >(CourseReviewsDocument, baseOptions);
 }
-export type Course_ReviewsQueryHookResult = ReturnType<
-  typeof useCourse_ReviewsQuery
+export type CourseReviewsQueryHookResult = ReturnType<
+  typeof useCourseReviewsQuery
 >;
-export type Course_ReviewsLazyQueryHookResult = ReturnType<
-  typeof useCourse_ReviewsLazyQuery
+export type CourseReviewsLazyQueryHookResult = ReturnType<
+  typeof useCourseReviewsLazyQuery
 >;
-export type Course_ReviewsQueryResult = ApolloReactCommon.QueryResult<
-  Course_ReviewsQuery,
-  Course_ReviewsQueryVariables
+export type CourseReviewsQueryResult = ApolloReactCommon.QueryResult<
+  CourseReviewsQuery,
+  CourseReviewsQueryVariables
 >;
-export const Course_Reviews_With_User_DataDocument = gql`
-  query COURSE_REVIEWS_WITH_USER_DATA($id: Int) {
+export const CourseReviewsWithUserDataDocument = gql`
+  query courseReviewsWithUserData($id: Int) {
     review(
       where: {
         course_id: { _eq: $id }
@@ -13625,55 +13624,55 @@ export const Course_Reviews_With_User_DataDocument = gql`
 `;
 
 /**
- * __useCourse_Reviews_With_User_DataQuery__
+ * __useCourseReviewsWithUserDataQuery__
  *
- * To run a query within a React component, call `useCourse_Reviews_With_User_DataQuery` and pass it any options that fit your needs.
- * When your component renders, `useCourse_Reviews_With_User_DataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCourseReviewsWithUserDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourseReviewsWithUserDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useCourse_Reviews_With_User_DataQuery({
+ * const { data, loading, error } = useCourseReviewsWithUserDataQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useCourse_Reviews_With_User_DataQuery(
+export function useCourseReviewsWithUserDataQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Course_Reviews_With_User_DataQuery,
-    Course_Reviews_With_User_DataQueryVariables
+    CourseReviewsWithUserDataQuery,
+    CourseReviewsWithUserDataQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Course_Reviews_With_User_DataQuery,
-    Course_Reviews_With_User_DataQueryVariables
-  >(Course_Reviews_With_User_DataDocument, baseOptions);
+    CourseReviewsWithUserDataQuery,
+    CourseReviewsWithUserDataQueryVariables
+  >(CourseReviewsWithUserDataDocument, baseOptions);
 }
-export function useCourse_Reviews_With_User_DataLazyQuery(
+export function useCourseReviewsWithUserDataLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Course_Reviews_With_User_DataQuery,
-    Course_Reviews_With_User_DataQueryVariables
+    CourseReviewsWithUserDataQuery,
+    CourseReviewsWithUserDataQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Course_Reviews_With_User_DataQuery,
-    Course_Reviews_With_User_DataQueryVariables
-  >(Course_Reviews_With_User_DataDocument, baseOptions);
+    CourseReviewsWithUserDataQuery,
+    CourseReviewsWithUserDataQueryVariables
+  >(CourseReviewsWithUserDataDocument, baseOptions);
 }
-export type Course_Reviews_With_User_DataQueryHookResult = ReturnType<
-  typeof useCourse_Reviews_With_User_DataQuery
+export type CourseReviewsWithUserDataQueryHookResult = ReturnType<
+  typeof useCourseReviewsWithUserDataQuery
 >;
-export type Course_Reviews_With_User_DataLazyQueryHookResult = ReturnType<
-  typeof useCourse_Reviews_With_User_DataLazyQuery
+export type CourseReviewsWithUserDataLazyQueryHookResult = ReturnType<
+  typeof useCourseReviewsWithUserDataLazyQuery
 >;
-export type Course_Reviews_With_User_DataQueryResult = ApolloReactCommon.QueryResult<
-  Course_Reviews_With_User_DataQuery,
-  Course_Reviews_With_User_DataQueryVariables
+export type CourseReviewsWithUserDataQueryResult = ApolloReactCommon.QueryResult<
+  CourseReviewsWithUserDataQuery,
+  CourseReviewsWithUserDataQueryVariables
 >;
-export const Refetch_Course_Review_UpvoteDocument = gql`
-  query REFETCH_COURSE_REVIEW_UPVOTE($review_id: Int) {
+export const RefetchCourseReviewUpvoteDocument = gql`
+  query refetchCourseReviewUpvote($review_id: Int) {
     review(where: { id: { _eq: $review_id } }) {
       ...ReviewVoteCounts
     }
@@ -13682,55 +13681,55 @@ export const Refetch_Course_Review_UpvoteDocument = gql`
 `;
 
 /**
- * __useRefetch_Course_Review_UpvoteQuery__
+ * __useRefetchCourseReviewUpvoteQuery__
  *
- * To run a query within a React component, call `useRefetch_Course_Review_UpvoteQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_Course_Review_UpvoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchCourseReviewUpvoteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchCourseReviewUpvoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_Course_Review_UpvoteQuery({
+ * const { data, loading, error } = useRefetchCourseReviewUpvoteQuery({
  *   variables: {
  *      review_id: // value for 'review_id'
  *   },
  * });
  */
-export function useRefetch_Course_Review_UpvoteQuery(
+export function useRefetchCourseReviewUpvoteQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_Course_Review_UpvoteQuery,
-    Refetch_Course_Review_UpvoteQueryVariables
+    RefetchCourseReviewUpvoteQuery,
+    RefetchCourseReviewUpvoteQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_Course_Review_UpvoteQuery,
-    Refetch_Course_Review_UpvoteQueryVariables
-  >(Refetch_Course_Review_UpvoteDocument, baseOptions);
+    RefetchCourseReviewUpvoteQuery,
+    RefetchCourseReviewUpvoteQueryVariables
+  >(RefetchCourseReviewUpvoteDocument, baseOptions);
 }
-export function useRefetch_Course_Review_UpvoteLazyQuery(
+export function useRefetchCourseReviewUpvoteLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_Course_Review_UpvoteQuery,
-    Refetch_Course_Review_UpvoteQueryVariables
+    RefetchCourseReviewUpvoteQuery,
+    RefetchCourseReviewUpvoteQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_Course_Review_UpvoteQuery,
-    Refetch_Course_Review_UpvoteQueryVariables
-  >(Refetch_Course_Review_UpvoteDocument, baseOptions);
+    RefetchCourseReviewUpvoteQuery,
+    RefetchCourseReviewUpvoteQueryVariables
+  >(RefetchCourseReviewUpvoteDocument, baseOptions);
 }
-export type Refetch_Course_Review_UpvoteQueryHookResult = ReturnType<
-  typeof useRefetch_Course_Review_UpvoteQuery
+export type RefetchCourseReviewUpvoteQueryHookResult = ReturnType<
+  typeof useRefetchCourseReviewUpvoteQuery
 >;
-export type Refetch_Course_Review_UpvoteLazyQueryHookResult = ReturnType<
-  typeof useRefetch_Course_Review_UpvoteLazyQuery
+export type RefetchCourseReviewUpvoteLazyQueryHookResult = ReturnType<
+  typeof useRefetchCourseReviewUpvoteLazyQuery
 >;
-export type Refetch_Course_Review_UpvoteQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_Course_Review_UpvoteQuery,
-  Refetch_Course_Review_UpvoteQueryVariables
+export type RefetchCourseReviewUpvoteQueryResult = ApolloReactCommon.QueryResult<
+  RefetchCourseReviewUpvoteQuery,
+  RefetchCourseReviewUpvoteQueryVariables
 >;
-export const Course_Review_ProfsDocument = gql`
-  query COURSE_REVIEW_PROFS($id: [Int!]) {
+export const CourseReviewProfsDocument = gql`
+  query courseReviewProfs($id: [Int!]) {
     review(
       where: {
         course_id: { _in: $id }
@@ -13745,55 +13744,55 @@ export const Course_Review_ProfsDocument = gql`
 `;
 
 /**
- * __useCourse_Review_ProfsQuery__
+ * __useCourseReviewProfsQuery__
  *
- * To run a query within a React component, call `useCourse_Review_ProfsQuery` and pass it any options that fit your needs.
- * When your component renders, `useCourse_Review_ProfsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCourseReviewProfsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourseReviewProfsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useCourse_Review_ProfsQuery({
+ * const { data, loading, error } = useCourseReviewProfsQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useCourse_Review_ProfsQuery(
+export function useCourseReviewProfsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Course_Review_ProfsQuery,
-    Course_Review_ProfsQueryVariables
+    CourseReviewProfsQuery,
+    CourseReviewProfsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Course_Review_ProfsQuery,
-    Course_Review_ProfsQueryVariables
-  >(Course_Review_ProfsDocument, baseOptions);
+    CourseReviewProfsQuery,
+    CourseReviewProfsQueryVariables
+  >(CourseReviewProfsDocument, baseOptions);
 }
-export function useCourse_Review_ProfsLazyQuery(
+export function useCourseReviewProfsLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Course_Review_ProfsQuery,
-    Course_Review_ProfsQueryVariables
+    CourseReviewProfsQuery,
+    CourseReviewProfsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Course_Review_ProfsQuery,
-    Course_Review_ProfsQueryVariables
-  >(Course_Review_ProfsDocument, baseOptions);
+    CourseReviewProfsQuery,
+    CourseReviewProfsQueryVariables
+  >(CourseReviewProfsDocument, baseOptions);
 }
-export type Course_Review_ProfsQueryHookResult = ReturnType<
-  typeof useCourse_Review_ProfsQuery
+export type CourseReviewProfsQueryHookResult = ReturnType<
+  typeof useCourseReviewProfsQuery
 >;
-export type Course_Review_ProfsLazyQueryHookResult = ReturnType<
-  typeof useCourse_Review_ProfsLazyQuery
+export type CourseReviewProfsLazyQueryHookResult = ReturnType<
+  typeof useCourseReviewProfsLazyQuery
 >;
-export type Course_Review_ProfsQueryResult = ApolloReactCommon.QueryResult<
-  Course_Review_ProfsQuery,
-  Course_Review_ProfsQueryVariables
+export type CourseReviewProfsQueryResult = ApolloReactCommon.QueryResult<
+  CourseReviewProfsQuery,
+  CourseReviewProfsQueryVariables
 >;
-export const Explore_AllDocument = gql`
-  query EXPLORE_ALL {
+export const ExploreAllDocument = gql`
+  query exploreAll {
     course_search_index {
       ...CourseSearch
     }
@@ -13806,52 +13805,52 @@ export const Explore_AllDocument = gql`
 `;
 
 /**
- * __useExplore_AllQuery__
+ * __useExploreAllQuery__
  *
- * To run a query within a React component, call `useExplore_AllQuery` and pass it any options that fit your needs.
- * When your component renders, `useExplore_AllQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useExploreAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExploreAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useExplore_AllQuery({
+ * const { data, loading, error } = useExploreAllQuery({
  *   variables: {
  *   },
  * });
  */
-export function useExplore_AllQuery(
+export function useExploreAllQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Explore_AllQuery,
-    Explore_AllQueryVariables
+    ExploreAllQuery,
+    ExploreAllQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<Explore_AllQuery, Explore_AllQueryVariables>(
-    Explore_AllDocument,
+  return ApolloReactHooks.useQuery<ExploreAllQuery, ExploreAllQueryVariables>(
+    ExploreAllDocument,
     baseOptions,
   );
 }
-export function useExplore_AllLazyQuery(
+export function useExploreAllLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Explore_AllQuery,
-    Explore_AllQueryVariables
+    ExploreAllQuery,
+    ExploreAllQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Explore_AllQuery,
-    Explore_AllQueryVariables
-  >(Explore_AllDocument, baseOptions);
+    ExploreAllQuery,
+    ExploreAllQueryVariables
+  >(ExploreAllDocument, baseOptions);
 }
-export type Explore_AllQueryHookResult = ReturnType<typeof useExplore_AllQuery>;
-export type Explore_AllLazyQueryHookResult = ReturnType<
-  typeof useExplore_AllLazyQuery
+export type ExploreAllQueryHookResult = ReturnType<typeof useExploreAllQuery>;
+export type ExploreAllLazyQueryHookResult = ReturnType<
+  typeof useExploreAllLazyQuery
 >;
-export type Explore_AllQueryResult = ApolloReactCommon.QueryResult<
-  Explore_AllQuery,
-  Explore_AllQueryVariables
+export type ExploreAllQueryResult = ApolloReactCommon.QueryResult<
+  ExploreAllQuery,
+  ExploreAllQueryVariables
 >;
-export const Explore_QueryDocument = gql`
-  query EXPLORE_QUERY($query: String, $code_only: Boolean) {
+export const ExploreDocument = gql`
+  query explore($query: String, $code_only: Boolean) {
     search_courses(args: { query: $query, code_only: $code_only }) {
       ...CourseSearch
     }
@@ -13864,56 +13863,52 @@ export const Explore_QueryDocument = gql`
 `;
 
 /**
- * __useExplore_QueryQuery__
+ * __useExploreQuery__
  *
- * To run a query within a React component, call `useExplore_QueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useExplore_QueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useExploreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExploreQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useExplore_QueryQuery({
+ * const { data, loading, error } = useExploreQuery({
  *   variables: {
  *      query: // value for 'query'
  *      code_only: // value for 'code_only'
  *   },
  * });
  */
-export function useExplore_QueryQuery(
+export function useExploreQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Explore_QueryQuery,
-    Explore_QueryQueryVariables
+    ExploreQuery,
+    ExploreQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
-    Explore_QueryQuery,
-    Explore_QueryQueryVariables
-  >(Explore_QueryDocument, baseOptions);
+  return ApolloReactHooks.useQuery<ExploreQuery, ExploreQueryVariables>(
+    ExploreDocument,
+    baseOptions,
+  );
 }
-export function useExplore_QueryLazyQuery(
+export function useExploreLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Explore_QueryQuery,
-    Explore_QueryQueryVariables
+    ExploreQuery,
+    ExploreQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    Explore_QueryQuery,
-    Explore_QueryQueryVariables
-  >(Explore_QueryDocument, baseOptions);
+  return ApolloReactHooks.useLazyQuery<ExploreQuery, ExploreQueryVariables>(
+    ExploreDocument,
+    baseOptions,
+  );
 }
-export type Explore_QueryQueryHookResult = ReturnType<
-  typeof useExplore_QueryQuery
+export type ExploreQueryHookResult = ReturnType<typeof useExploreQuery>;
+export type ExploreLazyQueryHookResult = ReturnType<typeof useExploreLazyQuery>;
+export type ExploreQueryResult = ApolloReactCommon.QueryResult<
+  ExploreQuery,
+  ExploreQueryVariables
 >;
-export type Explore_QueryLazyQueryHookResult = ReturnType<
-  typeof useExplore_QueryLazyQuery
->;
-export type Explore_QueryQueryResult = ApolloReactCommon.QueryResult<
-  Explore_QueryQuery,
-  Explore_QueryQueryVariables
->;
-export const Get_ProfDocument = gql`
-  query GET_PROF($code: String) {
+export const GetProfDocument = gql`
+  query getProf($code: String) {
     prof(where: { code: { _eq: $code } }) {
       ...ProfInfo
       ...ProfCoursesTaught
@@ -13926,53 +13921,51 @@ export const Get_ProfDocument = gql`
 `;
 
 /**
- * __useGet_ProfQuery__
+ * __useGetProfQuery__
  *
- * To run a query within a React component, call `useGet_ProfQuery` and pass it any options that fit your needs.
- * When your component renders, `useGet_ProfQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetProfQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGet_ProfQuery({
+ * const { data, loading, error } = useGetProfQuery({
  *   variables: {
  *      code: // value for 'code'
  *   },
  * });
  */
-export function useGet_ProfQuery(
+export function useGetProfQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Get_ProfQuery,
-    Get_ProfQueryVariables
+    GetProfQuery,
+    GetProfQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<Get_ProfQuery, Get_ProfQueryVariables>(
-    Get_ProfDocument,
+  return ApolloReactHooks.useQuery<GetProfQuery, GetProfQueryVariables>(
+    GetProfDocument,
     baseOptions,
   );
 }
-export function useGet_ProfLazyQuery(
+export function useGetProfLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Get_ProfQuery,
-    Get_ProfQueryVariables
+    GetProfQuery,
+    GetProfQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<Get_ProfQuery, Get_ProfQueryVariables>(
-    Get_ProfDocument,
+  return ApolloReactHooks.useLazyQuery<GetProfQuery, GetProfQueryVariables>(
+    GetProfDocument,
     baseOptions,
   );
 }
-export type Get_ProfQueryHookResult = ReturnType<typeof useGet_ProfQuery>;
-export type Get_ProfLazyQueryHookResult = ReturnType<
-  typeof useGet_ProfLazyQuery
+export type GetProfQueryHookResult = ReturnType<typeof useGetProfQuery>;
+export type GetProfLazyQueryHookResult = ReturnType<typeof useGetProfLazyQuery>;
+export type GetProfQueryResult = ApolloReactCommon.QueryResult<
+  GetProfQuery,
+  GetProfQueryVariables
 >;
-export type Get_ProfQueryResult = ApolloReactCommon.QueryResult<
-  Get_ProfQuery,
-  Get_ProfQueryVariables
->;
-export const Prof_ReviewsDocument = gql`
-  query PROF_REVIEWS($id: Int) {
+export const ProfReviewsDocument = gql`
+  query profReviews($id: Int) {
     review(
       where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }
     ) {
@@ -13985,55 +13978,53 @@ export const Prof_ReviewsDocument = gql`
 `;
 
 /**
- * __useProf_ReviewsQuery__
+ * __useProfReviewsQuery__
  *
- * To run a query within a React component, call `useProf_ReviewsQuery` and pass it any options that fit your needs.
- * When your component renders, `useProf_ReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useProfReviewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfReviewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useProf_ReviewsQuery({
+ * const { data, loading, error } = useProfReviewsQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useProf_ReviewsQuery(
+export function useProfReviewsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Prof_ReviewsQuery,
-    Prof_ReviewsQueryVariables
+    ProfReviewsQuery,
+    ProfReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
-    Prof_ReviewsQuery,
-    Prof_ReviewsQueryVariables
-  >(Prof_ReviewsDocument, baseOptions);
+  return ApolloReactHooks.useQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
+    ProfReviewsDocument,
+    baseOptions,
+  );
 }
-export function useProf_ReviewsLazyQuery(
+export function useProfReviewsLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Prof_ReviewsQuery,
-    Prof_ReviewsQueryVariables
+    ProfReviewsQuery,
+    ProfReviewsQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Prof_ReviewsQuery,
-    Prof_ReviewsQueryVariables
-  >(Prof_ReviewsDocument, baseOptions);
+    ProfReviewsQuery,
+    ProfReviewsQueryVariables
+  >(ProfReviewsDocument, baseOptions);
 }
-export type Prof_ReviewsQueryHookResult = ReturnType<
-  typeof useProf_ReviewsQuery
+export type ProfReviewsQueryHookResult = ReturnType<typeof useProfReviewsQuery>;
+export type ProfReviewsLazyQueryHookResult = ReturnType<
+  typeof useProfReviewsLazyQuery
 >;
-export type Prof_ReviewsLazyQueryHookResult = ReturnType<
-  typeof useProf_ReviewsLazyQuery
+export type ProfReviewsQueryResult = ApolloReactCommon.QueryResult<
+  ProfReviewsQuery,
+  ProfReviewsQueryVariables
 >;
-export type Prof_ReviewsQueryResult = ApolloReactCommon.QueryResult<
-  Prof_ReviewsQuery,
-  Prof_ReviewsQueryVariables
->;
-export const Prof_Reviews_With_User_DataDocument = gql`
-  query PROF_REVIEWS_WITH_USER_DATA($id: Int) {
+export const ProfReviewsWithUserDataDocument = gql`
+  query profReviewsWithUserData($id: Int) {
     review(
       where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }
     ) {
@@ -14048,52 +14039,52 @@ export const Prof_Reviews_With_User_DataDocument = gql`
 `;
 
 /**
- * __useProf_Reviews_With_User_DataQuery__
+ * __useProfReviewsWithUserDataQuery__
  *
- * To run a query within a React component, call `useProf_Reviews_With_User_DataQuery` and pass it any options that fit your needs.
- * When your component renders, `useProf_Reviews_With_User_DataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useProfReviewsWithUserDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfReviewsWithUserDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useProf_Reviews_With_User_DataQuery({
+ * const { data, loading, error } = useProfReviewsWithUserDataQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useProf_Reviews_With_User_DataQuery(
+export function useProfReviewsWithUserDataQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Prof_Reviews_With_User_DataQuery,
-    Prof_Reviews_With_User_DataQueryVariables
+    ProfReviewsWithUserDataQuery,
+    ProfReviewsWithUserDataQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Prof_Reviews_With_User_DataQuery,
-    Prof_Reviews_With_User_DataQueryVariables
-  >(Prof_Reviews_With_User_DataDocument, baseOptions);
+    ProfReviewsWithUserDataQuery,
+    ProfReviewsWithUserDataQueryVariables
+  >(ProfReviewsWithUserDataDocument, baseOptions);
 }
-export function useProf_Reviews_With_User_DataLazyQuery(
+export function useProfReviewsWithUserDataLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Prof_Reviews_With_User_DataQuery,
-    Prof_Reviews_With_User_DataQueryVariables
+    ProfReviewsWithUserDataQuery,
+    ProfReviewsWithUserDataQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Prof_Reviews_With_User_DataQuery,
-    Prof_Reviews_With_User_DataQueryVariables
-  >(Prof_Reviews_With_User_DataDocument, baseOptions);
+    ProfReviewsWithUserDataQuery,
+    ProfReviewsWithUserDataQueryVariables
+  >(ProfReviewsWithUserDataDocument, baseOptions);
 }
-export type Prof_Reviews_With_User_DataQueryHookResult = ReturnType<
-  typeof useProf_Reviews_With_User_DataQuery
+export type ProfReviewsWithUserDataQueryHookResult = ReturnType<
+  typeof useProfReviewsWithUserDataQuery
 >;
-export type Prof_Reviews_With_User_DataLazyQueryHookResult = ReturnType<
-  typeof useProf_Reviews_With_User_DataLazyQuery
+export type ProfReviewsWithUserDataLazyQueryHookResult = ReturnType<
+  typeof useProfReviewsWithUserDataLazyQuery
 >;
-export type Prof_Reviews_With_User_DataQueryResult = ApolloReactCommon.QueryResult<
-  Prof_Reviews_With_User_DataQuery,
-  Prof_Reviews_With_User_DataQueryVariables
+export type ProfReviewsWithUserDataQueryResult = ApolloReactCommon.QueryResult<
+  ProfReviewsWithUserDataQuery,
+  ProfReviewsWithUserDataQueryVariables
 >;
 export const Refetch_Prof_Review_UpvoteDocument = gql`
   query REFETCH_PROF_REVIEW_UPVOTE($review_id: Int) {
@@ -14152,8 +14143,8 @@ export type Refetch_Prof_Review_UpvoteQueryResult = ApolloReactCommon.QueryResul
   Refetch_Prof_Review_UpvoteQuery,
   Refetch_Prof_Review_UpvoteQueryVariables
 >;
-export const Get_UserDocument = gql`
-  query GET_USER($id: Int) {
+export const GetUserDocument = gql`
+  query getUser($id: Int) {
     user(where: { id: { _eq: $id } }) {
       ...UserInfo
       ...UserShortlist
@@ -14174,53 +14165,51 @@ export const Get_UserDocument = gql`
 `;
 
 /**
- * __useGet_UserQuery__
+ * __useGetUserQuery__
  *
- * To run a query within a React component, call `useGet_UserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGet_UserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGet_UserQuery({
+ * const { data, loading, error } = useGetUserQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGet_UserQuery(
+export function useGetUserQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Get_UserQuery,
-    Get_UserQueryVariables
+    GetUserQuery,
+    GetUserQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<Get_UserQuery, Get_UserQueryVariables>(
-    Get_UserDocument,
+  return ApolloReactHooks.useQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
     baseOptions,
   );
 }
-export function useGet_UserLazyQuery(
+export function useGetUserLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Get_UserQuery,
-    Get_UserQueryVariables
+    GetUserQuery,
+    GetUserQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<Get_UserQuery, Get_UserQueryVariables>(
-    Get_UserDocument,
+  return ApolloReactHooks.useLazyQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
     baseOptions,
   );
 }
-export type Get_UserQueryHookResult = ReturnType<typeof useGet_UserQuery>;
-export type Get_UserLazyQueryHookResult = ReturnType<
-  typeof useGet_UserLazyQuery
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserQueryResult = ApolloReactCommon.QueryResult<
+  GetUserQuery,
+  GetUserQueryVariables
 >;
-export type Get_UserQueryResult = ApolloReactCommon.QueryResult<
-  Get_UserQuery,
-  Get_UserQueryVariables
->;
-export const Refetch_User_ShortlistDocument = gql`
-  query REFETCH_USER_SHORTLIST($id: Int) {
+export const RefetchUserShortlistDocument = gql`
+  query refetchUserShortlist($id: Int) {
     user(where: { id: { _eq: $id } }) {
       id
       ...UserShortlist
@@ -14230,55 +14219,55 @@ export const Refetch_User_ShortlistDocument = gql`
 `;
 
 /**
- * __useRefetch_User_ShortlistQuery__
+ * __useRefetchUserShortlistQuery__
  *
- * To run a query within a React component, call `useRefetch_User_ShortlistQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_User_ShortlistQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchUserShortlistQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchUserShortlistQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_User_ShortlistQuery({
+ * const { data, loading, error } = useRefetchUserShortlistQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useRefetch_User_ShortlistQuery(
+export function useRefetchUserShortlistQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_User_ShortlistQuery,
-    Refetch_User_ShortlistQueryVariables
+    RefetchUserShortlistQuery,
+    RefetchUserShortlistQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_User_ShortlistQuery,
-    Refetch_User_ShortlistQueryVariables
-  >(Refetch_User_ShortlistDocument, baseOptions);
+    RefetchUserShortlistQuery,
+    RefetchUserShortlistQueryVariables
+  >(RefetchUserShortlistDocument, baseOptions);
 }
-export function useRefetch_User_ShortlistLazyQuery(
+export function useRefetchUserShortlistLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_User_ShortlistQuery,
-    Refetch_User_ShortlistQueryVariables
+    RefetchUserShortlistQuery,
+    RefetchUserShortlistQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_User_ShortlistQuery,
-    Refetch_User_ShortlistQueryVariables
-  >(Refetch_User_ShortlistDocument, baseOptions);
+    RefetchUserShortlistQuery,
+    RefetchUserShortlistQueryVariables
+  >(RefetchUserShortlistDocument, baseOptions);
 }
-export type Refetch_User_ShortlistQueryHookResult = ReturnType<
-  typeof useRefetch_User_ShortlistQuery
+export type RefetchUserShortlistQueryHookResult = ReturnType<
+  typeof useRefetchUserShortlistQuery
 >;
-export type Refetch_User_ShortlistLazyQueryHookResult = ReturnType<
-  typeof useRefetch_User_ShortlistLazyQuery
+export type RefetchUserShortlistLazyQueryHookResult = ReturnType<
+  typeof useRefetchUserShortlistLazyQuery
 >;
-export type Refetch_User_ShortlistQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_User_ShortlistQuery,
-  Refetch_User_ShortlistQueryVariables
+export type RefetchUserShortlistQueryResult = ApolloReactCommon.QueryResult<
+  RefetchUserShortlistQuery,
+  RefetchUserShortlistQueryVariables
 >;
-export const Refetch_User_ReviewDocument = gql`
-  query REFETCH_USER_REVIEW($id: Int) {
+export const RefetchUserReviewDocument = gql`
+  query refetchUserReview($id: Int) {
     review(where: { user: { user_id: { _eq: $id } } }) {
       ...ReviewInfo
     }
@@ -14287,50 +14276,50 @@ export const Refetch_User_ReviewDocument = gql`
 `;
 
 /**
- * __useRefetch_User_ReviewQuery__
+ * __useRefetchUserReviewQuery__
  *
- * To run a query within a React component, call `useRefetch_User_ReviewQuery` and pass it any options that fit your needs.
- * When your component renders, `useRefetch_User_ReviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useRefetchUserReviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRefetchUserReviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useRefetch_User_ReviewQuery({
+ * const { data, loading, error } = useRefetchUserReviewQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useRefetch_User_ReviewQuery(
+export function useRefetchUserReviewQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Refetch_User_ReviewQuery,
-    Refetch_User_ReviewQueryVariables
+    RefetchUserReviewQuery,
+    RefetchUserReviewQueryVariables
   >,
 ) {
   return ApolloReactHooks.useQuery<
-    Refetch_User_ReviewQuery,
-    Refetch_User_ReviewQueryVariables
-  >(Refetch_User_ReviewDocument, baseOptions);
+    RefetchUserReviewQuery,
+    RefetchUserReviewQueryVariables
+  >(RefetchUserReviewDocument, baseOptions);
 }
-export function useRefetch_User_ReviewLazyQuery(
+export function useRefetchUserReviewLazyQuery(
   baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Refetch_User_ReviewQuery,
-    Refetch_User_ReviewQueryVariables
+    RefetchUserReviewQuery,
+    RefetchUserReviewQueryVariables
   >,
 ) {
   return ApolloReactHooks.useLazyQuery<
-    Refetch_User_ReviewQuery,
-    Refetch_User_ReviewQueryVariables
-  >(Refetch_User_ReviewDocument, baseOptions);
+    RefetchUserReviewQuery,
+    RefetchUserReviewQueryVariables
+  >(RefetchUserReviewDocument, baseOptions);
 }
-export type Refetch_User_ReviewQueryHookResult = ReturnType<
-  typeof useRefetch_User_ReviewQuery
+export type RefetchUserReviewQueryHookResult = ReturnType<
+  typeof useRefetchUserReviewQuery
 >;
-export type Refetch_User_ReviewLazyQueryHookResult = ReturnType<
-  typeof useRefetch_User_ReviewLazyQuery
+export type RefetchUserReviewLazyQueryHookResult = ReturnType<
+  typeof useRefetchUserReviewLazyQuery
 >;
-export type Refetch_User_ReviewQueryResult = ApolloReactCommon.QueryResult<
-  Refetch_User_ReviewQuery,
-  Refetch_User_ReviewQueryVariables
+export type RefetchUserReviewQueryResult = ApolloReactCommon.QueryResult<
+  RefetchUserReviewQuery,
+  RefetchUserReviewQueryVariables
 >;

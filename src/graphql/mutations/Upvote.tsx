@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const INSERT_COURSE_REVIEW_VOTE = gql`
-  mutation INSERT_COURSE_REVIEW_VOTE($user_id: Int, $review_id: Int) {
+  mutation insertCourseReviewVote($user_id: Int, $review_id: Int) {
     insert_course_review_upvote(
       objects: { review_id: $review_id, user_id: $user_id }
     ) {
@@ -11,7 +11,7 @@ export const INSERT_COURSE_REVIEW_VOTE = gql`
 `;
 
 export const DELETE_COURSE_REVIEW_VOTE = gql`
-  mutation DELETE_COURSE_REVIEW_VOTE($user_id: Int, $review_id: Int) {
+  mutation deleteCourseReviewVote($user_id: Int, $review_id: Int) {
     delete_course_review_upvote(
       where: { user_id: { _eq: $user_id }, review_id: { _eq: $review_id } }
     ) {
@@ -21,7 +21,7 @@ export const DELETE_COURSE_REVIEW_VOTE = gql`
 `;
 
 export const INSERT_PROF_REVIEW_VOTE = gql`
-  mutation INSERT_PROF_REVIEW_VOTE($user_id: Int, $review_id: Int) {
+  mutation insertProfReviewVote($user_id: Int, $review_id: Int) {
     insert_prof_review_upvote(
       objects: { review_id: $review_id, user_id: $user_id }
     ) {

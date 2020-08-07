@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'react-feather';
 import moment from 'moment/moment';
 import { getCoursePageRoute } from 'Routes';
 
-import { LAB, LEC, TUT } from 'constants/PageConstants';
+import { LAB, LEC, TUT } from 'constants/CourseSection';
 import { formatCourseCode } from 'utils/Misc';
 
 import {

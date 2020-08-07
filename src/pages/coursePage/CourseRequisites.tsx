@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { getCoursePageRoute } from 'Routes';
 
 import { COURSE_CODE_REGEX, formatCourseCode } from 'utils/Misc';
@@ -12,17 +12,26 @@ import {
   ReqInfo,
   ReqText,
 } from './styles/CourseRequisites';
+import { CourseRequirementsFragment } from 'generated/graphql';
+
+type CourseRequisitesProps = {
+  courseCode: string;
+  prereqs?: string | null;
+  antireqs?: string | null;
+  coreqs?: string | null;
+  postreqs?: CourseRequirementsFragment['postrequisites'];
+};
 
 const CourseRequisites = ({
-  prereqs,
-  antireqs,
-  coreqs,
-  postreqs,
   courseCode,
-}) => {
-  const parsedRequisites = (requisites) => {
-    if (!requisites) {
-      return '';
+  prereqs = null,
+  antireqs = null,
+  coreqs = null,
+  postreqs = [],
+}: CourseRequisitesProps) => {
+  const parsedRequisites = (requisites: string | null): ReactNode[] => {
+    if (requisites === null) {
+      return [''];
     }
 
     let parsedReqs = requisites.replace(/\s{2,}/gi, ' ');
@@ -35,12 +44,12 @@ const CourseRequisites = ({
     const matches = parsedReqs.match(COURSE_CODE_REGEX);
 
     if (splitText.length <= 1) {
-      return parsedReqs;
+      return [parsedReqs];
     }
 
     return splitText.reduce(
-      (arr, element, index) =>
-        matches[index]
+      (arr: ReactNode[], element, index) =>
+        matches && matches[index]
           ? [
               ...arr,
               element,
@@ -89,15 +98,18 @@ const CourseRequisites = ({
       )}
       <br />
       <Header>{`${formatCourseCode(courseCode)} leads to`}</Header>
-      {postreqs.map((postreq, idx) => (
-        <LineOfText key={idx}>
-          <CourseText to={getCoursePageRoute(postreq.postrequisite.code)}>
-            {`${formatCourseCode(postreq.postrequisite.code)} - ${
-              postreq.postrequisite.name
-            }`}
-          </CourseText>
-        </LineOfText>
-      ))}
+      {postreqs.map(
+        (postreq, idx) =>
+          postreq.postrequisite && (
+            <LineOfText key={idx}>
+              <CourseText to={getCoursePageRoute(postreq.postrequisite.code)}>
+                {`${formatCourseCode(postreq.postrequisite.code)} - ${
+                  postreq.postrequisite.name
+                }`}
+              </CourseText>
+            </LineOfText>
+          ),
+      )}
       {postreqs.length === 0 && (
         <LineOfText>
           <GreyText>No other courses</GreyText>

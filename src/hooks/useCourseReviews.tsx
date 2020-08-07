@@ -1,29 +1,31 @@
 import { useState } from 'react';
+import {
+  CourseReviewsQuery,
+  CourseReviewsWithUserDataQuery,
+} from 'generated/graphql';
 
 export const UPDATE_REVIEW_DATA = 'update_review_data';
-export const SORT_COURSE_REVIEWS_BY_PROF = 'sort_by_prof';
 
-const convertInputToState = (data) => {
-  if (!data) {
-    return {
-      courseReviews: [],
-      reviewsByProf: [],
-      courseReviewProfs: [],
-      profReviewProfs: [],
-    };
-  }
+export type CourseReviewsAction = {
+  type: typeof UPDATE_REVIEW_DATA;
+  payload: CourseReviewsQuery | CourseReviewsWithUserDataQuery;
+};
 
-  const courseReviews = data.review
-    .filter((r) => r.course_comment)
-    .map((r) => ({
+export type CourseReviewsState = {
+  courseReviews: any[];
+  reviewsByProf: any[];
+  courseReviewProfs: string[];
+  profReviewProfs: string[];
+};
+
+const getReviewsByCourse = (data: any): any[] =>
+  data.review
+    .filter((r: any) => r.course_comment)
+    .map((r: any) => ({
       id: r.id,
       upvotes: r.course_review_rating ? r.course_review_rating.upvote_count : 0,
-      upvote_users: r.course_review_upvotes
-        ? r.course_review_upvotes.map((vote) => Number(vote.user_id))
-        : [],
       review: r.course_comment,
       author: r.author,
-      user: r.user,
       created_at: r.created_at,
       updated_at: r.updated_at,
       metrics: {
@@ -33,9 +35,14 @@ const convertInputToState = (data) => {
       },
       prof: r.prof ? r.prof.name : '',
       prof_code: r.prof ? r.prof.code : '',
+      upvote_users: r.course_review_upvotes
+        ? r.course_review_upvotes.map((vote: any) => Number(vote.user_id))
+        : [],
+      user: r.user,
     }));
 
-  const reviewsByProf = data.review.reduce((allProfs, current) => {
+const getReviewsByProf = (data: any): any[] =>
+  data.review.reduce((allProfs: any[], current: any) => {
     let profObject;
     let foundProfObject = false;
 
@@ -69,7 +76,7 @@ const convertInputToState = (data) => {
         ? current.prof_review_rating.upvote_count
         : 0,
       upvote_users: current.prof_review_upvotes
-        ? current.prof_review_upvotes.map((vote) => Number(vote.user_id))
+        ? current.prof_review_upvotes.map((vote: any) => Number(vote.user_id))
         : [],
       review: current.prof_comment,
       author: current.author,
@@ -84,36 +91,52 @@ const convertInputToState = (data) => {
     return allProfs;
   }, []);
 
-  const courseReviewProfs = data.review.reduce((allProfs, review) => {
+const getCourseReviewProfs = (data: any): string[] =>
+  data.review.reduce((allProfs: any[], review: any) => {
     if (review.prof && !allProfs.includes(review.prof.name)) {
       allProfs.push(review.prof.name);
     }
     return allProfs;
   }, []);
 
-  const profReviewProfs = reviewsByProf.map((obj) => obj.name);
+const getProfReviewProfs = (reviewsByProf: any): string[] =>
+  reviewsByProf.map((obj: any) => obj.name);
 
-  return {
-    courseReviews,
-    reviewsByProf,
-    courseReviewProfs,
-    profReviewProfs,
+const useCourseReviews = (): [
+  CourseReviewsState,
+  (action: CourseReviewsAction) => void,
+] => {
+  const [state, setState] = useState<CourseReviewsState>({
+    courseReviews: [],
+    reviewsByProf: [],
+    courseReviewProfs: [],
+    profReviewProfs: [],
+  });
+
+  const convertInputToState = (data: any): CourseReviewsState => {
+    const courseReviews = getReviewsByCourse(data);
+    const reviewsByProf = getReviewsByProf(data);
+    return {
+      courseReviews,
+      reviewsByProf,
+      courseReviewProfs: getCourseReviewProfs(data),
+      profReviewProfs: getProfReviewProfs(reviewsByProf),
+    };
   };
-};
 
-const processDispatch = (currentState, action) => {
-  switch (action.type) {
-    case UPDATE_REVIEW_DATA:
-      return convertInputToState(action.payload);
-    default:
-      return currentState;
-  }
-};
+  const processDispatch = (
+    currentState: CourseReviewsState,
+    action: CourseReviewsAction,
+  ) => {
+    switch (action.type) {
+      case UPDATE_REVIEW_DATA:
+        return convertInputToState(action.payload);
+      default:
+        return currentState;
+    }
+  };
 
-const useCourseReviewsReducer = (initialState) => {
-  const [state, setState] = useState(convertInputToState(initialState));
-
-  const dispatch = (action) => {
+  const dispatch = (action: CourseReviewsAction) => {
     const newState = processDispatch(state, action);
     setState(newState);
   };
@@ -121,4 +144,4 @@ const useCourseReviewsReducer = (initialState) => {
   return [state, dispatch];
 };
 
-export default useCourseReviewsReducer;
+export default useCourseReviews;

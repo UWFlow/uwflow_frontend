@@ -15,9 +15,7 @@ import {
   PROF_REVIEWS,
   PROF_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/prof/ProfReview';
-import useProfReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from 'hooks/useProfReviewsReducer';
+import useProfReviews, { UPDATE_REVIEW_DATA } from 'hooks/useProfReviews';
 import { formatCourseCode, processRating } from 'utils/Misc';
 import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
 
@@ -40,24 +38,31 @@ import {
   ShowMoreReviewsText,
   SortFilterDropdownWrapper,
 } from './styles/ProfReviews';
+import { RootState } from 'data/reducers/RootReducer';
 
-const ProfReviews = ({ profID }) => {
-  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+type ProfReviewsProps = {
+  profId: number;
+};
+
+const ProfReviews = ({ profId }: ProfReviewsProps) => {
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const theme = useTheme();
 
   const [courseSort, setCourseSort] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState(0);
   const [selectedSort, setSelectedSort] = useState(Array(1).fill(0));
+  const [showingReviewsMap, setShowingReviewsMap] = useState<{
+    [key: string]: string;
+  }>({});
+
+  const [reviewDataState, dispatchReviews] = useProfReviews();
 
   const profReviewsQuery = isLoggedIn
     ? PROF_REVIEWS_WITH_USER_DATA
     : PROF_REVIEWS;
   const { loading, data } = useQuery(profReviewsQuery, {
-    variables: { id: profID },
+    variables: { id: profId },
   });
-
-  const [reviewDataState, dispatchReviews] = useProfReviewsReducer(data);
-  const [showingReviewsMap, setShowingReviewsMap] = useState({});
 
   useEffect(() => {
     if (data) {
@@ -84,7 +89,7 @@ const ProfReviews = ({ profID }) => {
       .sort((a, b) => a.localeCompare(b)),
   ];
 
-  const sortCourses = (a, b) =>
+  const sortCourses = (a: any, b: any) =>
     courseSort === 0
       ? sortByReviews(a, b, (x, y) => x.code.localeCompare(y.code))
       : sortByLiked(a, b);
@@ -189,7 +194,7 @@ const ProfReviews = ({ profID }) => {
                     [course.code]: !showingReviewsMap[course.code],
                   });
                   if (showingReviewsMap[course.code]) {
-                    document.getElementById(course.code).scrollIntoView();
+                    document.getElementById(course.code)?.scrollIntoView();
                   }
                 }}
                 onMouseDown={(e) => e.preventDefault()}

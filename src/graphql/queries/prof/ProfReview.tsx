@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const PROF_REVIEWS = gql`
-  query PROF_REVIEWS($id: Int) {
+  query profReviews($id: Int) {
     review(
       where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }
     ) {
@@ -16,7 +16,7 @@ export const PROF_REVIEWS = gql`
 `;
 
 export const PROF_REVIEWS_WITH_USER_DATA = gql`
-  query PROF_REVIEWS_WITH_USER_DATA($id: Int) {
+  query profReviewsWithUserData($id: Int) {
     review(
       where: { prof_id: { _eq: $id }, prof_comment: { _is_null: false } }
     ) {

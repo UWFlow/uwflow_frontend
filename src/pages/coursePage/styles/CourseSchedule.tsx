@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Hover } from 'constants/Mixins';
-import { LAB, LEC } from 'constants/PageConstants';
+import { LAB, LEC } from 'constants/CourseSection';
 
 const CELL_HEIGHT = 28;
 
@@ -52,7 +52,7 @@ export const SectionContentWrapper = styled.div`
   top: 4px;
 `;
 
-export const ContentWrapper = styled.div<{ italics: boolean }>`
+export const ContentWrapper = styled.div<{ italics?: boolean }>`
   display: flex;
   align-items: center;
   width: 100%;

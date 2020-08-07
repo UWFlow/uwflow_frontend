@@ -35,7 +35,7 @@ const EmailInputForm = ({
 }: EmailInputFormProps) => {
   const theme = useTheme();
 
-  const userID = localStorage.getItem('user_id');
+  const userId = localStorage.getItem('user_id');
   const [emailText, setEmailText] = useState(email || '');
   const [emailError, setEmailError] = useState(false);
   const [updateEmail] = useMutation(UPDATE_USER_EMAIL);
@@ -48,7 +48,7 @@ const EmailInputForm = ({
     if (!validateEmail(emailText)) {
       setEmailError(true);
     } else {
-      updateEmail({ variables: { user_id: userID, email: emailText } })
+      updateEmail({ variables: { user_id: userId, email: emailText } })
         .then(() => {
           notifyUpdate();
           onSuccess(email);

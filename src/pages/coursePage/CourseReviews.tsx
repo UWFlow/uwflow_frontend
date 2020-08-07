@@ -14,14 +14,12 @@ import {
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 import {
   COURSE_REVIEWS,
   COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
-import useCourseReviewsReducer, {
-  UPDATE_REVIEW_DATA,
-} from 'hooks/useCourseReviewsReducer';
+import useCourseReviews, { UPDATE_REVIEW_DATA } from 'hooks/useCourseReviews';
 import { processRating } from 'utils/Misc';
 import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
 
@@ -46,16 +44,30 @@ import {
   ShowMoreReviewsSection,
   ShowMoreReviewsText,
 } from './styles/CourseReviews';
+import {
+  CourseReviewsQuery,
+  CourseReviewsQueryVariables,
+  CourseReviewsWithUserDataQuery,
+} from 'generated/graphql';
+
+type CourseCourseReviewsProps = {
+  reviews: any;
+  courseSort: any;
+  setCourseSort: any;
+  courseProfFilter: any;
+  courseProfFilterOptions: any;
+  setCourseProfFilter: any;
+};
 
 const CourseCourseReviews = ({
   reviews,
-  theme,
   courseSort,
   setCourseSort,
   courseProfFilter,
   courseProfFilterOptions,
   setCourseProfFilter,
-}) => {
+}: CourseCourseReviewsProps) => {
+  const theme = useTheme();
   const [showingAllReviews, setShowingAllReviews] = useState(false);
 
   const renderReviews = useMemo(
@@ -113,14 +125,19 @@ const CourseCourseReviews = ({
   );
 };
 
+type CourseProfReviewsProps = {
+  reviewsByProf: any;
+  selectedSort: any;
+  setSelectedSort: any;
+};
+
 const CourseProfReviews = ({
-  theme,
-  profSort,
   reviewsByProf,
   selectedSort,
   setSelectedSort,
-}) => {
-  const [showingReviewsMap, setShowingReviewsMap] = useState({});
+}: CourseProfReviewsProps) => {
+  const theme = useTheme();
+  const [showingReviewsMap, setShowingReviewsMap] = useState<any>({});
 
   const curSelectedSort =
     selectedSort.length >= reviewsByProf.length
@@ -132,7 +149,7 @@ const CourseProfReviews = ({
 
   const reviewList = useMemo(
     () =>
-      reviewsByProf.map((prof, idx) => (
+      reviewsByProf.map((prof: any, idx: number) => (
         <ReviewsForSingleProfWrapper key={idx}>
           <ReviewListWrapper>
             <ProfHeader>
@@ -197,7 +214,7 @@ const CourseProfReviews = ({
                   [prof.name]: !showingReviewsMap[prof.name],
                 });
                 if (showingReviewsMap[prof.name]) {
-                  document.getElementById(prof.name).scrollIntoView();
+                  document.getElementById(prof.name)?.scrollIntoView();
                 }
               }}
               onMouseDown={(e) => e.preventDefault()}
@@ -218,25 +235,35 @@ const CourseProfReviews = ({
   return <CourseProfReviewsWrapper>{reviewList}</CourseProfReviewsWrapper>;
 };
 
-const CourseReviews = ({ courseID, profsTeaching }) => {
+type CourseReviewsProps = {
+  courseId: number;
+  profsTeaching: any;
+};
+
+const CourseReviews = ({ courseId, profsTeaching }: CourseReviewsProps) => {
   const theme = useTheme();
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
-  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
 
   const courseReviewQuery = isLoggedIn
     ? COURSE_REVIEWS_WITH_USER_DATA
     : COURSE_REVIEWS;
-  const { loading, data } = useQuery(courseReviewQuery, {
-    variables: { id: courseID },
-  });
 
   const [courseSort, setCourseSort] = useState(0);
   const [courseProfFilter, setCourseProfFilter] = useState(0);
   const [profReviewFilter, setProfReviewFilter] = useState(0);
   const [showingProfReviews, setShowingProfReviews] = useState(false);
-  const [reviewDataState, dispatchReviews] = useCourseReviewsReducer(data);
   const [profSort, setProfSort] = useState(0);
   const [selectedProfSort, setSelectedProfSort] = useState(Array(1).fill(0));
+
+  const [reviewDataState, dispatchReviews] = useCourseReviews();
+
+  const { loading, data } = useQuery<
+    CourseReviewsQuery | CourseReviewsWithUserDataQuery,
+    CourseReviewsQueryVariables
+  >(courseReviewQuery, {
+    variables: { id: courseId },
+  });
 
   useEffect(() => {
     if (data) {
@@ -272,8 +299,8 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
     (prof) => prof.code,
   );
   const additionalProfs = profsTeaching
-    .filter((profObj) => !profsWithReviews.includes(profObj.prof.code))
-    .map((profObj) =>
+    .filter((profObj: any) => !profsWithReviews.includes(profObj.prof.code))
+    .map((profObj: any) =>
       Object({
         ...profObj.prof,
         ...profObj.prof.rating,
@@ -285,11 +312,11 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
     'all professors',
     ...[
       ...reviewDataState.profReviewProfs,
-      ...additionalProfs.map((prof) => prof.name),
+      ...additionalProfs.map((prof: any) => prof.name),
     ].sort((a, b) => a.localeCompare(b)),
   ];
 
-  const sortProfs = (a, b) =>
+  const sortProfs = (a: any, b: any) =>
     profSort === 0
       ? sortByReviews(a, b, (x, y) => x.name.localeCompare(y.name))
       : sortByLiked(a, b);
@@ -340,7 +367,6 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
       render: () => (
         <CourseCourseReviews
           reviews={courseReviewsToShow}
-          theme={theme}
           courseSort={courseSort}
           setCourseSort={setCourseSort}
           courseProfFilter={courseProfFilter}
@@ -368,9 +394,7 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
       )}
       {showingProfReviews && isBrowserDesktop && (
         <CourseProfReviews
-          theme={theme}
           reviewsByProf={profReviewsToShow}
-          ProfDropdowns={!isBrowserDesktop && ProfDropdowns}
           selectedSort={selectedProfSort}
           setSelectedSort={setSelectedProfSort}
         />
@@ -383,7 +407,6 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
           >
             <CourseCourseReviews
               reviews={courseReviewsToShow}
-              theme={theme}
               courseSort={courseSort}
               setCourseSort={setCourseSort}
               courseProfFilter={courseProfFilter}
@@ -394,9 +417,7 @@ const CourseReviews = ({ courseID, profsTeaching }) => {
           <CollapsibleContainer title={`Professor reviews (${numProfReviews})`}>
             {ProfDropdowns}
             <CourseProfReviews
-              theme={theme}
               reviewsByProf={profReviewsToShow}
-              ProfDropdowns={ProfDropdowns}
               selectedSort={selectedProfSort}
               setSelectedSort={setSelectedProfSort}
             />
