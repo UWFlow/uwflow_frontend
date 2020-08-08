@@ -8,8 +8,19 @@ import {
   CheckedText,
   CompleteProfileHeading,
 } from './styles/CompleteProfileContent';
+import { GetUserQuery, UserScheduleFragment } from 'generated/graphql';
 
-const CompleteProfileContent = ({ user, coursesTaken, reviews }) => {
+type CompleteProfileContentProps = {
+  user: UserScheduleFragment;
+  reviews: GetUserQuery['review'];
+  coursesTaken: GetUserQuery['user_course_taken'];
+};
+
+const CompleteProfileContent = ({
+  user,
+  coursesTaken,
+  reviews,
+}: CompleteProfileContentProps) => {
   const theme = useTheme();
 
   const hasScheduleUploaded = user.schedule && user.schedule.length > 0;
@@ -44,7 +55,7 @@ const CompleteProfileContent = ({ user, coursesTaken, reviews }) => {
           Upload your schedule
         </CheckedText>
       </CheckedItem>
-      <CheckedItem checked>
+      <CheckedItem>
         <CheckCircle color={theme.primary} checked={hasCourseInfo} />
         <CheckedText checked={hasCourseInfo}>
           Import your previous courses

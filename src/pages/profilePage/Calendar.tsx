@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
-import moment from 'moment/moment';
+import moment, { Moment } from 'moment/moment';
 import { getCoursePageRoute } from 'Routes';
 
 import { LAB, LEC, TUT } from 'constants/CourseSection';
@@ -24,9 +24,10 @@ import {
   NavButton,
   NavButtonWrapper,
   TotalHours,
-} from './styles/Calendar.tsx';
+} from './styles/Calendar';
+import { EventsByDate, ScheduleInterval } from 'types/Common';
 
-const getDateRangeString = (start, end) => {
+const getDateRangeString = (start: Moment, end: Moment) => {
   if (start.year() !== end.year()) {
     return `${start.format('MMM Do, YYYY')} - ${end.format('MMM Do, YYYY')}`;
   }
@@ -36,7 +37,7 @@ const getDateRangeString = (start, end) => {
   return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
 };
 
-const parseEventOverlap = (events) => {
+const parseEventOverlap = (events: ScheduleInterval[]) => {
   if (events.length < 2) {
     return events;
   }
@@ -51,7 +52,7 @@ const parseEventOverlap = (events) => {
 
     // alternate between left and right for overlapping events
     if (prevEvent.end.valueOf() > curEvent.start.valueOf()) {
-      if (!prevEvent.truncate) {
+      if (prevEvent.truncate === undefined) {
         prevEvent.truncate = 'left';
         curEvent.truncate = 'right';
       } else {
@@ -62,7 +63,13 @@ const parseEventOverlap = (events) => {
   return events;
 };
 
-const CalendarColumn = ({ day, minHour, events = [] }) => (
+type CalendarColumnProps = {
+  day: Moment;
+  minHour: number;
+  events: ScheduleInterval[];
+};
+
+const CalendarColumn = ({ day, minHour, events = [] }: CalendarColumnProps) => (
   <DayColumn>
     <DayHeader>{day.format('ddd MMM D')}</DayHeader>
     {parseEventOverlap(events).map((event, i) => {
@@ -83,7 +90,7 @@ const CalendarColumn = ({ day, minHour, events = [] }) => (
           height={HOUR_HEIGHT * (Math.abs(timeDiffMinutes) / 60)}
           color={color}
           key={i}
-          truncate={event.truncate || false}
+          truncate={event.truncate}
         >
           <CourseCode to={getCoursePageRoute(event.courseCode)}>
             {formatCourseCode(event.courseCode)}
@@ -101,14 +108,19 @@ const CalendarColumn = ({ day, minHour, events = [] }) => (
   </DayColumn>
 );
 
-const Calendar = ({ eventsByDate, initialStartDate }) => {
+type CalendarProps = {
+  eventsByDate: EventsByDate;
+  initialStartDate: Moment;
+};
+
+const Calendar = ({ eventsByDate, initialStartDate }: CalendarProps) => {
   const nearestMonday = initialStartDate;
   const [currentWeek, setCurrentWeek] = useState(nearestMonday);
   const fridayOfWeek = currentWeek.clone().add(4, 'days');
   const saturdayOfWeek = currentWeek.clone().add(5, 'days');
 
   // get events for every day of week
-  const currentWeekEvents = {};
+  const currentWeekEvents: EventsByDate = {};
   for (let i = 0; i < 6; i += 1) {
     const curDate = currentWeek.clone().add(i, 'days').format('YYYY-MM-DD');
     currentWeekEvents[curDate] = eventsByDate[curDate];

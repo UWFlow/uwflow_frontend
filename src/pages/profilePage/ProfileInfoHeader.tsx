@@ -17,8 +17,13 @@ import {
   UserPicture,
   UserProgram,
 } from './styles/ProfileInfoHeader';
+import { UserInfoFragment } from 'generated/graphql';
 
-const ProfileInfoHeader = ({ user }) => {
+type ProfileInfoHeaderProps = {
+  user: UserInfoFragment;
+};
+
+const ProfileInfoHeader = ({ user }: ProfileInfoHeaderProps) => {
   const [openModal] = useModal();
 
   return (

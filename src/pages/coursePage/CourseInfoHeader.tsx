@@ -1,5 +1,5 @@
 import React from 'react';
-import { Course } from 'generated/graphql';
+import { CourseInfoFragment, CourseRatingFragment } from 'generated/graphql';
 
 import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
@@ -19,7 +19,7 @@ import {
 } from './styles/CourseInfoHeader';
 
 type CourseInfoHeaderProps = {
-  course: Pick<Course, 'id' | 'code' | 'description' | 'name' | 'rating'>;
+  course: CourseInfoFragment & CourseRatingFragment;
   shortlisted: boolean;
 };
 

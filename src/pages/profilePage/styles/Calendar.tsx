@@ -52,7 +52,7 @@ export const NavButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const NavButton = styled.button<{ hideSmall: boolean }>`
+export const NavButton = styled.button<{ hideSmall?: boolean }>`
   ${Body}
   max-height: 48px;
   font-weight: 600;
@@ -68,7 +68,7 @@ export const NavButton = styled.button<{ hideSmall: boolean }>`
 
   ${Hover()}
   @media only screen and (max-width: 480px) {
-    ${({ hideSmall }) => (hideSmall ? 'display: none;' : '')}
+    ${({ hideSmall = false }) => (hideSmall ? 'display: none;' : '')}
   }
 `;
 
@@ -146,7 +146,7 @@ export const EventWrapper = styled.div<{
   color: string;
   height: number;
   top: number;
-  truncate: 'left' | 'right' | false;
+  truncate?: 'left' | 'right';
 }>`
   ${Body}
   z-index: 1

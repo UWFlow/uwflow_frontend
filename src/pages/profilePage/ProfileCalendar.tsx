@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment/moment';
+import moment, { Moment } from 'moment/moment';
 import { useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
@@ -29,8 +29,17 @@ import {
   RecentCalendarWrapper,
 } from './styles/ProfileCalendar';
 import Calendar from './Calendar';
+import {
+  UserScheduleFragment,
+  GetUserQueryVariables,
+  GetUserQuery,
+} from 'generated/graphql';
+import { ApolloQueryResult } from 'apollo-client';
+import { ScheduleInterval, EventsByDate } from 'types/Common';
 
-const getScheduleRange = (schedule) => {
+const getScheduleRange = (
+  schedule: UserScheduleFragment['schedule'],
+): [Date, number] => {
   let minTime = new Date();
   let maxTime = new Date();
 
@@ -67,7 +76,11 @@ const getScheduleRange = (schedule) => {
 };
 
 // start and end inclusive
-const getMomentsWithinRange = (start, end, dayOfWeek) => {
+const getMomentsWithinRange = (
+  start: Moment,
+  end: Moment,
+  dayOfWeek: string,
+) => {
   const currentMoment = start.clone();
   const daysToReturn = [];
   while (currentMoment.isSameOrBefore(end)) {
@@ -79,8 +92,12 @@ const getMomentsWithinRange = (start, end, dayOfWeek) => {
   return daysToReturn;
 };
 
-const getEventIntervals = (startDate, calendarDayRange, schedule) =>
-  schedule.reduce((allIntv, curr) => {
+const getEventIntervals = (
+  startDate: Moment,
+  calendarDayRange: number,
+  schedule: UserScheduleFragment['schedule'],
+) =>
+  schedule.reduce((allIntv: ScheduleInterval[], curr) => {
     const { section } = curr;
     section.exams.forEach((exam) => {
       allIntv.push({
@@ -95,7 +112,8 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
     section.meetings.forEach((meeting) => {
       const meetingStart = moment(meeting.start_date);
       const meetingEnd = moment(meeting.end_date);
-      meeting.days.forEach((day) => {
+
+      meeting.days.forEach((day: string) => {
         const momentsOfWeekForDay = getMomentsWithinRange(
           startDate.clone(),
           startDate.clone().add(calendarDayRange, 'days'),
@@ -121,11 +139,12 @@ const getEventIntervals = (startDate, calendarDayRange, schedule) =>
         });
       });
     });
+
     return allIntv;
   }, []);
 
-const getEventsByDate = (events) => {
-  const eventsByDate = {};
+const getEventsByDate = (events: ScheduleInterval[]) => {
+  const eventsByDate: EventsByDate = {};
   events.forEach((event) => {
     const dateString = event.start.format('YYYY-MM-DD');
     if (!eventsByDate[dateString]) {
@@ -137,7 +156,7 @@ const getEventsByDate = (events) => {
   return eventsByDate;
 };
 
-const getInitialMonday = (eventsByDate) => {
+const getInitialMonday = (eventsByDate: EventsByDate) => {
   const currentDate = moment();
   const dates = Object.keys(eventsByDate).sort((a, b) =>
     moment(a, 'YYYY-MM-DD').isBefore(moment(b, 'YYYY-MM-DD')) ? -1 : 1,
@@ -153,13 +172,25 @@ const getInitialMonday = (eventsByDate) => {
   return currentWeekMonday;
 };
 
-const ProfileCalendar = ({ schedule, secretID, refetchAll }) => {
+type ProfileCalendarProps = {
+  schedule: UserScheduleFragment['schedule'];
+  secretId: string;
+  refetchAll: (
+    variables: GetUserQueryVariables,
+  ) => Promise<ApolloQueryResult<GetUserQuery>>;
+};
+
+const ProfileCalendar = ({
+  schedule,
+  secretId,
+  refetchAll,
+}: ProfileCalendarProps) => {
   const [openModal, closeModal] = useModal();
   const theme = useTheme();
 
-  const handleCalendarExport = async (download) => {
+  const handleCalendarExport = async (download: boolean) => {
     const response = await fetch(
-      `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretID)}`,
+      `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretId)}`,
     );
     if (download) {
       window.location.assign(response.url);

@@ -1,3 +1,5 @@
+import { Moment } from 'moment';
+
 /* Table */
 export type TableSortBy = {
   id: string;
@@ -49,3 +51,15 @@ export type ProfSearchResult = {
   engaging: number;
   courses: Set<string>;
 };
+
+/* Profile Page */
+export type ScheduleInterval = {
+  start: Moment;
+  end: Moment;
+  courseCode: string;
+  section: string;
+  location?: string | null;
+  truncate?: 'left' | 'right';
+};
+
+export type EventsByDate = { [date: string]: ScheduleInterval[] };
