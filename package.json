@@ -61,6 +61,7 @@
     "test": "CI=true react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject",
     "lint": "yarn run eslint . --ext .ts,.tsx,.js,.jsx --fix -c .eslintrc.js --quiet",
+    "lint-nofix": "yarn run eslint . --ext .ts,.tsx,.js,.jsx -c .eslintrc.js --quiet",
     "generate": "graphql-codegen --config codegen.js"
   },
   "eslintConfig": {
