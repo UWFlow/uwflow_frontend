@@ -1,5 +1,7 @@
 FROM node:alpine AS builder
 
+WORKDIR /work
+
 COPY . .
 RUN yarn install
 RUN yarn lint-nofix
@@ -7,4 +9,4 @@ RUN yarn build
 
 FROM nginx:alpine
 
-COPY --from=builder /build /build
+COPY --from=builder /work/build /build
