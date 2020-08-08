@@ -4,6 +4,7 @@ import moment, { Moment } from 'moment/moment';
 import { getCoursePageRoute } from 'Routes';
 
 import { LAB, LEC, TUT } from 'constants/CourseSection';
+import { EventsByDate, ScheduleInterval } from 'types/Common';
 import { formatCourseCode } from 'utils/Misc';
 
 import {
@@ -25,7 +26,6 @@ import {
   NavButtonWrapper,
   TotalHours,
 } from './styles/Calendar';
-import { EventsByDate, ScheduleInterval } from 'types/Common';
 
 const getDateRangeString = (start: Moment, end: Moment) => {
   if (start.year() !== end.year()) {

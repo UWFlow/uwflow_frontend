@@ -3,6 +3,14 @@ import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { ApolloQueryResult } from 'apollo-client';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  UserInfoFragment,
+  UserScheduleFragment,
+  UserShortlistFragment,
+} from 'generated/graphql';
 import { LANDING_PAGE_ROUTE } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -24,14 +32,6 @@ import ProfileCalendar from './ProfileCalendar';
 import ProfileCourses from './ProfileCourses';
 import ProfileInfoHeader from './ProfileInfoHeader';
 import ShortlistBox from './ShortlistBox';
-import {
-  GetUserQuery,
-  GetUserQueryVariables,
-  UserInfoFragment,
-  UserScheduleFragment,
-  UserShortlistFragment,
-} from 'generated/graphql';
-import { ApolloQueryResult } from 'apollo-client';
 
 type ProfilePageContentProps = {
   user: UserInfoFragment & UserShortlistFragment & UserScheduleFragment;
@@ -55,7 +55,7 @@ const ProfilePageContent = ({
     const curReview = reviews.find(
       (review) => review.course_id === courseObj.course?.id,
     );
-    
+
     return { course: courseObj.course, review: curReview };
   });
 

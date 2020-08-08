@@ -1,5 +1,6 @@
 import React from 'react';
 import { Edit } from 'react-feather';
+import { UserInfoFragment } from 'generated/graphql';
 
 import { EDIT_EMAIL_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
@@ -17,7 +18,6 @@ import {
   UserPicture,
   UserProgram,
 } from './styles/ProfileInfoHeader';
-import { UserInfoFragment } from 'generated/graphql';
 
 type ProfileInfoHeaderProps = {
   user: UserInfoFragment;

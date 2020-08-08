@@ -1,5 +1,12 @@
 import React, { ReactNode } from 'react';
 import { Edit, PlusSquare } from 'react-feather';
+import { ApolloQueryResult } from 'apollo-client';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  ReviewInfoFragment,
+  UserCoursesTakenFragment,
+} from 'generated/graphql';
 import { getCoursePageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
@@ -29,13 +36,6 @@ import {
   ReviewButtonContents,
   YourCoursesWrapper,
 } from './styles/ProfileCourses';
-import {
-  GetUserQueryVariables,
-  GetUserQuery,
-  UserCoursesTakenFragment,
-  ReviewInfoFragment,
-} from 'generated/graphql';
-import { ApolloQueryResult } from 'apollo-client';
 
 type IndexedUserCourse = UserCoursesTakenFragment & { index: number };
 

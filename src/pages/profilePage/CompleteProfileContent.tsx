@@ -1,4 +1,5 @@
 import React from 'react';
+import { GetUserQuery, UserScheduleFragment } from 'generated/graphql';
 import { useTheme } from 'styled-components';
 
 import CheckCircle from 'components/input/CheckCircle';
@@ -8,7 +9,6 @@ import {
   CheckedText,
   CompleteProfileHeading,
 } from './styles/CompleteProfileContent';
-import { GetUserQuery, UserScheduleFragment } from 'generated/graphql';
 
 type CompleteProfileContentProps = {
   user: UserScheduleFragment;

@@ -1,4 +1,10 @@
 import React from 'react';
+import { ApolloQueryResult } from 'apollo-client';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  UserScheduleFragment,
+} from 'generated/graphql';
 import moment, { Moment } from 'moment/moment';
 import { useTheme } from 'styled-components';
 
@@ -11,6 +17,7 @@ import {
 } from 'constants/Api';
 import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
+import { EventsByDate, ScheduleInterval } from 'types/Common';
 import {
   getDateWithSeconds,
   millisecondsPerDay,
@@ -29,13 +36,6 @@ import {
   RecentCalendarWrapper,
 } from './styles/ProfileCalendar';
 import Calendar from './Calendar';
-import {
-  UserScheduleFragment,
-  GetUserQueryVariables,
-  GetUserQuery,
-} from 'generated/graphql';
-import { ApolloQueryResult } from 'apollo-client';
-import { ScheduleInterval, EventsByDate } from 'types/Common';
 
 const getScheduleRange = (
   schedule: UserScheduleFragment['schedule'],

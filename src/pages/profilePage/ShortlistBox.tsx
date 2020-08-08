@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { UserShortlistFragment } from 'generated/graphql';
 import { getCoursePageRoute } from 'Routes';
 
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
@@ -17,7 +18,6 @@ import {
   ShortListCourseText,
   ShortlistHeading,
 } from './styles/ShortlistBox';
-import { UserShortlistFragment } from 'generated/graphql';
 
 type ShortlistBoxProps = {
   shortlistCourses: UserShortlistFragment['shortlist'];
