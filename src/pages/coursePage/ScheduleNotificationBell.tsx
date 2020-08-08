@@ -11,6 +11,7 @@ import {
   SUBSCRIPTION_TOOLTIP,
 } from 'constants/Messages';
 import { AUTH_MODAL, NOTIFICATION_EMAIL_MODAL } from 'constants/Modal';
+import { RootState } from 'data/reducers/RootReducer';
 import {
   DELETE_SECTION_SUBSCRIPTION,
   INSERT_SECTION_SUBSCRIPTION,
@@ -19,7 +20,6 @@ import { REFETCH_SECTION_SUBSCRIPTIONS } from 'graphql/queries/course/Course';
 import useModal from 'hooks/useModal';
 
 import { NotificationBellWrapper } from './styles/ScheduleNotificationBell';
-import { RootState } from 'data/reducers/RootReducer';
 
 type ScheduleNotificationBellProps = {
   sectionId: number;

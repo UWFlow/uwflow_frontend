@@ -1,9 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { ExploreAllQuery, ExploreQuery } from 'generated/graphql';
 
 import TabContainer from 'components/display/TabContainer';
 import Table from 'components/display/Table';
 import { EXPLORE_COURSES_ERROR } from 'constants/Messages';
 import { SEARCH_RESULTS_PER_PAGE } from 'constants/Search';
+import {
+  CourseSearchResult,
+  ProfSearchResult,
+  SearchFilterState,
+  TableSortBy,
+} from 'types/Common';
 import { getCurrentTermCode, getNextTermCode } from 'utils/Misc';
 
 import { ResultsError, SearchResultsContent } from './styles/SearchResults';
@@ -12,7 +25,7 @@ import { courseColumns, profColumns } from './ExploreTableData';
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
 
-const compareNull = (a, b) => {
+const compareNull = (a: string | number | null, b: string | number | null) => {
   if (a === null && b === null) {
     return 0;
   }
@@ -22,7 +35,7 @@ const compareNull = (a, b) => {
   return -1;
 };
 
-const numberSort = (a, b, desc) => {
+const numberSort = (a: number | null, b: number | null, desc: boolean) => {
   if (a === null || b === null) {
     return compareNull(a, b);
   }
@@ -30,12 +43,24 @@ const numberSort = (a, b, desc) => {
   return desc ? a - b : b - a;
 };
 
-const stringSort = (a, b, desc) => {
+const stringSort = (a: string | null, b: string | null, desc: boolean) => {
   if (a === null || b === null) {
     return compareNull(a, b);
   }
 
   return desc ? b.localeCompare(a) : a.localeCompare(b);
+};
+
+type SearchResultsProps = {
+  filterState: SearchFilterState;
+  error: boolean;
+  exploreTab: number;
+  setExploreTab: Dispatch<SetStateAction<number>>;
+  ratingFilters: number[];
+  profCourses: string[];
+  loading: boolean;
+  exploreAll: boolean;
+  data?: ExploreAllQuery | ExploreQuery;
 };
 
 const SearchResults = ({
@@ -48,52 +73,54 @@ const SearchResults = ({
   profCourses,
   loading,
   exploreAll,
-}) => {
+}: SearchResultsProps) => {
   const [numRendered, setNumRendered] = useState(SEARCH_RESULTS_PER_PAGE);
-  const [courses, setCourses] = useState(null);
-  const [profs, setProfs] = useState(null);
-  const [tableState, setTableState] = useState({ sortBy: [] });
+  const [courses, setCourses] = useState<CourseSearchResult[] | null>(null);
+  const [profs, setProfs] = useState<ProfSearchResult[] | null>(null);
+  const [tableState, setTableState] = useState<{ sortBy: TableSortBy[] }>({
+    sortBy: [],
+  });
 
   useEffect(() => {
     setNumRendered(SEARCH_RESULTS_PER_PAGE);
   }, [exploreTab]);
 
   useEffect(() => {
-    if (!data) {
+    if (data === undefined) {
       return;
     }
 
-    const newCourses = data[
-      exploreAll ? 'course_search_index' : 'search_courses'
-    ].map((result) =>
-      Object({
-        id: result.course_id,
-        code: result.code,
-        name: result.name,
-        ratings: result.ratings,
-        liked: result.liked,
-        easy: result.easy,
-        useful: result.useful,
-        terms: result.terms,
-      }),
-    );
+    const allCourses = exploreAll
+      ? (data as ExploreAllQuery).course_search_index
+      : (data as ExploreQuery).search_courses;
 
-    const newProfs = data[
-      exploreAll ? 'prof_search_index' : 'search_profs'
-    ].map((result) =>
-      Object({
-        id: result.prof_id,
-        code_name: {
-          code: result.code,
-          name: result.name,
-        },
-        ratings: result.ratings,
-        liked: result.liked,
-        clear: result.clear,
-        engaging: result.engaging,
-        courses: new Set(result.course_codes),
-      }),
-    );
+    const allProfs = exploreAll
+      ? (data as ExploreAllQuery).prof_search_index
+      : (data as ExploreQuery).search_profs;
+
+    const newCourses: CourseSearchResult[] = allCourses.map((result) => ({
+      id: result.course_id!,
+      code: result.code!,
+      name: result.name!,
+      ratings: result.ratings,
+      liked: result.liked,
+      easy: result.easy,
+      useful: result.useful,
+      terms: result.terms,
+    }));
+
+    const newProfs: ProfSearchResult[] = allProfs.map((result) => ({
+      id: result.prof_id!,
+      code_name: {
+        code: result.code!,
+        name: result.name!,
+      },
+      ratings: result.ratings,
+      liked: result.liked,
+      clear: result.clear,
+      engaging: result.engaging,
+      courses: new Set<string>(result.course_codes),
+    }));
 
     setCourses(newCourses);
     setProfs(newProfs);
@@ -140,9 +167,11 @@ const SearchResults = ({
 
   const resultsToReturn = useMemo(() => {
     let filtered = courseSearch ? filteredCourses : filteredProfs;
+
     if (tableState.sortBy.length > 0) {
       const { id: sortKey, desc } = tableState.sortBy[0];
-      filtered = filtered.sort((a, b) =>
+
+      filtered = filtered.sort((a: any, b: any) =>
         ['code', 'name'].includes(sortKey)
           ? stringSort(a[sortKey], b[sortKey], desc)
           : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
@@ -150,6 +179,7 @@ const SearchResults = ({
           : numberSort(a[sortKey], b[sortKey], desc),
       );
     }
+
     return filtered;
   }, [courseSearch, filteredCourses, filteredProfs, tableState.sortBy]);
 
@@ -158,7 +188,7 @@ const SearchResults = ({
     loading: loading || courses === null || profs === null,
     sortable: true,
     manualSortBy: true,
-    setTableState: (state) => {
+    setTableState: (state: any) => {
       setNumRendered(50);
       setTableState(state);
     },
@@ -177,7 +207,6 @@ const SearchResults = ({
         {...tableProps}
         data={resultsToReturn.slice(0, numRendered)}
         columns={courseSearch ? courseColumns : profColumns}
-        rightAlignIndex={courseSearch ? 2 : 1}
         showNoResults
         fetchMore={() =>
           setNumRendered(

@@ -16,7 +16,7 @@ import kitten_13 from 'img/kittens/kitten_13.jpg';
 
 import { randIntBetween } from './Random';
 
-const kittens: ReactNode[] = [
+const kittens: string[] = [
   kitten_1,
   kitten_2,
   kitten_3,
@@ -32,9 +32,10 @@ const kittens: ReactNode[] = [
   kitten_13,
 ];
 
-export const getKittenFromID = (id: number): ReactNode => kittens[id % 13];
+export const getKittenFromID = (id?: number | null): string =>
+  id === null || id === undefined ? kittens[0] : kittens[id % 13];
 
-export const getRandomKitten = (): ReactNode => kittens[randIntBetween(0, 14)];
+export const getRandomKitten = (): string => kittens[randIntBetween(0, 14)];
 
 export const hashProgram = (program: string): number => {
   let hash = 0;

@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
+import {
+  ExploreAllQuery,
+  ExploreAllQueryVariables,
+  ExploreQuery,
+  ExploreQueryVariables,
+} from 'generated/graphql';
 import queryString from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
@@ -10,6 +16,7 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
+import { SearchFilterState } from 'types/Common';
 
 import {
   Column1,
@@ -25,6 +32,15 @@ import SearchResults from './SearchResults';
 const NUM_COURSE_CODE_FILTERS = 5;
 const RATING_FILTERS = [0, 1, 5, 10, 20, 50, 75, 100, 200, 500];
 
+type ExplorePageContentProps = {
+  query: string;
+  codeSearch: boolean;
+  courseTab: boolean;
+  error: boolean;
+  loading: boolean;
+  data?: ExploreAllQuery | ExploreQuery;
+};
+
 const ExplorePageContent = ({
   query,
   codeSearch,
@@ -32,9 +48,9 @@ const ExplorePageContent = ({
   data,
   error,
   loading,
-}) => {
-  const [profCourses, setProfCourses] = useState(['all courses']);
-  const [courseCodes, setCourseCodes] = useState(
+}: ExplorePageContentProps) => {
+  const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
+  const [courseCodes, setCourseCodes] = useState<boolean[]>(
     Array(NUM_COURSE_CODE_FILTERS).fill(true),
   );
   const [numCourseRatings, setNumCourseRatings] = useState(0);
@@ -47,19 +63,21 @@ const ExplorePageContent = ({
   const exploreAll = query === '';
 
   useEffect(() => {
-    if (!data) {
+    if (data === undefined) {
       return;
     }
 
+    const allProfs = exploreAll
+      ? (data as ExploreAllQuery).prof_search_index
+      : (data as ExploreQuery).search_profs;
+
     const seenCourses = new Set();
-    const allProfCourses = data[
-      exploreAll ? 'prof_search_index' : 'search_profs'
-    ]
-      .reduce((acc, result) => {
+    const parsedProfCourses = allProfs
+      .reduce((acc: string[], result) => {
         return acc.concat(
           result.course_codes
-            .filter((code) => !seenCourses.has(code))
-            .map((code) => {
+            .filter((code: string) => !seenCourses.has(code))
+            .map((code: string) => {
               seenCourses.add(code);
               return code;
             }),
@@ -67,10 +85,10 @@ const ExplorePageContent = ({
       }, [])
       .sort((a, b) => a.localeCompare(b));
 
-    setProfCourses(['all courses'].concat(allProfCourses));
+    setProfCourses(['all courses'].concat(parsedProfCourses));
   }, [data, exploreAll]);
 
-  const filterState = {
+  const filterState: SearchFilterState = {
     courseCodes,
     numCourseRatings,
     numProfRatings,
@@ -159,9 +177,10 @@ const processRawQuery = (query = '', codeOnly = false) => {
 
 const ExplorePage = () => {
   const location = useLocation();
+  const { q, t: type, c: code } = queryString.parse(location.search);
 
-  const { q: query, t: type, c: code } = queryString.parse(location.search);
-  const courseTab = !type || type === 'course' || type === 'c';
+  const query: string = (q as string) || '';
+  const courseTab: boolean = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
 
   const processedQueryText = processRawQuery(query, codeSearch);
@@ -173,14 +192,14 @@ const ExplorePage = () => {
           code_only: codeSearch,
         };
 
-  const { data, error, loading } = useQuery(
-    processedQueryText === '' ? EXPLORE_ALL_QUERY : EXPLORE_QUERY,
-    {
-      variables: queryVariables,
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: !query || query === '' ? 'no-cache' : 'cache-and-network',
-    },
-  );
+  const { data, error, loading } = useQuery<
+    ExploreAllQuery | ExploreQuery,
+    ExploreAllQueryVariables | ExploreQueryVariables
+  >(processedQueryText === '' ? EXPLORE_ALL_QUERY : EXPLORE_QUERY, {
+    variables: queryVariables,
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: !query || query === '' ? 'no-cache' : 'cache-and-network',
+  });
 
   return (
     <ExplorePageWrapper>

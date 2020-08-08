@@ -2,6 +2,13 @@ import React from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useRouteMatch } from 'react-router-dom';
+import {
+  GetProfQuery,
+  GetProfQueryVariables,
+  ProfCoursesTaughtFragment,
+  ProfInfoFragment,
+  ProfRatingFragment,
+} from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
@@ -9,13 +16,6 @@ import { GET_PROF } from 'graphql/queries/prof/Prof';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import ProfInfoHeader from 'pages/profPage/ProfInfoHeader';
 import ProfReviews from 'pages/profPage/ProfReviews';
-import {
-  GetProfQuery,
-  ProfInfoFragment,
-  ProfCoursesTaughtFragment,
-  ProfRatingFragment,
-  GetProfQueryVariables,
-} from 'generated/graphql';
 
 import {
   Column1,

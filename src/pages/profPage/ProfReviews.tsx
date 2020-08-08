@@ -11,6 +11,7 @@ import {
   MIN_REVIEWS_SHOWN_PROF,
   REVIEWS_DIV_ID,
 } from 'constants/PageConstants';
+import { RootState } from 'data/reducers/RootReducer';
 import {
   PROF_REVIEWS,
   PROF_REVIEWS_WITH_USER_DATA,
@@ -38,7 +39,6 @@ import {
   ShowMoreReviewsText,
   SortFilterDropdownWrapper,
 } from './styles/ProfReviews';
-import { RootState } from 'data/reducers/RootReducer';
 
 type ProfReviewsProps = {
   profId: number;

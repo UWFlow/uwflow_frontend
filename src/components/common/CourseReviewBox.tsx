@@ -12,6 +12,12 @@ import DropdownList from 'components/input/DropdownList';
 import RadioButton from 'components/input/RadioButton';
 import Modal from 'components/modal/Modal';
 import { REVIEW_SUCCESS } from 'constants/Messages';
+import {
+  CLEAR_OPTIONS,
+  EASY_OPTIONS,
+  ENGAGING_OPTIONS,
+  USEFUL_OPTIONS,
+} from 'constants/Review';
 import { DELETE_REVIEW, UPSERT_REVIEW } from 'graphql/mutations/Review';
 import {
   REFETCH_COURSE_REVIEWS,
@@ -26,7 +32,7 @@ import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
 
 import {
-  CourseReviewCourseBoxWrapper,
+  CourseReviewBoxWrapper,
   DeleteConfirmButtons,
   DeleteIconWrapper,
   DeleteReviewModalWrapper,
@@ -39,44 +45,15 @@ import {
   QuestionWrapper,
   ReviewTextArea,
   SliderOptionText,
-} from './styles/CourseReviewCourseBox';
+} from './styles/CourseReviewBox';
 
-const easyOptions = [
-  'Difficult',
-  'Somewhat difficult',
-  'Neutral',
-  'Somewhat easy',
-  'Easy',
-];
-
-const usefulOptions = [
-  'Useless',
-  'Somewhat useless',
-  'Neutral',
-  'Somewhat useful',
-  'Useful',
-];
-
-const clearOptions = [
-  'Unclear',
-  'Somewhat unclear',
-  'Neutral',
-  'Somewhat clear',
-  'Clear',
-];
-
-const engagingOptions = [
-  'Unengaging',
-  'Somewhat unengaging',
-  'Neutral',
-  'Somewhat engaging',
-  'Engaging',
-];
-
-const mergeInNewProfsTeaching = (currProfsTeaching, newProfsTeaching) => {
-  const currIDs = currProfsTeaching.map((prof) => prof.prof.id);
+const mergeInNewProfsTeaching = (
+  currProfsTeaching: any,
+  newProfsTeaching: any,
+) => {
+  const currIDs = currProfsTeaching.map((prof: any) => prof.prof.id);
   if (newProfsTeaching) {
-    newProfsTeaching.forEach((prof) => {
+    newProfsTeaching.forEach((prof: any) => {
       if (!currIDs.includes(prof.prof.id)) {
         currProfsTeaching.push(prof);
       }
@@ -84,21 +61,25 @@ const mergeInNewProfsTeaching = (currProfsTeaching, newProfsTeaching) => {
   }
 };
 
-const getProfIndex = (review, profsTeaching) =>
+const getProfIndex = (review: any, profsTeaching: any) =>
   review
     ? profsTeaching.findIndex(
-        (prof) => prof.prof && prof.prof.id === review.prof_id,
+        (prof: any) => prof.prof && prof.prof.id === review.prof_id,
       )
     : -1;
 
-const CourseReviewCourseBoxContent = ({
+type CourseReviewBoxContentProps = CourseReviewBoxProps & {
+  profsTeachingByCourseId: any;
+};
+
+const CourseReviewBoxContent = ({
   courseList,
+  profsTeachingByCourseId,
   initialSelectedCourseIndex = 0,
   showCourseDropdown = false,
   cancelButton = true,
   onCancel = () => {},
-  profsTeachingByCourseID,
-}) => {
+}: CourseReviewBoxContentProps) => {
   const theme = useTheme();
 
   const [selectedCourseIndex, setSelectedCourseIndex] = useState(
@@ -109,29 +90,29 @@ const CourseReviewCourseBoxContent = ({
     setSelectedCourseIndex(initialSelectedCourseIndex);
   }, [initialSelectedCourseIndex]);
 
-  const buildDefaultReview = (course, review) => {
+  const buildDefaultReview = (course: any, review: any) => {
     // We need to merge profs currently teaching the course and previous profs for the course with a review
     let profsTeaching = course.profs_teaching;
 
-    if (profsTeachingByCourseID) {
+    if (profsTeachingByCourseId) {
       mergeInNewProfsTeaching(
         profsTeaching,
-        profsTeachingByCourseID[course.id],
+        profsTeachingByCourseId[course.id],
       );
     }
 
-    profsTeaching = profsTeaching.filter((prof) => prof.prof !== null);
+    profsTeaching = profsTeaching.filter((prof: any) => prof.prof !== null);
     // add prof to dropdown if not fetched from backend
     if (review) {
       const profExists = profsTeaching.some(
-        (prof) => prof.prof && prof.prof.id === review.prof_id,
+        (prof: any) => prof.prof && prof.prof.id === review.prof_id,
       );
       if (!profExists && review.prof_id !== null) {
         profsTeaching.push({ prof: review.prof });
       }
     }
 
-    profsTeaching = profsTeaching.sort((a, b) =>
+    profsTeaching = profsTeaching.sort((a: any, b: any) =>
       a.prof.name.localeCompare(b.prof.name),
     );
 
@@ -167,7 +148,7 @@ const CourseReviewCourseBoxContent = ({
     }, {}),
   );
   const [lastRenderProfsTeaching, setLastRenderProfsTeaching] = useState(
-    profsTeachingByCourseID,
+    profsTeachingByCourseId,
   );
 
   const userId = getUserId();
@@ -193,25 +174,27 @@ const CourseReviewCourseBoxContent = ({
   /* Effects */
   useEffect(() => {
     // update state if profsTeaching changes
-    if (!_.isEqual(profsTeachingByCourseID, lastRenderProfsTeaching)) {
+    if (!_.isEqual(profsTeachingByCourseId, lastRenderProfsTeaching)) {
       const newReviewStates = _.cloneDeep(reviewStates);
       Object.keys(reviewStates).forEach((code) => {
         mergeInNewProfsTeaching(
           newReviewStates[code].profsTeaching,
-          profsTeachingByCourseID[reviewStates[code].id],
+          profsTeachingByCourseId[reviewStates[code].id],
         );
         newReviewStates[code].profsTeaching = newReviewStates[
           code
-        ].profsTeaching.sort((a, b) => a.prof.name.localeCompare(b.prof.name));
+        ].profsTeaching.sort((a: any, b: any) =>
+          a.prof.name.localeCompare(b.prof.name),
+        );
         newReviewStates[code].selectedProf = getProfIndex(
           review,
           newReviewStates[code].profsTeaching,
         );
       });
-      setLastRenderProfsTeaching(profsTeachingByCourseID);
+      setLastRenderProfsTeaching(profsTeachingByCourseId);
       setReviewStates(newReviewStates);
     }
-  }, [profsTeachingByCourseID, reviewStates, lastRenderProfsTeaching, review]);
+  }, [profsTeachingByCourseId, reviewStates, lastRenderProfsTeaching, review]);
 
   /* Mutations */
   const refetchQueries = [
@@ -324,7 +307,7 @@ const CourseReviewCourseBoxContent = ({
     }
   };
 
-  const setReviewValue = (key, value) => {
+  const setReviewValue = (key: string, value: any) => {
     setReviewStates({
       ...reviewStates,
       [course.code]: {
@@ -334,7 +317,7 @@ const CourseReviewCourseBoxContent = ({
     });
   };
 
-  const setSliderValue = (key, value, selectedKey) => {
+  const setSliderValue = (key: string, value: any, selectedKey: string) => {
     setReviewStates({
       ...reviewStates,
       [course.code]: {
@@ -346,7 +329,7 @@ const CourseReviewCourseBoxContent = ({
   };
 
   return (
-    <CourseReviewCourseBoxWrapper>
+    <CourseReviewBoxWrapper>
       {(courseList.length > 1 || showCourseDropdown) && (
         <QuestionWrapper>
           <QuestionText>Review a course: </QuestionText>
@@ -380,7 +363,7 @@ const CourseReviewCourseBoxContent = ({
           setSelected={(value) => setReviewValue('usefulSelected', value)}
         />
         <SliderOptionText>
-          {usefulSelected ? usefulOptions[useful] : ''}
+          {usefulSelected ? USEFUL_OPTIONS[useful] : ''}
         </SliderOptionText>
       </MetricQuestionWrapper>
 
@@ -397,7 +380,7 @@ const CourseReviewCourseBoxContent = ({
           setSelected={(value) => setReviewValue('easySelected', value)}
         />
         <SliderOptionText>
-          {easySelected ? easyOptions[easy] : ''}
+          {easySelected ? EASY_OPTIONS[easy] : ''}
         </SliderOptionText>
       </MetricQuestionWrapper>
 
@@ -428,8 +411,8 @@ const CourseReviewCourseBoxContent = ({
           placeholder="select your professor"
           options={[
             ...profsTeaching
-              .sort((a, b) => a.prof.name.localeCompare(b.prof.name))
-              .map((prof) => prof.prof.name),
+              .sort((a: any, b: any) => a.prof.name.localeCompare(b.prof.name))
+              .map((profObf: any) => profObf.prof.name),
             "my professor isn't here",
           ]}
           color={theme.professors}
@@ -444,6 +427,8 @@ const CourseReviewCourseBoxContent = ({
         transitionTime={200}
         easing="ease-in-out"
         overflowWhenOpen="visible"
+        trigger=""
+        triggerDisabled={true}
       >
         <MetricQuestionWrapper>
           <MetricQuestionText>Clear?</MetricQuestionText>
@@ -459,7 +444,7 @@ const CourseReviewCourseBoxContent = ({
             disabled={profId === null}
           />
           <SliderOptionText>
-            {clearSelected && profId !== null ? clearOptions[clear] : ''}
+            {clearSelected && profId !== null ? CLEAR_OPTIONS[clear] : ''}
           </SliderOptionText>
         </MetricQuestionWrapper>
 
@@ -478,7 +463,7 @@ const CourseReviewCourseBoxContent = ({
           />
           <SliderOptionText>
             {engagingSelected && profId !== null
-              ? engagingOptions[engaging]
+              ? ENGAGING_OPTIONS[engaging]
               : ''}
           </SliderOptionText>
         </MetricQuestionWrapper>
@@ -558,18 +543,26 @@ const CourseReviewCourseBoxContent = ({
           </DeleteConfirmButtons>
         </DeleteReviewModalWrapper>
       </Modal>
-    </CourseReviewCourseBoxWrapper>
+    </CourseReviewBoxWrapper>
   );
 };
 
-const CourseReviewCourseBox = ({ courseList, ...props }) => {
+type CourseReviewBoxProps = {
+  courseList: any[];
+  initialSelectedCourseIndex?: number;
+  showCourseDropdown?: boolean;
+  cancelButton?: boolean;
+  onCancel?: () => void;
+};
+
+const CourseReviewBox = ({ courseList, ...props }: CourseReviewBoxProps) => {
   const courseIds = courseList.map((course) => course.course.id);
   const { data } = useQuery(COURSE_REVIEW_PROFS, {
     variables: { id: courseIds },
   });
-  const profsSeenByCourseID = {};
-  const profsTeachingByCourseID = data
-    ? data.review.reduce((profs, currentProf) => {
+  const profsSeenByCourseID: { [key: string]: any } = {};
+  const profsTeachingByCourseId = data
+    ? data.review.reduce((profs: any, currentProf: any) => {
         if (
           currentProf &&
           currentProf.prof &&
@@ -592,14 +585,14 @@ const CourseReviewCourseBox = ({ courseList, ...props }) => {
     : null;
 
   return (
-    <CourseReviewCourseBoxContent
+    <CourseReviewBoxContent
       {...{
         ...props,
-        profsTeachingByCourseID,
+        profsTeachingByCourseId,
         courseList,
       }}
     />
   );
 };
 
-export default CourseReviewCourseBox;
+export default CourseReviewBox;

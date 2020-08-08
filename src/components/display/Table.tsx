@@ -12,6 +12,8 @@ import {
 } from 'react-table';
 import { throttle } from 'lodash';
 
+import { TableSortBy } from 'types/Common';
+
 import {
   HeaderCell,
   HeaderRow,
@@ -41,6 +43,10 @@ export type ColumnOverride = {
   style?: object;
 } & Column;
 
+export type TableStateOverride = TableState & {
+  sortBy?: TableSortBy[];
+};
+
 type TableProps = {
   cellPadding: string;
   columns: Column[];
@@ -50,8 +56,8 @@ type TableProps = {
   setTableState?: (state: TableState) => void;
   loading?: boolean;
   doneFetching?: boolean;
-  fetchMore?: () => Promise<void>;
-  initialState?: TableState;
+  fetchMore?: () => Promise<void> | void;
+  initialState?: TableStateOverride;
   fetchOffset?: number;
   showNoResults?: boolean;
   getRowProps?: (row: Row) => { [key: string]: any };

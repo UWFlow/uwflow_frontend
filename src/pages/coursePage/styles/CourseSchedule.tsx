@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Hover } from 'constants/Mixins';
 import { LAB, LEC } from 'constants/CourseSection';
+import { Hover } from 'constants/Mixins';
 
 const CELL_HEIGHT = 28;
 

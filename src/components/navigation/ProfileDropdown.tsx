@@ -2,11 +2,14 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import { GetUserQuery } from 'generated/graphql';
+import { Dispatch } from 'redux';
 import { isOnLandingPageRoute, PROFILE_PAGE_ROUTE } from 'Routes';
 import { useTheme } from 'styled-components';
 
 import DropdownList from 'components/input/DropdownList';
 import { AUTH_MODAL } from 'constants/Modal';
+import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
 import { logOut } from 'utils/Auth';
@@ -18,8 +21,16 @@ import {
   ProfileText,
 } from './styles/ProfileDropdown';
 
-const renderProfilePicture = (data, dispatch, isLanding) => {
-  let user = { picture_url: null };
+const renderProfilePicture = (
+  data: GetUserQuery,
+  dispatch: Dispatch,
+  isLanding: boolean,
+) => {
+  let user: { id?: number | null; picture_url?: string | null } = {
+    id: null,
+    picture_url: null,
+  };
+
   if (data && data.user) {
     if (data.user.length > 0) {
       [user] = data.user;
@@ -30,13 +41,7 @@ const renderProfilePicture = (data, dispatch, isLanding) => {
 
   return (
     <ProfilePicture
-      image={
-        user.picture_url
-          ? user.picture_url
-          : user.id
-          ? getKittenFromID(user.id)
-          : null
-      }
+      image={user.picture_url ? user.picture_url! : getKittenFromID(user.id)}
       isLanding={isLanding}
       onMouseDown={(e) => e.preventDefault()}
     />
@@ -49,8 +54,8 @@ const ProfileDropdown = () => {
   const history = useHistory();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
 
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const isLanding = isOnLandingPageRoute(location);
 
   const handleProfileButtonClick = () =>
@@ -64,7 +69,7 @@ const ProfileDropdown = () => {
             query={GET_USER}
             variables={{ id: Number(localStorage.getItem('user_id')) }}
           >
-            {({ data }) => (
+            {({ data }: { data: GetUserQuery }) => (
               <ProfileText
                 onClick={handleProfileButtonClick}
                 isLanding={isLanding}
