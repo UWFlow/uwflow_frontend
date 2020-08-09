@@ -3,11 +3,19 @@ import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { ApolloQueryResult } from 'apollo-client';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  UserInfoFragment,
+  UserScheduleFragment,
+  UserShortlistFragment,
+} from 'generated/graphql';
 import { LANDING_PAGE_ROUTE } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
-import { getIsBrowserDesktop } from 'data/reducers/RootReducer';
+import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { logOut } from 'utils/Auth';
@@ -25,15 +33,30 @@ import ProfileCourses from './ProfileCourses';
 import ProfileInfoHeader from './ProfileInfoHeader';
 import ShortlistBox from './ShortlistBox';
 
-const ProfilePageContent = ({ user, reviews, coursesTaken, refetchAll }) => {
+type ProfilePageContentProps = {
+  user: UserInfoFragment & UserShortlistFragment & UserScheduleFragment;
+  reviews: GetUserQuery['review'];
+  coursesTaken: GetUserQuery['user_course_taken'];
+  refetchAll: (
+    variables: GetUserQueryVariables,
+  ) => Promise<ApolloQueryResult<GetUserQuery>>;
+};
+
+const ProfilePageContent = ({
+  user,
+  reviews,
+  coursesTaken,
+  refetchAll,
+}: ProfilePageContentProps) => {
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
   const { shortlist } = user;
-  const reviewModalCourseList = coursesTaken.map((course) => {
+  const reviewModalCourseList = coursesTaken.map((courseObj) => {
     const curReview = reviews.find(
-      (review) => review.course_id === course.course.id,
+      (review) => review.course_id === courseObj.course?.id,
     );
-    return { course: course.course, review: curReview };
+
+    return { course: courseObj.course, review: curReview };
   });
 
   return (
@@ -43,13 +66,13 @@ const ProfilePageContent = ({ user, reviews, coursesTaken, refetchAll }) => {
         <Column1>
           <ProfileCalendar
             schedule={user.schedule}
-            secretID={user.secret_id}
+            secretId={user.secret_id}
             refetchAll={refetchAll}
           />
           <ProfileCourses
-            courses={coursesTaken}
-            reviewModalCourseList={reviewModalCourseList}
             reviews={reviews}
+            userCourses={coursesTaken}
+            reviewModalCourseList={reviewModalCourseList}
             refetchAll={refetchAll}
           />
         </Column1>
@@ -72,11 +95,14 @@ const ProfilePageContent = ({ user, reviews, coursesTaken, refetchAll }) => {
 
 export const ProfilePage = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.loggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const history = useHistory();
 
-  const { loading, error, data, refetch } = useQuery(GET_USER, {
-    variables: { id: localStorage.getItem('user_id') },
+  const { loading, error, data, refetch } = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(GET_USER, {
+    variables: { id: Number(localStorage.getItem('user_id')) },
   });
 
   if (data && data.user.length === 0) {
@@ -107,8 +133,8 @@ export const ProfilePage = () => {
       <ProfilePageContent
         user={data.user[0]}
         reviews={data.review}
-        refetchAll={refetch}
         coursesTaken={data.user_course_taken}
+        refetchAll={refetch}
       />
     </ProfilePageWrapper>
   );

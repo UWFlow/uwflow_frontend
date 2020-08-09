@@ -1,5 +1,6 @@
 import React from 'react';
 import { Edit } from 'react-feather';
+import { UserInfoFragment } from 'generated/graphql';
 
 import { EDIT_EMAIL_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
@@ -18,7 +19,11 @@ import {
   UserProgram,
 } from './styles/ProfileInfoHeader';
 
-const ProfileInfoHeader = ({ user }) => {
+type ProfileInfoHeaderProps = {
+  user: UserInfoFragment;
+};
+
+const ProfileInfoHeader = ({ user }: ProfileInfoHeaderProps) => {
   const [openModal] = useModal();
 
   return (

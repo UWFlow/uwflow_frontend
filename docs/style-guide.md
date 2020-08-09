@@ -14,49 +14,12 @@ File names should reflect these rules as well.
 - Common styles include heading and body text, box shadows, hover animations and cards
 - Only use colors found in the `GlobalTheme.tsx` file by accessing the `theme` prop in your Styled Components
 
-## Folder Structure
+## Hooks
 
-`components`
+- Always use hooks when available instead of an HOC
+- eg) React Router, Apollo, Styled Components, etc.
 
-- Common components used across pages
-- Contains a variety of subfolders grouped by function
+## Types
 
-`constants`
-
-- Global constants
-
-`data`
-
-- Data related functions such as Redux reducers and actions
-
-`generated`
-
-- Generated GraphQL types
-
-`graphql`
-
-- GraphQL fragments, queries and mutations
-
-`hooks`
-
-- Custom React hooks
-
-`img`
-
-- Images and other media files
-
-`pages`
-
-- Pages and page-specific components
-
-`search`
-
-- Search bar related components
-
-`types`
-
-- TypeScript type definitions and overrides for missing type packages
-
-`utils`
-
-- Common functions and utilities
+- Avoid explicitly using the `any` type
+- If you see any component using an explicit `any` type, try to clean it up when possible

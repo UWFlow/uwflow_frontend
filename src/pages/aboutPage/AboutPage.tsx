@@ -130,7 +130,7 @@ const AboutPage = () => (
           <TeamMember
             name="Ayush Kapur"
             title="Product Manager"
-            program="Computer Science 2022"
+            program="Software Engineering 2022"
             linkedIn="https://www.linkedin.com/in/ayush-kapur/"
             photo={AyushImg}
           >

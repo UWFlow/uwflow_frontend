@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { UserShortlistFragment } from 'generated/graphql';
 import { getCoursePageRoute } from 'Routes';
 
 import CollapsibleContainer from 'components/display/CollapsibleContainer';
@@ -18,11 +19,15 @@ import {
   ShortlistHeading,
 } from './styles/ShortlistBox';
 
-const ShortlistBox = ({ shortlistCourses }) => {
+type ShortlistBoxProps = {
+  shortlistCourses: UserShortlistFragment['shortlist'];
+};
+
+const ShortlistBox = ({ shortlistCourses }: ShortlistBoxProps) => {
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
-  const sortedShortlist = shortlistCourses.sort(
-    (a, b) => (a.course.code > b.course.code) - (a.course.code < b.course.code),
+  const sortedShortlist = shortlistCourses.sort((a, b) =>
+    a.course!.code.localeCompare(b.course!.code),
   );
 
   const shorlistContent = (
@@ -30,16 +35,16 @@ const ShortlistBox = ({ shortlistCourses }) => {
       {sortedShortlist.map((entry, idx) => (
         <ShortlistCourse key={idx}>
           <ShortlistStar
-            key={entry.course.id}
+            key={entry.course!.id}
             initialState={true}
-            courseId={entry.course.id}
-            courseCode={entry.course.code}
+            courseId={entry.course!.id}
+            courseCode={entry.course!.code}
           />
           <ShortListCourseText>
-            <ShortlistCourseCode to={getCoursePageRoute(entry.course.code)}>
-              {formatCourseCode(entry.course.code)}
+            <ShortlistCourseCode to={getCoursePageRoute(entry.course!.code)}>
+              {formatCourseCode(entry.course!.code)}
             </ShortlistCourseCode>
-            <ShortlistCourseName>{entry.course.name}</ShortlistCourseName>
+            <ShortlistCourseName>{entry.course!.name}</ShortlistCourseName>
           </ShortListCourseText>
         </ShortlistCourse>
       ))}

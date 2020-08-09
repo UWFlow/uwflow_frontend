@@ -2,4 +2,11 @@
 
 ## TypeScript code generation
 
-TypeScript GraphQL types can be generated in the `generated` folder by running `yarn generate`. This command will only need to be run if the Hasura GraphQL schema changes. Note that this command requires the Hasura server to be running locally.
+TypeScript GraphQL types can be generated in `generated/graphql.tsx` by running `yarn generate`. This command should be run if the Hasura GraphQL schema changes or a new GraphQL query/mutation was added to the frontend. Note that this command requires the Hasura server to be running locally.
+
+## Adding GraphQL queries and mutations
+
+1. Add a new GraphQL query/mutation under the appropriate folder in `graphql`
+   - Try to reuse common fragments under `graphql/fragements` or make your own if it can be used in multiple places
+2. Generate types for your new frament/query/mutation with `yarn generate`
+3. Make GraphQL requests with Apollo and the generated types

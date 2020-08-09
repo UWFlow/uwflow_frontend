@@ -4,9 +4,8 @@
 
 ## ⚙️ Frontend Setup ⚙
 
-1. clone the repository
-2. `yarn install` to install dependencies
-3. `yarn start` to run the server locally at [localhost:3000](localhost:3000)
+1. `yarn install` to install dependencies
+2. `yarn start` to run the server locally at [localhost:3000](localhost:3000)
 
 ## 🎬 Building for Production 🎬
 
@@ -25,7 +24,7 @@
 ## 📚 Documentation 📚
 
 - [Code style guide](docs/style-guide.md)
-- [GraphQL usage and TypeScript code generation](docs/graphql.md)
+- [GraphQL and TypeScript code generation](docs/graphql.md)
 - [Using and creating modals](docs/modals.md)
 - [Creating new pages](docs/pages.md)
 - [Explanation of client-side search](docs/search.md)

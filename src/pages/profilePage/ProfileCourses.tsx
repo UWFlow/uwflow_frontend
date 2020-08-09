@@ -1,5 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Edit, PlusSquare } from 'react-feather';
+import { ApolloQueryResult } from 'apollo-client';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  ReviewInfoFragment,
+  UserCoursesTakenFragment,
+} from 'generated/graphql';
 import { getCoursePageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
@@ -30,25 +37,43 @@ import {
   YourCoursesWrapper,
 } from './styles/ProfileCourses';
 
+type IndexedUserCourse = UserCoursesTakenFragment & { index: number };
+
+type TermCourseGroups = {
+  [key: string]: IndexedUserCourse[];
+};
+
+type ProfileCoursesProps = {
+  reviews: GetUserQuery['review'];
+  userCourses: GetUserQuery['user_course_taken'];
+  reviewModalCourseList: {
+    course: UserCoursesTakenFragment['course'];
+    review?: ReviewInfoFragment;
+  }[];
+  refetchAll: (
+    variables: GetUserQueryVariables,
+  ) => Promise<ApolloQueryResult<GetUserQuery>>;
+};
+
 const ProfileCourses = ({
-  courses,
-  reviewModalCourseList,
   reviews,
+  userCourses,
+  reviewModalCourseList,
   refetchAll,
-}) => {
+}: ProfileCoursesProps) => {
   const [openModal, closeModal] = useModal();
   const theme = useTheme();
 
   const groupCoursesByTerm = () => {
-    return courses.reduce((groups, course, idx) => {
+    return userCourses.reduce((groups: TermCourseGroups, course, idx) => {
       groups[course.term_id] = groups[course.term_id] || [];
       groups[course.term_id].push({ ...course, index: idx });
       return groups;
     }, {});
   };
 
-  const unorderedGroups = groupCoursesByTerm(courses);
-  const courseGroups = {};
+  const unorderedGroups = groupCoursesByTerm();
+  const courseGroups: { [key: string]: IndexedUserCourse[] } = {};
   const reviewModalProps = {
     showCourseDropdown: true,
     courseList: reviewModalCourseList,
@@ -60,30 +85,32 @@ const ProfileCourses = ({
     .sort()
     .reverse()
     .forEach((term) => {
-      courseGroups[termCodeToDate(term)] = unorderedGroups[term];
+      courseGroups[termCodeToDate(Number(term))] = unorderedGroups[term];
     });
 
   const sortedCourseList = reviewModalCourseList.sort((a, b) =>
-    a.course.code.localeCompare(b.course.code),
+    a.course!.code.localeCompare(b.course!.code),
   );
-  const tabContent = (termName) =>
+
+  const tabContent = (termName: string): ReactNode =>
     courseGroups[termName].map((courseTaken) => {
+      const course = courseTaken.course!;
       const review = reviews.find((r) => r.course_id === courseTaken.course_id);
       const selectedIndex = sortedCourseList.findIndex(
-        (courseObj) => courseObj.course.id === courseTaken.course.id,
+        (courseObj) => courseObj.course?.id === courseTaken.course?.id,
       );
 
       return (
-        <ProfileCoursesCourse key={courseTaken.course.id}>
+        <ProfileCoursesCourse key={course.id}>
           <ProfileCourseText>
-            <ProfileCourseCode to={getCoursePageRoute(courseTaken.course.code)}>
-              {formatCourseCode(courseTaken.course.code)}
+            <ProfileCourseCode to={getCoursePageRoute(course.code)}>
+              {formatCourseCode(course.code)}
             </ProfileCourseCode>
-            <ProfileCourseName>{courseTaken.course.name}</ProfileCourseName>
+            <ProfileCourseName>{course.name}</ProfileCourseName>
           </ProfileCourseText>
           <LikedCourseWrapper>
             <ProfileCourseLiked>
-              {processRating(courseTaken.course.rating.liked)}
+              {processRating(course.rating!.liked)}
             </ProfileCourseLiked>
             <LikedThisCourseText>
               liked this
@@ -93,16 +120,16 @@ const ProfileCourses = ({
           </LikedCourseWrapper>
           <LikeToggleWrapper>
             <LikeCourseToggle
-              key={courseTaken.course.id}
-              courseId={courseTaken.course.id}
-              courseCode={courseTaken.course.code}
+              key={course.id}
+              courseId={course.id}
+              courseCode={course.code}
               profId={review ? review.prof_id : null}
               reviewId={review ? review.id : null}
               initialState={review ? review.liked : null}
             />
           </LikeToggleWrapper>
           <Button
-            key={courseTaken.course.id}
+            key={course.id}
             margin="auto 0 auto 16px"
             padding="8px"
             height={48}
@@ -135,7 +162,7 @@ const ProfileCourses = ({
     return {
       title: termName,
       render: () => tabContent(termName),
-      onClick: () => null,
+      onClick: () => {},
     };
   });
 

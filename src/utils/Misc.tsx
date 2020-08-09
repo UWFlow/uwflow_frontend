@@ -114,7 +114,10 @@ export const secsToTime = (secs: number): string => {
   return `${h}:${m}${m === 0 ? 0 : ''} ${secs >= 3600 * 12 ? 'PM' : 'AM'}`;
 };
 
-export const getDateWithSeconds = (date: string, secs: number): Moment => {
+export const getDateWithSeconds = (
+  date: string,
+  secs?: number | null,
+): Moment => {
   return moment(`${date}`, 'YYYY-MM-DD').startOf('day').add(secs, 'seconds');
 };
 
