@@ -149,7 +149,7 @@ export const EventWrapper = styled.div<{
   truncate?: 'left' | 'right';
 }>`
   ${Body}
-  z-index: 1
+  z-index: 1;
   position: absolute;
   top: ${({ top }) => top + HEADER_HEIGHT}px;
   height: ${({ height }) => height - 2}px;
