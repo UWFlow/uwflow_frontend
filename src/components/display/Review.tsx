@@ -63,11 +63,11 @@ const MetricIfExists = (
     );
   }
 
-  // Otherwise, render numerical rating
+  // Otherwise, render numerical rating plus 1 since they go from 0 to 4
   return (
     <SingleMetricWrapper>
       <SingleMetricSquares>
-        <CircleRatings total={5} rating={Number(metrics[metric])} />
+        <CircleRatings total={5} rating={Number(metrics[metric]) + 1} />
       </SingleMetricSquares>
       <SingleMetricLabel> {metricText}</SingleMetricLabel>
     </SingleMetricWrapper>
