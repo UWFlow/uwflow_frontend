@@ -23,6 +23,7 @@ import {
   millisecondsPerDay,
   weekDayLetters,
 } from 'utils/Misc';
+import { randString } from 'utils/Random';
 
 import {
   ButtonWrapper,
@@ -195,8 +196,11 @@ const ProfileCalendar = ({
     if (download) {
       window.location.assign(response.url);
     } else {
-      // replace https:// with webcal://
-      const calendarUrl = response.url.replace(/^https:\/\//, 'webcal://');
+      // Replace https:// with webcal:// and append random query
+      // parameter to avoid cache issues with Google Calendar
+      const calendarUrl = response.url
+        .replace(/^https:\/\//, 'webcal://')
+        .concat(`?noCache=${randString()}`);
       window.open(`${GOOGLE_CALENDAR_URL}${calendarUrl}`, '_blank');
     }
   };
