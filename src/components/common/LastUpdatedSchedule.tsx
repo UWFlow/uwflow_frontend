@@ -5,7 +5,7 @@ import { splitCourseCode } from 'utils/Misc';
 
 import { LastUpdatedLink, LastUpdatedText } from './styles/LastUpdatedSchedule';
 
-const admLink = 'http://www.adm.uwaterloo.ca/infocour/CIR/SA/index.html';
+const classesLink = 'http://classes.uwaterloo.ca/infocour/CIR/SA/index.html';
 
 type LastUpdatedScheduleProps = {
   margin?: string;
@@ -29,16 +29,16 @@ const LastUpdatedSchedule = ({
           courseNum.length < 3)
           ? 'under'
           : 'grad';
-      return `http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=${courseLevel}&sess=${term}&subject=${courseLetters}&cournum=${courseNum.toUpperCase()}`;
+      return `http://classes.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=${courseLevel}&sess=${term}&subject=${courseLetters}&cournum=${courseNum.toUpperCase()}`;
     }
-    return admLink;
+    return classesLink;
   };
 
   return (
     <LastUpdatedText margin={margin}>
       Last updated {updatedAt?.fromNow()} from{' '}
       <LastUpdatedLink href={buildLink()} target="_blank">
-        adm.uwaterloo.ca
+        classes.uwaterloo.ca
       </LastUpdatedLink>
     </LastUpdatedText>
   );
