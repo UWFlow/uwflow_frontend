@@ -226,7 +226,6 @@ const CourseSchedule = ({
   const sectionsCleanedData = sections
     .map((s) => ({
       section: s.section_name,
-      campus: s.campus,
       class: s.class_number,
       term: s.term_id,
       enrolled: {

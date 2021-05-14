@@ -37,7 +37,6 @@ const CourseFragment = {
         enrollment_capacity
         enrollment_total
         class_number
-        campus
         section_name
         term_id
         updated_at
