@@ -7,6 +7,6 @@ TypeScript GraphQL types can be generated in `generated/graphql.tsx` by running 
 ## Adding GraphQL queries and mutations
 
 1. Add a new GraphQL query/mutation under the appropriate folder in `graphql`
-   - Try to reuse common fragments under `graphql/fragements` or make your own if it can be used in multiple places
+   - Try to reuse common fragments under `graphql/fragments` or make your own if it can be used in multiple places
 2. Generate types for your new frament/query/mutation with `yarn generate`
 3. Make GraphQL requests with Apollo and the generated types

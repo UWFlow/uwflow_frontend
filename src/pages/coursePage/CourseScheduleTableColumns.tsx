@@ -80,10 +80,6 @@ const EnrolledCell = ({ cell }: CellProps) => (
   </NormalCellWrapper>
 );
 
-const CampusCell = ({ cell }: CellProps) => (
-  <ContentWrapper>{cell.value}</ContentWrapper>
-);
-
 const TimeCell = ({ cell }: CellProps) => (
   <NormalCellWrapper>
     {cell.value.map((cl: any, idx: number) => (
@@ -162,6 +158,7 @@ export const courseScheduleTableColumns = [
     style: {
       padding: 0,
     },
+    maxWidth: 160,
   },
   {
     Header: 'Class',
@@ -195,10 +192,5 @@ export const courseScheduleTableColumns = [
     Header: 'Instructor',
     Cell: InstructorCell,
     accessor: 'profs',
-  },
-  {
-    Header: 'Campus',
-    Cell: CampusCell,
-    accessor: 'campus',
   },
 ];
