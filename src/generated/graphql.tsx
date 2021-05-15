@@ -3515,6 +3515,7 @@ export type Course_Search_Index = {
   course_letters?: Maybe<Scalars['String']>;
   document?: Maybe<Scalars['tsvector']>;
   easy?: Maybe<Scalars['numeric']>;
+  has_prereqs?: Maybe<Scalars['Boolean']>;
   liked?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
   prof_ids?: Maybe<Scalars['_int4']>;
@@ -3596,6 +3597,7 @@ export type Course_Search_Index_Bool_Exp = {
   course_letters?: Maybe<String_Comparison_Exp>;
   document?: Maybe<Tsvector_Comparison_Exp>;
   easy?: Maybe<Numeric_Comparison_Exp>;
+  has_prereqs?: Maybe<Boolean_Comparison_Exp>;
   liked?: Maybe<Numeric_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   prof_ids?: Maybe<_Int4_Comparison_Exp>;
@@ -3661,6 +3663,7 @@ export type Course_Search_Index_Order_By = {
   course_letters?: Maybe<Order_By>;
   document?: Maybe<Order_By>;
   easy?: Maybe<Order_By>;
+  has_prereqs?: Maybe<Order_By>;
   liked?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   prof_ids?: Maybe<Order_By>;
@@ -3681,6 +3684,8 @@ export enum Course_Search_Index_Select_Column {
   Document = 'document',
   /** column name */
   Easy = 'easy',
+  /** column name */
+  HasPrereqs = 'has_prereqs',
   /** column name */
   Liked = 'liked',
   /** column name */
@@ -3831,7 +3836,6 @@ export type Course_Search_Index_Variance_Order_By = {
 /** columns and relationships of "course_section" */
 export type Course_Section = {
   __typename?: 'course_section';
-  campus: Scalars['String'];
   class_number: Scalars['Int'];
   /** An object relationship */
   course: Course;
@@ -3964,7 +3968,6 @@ export type Course_Section_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Course_Section_Bool_Exp>>>;
   _not?: Maybe<Course_Section_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Course_Section_Bool_Exp>>>;
-  campus?: Maybe<String_Comparison_Exp>;
   class_number?: Maybe<Int_Comparison_Exp>;
   course?: Maybe<Course_Bool_Exp>;
   course_id?: Maybe<Int_Comparison_Exp>;
@@ -3998,7 +4001,6 @@ export type Course_Section_Inc_Input = {
 
 /** input type for inserting data into table "course_section" */
 export type Course_Section_Insert_Input = {
-  campus?: Maybe<Scalars['String']>;
   class_number?: Maybe<Scalars['Int']>;
   course?: Maybe<Course_Obj_Rel_Insert_Input>;
   course_id?: Maybe<Scalars['Int']>;
@@ -4015,7 +4017,6 @@ export type Course_Section_Insert_Input = {
 /** aggregate max on columns */
 export type Course_Section_Max_Fields = {
   __typename?: 'course_section_max_fields';
-  campus?: Maybe<Scalars['String']>;
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
@@ -4028,7 +4029,6 @@ export type Course_Section_Max_Fields = {
 
 /** order by max() on columns of table "course_section" */
 export type Course_Section_Max_Order_By = {
-  campus?: Maybe<Order_By>;
   class_number?: Maybe<Order_By>;
   course_id?: Maybe<Order_By>;
   enrollment_capacity?: Maybe<Order_By>;
@@ -4042,7 +4042,6 @@ export type Course_Section_Max_Order_By = {
 /** aggregate min on columns */
 export type Course_Section_Min_Fields = {
   __typename?: 'course_section_min_fields';
-  campus?: Maybe<Scalars['String']>;
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
@@ -4055,7 +4054,6 @@ export type Course_Section_Min_Fields = {
 
 /** order by min() on columns of table "course_section" */
 export type Course_Section_Min_Order_By = {
-  campus?: Maybe<Order_By>;
   class_number?: Maybe<Order_By>;
   course_id?: Maybe<Order_By>;
   enrollment_capacity?: Maybe<Order_By>;
@@ -4090,7 +4088,6 @@ export type Course_Section_On_Conflict = {
 
 /** ordering options when selecting data from "course_section" */
 export type Course_Section_Order_By = {
-  campus?: Maybe<Order_By>;
   class_number?: Maybe<Order_By>;
   course?: Maybe<Course_Order_By>;
   course_id?: Maybe<Order_By>;
@@ -4112,8 +4109,6 @@ export type Course_Section_Pk_Columns_Input = {
 /** select columns of table "course_section" */
 export enum Course_Section_Select_Column {
   /** column name */
-  Campus = 'campus',
-  /** column name */
   ClassNumber = 'class_number',
   /** column name */
   CourseId = 'course_id',
@@ -4133,7 +4128,6 @@ export enum Course_Section_Select_Column {
 
 /** input type for updating data in table "course_section" */
 export type Course_Section_Set_Input = {
-  campus?: Maybe<Scalars['String']>;
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
@@ -4230,8 +4224,6 @@ export type Course_Section_Sum_Order_By = {
 
 /** update columns of table "course_section" */
 export enum Course_Section_Update_Column {
-  /** column name */
-  Campus = 'campus',
   /** column name */
   ClassNumber = 'class_number',
   /** column name */
@@ -11330,7 +11322,6 @@ export type CourseScheduleFragment = { __typename?: 'course' } & Pick<
         | 'enrollment_capacity'
         | 'enrollment_total'
         | 'class_number'
-        | 'campus'
         | 'section_name'
         | 'term_id'
         | 'updated_at'
@@ -11547,6 +11538,7 @@ export type CourseSearchFragment = {
   | 'prof_ids'
   | 'liked'
   | 'easy'
+  | 'has_prereqs'
 >;
 
 export type ProfSearchFragment = { __typename?: 'prof_search_index' } & Pick<
@@ -12122,7 +12114,6 @@ export const CourseScheduleFragmentDoc = gql`
       enrollment_capacity
       enrollment_total
       class_number
-      campus
       section_name
       term_id
       updated_at
@@ -12320,6 +12311,7 @@ export const CourseSearchFragmentDoc = gql`
     prof_ids
     liked
     easy
+    has_prereqs
   }
 `;
 export const ProfSearchFragmentDoc = gql`

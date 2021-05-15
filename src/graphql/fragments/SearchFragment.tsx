@@ -12,6 +12,7 @@ const SearchFragment = {
       prof_ids
       liked
       easy
+      has_prereqs
     }
   `,
   profSearch: gql`

@@ -59,6 +59,7 @@ const ExplorePageContent = ({
   const [nextTerm, setNextTerm] = useState(false);
   const [courseTaught, setCourseTaught] = useState(0);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
+  const [hasPrereqs, setHasPrereqs] = useState(true);
 
   const exploreAll = query === '';
 
@@ -95,6 +96,7 @@ const ExplorePageContent = ({
     currentTerm,
     nextTerm,
     courseTaught,
+    hasPrereqs,
   };
 
   const resetCourseFilters = () => {
@@ -102,6 +104,7 @@ const ExplorePageContent = ({
     setNumCourseRatings(0);
     setCurrentTerm(false);
     setNextTerm(false);
+    setHasPrereqs(true);
   };
 
   const resetProfFilters = () => {
@@ -145,6 +148,7 @@ const ExplorePageContent = ({
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
             setCourseTaught={setCourseTaught}
+            setHasPrereqs={setHasPrereqs}
             ratingFilters={RATING_FILTERS}
             resetFilters={
               exploreTab === 0 ? resetCourseFilters : resetProfFilters
