@@ -107,6 +107,7 @@ const SearchResults = ({
       easy: result.easy,
       useful: result.useful,
       terms: result.terms,
+      has_prereqs: result.has_prereqs ? result.has_prereqs?.valueOf() : false,
     }));
 
     const newProfs: ProfSearchResult[] = allProfs.map((result) => ({
@@ -150,7 +151,9 @@ const SearchResults = ({
               course.terms.some((term) => Number(term) === currentTermCode))) &&
           (!filterState.nextTerm ||
             (filterState.nextTerm &&
-              course.terms.some((term) => Number(term) === nextTermCode))),
+              course.terms.some((term) => Number(term) === nextTermCode))) &&
+          (filterState.hasPrereqs ||
+            (!filterState.hasPrereqs && course.has_prereqs === false)),
       )
     : [];
 

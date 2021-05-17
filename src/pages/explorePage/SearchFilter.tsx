@@ -52,6 +52,7 @@ type SearchFilterProps = {
   setNextTerm: Dispatch<SetStateAction<boolean>>;
   setNumRatings: Dispatch<SetStateAction<number>>;
   setCourseTaught: Dispatch<SetStateAction<number>>;
+  setHasPrereqs: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   ratingFilters: number[];
   courseSearch: boolean;
@@ -65,6 +66,7 @@ const SearchFilter = ({
   setNextTerm,
   setNumRatings,
   setCourseTaught,
+  setHasPrereqs,
   resetFilters,
   ratingFilters,
   courseSearch,
@@ -134,6 +136,19 @@ const SearchFilter = ({
                 options={[`Next term (${nextTermString})`]}
                 margin="8px 0 0 0"
                 onClick={() => setNextTerm(!filterState.nextTerm)}
+                toggle
+              />
+            </RadioButtonWrapper>
+          </SearchFilterSection>
+          <SearchFilterSection style={{ marginTop: '24px' }}>
+            <SearchFilterText>Requirements</SearchFilterText>
+            <RadioButtonWrapper>
+              <RadioButton
+                color={theme.primary}
+                selected={!filterState.hasPrereqs}
+                options={['No prerequisites']}
+                margin="8px 16px 0 0"
+                onClick={() => setHasPrereqs(!filterState.hasPrereqs)}
                 toggle
               />
             </RadioButtonWrapper>

@@ -26,6 +26,7 @@ export type SearchFilterState = {
   currentTerm: boolean;
   nextTerm: boolean;
   courseTaught: number;
+  hasPrereqs: boolean;
 };
 
 export type CourseSearchResult = {
@@ -37,6 +38,7 @@ export type CourseSearchResult = {
   easy: number;
   useful: number;
   terms: number[];
+  has_prereqs: boolean;
 };
 
 export type ProfSearchResult = {
