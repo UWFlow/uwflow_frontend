@@ -160,7 +160,13 @@ const Calendar = ({ eventsByDate, initialStartDate }: CalendarProps) => {
   const hoursToDisplay = () => {
     const hours = [];
     for (let i = minHour; i <= maxHour; i += 1) {
-      hours.push(i < 13 ? `${i} am` : `${i - 12} pm`);
+      if (i === 0) {
+        hours.push('12 am');
+      } else if (i === 12) {
+        hours.push('12 pm');
+      } else {
+        hours.push(i < 12 ? `${i} am` : `${i - 12} pm`);
+      }
     }
     return hours;
   };
