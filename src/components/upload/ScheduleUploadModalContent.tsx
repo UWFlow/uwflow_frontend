@@ -117,7 +117,7 @@ const ScheduleUploadModalContent = ({
       } else {
         const scheduleRes = response as ScheduleParseResponse;
         setUploadError(
-          SCHEDULE_ERRORS.classes_failed(scheduleRes.failed_classes.length),
+          SCHEDULE_ERRORS.classes_failed(scheduleRes.failed_classes),
         );
         onAfterUploadSuccess();
       }

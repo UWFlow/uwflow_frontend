@@ -223,8 +223,8 @@ export const ErrorMessage = styled.div`
   width: 100%;
   top: 0;
   left: 0;
-  right: 0
-  z-index: 2;
+  right: 0;
+  z-index: 1;
   color: ${({ theme }) => theme.white};
   background: ${({ theme }) => theme.red};
 `;
