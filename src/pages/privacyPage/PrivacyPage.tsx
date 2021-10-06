@@ -106,6 +106,11 @@ const PrivacyPage = () => (
           encourage you to contact us immediately and we will do our best
           efforts to promptly remove such information from our records.
         </PageBodyParagraph>
+        <PageBodyHeader>Data Deletion</PageBodyHeader>
+        <PageBodyParagraph>
+          To request data deletion for your UW Flow account, please email us at
+          <a href="mailto:info@uwflow.com">info@uwflow.com</a>.
+        </PageBodyParagraph>
         <PageBodyHeader>Online Privacy Policy Only</PageBodyHeader>
         <PageBodyParagraph>
           This Privacy Policy applies only to our online activities and is valid
