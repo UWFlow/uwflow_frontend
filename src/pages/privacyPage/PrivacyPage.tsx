@@ -108,7 +108,7 @@ const PrivacyPage = () => (
         </PageBodyParagraph>
         <PageBodyHeader>Data Deletion</PageBodyHeader>
         <PageBodyParagraph>
-          To request data deletion for your UW Flow account, please email us at
+          To request data deletion for your UW Flow account, please email us at{' '}
           <a href="mailto:info@uwflow.com">info@uwflow.com</a>.
         </PageBodyParagraph>
         <PageBodyHeader>Online Privacy Policy Only</PageBodyHeader>
