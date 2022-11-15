@@ -1545,6 +1545,18 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@datadog/browser-core@4.24.0":
+  version "4.24.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-4.24.0.tgz#a089deb20eafe6628199e94c41d1e59bcedb2c5a"
+  integrity sha512-HTPrt+lOu7ineq3cWT91Lcsf3ihbu0I7YssT0bdt/4vjqmCW12fW3koGGq9B5MpcBwpp7uc1rg6vZiC9GRlGEw==
+
+"@datadog/browser-logs@^4.24.0":
+  version "4.24.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-4.24.0.tgz#7d2a7e93f189f40a696fafd23d93f9fa03cd7a7d"
+  integrity sha512-PrulQvy3rEqfhUjUT/PkmBdgTi18z2GKYnIwZxeaEtPNIneb8cVE7M2Mdu8vAGAWVjS19QOe/FOJLlmpC7SbNA==
+  dependencies:
+    "@datadog/browser-core" "4.24.0"
+
 "@emotion/is-prop-valid@^0.8.8":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"

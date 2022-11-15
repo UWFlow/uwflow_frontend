@@ -3,6 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
+import { datadogLogs } from '@datadog/browser-logs';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import App from 'App';
@@ -16,6 +17,21 @@ import ModalProvider from 'components/modal/ModalProvider';
 import Theme from 'constants/GlobalTheme';
 import client from 'graphql/apollo.js';
 import SearchProvider from 'search/SearchProvider';
+
+datadogLogs.init({
+  clientToken: 'pub0d780056baa6c3b6748135b473b72a8e',
+  site: 'datadoghq.com',
+  env: 'prod',
+  service: 'frontend',
+  forwardErrorsToLogs: true,
+  sampleRate: 100,
+});
+
+window.onerror = function (message, source, lineno, colno, error) {
+  datadogLogs.logger.error(error?.message || '', {
+    error: { stack: error?.stack },
+  });
+};
 
 Sentry.init({
   dsn:
