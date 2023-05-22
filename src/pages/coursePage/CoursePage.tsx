@@ -145,13 +145,15 @@ const CoursePage = () => {
 
   const courseCode = match.params.courseCode.toLowerCase();
   const query = isLoggedIn ? GET_COURSE_WITH_USER_DATA : GET_COURSE;
+  const variables = {
+    code: courseCode,
+    ...(isLoggedIn && { user_id: getUserId() }),
+  };
 
   const { loading, error, data } = useQuery<
     GetCourseQuery | GetCourseWithUserDataQuery,
     GetCourseQueryVariables
-  >(query, {
-    variables: { code: courseCode, user_id: getUserId() },
-  });
+  >(query, { variables });
 
   const renderContent = (
     queryData: GetCourseQuery | GetCourseWithUserDataQuery,

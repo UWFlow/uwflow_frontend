@@ -5,7 +5,7 @@ import ProfFragment from 'graphql/fragments/ProfFragment';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const GET_COURSE = gql`
-  query getCourse($code: String, $user_id: Int) {
+  query getCourse($code: String) {
     course(where: { code: { _eq: $code } }) {
       ...CourseInfo
       ...CourseSchedule
