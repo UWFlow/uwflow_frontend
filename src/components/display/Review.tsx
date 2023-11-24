@@ -153,7 +153,7 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
     timeAgo = '';
   }
 
-  const profText = prof
+  const profText = prof && prof_code
     ? [
         ', taught by ',
         <ProfText key={prof_code} to={getProfPageRoute(prof_code)}>
