@@ -314,12 +314,14 @@ const SearchBar = ({
     });
 
     let offset = courseResults.length;
-    const profResults = searchResults.profResults.map((result, i) => {
-      return profResult(
-        result,
-        selectedResultIndex === i + offset ? selectedResultRef : null,
-      );
-    });
+    const profResults = searchResults.profResults
+      .filter((prof) => !!prof.code)
+      .map((prof, i) => {
+        return profResult(
+          prof,
+          selectedResultIndex === i + offset ? selectedResultRef : null,
+        );
+      });
 
     offset += profResults.length;
 

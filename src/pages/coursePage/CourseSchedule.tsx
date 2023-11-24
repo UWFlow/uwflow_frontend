@@ -71,13 +71,14 @@ const getInfoGroupings = (meetings: Meeting[]) => {
             curr.end_seconds!,
           )}`,
           location: curr.location,
-          prof: curr.prof
-            ? {
-                id: curr.prof.id,
-                code: curr.prof.code,
-                name: curr.prof.name,
-              }
-            : {},
+          prof:
+            curr.prof && curr.prof.code
+              ? {
+                  id: curr.prof.id,
+                  code: curr.prof.code,
+                  name: curr.prof.name,
+                }
+              : {},
           timeRanges: [],
           cancelled: curr.is_cancelled,
           isTba: curr.is_tba,

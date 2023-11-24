@@ -149,85 +149,89 @@ const CourseProfReviews = ({
 
   const reviewList = useMemo(
     () =>
-      reviewsByProf.map((prof: any, idx: number) => (
-        <ReviewsForSingleProfWrapper key={idx}>
-          <ReviewListWrapper>
-            <ProfHeader>
-              <NameNumReviewsWrapper>
-                <ProfName to={getProfPageRoute(prof.code)}>
-                  {prof.name}
-                </ProfName>
-                <NumProfReviews>
-                  {prof.reviews.length > 0
-                    ? `${prof.reviews.length} review${
-                        prof.reviews.length === 1 ? '' : 's'
-                      } for this course`
-                    : `${prof.comment_count} review${
-                        prof.comment_count === 1 ? '' : 's'
-                      } for other courses`}
-                </NumProfReviews>
-              </NameNumReviewsWrapper>
-              <ProfLikedMetric>
-                <ProfLikedPercent>{processRating(prof.liked)}</ProfLikedPercent>
-                <ProfLikedPercentLabel>
-                  liked this professor
-                </ProfLikedPercentLabel>
-              </ProfLikedMetric>
-            </ProfHeader>
-            {prof.reviews.length > 0 && (
-              <ReviewsOptionsWrapper>
-                <DropdownPanelWrapper>
-                  <DropdownTableText>Sort by: </DropdownTableText>
-                  <DropdownList
-                    color={theme.primary}
-                    selectedIndex={curSelectedSort[idx]}
-                    options={['most recent', 'most helpful']}
-                    onChange={(value) => {
-                      curSelectedSort[idx] = value;
-                      setSelectedSort(curSelectedSort);
-                    }}
-                    zIndex={4}
+      reviewsByProf
+        .filter((prof: any) => !!prof.code)
+        .map((prof: any, idx: number) => (
+          <ReviewsForSingleProfWrapper key={idx}>
+            <ReviewListWrapper>
+              <ProfHeader>
+                <NameNumReviewsWrapper>
+                  <ProfName to={getProfPageRoute(prof.code)}>
+                    {prof.name}
+                  </ProfName>
+                  <NumProfReviews>
+                    {prof.reviews.length > 0
+                      ? `${prof.reviews.length} review${
+                          prof.reviews.length === 1 ? '' : 's'
+                        } for this course`
+                      : `${prof.comment_count} review${
+                          prof.comment_count === 1 ? '' : 's'
+                        } for other courses`}
+                  </NumProfReviews>
+                </NameNumReviewsWrapper>
+                <ProfLikedMetric>
+                  <ProfLikedPercent>
+                    {processRating(prof.liked)}
+                  </ProfLikedPercent>
+                  <ProfLikedPercentLabel>
+                    liked this professor
+                  </ProfLikedPercentLabel>
+                </ProfLikedMetric>
+              </ProfHeader>
+              {prof.reviews.length > 0 && (
+                <ReviewsOptionsWrapper>
+                  <DropdownPanelWrapper>
+                    <DropdownTableText>Sort by: </DropdownTableText>
+                    <DropdownList
+                      color={theme.primary}
+                      selectedIndex={curSelectedSort[idx]}
+                      options={['most recent', 'most helpful']}
+                      onChange={(value) => {
+                        curSelectedSort[idx] = value;
+                        setSelectedSort(curSelectedSort);
+                      }}
+                      zIndex={4}
+                    />
+                  </DropdownPanelWrapper>
+                </ReviewsOptionsWrapper>
+              )}
+              {sortReviews(prof.reviews, selectedSort[idx] === 0)
+                .filter((_, i) => {
+                  return (
+                    i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[prof.name]
+                  );
+                })
+                .map((review) => (
+                  <Review
+                    key={review.id}
+                    review={review}
+                    isCourseReview={false}
                   />
-                </DropdownPanelWrapper>
-              </ReviewsOptionsWrapper>
+                ))}
+            </ReviewListWrapper>
+            {prof.reviews.length > MIN_REVIEWS_SHOWN_PROF && (
+              <ShowMoreReviewsSection
+                id={prof.name}
+                onClick={() => {
+                  setShowingReviewsMap({
+                    ...showingReviewsMap,
+                    [prof.name]: !showingReviewsMap[prof.name],
+                  });
+                  if (showingReviewsMap[prof.name]) {
+                    document.getElementById(prof.name)?.scrollIntoView();
+                  }
+                }}
+                onMouseDown={(e) => e.preventDefault()}
+              >
+                <ShowMoreReviewsText>
+                  {showingReviewsMap[prof.name]
+                    ? `Show fewer reviews`
+                    : `Show all ${prof.reviews.length} reviews`}
+                </ShowMoreReviewsText>
+              </ShowMoreReviewsSection>
             )}
-            {sortReviews(prof.reviews, selectedSort[idx] === 0)
-              .filter((_, i) => {
-                return (
-                  i < MIN_REVIEWS_SHOWN_PROF || showingReviewsMap[prof.name]
-                );
-              })
-              .map((review) => (
-                <Review
-                  key={review.id}
-                  review={review}
-                  isCourseReview={false}
-                />
-              ))}
-          </ReviewListWrapper>
-          {prof.reviews.length > MIN_REVIEWS_SHOWN_PROF && (
-            <ShowMoreReviewsSection
-              id={prof.name}
-              onClick={() => {
-                setShowingReviewsMap({
-                  ...showingReviewsMap,
-                  [prof.name]: !showingReviewsMap[prof.name],
-                });
-                if (showingReviewsMap[prof.name]) {
-                  document.getElementById(prof.name)?.scrollIntoView();
-                }
-              }}
-              onMouseDown={(e) => e.preventDefault()}
-            >
-              <ShowMoreReviewsText>
-                {showingReviewsMap[prof.name]
-                  ? `Show fewer reviews`
-                  : `Show all ${prof.reviews.length} reviews`}
-              </ShowMoreReviewsText>
-            </ShowMoreReviewsSection>
-          )}
-        </ReviewsForSingleProfWrapper>
-      )),
+          </ReviewsForSingleProfWrapper>
+        )),
     // eslint-disable-next-line
     [reviewsByProf, showingReviewsMap, selectedSort, curSelectedSort],
   );
@@ -295,9 +299,9 @@ const CourseReviews = ({ courseId, profsTeaching }: CourseReviewsProps) => {
   );
 
   // find profs who don't have reviews but are currently teaching the course
-  const profsWithReviews = reviewDataState.reviewsByProf.map(
-    (prof) => prof.code,
-  );
+  const profsWithReviews = reviewDataState.reviewsByProf
+    .filter((prof) => !!prof.code)
+    .map((prof) => prof.code);
   const additionalProfs = profsTeaching
     .filter((profObj: any) => !profsWithReviews.includes(profObj.prof.code))
     .map((profObj: any) =>
