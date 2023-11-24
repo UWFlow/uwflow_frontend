@@ -153,14 +153,15 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
     timeAgo = '';
   }
 
-  const profText = prof && prof_code
-    ? [
-        ', taught by ',
-        <ProfText key={prof_code} to={getProfPageRoute(prof_code)}>
-          {prof}
-        </ProfText>,
-      ]
-    : [''];
+  const profText =
+    prof && prof_code
+      ? [
+          ', taught by ',
+          <ProfText key={prof_code} to={getProfPageRoute(prof_code)}>
+            {prof}
+          </ProfText>,
+        ]
+      : [''];
 
   const reviewContent = (
     <ReviewTextWrapper>
