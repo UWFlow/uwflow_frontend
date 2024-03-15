@@ -145,10 +145,10 @@ const SearchFilter = ({
             <RadioButtonWrapper>
               <RadioButton
                 color={theme.primary}
-                selected={!filterState.hasPrereqs}
+                selected={!filterState.hasNoPrereqs}
                 options={['No prerequisites']}
                 margin="8px 16px 0 0"
-                onClick={() => setHasPrereqs(!filterState.hasPrereqs)}
+                onClick={() => setHasPrereqs(!filterState.hasNoPrereqs)}
                 toggle
               />
             </RadioButtonWrapper>

@@ -26,7 +26,7 @@ export type SearchFilterState = {
   currentTerm: boolean;
   nextTerm: boolean;
   courseTaught: number;
-  hasPrereqs: boolean;
+  hasNoPrereqs: boolean;
 };
 
 export type CourseSearchResult = {

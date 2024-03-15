@@ -152,8 +152,8 @@ const SearchResults = ({
           (!filterState.nextTerm ||
             (filterState.nextTerm &&
               course.terms.some((term) => Number(term) === nextTermCode))) &&
-          (filterState.hasPrereqs ||
-            (!filterState.hasPrereqs && course.has_prereqs === false)),
+          (filterState.hasNoPrereqs ||
+            (!filterState.hasNoPrereqs && course.has_prereqs === false)),
       )
     : [];
 
