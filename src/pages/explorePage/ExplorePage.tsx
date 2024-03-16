@@ -8,7 +8,7 @@ import {
   ExploreQuery,
   ExploreQueryVariables,
 } from 'generated/graphql';
-import queryString from 'query-string';
+import queryString, { ParsedQuery } from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { MAX_SEARCH_TERMS } from 'constants/Search';
@@ -17,6 +17,8 @@ import {
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
 import { SearchFilterState } from 'types/Common';
+
+import { EXPLORE_PAGE_ROUTE } from '../../Routes';
 
 import {
   Column1,
@@ -49,17 +51,54 @@ const ExplorePageContent = ({
   error,
   loading,
 }: ExplorePageContentProps) => {
+  const location = useLocation();
+  const getDefaultFilterState = (pq: ParsedQuery): SearchFilterState => {
+    const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
+    if (pq.exclude && pq.exclude instanceof Array) {
+      pq.exclude.forEach((index) => {
+        courseCodes[parseInt(index, 10)] = false;
+      });
+    }
+    return {
+      courseCodes,
+      numCourseRatings: pq.numCourseRatings
+        ? parseInt(pq.numCourseRatings as string, 10)
+        : 0,
+      numProfRatings: pq.numProfRatings
+        ? parseInt(pq.numProfRatings as string, 10)
+        : 0,
+      currentTerm: pq.currentTerm ? Boolean(pq.currentTerm) : false,
+      nextTerm: pq.nextTerm ? Boolean(pq.nextTerm) : false,
+      courseTaught: pq.courseTaught
+        ? parseInt(pq.courseTaught as string, 10)
+        : 0,
+      hasPrereqs: pq.hasNoPrereqs ? !pq.hasNoPrereqs : true,
+    };
+  };
+
+  const defaultFilterState = getDefaultFilterState(
+    queryString.parse(location.search),
+  );
+
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
   const [courseCodes, setCourseCodes] = useState<boolean[]>(
-    Array(NUM_COURSE_CODE_FILTERS).fill(true),
+    defaultFilterState.courseCodes,
   );
-  const [numCourseRatings, setNumCourseRatings] = useState(0);
-  const [numProfRatings, setNumProfRatings] = useState(0);
-  const [currentTerm, setCurrentTerm] = useState(false);
-  const [nextTerm, setNextTerm] = useState(false);
-  const [courseTaught, setCourseTaught] = useState(0);
+  const [numCourseRatings, setNumCourseRatings] = useState(
+    defaultFilterState.numCourseRatings,
+  );
+  const [numProfRatings, setNumProfRatings] = useState(
+    defaultFilterState.numProfRatings,
+  );
+  const [currentTerm, setCurrentTerm] = useState(
+    defaultFilterState.currentTerm,
+  );
+  const [nextTerm, setNextTerm] = useState(defaultFilterState.nextTerm);
+  const [courseTaught, setCourseTaught] = useState(
+    defaultFilterState.courseTaught,
+  );
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
-  const [hasPrereqs, setHasPrereqs] = useState(true);
+  const [hasPrereqs, setHasPrereqs] = useState(defaultFilterState.hasPrereqs);
 
   const exploreAll = query === '';
 
@@ -98,6 +137,41 @@ const ExplorePageContent = ({
     courseTaught,
     hasPrereqs,
   };
+
+  const mapFilterStateToURL = (fs: SearchFilterState) => {
+    return {
+      exclude: fs.courseCodes
+        .map((bool, index) => (bool ? null : index))
+        .filter((index) => index !== null),
+      numCourseRatings: !fs.numCourseRatings ? null : fs.numCourseRatings,
+      numProfRatings: !fs.numProfRatings ? null : fs.numProfRatings,
+      courseTaught: !fs.courseTaught ? null : fs.courseTaught,
+      currentTerm: !fs.currentTerm ? null : fs.currentTerm,
+      nextTerm: !fs.nextTerm ? null : fs.nextTerm,
+      hasNoPrereqs: fs.hasPrereqs ? null : true,
+    };
+  };
+
+  useEffect(() => {
+    window.history.pushState(
+      {},
+      '',
+      `${EXPLORE_PAGE_ROUTE}/?${queryString.stringify(
+        mapFilterStateToURL(filterState),
+        {
+          skipNull: true,
+        },
+      )}`,
+    );
+  }, [
+    filterState,
+    courseCodes,
+    numCourseRatings,
+    currentTerm,
+    nextTerm,
+    courseTaught,
+    hasPrereqs,
+  ]);
 
   const resetCourseFilters = () => {
     setCourseCodes(Array(NUM_COURSE_CODE_FILTERS).fill(true));
