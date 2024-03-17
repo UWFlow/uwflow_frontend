@@ -61,23 +61,19 @@ const ExplorePageContent = ({
     }
     return {
       courseCodes,
-      numCourseRatings: pq.numCourseRatings
-        ? parseInt(pq.numCourseRatings as string, 10)
-        : 0,
-      numProfRatings: pq.numProfRatings
-        ? parseInt(pq.numProfRatings as string, 10)
-        : 0,
-      currentTerm: pq.currentTerm ? Boolean(pq.currentTerm) : false,
-      nextTerm: pq.nextTerm ? Boolean(pq.nextTerm) : false,
-      courseTaught: pq.courseTaught
-        ? parseInt(pq.courseTaught as string, 10)
-        : 0,
-      hasPrereqs: pq.hasNoPrereqs ? !pq.hasNoPrereqs : true,
+      numCourseRatings: parseInt(pq.minCourseRatings as string, 10) || 0,
+      numProfRatings: parseInt(pq.minProfRatings as string, 10) || 0,
+      currentTerm: Boolean(pq.currentTerm) || false,
+      nextTerm: Boolean(pq.nextTerm) || false,
+      courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
+      hasPrereqs: pq.noPrereqs ? !pq.hasNoPrereqs : true,
     };
   };
 
   const defaultFilterState = getDefaultFilterState(
-    queryString.parse(location.search),
+    queryString.parse(location.search, {
+      arrayFormat: 'comma',
+    }),
   );
 
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
@@ -143,12 +139,12 @@ const ExplorePageContent = ({
       exclude: fs.courseCodes
         .map((bool, index) => (bool ? null : index))
         .filter((index) => index !== null),
-      numCourseRatings: !fs.numCourseRatings ? null : fs.numCourseRatings,
-      numProfRatings: !fs.numProfRatings ? null : fs.numProfRatings,
-      courseTaught: !fs.courseTaught ? null : fs.courseTaught,
-      currentTerm: !fs.currentTerm ? null : fs.currentTerm,
-      nextTerm: !fs.nextTerm ? null : fs.nextTerm,
-      hasNoPrereqs: fs.hasPrereqs ? null : true,
+      minCourseRatings: fs.numCourseRatings || null,
+      minProfRatings: fs.numProfRatings || null,
+      courseTaught: fs.courseTaught || null,
+      currentTerm: fs.currentTerm || null,
+      nextTerm: fs.nextTerm || null,
+      noPrereqs: !fs.hasPrereqs || null,
     };
   };
 
@@ -156,10 +152,11 @@ const ExplorePageContent = ({
     window.history.pushState(
       {},
       '',
-      `${EXPLORE_PAGE_ROUTE}/?${queryString.stringify(
+      `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(
         mapFilterStateToURL(filterState),
         {
           skipNull: true,
+          arrayFormat: 'comma',
         },
       )}`,
     );
