@@ -66,7 +66,7 @@ const ExplorePageContent = ({
       currentTerm: Boolean(pq.currentTerm) || false,
       nextTerm: Boolean(pq.nextTerm) || false,
       courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
-      hasPrereqs: pq.noPrereqs ? !pq.hasNoPrereqs : true,
+      hasPrereqs: pq.noPrereqs ? !pq.noPrereqs : true,
     };
   };
 
