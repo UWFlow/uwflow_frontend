@@ -16,7 +16,7 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
-import { SearchFilterState } from 'types/Common';
+import { SearchFilterState, SearchFilterStateURL } from 'types/Common';
 
 import { EXPLORE_PAGE_ROUTE } from '../../Routes';
 
@@ -54,8 +54,8 @@ const ExplorePageContent = ({
   const location = useLocation();
   const getDefaultFilterState = (pq: ParsedQuery): SearchFilterState => {
     const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
-    if (pq.exclude && pq.exclude instanceof Array) {
-      pq.exclude.forEach((index) => {
+    if (pq.e && pq.e instanceof Array) {
+      pq.e.forEach((index) => {
         courseCodes[parseInt(index, 10)] = false;
       });
     }
@@ -72,7 +72,7 @@ const ExplorePageContent = ({
 
   const defaultFilterState = getDefaultFilterState(
     queryString.parse(location.search, {
-      arrayFormat: 'comma',
+      arrayFormat: 'bracket',
     }),
   );
 
@@ -134,9 +134,9 @@ const ExplorePageContent = ({
     hasPrereqs,
   };
 
-  const mapFilterStateToURL = (fs: SearchFilterState) => {
+  const mapFilterStateToURL = (fs: SearchFilterState): SearchFilterStateURL => {
     return {
-      exclude: fs.courseCodes
+      e: fs.courseCodes
         .map((bool, index) => (bool ? null : index))
         .filter((index) => index !== null),
       minCourseRatings: fs.numCourseRatings || null,
@@ -156,7 +156,7 @@ const ExplorePageContent = ({
         mapFilterStateToURL(filterState),
         {
           skipNull: true,
-          arrayFormat: 'comma',
+          arrayFormat: 'bracket',
         },
       )}`,
     );
