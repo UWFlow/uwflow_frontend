@@ -156,7 +156,7 @@ const ExplorePageContent = ({
     // Add a comma to the end of the URL if there is only one filter
     const addComma = filterStateURL.exclude.length === 1 ? ',' : '';
 
-    window.history.pushState(
+    window.history.replaceState(
       {},
       '',
       `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(filterStateURL, {
