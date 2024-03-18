@@ -30,7 +30,7 @@ export type SearchFilterState = {
 };
 
 export type SearchFilterStateURL = {
-  e: (number | null)[];
+  exclude: (number | null)[];
   minCourseRatings: number | null;
   minProfRatings: number | null;
   courseTaught: number | null;

@@ -54,8 +54,8 @@ const ExplorePageContent = ({
   const location = useLocation();
   const getDefaultFilterState = (pq: ParsedQuery): SearchFilterState => {
     const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
-    if (pq.e && pq.e instanceof Array) {
-      pq.e.forEach((index) => {
+    if (pq.exclude && pq.exclude instanceof Array) {
+      pq.exclude.forEach((index) => {
         courseCodes[parseInt(index, 10)] = false;
       });
     }
@@ -72,7 +72,7 @@ const ExplorePageContent = ({
 
   const defaultFilterState = getDefaultFilterState(
     queryString.parse(location.search, {
-      arrayFormat: 'bracket',
+      arrayFormat: 'comma',
     }),
   );
 
@@ -136,7 +136,7 @@ const ExplorePageContent = ({
 
   const mapFilterStateToURL = (fs: SearchFilterState): SearchFilterStateURL => {
     return {
-      e: fs.courseCodes
+      exclude: fs.courseCodes
         .map((bool, index) => (bool ? null : index))
         .filter((index) => index !== null),
       minCourseRatings: fs.numCourseRatings || null,
@@ -149,16 +149,25 @@ const ExplorePageContent = ({
   };
 
   useEffect(() => {
+    const filterStateURL: SearchFilterStateURL = mapFilterStateToURL(
+      filterState,
+    );
+
+    // Add a comma to the end of the URL if there is only one filter
+    const addComma = filterStateURL.exclude.length === 1 ? ',' : '';
+
     window.history.pushState(
       {},
       '',
-      `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(
-        mapFilterStateToURL(filterState),
-        {
-          skipNull: true,
-          arrayFormat: 'bracket',
+      `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(filterStateURL, {
+        arrayFormat: 'comma',
+        skipNull: true,
+        sort: (a, b) => {
+          if (a === 'exclude') return 1; // Always sort 'exclude' to the end
+          if (b === 'exclude') return -1; // Always sort 'exclude' to the end
+          return 0;
         },
-      )}`,
+      })}${addComma}`,
     );
   }, [
     filterState,
