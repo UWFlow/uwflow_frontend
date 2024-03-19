@@ -1,6 +1,6 @@
 # UW Flow 2.0 Frontend
 
-[![CircleCI](https://circleci.com/gh/AyushK1/uwflow2.0_frontend.svg?style=svg&circle-token=f0c3958442810fd3a81b0a45af6b873fa1022a5f)](https://circleci.com/gh/AyushK1/uwflow2.0_frontend)
+[![CircleCI](https://circleci.com/gh/UWFlow/uwflow_frontend.svg?style=svg)](https://circleci.com/gh/UWFlow/uwflow_frontend.svg?style=svg)
 
 ## ⚙️ Frontend Setup ⚙
 
