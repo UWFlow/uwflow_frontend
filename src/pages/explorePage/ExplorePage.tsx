@@ -153,7 +153,7 @@ const ExplorePageContent = ({
       filterState,
     );
 
-    // Add a comma to the end of the URL if there is only one filter, otherwise query-string can't parse single-element arrays 
+    // Add a comma to the end of the URL if there is only one filter, otherwise query-string can't parse single-element arrays
     const addComma = filterStateURL.exclude.length === 1 ? ',' : '';
 
     window.history.replaceState(
