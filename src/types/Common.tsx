@@ -29,6 +29,16 @@ export type SearchFilterState = {
   hasPrereqs: boolean;
 };
 
+export type SearchFilterStateURL = {
+  exclude: (number | null)[];
+  minCourseRatings: number | null;
+  minProfRatings: number | null;
+  courseTaught: number | null;
+  currentTerm: boolean | null;
+  nextTerm: boolean | null;
+  noPrereqs: boolean | null;
+};
+
 export type CourseSearchResult = {
   id: number;
   code: string;

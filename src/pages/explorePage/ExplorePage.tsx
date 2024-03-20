@@ -8,7 +8,7 @@ import {
   ExploreQuery,
   ExploreQueryVariables,
 } from 'generated/graphql';
-import queryString from 'query-string';
+import queryString, { ParsedQuery } from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { MAX_SEARCH_TERMS } from 'constants/Search';
@@ -16,7 +16,9 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
-import { SearchFilterState } from 'types/Common';
+import { SearchFilterState, SearchFilterStateURL } from 'types/Common';
+
+import { EXPLORE_PAGE_ROUTE } from '../../Routes';
 
 import {
   Column1,
@@ -49,17 +51,50 @@ const ExplorePageContent = ({
   error,
   loading,
 }: ExplorePageContentProps) => {
+  const location = useLocation();
+  const getDefaultFilterState = (pq: ParsedQuery): SearchFilterState => {
+    const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
+    if (pq.exclude && pq.exclude instanceof Array) {
+      pq.exclude.forEach((index) => {
+        courseCodes[parseInt(index, 10)] = false;
+      });
+    }
+    return {
+      courseCodes,
+      numCourseRatings: parseInt(pq.minCourseRatings as string, 10) || 0,
+      numProfRatings: parseInt(pq.minProfRatings as string, 10) || 0,
+      currentTerm: Boolean(pq.currentTerm) || false,
+      nextTerm: Boolean(pq.nextTerm) || false,
+      courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
+      hasPrereqs: pq.noPrereqs ? !pq.noPrereqs : true,
+    };
+  };
+
+  const defaultFilterState = getDefaultFilterState(
+    queryString.parse(location.search, {
+      arrayFormat: 'comma',
+    }),
+  );
+
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
   const [courseCodes, setCourseCodes] = useState<boolean[]>(
-    Array(NUM_COURSE_CODE_FILTERS).fill(true),
+    defaultFilterState.courseCodes,
   );
-  const [numCourseRatings, setNumCourseRatings] = useState(0);
-  const [numProfRatings, setNumProfRatings] = useState(0);
-  const [currentTerm, setCurrentTerm] = useState(false);
-  const [nextTerm, setNextTerm] = useState(false);
-  const [courseTaught, setCourseTaught] = useState(0);
+  const [numCourseRatings, setNumCourseRatings] = useState(
+    defaultFilterState.numCourseRatings,
+  );
+  const [numProfRatings, setNumProfRatings] = useState(
+    defaultFilterState.numProfRatings,
+  );
+  const [currentTerm, setCurrentTerm] = useState(
+    defaultFilterState.currentTerm,
+  );
+  const [nextTerm, setNextTerm] = useState(defaultFilterState.nextTerm);
+  const [courseTaught, setCourseTaught] = useState(
+    defaultFilterState.courseTaught,
+  );
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
-  const [hasPrereqs, setHasPrereqs] = useState(true);
+  const [hasPrereqs, setHasPrereqs] = useState(defaultFilterState.hasPrereqs);
 
   const exploreAll = query === '';
 
@@ -98,6 +133,51 @@ const ExplorePageContent = ({
     courseTaught,
     hasPrereqs,
   };
+
+  const mapFilterStateToURL = (fs: SearchFilterState): SearchFilterStateURL => {
+    return {
+      exclude: fs.courseCodes
+        .map((bool, index) => (bool ? null : index))
+        .filter((index) => index !== null),
+      minCourseRatings: fs.numCourseRatings || null,
+      minProfRatings: fs.numProfRatings || null,
+      courseTaught: fs.courseTaught || null,
+      currentTerm: fs.currentTerm || null,
+      nextTerm: fs.nextTerm || null,
+      noPrereqs: !fs.hasPrereqs || null,
+    };
+  };
+
+  useEffect(() => {
+    const filterStateURL: SearchFilterStateURL = mapFilterStateToURL(
+      filterState,
+    );
+
+    // Add a comma to the end of the URL if there is only one filter, otherwise query-string can't parse single-element arrays
+    const addComma = filterStateURL.exclude.length === 1 ? ',' : '';
+
+    window.history.replaceState(
+      {},
+      '',
+      `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(filterStateURL, {
+        arrayFormat: 'comma',
+        skipNull: true,
+        sort: (a, b) => {
+          if (a === 'exclude') return 1; // Always sort 'exclude' to the end
+          if (b === 'exclude') return -1; // Always sort 'exclude' to the end
+          return 0;
+        },
+      })}${addComma}`,
+    );
+  }, [
+    filterState,
+    courseCodes,
+    numCourseRatings,
+    currentTerm,
+    nextTerm,
+    courseTaught,
+    hasPrereqs,
+  ]);
 
   const resetCourseFilters = () => {
     setCourseCodes(Array(NUM_COURSE_CODE_FILTERS).fill(true));

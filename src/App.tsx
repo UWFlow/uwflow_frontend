@@ -137,7 +137,6 @@ const App = () => {
           component={() => <LoadableProfPage />}
         />
         <Route
-          exact
           path={EXPLORE_PAGE_ROUTE}
           component={() => <LoadableExplorePage />}
         />
