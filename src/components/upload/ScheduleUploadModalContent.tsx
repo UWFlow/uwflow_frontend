@@ -181,7 +181,7 @@ const ScheduleUploadModalContent = ({
               >
                 Login to Quest
               </Link>
-              and click &quot;Enroll&quot;
+              and click &quot;Class Schedule&quot;
             </InstructionText>
           </InstructionWrapper>
           <ScheduleStepPicture
