@@ -14,12 +14,8 @@
 
 ## 🌐 Interacting with the Backend 🌐
 
-- Run the backend Docker containers locally
-- To interact with the API server properly, the browser needs to have CORS disabled
-- To run Chrome without CORS
-  - MacOS - `open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security`
-  - Windows 10 - `"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp`
-  - Linux - `google-chrome --disable-web-security`
+- Run the backend Docker containers, which should start the GraphQL server at [localhost:8080](localhost:8080)
+  and the API server at [localhost:8081](localhost:8081)
 
 ## 📚 Documentation 📚
 
