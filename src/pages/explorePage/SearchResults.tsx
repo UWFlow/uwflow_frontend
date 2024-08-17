@@ -161,6 +161,7 @@ const SearchResults = ({
     ? profs.filter(
         (prof) =>
           prof.ratings >= ratingFilters[filterState.numProfRatings] &&
+          prof.code_name.code &&
           (filterState.courseTaught === 0 ||
             prof.courses.has(profCourses[filterState.courseTaught])),
       )

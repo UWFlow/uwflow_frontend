@@ -5,6 +5,7 @@ const makeRequest = async <T extends object>(
   body?: { body: any },
 ): Promise<[T, number]> => {
   const res = await fetch(endpoint, {
+    mode: process.env.NODE_ENV === 'development' ? 'no-cors' : 'cors',
     method,
     headers: {
       Accept: options.accept ? options.accept : 'application/json',
