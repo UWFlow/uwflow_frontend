@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Cell } from 'react-table';
-import { getProfPageRoute } from 'Routes';
 
 import { LAB, LEC, TUT } from 'constants/CourseSection';
 import { processDateString, weekDayLetters } from 'utils/Misc';
@@ -12,7 +11,6 @@ import {
   DateText,
   EnrollmentText,
   GreyWeekDay,
-  InstructorLink,
   NormalCellWrapper,
   SectionCellWrapper,
   SectionContentWrapper,
@@ -117,38 +115,40 @@ const DateCell = ({ cell }: CellProps) => (
   </NormalCellWrapper>
 );
 
-const LocationCell = ({ cell }: CellProps) => (
-  <NormalCellWrapper>
-    {cell.value.map((cl: any, idx: number) => (
-      <Fragment key={idx}>
-        <ContentWrapper>{cl.location}</ContentWrapper>
-        {contentSpace(cl.spaces)}
-        {idx < cell.value.length - 1 && <SpaceMargin />}
-      </Fragment>
-    ))}
-  </NormalCellWrapper>
-);
+// Deprecated due to removal from API
 
-const InstructorCell = ({ cell }: CellProps) => (
-  <NormalCellWrapper>
-    {cell.value.map((cl: any, idx: number) =>
-      cl.prof.code ? (
-        <Fragment key={idx}>
-          <InstructorLink to={getProfPageRoute(cl.prof.code)} key={idx}>
-            {cl.prof.name}
-          </InstructorLink>
-          {contentSpace(cl.spaces)}
-          {idx < cell.value.length - 1 && <SpaceMargin />}
-        </Fragment>
-      ) : (
-        <Fragment key={idx}>
-          {contentSpace(cl.spaces + 1)}
-          {idx < cell.value.length - 1 && <SpaceMargin />}
-        </Fragment>
-      ),
-    )}
-  </NormalCellWrapper>
-);
+// const LocationCell = ({ cell }: CellProps) => (
+//   <NormalCellWrapper>
+//     {cell.value.map((cl: any, idx: number) => (
+//       <Fragment key={idx}>
+//         <ContentWrapper>{cl.location}</ContentWrapper>
+//         {contentSpace(cl.spaces)}
+//         {idx < cell.value.length - 1 && <SpaceMargin />}
+//       </Fragment>
+//     ))}
+//   </NormalCellWrapper>
+// );
+
+// const InstructorCell = ({ cell }: CellProps) => (
+//   <NormalCellWrapper>
+//     {cell.value.map((cl: any, idx: number) =>
+//       cl.prof.code ? (
+//         <Fragment key={idx}>
+//           <InstructorLink to={getProfPageRoute(cl.prof.code)} key={idx}>
+//             {cl.prof.name}
+//           </InstructorLink>
+//           {contentSpace(cl.spaces)}
+//           {idx < cell.value.length - 1 && <SpaceMargin />}
+//         </Fragment>
+//       ) : (
+//         <Fragment key={idx}>
+//           {contentSpace(cl.spaces + 1)}
+//           {idx < cell.value.length - 1 && <SpaceMargin />}
+//         </Fragment>
+//       ),
+//     )}
+//   </NormalCellWrapper>
+// );
 
 export const courseScheduleTableColumns = [
   {
@@ -183,14 +183,14 @@ export const courseScheduleTableColumns = [
       paddingBottom: 16,
     },
   },
-  {
-    Header: 'Location',
-    Cell: LocationCell,
-    accessor: 'locations',
-  },
-  {
-    Header: 'Instructor',
-    Cell: InstructorCell,
-    accessor: 'profs',
-  },
+  // {
+  //   Header: 'Location',
+  //   Cell: LocationCell,
+  //   accessor: 'locations',
+  // },
+  // {
+  //   Header: 'Instructor',
+  //   Cell: InstructorCell,
+  //   accessor: 'profs',
+  // },
 ];
