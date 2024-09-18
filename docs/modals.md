@@ -13,7 +13,7 @@ The `useModal` hook will provide `openModal` and `closeModal` functions that can
 
 1. Make a modal content component
 2. Add a new modal name constant under `constants/modal`
-3. Add tbe modal to the modal name map in `components/modal/ModalUtils`
+3. Add the modal to the modal name map in `components/modal/ModalUtils`
 
 ## Notes
 

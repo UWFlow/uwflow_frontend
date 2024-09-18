@@ -39,3 +39,6 @@ export const SEARCH_DATA_ENDPOINT = '/data/search';
 export const CALENDAR_EXPORT_ENDPOINT = (secretId: string) =>
   `/calendar/${secretId}.ics`;
 export const GOOGLE_CALENDAR_URL = `https://calendar.google.com/calendar/r?cid=`;
+
+/* User */
+export const USER_ACCOUNT_ENDPOINT = '/user';
