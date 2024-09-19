@@ -56,7 +56,7 @@
     "use-onclickoutside": "^0.3.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "CI=true react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject",

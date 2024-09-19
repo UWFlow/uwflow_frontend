@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { LANDING_PAGE_ROUTE } from 'Routes';
 import { useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
 import { BACKEND_ENDPOINT, USER_ACCOUNT_ENDPOINT } from 'constants/Api';
 import { DEFAULT_ERROR, DELETE_ACCOUNT_SUCCESS } from 'constants/Messages';
 import { makeAuthenticatedDELETERequest } from 'utils/Api';
+import { logOut } from 'utils/Auth';
 
 import {
   ButtonsWrapper,
@@ -22,31 +26,29 @@ const DeleteAccountModalContent = ({
   onRequestClose = () => {},
 }: DeleteAccountModalContentProps) => {
   const theme = useTheme();
-  const [loading, setLoading] = useState(false);
-
-  const notifyDeleted = () => toast(DELETE_ACCOUNT_SUCCESS);
-  const notifyError = () => toast(DEFAULT_ERROR);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async () => {
-    setLoading(true);
+    setDeleting(true);
     try {
       const [response, status] = await makeAuthenticatedDELETERequest(
         `${BACKEND_ENDPOINT}${USER_ACCOUNT_ENDPOINT}`,
         {},
       );
-
-      if (status === 200 || status === 204) {
-        notifyDeleted();
-        localStorage.clear();
-        window.location.href = '/';
+      if (status < 400) {
+        toast(DELETE_ACCOUNT_SUCCESS);
+        logOut(dispatch);
+        history.push(LANDING_PAGE_ROUTE);
         onRequestClose();
       } else {
-        notifyError();
+        throw new Error();
       }
     } catch (err) {
-      notifyError();
+      toast(DEFAULT_ERROR);
     } finally {
-      setLoading(false);
+      setDeleting(false);
     }
   };
 
@@ -68,8 +70,8 @@ const DeleteAccountModalContent = ({
         >
           Cancel
         </Button>
-        <Button color={theme.red} handleClick={handleDelete} disabled={loading}>
-          {loading ? 'Deleting...' : 'Delete'}
+        <Button color={theme.red} handleClick={handleDelete} loading={deleting}>
+          Delete
         </Button>
       </ButtonsWrapper>
     </DeleteModalWrapper>
