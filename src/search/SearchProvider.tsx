@@ -68,7 +68,6 @@ const SearchProvider = ({ searchWorker, children }: SearchProviderProps) => {
       lastIndexedDate: null,
     });
     setShouldReindex(false);
-    console.log(shouldReindex);
   }, [shouldReindex, searchWorker]);
 
   return (
