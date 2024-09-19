@@ -40,13 +40,12 @@ const SearchProvider = ({ searchWorker, children }: SearchProviderProps) => {
       const { type } = event.data;
       if (type === 'data') {
         const { searchData, lastIndexedDate } = event.data;
-        const indexedDate = lastIndexedDate === null ? lastIndexedDate : Date();
         localStorage.setItem(SEARCH_DATA_ID, searchData);
-        localStorage.setItem(LAST_INDEXED_ID, indexedDate);
+        localStorage.setItem(LAST_INDEXED_ID, lastIndexedDate);
 
         // Reload if index is more than 12 hours old
         if (
-          new Date().getTime() - new Date(indexedDate).getTime() >
+          new Date().getTime() - new Date(lastIndexedDate).getTime() >
           millisecondsPerDay / 2
         ) {
           setShouldReindex(true);
@@ -69,6 +68,7 @@ const SearchProvider = ({ searchWorker, children }: SearchProviderProps) => {
       lastIndexedDate: null,
     });
     setShouldReindex(false);
+    console.log(shouldReindex);
   }, [shouldReindex, searchWorker]);
 
   return (

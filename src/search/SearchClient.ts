@@ -145,10 +145,10 @@ class SearchClient {
 
   async buildIndices(
     searchData: string | null,
-    lastIndexedDate: string,
-  ): Promise<[string, string]> {
+    lastIndexedDate: Date,
+  ): Promise<[string, Date]> {
     let parsedSearchData: SearchDataResponse | null = null;
-    let indexedDate: string = lastIndexedDate;
+    let indexedDate = lastIndexedDate;
 
     if (searchData !== null) {
       parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData)!);
@@ -160,7 +160,7 @@ class SearchClient {
         `${BACKEND_ENDPOINT}${SEARCH_DATA_ENDPOINT}`,
         {},
       );
-      indexedDate = Date();
+      indexedDate = new Date();
     }
 
     // Parse data
