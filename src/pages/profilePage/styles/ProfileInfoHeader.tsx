@@ -72,7 +72,7 @@ export const UserProgram = styled(FadeIn)`
   font-weight: 400;
 `;
 
-export const UserEmailWrapper = styled(FadeIn)`
+export const UserProfileOptionWrapper = styled(FadeIn)`
   ${Body}
   color: ${({ theme }) => theme.light1};
   display: flex;
@@ -91,7 +91,7 @@ export const UserEmailText = styled.div`
   width: max-content;
 `;
 
-export const UserEmail = styled.a`
+export const UserClickable = styled.a`
   display: flex;
   align-items: center;
   text-decoration: underline;
@@ -101,7 +101,7 @@ export const UserEmail = styled.a`
   ${Hover()}
 `;
 
-export const EditWrapper = styled.div`
+export const ProfileOptionIconWrapper = styled.div`
   cursor: pointer;
   height: 16px;
   width: 16px;

@@ -1,21 +1,21 @@
 import React from 'react';
-import { Edit } from 'react-feather';
+import { Edit, Trash2 } from 'react-feather';
 import { UserInfoFragment } from 'generated/graphql';
 
-import { EDIT_EMAIL_MODAL } from 'constants/Modal';
+import { DELETE_ACCOUNT_MODAL, EDIT_EMAIL_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
-  EditWrapper,
   ProfileInfoHeaderWrapper,
   ProfileInfoSection,
-  UserEmail,
+  ProfileOptionIconWrapper,
+  UserClickable,
   UserEmailText,
-  UserEmailWrapper,
   UserInfoWrapper,
   UserName,
   UserPicture,
+  UserProfileOptionWrapper,
   UserProgram,
 } from './styles/ProfileInfoHeader';
 
@@ -35,17 +35,25 @@ const ProfileInfoHeader = ({ user }: ProfileInfoHeaderProps) => {
         <UserInfoWrapper>
           <UserName>{user.full_name}</UserName>
           <UserProgram>{user.program}</UserProgram>
-          <UserEmailWrapper>
+          <UserProfileOptionWrapper>
             <UserEmailText>Send notifications to</UserEmailText>
-            <UserEmail
+            <UserClickable
               onClick={() => openModal(EDIT_EMAIL_MODAL, { email: user.email })}
             >
               {user.email}
-              <EditWrapper>
+              <ProfileOptionIconWrapper>
                 <Edit size={16} />
-              </EditWrapper>
-            </UserEmail>
-          </UserEmailWrapper>
+              </ProfileOptionIconWrapper>
+            </UserClickable>
+          </UserProfileOptionWrapper>
+          <UserProfileOptionWrapper>
+            <UserClickable onClick={() => openModal(DELETE_ACCOUNT_MODAL, {})}>
+              Delete account
+              <ProfileOptionIconWrapper>
+                <Trash2 size={16} />
+              </ProfileOptionIconWrapper>
+            </UserClickable>
+          </UserProfileOptionWrapper>
         </UserInfoWrapper>
       </ProfileInfoSection>
     </ProfileInfoHeaderWrapper>

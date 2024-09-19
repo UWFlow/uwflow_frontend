@@ -79,6 +79,8 @@ export const DATA_UPLOAD_SUCCESS = 'Success! 🎉';
 
 export const EMAIL_UPDATE_SUCCESS = 'Successfully updated email! 🎉';
 
+export const DELETE_ACCOUNT_SUCCESS = 'Account deleted successfully!';
+
 export const AUTH_SUCCESS: MessageObject = {
   login: 'Logged in!',
   logout: 'Logged out!',

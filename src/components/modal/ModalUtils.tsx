@@ -7,6 +7,9 @@ import ResetPasswordModalContent, {
   ResetPasswordModalContentProps,
 } from 'components/auth/ResetPasswordModalContent';
 import CourseReviewBox from 'components/common/CourseReviewBox';
+import DeleteAccountModalContent, {
+  DeleteAccountModalContentProps,
+} from 'components/delete/DeleteAccountModalContent';
 import EditEmailModalContent, {
   EditEmailModalContentProps,
 } from 'components/email/EditEmailModalContent';
@@ -22,6 +25,7 @@ import TranscriptUploadModalContent, {
 import {
   AUTH_MODAL,
   COURSE_REVIEW_COURSE_MODAL,
+  DELETE_ACCOUNT_MODAL,
   EDIT_EMAIL_MODAL,
   ModalName,
   NOTIFICATION_EMAIL_MODAL,
@@ -57,6 +61,10 @@ const ResetPasswordModal = (props: ResetPasswordModalContentProps) => (
   <ResetPasswordModalContent {...props} />
 );
 
+const DeleteAccountModal = (props: DeleteAccountModalContentProps) => (
+  <DeleteAccountModalContent {...props} />
+);
+
 type NameModalMap = {
   [key in ModalName]: (props: any) => ReactNode;
 };
@@ -69,4 +77,5 @@ export const modalNameToModal: NameModalMap = {
   [NOTIFICATION_EMAIL_MODAL]: NotificationEmailModal,
   [EDIT_EMAIL_MODAL]: EditEmailModal,
   [RESET_PASSWORD_MODAL]: ResetPasswordModal,
+  [DELETE_ACCOUNT_MODAL]: DeleteAccountModal,
 };
