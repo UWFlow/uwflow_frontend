@@ -35,7 +35,7 @@ const WelcomePage = () => {
         <ScheduleUploadModalContent
           onSkip={() => {
             setIsUploadingSchedule(false);
-            history.push(PROFILE_PAGE_ROUTE);
+            history.push(PROFILE_PAGE_ROUTE, { fromWelcome: true });
           }}
           showSkipStepButton={true}
         />

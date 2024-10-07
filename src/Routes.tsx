@@ -1,6 +1,10 @@
 import { History, Location } from 'history';
 import { compile, pathToRegexp } from 'path-to-regexp';
 
+export interface LocationState {
+  fromWelcome?: boolean;
+}
+
 /* Page Routes */
 export const LANDING_PAGE_ROUTE = '/';
 export const PROFILE_PAGE_ROUTE = '/profile';
