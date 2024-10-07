@@ -202,7 +202,7 @@ const CourseReviewBoxContent = ({
       query: REFETCH_RATINGS,
       variables: {
         course_id: course.id,
-        prof_id: review ? review.prof_id : null,
+        prof_id: review && review.prof_id ? review.prof_id : -1,
       },
     },
     {
