@@ -1,5 +1,9 @@
 import React from 'react';
-import { CourseInfoFragment, CourseRatingFragment } from 'generated/graphql';
+import {
+  CourseInfoFragment,
+  CourseRatingFragment,
+  CourseReviewDistributionFragment,
+} from 'generated/graphql';
 
 import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
@@ -19,12 +23,15 @@ import {
 } from './styles/CourseInfoHeader';
 
 type CourseInfoHeaderProps = {
-  course: CourseInfoFragment & CourseRatingFragment;
+  course: CourseInfoFragment &
+    CourseRatingFragment &
+    CourseReviewDistributionFragment;
   shortlisted: boolean;
 };
 
 const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating!;
+  const { course_useful_buckets, course_easy_buckets } = course;
 
   return (
     <CourseInfoHeaderWrapper>
@@ -53,6 +60,14 @@ const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
           <RatingBox
             numRatings={filled_count}
             numComments={comment_count}
+            usefulBuckets={course_useful_buckets.map(({ value, count }) => ({
+              value: value!,
+              count,
+            }))}
+            easyBuckets={course_easy_buckets.map(({ value, count }) => ({
+              value: value!,
+              count,
+            }))}
             percentages={[
               {
                 displayName: 'Likes',

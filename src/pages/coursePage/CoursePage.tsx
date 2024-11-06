@@ -7,6 +7,7 @@ import {
   CourseInfoFragment,
   CourseRatingFragment,
   CourseRequirementsFragment,
+  CourseReviewDistributionFragment,
   CourseScheduleFragment,
   GetCourseQuery,
   GetCourseQueryVariables,
@@ -47,7 +48,8 @@ import CourseSchedule from './CourseSchedule';
 type Course = CourseInfoFragment &
   CourseScheduleFragment &
   CourseRequirementsFragment &
-  CourseRatingFragment;
+  CourseRatingFragment &
+  CourseReviewDistributionFragment;
 
 type CoursePageContentProps = {
   course: Course;
