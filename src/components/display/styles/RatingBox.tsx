@@ -18,10 +18,11 @@ export const RatingBoxWrapper = styled.div<{
   width: 100%;
   display: flex;
   justify-content: space-between;
+  height: 100%;
+  margin-right: 32px;
 
   ${breakpoint('tablet')`
     width: ${({ ratingBoxWidth }: RatingBoxWidth) => ratingBoxWidth}px;
-    height: ${({ ratingBoxHeight }: RatingBoxHeight) => ratingBoxHeight}px;
     background-color: white;
     border-radius: ${({ ratingBoxHeight }: RatingBoxHeight) =>
       ratingBoxHeight / 2}px 5px 5px
@@ -43,21 +44,31 @@ export const RatingBarsColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: flex-begin;
-  justify-content: center;
+  height: 100%;
+  margin: 8px;
+  align-items: center;
+
+  ${breakpoint('tablet')`
+    align-items: flex-start;
+  `}
 `;
 
 export const ProgressWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 8px;
+  margin: 0px;
+  width: 80%;
 
   &:first-child {
-    margin-top: 16px;
+    margin-top: 13px;
   }
 
+  ${breakpoint('tablet')`
+    width: 100%;
+    margin: 0;
+  `}
+
   ${breakpoint('zero', 'desktop')`
-    margin: 0 8px 8px 0;
   `}
 `;
 
@@ -70,12 +81,14 @@ export const ProgressBarWrapper = styled.div`
 
 export const ProgressNumberLabel = styled.div`
   ${Body};
-  margin: 8px;
-  flex: none;
+  margin-right: 8px;
+  text-wrap: wrap;
+  width: 5%;
+  color: ${({ theme }) => theme.dark3};
 `;
 
 export const ReviewsAndGraphButtonWrapper = styled.div`
-  display: flex;
+  justify-content: center;
 `;
 
 export const NumCommentsAndRatingsWrapper = styled.div`
@@ -115,4 +128,77 @@ export const NumRatingsWrapper = styled.div`
   ${breakpoint('desktop')`
     margin-left: 24px;
   `}
+`;
+
+export const MetricHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16px;
+`;
+
+export const ProgressPercentage = styled.div`
+  ${Body}
+  width: 48px;
+  text-align: right;
+  color: ${({ theme }) => theme.dark2};
+`;
+
+export const MetricsRow = styled.div`
+  display: flex;
+  margin: 8px;
+  width: 100%;
+  justify-content: space-evenly;
+
+  ${breakpoint('tablet')`
+    gap: 32px;
+    justify-content: flex-start;
+  `}
+`;
+
+export const MetricBox = styled.div`
+  flex-direction: column;
+  align-items: flex-start;
+  align-items: center;
+`;
+
+export const MetricValue = styled.div`
+  color: ${({ theme }) => theme.dark1};
+  font-size: min(32px, 6vw);
+  font-weight: 700;
+  text-align: center;
+  ${breakpoint('tablet')`
+    text-align: left;
+  `}
+`;
+
+export const MetricLabel = styled.div`
+  ${Body}
+  font-size: min(16px, 3.5vw);
+  color: ${({ theme }) => theme.dark2};
+`;
+
+export const MetricsRowWrapper = styled.div`
+  width: 100%;
+`;
+
+export const FilterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  ${Body};
+  margin-top: 15px;
+  text-wrap: wrap;
+  color: ${({ theme }) => theme.dark3};
+  ${breakpoint('zero', 'mobileLarge')`
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  `}
+`;
+
+export const RatingDistributionToggle = styled.div`
+  text-decoration: underline;
+  cursor: pointer;
+  ${Hover(true)}
+  ${Link}
+  color: ${({ theme }) => theme.primary};
 `;
