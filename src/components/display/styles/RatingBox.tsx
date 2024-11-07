@@ -46,6 +46,8 @@ export const RatingBarsColumn = styled.div`
   width: 100%;
   height: 100%;
   margin: 8px;
+  margin-top: 40px;
+  margin-bottom: 50px;
   align-items: center;
 
   ${breakpoint('tablet')`
@@ -98,7 +100,6 @@ export const ReviewsAndGraphButtonWrapper = styled.div`
 
 export const NumCommentsAndRatingsWrapper = styled.div`
   display: flex;
-  margin: 8px;
 
   ${breakpoint('zero', 'desktop')`
     flex-direction: column;
@@ -151,7 +152,6 @@ export const ProgressPercentage = styled.div`
 
 export const MetricsRow = styled.div`
   display: flex;
-  margin-top: 8px;
   width: 100%;
   justify-content: space-evenly;
 
