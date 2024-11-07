@@ -59,17 +59,13 @@ export const ProgressWrapper = styled.div`
   margin: 0px;
   width: 80%;
 
+  ${breakpoint('zero', 'mobileLarge')`
+    width: 97%;
+  `}
+
   &:first-child {
     margin-top: 13px;
   }
-
-  ${breakpoint('tablet')`
-    width: 100%;
-    margin: 0;
-  `}
-
-  ${breakpoint('zero', 'desktop')`
-  `}
 `;
 
 export const ProgressTextLabel = styled.div``;
@@ -89,6 +85,15 @@ export const ProgressNumberLabel = styled.div`
 
 export const ReviewsAndGraphButtonWrapper = styled.div`
   justify-content: center;
+  width: 80%;
+
+  ${breakpoint('tablet')`
+    width: 100%;
+  `}
+
+  ${breakpoint('zero', 'mobileLarge')`
+    width: 97%;
+  `}
 `;
 
 export const NumCommentsAndRatingsWrapper = styled.div`
@@ -98,6 +103,7 @@ export const NumCommentsAndRatingsWrapper = styled.div`
   ${breakpoint('zero', 'desktop')`
     flex-direction: column;
     margin: 0 0 16px 0;
+
   `}
 `;
 
@@ -145,7 +151,7 @@ export const ProgressPercentage = styled.div`
 
 export const MetricsRow = styled.div`
   display: flex;
-  margin: 8px;
+  margin-top: 8px;
   width: 100%;
   justify-content: space-evenly;
 
@@ -177,10 +183,6 @@ export const MetricLabel = styled.div`
   color: ${({ theme }) => theme.dark2};
 `;
 
-export const MetricsRowWrapper = styled.div`
-  width: 100%;
-`;
-
 export const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -189,7 +191,6 @@ export const FilterWrapper = styled.div`
   text-wrap: wrap;
   color: ${({ theme }) => theme.dark3};
   ${breakpoint('zero', 'mobileLarge')`
-    margin-top: 10px;
     flex-direction: column;
     align-items: flex-start;
   `}

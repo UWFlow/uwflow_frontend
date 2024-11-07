@@ -12,7 +12,6 @@ import {
   MetricBox,
   MetricLabel,
   MetricsRow,
-  MetricsRowWrapper,
   MetricValue,
   NumCommentsAndRatingsWrapper,
   NumCommentsWrapper,
@@ -106,18 +105,16 @@ const RatingBox = ({
         />
       </CircularPercentageWrapper>
       <RatingBarsColumn>
-        <MetricsRowWrapper>
-          <MetricsRow>
-            {percentages.slice(1).map((metric) => (
-              <MetricBox key={metric.displayName}>
-                <MetricValue>{Math.round(metric.percent * 100)}%</MetricValue>
-                <MetricLabel>
-                  found {metric.displayName.toLowerCase()}
-                </MetricLabel>
-              </MetricBox>
-            ))}
-          </MetricsRow>
-        </MetricsRowWrapper>
+        <MetricsRow>
+          {percentages.slice(1).map((metric) => (
+            <MetricBox key={metric.displayName}>
+              <MetricValue>{Math.round(metric.percent * 100)}%</MetricValue>
+              <MetricLabel>
+                found {metric.displayName.toLowerCase()}
+              </MetricLabel>
+            </MetricBox>
+          ))}
+        </MetricsRow>
         <ProgressWrapper key={filter}>
           <FilterWrapper>
             Ratings for&nbsp;
@@ -139,20 +136,20 @@ const RatingBox = ({
               />
             </ProgressBarWrapper>
           ))}
-          <ReviewsAndGraphButtonWrapper>
-            <NumCommentsAndRatingsWrapper>
-              <NumCommentsWrapper
-                onClick={scrollToReviews}
-                hasComments={Boolean(numComments)}
-              >
-                {numComments || 0} {numComments === 1 ? 'comment' : 'comments'}
-              </NumCommentsWrapper>
-              <NumRatingsWrapper>
-                {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
-              </NumRatingsWrapper>
-            </NumCommentsAndRatingsWrapper>
-          </ReviewsAndGraphButtonWrapper>
         </ProgressWrapper>
+        <ReviewsAndGraphButtonWrapper>
+          <NumCommentsAndRatingsWrapper>
+            <NumCommentsWrapper
+              onClick={scrollToReviews}
+              hasComments={Boolean(numComments)}
+            >
+              {numComments || 0} {numComments === 1 ? 'comment' : 'comments'}
+            </NumCommentsWrapper>
+            <NumRatingsWrapper>
+              {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
+            </NumRatingsWrapper>
+          </NumCommentsAndRatingsWrapper>
+        </ReviewsAndGraphButtonWrapper>
       </RatingBarsColumn>
     </RatingBoxWrapper>
   );
