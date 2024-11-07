@@ -88,7 +88,7 @@ const SearchBar = ({
   const { searchWorker } = useSearchContext();
 
   // Handle search result data from search worker message
-  const performSearch = useCallback((event: MessageEvent) => {
+  const performSearch = (event: MessageEvent): void => {
     const { type } = event.data;
     if (type === 'autocomplete') {
       const { results } = event.data;
@@ -99,28 +99,25 @@ const SearchBar = ({
         inputRef.current.focus();
       }
     }
-  }, []);
+  };
 
   // Arrow key functionality for search result dropdown
-  const handleUserKeyPress = useCallback(
-    (event) => {
-      const { keyCode } = event;
-      if (keyCode === KeycodeConstants.ESCAPE) {
-        setOpen(false);
-      } else if (keyCode === KeycodeConstants.UP) {
-        event.preventDefault();
-        setSelectedResultIndex(Math.max(-1, selectedResultIndex - 1));
-      } else if (keyCode === KeycodeConstants.DOWN) {
-        event.preventDefault();
-        const length =
-          Math.max(searchResults.courseCodeResults.length, 1) +
-          searchResults.courseResults.length +
-          searchResults.profResults.length;
-        setSelectedResultIndex(Math.min(length - 1, selectedResultIndex + 1));
-      }
-    },
-    [selectedResultIndex, searchResults],
-  );
+  const handleUserKeyPress = (event: globalThis.KeyboardEvent): void => {
+    const { keyCode } = event;
+    if (keyCode === KeycodeConstants.ESCAPE) {
+      setOpen(false);
+    } else if (keyCode === KeycodeConstants.UP) {
+      event.preventDefault();
+      setSelectedResultIndex(Math.max(-1, selectedResultIndex - 1));
+    } else if (keyCode === KeycodeConstants.DOWN) {
+      event.preventDefault();
+      const length =
+        Math.max(searchResults.courseCodeResults.length, 1) +
+        searchResults.courseResults.length +
+        searchResults.profResults.length;
+      setSelectedResultIndex(Math.min(length - 1, selectedResultIndex + 1));
+    }
+  };
 
   useEffect(() => {
     searchWorker.addEventListener('message', performSearch);
@@ -132,7 +129,7 @@ const SearchBar = ({
       );
       window.removeEventListener('keydown', handleUserKeyPress);
     };
-  }, [handleUserKeyPress, searchWorker]);
+  }, []);
 
   useEffect(() => {
     if (selectedResultIndex === -1 && inputRef.current) {
