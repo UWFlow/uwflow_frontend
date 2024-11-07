@@ -88,7 +88,7 @@ const SearchBar = ({
   const { searchWorker } = useSearchContext();
 
   // Handle search result data from search worker message
-  const performSearch = (event: MessageEvent) => {
+  const performSearch = useCallback((event: MessageEvent) => {
     const { type } = event.data;
     if (type === 'autocomplete') {
       const { results } = event.data;
@@ -99,7 +99,7 @@ const SearchBar = ({
         inputRef.current.focus();
       }
     }
-  };
+  }, []);
 
   // Arrow key functionality for search result dropdown
   const handleUserKeyPress = useCallback(
@@ -123,7 +123,7 @@ const SearchBar = ({
   );
 
   useEffect(() => {
-    searchWorker.addEventListener('message', (event) => performSearch(event));
+    searchWorker.addEventListener('message', performSearch);
     window.addEventListener('keydown', handleUserKeyPress);
 
     return () => {
