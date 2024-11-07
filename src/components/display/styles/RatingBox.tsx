@@ -46,12 +46,13 @@ export const RatingBarsColumn = styled.div`
   width: 100%;
   height: 100%;
   margin: 8px;
-  margin-top: 40px;
-  margin-bottom: 50px;
+  margin-top: 24px;
   align-items: center;
 
   ${breakpoint('tablet')`
     align-items: flex-start;
+    margin-top: 40px;
+    margin-bottom: 50px;
   `}
 `;
 
