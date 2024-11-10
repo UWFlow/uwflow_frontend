@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
 import { Body, BoxShadow, Hover, Link } from 'constants/Mixins';
+import { RATING_BOX_OFFSET } from 'constants/PageConstants';
 
 type RatingBoxWidth = {
   ratingBoxWidth: number;
@@ -11,15 +12,36 @@ type RatingBoxHeight = {
   ratingBoxHeight: number;
 };
 
-export const RatingBoxWrapper = styled.div<{
+// RatingBoxWrapper is the parent contianer for the RatingBox and the DistributionGraph dropdown
+export const RatingBoxWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+// RatingBoxContainer is a parent container that allows the rating box to "float" above content
+// It has a height of the rating box offset by 150px and a relative position so that its child, RatingBoxContent, can be positioned absolutely
+export const RatingBoxContainer = styled.div<{
+  ratingBoxHeight: number;
+}>`
+  width: 100%;
+
+  ${breakpoint('tablet')`
+  position: relative;
+  overflow: visible;
+  height: ${({ ratingBoxHeight }: RatingBoxHeight) =>
+    ratingBoxHeight - RATING_BOX_OFFSET}px;
+  `}
+`;
+
+export const RatingBoxContent = styled.div<{
   ratingBoxWidth: number;
   ratingBoxHeight: number;
 }>`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  height: 100%;
-  margin-right: 32px;
 
   ${breakpoint('tablet')`
     width: ${({ ratingBoxWidth }: RatingBoxWidth) => ratingBoxWidth}px;
@@ -28,8 +50,15 @@ export const RatingBoxWrapper = styled.div<{
       ratingBoxHeight / 2}px 5px 5px
       ${({ ratingBoxHeight }: RatingBoxHeight) => ratingBoxHeight / 2}px;
     position: relative;
+    transform: translateY(-${RATING_BOX_OFFSET}px) scaleY(1);
     ${BoxShadow}
-    margin-right: 32px;
+  `}
+
+
+  // slightly jank solution: at the point between tablet and desktop, we need to push the rating box up a little more 
+  // because the NumCommentsAndRatingsWrapper changes to a flex-direction: column 
+  ${breakpoint('tablet', 'desktop')`
+    transform: translateY(-${RATING_BOX_OFFSET + 40}px) scaleY(1);
   `}
 `;
 
@@ -56,19 +85,25 @@ export const RatingBarsColumn = styled.div`
   `}
 `;
 
+export const RatingBarsColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 export const ProgressWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0px;
-  width: 80%;
-
-  ${breakpoint('zero', 'mobileLarge')`
-    width: 97%;
-  `}
+  width: 100%;
 
   &:first-child {
-    margin-top: 13px;
+    margin-top: 16px;
   }
+
+  ${breakpoint('zero', 'desktop')`
+    margin: 0 8px 8px 0;
+  `}
 `;
 
 export const ProgressTextLabel = styled.div``;
@@ -80,23 +115,13 @@ export const ProgressBarWrapper = styled.div`
 
 export const ProgressNumberLabel = styled.div`
   ${Body};
-  margin-right: 8px;
-  text-wrap: wrap;
-  width: 5%;
-  color: ${({ theme }) => theme.dark3};
+  margin: 8px;
+  flex: none;
 `;
 
 export const ReviewsAndGraphButtonWrapper = styled.div`
   justify-content: center;
-  width: 80%;
-
-  ${breakpoint('tablet')`
-    width: 100%;
-  `}
-
-  ${breakpoint('zero', 'mobileLarge')`
-    width: 97%;
-  `}
+  width: 100%;
 `;
 
 export const NumCommentsAndRatingsWrapper = styled.div`
@@ -203,4 +228,27 @@ export const RatingDistributionToggle = styled.div`
   ${Hover(true)}
   ${Link}
   color: ${({ theme }) => theme.primary};
+`;
+
+export const ProgressLabel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export const DistributionIcon = styled.div<{
+  borderColor: string;
+  color: string;
+}>`
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-style: solid;
+  margin-left: 8px;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: ${({ borderColor }) => borderColor};
+  color: ${({ borderColor }) => borderColor};
+
+  background-color: ${({ color }) => color};
 `;

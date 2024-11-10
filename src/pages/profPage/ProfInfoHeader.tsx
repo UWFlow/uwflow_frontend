@@ -54,18 +54,23 @@ const ProfInfoHeader = ({ prof }: ProfInfoHeaderProps) => {
           <RatingBox
             numRatings={filled_count}
             numComments={comment_count}
+            showDistribution={false}
+            distribution={null}
             percentages={[
               {
                 displayName: 'Likes',
                 percent: liked,
+                hasDistribution: false,
               },
               {
                 displayName: 'Clear',
                 percent: clear,
+                hasDistribution: false,
               },
               {
                 displayName: 'Engaging',
                 percent: engaging,
+                hasDistribution: false,
               },
             ]}
           />

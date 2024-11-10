@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 import {
+  Aggregate_Course_Easy_Buckets,
+  Aggregate_Course_Useful_Buckets,
   CourseInfoFragment,
   CourseRatingFragment,
   CourseRequirementsFragment,
@@ -60,6 +62,38 @@ type CoursePageContentProps = {
   userCourseTaken?: boolean;
 };
 
+type Distribution = {
+  hasDistribution: boolean;
+  displayName: string;
+  buckets: Buckets;
+  total: number;
+};
+
+type Buckets = Array<{
+  value: number;
+  count: number;
+}>;
+
+export const createOrderedBuckets = (
+  buckets: Array<
+    Aggregate_Course_Easy_Buckets | Aggregate_Course_Useful_Buckets
+  >,
+): Buckets => {
+  // Create a map of existing values to counts
+  const bucketMap = buckets.reduce<{ [key: number]: number }>((acc, bucket) => {
+    if (bucket.value !== null && bucket.count !== null) {
+      acc[bucket.value] = Number(bucket.count);
+    }
+    return acc;
+  }, {});
+
+  // Create ordered array with all values 4-0, using 0 for missing counts
+  return [4, 3, 2, 1, 0].map((value) => ({
+    value,
+    count: bucketMap[value] || 0,
+  }));
+};
+
 const CoursePageContent = ({
   course,
   userReview,
@@ -71,6 +105,28 @@ const CoursePageContent = ({
   const [openModal, closeModal] = useModal();
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+
+  console.log(course.course_useful_buckets.length > 0);
+
+  const usefulDistribution: Distribution = {
+    hasDistribution: course.course_useful_buckets.length > 0,
+    displayName: 'Useful',
+    buckets: createOrderedBuckets(course.course_useful_buckets),
+    total: course.course_useful_buckets.reduce(
+      (acc, bucket) => acc + bucket.count,
+      0,
+    ),
+  };
+
+  const easyDistribution: Distribution = {
+    hasDistribution: course.course_easy_buckets.length > 0,
+    displayName: 'Easy',
+    buckets: createOrderedBuckets(course.course_easy_buckets),
+    total: course.course_easy_buckets.reduce(
+      (acc, bucket) => acc + bucket.count,
+      0,
+    ),
+  };
 
   const handleReviewClick = () =>
     isLoggedIn
@@ -92,7 +148,14 @@ const CoursePageContent = ({
 
   return (
     <>
-      <CourseInfoHeader course={course} shortlisted={shortlisted} />
+      <CourseInfoHeader
+        course={course}
+        shortlisted={shortlisted}
+        distributions={{
+          useful: usefulDistribution,
+          easy: easyDistribution,
+        }}
+      />
       <ColumnWrapper>
         {isBrowserDesktop && Schedule}
         <Column1>

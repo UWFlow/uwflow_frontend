@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CourseInfoFragment,
   CourseRatingFragment,
@@ -18,7 +18,6 @@ import {
   CourseName,
   CourseNameWrapper,
   Description,
-  RatingsSection,
   StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
 
@@ -26,12 +25,34 @@ type CourseInfoHeaderProps = {
   course: CourseInfoFragment &
     CourseRatingFragment &
     CourseReviewDistributionFragment;
+  distributions: {
+    useful: Distribution;
+    easy: Distribution;
+  };
   shortlisted: boolean;
 };
 
-const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
+type Distribution = {
+  hasDistribution: boolean;
+  displayName: string;
+  buckets: Buckets;
+  total: number;
+};
+
+type Buckets = Array<{
+  value: number;
+  count: number;
+}>;
+
+const CourseInfoHeader = ({
+  course,
+  shortlisted,
+  distributions,
+}: CourseInfoHeaderProps) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating!;
-  const { course_useful_buckets, course_easy_buckets } = course;
+
+  const [distribution, setDistribution] = useState<Distribution | null>(null);
+  const [showDistribution, setShowDistribution] = useState(false);
 
   return (
     <CourseInfoHeaderWrapper>
@@ -56,37 +77,50 @@ const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
         </CourseNameWrapper>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
-        <RatingsSection>
-          <RatingBox
-            numRatings={filled_count}
-            numComments={comment_count}
-            usefulBuckets={course_useful_buckets.map(({ value, count }) => ({
-              value: value!,
-              count,
-            }))}
-            easyBuckets={course_easy_buckets.map(({ value, count }) => ({
-              value: value!,
-              count,
-            }))}
-            percentages={[
-              {
-                displayName: 'Likes',
-                percent: liked,
+        <RatingBox
+          numRatings={filled_count}
+          numComments={comment_count}
+          percentages={[
+            {
+              displayName: 'Likes',
+              percent: liked,
+              hasDistribution: false,
+            },
+            {
+              displayName: 'Easy',
+              percent: easy,
+              hasDistribution: distributions.easy.hasDistribution,
+              onDistributionClick: () => {
+                if (!showDistribution) {
+                  setDistribution(distributions.easy);
+                  setShowDistribution(true);
+                } else if (distribution?.displayName !== 'Easy') {
+                  setDistribution(distributions.easy);
+                } else {
+                  setShowDistribution(false);
+                }
               },
-              {
-                displayName: 'Easy',
-                percent: easy,
+            },
+            {
+              displayName: 'Useful',
+              percent: useful,
+              hasDistribution: distributions.useful.hasDistribution,
+              onDistributionClick: () => {
+                if (!showDistribution) {
+                  setDistribution(distributions.useful);
+                  setShowDistribution(true);
+                } else if (distribution?.displayName !== 'Useful') {
+                  setDistribution(distributions.useful);
+                } else {
+                  setShowDistribution(false);
+                }
               },
-              {
-                displayName: 'Useful',
-                percent: useful,
-              },
-            ]}
-          />
-        </RatingsSection>
-        <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          {course.description}
-        </Description>
+            },
+          ]}
+          distribution={distribution}
+          showDistribution={showDistribution}
+        />
+        <Description>{course.description}</Description>
       </CourseDescriptionSection>
     </CourseInfoHeaderWrapper>
   );

@@ -1,92 +1,69 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
+import Collapsible from 'react-collapsible';
 
-import { Body } from 'constants/Mixins';
-
+import {
+  BarLabel,
+  BarPercentage,
+  BarWrapper,
+  DistributionBarWrapper,
+  Graph,
+  GraphDistributionLabel,
+  GraphTitle,
+  GraphWrapper,
+} from './styles/RatingDistributionGraph';
 import ProgressBar from './ProgressBar';
 
-const GraphWrapper = styled.div`
-  border-radius: 4px;
-  padding: 16px;
-  margin-top: 16px;
-`;
-
-const FilterWrapper = styled.div`
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-`;
-
-const FilterButton = styled.button<{ active: boolean }>`
-  ${Body}
-  background: none;
-  border: none;
-  color: ${({ theme, active }) => (active ? theme.primary : theme.dark2)};
-  cursor: pointer;
-  padding: 0;
-  text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
-`;
-
-const BarWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  gap: 8px;
-`;
-
-const BarLabel = styled.div`
-  ${Body}
-  color: ${({ theme }) => theme.dark2};
-  width: 24px;
-  text-align: right;
-`;
-
-const BarPercentage = styled.div`
-  ${Body}
-  color: ${({ theme }) => theme.dark2};
-  width: 40px;
-`;
+type Distribution = {
+  displayName: string;
+  buckets: Array<{
+    value: number;
+    count: number;
+  }>;
+  total: number;
+};
 
 type RatingDistributionGraphProps = {
-  usefulBuckets?: { value: number; count: number }[];
-  easyBuckets?: { value: number; count: number }[];
+  distribution: Distribution | null;
+  showDistribution: boolean;
 };
 
 const RatingDistributionGraph = ({
-  usefulBuckets = [],
-  easyBuckets = [],
+  distribution,
+  showDistribution,
 }: RatingDistributionGraphProps) => {
-  const [activeFilter, setActiveFilter] = useState<'useful' | 'easy'>('useful');
-
-  const buckets = activeFilter === 'useful' ? usefulBuckets : easyBuckets;
-  const total = buckets.reduce((sum, bucket) => sum + bucket.count, 0);
-
   return (
     <GraphWrapper>
-      <FilterWrapper>
-        <FilterButton
-          active={activeFilter === 'useful'}
-          onClick={() => setActiveFilter('useful')}
-        >
-          Useful
-        </FilterButton>
-        <FilterButton
-          active={activeFilter === 'easy'}
-          onClick={() => setActiveFilter('easy')}
-        >
-          Easy
-        </FilterButton>
-      </FilterWrapper>
-      {buckets.map((bucket, index) => {
-        const percentage = total > 0 ? (bucket.count / total) * 100 : 0;
-        return (
-          <BarWrapper key={index}>
-            <BarLabel>{bucket.value + 2}</BarLabel>
-            <ProgressBar percentComplete={percentage / 100} />
-            <BarPercentage>{percentage}%</BarPercentage>
-          </BarWrapper>
-        );
-      })}
+      <Collapsible
+        open={showDistribution}
+        transitionTime={400}
+        easing="ease-in-out"
+        trigger=""
+        triggerDisabled={true}
+      >
+        <Graph>
+          <GraphTitle>
+            <GraphDistributionLabel>
+              {distribution?.displayName}{' '}
+            </GraphDistributionLabel>
+            Distribution
+          </GraphTitle>
+          {distribution?.buckets.map((bucket, index) => {
+            const percentage =
+              distribution?.total > 0
+                ? (bucket.count / distribution?.total) * 100
+                : 0;
+            return (
+              <BarWrapper key={index}>
+                <BarLabel>{bucket.value + 1}</BarLabel>
+                <DistributionBarWrapper>
+                  <ProgressBar percentComplete={percentage / 100} />
+                </DistributionBarWrapper>
+                <BarPercentage>({bucket.count})</BarPercentage>
+              </BarWrapper>
+            );
+          })}
+        </Graph>
+      </Collapsible>
     </GraphWrapper>
   );
 };

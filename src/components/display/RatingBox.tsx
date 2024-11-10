@@ -1,32 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BarChart2 } from 'react-feather';
 import { useSelector } from 'react-redux';
+import { useTheme } from 'styled-components';
 
 import ProgressBar from 'components/display/ProgressBar';
 import CircularPercentage from 'components/statistics/CircularPercentage';
 import { REVIEWS_DIV_ID } from 'constants/PageConstants';
 import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
+import { processRating } from 'utils/Misc';
 
 import {
   CircularPercentageWrapper,
-  FilterWrapper,
-  MetricBox,
-  MetricLabel,
-  MetricsRow,
-  MetricValue,
+  DistributionIcon,
   NumCommentsAndRatingsWrapper,
   NumCommentsWrapper,
   NumRatingsWrapper,
   ProgressBarWrapper,
+  ProgressLabel,
   ProgressNumberLabel,
+  ProgressTextLabel,
   ProgressWrapper,
   RatingBarsColumn,
+  RatingBoxContainer,
+  RatingBoxContent,
   RatingBoxWrapper,
-  RatingDistributionToggle,
   ReviewsAndGraphButtonWrapper,
 } from './styles/RatingBox';
+import RatingDistributionGraph from './RatingDistributionGraph';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
+
+type Distribution = {
+  displayName: string;
+  buckets: Array<{
+    value: number;
+    count: number;
+  }>;
+  total: number;
+};
 
 /*
   Data for "liked" must be the first element in percentages
@@ -35,24 +47,24 @@ type RatingBoxProps = {
   percentages: {
     displayName: string;
     percent: number;
+    hasDistribution: boolean;
+    onDistributionClick?: () => void;
   }[];
   numRatings: number;
   numComments: number;
-  usefulBuckets?: { value: number; count: number }[];
-  easyBuckets?: { value: number; count: number }[];
+  distribution: Distribution | null;
+  showDistribution: boolean;
 };
 
 const RatingBox = ({
   percentages,
   numRatings,
   numComments,
-  usefulBuckets = [],
-  easyBuckets = [],
+  distribution,
+  showDistribution,
 }: RatingBoxProps) => {
+  const theme = useTheme();
   const width = useSelector((state: RootState) => state.browser.width);
-  const [filter, setFilter] = useState<'difficulty' | 'usefulness'>(
-    'usefulness',
-  );
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
   const likedPercent = percentages[0].percent
@@ -67,90 +79,72 @@ const RatingBox = ({
     }
   };
 
-  // Create a map of all buckets with default 0 values
-  const getFullBuckets = (
-    buckets: { value: number; count: number }[],
-  ): Array<number> => {
-    const bucketMap = new Array(5).fill(0);
-
-    buckets.forEach((bucket) => {
-      bucketMap[bucket.value] = bucket.count;
-    });
-
-    return bucketMap;
-  };
-
-  const currentBuckets: Array<number> =
-    filter === 'usefulness'
-      ? getFullBuckets(usefulBuckets)
-      : getFullBuckets(easyBuckets);
-
-  const totalCount = currentBuckets.reduce((acc, val) => acc + val, 0);
-
   return (
-    <RatingBoxWrapper
-      ratingBoxHeight={RATING_BOX_HEIGHT}
-      ratingBoxWidth={RATING_BOX_WIDTH}
-    >
-      <CircularPercentageWrapper>
-        <CircularPercentage
-          height={
-            isBrowserDesktop
-              ? RATING_BOX_HEIGHT - 32
-              : Math.min(width / 2 - 32, 200)
-          }
-          percent={likedPercent}
-          barThickness={16}
-          label="liked"
-        />
-      </CircularPercentageWrapper>
-      <RatingBarsColumn>
-        <MetricsRow>
-          {percentages.slice(1).map((metric) => (
-            <MetricBox key={metric.displayName}>
-              <MetricValue>{Math.round(metric.percent * 100)}%</MetricValue>
-              <MetricLabel>
-                found {metric.displayName.toLowerCase()}
-              </MetricLabel>
-            </MetricBox>
-          ))}
-        </MetricsRow>
-        <ProgressWrapper key={filter}>
-          <FilterWrapper>
-            Ratings for&nbsp;
-            <RatingDistributionToggle
-              onClick={() =>
-                setFilter(filter === 'usefulness' ? 'difficulty' : 'usefulness')
+    <RatingBoxWrapper>
+      <RatingBoxContainer ratingBoxHeight={RATING_BOX_HEIGHT}>
+        <RatingBoxContent
+          ratingBoxHeight={RATING_BOX_HEIGHT}
+          ratingBoxWidth={RATING_BOX_WIDTH}
+        >
+          <CircularPercentageWrapper>
+            <CircularPercentage
+              height={
+                isBrowserDesktop
+                  ? RATING_BOX_HEIGHT - 32
+                  : Math.min(width / 2 - 32, 200)
               }
-            >
-              {filter === 'usefulness' ? 'Usefulness' : 'Easyness'}
-            </RatingDistributionToggle>
-          </FilterWrapper>
-          {[...currentBuckets].reverse().map((val, index) => (
-            <ProgressBarWrapper key={currentBuckets.length - 1 - index}>
-              <ProgressNumberLabel>
-                {currentBuckets.length - index}
-              </ProgressNumberLabel>
-              <ProgressBar
-                percentComplete={totalCount > 0 ? val / totalCount : 0}
-              />
-            </ProgressBarWrapper>
-          ))}
-        </ProgressWrapper>
-        <ReviewsAndGraphButtonWrapper>
-          <NumCommentsAndRatingsWrapper>
-            <NumCommentsWrapper
-              onClick={scrollToReviews}
-              hasComments={Boolean(numComments)}
-            >
-              {numComments || 0} {numComments === 1 ? 'comment' : 'comments'}
-            </NumCommentsWrapper>
-            <NumRatingsWrapper>
-              {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
-            </NumRatingsWrapper>
-          </NumCommentsAndRatingsWrapper>
-        </ReviewsAndGraphButtonWrapper>
-      </RatingBarsColumn>
+              percent={likedPercent}
+              barThickness={16}
+              label="liked"
+            />
+          </CircularPercentageWrapper>
+          <RatingBarsColumn>
+            {percentages.map((metric, ind) =>
+              ind === 0 ? null : (
+                <ProgressWrapper key={metric.displayName}>
+                  <ProgressLabel>
+                    <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
+                    {metric.hasDistribution && (
+                      <DistributionIcon
+                        onClick={metric?.onDistributionClick}
+                        color={theme.light1}
+                        borderColor={theme.dark3}
+                        className="primaryicon"
+                      >
+                        <BarChart2 strokeWidth={3} size={15} />
+                      </DistributionIcon>
+                    )}
+                  </ProgressLabel>
+                  <ProgressBarWrapper>
+                    <ProgressBar percentComplete={metric.percent} />
+                    <ProgressNumberLabel>
+                      {processRating(metric.percent)}
+                    </ProgressNumberLabel>
+                  </ProgressBarWrapper>
+                </ProgressWrapper>
+              ),
+            )}
+            <ReviewsAndGraphButtonWrapper>
+              <NumCommentsAndRatingsWrapper>
+                <NumCommentsWrapper
+                  onClick={scrollToReviews}
+                  hasComments={Boolean(numComments)}
+                >
+                  {numComments || 0}{' '}
+                  {numComments === 1 ? 'comment' : 'comments'}
+                </NumCommentsWrapper>
+                <NumRatingsWrapper>
+                  {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
+                </NumRatingsWrapper>
+              </NumCommentsAndRatingsWrapper>
+            </ReviewsAndGraphButtonWrapper>
+          </RatingBarsColumn>
+        </RatingBoxContent>
+      </RatingBoxContainer>
+      <RatingDistributionGraph
+        distribution={distribution}
+        showDistribution={showDistribution}
+      />
     </RatingBoxWrapper>
   );
 };
