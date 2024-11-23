@@ -4,8 +4,6 @@ import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 import {
-  Aggregate_Course_Easy_Buckets,
-  Aggregate_Course_Useful_Buckets,
   CourseInfoFragment,
   CourseRatingFragment,
   CourseRequirementsFragment,
@@ -31,6 +29,7 @@ import useModal from 'hooks/useModal';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
+import { createOrderedBuckets, Distribution } from 'utils/Ratings';
 
 import {
   Column1,
@@ -62,38 +61,6 @@ type CoursePageContentProps = {
   userCourseTaken?: boolean;
 };
 
-type Distribution = {
-  hasDistribution: boolean;
-  displayName: string;
-  buckets: Buckets;
-  total: number;
-};
-
-type Buckets = Array<{
-  value: number;
-  count: number;
-}>;
-
-export const createOrderedBuckets = (
-  buckets: Array<
-    Aggregate_Course_Easy_Buckets | Aggregate_Course_Useful_Buckets
-  >,
-): Buckets => {
-  // Create a map of existing values to counts
-  const bucketMap = buckets.reduce<{ [key: number]: number }>((acc, bucket) => {
-    if (bucket.value !== null && bucket.count !== null) {
-      acc[bucket.value] = Number(bucket.count);
-    }
-    return acc;
-  }, {});
-
-  // Create ordered array with all values 4-0, using 0 for missing counts
-  return [4, 3, 2, 1, 0].map((value) => ({
-    value,
-    count: bucketMap[value] || 0,
-  }));
-};
-
 const CoursePageContent = ({
   course,
   userReview,
@@ -105,8 +72,6 @@ const CoursePageContent = ({
   const [openModal, closeModal] = useModal();
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-
-  console.log(course.course_useful_buckets.length > 0);
 
   const usefulDistribution: Distribution = {
     hasDistribution: course.course_useful_buckets.length > 0,

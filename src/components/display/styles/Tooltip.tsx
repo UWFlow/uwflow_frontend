@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Body } from 'constants/Mixins';
 
-import 'tippy.js/dist/tippy.css'; // optional
+import 'tippy.js/dist/tippy.css';
 
 export const TooltipWrapper = styled(Tippy)`
   ${Body}

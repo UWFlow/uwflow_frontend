@@ -21,8 +21,6 @@ import {
   ProgressTextLabel,
   ProgressWrapper,
   RatingBarsColumn,
-  RatingBoxContainer,
-  RatingBoxContent,
   RatingBoxWrapper,
   ReviewsAndGraphButtonWrapper,
 } from './styles/RatingBox';
@@ -48,6 +46,7 @@ type RatingBoxProps = {
   percentages: {
     displayName: string;
     percent: number;
+    hasDistribution?: boolean;
     distribution?: Distribution;
   }[];
   numRatings: number;
@@ -76,74 +75,69 @@ const RatingBox = ({
   };
 
   return (
-    <RatingBoxWrapper>
-      <RatingBoxContainer ratingBoxHeight={RATING_BOX_HEIGHT}>
-        <RatingBoxContent
-          ratingBoxHeight={RATING_BOX_HEIGHT}
-          ratingBoxWidth={RATING_BOX_WIDTH}
-        >
-          <CircularPercentageWrapper>
-            <CircularPercentage
-              height={
-                isBrowserDesktop
-                  ? RATING_BOX_HEIGHT - 32
-                  : Math.min(width / 2 - 32, 200)
-              }
-              percent={likedPercent}
-              barThickness={16}
-              label="liked"
-            />
-          </CircularPercentageWrapper>
-          <RatingBarsColumn>
-            {percentages.map((metric, ind) =>
-              ind === 0 ? null : (
-                <ProgressWrapper key={metric.displayName}>
-                  <ProgressLabel>
-                    <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
-                    {metric.distribution && (
-                      <Popover
-                        content={
-                          <RatingDistributionGraph
-                            distribution={metric.distribution}
-                          />
-                        }
-                      >
-                        <DistributionIcon
-                          color={theme.light1}
-                          borderColor={theme.dark3}
-                          className="primaryicon"
-                        >
-                          <BarChart2 strokeWidth={3} size={15} />
-                        </DistributionIcon>
-                      </Popover>
-                    )}
-                  </ProgressLabel>
-                  <ProgressBarWrapper>
-                    <ProgressBar percentComplete={metric.percent} />
-                    <ProgressNumberLabel>
-                      {processRating(metric.percent)}
-                    </ProgressNumberLabel>
-                  </ProgressBarWrapper>
-                </ProgressWrapper>
-              ),
-            )}
-            <ReviewsAndGraphButtonWrapper>
-              <NumCommentsAndRatingsWrapper>
-                <NumCommentsWrapper
-                  onClick={scrollToReviews}
-                  hasComments={Boolean(numComments)}
-                >
-                  {numComments || 0}{' '}
-                  {numComments === 1 ? 'comment' : 'comments'}
-                </NumCommentsWrapper>
-                <NumRatingsWrapper>
-                  {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
-                </NumRatingsWrapper>
-              </NumCommentsAndRatingsWrapper>
-            </ReviewsAndGraphButtonWrapper>
-          </RatingBarsColumn>
-        </RatingBoxContent>
-      </RatingBoxContainer>
+    <RatingBoxWrapper
+      ratingBoxHeight={RATING_BOX_HEIGHT}
+      ratingBoxWidth={RATING_BOX_WIDTH}
+    >
+      <CircularPercentageWrapper>
+        <CircularPercentage
+          height={
+            isBrowserDesktop
+              ? RATING_BOX_HEIGHT - 32
+              : Math.min(width / 2 - 32, 200)
+          }
+          percent={likedPercent}
+          barThickness={16}
+          label="liked"
+        />
+      </CircularPercentageWrapper>
+      <RatingBarsColumn>
+        {percentages.map((metric, ind) =>
+          ind === 0 ? null : (
+            <ProgressWrapper key={metric.displayName}>
+              <ProgressLabel>
+                <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
+                {metric.hasDistribution && metric.distribution && (
+                  <Popover
+                    content={
+                      <RatingDistributionGraph
+                        distribution={metric.distribution}
+                      />
+                    }
+                  >
+                    <DistributionIcon
+                      color={theme.light1}
+                      borderColor={theme.dark3}
+                      className="primaryicon"
+                    >
+                      <BarChart2 strokeWidth={3} size={15} />
+                    </DistributionIcon>
+                  </Popover>
+                )}
+              </ProgressLabel>
+              <ProgressBarWrapper>
+                <ProgressBar percentComplete={metric.percent} />
+                <ProgressNumberLabel>
+                  {processRating(metric.percent)}
+                </ProgressNumberLabel>
+              </ProgressBarWrapper>
+            </ProgressWrapper>
+          ),
+        )}
+        <ReviewsAndGraphButtonWrapper>
+          <NumCommentsAndRatingsWrapper>
+            <NumCommentsWrapper
+              onClick={scrollToReviews}
+              hasComments={Boolean(numComments)}
+            >
+              {numComments || 0} {numComments === 1 ? 'comment' : 'comments'}
+            </NumCommentsWrapper>
+            <NumRatingsWrapper>
+              {numRatings || 0} {numRatings === 1 ? 'rating' : 'ratings'}
+            </NumRatingsWrapper>
+          </NumCommentsAndRatingsWrapper>
+        </ReviewsAndGraphButtonWrapper>
+      </RatingBarsColumn>
     </RatingBoxWrapper>
   );
 };

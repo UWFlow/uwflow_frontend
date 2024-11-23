@@ -1,20 +1,13 @@
 import styled from 'styled-components';
-import breakpoint from 'styled-components-breakpoint';
 
 import { Body, Heading4 } from 'constants/Mixins';
-
-export const GraphWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
 
 export const Graph = styled.div`
   width: 300px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 `;
 
 export const BarWrapper = styled.div`
@@ -37,14 +30,9 @@ export const BarPercentage = styled.div`
   text-align: right;
 `;
 
-export const DistributionBarWrapper = styled.div`
-  flex: 1;
-`;
-
 export const GraphTitle = styled.div`
   ${Body}
   color: ${({ theme }) => theme.dark1};
-  margin-bottom: 8px;
 `;
 
 export const GraphDistributionLabel = styled.span`

@@ -7,5 +7,3 @@ export const FOOTER_HEIGHT = 70;
 export const FOOTER_MARGIN_TOP = 32;
 
 export const REVIEWS_DIV_ID = 'reviews';
-
-export const RATING_BOX_OFFSET = 150;

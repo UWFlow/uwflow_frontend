@@ -31,6 +31,19 @@ const ProfFragment = {
       }
     }
   `,
+  profReviewDistribution: gql`
+    fragment ProfReviewDistribution on prof {
+      id
+      prof_engaging_buckets {
+        value
+        count
+      }
+      prof_clear_buckets {
+        value
+        count
+      }
+    }
+  `,
 };
 
 export default ProfFragment;

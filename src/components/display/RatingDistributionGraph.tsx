@@ -1,15 +1,12 @@
 import React from 'react';
-import Collapsible from 'react-collapsible';
 
 import {
   BarLabel,
   BarPercentage,
   BarWrapper,
-  DistributionBarWrapper,
   Graph,
   GraphDistributionLabel,
   GraphTitle,
-  GraphWrapper,
 } from './styles/RatingDistributionGraph';
 import ProgressBar from './ProgressBar';
 
@@ -32,31 +29,27 @@ const RatingDistributionGraph = ({
   if (!distribution) return null;
 
   return (
-    <GraphWrapper>
-      <Graph>
-        <GraphTitle>
-          <GraphDistributionLabel>
-            {distribution.displayName}{' '}
-          </GraphDistributionLabel>
-          Distribution
-        </GraphTitle>
-        {distribution.buckets.map((bucket, index) => {
-          const percentage =
-            distribution.total > 0
-              ? (bucket.count / distribution.total) * 100
-              : 0;
-          return (
-            <BarWrapper key={index}>
-              <BarLabel>{bucket.value + 1}</BarLabel>
-              <DistributionBarWrapper>
-                <ProgressBar percentComplete={percentage / 100} />
-              </DistributionBarWrapper>
-              <BarPercentage>({bucket.count})</BarPercentage>
-            </BarWrapper>
-          );
-        })}
-      </Graph>
-    </GraphWrapper>
+    <Graph>
+      <GraphTitle>
+        <GraphDistributionLabel>
+          {distribution.displayName}{' '}
+        </GraphDistributionLabel>
+        Distribution
+      </GraphTitle>
+      {distribution.buckets.map((bucket, index) => {
+        const percentage =
+          distribution.total > 0
+            ? (bucket.count / distribution.total) * 100
+            : 0;
+        return (
+          <BarWrapper key={index}>
+            <BarLabel>{bucket.value + 1}</BarLabel>
+            <ProgressBar percentComplete={percentage / 100} />
+            <BarPercentage>({bucket.count})</BarPercentage>
+          </BarWrapper>
+        );
+      })}
+    </Graph>
   );
 };
 

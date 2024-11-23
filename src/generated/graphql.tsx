@@ -11703,6 +11703,24 @@ export type ProfRatingFragment = { __typename?: 'prof' } & Pick<Prof, 'id'> & {
     >;
   };
 
+export type ProfReviewDistributionFragment = { __typename?: 'prof' } & Pick<
+  Prof,
+  'id'
+> & {
+    prof_engaging_buckets: Array<
+      { __typename?: 'aggregate_prof_engaging_buckets' } & Pick<
+        Aggregate_Prof_Engaging_Buckets,
+        'value' | 'count'
+      >
+    >;
+    prof_clear_buckets: Array<
+      { __typename?: 'aggregate_prof_clear_buckets' } & Pick<
+        Aggregate_Prof_Clear_Buckets,
+        'value' | 'count'
+      >
+    >;
+  };
+
 export type ReviewInfoFragment = { __typename?: 'review' } & Pick<
   Review,
   | 'id'
@@ -12304,7 +12322,8 @@ export type GetProfQuery = { __typename?: 'query_root' } & {
   prof: Array<
     { __typename?: 'prof' } & ProfInfoFragment &
       ProfCoursesTaughtFragment &
-      ProfRatingFragment
+      ProfRatingFragment &
+      ProfReviewDistributionFragment
   >;
 };
 
@@ -12506,6 +12525,19 @@ export const ProfRatingFragmentDoc = gql`
       engaging
       filled_count
       comment_count
+    }
+  }
+`;
+export const ProfReviewDistributionFragmentDoc = gql`
+  fragment ProfReviewDistribution on prof {
+    id
+    prof_engaging_buckets {
+      value
+      count
+    }
+    prof_clear_buckets {
+      value
+      count
     }
   }
 `;
@@ -14215,11 +14247,13 @@ export const GetProfDocument = gql`
       ...ProfInfo
       ...ProfCoursesTaught
       ...ProfRating
+      ...ProfReviewDistribution
     }
   }
   ${ProfInfoFragmentDoc}
   ${ProfCoursesTaughtFragmentDoc}
   ${ProfRatingFragmentDoc}
+  ${ProfReviewDistributionFragmentDoc}
 `;
 
 /**

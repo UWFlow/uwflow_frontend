@@ -31,7 +31,6 @@ export const CourseCodeAndNameSection = styled.div`
 
   ${breakpoint('tablet')`
     min-height: 320px;
-    padding-bottom: 48px;
   `}
 `;
 
@@ -60,13 +59,13 @@ export const CourseCode = styled(FadeIn)<{ ratingBoxWidth: number }>`
   color: white;
   text-transform: uppercase;
 
+  ${breakpoint('zero', 'tablet')`
+    margin-right: 16px;
+  `}
+
   ${breakpoint('tablet')`
     max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
       ratingBoxWidth}px);
-  `}
-
-  ${breakpoint('zero', 'tablet')`
-    margin-right: 16px;
   `}
 `;
 
@@ -90,22 +89,18 @@ export const CourseName = styled.div<{ ratingBoxWidth: number }>`
 
 export const CourseDescriptionSection = styled.div`
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 0;
   position: relative;
-  flex-wrap: wrap;
-  width: 100%;
 
   ${breakpoint('tablet')`
     ${PageContent}
+    padding-bottom: 48px;
     margin: auto;
-    gap: 32px;
-    flex-wrap: nowrap;
   `}
 `;
 
-export const Description = styled(FadeIn)`
+export const Description = styled(FadeIn)<{ ratingBoxWidth: number }>`
   ${Body}
   position: relative;
   font-weight: 500;
@@ -121,7 +116,8 @@ export const Description = styled(FadeIn)`
 
   ${breakpoint('tablet')`
     margin-top: 48px;
-    padding-bottom: 48px;
+    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
+      ratingBoxWidth}px);
   `}
 `;
 

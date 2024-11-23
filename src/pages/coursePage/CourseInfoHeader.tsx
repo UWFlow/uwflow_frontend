@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   CourseInfoFragment,
   CourseRatingFragment,
@@ -8,6 +8,7 @@ import {
 import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
 import { formatCourseCode } from 'utils/Misc';
+import { Distribution } from 'utils/Ratings';
 
 import {
   CourseCode,
@@ -18,6 +19,7 @@ import {
   CourseName,
   CourseNameWrapper,
   Description,
+  RatingsSection,
   StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
 
@@ -31,18 +33,6 @@ type CourseInfoHeaderProps = {
   };
   shortlisted: boolean;
 };
-
-type Distribution = {
-  hasDistribution: boolean;
-  displayName: string;
-  buckets: Buckets;
-  total: number;
-};
-
-type Buckets = Array<{
-  value: number;
-  count: number;
-}>;
 
 const CourseInfoHeader = ({
   course,
@@ -74,27 +64,33 @@ const CourseInfoHeader = ({
         </CourseNameWrapper>
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
-        <RatingBox
-          numRatings={filled_count}
-          numComments={comment_count}
-          percentages={[
-            {
-              displayName: 'Likes',
-              percent: liked,
-            },
-            {
-              displayName: 'Easy',
-              percent: easy,
-              distribution: distributions.easy,
-            },
-            {
-              displayName: 'Useful',
-              percent: useful,
-              distribution: distributions.useful,
-            },
-          ]}
-        />
-        <Description>{course.description}</Description>
+        <RatingsSection>
+          <RatingBox
+            numRatings={filled_count}
+            numComments={comment_count}
+            percentages={[
+              {
+                displayName: 'Likes',
+                percent: liked,
+              },
+              {
+                displayName: 'Easy',
+                percent: easy,
+                distribution: distributions.easy,
+                hasDistribution: distributions.easy.hasDistribution,
+              },
+              {
+                displayName: 'Useful',
+                percent: useful,
+                distribution: distributions.useful,
+                hasDistribution: distributions.useful.hasDistribution,
+              },
+            ]}
+          />
+        </RatingsSection>
+        <Description ratingBoxWidth={RATING_BOX_WIDTH}>
+          {course.description}
+        </Description>
       </CourseDescriptionSection>
     </CourseInfoHeaderWrapper>
   );

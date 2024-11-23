@@ -8,14 +8,9 @@ import 'tippy.js/dist/tippy.css';
 export const PopoverWrapper = styled(Tippy)`
   ${Body}
   background: ${({ theme }) => theme.light1} !important;
-  border: 1px solid ${({ theme }) => theme.light3};
-  padding: 2px;
-  border-radius: 4px !important;
-  max-width: 200px;
+  box-shadow: inset 0 0 0 5px ${({ theme }) => theme.light3};
   color: ${({ theme }) => theme.dark1} !important;
-  white-space: normal;
   opacity: 0.98;
-  font-size: 16px !important;
 
   /* Style the arrow */
   .tippy-arrow {
