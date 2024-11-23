@@ -24,46 +24,38 @@ type Distribution = {
 
 type RatingDistributionGraphProps = {
   distribution: Distribution | null;
-  showDistribution: boolean;
 };
 
 const RatingDistributionGraph = ({
   distribution,
-  showDistribution,
 }: RatingDistributionGraphProps) => {
+  if (!distribution) return null;
+
   return (
     <GraphWrapper>
-      <Collapsible
-        open={showDistribution}
-        transitionTime={400}
-        easing="ease-in-out"
-        trigger=""
-        triggerDisabled={true}
-      >
-        <Graph>
-          <GraphTitle>
-            <GraphDistributionLabel>
-              {distribution?.displayName}{' '}
-            </GraphDistributionLabel>
-            Distribution
-          </GraphTitle>
-          {distribution?.buckets.map((bucket, index) => {
-            const percentage =
-              distribution?.total > 0
-                ? (bucket.count / distribution?.total) * 100
-                : 0;
-            return (
-              <BarWrapper key={index}>
-                <BarLabel>{bucket.value + 1}</BarLabel>
-                <DistributionBarWrapper>
-                  <ProgressBar percentComplete={percentage / 100} />
-                </DistributionBarWrapper>
-                <BarPercentage>({bucket.count})</BarPercentage>
-              </BarWrapper>
-            );
-          })}
-        </Graph>
-      </Collapsible>
+      <Graph>
+        <GraphTitle>
+          <GraphDistributionLabel>
+            {distribution.displayName}{' '}
+          </GraphDistributionLabel>
+          Distribution
+        </GraphTitle>
+        {distribution.buckets.map((bucket, index) => {
+          const percentage =
+            distribution.total > 0
+              ? (bucket.count / distribution.total) * 100
+              : 0;
+          return (
+            <BarWrapper key={index}>
+              <BarLabel>{bucket.value + 1}</BarLabel>
+              <DistributionBarWrapper>
+                <ProgressBar percentComplete={percentage / 100} />
+              </DistributionBarWrapper>
+              <BarPercentage>({bucket.count})</BarPercentage>
+            </BarWrapper>
+          );
+        })}
+      </Graph>
     </GraphWrapper>
   );
 };

@@ -26,6 +26,7 @@ import {
   RatingBoxWrapper,
   ReviewsAndGraphButtonWrapper,
 } from './styles/RatingBox';
+import Popover from './Popover';
 import RatingDistributionGraph from './RatingDistributionGraph';
 
 export const RATING_BOX_HEIGHT = 244;
@@ -47,21 +48,16 @@ type RatingBoxProps = {
   percentages: {
     displayName: string;
     percent: number;
-    hasDistribution: boolean;
-    onDistributionClick?: () => void;
+    distribution?: Distribution;
   }[];
   numRatings: number;
   numComments: number;
-  distribution: Distribution | null;
-  showDistribution: boolean;
 };
 
 const RatingBox = ({
   percentages,
   numRatings,
   numComments,
-  distribution,
-  showDistribution,
 }: RatingBoxProps) => {
   const theme = useTheme();
   const width = useSelector((state: RootState) => state.browser.width);
@@ -104,15 +100,22 @@ const RatingBox = ({
                 <ProgressWrapper key={metric.displayName}>
                   <ProgressLabel>
                     <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
-                    {metric.hasDistribution && (
-                      <DistributionIcon
-                        onClick={metric?.onDistributionClick}
-                        color={theme.light1}
-                        borderColor={theme.dark3}
-                        className="primaryicon"
+                    {metric.distribution && (
+                      <Popover
+                        content={
+                          <RatingDistributionGraph
+                            distribution={metric.distribution}
+                          />
+                        }
                       >
-                        <BarChart2 strokeWidth={3} size={15} />
-                      </DistributionIcon>
+                        <DistributionIcon
+                          color={theme.light1}
+                          borderColor={theme.dark3}
+                          className="primaryicon"
+                        >
+                          <BarChart2 strokeWidth={3} size={15} />
+                        </DistributionIcon>
+                      </Popover>
                     )}
                   </ProgressLabel>
                   <ProgressBarWrapper>
@@ -141,10 +144,6 @@ const RatingBox = ({
           </RatingBarsColumn>
         </RatingBoxContent>
       </RatingBoxContainer>
-      <RatingDistributionGraph
-        distribution={distribution}
-        showDistribution={showDistribution}
-      />
     </RatingBoxWrapper>
   );
 };

@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 import { Body } from 'constants/Mixins';
 
-import 'tippy.js/dist/tippy.css'; // optional
+import 'tippy.js/dist/tippy.css';
 
-export const TooltipWrapper = styled(Tippy)`
+export const PopoverWrapper = styled(Tippy)`
   ${Body}
   background: ${({ theme }) => theme.light1} !important;
-  border: 2px solid ${({ theme }) => theme.light3};
+  border: 1px solid ${({ theme }) => theme.light3};
   padding: 2px;
   border-radius: 4px !important;
   max-width: 200px;
@@ -17,7 +17,13 @@ export const TooltipWrapper = styled(Tippy)`
   opacity: 0.98;
   font-size: 16px !important;
 
-  &:after {
-    display: none;
+  /* Style the arrow */
+  .tippy-arrow {
+    color: ${({ theme }) => theme.light3}; /* Border color */
+  }
+
+  /* Style the arrow's inner fill */
+  .tippy-arrow:before {
+    color: ${({ theme }) => theme.light3}; /* Border color */
   }
 `;

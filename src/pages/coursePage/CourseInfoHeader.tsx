@@ -51,9 +51,6 @@ const CourseInfoHeader = ({
 }: CourseInfoHeaderProps) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating!;
 
-  const [distribution, setDistribution] = useState<Distribution | null>(null);
-  const [showDistribution, setShowDistribution] = useState(false);
-
   return (
     <CourseInfoHeaderWrapper>
       <CourseCodeAndNameSection>
@@ -84,41 +81,18 @@ const CourseInfoHeader = ({
             {
               displayName: 'Likes',
               percent: liked,
-              hasDistribution: false,
             },
             {
               displayName: 'Easy',
               percent: easy,
-              hasDistribution: distributions.easy.hasDistribution,
-              onDistributionClick: () => {
-                if (!showDistribution) {
-                  setDistribution(distributions.easy);
-                  setShowDistribution(true);
-                } else if (distribution?.displayName !== 'Easy') {
-                  setDistribution(distributions.easy);
-                } else {
-                  setShowDistribution(false);
-                }
-              },
+              distribution: distributions.easy,
             },
             {
               displayName: 'Useful',
               percent: useful,
-              hasDistribution: distributions.useful.hasDistribution,
-              onDistributionClick: () => {
-                if (!showDistribution) {
-                  setDistribution(distributions.useful);
-                  setShowDistribution(true);
-                } else if (distribution?.displayName !== 'Useful') {
-                  setDistribution(distributions.useful);
-                } else {
-                  setShowDistribution(false);
-                }
-              },
+              distribution: distributions.useful,
             },
           ]}
-          distribution={distribution}
-          showDistribution={showDistribution}
         />
         <Description>{course.description}</Description>
       </CourseDescriptionSection>
