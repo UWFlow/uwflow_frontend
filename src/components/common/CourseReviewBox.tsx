@@ -27,6 +27,7 @@ import {
   COURSE_REVIEW_PROFS,
   COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
+import { ONLY_PROF_QUERY } from 'graphql/queries/prof/Prof';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
@@ -70,6 +71,7 @@ const getProfIndex = (review: any, profsTeaching: any) =>
 
 type CourseReviewBoxContentProps = CourseReviewBoxProps & {
   profsTeachingByCourseId: any;
+  allProfs: any[];
 };
 
 const CourseReviewBoxContent = ({
@@ -79,6 +81,7 @@ const CourseReviewBoxContent = ({
   showCourseDropdown = false,
   cancelButton = true,
   onCancel = () => {},
+  allProfs,
 }: CourseReviewBoxContentProps) => {
   const theme = useTheme();
 
@@ -239,11 +242,12 @@ const CourseReviewBoxContent = ({
   const notifyDelete = () => toast(REVIEW_SUCCESS.deleted);
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
-
   const profId =
-    selectedProf === -1 || selectedProf === profsTeaching.length
+    selectedProf === -1 || selectedProf === 0
       ? null
-      : profsTeaching[selectedProf].prof.id;
+      : selectedProf <= profsTeaching.length
+      ? profsTeaching[selectedProf - 1].prof.id
+      : allProfs[selectedProf - profsTeaching.length - 1].id;
 
   const handlePost = () => {
     setReviewUpdating(true);
@@ -410,20 +414,23 @@ const CourseReviewBoxContent = ({
           selectedIndex={selectedProf}
           placeholder="select your professor"
           options={[
+            "My Professor Isn't Here",
             ...profsTeaching
               .sort((a: any, b: any) => a.prof.name.localeCompare(b.prof.name))
               .map((profObf: any) => profObf.prof.name),
-            "my professor isn't here",
+            ...allProfs.map((prof: any) => prof.name),
           ]}
           color={theme.professors}
           onChange={(value) => setReviewValue('selectedProf', value)}
           zIndex={5}
+          maxItems={4}
+          width={230}
           searchable
         />
       </QuestionWrapper>
 
       <Collapsible
-        open={selectedProf !== -1 && selectedProf !== profsTeaching.length}
+        open={selectedProf !== -1 && selectedProf !== 0}
         transitionTime={200}
         easing="ease-in-out"
         overflowWhenOpen="visible"
@@ -496,6 +503,7 @@ const CourseReviewBoxContent = ({
             onChange={(value) => setReviewValue('selectedAnonymous', value)}
             margin="auto 16px auto auto"
             zIndex={2}
+            width={140}
           />
           {cancelButton && (
             <Button
@@ -557,12 +565,16 @@ type CourseReviewBoxProps = {
 
 const CourseReviewBox = ({ courseList, ...props }: CourseReviewBoxProps) => {
   const courseIds = courseList.map((course) => course.course.id);
-  const { data } = useQuery(COURSE_REVIEW_PROFS, {
+  const { data: profsData } = useQuery(COURSE_REVIEW_PROFS, {
     variables: { id: courseIds },
   });
+
+  // Add new query for all professors
+  const { data: allProfsData } = useQuery(ONLY_PROF_QUERY);
+
   const profsSeenByCourseID: { [key: string]: any } = {};
-  const profsTeachingByCourseId = data
-    ? data.review.reduce((profs: any, currentProf: any) => {
+  const profsTeachingByCourseId = profsData
+    ? profsData.review.reduce((profs: any, currentProf: any) => {
         if (
           currentProf &&
           currentProf.prof &&
@@ -590,6 +602,7 @@ const CourseReviewBox = ({ courseList, ...props }: CourseReviewBoxProps) => {
         ...props,
         profsTeachingByCourseId,
         courseList,
+        allProfs: allProfsData?.prof || [],
       }}
     />
   );
