@@ -48,6 +48,14 @@ import {
   SliderOptionText,
 } from './styles/CourseReviewBox';
 
+const filterDisjointProfs = (allProfs: any[], profsTeaching: any[]) => {
+  const teachingProfIds = new Set(
+    profsTeaching.map((profObj) => profObj.prof?.id).filter(Boolean),
+  );
+
+  return allProfs.filter((prof) => !teachingProfIds.has(prof.id));
+};
+
 const mergeInNewProfsTeaching = (
   currProfsTeaching: any,
   newProfsTeaching: any,
@@ -417,8 +425,10 @@ const CourseReviewBoxContent = ({
             "My Professor Isn't Here",
             ...profsTeaching
               .sort((a: any, b: any) => a.prof.name.localeCompare(b.prof.name))
-              .map((profObf: any) => profObf.prof.name),
-            ...allProfs.map((prof: any) => prof.name),
+              .map((profObj: any) => profObj.prof.name),
+            ...filterDisjointProfs(allProfs, profsTeaching).map(
+              (prof: any) => prof.name,
+            ),
           ]}
           color={theme.professors}
           onChange={(value) => setReviewValue('selectedProf', value)}
