@@ -48,7 +48,7 @@ import {
   SliderOptionText,
 } from './styles/CourseReviewBox';
 
-const filterDisjointProfs = (allProfs: any[], profsTeaching: any[]) => {
+const filterDuplicateProfs = (allProfs: any[], profsTeaching: any[]) => {
   const teachingProfIds = new Set(
     profsTeaching.map((profObj) => profObj.prof?.id).filter(Boolean),
   );
@@ -250,6 +250,7 @@ const CourseReviewBoxContent = ({
   const notifyDelete = () => toast(REVIEW_SUCCESS.deleted);
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
+
   const profId =
     selectedProf === -1 || selectedProf === 0
       ? null
@@ -426,7 +427,7 @@ const CourseReviewBoxContent = ({
             ...profsTeaching
               .sort((a: any, b: any) => a.prof.name.localeCompare(b.prof.name))
               .map((profObj: any) => profObj.prof.name),
-            ...filterDisjointProfs(allProfs, profsTeaching).map(
+            ...filterDuplicateProfs(allProfs, profsTeaching).map(
               (prof: any) => prof.name,
             ),
           ]}
