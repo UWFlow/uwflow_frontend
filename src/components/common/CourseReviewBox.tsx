@@ -61,8 +61,6 @@ import {
   SliderOptionText,
 } from './styles/CourseReviewBox';
 
-const NO_PROFESSOR_INDEX = 0;
-
 const filterTeachingProfs = (
   allProfs: Prof[],
   profsTeaching: ProfTeaching[],
@@ -135,6 +133,7 @@ interface CourseReviewBoxContentProps extends CourseReviewBoxProps {
   profsTeachingByCourseId: {
     [key: string]: ProfTeaching[];
   } | null;
+  allProfs: Prof[];
 }
 
 interface ReviewState {
@@ -202,10 +201,10 @@ const getProfIndex = (
       )
     : -1;
 
-type CourseReviewBoxContentProps = CourseReviewBoxProps & {
-  profsTeachingByCourseId: any;
-  allProfs: any[];
-};
+interface ProfOption {
+  label: string;
+  id: number | null;
+}
 
 const CourseReviewBoxContent = ({
   courseList,
@@ -405,12 +404,21 @@ const CourseReviewBoxContent = ({
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
-  const profId: number | null =
-    selectedProf === -1 || selectedProf === NO_PROFESSOR_INDEX
-      ? null
-      : selectedProf <= profsTeaching.length
-      ? profsTeaching[selectedProf - 1].prof.id
-      : allProfs[selectedProf - profsTeaching.length - 1].id;
+  const profOptions: ProfOption[] = [
+    { label: "My Professor Isn't Here", id: null },
+    ...profsTeaching
+      .sort((a: ProfTeaching, b: ProfTeaching) =>
+        a.prof.name.localeCompare(b.prof.name),
+      )
+      .map((profObj: ProfTeaching) => ({
+        label: profObj.prof.name,
+        id: profObj.prof.id,
+      })),
+    ...filterTeachingProfs(allProfs, profsTeaching).map((prof: Prof) => ({
+      label: prof.name,
+      id: prof.id,
+    })),
+  ];
 
   const handlePost = () => {
     setReviewUpdating(true);
@@ -418,15 +426,19 @@ const CourseReviewBoxContent = ({
     const reviewData: UpsertReviewMutationVariables = {
       user_id: userId,
       course_id: course.id,
-      prof_id: profId,
+      prof_id: profOptions[selectedProf]?.id ?? null,
       liked: 1 - liked,
       public: selectedAnonymous !== 0,
       course_easy: easy,
       course_useful: useful,
       course_comment: courseComment !== '' ? courseComment : null,
-      prof_clear: profId && clearSelected ? clear : null,
-      prof_engaging: profId && engagingSelected ? engaging : null,
-      prof_comment: profId && profComment !== '' ? profComment : null,
+      prof_clear: profOptions[selectedProf]?.id && clearSelected ? clear : null,
+      prof_engaging:
+        profOptions[selectedProf]?.id && engagingSelected ? engaging : null,
+      prof_comment:
+        profOptions[selectedProf]?.id && profComment !== ''
+          ? profComment
+          : null,
     };
 
     upsertReview({
@@ -586,17 +598,7 @@ const CourseReviewBoxContent = ({
         <DropdownList
           selectedIndex={selectedProf}
           placeholder="select your professor"
-          options={[
-            "My Professor Isn't Here",
-            ...profsTeaching
-              .sort((a: ProfTeaching, b: ProfTeaching) =>
-                a.prof.name.localeCompare(b.prof.name),
-              )
-              .map((profObj: ProfTeaching) => profObj.prof.name),
-            ...filterTeachingProfs(allProfs, profsTeaching).map(
-              (prof: Prof) => prof.name,
-            ),
-          ]}
+          options={profOptions.map((p) => p.label)}
           color={theme.professors}
           onChange={(value) => setReviewValue('selectedProf', value)}
           zIndex={5}
@@ -627,10 +629,12 @@ const CourseReviewBoxContent = ({
             setSelected={(value: boolean) =>
               setReviewValue('clearSelected', value)
             }
-            disabled={profId === null}
+            disabled={profOptions[selectedProf]?.id === null}
           />
           <SliderOptionText>
-            {clearSelected && profId !== null ? CLEAR_OPTIONS[clear] : ''}
+            {clearSelected && profOptions[selectedProf]?.id !== null
+              ? CLEAR_OPTIONS[clear]
+              : ''}
           </SliderOptionText>
         </MetricQuestionWrapper>
 
@@ -647,10 +651,10 @@ const CourseReviewBoxContent = ({
             setSelected={(value: boolean) =>
               setReviewValue('engagingSelected', value)
             }
-            disabled={profId === null}
+            disabled={profOptions[selectedProf]?.id === null}
           />
           <SliderOptionText>
-            {engagingSelected && profId !== null
+            {engagingSelected && profOptions[selectedProf]?.id !== null
               ? ENGAGING_OPTIONS[engaging]
               : ''}
           </SliderOptionText>
@@ -664,7 +668,7 @@ const CourseReviewBoxContent = ({
             setReviewValue('profComment', event.target.value)
           }
           placeholder="Add any comments or tips..."
-          disabled={profId === null}
+          disabled={profOptions[selectedProf]?.id === null}
         />
       </Collapsible>
       <Footer>
