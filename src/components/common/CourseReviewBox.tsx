@@ -3,8 +3,20 @@ import { useMutation, useQuery } from 'react-apollo';
 import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
+import {
+  CourseReviewProfsQuery,
+  CourseReviewsWithUserDataQueryVariables,
+  DeleteReviewMutation,
+  DeleteReviewMutationVariables,
+  RefetchCourseReviewsQueryVariables,
+  RefetchRatingsQueryVariables,
+  RefetchUserReviewQueryVariables,
+  UpsertReviewMutation,
+  UpsertReviewMutationVariables,
+  User,
+} from 'generated/graphql';
 import _ from 'lodash';
-import { useTheme } from 'styled-components';
+import { DefaultTheme, useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
 import DiscreteSlider from 'components/input/DiscreteSlider';
@@ -18,6 +30,7 @@ import {
   ENGAGING_OPTIONS,
   USEFUL_OPTIONS,
 } from 'constants/Review';
+import { DocumentNode } from 'graphql';
 import { DELETE_REVIEW, UPSERT_REVIEW } from 'graphql/mutations/Review';
 import {
   REFETCH_COURSE_REVIEWS,
@@ -48,7 +61,12 @@ import {
   SliderOptionText,
 } from './styles/CourseReviewBox';
 
-const filterDuplicateProfs = (allProfs: any[], profsTeaching: any[]) => {
+const NO_PROFESSOR_INDEX = 0;
+
+const filterTeachingProfs = (
+  allProfs: Prof[],
+  profsTeaching: ProfTeaching[],
+) => {
   const teachingProfIds = new Set(
     profsTeaching.map((profObj) => profObj.prof?.id).filter(Boolean),
   );
@@ -56,13 +74,117 @@ const filterDuplicateProfs = (allProfs: any[], profsTeaching: any[]) => {
   return allProfs.filter((prof) => !teachingProfIds.has(prof.id));
 };
 
+interface Prof {
+  id: number;
+  code: string;
+  name: string;
+}
+
+interface ProfTeaching {
+  prof: Prof;
+}
+
+interface Course {
+  id: number;
+  code: string;
+  profs_teaching: ProfTeaching[];
+  ratings: Array<{
+    liked: number;
+    useful: number;
+    easy: number;
+    count: number;
+  }>;
+  sections: Array<{
+    id: number;
+    code: string;
+  }>;
+  reviews: Review[];
+}
+
+interface Review {
+  author: User;
+  course: Course;
+  course_comment: string | null;
+  course_easy: number | null;
+  course_id: number;
+  course_useful: number | null;
+  created_at: string;
+  id: number;
+  liked: number | null;
+  prof: Prof | null;
+  prof_clear: number | null;
+  prof_engaging: number | null;
+  prof_comment: string | null;
+  public: boolean;
+}
+
+interface CourseListItem {
+  course: Course;
+  review: Review | null;
+}
+
+interface CourseReviewBoxProps {
+  courseList: CourseListItem[];
+  initialSelectedCourseIndex?: number;
+  showCourseDropdown?: boolean;
+  cancelButton?: boolean;
+  onCancel?: () => void;
+}
+
+interface CourseReviewBoxContentProps extends CourseReviewBoxProps {
+  profsTeachingByCourseId: {
+    [key: string]: ProfTeaching[];
+  } | null;
+}
+
+interface ReviewState {
+  id: number;
+  liked: number;
+  useful: number;
+  usefulSelected: boolean;
+  easy: number;
+  easySelected: boolean;
+  courseComment: string;
+  selectedProf: number;
+  clear: number;
+  clearSelected: boolean;
+  engaging: number;
+  engagingSelected: boolean;
+  profComment: string;
+  selectedAnonymous: number;
+  profsTeaching: ProfTeaching[];
+}
+
+interface ReviewStates {
+  [courseCode: string]: ReviewState;
+}
+
+interface Review {
+  user_id: number;
+  course_id: number;
+  prof_id: number | null;
+  liked: number | null;
+  public: boolean;
+  course_easy: number | null;
+  course_useful: number | null;
+  course_comment: string | null;
+  prof_clear: number | null;
+  prof_comment: string | null;
+  prof_engaging: number | null;
+  updated_at: string;
+}
+
+type ProfTeachingMap = {
+  [key: string]: ProfTeaching[];
+};
+
 const mergeInNewProfsTeaching = (
-  currProfsTeaching: any,
-  newProfsTeaching: any,
-) => {
-  const currIDs = currProfsTeaching.map((prof: any) => prof.prof.id);
+  currProfsTeaching: ProfTeaching[],
+  newProfsTeaching: ProfTeaching[] | undefined,
+): void => {
+  const currIDs: number[] = currProfsTeaching.map((prof) => prof.prof.id);
   if (newProfsTeaching) {
-    newProfsTeaching.forEach((prof: any) => {
+    newProfsTeaching.forEach((prof) => {
       if (!currIDs.includes(prof.prof.id)) {
         currProfsTeaching.push(prof);
       }
@@ -70,10 +192,13 @@ const mergeInNewProfsTeaching = (
   }
 };
 
-const getProfIndex = (review: any, profsTeaching: any) =>
+const getProfIndex = (
+  review: Review | null,
+  profsTeaching: ProfTeaching[],
+): number =>
   review
     ? profsTeaching.findIndex(
-        (prof: any) => prof.prof && prof.prof.id === review.prof_id,
+        (prof) => prof.prof && prof.prof.id === review.prof_id,
       )
     : -1;
 
@@ -91,9 +216,9 @@ const CourseReviewBoxContent = ({
   onCancel = () => {},
   allProfs,
 }: CourseReviewBoxContentProps) => {
-  const theme = useTheme();
+  const theme: DefaultTheme = useTheme();
 
-  const [selectedCourseIndex, setSelectedCourseIndex] = useState(
+  const [selectedCourseIndex, setSelectedCourseIndex] = useState<number>(
     initialSelectedCourseIndex,
   );
 
@@ -101,9 +226,12 @@ const CourseReviewBoxContent = ({
     setSelectedCourseIndex(initialSelectedCourseIndex);
   }, [initialSelectedCourseIndex]);
 
-  const buildDefaultReview = (course: any, review: any) => {
+  const buildDefaultReview = (
+    course: Course,
+    review: Review | null,
+  ): ReviewState => {
     // We need to merge profs currently teaching the course and previous profs for the course with a review
-    let profsTeaching = course.profs_teaching;
+    let profsTeaching: ProfTeaching[] = course.profs_teaching;
 
     if (profsTeachingByCourseId) {
       mergeInNewProfsTeaching(
@@ -112,22 +240,24 @@ const CourseReviewBoxContent = ({
       );
     }
 
-    profsTeaching = profsTeaching.filter((prof: any) => prof.prof !== null);
+    profsTeaching = profsTeaching.filter(
+      (prof: ProfTeaching) => prof.prof !== null,
+    );
     // add prof to dropdown if not fetched from backend
     if (review) {
       const profExists = profsTeaching.some(
-        (prof: any) => prof.prof && prof.prof.id === review.prof_id,
+        (prof: ProfTeaching) => prof.prof && prof.prof.id === review.prof_id,
       );
-      if (!profExists && review.prof_id !== null) {
+      if (!profExists && review.prof_id !== null && review.prof) {
         profsTeaching.push({ prof: review.prof });
       }
     }
 
-    profsTeaching = profsTeaching.sort((a: any, b: any) =>
+    profsTeaching = profsTeaching.sort((a: ProfTeaching, b: ProfTeaching) =>
       a.prof.name.localeCompare(b.prof.name),
     );
 
-    const profIndex = getProfIndex(review, profsTeaching);
+    const profIndex: number = getProfIndex(review, profsTeaching);
 
     return {
       id: course.id,
@@ -149,21 +279,31 @@ const CourseReviewBoxContent = ({
   };
 
   /* State */
-  const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState(false);
-  const [reviewUpdating, setReviewUpdating] = useState(false);
-  const [reviewDeleting, setReviewDeleting] = useState(false);
-  const [reviewStates, setReviewStates] = useState(
-    courseList.reduce((states, { course, review }) => {
-      states[course.code] = buildDefaultReview(course, review);
-      return states;
-    }, {}),
+  const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState<boolean>(
+    false,
   );
-  const [lastRenderProfsTeaching, setLastRenderProfsTeaching] = useState(
-    profsTeachingByCourseId,
-  );
+  const [reviewUpdating, setReviewUpdating] = useState<boolean>(false);
+  const [reviewDeleting, setReviewDeleting] = useState<boolean>(false);
 
-  const userId = getUserId();
-  const { course, review } = courseList[selectedCourseIndex];
+  const [reviewStates, setReviewStates] = useState<ReviewStates>(
+    courseList.reduce(
+      (
+        states: ReviewStates,
+        { course, review }: { course: Course; review: Review | null },
+      ) => {
+        states[course.code] = buildDefaultReview(course, review);
+        return states;
+      },
+      {},
+    ),
+  );
+  const [
+    lastRenderProfsTeaching,
+    setLastRenderProfsTeaching,
+  ] = useState<ProfTeachingMap | null>(profsTeachingByCourseId);
+
+  const userId: number = getUserId();
+  const { course, review }: CourseListItem = courseList[selectedCourseIndex];
 
   const {
     liked,
@@ -180,21 +320,22 @@ const CourseReviewBoxContent = ({
     profComment,
     selectedAnonymous,
     profsTeaching,
-  } = reviewStates[course.code];
+  }: ReviewState = reviewStates[course.code];
 
   /* Effects */
   useEffect(() => {
+    if (!profsTeachingByCourseId) return;
     // update state if profsTeaching changes
     if (!_.isEqual(profsTeachingByCourseId, lastRenderProfsTeaching)) {
-      const newReviewStates = _.cloneDeep(reviewStates);
-      Object.keys(reviewStates).forEach((code) => {
+      const newReviewStates: ReviewStates = _.cloneDeep(reviewStates);
+      Object.keys(reviewStates).forEach((code: string) => {
         mergeInNewProfsTeaching(
           newReviewStates[code].profsTeaching,
           profsTeachingByCourseId[reviewStates[code].id],
         );
         newReviewStates[code].profsTeaching = newReviewStates[
           code
-        ].profsTeaching.sort((a: any, b: any) =>
+        ].profsTeaching.sort((a: ProfTeaching, b: ProfTeaching) =>
           a.prof.name.localeCompare(b.prof.name),
         );
         newReviewStates[code].selectedProf = getProfIndex(
@@ -208,7 +349,14 @@ const CourseReviewBoxContent = ({
   }, [profsTeachingByCourseId, reviewStates, lastRenderProfsTeaching, review]);
 
   /* Mutations */
-  const refetchQueries = [
+  const refetchQueries: Array<{
+    query: DocumentNode;
+    variables:
+      | RefetchRatingsQueryVariables
+      | RefetchCourseReviewsQueryVariables
+      | CourseReviewsWithUserDataQueryVariables
+      | RefetchUserReviewQueryVariables;
+  }> = [
     {
       query: REFETCH_RATINGS,
       variables: {
@@ -237,12 +385,18 @@ const CourseReviewBoxContent = ({
     },
   ];
 
-  const [upsertReview] = useMutation(UPSERT_REVIEW, {
+  const [upsertReview] = useMutation<
+    UpsertReviewMutation,
+    UpsertReviewMutationVariables
+  >(UPSERT_REVIEW, {
     refetchQueries,
     awaitRefetchQueries: true,
   });
 
-  const [deleteReview] = useMutation(DELETE_REVIEW, {
+  const [deleteReview] = useMutation<
+    DeleteReviewMutation,
+    DeleteReviewMutationVariables
+  >(DELETE_REVIEW, {
     refetchQueries,
     awaitRefetchQueries: true,
   });
@@ -251,8 +405,8 @@ const CourseReviewBoxContent = ({
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
-  const profId =
-    selectedProf === -1 || selectedProf === 0
+  const profId: number | null =
+    selectedProf === -1 || selectedProf === NO_PROFESSOR_INDEX
       ? null
       : selectedProf <= profsTeaching.length
       ? profsTeaching[selectedProf - 1].prof.id
@@ -261,7 +415,7 @@ const CourseReviewBoxContent = ({
   const handlePost = () => {
     setReviewUpdating(true);
 
-    const reviewData = {
+    const reviewData: UpsertReviewMutationVariables = {
       user_id: userId,
       course_id: course.id,
       prof_id: profId,
@@ -284,10 +438,11 @@ const CourseReviewBoxContent = ({
           returning: [
             {
               __typename: 'review',
-              id: review ? review.id : null,
+              id: review ? review.id : 0,
               ...reviewData,
-              created_at: new Date(),
-              updated_at: new Date(),
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+              public: Boolean(selectedAnonymous !== 0),
             },
           ],
         },
@@ -320,7 +475,10 @@ const CourseReviewBoxContent = ({
     }
   };
 
-  const setReviewValue = (key: string, value: any) => {
+  const setReviewValue = (
+    key: keyof ReviewState,
+    value: ReviewState[keyof ReviewState],
+  ) => {
     setReviewStates({
       ...reviewStates,
       [course.code]: {
@@ -330,7 +488,11 @@ const CourseReviewBoxContent = ({
     });
   };
 
-  const setSliderValue = (key: string, value: any, selectedKey: string) => {
+  const setSliderValue = (
+    key: keyof ReviewState,
+    value: ReviewState[keyof ReviewState],
+    selectedKey: keyof ReviewState,
+  ) => {
     setReviewStates({
       ...reviewStates,
       [course.code]: {
@@ -349,7 +511,7 @@ const CourseReviewBoxContent = ({
           <DropdownList
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
-            options={courseList.map((courseObj) =>
+            options={courseList.map((courseObj: CourseListItem) =>
               formatCourseCode(courseObj.course.code),
             )}
             color={theme.courses}
@@ -369,11 +531,13 @@ const CourseReviewBoxContent = ({
           numNodes={5}
           currentNode={useful}
           color={theme.courses}
-          onSlideEnd={(value) =>
+          onSlideEnd={(value: readonly number[]) =>
             setSliderValue('useful', value[0], 'usefulSelected')
           }
           selected={usefulSelected}
-          setSelected={(value) => setReviewValue('usefulSelected', value)}
+          setSelected={(value: boolean) =>
+            setReviewValue('usefulSelected', value)
+          }
         />
         <SliderOptionText>
           {usefulSelected ? USEFUL_OPTIONS[useful] : ''}
@@ -386,7 +550,7 @@ const CourseReviewBoxContent = ({
           numNodes={5}
           currentNode={easy}
           color={theme.courses}
-          onSlideEnd={(value) =>
+          onSlideEnd={(value: readonly number[]) =>
             setSliderValue('easy', value[0], 'easySelected')
           }
           selected={easySelected}
@@ -425,10 +589,12 @@ const CourseReviewBoxContent = ({
           options={[
             "My Professor Isn't Here",
             ...profsTeaching
-              .sort((a: any, b: any) => a.prof.name.localeCompare(b.prof.name))
-              .map((profObj: any) => profObj.prof.name),
-            ...filterDuplicateProfs(allProfs, profsTeaching).map(
-              (prof: any) => prof.name,
+              .sort((a: ProfTeaching, b: ProfTeaching) =>
+                a.prof.name.localeCompare(b.prof.name),
+              )
+              .map((profObj: ProfTeaching) => profObj.prof.name),
+            ...filterTeachingProfs(allProfs, profsTeaching).map(
+              (prof: Prof) => prof.name,
             ),
           ]}
           color={theme.professors}
@@ -454,11 +620,13 @@ const CourseReviewBoxContent = ({
             numNodes={5}
             currentNode={clear}
             color={theme.professors}
-            onSlideEnd={(value) =>
+            onSlideEnd={(value: readonly number[]) =>
               setSliderValue('clear', value[0], 'clearSelected')
             }
             selected={clearSelected}
-            setSelected={(value) => setReviewValue('clearSelected', value)}
+            setSelected={(value: boolean) =>
+              setReviewValue('clearSelected', value)
+            }
             disabled={profId === null}
           />
           <SliderOptionText>
@@ -472,11 +640,13 @@ const CourseReviewBoxContent = ({
             numNodes={5}
             currentNode={engaging}
             color={theme.professors}
-            onSlideEnd={(value) =>
+            onSlideEnd={(value: readonly number[]) =>
               setSliderValue('engaging', value[0], 'engagingSelected')
             }
             selected={engagingSelected}
-            setSelected={(value) => setReviewValue('engagingSelected', value)}
+            setSelected={(value: boolean) =>
+              setReviewValue('engagingSelected', value)
+            }
             disabled={profId === null}
           />
           <SliderOptionText>
@@ -490,16 +660,19 @@ const CourseReviewBoxContent = ({
           rows={5}
           value={profComment}
           maxLength={8192}
-          onChange={(event) =>
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
             setReviewValue('profComment', event.target.value)
           }
           placeholder="Add any comments or tips..."
           disabled={profId === null}
         />
       </Collapsible>
-
       <Footer>
-        <DeleteIconWrapper onMouseDown={(e) => e.preventDefault()}>
+        <DeleteIconWrapper
+          onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+            e.preventDefault()
+          }
+        >
           <Trash2
             onClick={() => setDeleteReviewModalOpen(true)}
             color={theme.red}
@@ -511,7 +684,9 @@ const CourseReviewBoxContent = ({
             selectedIndex={selectedAnonymous}
             options={['anonymously', 'as yourself']}
             color={theme.primary}
-            onChange={(value) => setReviewValue('selectedAnonymous', value)}
+            onChange={(value: number) =>
+              setReviewValue('selectedAnonymous', value)
+            }
             margin="auto 16px auto auto"
             zIndex={2}
             width={140}
@@ -566,45 +741,46 @@ const CourseReviewBoxContent = ({
   );
 };
 
-type CourseReviewBoxProps = {
-  courseList: any[];
-  initialSelectedCourseIndex?: number;
-  showCourseDropdown?: boolean;
-  cancelButton?: boolean;
-  onCancel?: () => void;
-};
-
 const CourseReviewBox = ({ courseList, ...props }: CourseReviewBoxProps) => {
   const courseIds = courseList.map((course) => course.course.id);
-  const { data: profsData } = useQuery(COURSE_REVIEW_PROFS, {
-    variables: { id: courseIds },
-  });
+  const { data: profsData } = useQuery<CourseReviewProfsQuery>(
+    COURSE_REVIEW_PROFS,
+    {
+      variables: { id: courseIds },
+    },
+  );
 
   // Add new query for all professors
   const { data: allProfsData } = useQuery(ONLY_PROF_QUERY);
 
-  const profsSeenByCourseID: { [key: string]: any } = {};
+  const profsSeenByCourseID: { [key: string]: { [key: string]: boolean } } = {};
   const profsTeachingByCourseId = profsData
-    ? profsData.review.reduce((profs: any, currentProf: any) => {
-        if (
-          currentProf &&
-          currentProf.prof &&
-          (!profsSeenByCourseID[currentProf.course_id] ||
-            !profsSeenByCourseID[currentProf.course_id][currentProf.prof.code])
-        ) {
-          if (!profs[currentProf.course_id]) {
-            profs[currentProf.course_id] = [];
+    ? profsData.review.reduce<{ [key: string]: ProfTeaching[] }>(
+        (profs, currentProf) => {
+          if (
+            currentProf &&
+            currentProf.prof &&
+            currentProf.course_id &&
+            (!profsSeenByCourseID[currentProf.course_id] ||
+              !profsSeenByCourseID[currentProf.course_id]?.[
+                currentProf.prof.code
+              ])
+          ) {
+            if (!profs[currentProf.course_id]) {
+              profs[currentProf.course_id] = [];
+            }
+            profs[currentProf.course_id].push({ prof: currentProf.prof });
+            if (!profsSeenByCourseID[currentProf.course_id]) {
+              profsSeenByCourseID[currentProf.course_id] = {};
+            }
+            profsSeenByCourseID[currentProf.course_id][
+              currentProf.prof.code
+            ] = true;
           }
-          profs[currentProf.course_id].push({ prof: currentProf.prof });
-          if (!profsSeenByCourseID[currentProf.course_id]) {
-            profsSeenByCourseID[currentProf.course_id] = {};
-          }
-          profsSeenByCourseID[currentProf.course_id][
-            currentProf.prof.code
-          ] = true;
-        }
-        return profs;
-      }, {})
+          return profs;
+        },
+        {},
+      )
     : null;
 
   return (
