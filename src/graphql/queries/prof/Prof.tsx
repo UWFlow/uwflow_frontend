@@ -8,9 +8,11 @@ export const GET_PROF = gql`
       ...ProfInfo
       ...ProfCoursesTaught
       ...ProfRating
+      ...ProfReviewDistribution
     }
   }
   ${ProfFragment.profInfo}
   ${ProfFragment.profCoursesTaught}
   ${ProfFragment.profRating}
+  ${ProfFragment.profReviewDistribution}
 `;

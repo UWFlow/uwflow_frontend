@@ -33,7 +33,7 @@ const DeleteAccountModalContent = ({
   const handleDelete = async () => {
     setDeleting(true);
     try {
-      const [response, status] = await makeAuthenticatedDELETERequest(
+      const [, status] = await makeAuthenticatedDELETERequest(
         `${BACKEND_ENDPOINT}${USER_ACCOUNT_ENDPOINT}`,
         {},
       );

@@ -8,6 +8,7 @@ import {
   ProfCoursesTaughtFragment,
   ProfInfoFragment,
   ProfRatingFragment,
+  ProfReviewDistributionFragment,
 } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -16,6 +17,7 @@ import { GET_PROF } from 'graphql/queries/prof/Prof';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import ProfInfoHeader from 'pages/profPage/ProfInfoHeader';
 import ProfReviews from 'pages/profPage/ProfReviews';
+import { createOrderedBuckets, Distribution } from 'utils/Ratings';
 
 import {
   Column1,
@@ -25,13 +27,42 @@ import {
 } from './styles/ProfPage';
 
 type ProfPageContentProps = {
-  prof: ProfInfoFragment & ProfCoursesTaughtFragment & ProfRatingFragment;
+  prof: ProfInfoFragment &
+    ProfCoursesTaughtFragment &
+    ProfRatingFragment &
+    ProfReviewDistributionFragment;
 };
 
 const ProfPageContent = ({ prof }: ProfPageContentProps) => {
+  const clearDistribution: Distribution = {
+    hasDistribution: prof.prof_clear_buckets.length > 0,
+    displayName: 'Clear',
+    buckets: createOrderedBuckets(prof.prof_clear_buckets),
+    total: prof.prof_clear_buckets.reduce(
+      (acc, bucket) => acc + bucket.count,
+      0,
+    ),
+  };
+
+  const engagingDistribution: Distribution = {
+    hasDistribution: prof.prof_engaging_buckets.length > 0,
+    displayName: 'Engaging',
+    buckets: createOrderedBuckets(prof.prof_engaging_buckets),
+    total: prof.prof_engaging_buckets.reduce(
+      (acc, bucket) => acc + bucket.count,
+      0,
+    ),
+  };
+
   return (
     <>
-      <ProfInfoHeader prof={prof} />
+      <ProfInfoHeader
+        prof={prof}
+        distributions={{
+          clear: clearDistribution,
+          engaging: engagingDistribution,
+        }}
+      />
       <ColumnWrapper>
         <Column1>
           <ProfReviews profId={prof.id} />

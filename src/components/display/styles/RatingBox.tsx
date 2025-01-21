@@ -116,3 +116,26 @@ export const NumRatingsWrapper = styled.div`
     margin-left: 24px;
   `}
 `;
+
+export const ProgressLabel = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export const DistributionIcon = styled.div<{
+  borderColor: string;
+  color: string;
+}>`
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-style: solid;
+  margin-left: 8px;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: ${({ borderColor }) => borderColor};
+  color: ${({ borderColor }) => borderColor};
+
+  background-color: ${({ color }) => color};
+`;

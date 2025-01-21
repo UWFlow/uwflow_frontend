@@ -1,5 +1,7 @@
 import React from 'react';
+import { BarChart2 } from 'react-feather';
 import { useSelector } from 'react-redux';
+import { useTheme } from 'styled-components';
 
 import ProgressBar from 'components/display/ProgressBar';
 import CircularPercentage from 'components/statistics/CircularPercentage';
@@ -9,10 +11,12 @@ import { processRating } from 'utils/Misc';
 
 import {
   CircularPercentageWrapper,
+  DistributionIcon,
   NumCommentsAndRatingsWrapper,
   NumCommentsWrapper,
   NumRatingsWrapper,
   ProgressBarWrapper,
+  ProgressLabel,
   ProgressNumberLabel,
   ProgressTextLabel,
   ProgressWrapper,
@@ -20,9 +24,20 @@ import {
   RatingBoxWrapper,
   ReviewsAndGraphButtonWrapper,
 } from './styles/RatingBox';
+import Popover from './Popover';
+import RatingDistributionGraph from './RatingDistributionGraph';
 
 export const RATING_BOX_HEIGHT = 244;
 export const RATING_BOX_WIDTH = 512;
+
+type Distribution = {
+  displayName: string;
+  buckets: Array<{
+    value: number;
+    count: number;
+  }>;
+  total: number;
+};
 
 /*
   Data for "liked" must be the first element in percentages
@@ -31,6 +46,8 @@ type RatingBoxProps = {
   percentages: {
     displayName: string;
     percent: number;
+    hasDistribution?: boolean;
+    distribution?: Distribution;
   }[];
   numRatings: number;
   numComments: number;
@@ -41,6 +58,7 @@ const RatingBox = ({
   numRatings,
   numComments,
 }: RatingBoxProps) => {
+  const theme = useTheme();
   const width = useSelector((state: RootState) => state.browser.width);
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
@@ -77,7 +95,26 @@ const RatingBox = ({
         {percentages.map((metric, ind) =>
           ind === 0 ? null : (
             <ProgressWrapper key={metric.displayName}>
-              <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
+              <ProgressLabel>
+                <ProgressTextLabel>{metric.displayName}</ProgressTextLabel>
+                {metric.hasDistribution && metric.distribution && (
+                  <Popover
+                    content={
+                      <RatingDistributionGraph
+                        distribution={metric.distribution}
+                      />
+                    }
+                  >
+                    <DistributionIcon
+                      color={theme.light1}
+                      borderColor={theme.dark3}
+                      className="primaryicon"
+                    >
+                      <BarChart2 strokeWidth={3} size={15} />
+                    </DistributionIcon>
+                  </Popover>
+                )}
+              </ProgressLabel>
               <ProgressBarWrapper>
                 <ProgressBar percentComplete={metric.percent} />
                 <ProgressNumberLabel>

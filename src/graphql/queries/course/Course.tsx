@@ -11,12 +11,14 @@ export const GET_COURSE = gql`
       ...CourseSchedule
       ...CourseRequirements
       ...CourseRating
+      ...CourseReviewDistribution
     }
   }
   ${CourseFragment.courseInfo}
   ${CourseFragment.courseSchedule}
   ${CourseFragment.courseRequirements}
   ${CourseFragment.courseRating}
+  ${CourseFragment.courseReviewDistribution}
 `;
 
 export const GET_COURSE_WITH_USER_DATA = gql`
@@ -26,6 +28,7 @@ export const GET_COURSE_WITH_USER_DATA = gql`
       ...CourseSchedule
       ...CourseRequirements
       ...CourseRating
+      ...CourseReviewDistribution
     }
     user_shortlist(
       where: { user_id: { _eq: $user_id }, course: { code: { _eq: $code } } }
@@ -64,6 +67,7 @@ export const GET_COURSE_WITH_USER_DATA = gql`
   ${CourseFragment.courseSchedule}
   ${CourseFragment.courseRequirements}
   ${CourseFragment.courseRating}
+  ${CourseFragment.courseReviewDistribution}
   ${ReviewFragment.reviewInfo}
 `;
 

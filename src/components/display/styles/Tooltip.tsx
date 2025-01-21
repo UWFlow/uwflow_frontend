@@ -1,4 +1,4 @@
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { Body } from 'constants/Mixins';
