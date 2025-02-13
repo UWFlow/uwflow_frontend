@@ -3,6 +3,7 @@ import {
   ProfCoursesTaughtFragment,
   ProfInfoFragment,
   ProfRatingFragment,
+  ProfReviewDistributionFragment,
 } from 'generated/graphql';
 import { getCoursePageRoute } from 'Routes';
 
@@ -11,6 +12,7 @@ import RatingBox, {
   RATING_BOX_WIDTH,
 } from 'components/display/RatingBox';
 import { formatCourseCode } from 'utils/Misc';
+import { Distribution } from 'utils/Ratings';
 
 import {
   CourseLink,
@@ -24,10 +26,17 @@ import {
 } from './styles/ProfInfoHeader';
 
 type ProfInfoHeaderProps = {
-  prof: ProfInfoFragment & ProfCoursesTaughtFragment & ProfRatingFragment;
+  prof: ProfInfoFragment &
+    ProfCoursesTaughtFragment &
+    ProfRatingFragment &
+    ProfReviewDistributionFragment;
+  distributions: {
+    clear: Distribution;
+    engaging: Distribution;
+  };
 };
 
-const ProfInfoHeader = ({ prof }: ProfInfoHeaderProps) => {
+const ProfInfoHeader = ({ prof, distributions }: ProfInfoHeaderProps) => {
   const { liked, clear, engaging, filled_count, comment_count } = prof.rating!;
 
   const profCourses = prof.prof_courses.map(
@@ -62,10 +71,14 @@ const ProfInfoHeader = ({ prof }: ProfInfoHeaderProps) => {
               {
                 displayName: 'Clear',
                 percent: clear,
+                distribution: distributions.clear,
+                hasDistribution: distributions.clear.hasDistribution,
               },
               {
                 displayName: 'Engaging',
                 percent: engaging,
+                distribution: distributions.engaging,
+                hasDistribution: distributions.engaging.hasDistribution,
               },
             ]}
           />

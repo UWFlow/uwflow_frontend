@@ -7,6 +7,7 @@ import {
   CourseInfoFragment,
   CourseRatingFragment,
   CourseRequirementsFragment,
+  CourseReviewDistributionFragment,
   CourseScheduleFragment,
   GetCourseQuery,
   GetCourseQueryVariables,
@@ -28,6 +29,7 @@ import useModal from 'hooks/useModal';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
+import { createOrderedBuckets, Distribution } from 'utils/Ratings';
 
 import {
   Column1,
@@ -47,7 +49,8 @@ import CourseSchedule from './CourseSchedule';
 type Course = CourseInfoFragment &
   CourseScheduleFragment &
   CourseRequirementsFragment &
-  CourseRatingFragment;
+  CourseRatingFragment &
+  CourseReviewDistributionFragment;
 
 type CoursePageContentProps = {
   course: Course;
@@ -70,6 +73,26 @@ const CoursePageContent = ({
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
 
+  const usefulDistribution: Distribution = {
+    hasDistribution: course.course_useful_buckets.length > 0,
+    displayName: 'Useful',
+    buckets: createOrderedBuckets(course.course_useful_buckets),
+    total: course.course_useful_buckets.reduce(
+      (acc, bucket) => acc + bucket.count,
+      0,
+    ),
+  };
+
+  const easyDistribution: Distribution = {
+    hasDistribution: course.course_easy_buckets.length > 0,
+    displayName: 'Easy',
+    buckets: createOrderedBuckets(course.course_easy_buckets),
+    total: course.course_easy_buckets.reduce(
+      (acc, bucket) => acc + bucket.count,
+      0,
+    ),
+  };
+
   const handleReviewClick = () =>
     isLoggedIn
       ? openModal(COURSE_REVIEW_COURSE_MODAL, {
@@ -90,7 +113,14 @@ const CoursePageContent = ({
 
   return (
     <>
-      <CourseInfoHeader course={course} shortlisted={shortlisted} />
+      <CourseInfoHeader
+        course={course}
+        shortlisted={shortlisted}
+        distributions={{
+          useful: usefulDistribution,
+          easy: easyDistribution,
+        }}
+      />
       <ColumnWrapper>
         {isBrowserDesktop && Schedule}
         <Column1>

@@ -95,6 +95,19 @@ const CourseFragment = {
       }
     }
   `,
+  courseReviewDistribution: gql`
+    fragment CourseReviewDistribution on course {
+      id
+      course_useful_buckets {
+        value
+        count
+      }
+      course_easy_buckets {
+        value
+        count
+      }
+    }
+  `,
 };
 
 export default CourseFragment;
