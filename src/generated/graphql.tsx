@@ -12327,6 +12327,14 @@ export type GetProfQuery = { __typename?: 'query_root' } & {
   >;
 };
 
+export type OnlyProfQueryVariables = Exact<{
+  code?: Maybe<Scalars['String']>;
+}>;
+
+export type OnlyProfQuery = { __typename?: 'query_root' } & {
+  prof: Array<{ __typename?: 'prof' } & ProfInfoFragment>;
+};
+
 export type ProfReviewsQueryVariables = Exact<{
   id?: Maybe<Scalars['Int']>;
 }>;
@@ -14299,6 +14307,61 @@ export type GetProfLazyQueryHookResult = ReturnType<typeof useGetProfLazyQuery>;
 export type GetProfQueryResult = ApolloReactCommon.QueryResult<
   GetProfQuery,
   GetProfQueryVariables
+>;
+export const OnlyProfDocument = gql`
+  query onlyProf($code: String) {
+    prof(where: { code: { _eq: $code } }) {
+      ...ProfInfo
+    }
+  }
+  ${ProfInfoFragmentDoc}
+`;
+
+/**
+ * __useOnlyProfQuery__
+ *
+ * To run a query within a React component, call `useOnlyProfQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnlyProfQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnlyProfQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useOnlyProfQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    OnlyProfQuery,
+    OnlyProfQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<OnlyProfQuery, OnlyProfQueryVariables>(
+    OnlyProfDocument,
+    baseOptions,
+  );
+}
+export function useOnlyProfLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    OnlyProfQuery,
+    OnlyProfQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<OnlyProfQuery, OnlyProfQueryVariables>(
+    OnlyProfDocument,
+    baseOptions,
+  );
+}
+export type OnlyProfQueryHookResult = ReturnType<typeof useOnlyProfQuery>;
+export type OnlyProfLazyQueryHookResult = ReturnType<
+  typeof useOnlyProfLazyQuery
+>;
+export type OnlyProfQueryResult = ApolloReactCommon.QueryResult<
+  OnlyProfQuery,
+  OnlyProfQueryVariables
 >;
 export const ProfReviewsDocument = gql`
   query profReviews($id: Int) {

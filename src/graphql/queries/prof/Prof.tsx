@@ -16,3 +16,12 @@ export const GET_PROF = gql`
   ${ProfFragment.profRating}
   ${ProfFragment.profReviewDistribution}
 `;
+
+export const ONLY_PROF_QUERY = gql`
+  query getAllProfs {
+    prof(order_by: { name: asc }) {
+      ...ProfInfo
+    }
+  }
+  ${ProfFragment.profInfo}
+`;
