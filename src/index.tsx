@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import App from 'App';
-import { createBrowserHistory } from 'history';
+import { history } from 'browserhistory';
 import { configureStore } from 'Store';
 import { ThemeProvider } from 'styled-components';
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -15,9 +15,10 @@ import Theme from 'constants/GlobalTheme';
 import client from 'graphql/apollo.js';
 import SearchProvider from 'search/SearchProvider';
 
+import './sentry';
+
 const StartApp = () => {
   const store = configureStore();
-  const history = createBrowserHistory();
 
   ReactDOM.render(
     <ApolloProvider client={client}>
