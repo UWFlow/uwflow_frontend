@@ -3,7 +3,7 @@ import ReactGA from 'react-ga';
 import { Helmet } from 'react-helmet';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { Redirect, Switch, useLocation } from 'react-router-dom';
 import { Bounce, ToastContainer } from 'react-toastify';
 import {
   LoadableAboutPage,
@@ -42,6 +42,8 @@ import LandingPageBg from 'img/landing.svg';
 import { AuthRefreshResponse } from 'types/Api';
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { getUserId } from 'utils/Auth';
+
+import { SentryRoute } from './sentry';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -96,8 +98,12 @@ const App = () => {
         transition={Bounce}
       />
       <Switch>
-        <Route exact path={LANDING_PAGE_ROUTE} component={() => <div />} />
-        <Route path="*" component={() => <Navbar />} />
+        <SentryRoute
+          exact
+          path={LANDING_PAGE_ROUTE}
+          component={() => <div />}
+        />
+        <SentryRoute path="*" component={() => <Navbar />} />
       </Switch>
       <Helmet>
         <title>UW Flow</title>
@@ -115,47 +121,47 @@ const App = () => {
         />
       </Helmet>
       <Switch>
-        <Route
+        <SentryRoute
           exact
           path={LANDING_PAGE_ROUTE}
           component={() => <LoadableLandingPage />}
         />
-        <Route
+        <SentryRoute
           exact
           path={PROFILE_PAGE_ROUTE}
           component={() => <LoadableProfilePage />}
         />
-        <Route
+        <SentryRoute
           exact
           path={COURSE_PAGE_ROUTE}
           component={() => <LoadableCoursePage />}
         />
         <Redirect from={SHORT_PROF_PAGE_ROUTE} to={PROF_PAGE_ROUTE} />
-        <Route
+        <SentryRoute
           exact
           path={PROF_PAGE_ROUTE}
           component={() => <LoadableProfPage />}
         />
-        <Route
+        <SentryRoute
           path={EXPLORE_PAGE_ROUTE}
           component={() => <LoadableExplorePage />}
         />
-        <Route
+        <SentryRoute
           exact
           path={ABOUT_PAGE_ROUTE}
           component={() => <LoadableAboutPage />}
         />
-        <Route
+        <SentryRoute
           exact
           path={PRIVACY_PAGE_ROUTE}
           component={() => <LoadablePrivacyPage />}
         />
-        <Route
+        <SentryRoute
           exact
           path={WELCOME_PAGE_ROUTE}
           component={() => <LoadableWelcomePage />}
         />
-        <Route path="*" component={() => <LoadableNotFoundPage />} />
+        <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
       <Footer />
       <ModalMount />
