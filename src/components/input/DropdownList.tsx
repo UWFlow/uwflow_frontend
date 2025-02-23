@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import FadeIn from 'react-fade-in';
 import { ChevronDown, Search } from 'react-feather';
+import { FixedSizeList as List } from 'react-window';
+import fuzzysort from 'fuzzysort';
 import { useTheme } from 'styled-components';
 import useOnClickOutside from 'use-onclickoutside';
 
@@ -28,7 +29,7 @@ type DropdownListProps = {
   onChange?: (index: number) => void;
   placeholder?: string;
   searchable?: boolean;
-  width?: string;
+  width?: number;
   zIndex?: number;
 };
 
@@ -39,7 +40,7 @@ const DropdownList = ({
   onChange = () => {},
   placeholder = 'select an option',
   zIndex = 4,
-  width = 'fit-content',
+  width = 150,
   margin = 'auto',
   itemColor = undefined,
   menuOffset = 8,
@@ -50,7 +51,9 @@ const DropdownList = ({
   const ref = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
-
+  const [filteredOptions, setFilteredOptions] = useState<
+    Array<{ value: string; index: number }>
+  >(options.map((opt, idx) => ({ value: opt, index: idx })));
   useOnClickOutside(ref, () => setOpen(false));
 
   const handleUserKeyPress = useCallback((event) => {
@@ -60,12 +63,62 @@ const DropdownList = ({
     }
   }, []);
 
+  const filterAndSetOptions = (
+    searchValue: string,
+    optionsList: string[],
+    setFilteredOptionsFn: React.Dispatch<
+      React.SetStateAction<Array<{ value: string; index: number }>>
+    >,
+  ) => {
+    if (!searchValue) {
+      setFilteredOptionsFn(
+        optionsList.map((opt, idx) => ({ value: opt, index: idx })),
+      );
+      return;
+    }
+
+    const results = fuzzysort.go(searchValue, optionsList, {
+      threshold: -10000,
+      allowTypo: true,
+    });
+
+    setFilteredOptionsFn(
+      results.map((result) => ({
+        value: result.target,
+        index: optionsList.indexOf(result.target),
+      })),
+    );
+  };
+
+  useEffect(() => {
+    filterAndSetOptions(searchText, options, setFilteredOptions);
+  }, [searchText, options]);
+
   useEffect(() => {
     window.addEventListener('keydown', handleUserKeyPress);
     return () => {
       window.removeEventListener('keydown', handleUserKeyPress);
     };
   }, [handleUserKeyPress]);
+
+  const Row = useCallback(
+    ({ index, style }) => (
+      <MenuItem
+        key={filteredOptions[index].index}
+        selected={filteredOptions[index].index === selectedIndex}
+        itemColor={itemColor}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => {
+          onChange(filteredOptions[index].index);
+          setOpen(false);
+        }}
+        style={style}
+      >
+        {filteredOptions[index].value}
+      </MenuItem>
+    ),
+    [filteredOptions, selectedIndex, itemColor, onChange],
+  );
 
   const DropdownMenuContent = () => (
     <>
@@ -85,37 +138,27 @@ const DropdownList = ({
           />
         </MenuSearch>
       )}
-      {options
-        .map((opt, idx) => Object({ value: opt, index: idx }))
-        .filter((opt: { value: string; index: number }) => {
-          const lowercaseOpt = opt.value.toLowerCase();
-          const lowercaseSearchText = searchText.toLowerCase();
-          return (
-            lowercaseOpt
-              .split(' ')
-              .some((val: string) => val.startsWith(lowercaseSearchText)) ||
-            lowercaseOpt.startsWith(lowercaseSearchText)
-          );
-        })
-        .map((opt) => (
-          <MenuItem
-            key={opt.index}
-            selected={opt.index === selectedIndex}
-            itemColor={itemColor}
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => {
-              onChange(opt.index);
-              setOpen(false);
-            }}
-          >
-            {opt.value}
-          </MenuItem>
-        ))}{' '}
+      <List
+        height={Math.min(
+          filteredOptions.length * ITEM_HEIGHT,
+          maxItems * ITEM_HEIGHT,
+        )}
+        itemCount={filteredOptions.length}
+        itemSize={ITEM_HEIGHT}
+        width={width}
+      >
+        {Row}
+      </List>
     </>
   );
 
   return (
-    <DropdownWrapper zIndex={zIndex} ref={ref} width={width} margin={margin}>
+    <DropdownWrapper
+      zIndex={zIndex}
+      ref={ref}
+      width={width.toString()}
+      margin={margin}
+    >
       <DropdownControl
         open={open}
         color={color}
@@ -127,17 +170,7 @@ const DropdownList = ({
       </DropdownControl>
       <FadeIn>
         <DropdownMenu open={open} menuOffset={menuOffset}>
-          {options.length > maxItems ? (
-            <Scrollbars
-              autoHeight
-              autoHeightMin="100%"
-              autoHeightMax={maxItems * ITEM_HEIGHT}
-            >
-              {DropdownMenuContent()}
-            </Scrollbars>
-          ) : (
-            DropdownMenuContent()
-          )}
+          {DropdownMenuContent()}
         </DropdownMenu>
       </FadeIn>
     </DropdownWrapper>
