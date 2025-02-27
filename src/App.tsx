@@ -161,18 +161,6 @@ const App = () => {
           path={WELCOME_PAGE_ROUTE}
           component={() => <LoadableWelcomePage />}
         />
-        <SentryRoute
-          path="/bug"
-          component={() => (
-            <button
-              onClick={() => {
-                throw new Error('This is your first error!');
-              }}
-            >
-              Break the world
-            </button>
-          )}
-        />
         <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
       <Footer />
