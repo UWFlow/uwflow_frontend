@@ -5,7 +5,7 @@ import { history } from './browserhistory';
 
 Sentry.init({
   dsn:
-    'https://1185dfd648e675f96285c2fecd697d6c@o4508810215686144.ingest.us.sentry.io/4508810216800256',
+    'https://4fc1290ffbf3e98712374e16e8cea4ac@o4504154328465408.ingest.us.sentry.io/4508889530236928',
   integrations: [
     Sentry.reactRouterV5BrowserTracingIntegration({ history }),
     Sentry.replayIntegration(),
