@@ -10,6 +10,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Setup Sentry environment variables
+          command: |
+            echo 'export SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}' >> $BASH_ENV
+            echo 'export SENTRY_PROJECT=${SENTRY_PROJECT}' >> $BASH_ENV
+            echo 'export SENTRY_ORG=${SENTRY_ORG}' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
           name: Build Docker image
           command: docker build -t $IMAGE_NAME:latest .
       - run:
