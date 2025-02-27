@@ -60,7 +60,7 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build && yarn sentry:sourcemaps",
+    "build": "echo $SENTRY_AUTH_TOKEN && react-scripts build && yarn sentry:sourcemaps",
     "test": "CI=true react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject",
     "lint": "yarn run eslint . --ext .ts,.tsx,.js,.jsx --fix -c .eslintrc.js --quiet",
