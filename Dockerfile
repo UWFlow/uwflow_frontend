@@ -1,17 +1,15 @@
+# syntax=docker/dockerfile:1.4
 FROM node:16-alpine AS builder
-
-ARG SENTRY_AUTH_TOKEN
-ARG SENTRY_ORG
-ARG SENTRY_PROJECT
-ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
-ENV SENTRY_ORG=$SENTRY_ORG
-ENV SENTRY_PROJECT=$SENTRY_PROJECT
-
 WORKDIR /work
 COPY . .
 RUN yarn install
 RUN yarn lint-nofix
-RUN yarn build
+
+# Use secrets during build time only
+RUN --mount=type=secret,id=sentry_auth_token \
+    export SENTRY_AUTH_TOKEN="$(cat /run/secrets/sentry_auth_token)" && \
+    yarn build
 
 FROM nginx:alpine
+
 COPY --from=builder /work/build /build
