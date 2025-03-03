@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-          docker build \
+            docker build \
             --secret id=sentry_auth_token,env=SENTRY_AUTH_TOKEN \
             -t $IMAGE_NAME:latest .
       - run:
