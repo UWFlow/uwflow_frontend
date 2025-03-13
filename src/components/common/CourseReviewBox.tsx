@@ -405,7 +405,6 @@ const CourseReviewBoxContent = ({
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
   const profOptions: ProfOption[] = [
-    { label: "My Professor Isn't Here", id: null },
     ...profsTeaching
       .sort((a: ProfTeaching, b: ProfTeaching) =>
         a.prof.name.localeCompare(b.prof.name),
@@ -414,6 +413,7 @@ const CourseReviewBoxContent = ({
         label: profObj.prof.name,
         id: profObj.prof.id,
       })),
+    { label: "My Professor Isn't Here", id: null },
     ...filterTeachingProfs(allProfs, profsTeaching).map((prof: Prof) => ({
       label: prof.name,
       id: prof.id,
