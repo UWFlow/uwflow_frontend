@@ -6,7 +6,9 @@ import AuthModalContent, {
 import ResetPasswordModalContent, {
   ResetPasswordModalContentProps,
 } from 'components/auth/ResetPasswordModalContent';
-import CourseReviewBox from 'components/common/CourseReviewBox';
+import CourseReviewBox, {
+  CourseReviewBoxProps,
+} from 'components/common/CourseReviewBox';
 import DeleteAccountModalContent, {
   DeleteAccountModalContentProps,
 } from 'components/delete/DeleteAccountModalContent';
@@ -47,7 +49,9 @@ const TranscriptUploadModal = (props: TranscriptUploadModalContentProps) => (
   <TranscriptUploadModalContent {...props} />
 );
 
-const CourseReviewCourseModal = (props: any) => <CourseReviewBox {...props} />;
+const CourseReviewCourseModal = (props: CourseReviewBoxProps) => (
+  <CourseReviewBox {...props} />
+);
 
 const NotificationEmailModal = (props: NotificationEmailModalContentProps) => (
   <NotificationEmailModalContent {...props} />

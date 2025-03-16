@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 
+import ProfFragment from 'graphql/fragments/ProfFragment';
 import ReviewFragment from 'graphql/fragments/ReviewFragment';
 
 export const COURSE_REVIEWS = gql`
@@ -52,16 +53,21 @@ export const REFETCH_COURSE_REVIEW_UPVOTE = gql`
 `;
 
 export const COURSE_REVIEW_PROFS = gql`
-  query courseReviewProfs($id: [Int!]) {
-    review(
+  query courseReviewProfs($courseIds: [Int!]) {
+    allProfs: prof(order_by: { name: asc }) {
+      ...ProfInfo
+    }
+    reviewProfs: review(
       where: {
-        course_id: { _in: $id }
+        course_id: { _in: $courseIds }
         prof_id: { _is_null: false }
         prof_comment: { _is_null: false }
       }
+      distinct_on: [course_id, prof_id]
     ) {
       ...ReviewProfs
     }
   }
+  ${ProfFragment.profInfo}
   ${ReviewFragment.reviewProfs}
 `;
