@@ -1,9 +1,14 @@
 import React from 'react';
-import { CourseInfoFragment, CourseRatingFragment } from 'generated/graphql';
+import {
+  CourseInfoFragment,
+  CourseRatingFragment,
+  CourseReviewDistributionFragment,
+} from 'generated/graphql';
 
 import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
 import { formatCourseCode } from 'utils/Misc';
+import { Distribution } from 'utils/Ratings';
 
 import {
   CourseCode,
@@ -19,11 +24,21 @@ import {
 } from './styles/CourseInfoHeader';
 
 type CourseInfoHeaderProps = {
-  course: CourseInfoFragment & CourseRatingFragment;
+  course: CourseInfoFragment &
+    CourseRatingFragment &
+    CourseReviewDistributionFragment;
+  distributions: {
+    useful: Distribution;
+    easy: Distribution;
+  };
   shortlisted: boolean;
 };
 
-const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
+const CourseInfoHeader = ({
+  course,
+  shortlisted,
+  distributions,
+}: CourseInfoHeaderProps) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating!;
 
   return (
@@ -61,10 +76,14 @@ const CourseInfoHeader = ({ course, shortlisted }: CourseInfoHeaderProps) => {
               {
                 displayName: 'Easy',
                 percent: easy,
+                distribution: distributions.easy,
+                hasDistribution: distributions.easy.hasDistribution,
               },
               {
                 displayName: 'Useful',
                 percent: useful,
+                distribution: distributions.useful,
+                hasDistribution: distributions.useful.hasDistribution,
               },
             ]}
           />

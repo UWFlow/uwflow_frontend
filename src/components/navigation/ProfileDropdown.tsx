@@ -80,6 +80,7 @@ const ProfileDropdown = () => {
           </Query>
           <DropdownList
             selectedIndex={-1}
+            width={130}
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
             options={['View profile', 'Log out']}

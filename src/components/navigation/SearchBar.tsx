@@ -2,7 +2,6 @@ import React, {
   KeyboardEvent,
   ReactNode,
   RefObject,
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -88,7 +87,7 @@ const SearchBar = ({
   const { searchWorker } = useSearchContext();
 
   // Handle search result data from search worker message
-  const performSearch = (event: MessageEvent) => {
+  const performSearch = (event: MessageEvent): void => {
     const { type } = event.data;
     if (type === 'autocomplete') {
       const { results } = event.data;
@@ -101,9 +100,16 @@ const SearchBar = ({
     }
   };
 
-  // Arrow key functionality for search result dropdown
-  const handleUserKeyPress = useCallback(
-    (event) => {
+  useEffect(() => {
+    searchWorker.addEventListener('message', performSearch);
+    return () => {
+      searchWorker.removeEventListener('message', performSearch);
+    };
+  }, [searchText, searchWorker]);
+
+  useEffect(() => {
+    // Arrow key functionality for search result dropdown
+    const handleUserKeyPress = (event: globalThis.KeyboardEvent): void => {
       const { keyCode } = event;
       if (keyCode === KeycodeConstants.ESCAPE) {
         setOpen(false);
@@ -118,21 +124,13 @@ const SearchBar = ({
           searchResults.profResults.length;
         setSelectedResultIndex(Math.min(length - 1, selectedResultIndex + 1));
       }
-    },
-    [selectedResultIndex, searchResults],
-  );
-
-  useEffect(() => {
-    searchWorker.addEventListener('message', (event) => performSearch(event));
+    };
     window.addEventListener('keydown', handleUserKeyPress);
 
     return () => {
-      searchWorker.removeEventListener('message', (event) =>
-        performSearch(event),
-      );
       window.removeEventListener('keydown', handleUserKeyPress);
     };
-  }, [handleUserKeyPress, searchWorker]);
+  }, [selectedResultIndex, searchResults, searchWorker]);
 
   useEffect(() => {
     if (selectedResultIndex === -1 && inputRef.current) {
