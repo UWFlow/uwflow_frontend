@@ -131,6 +131,7 @@ a {
   display: inline-flex;
   align-items: center;
   outline: none;
+  overflow-y: scroll;
 }
 
 .ReactModal__Html--open {

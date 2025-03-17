@@ -12282,11 +12282,12 @@ export type RefetchCourseReviewUpvoteQuery = { __typename?: 'query_root' } & {
 };
 
 export type CourseReviewProfsQueryVariables = Exact<{
-  id?: Maybe<Array<Scalars['Int']>>;
+  courseIds?: Maybe<Array<Scalars['Int']>>;
 }>;
 
 export type CourseReviewProfsQuery = { __typename?: 'query_root' } & {
-  review: Array<{ __typename?: 'review' } & ReviewProfsFragment>;
+  allProfs: Array<{ __typename?: 'prof' } & ProfInfoFragment>;
+  reviewProfs: Array<{ __typename?: 'review' } & ReviewProfsFragment>;
 };
 
 export type ExploreAllQueryVariables = Exact<{ [key: string]: never }>;
@@ -12325,14 +12326,6 @@ export type GetProfQuery = { __typename?: 'query_root' } & {
       ProfRatingFragment &
       ProfReviewDistributionFragment
   >;
-};
-
-export type OnlyProfQueryVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
-}>;
-
-export type OnlyProfQuery = { __typename?: 'query_root' } & {
-  prof: Array<{ __typename?: 'prof' } & ProfInfoFragment>;
 };
 
 export type ProfReviewsQueryVariables = Exact<{
@@ -14071,17 +14064,22 @@ export type RefetchCourseReviewUpvoteQueryResult = ApolloReactCommon.QueryResult
   RefetchCourseReviewUpvoteQueryVariables
 >;
 export const CourseReviewProfsDocument = gql`
-  query courseReviewProfs($id: [Int!]) {
-    review(
+  query courseReviewProfs($courseIds: [Int!]) {
+    allProfs: prof(order_by: { name: asc }) {
+      ...ProfInfo
+    }
+    reviewProfs: review(
       where: {
-        course_id: { _in: $id }
+        course_id: { _in: $courseIds }
         prof_id: { _is_null: false }
         prof_comment: { _is_null: false }
       }
+      distinct_on: [course_id, prof_id]
     ) {
       ...ReviewProfs
     }
   }
+  ${ProfInfoFragmentDoc}
   ${ReviewProfsFragmentDoc}
 `;
 
@@ -14097,7 +14095,7 @@ export const CourseReviewProfsDocument = gql`
  * @example
  * const { data, loading, error } = useCourseReviewProfsQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      courseIds: // value for 'courseIds'
  *   },
  * });
  */
@@ -14307,61 +14305,6 @@ export type GetProfLazyQueryHookResult = ReturnType<typeof useGetProfLazyQuery>;
 export type GetProfQueryResult = ApolloReactCommon.QueryResult<
   GetProfQuery,
   GetProfQueryVariables
->;
-export const OnlyProfDocument = gql`
-  query onlyProf($code: String) {
-    prof(where: { code: { _eq: $code } }) {
-      ...ProfInfo
-    }
-  }
-  ${ProfInfoFragmentDoc}
-`;
-
-/**
- * __useOnlyProfQuery__
- *
- * To run a query within a React component, call `useOnlyProfQuery` and pass it any options that fit your needs.
- * When your component renders, `useOnlyProfQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOnlyProfQuery({
- *   variables: {
- *      code: // value for 'code'
- *   },
- * });
- */
-export function useOnlyProfQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    OnlyProfQuery,
-    OnlyProfQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<OnlyProfQuery, OnlyProfQueryVariables>(
-    OnlyProfDocument,
-    baseOptions,
-  );
-}
-export function useOnlyProfLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    OnlyProfQuery,
-    OnlyProfQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<OnlyProfQuery, OnlyProfQueryVariables>(
-    OnlyProfDocument,
-    baseOptions,
-  );
-}
-export type OnlyProfQueryHookResult = ReturnType<typeof useOnlyProfQuery>;
-export type OnlyProfLazyQueryHookResult = ReturnType<
-  typeof useOnlyProfLazyQuery
->;
-export type OnlyProfQueryResult = ApolloReactCommon.QueryResult<
-  OnlyProfQuery,
-  OnlyProfQueryVariables
 >;
 export const ProfReviewsDocument = gql`
   query profReviews($id: Int) {
