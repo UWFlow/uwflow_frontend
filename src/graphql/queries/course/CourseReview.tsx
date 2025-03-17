@@ -63,6 +63,7 @@ export const COURSE_REVIEW_PROFS = gql`
         prof_id: { _is_null: false }
         prof_comment: { _is_null: false }
       }
+      order_by: [{ course_id: asc }, { prof_id: asc }, { id: desc }]
       distinct_on: [course_id, prof_id]
     ) {
       ...ReviewProfs

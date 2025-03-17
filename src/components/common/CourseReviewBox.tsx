@@ -132,10 +132,9 @@ const CourseReviewBoxContent = ({
       easy: (userReview && userReview.course_easy) || 0,
       easySelected: userReview ? userReview.course_easy !== null : false,
       courseComment: (userReview && userReview.course_comment) || '',
-      selectedProf:
-        combinedProfs?.findIndex(
-          (prof) => prof && prof.id === userReview?.prof_id,
-        ) || -1,
+      selectedProf: combinedProfs?.findIndex(
+        (prof) => prof && prof.id === userReview?.prof_id,
+      ),
       clear: (userReview && userReview.prof_clear) || 0,
       clearSelected: userReview ? userReview.prof_clear !== null : false,
       engaging: (userReview && userReview.prof_engaging) || 0,
