@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/react';
 
 import { history } from './browserhistory';
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'production') {
   Sentry.init({
     dsn:
       'https://4fc1290ffbf3e98712374e16e8cea4ac@o4504154328465408.ingest.us.sentry.io/4508889530236928',
