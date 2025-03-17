@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ import {
   UserScheduleFragment,
   UserShortlistFragment,
 } from 'generated/graphql';
-import { LANDING_PAGE_ROUTE, LocationState } from 'Routes';
+import { LANDING_PAGE_ROUTE } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
@@ -104,15 +104,6 @@ export const ProfilePage = () => {
   >(GET_USER, {
     variables: { id: Number(localStorage.getItem('user_id')) },
   });
-
-  const fromWelcomePage =
-    (history.location.state as LocationState)?.fromWelcome || false;
-
-  useEffect(() => {
-    if (fromWelcomePage) {
-      refetch();
-    }
-  }, [fromWelcomePage, refetch]);
 
   if (data && data.user.length === 0) {
     logOut(dispatch);
