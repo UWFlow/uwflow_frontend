@@ -4,6 +4,7 @@ import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
 import {
+  Course,
   CourseReviewProfsQuery,
   CourseReviewsWithUserDataQueryVariables,
   DeleteReviewMutation,
@@ -11,9 +12,10 @@ import {
   RefetchCourseReviewsQueryVariables,
   RefetchRatingsQueryVariables,
   RefetchUserReviewQueryVariables,
+  ReviewInfoFragment,
+  ReviewProfsFragment,
   UpsertReviewMutation,
   UpsertReviewMutationVariables,
-  User,
 } from 'generated/graphql';
 import _ from 'lodash';
 import { DefaultTheme, useTheme } from 'styled-components';
@@ -40,7 +42,6 @@ import {
   COURSE_REVIEW_PROFS,
   COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
-import { ONLY_PROF_QUERY } from 'graphql/queries/prof/Prof';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
@@ -61,159 +62,19 @@ import {
   SliderOptionText,
 } from './styles/CourseReviewBox';
 
-const filterTeachingProfs = (
-  allProfs: Prof[],
-  profsTeaching: ProfTeaching[],
-) => {
-  const teachingProfIds = new Set(
-    profsTeaching.map((profObj) => profObj.prof?.id).filter(Boolean),
-  );
-
-  return allProfs.filter((prof) => !teachingProfIds.has(prof.id));
-};
-
-interface Prof {
-  id: number;
-  code: string;
-  name: string;
-}
-
-interface ProfTeaching {
-  prof: Prof;
-}
-
-interface Course {
-  id: number;
-  code: string;
-  profs_teaching: ProfTeaching[];
-  ratings: Array<{
-    liked: number;
-    useful: number;
-    easy: number;
-    count: number;
-  }>;
-  sections: Array<{
-    id: number;
-    code: string;
-  }>;
-  reviews: Review[];
-}
-
-interface Review {
-  author: User;
-  course: Course;
-  course_comment: string | null;
-  course_easy: number | null;
-  course_id: number;
-  course_useful: number | null;
-  created_at: string;
-  id: number;
-  liked: number | null;
-  prof: Prof | null;
-  prof_clear: number | null;
-  prof_engaging: number | null;
-  prof_comment: string | null;
-  public: boolean;
-}
-
-interface CourseListItem {
-  course: Course;
-  review: Review | null;
-}
-
-interface CourseReviewBoxProps {
-  courseList: CourseListItem[];
-  initialSelectedCourseIndex?: number;
-  showCourseDropdown?: boolean;
-  cancelButton?: boolean;
-  onCancel?: () => void;
-}
-
 interface CourseReviewBoxContentProps extends CourseReviewBoxProps {
-  profsTeachingByCourseId: {
-    [key: string]: ProfTeaching[];
-  } | null;
-  allProfs: Prof[];
+  teaching: Record<string, ReviewProfsFragment['prof'][] | undefined>;
+  allProfs: CourseReviewProfsQuery['allProfs'] | undefined;
+  cancelButton: boolean;
 }
-
-interface ReviewState {
-  id: number;
-  liked: number;
-  useful: number;
-  usefulSelected: boolean;
-  easy: number;
-  easySelected: boolean;
-  courseComment: string;
-  selectedProf: number;
-  clear: number;
-  clearSelected: boolean;
-  engaging: number;
-  engagingSelected: boolean;
-  profComment: string;
-  selectedAnonymous: number;
-  profsTeaching: ProfTeaching[];
-}
-
-interface ReviewStates {
-  [courseCode: string]: ReviewState;
-}
-
-interface Review {
-  user_id: number;
-  course_id: number;
-  prof_id: number | null;
-  liked: number | null;
-  public: boolean;
-  course_easy: number | null;
-  course_useful: number | null;
-  course_comment: string | null;
-  prof_clear: number | null;
-  prof_comment: string | null;
-  prof_engaging: number | null;
-  updated_at: string;
-}
-
-type ProfTeachingMap = {
-  [key: string]: ProfTeaching[];
-};
-
-const mergeInNewProfsTeaching = (
-  currProfsTeaching: ProfTeaching[],
-  newProfsTeaching: ProfTeaching[] | undefined,
-): void => {
-  const currIDs: number[] = currProfsTeaching.map((prof) => prof.prof.id);
-  if (newProfsTeaching) {
-    newProfsTeaching.forEach((prof) => {
-      if (!currIDs.includes(prof.prof.id)) {
-        currProfsTeaching.push(prof);
-      }
-    });
-  }
-};
-
-const getProfIndex = (
-  review: Review | null,
-  profsTeaching: ProfTeaching[],
-): number =>
-  review
-    ? profsTeaching.findIndex(
-        (prof) => prof.prof && prof.prof.id === review.prof_id,
-      )
-    : -1;
-
-interface ProfOption {
-  label: string;
-  id: number | null;
-}
-
 const CourseReviewBoxContent = ({
-  courseList,
-  profsTeachingByCourseId,
+  courseReviews,
+  teaching,
+  allProfs,
   initialSelectedCourseIndex = 0,
   showCourseDropdown = false,
   cancelButton = true,
   onCancel = () => {},
-  allProfs,
 }: CourseReviewBoxContentProps) => {
   const theme: DefaultTheme = useTheme();
 
@@ -225,84 +86,100 @@ const CourseReviewBoxContent = ({
     setSelectedCourseIndex(initialSelectedCourseIndex);
   }, [initialSelectedCourseIndex]);
 
-  const buildDefaultReview = (
+  interface ReviewDisplayData {
+    id: number;
+    liked: number;
+    useful: number;
+    usefulSelected: boolean;
+    easy: number;
+    easySelected: boolean;
+    courseComment: string;
+    selectedProf: number;
+    clear: number;
+    clearSelected: boolean;
+    engaging: number;
+    engagingSelected: boolean;
+    profComment: string;
+    selectedAnonymous: number;
+    profsTeaching: ReviewProfsFragment['prof'][];
+  }
+
+  function buildDefaultReview(
     course: Course,
-    review: Review | null,
-  ): ReviewState => {
-    // We need to merge profs currently teaching the course and previous profs for the course with a review
-    let profsTeaching: ProfTeaching[] = course.profs_teaching;
+    userReview: ReviewInfoFragment | null,
+  ): ReviewDisplayData {
+    let combinedProfs: ReviewProfsFragment['prof'][] = [];
+    if (allProfs) {
+      // We want to show profs from previous reviews first, then all other profs
+      const reviewedProfessors = teaching[course.id];
 
-    if (profsTeachingByCourseId) {
-      mergeInNewProfsTeaching(
-        profsTeaching,
-        profsTeachingByCourseId[course.id],
-      );
+      const ids = new Set(reviewedProfessors?.map((prof) => prof?.id));
+
+      const remaining = allProfs?.filter((prof) => !ids.has(prof.id));
+
+      combinedProfs = [...(teaching[course.id] || []), ...remaining];
     }
-
-    profsTeaching = profsTeaching.filter(
-      (prof: ProfTeaching) => prof.prof !== null,
-    );
-    // add prof to dropdown if not fetched from backend
-    if (review) {
-      const profExists = profsTeaching.some(
-        (prof: ProfTeaching) => prof.prof && prof.prof.id === review.prof_id,
-      );
-      if (!profExists && review.prof_id !== null && review.prof) {
-        profsTeaching.push({ prof: review.prof });
-      }
-    }
-
-    profsTeaching = profsTeaching.sort((a: ProfTeaching, b: ProfTeaching) =>
-      a.prof.name.localeCompare(b.prof.name),
-    );
-
-    const profIndex: number = getProfIndex(review, profsTeaching);
 
     return {
       id: course.id,
-      liked: review ? (review.liked !== null ? 1 - review.liked : -1) : -1,
-      useful: (review && review.course_useful) || 0,
-      usefulSelected: review ? review.course_useful !== null : false,
-      easy: (review && review.course_easy) || 0,
-      easySelected: review ? review.course_easy !== null : false,
-      courseComment: (review && review.course_comment) || '',
-      selectedProf: profIndex,
-      clear: (review && review.prof_clear) || 0,
-      clearSelected: review ? review.prof_clear !== null : false,
-      engaging: (review && review.prof_engaging) || 0,
-      engagingSelected: review ? review.prof_engaging !== null : false,
-      profComment: (review && review.prof_comment) || '',
-      selectedAnonymous: review && review.public ? 1 : 0,
-      profsTeaching,
+      liked: userReview
+        ? userReview.liked !== null
+          ? 1 - userReview.liked
+          : -1
+        : -1,
+      useful: (userReview && userReview.course_useful) || 0,
+      usefulSelected: userReview ? userReview.course_useful !== null : false,
+      easy: (userReview && userReview.course_easy) || 0,
+      easySelected: userReview ? userReview.course_easy !== null : false,
+      courseComment: (userReview && userReview.course_comment) || '',
+      selectedProf: combinedProfs?.findIndex(
+        (prof) => prof && prof.id === userReview?.prof_id,
+      ),
+      clear: (userReview && userReview.prof_clear) || 0,
+      clearSelected: userReview ? userReview.prof_clear !== null : false,
+      engaging: (userReview && userReview.prof_engaging) || 0,
+      engagingSelected: userReview ? userReview.prof_engaging !== null : false,
+      profComment: (userReview && userReview.prof_comment) || '',
+      selectedAnonymous: userReview && userReview.public ? 1 : 0,
+      profsTeaching: combinedProfs || [],
     };
-  };
+  }
+  const initialReviewStates: Record<string, ReviewDisplayData> = {};
+  for (const course of courseReviews) {
+    initialReviewStates[course.course.code] = buildDefaultReview(
+      course.course,
+      course.review,
+    );
+  }
 
-  /* State */
+  const [reviewStates, setReviewStates] = useState<
+    Record<string, ReviewDisplayData>
+  >(initialReviewStates);
+
+  useEffect(() => {
+    if (allProfs && teaching) {
+      const newReviewStates: Record<string, ReviewDisplayData> = {};
+      for (const course of courseReviews) {
+        newReviewStates[course.course.code] = buildDefaultReview(
+          course.course,
+          course.review,
+        );
+      }
+      setReviewStates(newReviewStates);
+    }
+  }, [allProfs, teaching, courseReviews]);
+
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState<boolean>(
     false,
   );
   const [reviewUpdating, setReviewUpdating] = useState<boolean>(false);
   const [reviewDeleting, setReviewDeleting] = useState<boolean>(false);
 
-  const [reviewStates, setReviewStates] = useState<ReviewStates>(
-    courseList.reduce(
-      (
-        states: ReviewStates,
-        { course, review }: { course: Course; review: Review | null },
-      ) => {
-        states[course.code] = buildDefaultReview(course, review);
-        return states;
-      },
-      {},
-    ),
-  );
-  const [
-    lastRenderProfsTeaching,
-    setLastRenderProfsTeaching,
-  ] = useState<ProfTeachingMap | null>(profsTeachingByCourseId);
+  // Course Specific Logic ---------
 
   const userId: number = getUserId();
-  const { course, review }: CourseListItem = courseList[selectedCourseIndex];
+
+  const { course, review } = courseReviews[selectedCourseIndex];
 
   const {
     liked,
@@ -319,33 +196,7 @@ const CourseReviewBoxContent = ({
     profComment,
     selectedAnonymous,
     profsTeaching,
-  }: ReviewState = reviewStates[course.code];
-
-  /* Effects */
-  useEffect(() => {
-    if (!profsTeachingByCourseId) return;
-    // update state if profsTeaching changes
-    if (!_.isEqual(profsTeachingByCourseId, lastRenderProfsTeaching)) {
-      const newReviewStates: ReviewStates = _.cloneDeep(reviewStates);
-      Object.keys(reviewStates).forEach((code: string) => {
-        mergeInNewProfsTeaching(
-          newReviewStates[code].profsTeaching,
-          profsTeachingByCourseId[reviewStates[code].id],
-        );
-        newReviewStates[code].profsTeaching = newReviewStates[
-          code
-        ].profsTeaching.sort((a: ProfTeaching, b: ProfTeaching) =>
-          a.prof.name.localeCompare(b.prof.name),
-        );
-        newReviewStates[code].selectedProf = getProfIndex(
-          review,
-          newReviewStates[code].profsTeaching,
-        );
-      });
-      setLastRenderProfsTeaching(profsTeachingByCourseId);
-      setReviewStates(newReviewStates);
-    }
-  }, [profsTeachingByCourseId, reviewStates, lastRenderProfsTeaching, review]);
+  }: ReviewDisplayData = reviewStates[course.code];
 
   /* Mutations */
   const refetchQueries: Array<{
@@ -404,20 +255,14 @@ const CourseReviewBoxContent = ({
   const notifyInsert = () => toast(REVIEW_SUCCESS.posted);
   const notifyUpdate = () => toast(REVIEW_SUCCESS.updated);
 
-  const profOptions: ProfOption[] = [
-    ...profsTeaching
-      .sort((a: ProfTeaching, b: ProfTeaching) =>
-        a.prof.name.localeCompare(b.prof.name),
-      )
-      .map((profObj: ProfTeaching) => ({
-        label: profObj.prof.name,
-        id: profObj.prof.id,
-      })),
-    { label: "My Professor Isn't Here", id: null },
-    ...filterTeachingProfs(allProfs, profsTeaching).map((prof: Prof) => ({
-      label: prof.name,
-      id: prof.id,
-    })),
+  const profOptions: { label: string; id: number | null }[] = [
+    ...profsTeaching.map((profObj: ReviewProfsFragment['prof']) => {
+      if (!profObj) return { label: '', id: null };
+      return {
+        label: profObj.name,
+        id: profObj.id,
+      };
+    }),
   ];
 
   const handlePost = () => {
@@ -488,8 +333,8 @@ const CourseReviewBoxContent = ({
   };
 
   const setReviewValue = (
-    key: keyof ReviewState,
-    value: ReviewState[keyof ReviewState],
+    key: keyof ReviewDisplayData,
+    value: ReviewDisplayData[keyof ReviewDisplayData],
   ) => {
     setReviewStates({
       ...reviewStates,
@@ -501,9 +346,9 @@ const CourseReviewBoxContent = ({
   };
 
   const setSliderValue = (
-    key: keyof ReviewState,
-    value: ReviewState[keyof ReviewState],
-    selectedKey: keyof ReviewState,
+    key: keyof ReviewDisplayData,
+    value: ReviewDisplayData[keyof ReviewDisplayData],
+    selectedKey: keyof ReviewDisplayData,
   ) => {
     setReviewStates({
       ...reviewStates,
@@ -517,13 +362,13 @@ const CourseReviewBoxContent = ({
 
   return (
     <CourseReviewBoxWrapper>
-      {(courseList.length > 1 || showCourseDropdown) && (
+      {(courseReviews.length > 1 || showCourseDropdown) && (
         <QuestionWrapper>
           <QuestionText>Review a course: </QuestionText>
           <DropdownList
             selectedIndex={selectedCourseIndex}
             placeholder="select a course"
-            options={courseList.map((courseObj: CourseListItem) =>
+            options={courseReviews.map((courseObj) =>
               formatCourseCode(courseObj.course.code),
             )}
             color={theme.courses}
@@ -609,7 +454,7 @@ const CourseReviewBoxContent = ({
       </QuestionWrapper>
 
       <Collapsible
-        open={selectedProf !== -1 && selectedProf !== 0}
+        open={selectedProf !== -1}
         transitionTime={200}
         easing="ease-in-out"
         overflowWhenOpen="visible"
@@ -745,56 +590,53 @@ const CourseReviewBoxContent = ({
   );
 };
 
-const CourseReviewBox = ({ courseList, ...props }: CourseReviewBoxProps) => {
-  const courseIds = courseList.map((course) => course.course.id);
-  const { data: profsData } = useQuery<CourseReviewProfsQuery>(
-    COURSE_REVIEW_PROFS,
-    {
-      variables: { id: courseIds },
+export interface CourseReviewBoxProps {
+  courseReviews: { course: Course; review: ReviewInfoFragment }[];
+  showCourseDropdown: boolean;
+  initialSelectedCourseIndex: number;
+  onCancel: () => void;
+  cancelButton: boolean;
+}
+const CourseReviewBox = ({
+  courseReviews,
+  showCourseDropdown,
+  initialSelectedCourseIndex,
+  onCancel,
+  cancelButton,
+}: CourseReviewBoxProps) => {
+  const courseIds: number[] = courseReviews.map((c) => c.course.id);
+
+  // Fetch all professors ordered by name
+  // Fetch previous professors mentioned in reviews
+  const { data } = useQuery<CourseReviewProfsQuery>(COURSE_REVIEW_PROFS, {
+    variables: {
+      courseIds,
     },
-  );
+  });
 
-  // Add new query for all professors
-  const { data: allProfsData } = useQuery(ONLY_PROF_QUERY);
+  const allProfs = data?.allProfs;
+  const reviewProfs = data?.reviewProfs.sort((a, b) => b.id - a.id);
 
-  const profsSeenByCourseID: { [key: string]: { [key: string]: boolean } } = {};
-  const profsTeachingByCourseId = profsData
-    ? profsData.review.reduce<{ [key: string]: ProfTeaching[] }>(
-        (profs, currentProf) => {
-          if (
-            currentProf &&
-            currentProf.prof &&
-            currentProf.course_id &&
-            (!profsSeenByCourseID[currentProf.course_id] ||
-              !profsSeenByCourseID[currentProf.course_id]?.[
-                currentProf.prof.code
-              ])
-          ) {
-            if (!profs[currentProf.course_id]) {
-              profs[currentProf.course_id] = [];
-            }
-            profs[currentProf.course_id].push({ prof: currentProf.prof });
-            if (!profsSeenByCourseID[currentProf.course_id]) {
-              profsSeenByCourseID[currentProf.course_id] = {};
-            }
-            profsSeenByCourseID[currentProf.course_id][
-              currentProf.prof.code
-            ] = true;
-          }
-          return profs;
-        },
-        {},
-      )
-    : null;
+  // eg: teaching = ['CS135': [{id: 1, code: 'john_doe', name: 'John Doe'}], 'CS136': []]
+  const teaching: Record<string, ReviewProfsFragment['prof'][]> = {};
+
+  for (const review of reviewProfs || []) {
+    const courseCode = review.course_id as number;
+    if (!teaching[courseCode]) {
+      teaching[courseCode] = [];
+    }
+    teaching[courseCode].push(review.prof);
+  }
 
   return (
     <CourseReviewBoxContent
-      {...{
-        ...props,
-        profsTeachingByCourseId,
-        courseList,
-        allProfs: allProfsData?.prof || [],
-      }}
+      courseReviews={courseReviews}
+      teaching={teaching}
+      allProfs={allProfs}
+      showCourseDropdown={showCourseDropdown}
+      onCancel={onCancel}
+      initialSelectedCourseIndex={initialSelectedCourseIndex}
+      cancelButton={cancelButton}
     />
   );
 };

@@ -46,7 +46,7 @@ import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
 import CourseSchedule from './CourseSchedule';
 
-type Course = CourseInfoFragment &
+export type Course = CourseInfoFragment &
   CourseScheduleFragment &
   CourseRequirementsFragment &
   CourseRatingFragment &
@@ -96,7 +96,7 @@ const CoursePageContent = ({
   const handleReviewClick = () =>
     isLoggedIn
       ? openModal(COURSE_REVIEW_COURSE_MODAL, {
-          courseList: [{ course, review: userReview }],
+          courseReviews: [{ course, review: userReview }],
           onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
         })
       : openModal(AUTH_MODAL);

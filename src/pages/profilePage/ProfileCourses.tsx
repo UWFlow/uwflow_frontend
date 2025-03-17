@@ -76,7 +76,7 @@ const ProfileCourses = ({
   const courseGroups: { [key: string]: IndexedUserCourse[] } = {};
   const reviewModalProps = {
     showCourseDropdown: true,
-    courseList: reviewModalCourseList,
+    courseReviews: reviewModalCourseList,
     onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
   };
 
