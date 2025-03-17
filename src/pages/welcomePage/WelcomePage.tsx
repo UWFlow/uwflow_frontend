@@ -34,7 +34,6 @@ const WelcomePage = () => {
     <WelcomePageWrapper>
       {isUploadingTranscript && (
         <TranscriptUploadModalContent
-          onAfterUploadSuccess={() => client.resetStore()}
           onSkip={() => {
             setIsUploadingTranscript(false);
             setIsUploadingSchedule(true);
