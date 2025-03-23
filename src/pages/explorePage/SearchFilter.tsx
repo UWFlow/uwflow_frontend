@@ -53,6 +53,7 @@ type SearchFilterProps = {
   setNumRatings: Dispatch<SetStateAction<number>>;
   setCourseTaught: Dispatch<SetStateAction<number>>;
   setHasPrereqs: Dispatch<SetStateAction<boolean>>;
+  setHasRoomAvailable: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   ratingFilters: number[];
   courseSearch: boolean;
@@ -67,6 +68,7 @@ const SearchFilter = ({
   setNumRatings,
   setCourseTaught,
   setHasPrereqs,
+  setHasRoomAvailable,
   resetFilters,
   ratingFilters,
   courseSearch,
@@ -152,6 +154,23 @@ const SearchFilter = ({
                 toggle
               />
             </RadioButtonWrapper>
+
+            {filterState.currentTerm || filterState.nextTerm ? (
+              <RadioButtonWrapper style={{ marginTop: '8px' }}>
+                <RadioButton
+                  color={theme.primary}
+                  selected={filterState.hasRoomAvailable}
+                  options={['Seats available']}
+                  margin="8px 0 0 0"
+                  onClick={() =>
+                    setHasRoomAvailable(!filterState.hasRoomAvailable)
+                  }
+                  toggle
+                />
+              </RadioButtonWrapper>
+            ) : (
+              filterState.hasRoomAvailable && setHasRoomAvailable(false)
+            )}
           </SearchFilterSection>
         </>
       ) : (
