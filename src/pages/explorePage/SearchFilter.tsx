@@ -129,7 +129,12 @@ const SearchFilter = ({
                 selected={filterState.currentTerm}
                 options={[`This term (${currentTermString})`]}
                 margin="8px 16px 0 0"
-                onClick={() => setCurrentTerm(!filterState.currentTerm)}
+                onClick={() => {
+                  setCurrentTerm(!filterState.currentTerm);
+                  if (!filterState.currentTerm) {
+                    setHasRoomAvailable(false);
+                  }
+                }}
                 toggle
               />
               <RadioButton
@@ -137,7 +142,12 @@ const SearchFilter = ({
                 selected={filterState.nextTerm}
                 options={[`Next term (${nextTermString})`]}
                 margin="8px 0 0 0"
-                onClick={() => setNextTerm(!filterState.nextTerm)}
+                onClick={() => {
+                  setNextTerm(!filterState.nextTerm);
+                  if (!filterState.nextTerm) {
+                    setHasRoomAvailable(false);
+                  }
+                }}
                 toggle
               />
             </RadioButtonWrapper>

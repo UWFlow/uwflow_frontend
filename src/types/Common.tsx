@@ -50,6 +50,7 @@ export type CourseSearchResult = {
   easy: number;
   useful: number;
   terms: number[];
+  terms_with_seats: number[];
   has_prereqs: boolean;
 };
 

@@ -107,6 +107,7 @@ const SearchResults = ({
       easy: result.easy,
       useful: result.useful,
       terms: result.terms,
+      terms_with_seats: result.terms_with_seats,
       has_prereqs: result.has_prereqs ? result.has_prereqs?.valueOf() : false,
     }));
 
@@ -153,7 +154,18 @@ const SearchResults = ({
             (filterState.nextTerm &&
               course.terms.some((term) => Number(term) === nextTermCode))) &&
           (filterState.hasPrereqs ||
-            (!filterState.hasPrereqs && course.has_prereqs === false)),
+            (!filterState.hasPrereqs && course.has_prereqs === false)) &&
+          (!filterState.hasRoomAvailable ||
+            (filterState.hasRoomAvailable &&
+              (filterState.currentTerm
+                ? course.terms_with_seats.some(
+                    (term) => Number(term) === currentTermCode,
+                  )
+                : filterState.nextTerm
+                ? course.terms_with_seats.some(
+                    (term) => Number(term) === nextTermCode,
+                  )
+                : true))),
       )
     : [];
 

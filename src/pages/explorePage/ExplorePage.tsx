@@ -182,6 +182,7 @@ const ExplorePageContent = ({
     nextTerm,
     courseTaught,
     hasPrereqs,
+    hasRoomAvailable,
   ]);
 
   const resetCourseFilters = () => {
@@ -190,6 +191,7 @@ const ExplorePageContent = ({
     setCurrentTerm(false);
     setNextTerm(false);
     setHasPrereqs(true);
+    setHasRoomAvailable(false);
   };
 
   const resetProfFilters = () => {
