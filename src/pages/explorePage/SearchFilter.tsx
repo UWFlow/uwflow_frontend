@@ -131,7 +131,7 @@ const SearchFilter = ({
                 margin="8px 16px 0 0"
                 onClick={() => {
                   setCurrentTerm(!filterState.currentTerm);
-                  if (!filterState.currentTerm) {
+                  if (!filterState.currentTerm && !filterState.nextTerm) {
                     setHasRoomAvailable(false);
                   }
                 }}
@@ -144,7 +144,7 @@ const SearchFilter = ({
                 margin="8px 0 0 0"
                 onClick={() => {
                   setNextTerm(!filterState.nextTerm);
-                  if (!filterState.nextTerm) {
+                  if (!filterState.nextTerm && !filterState.currentTerm) {
                     setHasRoomAvailable(false);
                   }
                 }}
