@@ -18,6 +18,7 @@ import {
 } from 'LoadableComponents';
 import {
   ABOUT_PAGE_ROUTE,
+  ANNOUNCEMENTS_PAGE_ROUTE,
   COURSE_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
   LANDING_PAGE_ROUTE,
@@ -27,7 +28,9 @@ import {
   SHORT_PROF_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
 } from 'Routes';
+import { useTheme } from 'styled-components';
 
+import AnnouncementBanner from 'components/banner/AnnouncementBanner';
 import ModalMount from 'components/modal/ModalMount';
 import Footer from 'components/navigation/Footer';
 import Navbar from 'components/navigation/Navbar';
@@ -53,6 +56,7 @@ ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 const App = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const location = useLocation();
+  const theme = useTheme();
 
   // Refresh auth token if logged in
   useEffect(() => {
@@ -120,6 +124,12 @@ const App = () => {
           content={`${window.location.origin}${LandingPageBg}`}
         />
       </Helmet>
+      <AnnouncementBanner
+        text="🎉 UWFlow is back to active maintenance and open source."
+        linkUrl={`${window.location.origin}/announcements`}
+        linkText="Read more."
+        type="default"
+      />
       <Switch>
         <SentryRoute
           exact
