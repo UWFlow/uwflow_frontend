@@ -27,6 +27,7 @@ export type SearchFilterState = {
   nextTerm: boolean;
   courseTaught: number;
   hasPrereqs: boolean;
+  hasRoomAvailable: boolean;
 };
 
 export type SearchFilterStateURL = {
@@ -37,6 +38,7 @@ export type SearchFilterStateURL = {
   currentTerm: boolean | null;
   nextTerm: boolean | null;
   noPrereqs: boolean | null;
+  hasRoomAvailable: boolean | null;
 };
 
 export type CourseSearchResult = {
@@ -48,6 +50,7 @@ export type CourseSearchResult = {
   easy: number;
   useful: number;
   terms: number[];
+  terms_with_seats: number[];
   has_prereqs: boolean;
 };
 

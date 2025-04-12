@@ -3556,6 +3556,7 @@ export type Course_Search_Index = {
   prof_ids?: Maybe<Scalars['_int4']>;
   ratings?: Maybe<Scalars['bigint']>;
   terms?: Maybe<Scalars['_int4']>;
+  terms_with_seats?: Maybe<Scalars['_int4']>;
   useful?: Maybe<Scalars['numeric']>;
 };
 
@@ -3614,6 +3615,7 @@ export type Course_Search_Index_Bool_Exp = {
   prof_ids?: Maybe<_Int4_Comparison_Exp>;
   ratings?: Maybe<Bigint_Comparison_Exp>;
   terms?: Maybe<_Int4_Comparison_Exp>;
+  terms_with_seats?: Maybe<_Int4_Comparison_Exp>;
   useful?: Maybe<Numeric_Comparison_Exp>;
 };
 
@@ -3656,6 +3658,7 @@ export type Course_Search_Index_Order_By = {
   prof_ids?: Maybe<Order_By>;
   ratings?: Maybe<Order_By>;
   terms?: Maybe<Order_By>;
+  terms_with_seats?: Maybe<Order_By>;
   useful?: Maybe<Order_By>;
 };
 
@@ -3683,6 +3686,8 @@ export enum Course_Search_Index_Select_Column {
   Ratings = 'ratings',
   /** column name */
   Terms = 'terms',
+  /** column name */
+  TermsWithSeats = 'terms_with_seats',
   /** column name */
   Useful = 'useful',
 }
@@ -3738,6 +3743,7 @@ export type Course_Search_Index_Stream_Cursor_Value_Input = {
   prof_ids?: Maybe<Scalars['_int4']>;
   ratings?: Maybe<Scalars['bigint']>;
   terms?: Maybe<Scalars['_int4']>;
+  terms_with_seats?: Maybe<Scalars['_int4']>;
   useful?: Maybe<Scalars['numeric']>;
 };
 
@@ -11845,6 +11851,7 @@ export type CourseSearchFragment = {
   | 'code'
   | 'useful'
   | 'terms'
+  | 'terms_with_seats'
   | 'ratings'
   | 'prof_ids'
   | 'liked'
@@ -12647,6 +12654,7 @@ export const CourseSearchFragmentDoc = gql`
     code
     useful
     terms
+    terms_with_seats
     ratings
     prof_ids
     liked
@@ -14074,6 +14082,7 @@ export const CourseReviewProfsDocument = gql`
         prof_id: { _is_null: false }
         prof_comment: { _is_null: false }
       }
+      order_by: [{ course_id: asc }, { prof_id: asc }, { id: desc }]
       distinct_on: [course_id, prof_id]
     ) {
       ...ReviewProfs

@@ -68,8 +68,8 @@ export const isCurrentTerm = (termCode: number): boolean => {
 
 export const getCurrentTermCode = (): number => {
   const curDate = new Date();
-  const curMonth = curDate.getMonth();
   const curYear = curDate.getFullYear();
+  const curMonth = curDate.getMonth();
   const monthInt =
     curMonth >= 0 && curMonth <= 3 ? 1 : curMonth >= 4 && curMonth <= 7 ? 5 : 9;
   return (curYear - 1900) * 10 + monthInt;

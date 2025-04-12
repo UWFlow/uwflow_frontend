@@ -8,6 +8,7 @@ const SearchFragment = {
       code
       useful
       terms
+      terms_with_seats
       ratings
       prof_ids
       liked

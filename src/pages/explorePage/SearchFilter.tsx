@@ -53,6 +53,7 @@ type SearchFilterProps = {
   setNumRatings: Dispatch<SetStateAction<number>>;
   setCourseTaught: Dispatch<SetStateAction<number>>;
   setHasPrereqs: Dispatch<SetStateAction<boolean>>;
+  setHasRoomAvailable: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   ratingFilters: number[];
   courseSearch: boolean;
@@ -67,6 +68,7 @@ const SearchFilter = ({
   setNumRatings,
   setCourseTaught,
   setHasPrereqs,
+  setHasRoomAvailable,
   resetFilters,
   ratingFilters,
   courseSearch,
@@ -127,7 +129,12 @@ const SearchFilter = ({
                 selected={filterState.currentTerm}
                 options={[`This term (${currentTermString})`]}
                 margin="8px 16px 0 0"
-                onClick={() => setCurrentTerm(!filterState.currentTerm)}
+                onClick={() => {
+                  setCurrentTerm(!filterState.currentTerm);
+                  if (!filterState.currentTerm && !filterState.nextTerm) {
+                    setHasRoomAvailable(false);
+                  }
+                }}
                 toggle
               />
               <RadioButton
@@ -135,7 +142,12 @@ const SearchFilter = ({
                 selected={filterState.nextTerm}
                 options={[`Next term (${nextTermString})`]}
                 margin="8px 0 0 0"
-                onClick={() => setNextTerm(!filterState.nextTerm)}
+                onClick={() => {
+                  setNextTerm(!filterState.nextTerm);
+                  if (!filterState.nextTerm && !filterState.currentTerm) {
+                    setHasRoomAvailable(false);
+                  }
+                }}
                 toggle
               />
             </RadioButtonWrapper>
@@ -152,6 +164,23 @@ const SearchFilter = ({
                 toggle
               />
             </RadioButtonWrapper>
+
+            {filterState.currentTerm || filterState.nextTerm ? (
+              <RadioButtonWrapper style={{ marginTop: '8px' }}>
+                <RadioButton
+                  color={theme.primary}
+                  selected={filterState.hasRoomAvailable}
+                  options={['Seats available']}
+                  margin="8px 0 0 0"
+                  onClick={() =>
+                    setHasRoomAvailable(!filterState.hasRoomAvailable)
+                  }
+                  toggle
+                />
+              </RadioButtonWrapper>
+            ) : (
+              filterState.hasRoomAvailable && setHasRoomAvailable(false)
+            )}
           </SearchFilterSection>
         </>
       ) : (
