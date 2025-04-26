@@ -154,18 +154,7 @@ const SearchResults = ({
             (filterState.nextTerm &&
               course.terms.some((term) => Number(term) === nextTermCode))) &&
           (filterState.hasPrereqs ||
-            (!filterState.hasPrereqs && course.has_prereqs === false)) &&
-          (!filterState.hasRoomAvailable ||
-            (filterState.hasRoomAvailable &&
-              (filterState.currentTerm
-                ? course.terms_with_seats.some(
-                    (term) => Number(term) === currentTermCode,
-                  )
-                : filterState.nextTerm
-                ? course.terms_with_seats.some(
-                    (term) => Number(term) === nextTermCode,
-                  )
-                : true))),
+            (!filterState.hasPrereqs && course.has_prereqs === false)),
       )
     : [];
 
