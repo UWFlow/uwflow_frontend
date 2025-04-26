@@ -122,10 +122,10 @@ const App = () => {
         />
       </Helmet>
       <AnnouncementBanner
-        boldText="🎉 We're so back. "
-        text="UWFlow is back to active maintenance and open source."
+        boldText="🎉 UWFlow is open source! "
+        text="We're working on a fix for new professor reviews."
         linkUrl={'https://github.com/UWFlow/uwflow/releases/tag/v1.0.0'}
-        linkText="Read more."
+        linkText="View here."
         id="uwflow-maintenance"
         type="default"
       />
