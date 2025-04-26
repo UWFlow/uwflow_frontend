@@ -18,7 +18,6 @@ import {
 } from 'LoadableComponents';
 import {
   ABOUT_PAGE_ROUTE,
-  ANNOUNCEMENTS_PAGE_ROUTE,
   COURSE_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
   LANDING_PAGE_ROUTE,
@@ -28,7 +27,6 @@ import {
   SHORT_PROF_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
 } from 'Routes';
-import { useTheme } from 'styled-components';
 
 import AnnouncementBanner from 'components/banner/AnnouncementBanner';
 import ModalMount from 'components/modal/ModalMount';
@@ -56,7 +54,6 @@ ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 const App = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const location = useLocation();
-  const theme = useTheme();
 
   // Refresh auth token if logged in
   useEffect(() => {
@@ -125,9 +122,11 @@ const App = () => {
         />
       </Helmet>
       <AnnouncementBanner
-        text="🎉 UWFlow is back to active maintenance and open source."
-        linkUrl={`${window.location.origin}/announcements`}
+        boldText="🎉 We're so back. "
+        text="UWFlow is back to active maintenance and open source."
+        linkUrl={'https://github.com/UWFlow/uwflow/releases/tag/v1.0.0'}
         linkText="Read more."
+        id="uwflow-maintenance"
         type="default"
       />
       <Switch>

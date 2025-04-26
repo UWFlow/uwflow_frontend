@@ -54,6 +54,10 @@ export const AnnouncementText = styled.span<{
   }
 `;
 
+export const BoldAnnouncementText = styled(AnnouncementText)`
+  font-weight: 700;
+`;
+
 export const AnnouncementLink = styled.a<{
   linkColor: string;
 }>`

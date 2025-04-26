@@ -6,12 +6,17 @@ import {
   AnnouncementBannerWrapper,
   AnnouncementLink,
   AnnouncementText,
+  BoldAnnouncementText,
   CloseButton,
 } from './styles/AnnouncementBanner';
 
 export type AnnouncementType = 'default' | 'success' | 'warning' | 'info';
 
 type AnnouncementBannerProps = {
+  /**
+   * First bold text to display in the announcement banner
+   */
+  boldText: string;
   /**
    * The text to display in the announcement banner
    */
@@ -30,6 +35,10 @@ type AnnouncementBannerProps = {
    * Defaults to 'default'
    */
   type?: AnnouncementType;
+  /**
+   * The ID of the announcement banner
+   */
+  id: string;
   /**
    * Custom text color for the banner
    * Defaults to theme.dark1
@@ -68,17 +77,27 @@ const useAnnouncementTheme = (
 };
 
 const AnnouncementBanner = ({
+  boldText,
   text,
   linkUrl,
   linkText = 'Learn more',
   type = 'default',
+  id,
   onDismiss,
 }: AnnouncementBannerProps) => {
   const { backgroundColor, textColor, linkColor } = useAnnouncementTheme(type);
-  const [dismissed, setDismissed] = useState<boolean>(false);
+
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   const bannerRef = useRef<HTMLDivElement>(null);
+
+  // Create a localStorage key based on the banner ID
+  const localStorageKey = `banner-dismissed-${id}`;
+
+  const [dismissed, setDismissed] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false; // SSR / Jest
+    return localStorage.getItem(localStorageKey) === 'true';
+  });
 
   const handleDismiss = () => {
     // Start the animation
@@ -90,6 +109,7 @@ const AnnouncementBanner = ({
         onDismiss();
       }
       setDismissed(true);
+      localStorage.setItem(localStorageKey, 'true');
     }, 300); // Matched to the animation duration
   };
 
@@ -105,7 +125,10 @@ const AnnouncementBanner = ({
         ref={bannerRef}
         isAnimatingOut={isAnimatingOut}
       >
-        <AnnouncementText textColor={textColor}>{text}</AnnouncementText>
+        <AnnouncementText textColor={textColor}>
+          <strong>{boldText}</strong>
+          {text}
+        </AnnouncementText>
         {linkUrl && (
           <AnnouncementLink
             linkColor={linkColor}

@@ -143,19 +143,52 @@ const SearchResults = ({
   }, [filterState]);
 
   const filteredCourses = courses
-    ? courses.filter(
-        (course) =>
-          courseCodeRegex.test(course.code) &&
-          course.ratings >= ratingFilters[filterState.numCourseRatings] &&
-          (!filterState.currentTerm ||
-            (filterState.currentTerm &&
-              course.terms.some((term) => Number(term) === currentTermCode))) &&
-          (!filterState.nextTerm ||
-            (filterState.nextTerm &&
-              course.terms.some((term) => Number(term) === nextTermCode))) &&
-          (filterState.hasPrereqs ||
-            (!filterState.hasPrereqs && course.has_prereqs === false)),
-      )
+    ? courses.filter((course) => {
+        // Filter by course code (e.g., 1XX, 2XX)
+        const matchesCodePattern = courseCodeRegex.test(course.code);
+
+        // Filter by minimum rating requirement
+        const meetsRatingThreshold =
+          course.ratings >= ratingFilters[filterState.numCourseRatings];
+
+        // Filter by term availability (this term and/or next term)
+        const isOfferedInCurrentTerm =
+          !filterState.currentTerm ||
+          course.terms.some((term) => Number(term) === currentTermCode);
+
+        const isOfferedInNextTerm =
+          !filterState.nextTerm ||
+          course.terms.some((term) => Number(term) === nextTermCode);
+
+        // Filter by prerequisites requirement
+        const satisfiesPrereqFilter =
+          filterState.hasPrereqs ||
+          (!filterState.hasPrereqs && course.has_prereqs === false);
+
+        // Filter by seat availability
+        let hasSeatsAvailable = true;
+        if (filterState.hasRoomAvailable) {
+          if (filterState.currentTerm) {
+            hasSeatsAvailable = course.terms_with_seats.some(
+              (term) => Number(term) === currentTermCode,
+            );
+          } else if (filterState.nextTerm) {
+            hasSeatsAvailable = course.terms_with_seats.some(
+              (term) => Number(term) === nextTermCode,
+            );
+          }
+        }
+
+        // All conditions must be true for the course to be included
+        return (
+          matchesCodePattern &&
+          meetsRatingThreshold &&
+          isOfferedInCurrentTerm &&
+          isOfferedInNextTerm &&
+          satisfiesPrereqFilter &&
+          hasSeatsAvailable
+        );
+      })
     : [];
 
   const filteredProfs = profs
