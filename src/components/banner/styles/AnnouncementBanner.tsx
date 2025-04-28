@@ -45,7 +45,7 @@ export const AnnouncementText = styled.span<{
   color: ${({ textColor }) => textColor};
   text-align: center;
   font-weight: 500;
-  margin-right: 8px;
+  margin-right: 4px;
   
   @media only screen and (max-width: ${({ theme }) =>
     theme.breakpoints.tablet}px) {
@@ -62,16 +62,15 @@ export const AnnouncementLink = styled.a<{
   linkColor: string;
 }>`
   ${Link}
+  margin-top: 1px;
   color: ${({ linkColor }) => linkColor};
   white-space: nowrap;
 `;
 
-export const CloseButton = styled.button<{
-  textColor: string;
-}>`
+export const CloseButton = styled.button`
   background: none;
+  color: ${({ theme }) => theme.dark1};
   border: none;
-  color: ${({ textColor }) => textColor};
   cursor: pointer;
   font-size: 16px;
   margin-left: 12px;

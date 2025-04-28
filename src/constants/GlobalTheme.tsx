@@ -30,10 +30,6 @@ export default {
   google: '#4285f4',
   facebook: '#3c5a99',
 
-  announcement: '#ffc400',
-  announcementSuccess: '#36b37e',
-  announcementWarning: '#ff5630',
-
   transparent: 'rgba(0,0,0,0)',
 
   breakpoints: {

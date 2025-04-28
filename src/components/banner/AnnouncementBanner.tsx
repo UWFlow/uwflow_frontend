@@ -31,11 +31,6 @@ type AnnouncementBannerProps = {
    */
   linkText?: string;
   /**
-   * The type of announcement banner to display
-   * Defaults to 'default'
-   */
-  type?: AnnouncementType;
-  /**
    * The ID of the announcement banner
    */
   id: string;
@@ -47,45 +42,15 @@ type AnnouncementBannerProps = {
   onDismiss?: () => void;
 };
 
-const useAnnouncementTheme = (
-  type: AnnouncementType,
-): { backgroundColor: string; textColor: string; linkColor: string } => {
-  const theme = useTheme();
-  let themeColor;
-  let textColor;
-  let linkColor: string;
-
-  switch (type) {
-    case 'success':
-      themeColor = theme.announcementSuccess;
-      linkColor = theme.white;
-      textColor = theme.white;
-      break;
-    case 'warning':
-      themeColor = theme.announcementWarning;
-      linkColor = theme.white;
-      textColor = theme.white;
-      break;
-    default:
-      themeColor = theme.announcement;
-      linkColor = theme.primary;
-      textColor = theme.dark1;
-      break;
-  }
-
-  return { backgroundColor: themeColor, textColor, linkColor };
-};
-
 const AnnouncementBanner = ({
   boldText,
   text,
   linkUrl,
   linkText = 'Learn more',
-  type = 'default',
   id,
   onDismiss,
 }: AnnouncementBannerProps) => {
-  const { backgroundColor, textColor, linkColor } = useAnnouncementTheme(type);
+  const theme: DefaultTheme = useTheme();
 
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
@@ -121,17 +86,17 @@ const AnnouncementBanner = ({
   return (
     <FadeIn>
       <AnnouncementBannerWrapper
-        backgroundColor={backgroundColor}
+        backgroundColor={theme.accent}
         ref={bannerRef}
         isAnimatingOut={isAnimatingOut}
       >
-        <AnnouncementText textColor={textColor}>
+        <AnnouncementText textColor={theme.dark1}>
           <strong>{boldText}</strong>
           {text}
         </AnnouncementText>
         {linkUrl && (
           <AnnouncementLink
-            linkColor={linkColor}
+            linkColor={theme.primary}
             href={linkUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -139,9 +104,7 @@ const AnnouncementBanner = ({
             {linkText}
           </AnnouncementLink>
         )}
-        <CloseButton onClick={() => handleDismiss()} textColor={textColor}>
-          ✕
-        </CloseButton>
+        <CloseButton onClick={() => handleDismiss()}>✕</CloseButton>
       </AnnouncementBannerWrapper>
     </FadeIn>
   );

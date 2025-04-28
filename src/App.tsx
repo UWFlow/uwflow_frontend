@@ -123,11 +123,10 @@ const App = () => {
       </Helmet>
       <AnnouncementBanner
         boldText="🎉 UWFlow is open source! "
-        text="We're working on a fix for new professor reviews."
+        text="Check out the"
         linkUrl={'https://github.com/UWFlow/uwflow/releases/tag/v1.0.0'}
-        linkText="View here."
+        linkText="announcement here."
         id="uwflow-maintenance"
-        type="default"
       />
       <Switch>
         <SentryRoute
