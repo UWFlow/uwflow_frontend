@@ -84,9 +84,7 @@ const ProfInfoHeader = ({ prof, distributions }: ProfInfoHeaderProps) => {
           />
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          {profCourses.length > 0
-            ? 'Currently teaches'
-            : 'Not currently teaching anything'}
+          {profCourses.length > 0 ? 'Has taught' : 'Not teaching anything'}
           {profCourseLinks}
         </Description>
       </ProfDescriptionSection>
