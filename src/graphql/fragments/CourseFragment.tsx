@@ -7,6 +7,7 @@ const CourseFragment = {
       code
       name
       description
+      delivery_mode
       profs_teaching {
         prof {
           id

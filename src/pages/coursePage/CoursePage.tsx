@@ -41,6 +41,7 @@ import {
   CourseReviewQuestionText,
   ReviewWrapper,
 } from './styles/CoursePage';
+import CourseDeliveryMode from './CourseDeliveryMode';
 import CourseInfoHeader from './CourseInfoHeader';
 import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
@@ -156,6 +157,10 @@ const CoursePageContent = ({
           />
         </Column1>
         <Column2>
+          <CourseDeliveryMode
+            courseCode={course.code}
+            deliveryMode={course.delivery_mode}
+          />
           <CourseRequisites
             courseCode={course.code}
             prereqs={course.prereqs}

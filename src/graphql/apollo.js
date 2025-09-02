@@ -71,6 +71,9 @@ const cache = new InMemoryCache({
   },
 });
 
+// Force clear cache completely to fix delivery_mode schema issue
+cache.reset();
+
 const client = new ApolloClient({
   link,
   cache,

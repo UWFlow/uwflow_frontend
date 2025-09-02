@@ -1931,6 +1931,7 @@ export type Course = {
   course_useful_buckets: Array<Aggregate_Course_Useful_Buckets>;
   /** An aggregate relationship */
   course_useful_buckets_aggregate: Aggregate_Course_Useful_Buckets_Aggregate;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -2460,6 +2461,7 @@ export type Course_Bool_Exp = {
   course_useful_buckets_aggregate?: Maybe<
     Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp
   >;
+  delivery_mode?: Maybe<String_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
@@ -2503,6 +2505,7 @@ export type Course_Insert_Input = {
   course_useful_buckets?: Maybe<
     Aggregate_Course_Useful_Buckets_Arr_Rel_Insert_Input
   >;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -2521,6 +2524,7 @@ export type Course_Max_Fields = {
   antireqs?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -2533,6 +2537,7 @@ export type Course_Min_Fields = {
   antireqs?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -2575,6 +2580,7 @@ export type Course_Order_By = {
   course_useful_buckets_aggregate?: Maybe<
     Aggregate_Course_Useful_Buckets_Aggregate_Order_By
   >;
+  delivery_mode?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -3794,6 +3800,7 @@ export type Course_Section = {
   /** An object relationship */
   course: Course;
   course_id: Scalars['Int'];
+  delivery_mode?: Maybe<Scalars['String']>;
   enrollment_capacity: Scalars['Int'];
   enrollment_total: Scalars['Int'];
   /** An array relationship */
@@ -3937,6 +3944,7 @@ export type Course_Section_Bool_Exp = {
   class_number?: Maybe<Int_Comparison_Exp>;
   course?: Maybe<Course_Bool_Exp>;
   course_id?: Maybe<Int_Comparison_Exp>;
+  delivery_mode?: Maybe<String_Comparison_Exp>;
   enrollment_capacity?: Maybe<Int_Comparison_Exp>;
   enrollment_total?: Maybe<Int_Comparison_Exp>;
   exams?: Maybe<Section_Exam_Bool_Exp>;
@@ -3972,6 +3980,7 @@ export type Course_Section_Insert_Input = {
   class_number?: Maybe<Scalars['Int']>;
   course?: Maybe<Course_Obj_Rel_Insert_Input>;
   course_id?: Maybe<Scalars['Int']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   exams?: Maybe<Section_Exam_Arr_Rel_Insert_Input>;
@@ -3987,6 +3996,7 @@ export type Course_Section_Max_Fields = {
   __typename?: 'course_section_max_fields';
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -3999,6 +4009,7 @@ export type Course_Section_Max_Fields = {
 export type Course_Section_Max_Order_By = {
   class_number?: Maybe<Order_By>;
   course_id?: Maybe<Order_By>;
+  delivery_mode?: Maybe<Order_By>;
   enrollment_capacity?: Maybe<Order_By>;
   enrollment_total?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -4012,6 +4023,7 @@ export type Course_Section_Min_Fields = {
   __typename?: 'course_section_min_fields';
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -4024,6 +4036,7 @@ export type Course_Section_Min_Fields = {
 export type Course_Section_Min_Order_By = {
   class_number?: Maybe<Order_By>;
   course_id?: Maybe<Order_By>;
+  delivery_mode?: Maybe<Order_By>;
   enrollment_capacity?: Maybe<Order_By>;
   enrollment_total?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -4060,6 +4073,7 @@ export type Course_Section_Order_By = {
   class_number?: Maybe<Order_By>;
   course?: Maybe<Course_Order_By>;
   course_id?: Maybe<Order_By>;
+  delivery_mode?: Maybe<Order_By>;
   enrollment_capacity?: Maybe<Order_By>;
   enrollment_total?: Maybe<Order_By>;
   exams_aggregate?: Maybe<Section_Exam_Aggregate_Order_By>;
@@ -4082,6 +4096,8 @@ export enum Course_Section_Select_Column {
   /** column name */
   CourseId = 'course_id',
   /** column name */
+  DeliveryMode = 'delivery_mode',
+  /** column name */
   EnrollmentCapacity = 'enrollment_capacity',
   /** column name */
   EnrollmentTotal = 'enrollment_total',
@@ -4099,6 +4115,7 @@ export enum Course_Section_Select_Column {
 export type Course_Section_Set_Input = {
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -4182,6 +4199,7 @@ export type Course_Section_Stream_Cursor_Input = {
 export type Course_Section_Stream_Cursor_Value_Input = {
   class_number?: Maybe<Scalars['Int']>;
   course_id?: Maybe<Scalars['Int']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -4217,6 +4235,8 @@ export enum Course_Section_Update_Column {
   ClassNumber = 'class_number',
   /** column name */
   CourseId = 'course_id',
+  /** column name */
+  DeliveryMode = 'delivery_mode',
   /** column name */
   EnrollmentCapacity = 'enrollment_capacity',
   /** column name */
@@ -4314,6 +4334,8 @@ export enum Course_Select_Column {
   /** column name */
   Coreqs = 'coreqs',
   /** column name */
+  DeliveryMode = 'delivery_mode',
+  /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
@@ -4329,6 +4351,7 @@ export type Course_Set_Input = {
   authoritative?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -4367,6 +4390,7 @@ export type Course_Stream_Cursor_Value_Input = {
   authoritative?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -4389,6 +4413,8 @@ export enum Course_Update_Column {
   Code = 'code',
   /** column name */
   Coreqs = 'coreqs',
+  /** column name */
+  DeliveryMode = 'delivery_mode',
   /** column name */
   Description = 'description',
   /** column name */
@@ -11565,7 +11591,7 @@ export type User_Variance_Fields = {
 
 export type CourseInfoFragment = { __typename?: 'course' } & Pick<
   Course,
-  'id' | 'code' | 'name' | 'description'
+  'id' | 'code' | 'name' | 'description' | 'delivery_mode'
 > & {
     profs_teaching: Array<
       { __typename?: 'prof_teaches_course' } & {
@@ -12405,6 +12431,7 @@ export const CourseInfoFragmentDoc = gql`
     code
     name
     description
+    delivery_mode
     profs_teaching {
       prof {
         id
