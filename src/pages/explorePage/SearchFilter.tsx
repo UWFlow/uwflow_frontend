@@ -54,6 +54,7 @@ type SearchFilterProps = {
   setCourseTaught: Dispatch<SetStateAction<number>>;
   setHasPrereqs: Dispatch<SetStateAction<boolean>>;
   setHasRoomAvailable: Dispatch<SetStateAction<boolean>>;
+  setOnlineCourses: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   ratingFilters: number[];
   courseSearch: boolean;
@@ -69,6 +70,7 @@ const SearchFilter = ({
   setCourseTaught,
   setHasPrereqs,
   setHasRoomAvailable,
+  setOnlineCourses,
   resetFilters,
   ratingFilters,
   courseSearch,
@@ -161,6 +163,17 @@ const SearchFilter = ({
                 options={['No prerequisites']}
                 margin="8px 16px 0 0"
                 onClick={() => setHasPrereqs(!filterState.hasPrereqs)}
+                toggle
+              />
+            </RadioButtonWrapper>
+
+            <RadioButtonWrapper style={{ marginTop: '8px' }}>
+              <RadioButton
+                color={theme.primary}
+                selected={filterState.onlineCourses}
+                options={['Online courses']}
+                margin="8px 16px 0 0"
+                onClick={() => setOnlineCourses(!filterState.onlineCourses)}
                 toggle
               />
             </RadioButtonWrapper>
