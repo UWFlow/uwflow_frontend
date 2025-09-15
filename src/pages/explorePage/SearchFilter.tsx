@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { X } from 'react-feather';
 import { useTheme } from 'styled-components';
 
@@ -54,6 +54,8 @@ type SearchFilterProps = {
   setCourseTaught: Dispatch<SetStateAction<number>>;
   setHasPrereqs: Dispatch<SetStateAction<boolean>>;
   setHasRoomAvailable: Dispatch<SetStateAction<boolean>>;
+  setHasOnlineCurrentTerm: Dispatch<SetStateAction<boolean>>;
+  setHasOnlineNextTerm: Dispatch<SetStateAction<boolean>>;
   resetFilters: () => void;
   ratingFilters: number[];
   courseSearch: boolean;
@@ -69,11 +71,30 @@ const SearchFilter = ({
   setCourseTaught,
   setHasPrereqs,
   setHasRoomAvailable,
+  setHasOnlineCurrentTerm,
+  setHasOnlineNextTerm,
   resetFilters,
   ratingFilters,
   courseSearch,
 }: SearchFilterProps) => {
   const theme = useTheme();
+
+  // Clear online filters when term filters are disabled
+  useEffect(() => {
+    if (!filterState.currentTerm && filterState.hasOnlineCurrentTerm) {
+      setHasOnlineCurrentTerm(false);
+    }
+    if (!filterState.nextTerm && filterState.hasOnlineNextTerm) {
+      setHasOnlineNextTerm(false);
+    }
+  }, [
+    filterState.currentTerm,
+    filterState.nextTerm,
+    filterState.hasOnlineCurrentTerm,
+    filterState.hasOnlineNextTerm,
+    setHasOnlineCurrentTerm,
+    setHasOnlineNextTerm,
+  ]);
 
   const numRatings = courseSearch
     ? filterState.numCourseRatings
@@ -181,6 +202,36 @@ const SearchFilter = ({
             ) : (
               filterState.hasRoomAvailable && setHasRoomAvailable(false)
             )}
+
+            {filterState.currentTerm ? (
+              <RadioButtonWrapper style={{ marginTop: '8px' }}>
+                <RadioButton
+                  color={theme.primary}
+                  selected={filterState.hasOnlineCurrentTerm}
+                  options={[`Online available this term`]}
+                  margin="8px 0 0 0"
+                  onClick={() =>
+                    setHasOnlineCurrentTerm(!filterState.hasOnlineCurrentTerm)
+                  }
+                  toggle
+                />
+              </RadioButtonWrapper>
+            ) : null}
+
+            {filterState.nextTerm ? (
+              <RadioButtonWrapper style={{ marginTop: '8px' }}>
+                <RadioButton
+                  color={theme.primary}
+                  selected={filterState.hasOnlineNextTerm}
+                  options={[`Online available next term`]}
+                  margin="8px 0 0 0"
+                  onClick={() =>
+                    setHasOnlineNextTerm(!filterState.hasOnlineNextTerm)
+                  }
+                  toggle
+                />
+              </RadioButtonWrapper>
+            ) : null}
           </SearchFilterSection>
         </>
       ) : (

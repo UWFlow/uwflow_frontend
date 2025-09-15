@@ -109,6 +109,7 @@ const SearchResults = ({
       terms: result.terms,
       terms_with_seats: result.terms_with_seats,
       has_prereqs: result.has_prereqs ? result.has_prereqs?.valueOf() : false,
+      course: result.course,
     }));
 
     const newProfs: ProfSearchResult[] = allProfs.map((result) => ({
@@ -179,6 +180,29 @@ const SearchResults = ({
           }
         }
 
+        // Filter by online delivery mode
+        let hasOnlineCurrentTerm = true;
+        if (filterState.hasOnlineCurrentTerm) {
+          const deliveryModes = course.course?.term_delivery_modes || [];
+          hasOnlineCurrentTerm = deliveryModes.some(
+            (dm) =>
+              Number(dm.term_id) === currentTermCode &&
+              (dm.delivery_mode === 'ONLINE_ONLY' ||
+                dm.delivery_mode === 'BOTH'),
+          );
+        }
+
+        let hasOnlineNextTerm = true;
+        if (filterState.hasOnlineNextTerm) {
+          const deliveryModes = course.course?.term_delivery_modes || [];
+          hasOnlineNextTerm = deliveryModes.some(
+            (dm) =>
+              Number(dm.term_id) === nextTermCode &&
+              (dm.delivery_mode === 'ONLINE_ONLY' ||
+                dm.delivery_mode === 'BOTH'),
+          );
+        }
+
         // All conditions must be true for the course to be included
         return (
           matchesCodePattern &&
@@ -186,7 +210,9 @@ const SearchResults = ({
           isOfferedInCurrentTerm &&
           isOfferedInNextTerm &&
           satisfiesPrereqFilter &&
-          hasSeatsAvailable
+          hasSeatsAvailable &&
+          hasOnlineCurrentTerm &&
+          hasOnlineNextTerm
         );
       })
     : [];
