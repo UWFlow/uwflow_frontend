@@ -35,7 +35,7 @@ const AnnouncementBanner = () => {
         }}
       >
         <div style={{ textAlign: 'center', width: '90%' }}>
-          <strong> UWFlow is open source! </strong> Check out the{' '}
+          <strong> UWFlow is open source! </strong> Check out the
           <a href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0">
             announcement here!
           </a>
