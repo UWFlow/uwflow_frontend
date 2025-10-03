@@ -4,19 +4,15 @@ import { Body, Link } from 'constants/Mixins';
 
 export const AnnouncementBannerWrapper = styled.div<{
   backgroundColor: string;
-  isAnimatingOut: boolean;
 }>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 
-  z-index: 2;
   min-height: 48px;
   padding: 12px 24px;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  overflow: hidden;
-  transform-origin: top;
 `;
 
 export const AnnouncementText = styled.span<{
@@ -28,11 +24,6 @@ export const AnnouncementText = styled.span<{
   font-weight: 500;
   margin-right: 4px;
   
-  @media only screen and (max-width: ${({ theme }) =>
-    theme.breakpoints.tablet}px) {
-    margin-right: 0;
-    margin-bottom: 4px;
-  }
 `;
 
 export const BoldAnnouncementText = styled(AnnouncementText)`
@@ -60,8 +51,6 @@ export const CloseButton = styled.button`
   position: absolute;
   right: 12px;
   top: 50%;
-  transform: translateY(-50%);
-  transition: opacity 0.2s ease;
 
   &:hover {
     opacity: 1;

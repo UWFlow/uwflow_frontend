@@ -6,7 +6,6 @@ import {
   AnnouncementBannerWrapper,
   AnnouncementLink,
   AnnouncementText,
-  BoldAnnouncementText,
   CloseButton,
 } from './styles/AnnouncementBanner';
 
@@ -60,20 +59,9 @@ const AnnouncementBanner = ({
   const [dismissed, setDismissed] = useState<boolean>(
     localStorage.getItem(localStorageKey) != null,
   );
-  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(false);
-
   const handleDismiss = () => {
-    // Start the animation
-    setIsAnimatingOut(true);
-    // Wait for animation to complete before removing from DOM
-    setTimeout(() => {
-      // Call the onDismiss callback if provided
-      if (onDismiss) {
-        onDismiss();
-      }
-      setDismissed(true);
-      localStorage.setItem(localStorageKey, 'true');
-    }, 300); // Matched to the animation duration
+    setDismissed(true);
+    localStorage.setItem(localStorageKey, 'true');
   };
 
   // If the banner is dismissed, we return null
@@ -83,11 +71,7 @@ const AnnouncementBanner = ({
 
   return (
     <FadeIn>
-      <AnnouncementBannerWrapper
-        backgroundColor={theme.accent}
-        ref={bannerRef}
-        isAnimatingOut={isAnimatingOut}
-      >
+      <AnnouncementBannerWrapper backgroundColor={theme.accent} ref={bannerRef}>
         <AnnouncementText textColor={theme.dark1}>
           <strong>{boldText}</strong>
           {text}
@@ -96,7 +80,7 @@ const AnnouncementBanner = ({
           <AnnouncementLink
             linkColor={theme.primary}
             href={linkUrl}
-            target="_blank"
+            target="blank"
             rel="noopener noreferrer"
           >
             {linkText}
