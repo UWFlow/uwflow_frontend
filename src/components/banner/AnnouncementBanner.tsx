@@ -71,23 +71,24 @@ const AnnouncementBanner = ({
 
   return (
     <FadeIn>
-      <AnnouncementBannerWrapper backgroundColor={theme.accent} ref={bannerRef}>
-        <AnnouncementText textColor={theme.dark1}>
-          <strong>{boldText}</strong>
-          {text}
-        </AnnouncementText>
-        {linkUrl && (
-          <AnnouncementLink
-            linkColor={theme.primary}
-            href={linkUrl}
-            target="blank"
-            rel="noopener noreferrer"
-          >
-            {linkText}
-          </AnnouncementLink>
-        )}
-        <CloseButton onClick={() => handleDismiss()}>✕</CloseButton>
-      </AnnouncementBannerWrapper>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          padding: '15px',
+          backgroundColor: theme.accent,
+        }}
+      >
+        <div style={{ textAlign: 'center', width: '90%' }}>
+          <strong> UWFlow is open source! </strong> Check out the{' '}
+          <a href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0">
+            {' '}
+            announcement here!{' '}
+          </a>
+        </div>
+        <CloseButton onClick={handleDismiss}>x</CloseButton>
+      </div>
     </FadeIn>
   );
 };
