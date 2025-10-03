@@ -28,6 +28,7 @@ import {
   WELCOME_PAGE_ROUTE,
 } from 'Routes';
 
+import AnnouncementBanner from 'components/banner/AnnouncementBanner';
 import ModalMount from 'components/modal/ModalMount';
 import Footer from 'components/navigation/Footer';
 import Navbar from 'components/navigation/Navbar';
@@ -120,6 +121,7 @@ const App = () => {
           content={`${window.location.origin}${LandingPageBg}`}
         />
       </Helmet>
+      <AnnouncementBanner />
       <Switch>
         <SentryRoute
           exact
