@@ -68,6 +68,8 @@ const ExplorePageContent = ({
       courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
       hasPrereqs: pq.noPrereqs ? !pq.noPrereqs : true,
       hasRoomAvailable: Boolean(pq.hasRoomAvailable) || false,
+      hasOnlineCurrentTerm: Boolean(pq.hasOnlineCurrentTerm) || false,
+      hasOnlineNextTerm: Boolean(pq.hasOnlineNextTerm) || false,
     };
   };
 
@@ -98,6 +100,12 @@ const ExplorePageContent = ({
   const [hasPrereqs, setHasPrereqs] = useState(defaultFilterState.hasPrereqs);
   const [hasRoomAvailable, setHasRoomAvailable] = useState(
     defaultFilterState.hasRoomAvailable,
+  );
+  const [hasOnlineCurrentTerm, setHasOnlineCurrentTerm] = useState(
+    defaultFilterState.hasOnlineCurrentTerm,
+  );
+  const [hasOnlineNextTerm, setHasOnlineNextTerm] = useState(
+    defaultFilterState.hasOnlineNextTerm,
   );
   const exploreAll = query === '';
 
@@ -136,6 +144,8 @@ const ExplorePageContent = ({
     courseTaught,
     hasPrereqs,
     hasRoomAvailable,
+    hasOnlineCurrentTerm,
+    hasOnlineNextTerm,
   };
 
   const mapFilterStateToURL = (fs: SearchFilterState): SearchFilterStateURL => {
@@ -150,6 +160,8 @@ const ExplorePageContent = ({
       nextTerm: fs.nextTerm || null,
       noPrereqs: !fs.hasPrereqs || null,
       hasRoomAvailable: fs.hasRoomAvailable || null,
+      hasOnlineCurrentTerm: fs.hasOnlineCurrentTerm || null,
+      hasOnlineNextTerm: fs.hasOnlineNextTerm || null,
     };
   };
 
@@ -183,6 +195,8 @@ const ExplorePageContent = ({
     courseTaught,
     hasPrereqs,
     hasRoomAvailable,
+    hasOnlineCurrentTerm,
+    hasOnlineNextTerm,
   ]);
 
   const resetCourseFilters = () => {
@@ -192,6 +206,8 @@ const ExplorePageContent = ({
     setNextTerm(false);
     setHasPrereqs(true);
     setHasRoomAvailable(false);
+    setHasOnlineCurrentTerm(false);
+    setHasOnlineNextTerm(false);
   };
 
   const resetProfFilters = () => {
@@ -237,6 +253,8 @@ const ExplorePageContent = ({
             setCourseTaught={setCourseTaught}
             setHasPrereqs={setHasPrereqs}
             setHasRoomAvailable={setHasRoomAvailable}
+            setHasOnlineCurrentTerm={setHasOnlineCurrentTerm}
+            setHasOnlineNextTerm={setHasOnlineNextTerm}
             ratingFilters={RATING_FILTERS}
             resetFilters={
               exploreTab === 0 ? resetCourseFilters : resetProfFilters

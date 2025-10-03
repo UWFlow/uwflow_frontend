@@ -1931,6 +1931,7 @@ export type Course = {
   course_useful_buckets: Array<Aggregate_Course_Useful_Buckets>;
   /** An aggregate relationship */
   course_useful_buckets_aggregate: Aggregate_Course_Useful_Buckets_Aggregate;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -1957,6 +1958,10 @@ export type Course = {
   sections: Array<Course_Section>;
   /** An aggregate relationship */
   sections_aggregate: Course_Section_Aggregate;
+  /** An array relationship */
+  term_delivery_modes: Array<Course_Term_Delivery_Modes>;
+  /** An aggregate relationship */
+  term_delivery_modes_aggregate: Course_Term_Delivery_Modes_Aggregate;
 };
 
 /** columns and relationships of "course" */
@@ -2101,6 +2106,24 @@ export type CourseSections_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Course_Section_Order_By>>;
   where?: Maybe<Course_Section_Bool_Exp>;
+};
+
+/** columns and relationships of "course" */
+export type CourseTerm_Delivery_ModesArgs = {
+  distinct_on?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Term_Delivery_Modes_Order_By>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+};
+
+/** columns and relationships of "course" */
+export type CourseTerm_Delivery_Modes_AggregateArgs = {
+  distinct_on?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Term_Delivery_Modes_Order_By>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
 };
 
 /** aggregated selection of "course" */
@@ -2460,6 +2483,7 @@ export type Course_Bool_Exp = {
   course_useful_buckets_aggregate?: Maybe<
     Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp
   >;
+  delivery_mode?: Maybe<String_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
@@ -2475,6 +2499,10 @@ export type Course_Bool_Exp = {
   reviews_aggregate?: Maybe<Review_Aggregate_Bool_Exp>;
   sections?: Maybe<Course_Section_Bool_Exp>;
   sections_aggregate?: Maybe<Course_Section_Aggregate_Bool_Exp>;
+  term_delivery_modes?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+  term_delivery_modes_aggregate?: Maybe<
+    Course_Term_Delivery_Modes_Aggregate_Bool_Exp
+  >;
 };
 
 /** unique or primary key constraints on table "course" */
@@ -2503,6 +2531,7 @@ export type Course_Insert_Input = {
   course_useful_buckets?: Maybe<
     Aggregate_Course_Useful_Buckets_Arr_Rel_Insert_Input
   >;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -2513,6 +2542,7 @@ export type Course_Insert_Input = {
   rating?: Maybe<Aggregate_Course_Rating_Obj_Rel_Insert_Input>;
   reviews?: Maybe<Review_Arr_Rel_Insert_Input>;
   sections?: Maybe<Course_Section_Arr_Rel_Insert_Input>;
+  term_delivery_modes?: Maybe<Course_Term_Delivery_Modes_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -2521,6 +2551,7 @@ export type Course_Max_Fields = {
   antireqs?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -2533,6 +2564,7 @@ export type Course_Min_Fields = {
   antireqs?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -2575,6 +2607,7 @@ export type Course_Order_By = {
   course_useful_buckets_aggregate?: Maybe<
     Aggregate_Course_Useful_Buckets_Aggregate_Order_By
   >;
+  delivery_mode?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -2585,6 +2618,9 @@ export type Course_Order_By = {
   rating?: Maybe<Aggregate_Course_Rating_Order_By>;
   reviews_aggregate?: Maybe<Review_Aggregate_Order_By>;
   sections_aggregate?: Maybe<Course_Section_Aggregate_Order_By>;
+  term_delivery_modes_aggregate?: Maybe<
+    Course_Term_Delivery_Modes_Aggregate_Order_By
+  >;
 };
 
 /** primary key columns input for table: course */
@@ -3546,6 +3582,8 @@ export type Course_Review_Upvote_Variance_Order_By = {
 export type Course_Search_Index = {
   __typename?: 'course_search_index';
   code?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  course?: Maybe<Course>;
   course_id?: Maybe<Scalars['Int']>;
   course_letters?: Maybe<Scalars['String']>;
   document?: Maybe<Scalars['tsvector']>;
@@ -3605,6 +3643,7 @@ export type Course_Search_Index_Bool_Exp = {
   _not?: Maybe<Course_Search_Index_Bool_Exp>;
   _or?: Maybe<Array<Course_Search_Index_Bool_Exp>>;
   code?: Maybe<String_Comparison_Exp>;
+  course?: Maybe<Course_Bool_Exp>;
   course_id?: Maybe<Int_Comparison_Exp>;
   course_letters?: Maybe<String_Comparison_Exp>;
   document?: Maybe<Tsvector_Comparison_Exp>;
@@ -3648,6 +3687,7 @@ export type Course_Search_Index_Min_Fields = {
 /** Ordering options when selecting data from "course_search_index". */
 export type Course_Search_Index_Order_By = {
   code?: Maybe<Order_By>;
+  course?: Maybe<Course_Order_By>;
   course_id?: Maybe<Order_By>;
   course_letters?: Maybe<Order_By>;
   document?: Maybe<Order_By>;
@@ -4314,6 +4354,8 @@ export enum Course_Select_Column {
   /** column name */
   Coreqs = 'coreqs',
   /** column name */
+  DeliveryMode = 'delivery_mode',
+  /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
@@ -4329,6 +4371,7 @@ export type Course_Set_Input = {
   authoritative?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -4367,6 +4410,7 @@ export type Course_Stream_Cursor_Value_Input = {
   authoritative?: Maybe<Scalars['Boolean']>;
   code?: Maybe<Scalars['String']>;
   coreqs?: Maybe<Scalars['String']>;
+  delivery_mode?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -4379,6 +4423,352 @@ export type Course_Sum_Fields = {
   id?: Maybe<Scalars['Int']>;
 };
 
+/** columns and relationships of "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes = {
+  __typename?: 'course_term_delivery_modes';
+  /** An object relationship */
+  course: Course;
+  course_id: Scalars['Int'];
+  created_at: Scalars['timestamptz'];
+  delivery_mode: Scalars['String'];
+  term_id: Scalars['Int'];
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Aggregate = {
+  __typename?: 'course_term_delivery_modes_aggregate';
+  aggregate?: Maybe<Course_Term_Delivery_Modes_Aggregate_Fields>;
+  nodes: Array<Course_Term_Delivery_Modes>;
+};
+
+export type Course_Term_Delivery_Modes_Aggregate_Bool_Exp = {
+  count?: Maybe<Course_Term_Delivery_Modes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Course_Term_Delivery_Modes_Aggregate_Bool_Exp_Count = {
+  arguments?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+  filter?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Aggregate_Fields = {
+  __typename?: 'course_term_delivery_modes_aggregate_fields';
+  avg?: Maybe<Course_Term_Delivery_Modes_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Course_Term_Delivery_Modes_Max_Fields>;
+  min?: Maybe<Course_Term_Delivery_Modes_Min_Fields>;
+  stddev?: Maybe<Course_Term_Delivery_Modes_Stddev_Fields>;
+  stddev_pop?: Maybe<Course_Term_Delivery_Modes_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Course_Term_Delivery_Modes_Stddev_Samp_Fields>;
+  sum?: Maybe<Course_Term_Delivery_Modes_Sum_Fields>;
+  var_pop?: Maybe<Course_Term_Delivery_Modes_Var_Pop_Fields>;
+  var_samp?: Maybe<Course_Term_Delivery_Modes_Var_Samp_Fields>;
+  variance?: Maybe<Course_Term_Delivery_Modes_Variance_Fields>;
+};
+
+/** aggregate fields of "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Aggregate_Order_By = {
+  avg?: Maybe<Course_Term_Delivery_Modes_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Course_Term_Delivery_Modes_Max_Order_By>;
+  min?: Maybe<Course_Term_Delivery_Modes_Min_Order_By>;
+  stddev?: Maybe<Course_Term_Delivery_Modes_Stddev_Order_By>;
+  stddev_pop?: Maybe<Course_Term_Delivery_Modes_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Course_Term_Delivery_Modes_Stddev_Samp_Order_By>;
+  sum?: Maybe<Course_Term_Delivery_Modes_Sum_Order_By>;
+  var_pop?: Maybe<Course_Term_Delivery_Modes_Var_Pop_Order_By>;
+  var_samp?: Maybe<Course_Term_Delivery_Modes_Var_Samp_Order_By>;
+  variance?: Maybe<Course_Term_Delivery_Modes_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Arr_Rel_Insert_Input = {
+  data: Array<Course_Term_Delivery_Modes_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: Maybe<Course_Term_Delivery_Modes_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Course_Term_Delivery_Modes_Avg_Fields = {
+  __typename?: 'course_term_delivery_modes_avg_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Avg_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "course_term_delivery_modes". All fields are combined with a logical 'AND'. */
+export type Course_Term_Delivery_Modes_Bool_Exp = {
+  _and?: Maybe<Array<Course_Term_Delivery_Modes_Bool_Exp>>;
+  _not?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+  _or?: Maybe<Array<Course_Term_Delivery_Modes_Bool_Exp>>;
+  course?: Maybe<Course_Bool_Exp>;
+  course_id?: Maybe<Int_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  delivery_mode?: Maybe<String_Comparison_Exp>;
+  term_id?: Maybe<Int_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "course_term_delivery_modes" */
+export enum Course_Term_Delivery_Modes_Constraint {
+  /** unique or primary key constraint on columns "term_id", "course_id" */
+  CourseTermDeliveryModesPkey = 'course_term_delivery_modes_pkey',
+}
+
+/** input type for incrementing numeric columns in table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Inc_Input = {
+  course_id?: Maybe<Scalars['Int']>;
+  term_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Insert_Input = {
+  course?: Maybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  delivery_mode?: Maybe<Scalars['String']>;
+  term_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Course_Term_Delivery_Modes_Max_Fields = {
+  __typename?: 'course_term_delivery_modes_max_fields';
+  course_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  delivery_mode?: Maybe<Scalars['String']>;
+  term_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Max_Order_By = {
+  course_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  delivery_mode?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Course_Term_Delivery_Modes_Min_Fields = {
+  __typename?: 'course_term_delivery_modes_min_fields';
+  course_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  delivery_mode?: Maybe<Scalars['String']>;
+  term_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Min_Order_By = {
+  course_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  delivery_mode?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Mutation_Response = {
+  __typename?: 'course_term_delivery_modes_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Course_Term_Delivery_Modes>;
+};
+
+/** on_conflict condition type for table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_On_Conflict = {
+  constraint: Course_Term_Delivery_Modes_Constraint;
+  update_columns: Array<Course_Term_Delivery_Modes_Update_Column>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "course_term_delivery_modes". */
+export type Course_Term_Delivery_Modes_Order_By = {
+  course?: Maybe<Course_Order_By>;
+  course_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  delivery_mode?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: course_term_delivery_modes */
+export type Course_Term_Delivery_Modes_Pk_Columns_Input = {
+  course_id: Scalars['Int'];
+  term_id: Scalars['Int'];
+};
+
+/** select columns of table "course_term_delivery_modes" */
+export enum Course_Term_Delivery_Modes_Select_Column {
+  /** column name */
+  CourseId = 'course_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DeliveryMode = 'delivery_mode',
+  /** column name */
+  TermId = 'term_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+}
+
+/** input type for updating data in table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Set_Input = {
+  course_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  delivery_mode?: Maybe<Scalars['String']>;
+  term_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Course_Term_Delivery_Modes_Stddev_Fields = {
+  __typename?: 'course_term_delivery_modes_stddev_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Stddev_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Course_Term_Delivery_Modes_Stddev_Pop_Fields = {
+  __typename?: 'course_term_delivery_modes_stddev_pop_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Stddev_Pop_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Course_Term_Delivery_Modes_Stddev_Samp_Fields = {
+  __typename?: 'course_term_delivery_modes_stddev_samp_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Stddev_Samp_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** Streaming cursor of the table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Course_Term_Delivery_Modes_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: Maybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Course_Term_Delivery_Modes_Stream_Cursor_Value_Input = {
+  course_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  delivery_mode?: Maybe<Scalars['String']>;
+  term_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type Course_Term_Delivery_Modes_Sum_Fields = {
+  __typename?: 'course_term_delivery_modes_sum_fields';
+  course_id?: Maybe<Scalars['Int']>;
+  term_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Sum_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "course_term_delivery_modes" */
+export enum Course_Term_Delivery_Modes_Update_Column {
+  /** column name */
+  CourseId = 'course_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  DeliveryMode = 'delivery_mode',
+  /** column name */
+  TermId = 'term_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+}
+
+export type Course_Term_Delivery_Modes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: Maybe<Course_Term_Delivery_Modes_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: Maybe<Course_Term_Delivery_Modes_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Course_Term_Delivery_Modes_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Course_Term_Delivery_Modes_Var_Pop_Fields = {
+  __typename?: 'course_term_delivery_modes_var_pop_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Var_Pop_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Course_Term_Delivery_Modes_Var_Samp_Fields = {
+  __typename?: 'course_term_delivery_modes_var_samp_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Var_Samp_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Course_Term_Delivery_Modes_Variance_Fields = {
+  __typename?: 'course_term_delivery_modes_variance_fields';
+  course_id?: Maybe<Scalars['Float']>;
+  term_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "course_term_delivery_modes" */
+export type Course_Term_Delivery_Modes_Variance_Order_By = {
+  course_id?: Maybe<Order_By>;
+  term_id?: Maybe<Order_By>;
+};
+
 /** update columns of table "course" */
 export enum Course_Update_Column {
   /** column name */
@@ -4389,6 +4779,8 @@ export enum Course_Update_Column {
   Code = 'code',
   /** column name */
   Coreqs = 'coreqs',
+  /** column name */
+  DeliveryMode = 'delivery_mode',
   /** column name */
   Description = 'description',
   /** column name */
@@ -4492,6 +4884,12 @@ export type Mutation_Root = {
   delete_course_section?: Maybe<Course_Section_Mutation_Response>;
   /** delete single row from the table: "course_section" */
   delete_course_section_by_pk?: Maybe<Course_Section>;
+  /** delete data from the table: "course_term_delivery_modes" */
+  delete_course_term_delivery_modes?: Maybe<
+    Course_Term_Delivery_Modes_Mutation_Response
+  >;
+  /** delete single row from the table: "course_term_delivery_modes" */
+  delete_course_term_delivery_modes_by_pk?: Maybe<Course_Term_Delivery_Modes>;
   /** delete data from the table: "prof" */
   delete_prof?: Maybe<Prof_Mutation_Response>;
   /** delete single row from the table: "prof" */
@@ -4548,6 +4946,12 @@ export type Mutation_Root = {
   insert_course_section?: Maybe<Course_Section_Mutation_Response>;
   /** insert a single row into the table: "course_section" */
   insert_course_section_one?: Maybe<Course_Section>;
+  /** insert data into the table: "course_term_delivery_modes" */
+  insert_course_term_delivery_modes?: Maybe<
+    Course_Term_Delivery_Modes_Mutation_Response
+  >;
+  /** insert a single row into the table: "course_term_delivery_modes" */
+  insert_course_term_delivery_modes_one?: Maybe<Course_Term_Delivery_Modes>;
   /** insert data into the table: "prof" */
   insert_prof?: Maybe<Prof_Mutation_Response>;
   /** insert a single row into the table: "prof" */
@@ -4631,6 +5035,16 @@ export type Mutation_Root = {
   /** update multiples rows of table: "course_section" */
   update_course_section_many?: Maybe<
     Array<Maybe<Course_Section_Mutation_Response>>
+  >;
+  /** update data of the table: "course_term_delivery_modes" */
+  update_course_term_delivery_modes?: Maybe<
+    Course_Term_Delivery_Modes_Mutation_Response
+  >;
+  /** update single row of the table: "course_term_delivery_modes" */
+  update_course_term_delivery_modes_by_pk?: Maybe<Course_Term_Delivery_Modes>;
+  /** update multiples rows of table: "course_term_delivery_modes" */
+  update_course_term_delivery_modes_many?: Maybe<
+    Array<Maybe<Course_Term_Delivery_Modes_Mutation_Response>>
   >;
   /** update data of the table: "prof" */
   update_prof?: Maybe<Prof_Mutation_Response>;
@@ -4742,6 +5156,17 @@ export type Mutation_RootDelete_Course_SectionArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Course_Section_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Course_Term_Delivery_ModesArgs = {
+  where: Course_Term_Delivery_Modes_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Course_Term_Delivery_Modes_By_PkArgs = {
+  course_id: Scalars['Int'];
+  term_id: Scalars['Int'];
 };
 
 /** mutation root */
@@ -4887,6 +5312,18 @@ export type Mutation_RootInsert_Course_SectionArgs = {
 export type Mutation_RootInsert_Course_Section_OneArgs = {
   object: Course_Section_Insert_Input;
   on_conflict?: Maybe<Course_Section_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Course_Term_Delivery_ModesArgs = {
+  objects: Array<Course_Term_Delivery_Modes_Insert_Input>;
+  on_conflict?: Maybe<Course_Term_Delivery_Modes_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Course_Term_Delivery_Modes_OneArgs = {
+  object: Course_Term_Delivery_Modes_Insert_Input;
+  on_conflict?: Maybe<Course_Term_Delivery_Modes_On_Conflict>;
 };
 
 /** mutation root */
@@ -5101,6 +5538,25 @@ export type Mutation_RootUpdate_Course_Section_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Course_Section_ManyArgs = {
   updates: Array<Course_Section_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Course_Term_Delivery_ModesArgs = {
+  _inc?: Maybe<Course_Term_Delivery_Modes_Inc_Input>;
+  _set?: Maybe<Course_Term_Delivery_Modes_Set_Input>;
+  where: Course_Term_Delivery_Modes_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Course_Term_Delivery_Modes_By_PkArgs = {
+  _inc?: Maybe<Course_Term_Delivery_Modes_Inc_Input>;
+  _set?: Maybe<Course_Term_Delivery_Modes_Set_Input>;
+  pk_columns: Course_Term_Delivery_Modes_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Course_Term_Delivery_Modes_ManyArgs = {
+  updates: Array<Course_Term_Delivery_Modes_Updates>;
 };
 
 /** mutation root */
@@ -6474,6 +6930,12 @@ export type Query_Root = {
   course_section_aggregate: Course_Section_Aggregate;
   /** fetch data from the table: "course_section" using primary key columns */
   course_section_by_pk?: Maybe<Course_Section>;
+  /** fetch data from the table: "course_term_delivery_modes" */
+  course_term_delivery_modes: Array<Course_Term_Delivery_Modes>;
+  /** fetch aggregated fields from the table: "course_term_delivery_modes" */
+  course_term_delivery_modes_aggregate: Course_Term_Delivery_Modes_Aggregate;
+  /** fetch data from the table: "course_term_delivery_modes" using primary key columns */
+  course_term_delivery_modes_by_pk?: Maybe<Course_Term_Delivery_Modes>;
   /** fetch data from the table: "prof" */
   prof: Array<Prof>;
   /** fetch aggregated fields from the table: "prof" */
@@ -6794,6 +7256,27 @@ export type Query_RootCourse_Section_AggregateArgs = {
 
 export type Query_RootCourse_Section_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+export type Query_RootCourse_Term_Delivery_ModesArgs = {
+  distinct_on?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Term_Delivery_Modes_Order_By>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+};
+
+export type Query_RootCourse_Term_Delivery_Modes_AggregateArgs = {
+  distinct_on?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Term_Delivery_Modes_Order_By>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+};
+
+export type Query_RootCourse_Term_Delivery_Modes_By_PkArgs = {
+  course_id: Scalars['Int'];
+  term_id: Scalars['Int'];
 };
 
 export type Query_RootProfArgs = {
@@ -9392,6 +9875,14 @@ export type Subscription_Root = {
   course_section_stream: Array<Course_Section>;
   /** fetch data from the table in a streaming manner: "course" */
   course_stream: Array<Course>;
+  /** fetch data from the table: "course_term_delivery_modes" */
+  course_term_delivery_modes: Array<Course_Term_Delivery_Modes>;
+  /** fetch aggregated fields from the table: "course_term_delivery_modes" */
+  course_term_delivery_modes_aggregate: Course_Term_Delivery_Modes_Aggregate;
+  /** fetch data from the table: "course_term_delivery_modes" using primary key columns */
+  course_term_delivery_modes_by_pk?: Maybe<Course_Term_Delivery_Modes>;
+  /** fetch data from the table in a streaming manner: "course_term_delivery_modes" */
+  course_term_delivery_modes_stream: Array<Course_Term_Delivery_Modes>;
   /** fetch data from the table: "prof" */
   prof: Array<Prof>;
   /** fetch aggregated fields from the table: "prof" */
@@ -9830,6 +10321,33 @@ export type Subscription_RootCourse_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<Maybe<Course_Stream_Cursor_Input>>;
   where?: Maybe<Course_Bool_Exp>;
+};
+
+export type Subscription_RootCourse_Term_Delivery_ModesArgs = {
+  distinct_on?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Term_Delivery_Modes_Order_By>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+};
+
+export type Subscription_RootCourse_Term_Delivery_Modes_AggregateArgs = {
+  distinct_on?: Maybe<Array<Course_Term_Delivery_Modes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Course_Term_Delivery_Modes_Order_By>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
+};
+
+export type Subscription_RootCourse_Term_Delivery_Modes_By_PkArgs = {
+  course_id: Scalars['Int'];
+  term_id: Scalars['Int'];
+};
+
+export type Subscription_RootCourse_Term_Delivery_Modes_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<Maybe<Course_Term_Delivery_Modes_Stream_Cursor_Input>>;
+  where?: Maybe<Course_Term_Delivery_Modes_Bool_Exp>;
 };
 
 export type Subscription_RootProfArgs = {
@@ -11857,7 +12375,18 @@ export type CourseSearchFragment = {
   | 'liked'
   | 'easy'
   | 'has_prereqs'
->;
+> & {
+    course?: Maybe<
+      { __typename?: 'course' } & {
+        term_delivery_modes: Array<
+          { __typename?: 'course_term_delivery_modes' } & Pick<
+            Course_Term_Delivery_Modes,
+            'term_id' | 'delivery_mode'
+          >
+        >;
+      }
+    >;
+  };
 
 export type ProfSearchFragment = { __typename?: 'prof_search_index' } & Pick<
   Prof_Search_Index,
@@ -12660,6 +13189,12 @@ export const CourseSearchFragmentDoc = gql`
     liked
     easy
     has_prereqs
+    course {
+      term_delivery_modes {
+        term_id
+        delivery_mode
+      }
+    }
   }
 `;
 export const ProfSearchFragmentDoc = gql`
