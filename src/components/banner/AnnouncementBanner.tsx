@@ -52,17 +52,15 @@ const AnnouncementBanner = ({
 }: AnnouncementBannerProps) => {
   const theme: DefaultTheme = useTheme();
 
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-
   const bannerRef = useRef<HTMLDivElement>(null);
 
   // Create a localStorage key based on the banner ID
-  const localStorageKey = `banner-dismissed-${id}`;
+  const localStorageKey = `banner-dismissed`;
 
-  const [dismissed, setDismissed] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false; // SSR / Jest
-    return localStorage.getItem(localStorageKey) === 'true';
-  });
+  const [dismissed, setDismissed] = useState<boolean>(
+    localStorage.getItem(localStorageKey) != null,
+  );
+  const [isAnimatingOut, setIsAnimatingOut] = useState<boolean>(false);
 
   const handleDismiss = () => {
     // Start the animation

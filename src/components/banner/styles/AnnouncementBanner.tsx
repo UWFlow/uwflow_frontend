@@ -11,31 +11,12 @@ export const AnnouncementBannerWrapper = styled.div<{
   align-items: center;
   width: 100%;
 
-  position: relative;
   z-index: 2;
-
-  /* All of this is for animating the banner close upwards lmao */
-
-  min-height: ${({ isAnimatingOut }) => (isAnimatingOut ? '0' : '48px')};
-  padding: ${({ isAnimatingOut }) => (isAnimatingOut ? '0 24px' : '12px 24px')};
+  min-height: 48px;
+  padding: 12px 24px;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  height: ${({ isAnimatingOut }) => (isAnimatingOut ? '0' : 'auto')};
-  opacity: ${({ isAnimatingOut }) => (isAnimatingOut ? '0' : '1')};
   overflow: hidden;
-  transform: ${({ isAnimatingOut }) =>
-    isAnimatingOut ? 'translateY(-100%)' : 'translateY(0)'};
   transform-origin: top;
-  transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    padding 300ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  @media only screen and (max-width: ${({ theme }) =>
-      theme.breakpoints.tablet}px) {
-    padding: ${({ isAnimatingOut }) =>
-      isAnimatingOut ? '0 16px' : '12px 16px'};
-    flex-direction: column;
-  }
 `;
 
 export const AnnouncementText = styled.span<{
