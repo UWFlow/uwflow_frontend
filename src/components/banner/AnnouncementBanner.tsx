@@ -2,53 +2,7 @@ import React, { useRef, useState } from 'react';
 import FadeIn from 'react-fade-in';
 import { DefaultTheme, useTheme } from 'styled-components';
 
-import {
-  AnnouncementBannerWrapper,
-  AnnouncementLink,
-  AnnouncementText,
-  CloseButton,
-} from './styles/AnnouncementBanner';
-
-export type AnnouncementType = 'default' | 'success' | 'warning' | 'info';
-
-type AnnouncementBannerProps = {
-  /**
-   * First bold text to display in the announcement banner
-   */
-  boldText: string;
-  /**
-   * The text to display in the announcement banner
-   */
-  text: string;
-  /**
-   * URL to direct users when clicking the link
-   */
-  linkUrl?: string;
-  /**
-   * Text for the link
-   * Defaults to "Learn more"
-   */
-  linkText?: string;
-  /**
-   * The ID of the announcement banner
-   */
-  id: string;
-  /**
-   * Custom text color for the banner
-   * Defaults to theme.dark1
-   */
-  textColor?: string;
-  onDismiss?: () => void;
-};
-
-const AnnouncementBanner = ({
-  boldText,
-  text,
-  linkUrl,
-  linkText = 'Learn more',
-  id,
-  onDismiss,
-}: AnnouncementBannerProps) => {
+const AnnouncementBanner = () => {
   const theme: DefaultTheme = useTheme();
 
   const bannerRef = useRef<HTMLDivElement>(null);
@@ -83,11 +37,21 @@ const AnnouncementBanner = ({
         <div style={{ textAlign: 'center', width: '90%' }}>
           <strong> UWFlow is open source! </strong> Check out the{' '}
           <a href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0">
-            {' '}
-            announcement here!{' '}
+            announcement here!
           </a>
         </div>
-        <CloseButton onClick={handleDismiss}>x</CloseButton>
+        <button
+          style={{
+            background: 'none',
+            fontSize: '20px',
+            opacity: '50%',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          onClick={handleDismiss}
+        >
+          x
+        </button>
       </div>
     </FadeIn>
   );

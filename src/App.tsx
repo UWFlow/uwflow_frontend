@@ -121,13 +121,7 @@ const App = () => {
           content={`${window.location.origin}${LandingPageBg}`}
         />
       </Helmet>
-      <AnnouncementBanner
-        boldText="🎉 UWFlow is open source! "
-        text="Check out the"
-        linkUrl={'https://github.com/UWFlow/uwflow/releases/tag/v1.0.0'}
-        linkText="announcement here."
-        id="uwflow-maintenance"
-      />
+      <AnnouncementBanner />
       <Switch>
         <SentryRoute
           exact
