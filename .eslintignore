@@ -3,6 +3,7 @@ public/**
 build/**
 
 Dockerfile
+LICENSE
 *.lock
 *.json
 *.md
