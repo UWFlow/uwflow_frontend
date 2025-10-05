@@ -16,7 +16,6 @@ import { Distribution } from 'utils/Ratings';
 
 import {
   CourseLink,
-  Description,
   ProfDescriptionSection,
   ProfInfoHeaderWrapper,
   ProfName,
@@ -83,12 +82,6 @@ const ProfInfoHeader = ({ prof, distributions }: ProfInfoHeaderProps) => {
             ]}
           />
         </RatingsSection>
-        <Description ratingBoxWidth={RATING_BOX_WIDTH}>
-          {profCourses.length > 0
-            ? 'Currently teaches'
-            : 'Not currently teaching anything'}
-          {profCourseLinks}
-        </Description>
       </ProfDescriptionSection>
     </ProfInfoHeaderWrapper>
   );

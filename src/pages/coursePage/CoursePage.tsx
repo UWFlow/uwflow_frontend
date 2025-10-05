@@ -33,7 +33,6 @@ import { createOrderedBuckets, Distribution } from 'utils/Ratings';
 
 import {
   Column1,
-  Column2,
   ColumnWrapper,
   CoursePageWrapper,
   CourseQuestionTextAndToggle,
@@ -42,7 +41,6 @@ import {
   ReviewWrapper,
 } from './styles/CoursePage';
 import CourseInfoHeader from './CourseInfoHeader';
-import CourseRequisites from './CourseRequisites';
 import CourseReviews from './CourseReviews';
 import CourseSchedule from './CourseSchedule';
 
@@ -155,15 +153,6 @@ const CoursePageContent = ({
             profsTeaching={course.profs_teaching}
           />
         </Column1>
-        <Column2>
-          <CourseRequisites
-            courseCode={course.code}
-            prereqs={course.prereqs}
-            antireqs={course.antireqs}
-            coreqs={course.coreqs}
-            postreqs={course.postrequisites}
-          />
-        </Column2>
       </ColumnWrapper>
     </>
   );
