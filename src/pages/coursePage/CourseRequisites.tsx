@@ -24,9 +24,7 @@ type CourseRequisitesProps = {
 
 const CourseRequisites = ({
   courseCode,
-  prereqs = null,
-  antireqs = null,
-  coreqs = null,
+
   postreqs = [],
 }: CourseRequisitesProps) => {
   const parsedRequisites = (requisites: string | null): ReactNode[] => {
@@ -64,39 +62,6 @@ const CourseRequisites = ({
 
   return (
     <CourseRequisitesWrapper>
-      <Header>{`${formatCourseCode(courseCode)} prerequisites`}</Header>
-      {prereqs ? (
-        <ReqText>{parsedRequisites(prereqs)}</ReqText>
-      ) : (
-        <LineOfText>
-          <GreyText>No prerequisites</GreyText>
-        </LineOfText>
-      )}
-      <br />
-      <Header>{`${formatCourseCode(courseCode)} corequisites`}</Header>
-      {coreqs ? (
-        <>
-          <ReqInfo>
-            Courses required to be taken concurrently with, or prior to, this
-            course.
-          </ReqInfo>
-          <ReqText>{parsedRequisites(coreqs)}</ReqText>
-        </>
-      ) : (
-        <LineOfText>
-          <GreyText>No corequisites</GreyText>
-        </LineOfText>
-      )}
-      <br />
-      <Header>{`${formatCourseCode(courseCode)} antirequisites`}</Header>
-      {antireqs ? (
-        <ReqText>{parsedRequisites(antireqs)}</ReqText>
-      ) : (
-        <LineOfText>
-          <GreyText>No antirequisites</GreyText>
-        </LineOfText>
-      )}
-      <br />
       <Header>{`${formatCourseCode(courseCode)} leads to`}</Header>
       {postreqs.map(
         (postreq, idx) =>
