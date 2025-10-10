@@ -27,39 +27,6 @@ const CourseRequisites = ({
 
   postreqs = [],
 }: CourseRequisitesProps) => {
-  const parsedRequisites = (requisites: string | null): ReactNode[] => {
-    if (requisites === null) {
-      return [''];
-    }
-
-    let parsedReqs = requisites.replace(/\s{2,}/gi, ' ');
-    parsedReqs = parsedReqs.replace(/\(\s*/gi, '(');
-    parsedReqs = parsedReqs.replace(/\s*\)/gi, ')');
-    parsedReqs = parsedReqs.replace(/\s*\\\s*/gi, '\\');
-    parsedReqs = parsedReqs.replace(/\s*\/\s*/gi, '/');
-
-    const splitText = parsedReqs.split(COURSE_CODE_REGEX);
-    const matches = parsedReqs.match(COURSE_CODE_REGEX);
-
-    if (splitText.length <= 1) {
-      return [parsedReqs];
-    }
-
-    return splitText.reduce(
-      (arr: ReactNode[], element, index) =>
-        matches && matches[index]
-          ? [
-              ...arr,
-              element,
-              <CourseText to={getCoursePageRoute(matches[index])} key={index}>
-                {`${formatCourseCode(matches[index])}`}
-              </CourseText>,
-            ]
-          : [...arr, element],
-      [],
-    );
-  };
-
   return (
     <CourseRequisitesWrapper>
       <Header>{`${formatCourseCode(courseCode)} leads to`}</Header>
