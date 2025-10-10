@@ -68,6 +68,7 @@ const ExplorePageContent = ({
       courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
       hasPrereqs: pq.noPrereqs ? !pq.noPrereqs : true,
       hasRoomAvailable: Boolean(pq.hasRoomAvailable) || false,
+      onlineCourses: false,
     };
   };
 
@@ -99,6 +100,7 @@ const ExplorePageContent = ({
   const [hasRoomAvailable, setHasRoomAvailable] = useState(
     defaultFilterState.hasRoomAvailable,
   );
+  const [onlineCourses, setOnlineCourses] = useState(false);
   const exploreAll = query === '';
 
   useEffect(() => {
@@ -136,6 +138,7 @@ const ExplorePageContent = ({
     courseTaught,
     hasPrereqs,
     hasRoomAvailable,
+    onlineCourses,
   };
 
   const mapFilterStateToURL = (fs: SearchFilterState): SearchFilterStateURL => {
@@ -192,6 +195,7 @@ const ExplorePageContent = ({
     setNextTerm(false);
     setHasPrereqs(true);
     setHasRoomAvailable(false);
+    setOnlineCourses(false);
   };
 
   const resetProfFilters = () => {
@@ -229,19 +233,19 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setCourseCodes={setCourseCodes}
-            setNumRatings={
-              exploreTab === 0 ? setNumCourseRatings : setNumProfRatings
-            }
             setCurrentTerm={setCurrentTerm}
             setNextTerm={setNextTerm}
+            setNumRatings={setNumCourseRatings}
             setCourseTaught={setCourseTaught}
             setHasPrereqs={setHasPrereqs}
             setHasRoomAvailable={setHasRoomAvailable}
+            setOnlineCourses={setOnlineCourses}
+            resetFilters={() => {
+              resetCourseFilters();
+              resetProfFilters();
+            }}
             ratingFilters={RATING_FILTERS}
-            resetFilters={
-              exploreTab === 0 ? resetCourseFilters : resetProfFilters
-            }
-            courseSearch={exploreTab === 0}
+            courseSearch={courseTab}
           />
         </Column2>
       </ColumnWrapper>

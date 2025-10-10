@@ -28,6 +28,7 @@ export type SearchFilterState = {
   courseTaught: number;
   hasPrereqs: boolean;
   hasRoomAvailable: boolean;
+  onlineCourses: boolean;
 };
 
 export type SearchFilterStateURL = {
