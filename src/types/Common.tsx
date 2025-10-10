@@ -28,6 +28,8 @@ export type SearchFilterState = {
   courseTaught: number;
   hasPrereqs: boolean;
   hasRoomAvailable: boolean;
+  hasOnlineCurrentTerm: boolean;
+  hasOnlineNextTerm: boolean;
 };
 
 export type SearchFilterStateURL = {
@@ -39,6 +41,8 @@ export type SearchFilterStateURL = {
   nextTerm: boolean | null;
   noPrereqs: boolean | null;
   hasRoomAvailable: boolean | null;
+  hasOnlineCurrentTerm: boolean | null;
+  hasOnlineNextTerm: boolean | null;
 };
 
 export type CourseSearchResult = {
@@ -52,6 +56,12 @@ export type CourseSearchResult = {
   terms: number[];
   terms_with_seats: number[];
   has_prereqs: boolean;
+  course?: {
+    term_delivery_modes: Array<{
+      term_id: number;
+      delivery_mode: string;
+    }>;
+  } | null;
 };
 
 export type ProfSearchResult = {
