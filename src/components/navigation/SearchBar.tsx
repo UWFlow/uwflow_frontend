@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { isMobile } from 'react-device-detect';
 import { Layers, Search, Square, User, Users } from 'react-feather';
 import Highlighter from 'react-highlight-words';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -144,6 +145,13 @@ const SearchBar = ({
   useEffect(() => {
     hasMounted.current = true;
   }, []);
+
+  useEffect(() => {
+    if (inputRef.current && isMobile) {
+      setOpen(false);
+      inputRef.current.blur();
+    }
+  }, [inputRef]);
 
   useOnClickOutside(searchBarRef, () => setOpen(false));
 
