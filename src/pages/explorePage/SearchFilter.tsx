@@ -1,12 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { X } from 'react-feather';
 import { useTheme } from 'styled-components';
 
-import DiscreteSlider from 'components/input/DiscreteSlider';
 import DropdownList from 'components/input/DropdownList';
 import MultiSelectButton from 'components/input/MultiSelectButton';
 import RadioButton from 'components/input/RadioButton';
-import { SearchFilterState } from 'types/Common';
+import { SearchFilterState, SearchFilterStateKey } from 'types/Common';
 import {
   formatCourseCode,
   getCurrentTermCode,
@@ -18,8 +17,6 @@ import {
   BoldText,
   CourseFilterDropdown,
   HeaderButtonWrapper,
-  NumRatingsText,
-  NumRatingsWrapper,
   RadioButtonWrapper,
   ResetButton,
   SearchFilterHeader,
@@ -28,6 +25,7 @@ import {
   SearchFilterWrapper,
   XWrapper,
 } from './styles/SearchFilter';
+import RatingsSlider from './RatingSlider';
 
 const courseNumberOptions = [1, 2, 3, 4]
   .map((num) => (
@@ -47,57 +45,43 @@ const nextTermString = termCodeToDate(getNextTermCode());
 type SearchFilterProps = {
   profCourses: string[];
   filterState: SearchFilterState;
-  setCourseCodes: Dispatch<SetStateAction<boolean[]>>;
-  setCurrentTerm: Dispatch<SetStateAction<boolean>>;
-  setNextTerm: Dispatch<SetStateAction<boolean>>;
-  setNumRatings: Dispatch<SetStateAction<number>>;
-  setCourseTaught: Dispatch<SetStateAction<number>>;
-  setHasPrereqs: Dispatch<SetStateAction<boolean>>;
-  setHasRoomAvailable: Dispatch<SetStateAction<boolean>>;
+  setFilterState: Dispatch<SetStateAction<SearchFilterState>>;
   resetFilters: () => void;
-  ratingFilters: number[];
   courseSearch: boolean;
 };
 
 const SearchFilter = ({
   profCourses,
   filterState,
-  setCourseCodes,
-  setCurrentTerm,
-  setNextTerm,
-  setNumRatings,
-  setCourseTaught,
-  setHasPrereqs,
-  setHasRoomAvailable,
+  setFilterState: setFilter,
   resetFilters,
-  ratingFilters,
   courseSearch,
 }: SearchFilterProps) => {
   const theme = useTheme();
 
-  const numRatings = courseSearch
-    ? filterState.numCourseRatings
-    : filterState.numProfRatings;
+  const {
+    courseCodes,
+    currentTerm,
+    nextTerm,
+    courseTaught,
+    numCourseRatings,
+    numProfRatings,
+    hasRoomAvailable,
+  } = filterState;
 
-  const ratingSlider = (
-    <>
-      <NumRatingsWrapper>
-        <SearchFilterText>Min # of ratings</SearchFilterText>
-        <NumRatingsText>
-          &ge; {ratingFilters[numRatings]}{' '}
-          {ratingFilters[numRatings] === 1 ? 'rating' : 'ratings'}
-        </NumRatingsText>
-      </NumRatingsWrapper>
-      <DiscreteSlider
-        numNodes={ratingFilters.length}
-        currentNode={numRatings}
-        color={theme.primary}
-        onUpdate={(values) => setNumRatings(values[0])}
-        showTicks={false}
-        fullWidthMobile
-      />
-    </>
-  );
+  const setFilterState = <K extends SearchFilterStateKey>(
+    key: K,
+    val: SearchFilterState[K],
+  ) => {
+    filterState[key] = val;
+    setFilter({ ...filterState });
+  };
+
+  useEffect(() => {
+    if (!currentTerm && !nextTerm) {
+      setFilterState('hasRoomAvailable', false);
+    }
+  }, []);
 
   return (
     <SearchFilterWrapper>
@@ -110,43 +94,42 @@ const SearchFilter = ({
             <SearchFilterText>Course code</SearchFilterText>
             <MultiSelectButton
               options={courseNumberOptions}
-              selected={filterState.courseCodes}
+              selected={courseCodes}
               onClick={(idx) => {
-                setCourseCodes([
-                  ...filterState.courseCodes.slice(0, idx),
-                  !filterState.courseCodes[idx],
-                  ...filterState.courseCodes.slice(idx + 1),
+                setFilterState('courseCodes', [
+                  ...courseCodes.slice(0, idx),
+                  !courseCodes[idx],
+                  ...courseCodes.slice(idx + 1),
                 ]);
               }}
             />
           </SearchFilterSection>
-          <SearchFilterSection>{ratingSlider}</SearchFilterSection>
+          <SearchFilterSection>
+            <RatingsSlider
+              currentIndex={numCourseRatings}
+              setSlider={(val) => setFilterState('numCourseRatings', val)}
+            />
+          </SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>Offered in</SearchFilterText>
             <RadioButtonWrapper>
               <RadioButton
                 color={theme.primary}
-                selected={filterState.currentTerm}
+                selected={currentTerm}
                 options={[`This term (${currentTermString})`]}
                 margin="8px 16px 0 0"
                 onClick={() => {
-                  setCurrentTerm(!filterState.currentTerm);
-                  if (!filterState.currentTerm && !filterState.nextTerm) {
-                    setHasRoomAvailable(false);
-                  }
+                  setFilterState('currentTerm', !filterState.currentTerm);
                 }}
                 toggle
               />
               <RadioButton
                 color={theme.primary}
-                selected={filterState.nextTerm}
+                selected={nextTerm}
                 options={[`Next term (${nextTermString})`]}
                 margin="8px 0 0 0"
                 onClick={() => {
-                  setNextTerm(!filterState.nextTerm);
-                  if (!filterState.nextTerm && !filterState.currentTerm) {
-                    setHasRoomAvailable(false);
-                  }
+                  setFilterState('nextTerm', !filterState.nextTerm);
                 }}
                 toggle
               />
@@ -154,38 +137,33 @@ const SearchFilter = ({
           </SearchFilterSection>
           <SearchFilterSection style={{ marginTop: '24px' }}>
             <SearchFilterText>Requirements</SearchFilterText>
-            <RadioButtonWrapper>
-              <RadioButton
-                color={theme.primary}
-                selected={!filterState.hasPrereqs}
-                options={['No prerequisites']}
-                margin="8px 16px 0 0"
-                onClick={() => setHasPrereqs(!filterState.hasPrereqs)}
-                toggle
-              />
-            </RadioButtonWrapper>
-
-            {filterState.currentTerm || filterState.nextTerm ? (
+            {(filterState.currentTerm || filterState.nextTerm) && (
               <RadioButtonWrapper style={{ marginTop: '8px' }}>
                 <RadioButton
                   color={theme.primary}
-                  selected={filterState.hasRoomAvailable}
+                  selected={hasRoomAvailable}
                   options={['Seats available']}
                   margin="8px 0 0 0"
                   onClick={() =>
-                    setHasRoomAvailable(!filterState.hasRoomAvailable)
+                    setFilterState(
+                      'hasRoomAvailable',
+                      !filterState.hasRoomAvailable,
+                    )
                   }
                   toggle
                 />
               </RadioButtonWrapper>
-            ) : (
-              filterState.hasRoomAvailable && setHasRoomAvailable(false)
             )}
           </SearchFilterSection>
         </>
       ) : (
         <>
-          <SearchFilterSection>{ratingSlider}</SearchFilterSection>
+          <SearchFilterSection>
+            <RatingsSlider
+              currentIndex={numProfRatings}
+              setSlider={(val) => setFilterState('numProfRatings', val)}
+            />
+          </SearchFilterSection>
           <SearchFilterSection>
             <SearchFilterText>
               Show professors that
@@ -193,12 +171,12 @@ const SearchFilter = ({
               teach:
               <CourseFilterDropdown>
                 <DropdownList
-                  selectedIndex={filterState.courseTaught}
+                  selectedIndex={courseTaught}
                   options={profCourses.map((code) =>
                     code === 'all courses' ? code : formatCourseCode(code),
                   )}
                   color={theme.courses}
-                  onChange={(idx) => setCourseTaught(idx)}
+                  onChange={(idx) => setFilterState('courseTaught', idx)}
                   searchable
                 />
               </CourseFilterDropdown>
