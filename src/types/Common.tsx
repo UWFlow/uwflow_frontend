@@ -1,3 +1,4 @@
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { Moment } from 'moment';
 
 /* Table */
@@ -26,20 +27,14 @@ export type SearchFilterState = {
   currentTerm: boolean;
   nextTerm: boolean;
   courseTaught: number;
-  hasPrereqs: boolean;
   hasRoomAvailable: boolean;
 };
 
-export type SearchFilterStateURL = {
-  exclude: (number | null)[];
-  minCourseRatings: number | null;
-  minProfRatings: number | null;
-  courseTaught: number | null;
-  currentTerm: boolean | null;
-  nextTerm: boolean | null;
-  noPrereqs: boolean | null;
-  hasRoomAvailable: boolean | null;
+export type Nullable<T> = {
+  [K in keyof T]: T[K] | null;
 };
+
+export type SearchFilterStateKey = keyof SearchFilterState;
 
 export type CourseSearchResult = {
   id: number;
