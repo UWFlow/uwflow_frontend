@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { isMobile } from 'react-device-detect';
 import { Layers, Search, Square, User, Users } from 'react-feather';
 import Highlighter from 'react-highlight-words';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -147,7 +146,7 @@ const SearchBar = ({
   }, []);
 
   useEffect(() => {
-    if (inputRef.current && isMobile) {
+    if (inputRef.current && navigator.maxTouchPoints) {
       setOpen(false);
       inputRef.current.blur();
     }
