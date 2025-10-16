@@ -73,8 +73,9 @@ const SearchFilter = ({
     key: K,
     val: SearchFilterState[K],
   ) => {
-    filterState[key] = val;
-    setFilter({ ...filterState });
+    setFilter((prev) => {
+      return { ...prev, key: val };
+    });
   };
 
   useEffect(() => {
