@@ -82,7 +82,7 @@ const SearchFilter = ({
     if (!currentTerm && !nextTerm) {
       setFilterState('hasRoomAvailable', false);
     }
-  }, []);
+  }, [currentTerm, nextTerm]);
 
   return (
     <SearchFilterWrapper>
