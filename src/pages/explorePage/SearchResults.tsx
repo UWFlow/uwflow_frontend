@@ -21,6 +21,7 @@ import { getCurrentTermCode, getNextTermCode } from 'utils/Misc';
 
 import { ResultsError, SearchResultsContent } from './styles/SearchResults';
 import { courseColumns, profColumns } from './ExploreTableData';
+import { RATING_MULTIPLES } from './RatingSlider';
 
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
@@ -56,7 +57,6 @@ type SearchResultsProps = {
   error: boolean;
   exploreTab: number;
   setExploreTab: Dispatch<SetStateAction<number>>;
-  ratingFilters: number[];
   profCourses: string[];
   loading: boolean;
   exploreAll: boolean;
@@ -69,7 +69,6 @@ const SearchResults = ({
   error,
   exploreTab,
   setExploreTab,
-  ratingFilters,
   profCourses,
   loading,
   exploreAll,
@@ -149,7 +148,7 @@ const SearchResults = ({
 
         // Filter by minimum rating requirement
         const meetsRatingThreshold =
-          course.ratings >= ratingFilters[filterState.numCourseRatings];
+          course.ratings >= RATING_MULTIPLES[filterState.numCourseRatings];
 
         // Filter by term availability (this term and/or next term)
         const isOfferedInCurrentTerm =
@@ -159,11 +158,6 @@ const SearchResults = ({
         const isOfferedInNextTerm =
           !filterState.nextTerm ||
           course.terms.some((term) => Number(term) === nextTermCode);
-
-        // Filter by prerequisites requirement
-        const satisfiesPrereqFilter =
-          filterState.hasPrereqs ||
-          (!filterState.hasPrereqs && course.has_prereqs === false);
 
         // Filter by seat availability
         let hasSeatsAvailable = true;
@@ -185,7 +179,6 @@ const SearchResults = ({
           meetsRatingThreshold &&
           isOfferedInCurrentTerm &&
           isOfferedInNextTerm &&
-          satisfiesPrereqFilter &&
           hasSeatsAvailable
         );
       })
@@ -194,7 +187,7 @@ const SearchResults = ({
   const filteredProfs = profs
     ? profs.filter(
         (prof) =>
-          prof.ratings >= ratingFilters[filterState.numProfRatings] &&
+          prof.ratings >= RATING_MULTIPLES[filterState.numProfRatings] &&
           prof.code_name.code &&
           (filterState.courseTaught === 0 ||
             prof.courses.has(profCourses[filterState.courseTaught])),

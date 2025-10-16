@@ -16,7 +16,7 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
-import { SearchFilterState, SearchFilterStateURL } from 'types/Common';
+import { Nullable, SearchFilterState } from 'types/Common';
 
 import { EXPLORE_PAGE_ROUTE } from '../../Routes';
 
@@ -31,8 +31,7 @@ import {
 import SearchFilter from './SearchFilter';
 import SearchResults from './SearchResults';
 
-const NUM_COURSE_CODE_FILTERS = 5;
-const RATING_FILTERS = [0, 1, 5, 10, 20, 50, 75, 100, 200, 500];
+export const NUM_COURSE_CODE_FILTERS = 5;
 
 type ExplorePageContentProps = {
   query: string;
@@ -66,39 +65,19 @@ const ExplorePageContent = ({
       currentTerm: Boolean(pq.currentTerm) || false,
       nextTerm: Boolean(pq.nextTerm) || false,
       courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
-      hasPrereqs: pq.noPrereqs ? !pq.noPrereqs : true,
       hasRoomAvailable: Boolean(pq.hasRoomAvailable) || false,
     };
   };
 
-  const defaultFilterState = getDefaultFilterState(
-    queryString.parse(location.search, {
-      arrayFormat: 'comma',
-    }),
+  const [filterState, setFilterState] = useState<SearchFilterState>(
+    getDefaultFilterState(
+      queryString.parse(location.search, {
+        arrayFormat: 'comma',
+      }),
+    ),
   );
-
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
-  const [courseCodes, setCourseCodes] = useState<boolean[]>(
-    defaultFilterState.courseCodes,
-  );
-  const [numCourseRatings, setNumCourseRatings] = useState(
-    defaultFilterState.numCourseRatings,
-  );
-  const [numProfRatings, setNumProfRatings] = useState(
-    defaultFilterState.numProfRatings,
-  );
-  const [currentTerm, setCurrentTerm] = useState(
-    defaultFilterState.currentTerm,
-  );
-  const [nextTerm, setNextTerm] = useState(defaultFilterState.nextTerm);
-  const [courseTaught, setCourseTaught] = useState(
-    defaultFilterState.courseTaught,
-  );
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
-  const [hasPrereqs, setHasPrereqs] = useState(defaultFilterState.hasPrereqs);
-  const [hasRoomAvailable, setHasRoomAvailable] = useState(
-    defaultFilterState.hasRoomAvailable,
-  );
   const exploreAll = query === '';
 
   useEffect(() => {
@@ -127,39 +106,27 @@ const ExplorePageContent = ({
     setProfCourses(['all courses'].concat(parsedProfCourses));
   }, [data, exploreAll]);
 
-  const filterState: SearchFilterState = {
-    courseCodes,
-    numCourseRatings,
-    numProfRatings,
-    currentTerm,
-    nextTerm,
-    courseTaught,
-    hasPrereqs,
-    hasRoomAvailable,
-  };
-
-  const mapFilterStateToURL = (fs: SearchFilterState): SearchFilterStateURL => {
+  const mapFilterStateToURL = (
+    sf: SearchFilterState,
+  ): Nullable<SearchFilterState> => {
     return {
-      exclude: fs.courseCodes
-        .map((bool, index) => (bool ? null : index))
-        .filter((index) => index !== null),
-      minCourseRatings: fs.numCourseRatings || null,
-      minProfRatings: fs.numProfRatings || null,
-      courseTaught: fs.courseTaught || null,
-      currentTerm: fs.currentTerm || null,
-      nextTerm: fs.nextTerm || null,
-      noPrereqs: !fs.hasPrereqs || null,
-      hasRoomAvailable: fs.hasRoomAvailable || null,
+      courseCodes: sf.courseCodes.some((code) => !code) ? sf.courseCodes : [],
+      numCourseRatings: sf.numCourseRatings !== 0 ? sf.numCourseRatings : null,
+      numProfRatings: sf.numProfRatings !== 0 ? sf.numProfRatings : null,
+      currentTerm: sf.currentTerm ? sf.currentTerm : null,
+      nextTerm: sf.nextTerm ? sf.nextTerm : null,
+      courseTaught: sf.courseTaught !== 0 ? sf.courseTaught : null,
+      hasRoomAvailable: sf.hasRoomAvailable ? sf.hasRoomAvailable : null,
     };
   };
 
   useEffect(() => {
-    const filterStateURL: SearchFilterStateURL = mapFilterStateToURL(
+    const filterStateURL: Nullable<SearchFilterState> = mapFilterStateToURL(
       filterState,
     );
 
     // Add a comma to the end of the URL if there is only one filter, otherwise query-string can't parse single-element arrays
-    const addComma = filterStateURL.exclude.length === 1 ? ',' : '';
+    const addComma = filterStateURL.courseCodes?.length === 1 ? ',' : '';
 
     window.history.replaceState(
       {},
@@ -174,30 +141,7 @@ const ExplorePageContent = ({
         },
       })}${addComma}`,
     );
-  }, [
-    filterState,
-    courseCodes,
-    numCourseRatings,
-    currentTerm,
-    nextTerm,
-    courseTaught,
-    hasPrereqs,
-    hasRoomAvailable,
-  ]);
-
-  const resetCourseFilters = () => {
-    setCourseCodes(Array(NUM_COURSE_CODE_FILTERS).fill(true));
-    setNumCourseRatings(0);
-    setCurrentTerm(false);
-    setNextTerm(false);
-    setHasPrereqs(true);
-    setHasRoomAvailable(false);
-  };
-
-  const resetProfFilters = () => {
-    setNumProfRatings(0);
-    setCourseTaught(0);
-  };
+  }, [filterState]);
 
   return (
     <ExplorePageWrapper>
@@ -218,7 +162,6 @@ const ExplorePageContent = ({
             error={error}
             exploreTab={exploreTab}
             setExploreTab={setExploreTab}
-            ratingFilters={RATING_FILTERS}
             profCourses={profCourses}
             loading={loading}
             exploreAll={exploreAll}
@@ -228,18 +171,9 @@ const ExplorePageContent = ({
           <SearchFilter
             profCourses={profCourses}
             filterState={filterState}
-            setCourseCodes={setCourseCodes}
-            setNumRatings={
-              exploreTab === 0 ? setNumCourseRatings : setNumProfRatings
-            }
-            setCurrentTerm={setCurrentTerm}
-            setNextTerm={setNextTerm}
-            setCourseTaught={setCourseTaught}
-            setHasPrereqs={setHasPrereqs}
-            setHasRoomAvailable={setHasRoomAvailable}
-            ratingFilters={RATING_FILTERS}
-            resetFilters={
-              exploreTab === 0 ? resetCourseFilters : resetProfFilters
+            setFilterState={setFilterState}
+            resetFilters={() =>
+              setFilterState(getDefaultFilterState(queryString.parse('')))
             }
             courseSearch={exploreTab === 0}
           />
