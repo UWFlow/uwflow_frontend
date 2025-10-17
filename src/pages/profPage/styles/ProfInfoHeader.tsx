@@ -76,26 +76,6 @@ export const ProfDescriptionSection = styled.div`
   `}
 `;
 
-export const Description = styled.div<{ ratingBoxWidth: number }>`
-  ${Heading3}
-  position: relative;
-  margin: auto 0;
-  vertical-align: middle;
-  color: ${({ theme }) => theme.dark2};
-
-  ${breakpoint('zero', 'tablet')`
-    margin-bottom: 16px;
-    padding: 0 16px;
-    min-width: 100%;
-  `}
-
-  ${breakpoint('tablet')`
-    margin-top: 48px;
-    max-width: calc(100% - ${({ ratingBoxWidth }: { ratingBoxWidth: number }) =>
-      ratingBoxWidth}px);
-  `}
-`;
-
 export const RatingsSection = styled(FadeIn)<{ ratingBoxHeight: number }>`
   ${breakpoint('zero', 'tablet')`
     width: 100%;
