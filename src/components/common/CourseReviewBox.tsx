@@ -17,7 +17,6 @@ import {
   UpsertReviewMutation,
   UpsertReviewMutationVariables,
 } from 'generated/graphql';
-import _ from 'lodash';
 import { DefaultTheme, useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
