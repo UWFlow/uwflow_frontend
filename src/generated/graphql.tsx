@@ -3556,6 +3556,7 @@ export type Course_Search_Index = {
   prof_ids?: Maybe<Scalars['_int4']>;
   ratings?: Maybe<Scalars['bigint']>;
   terms?: Maybe<Scalars['_int4']>;
+  terms_with_online_sections?: Maybe<Scalars['_int4']>;
   terms_with_seats?: Maybe<Scalars['_int4']>;
   useful?: Maybe<Scalars['numeric']>;
 };
@@ -3615,6 +3616,7 @@ export type Course_Search_Index_Bool_Exp = {
   prof_ids?: Maybe<_Int4_Comparison_Exp>;
   ratings?: Maybe<Bigint_Comparison_Exp>;
   terms?: Maybe<_Int4_Comparison_Exp>;
+  terms_with_online_sections?: Maybe<_Int4_Comparison_Exp>;
   terms_with_seats?: Maybe<_Int4_Comparison_Exp>;
   useful?: Maybe<Numeric_Comparison_Exp>;
 };
@@ -3658,6 +3660,7 @@ export type Course_Search_Index_Order_By = {
   prof_ids?: Maybe<Order_By>;
   ratings?: Maybe<Order_By>;
   terms?: Maybe<Order_By>;
+  terms_with_online_sections?: Maybe<Order_By>;
   terms_with_seats?: Maybe<Order_By>;
   useful?: Maybe<Order_By>;
 };
@@ -3686,6 +3689,8 @@ export enum Course_Search_Index_Select_Column {
   Ratings = 'ratings',
   /** column name */
   Terms = 'terms',
+  /** column name */
+  TermsWithOnlineSections = 'terms_with_online_sections',
   /** column name */
   TermsWithSeats = 'terms_with_seats',
   /** column name */
@@ -3743,6 +3748,7 @@ export type Course_Search_Index_Stream_Cursor_Value_Input = {
   prof_ids?: Maybe<Scalars['_int4']>;
   ratings?: Maybe<Scalars['bigint']>;
   terms?: Maybe<Scalars['_int4']>;
+  terms_with_online_sections?: Maybe<Scalars['_int4']>;
   terms_with_seats?: Maybe<Scalars['_int4']>;
   useful?: Maybe<Scalars['numeric']>;
 };
@@ -3801,6 +3807,7 @@ export type Course_Section = {
   /** An aggregate relationship */
   exams_aggregate: Section_Exam_Aggregate;
   id: Scalars['Int'];
+  is_online: Scalars['Boolean'];
   /** An array relationship */
   meetings: Array<Section_Meeting>;
   /** An aggregate relationship */
@@ -3854,7 +3861,23 @@ export type Course_Section_Aggregate = {
 };
 
 export type Course_Section_Aggregate_Bool_Exp = {
+  bool_and?: Maybe<Course_Section_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: Maybe<Course_Section_Aggregate_Bool_Exp_Bool_Or>;
   count?: Maybe<Course_Section_Aggregate_Bool_Exp_Count>;
+};
+
+export type Course_Section_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: Maybe<Scalars['Boolean']>;
+  filter?: Maybe<Course_Section_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Course_Section_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: Maybe<Scalars['Boolean']>;
+  filter?: Maybe<Course_Section_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Section_Aggregate_Bool_Exp_Count = {
@@ -3942,6 +3965,7 @@ export type Course_Section_Bool_Exp = {
   exams?: Maybe<Section_Exam_Bool_Exp>;
   exams_aggregate?: Maybe<Section_Exam_Aggregate_Bool_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  is_online?: Maybe<Boolean_Comparison_Exp>;
   meetings?: Maybe<Section_Meeting_Bool_Exp>;
   meetings_aggregate?: Maybe<Section_Meeting_Aggregate_Bool_Exp>;
   section_name?: Maybe<String_Comparison_Exp>;
@@ -3976,6 +4000,7 @@ export type Course_Section_Insert_Input = {
   enrollment_total?: Maybe<Scalars['Int']>;
   exams?: Maybe<Section_Exam_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['Int']>;
+  is_online?: Maybe<Scalars['Boolean']>;
   meetings?: Maybe<Section_Meeting_Arr_Rel_Insert_Input>;
   section_name?: Maybe<Scalars['String']>;
   term_id?: Maybe<Scalars['Int']>;
@@ -4064,6 +4089,7 @@ export type Course_Section_Order_By = {
   enrollment_total?: Maybe<Order_By>;
   exams_aggregate?: Maybe<Section_Exam_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
+  is_online?: Maybe<Order_By>;
   meetings_aggregate?: Maybe<Section_Meeting_Aggregate_Order_By>;
   section_name?: Maybe<Order_By>;
   term_id?: Maybe<Order_By>;
@@ -4088,11 +4114,25 @@ export enum Course_Section_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsOnline = 'is_online',
+  /** column name */
   SectionName = 'section_name',
   /** column name */
   TermId = 'term_id',
   /** column name */
   UpdatedAt = 'updated_at',
+}
+
+/** select "course_section_aggregate_bool_exp_bool_and_arguments_columns" columns of table "course_section" */
+export enum Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsOnline = 'is_online',
+}
+
+/** select "course_section_aggregate_bool_exp_bool_or_arguments_columns" columns of table "course_section" */
+export enum Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsOnline = 'is_online',
 }
 
 /** input type for updating data in table "course_section" */
@@ -4102,6 +4142,7 @@ export type Course_Section_Set_Input = {
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  is_online?: Maybe<Scalars['Boolean']>;
   section_name?: Maybe<Scalars['String']>;
   term_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -4185,6 +4226,7 @@ export type Course_Section_Stream_Cursor_Value_Input = {
   enrollment_capacity?: Maybe<Scalars['Int']>;
   enrollment_total?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  is_online?: Maybe<Scalars['Boolean']>;
   section_name?: Maybe<Scalars['String']>;
   term_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -4223,6 +4265,8 @@ export enum Course_Section_Update_Column {
   EnrollmentTotal = 'enrollment_total',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsOnline = 'is_online',
   /** column name */
   SectionName = 'section_name',
   /** column name */
