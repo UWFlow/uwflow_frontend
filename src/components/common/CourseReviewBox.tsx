@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-apollo';
 import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
@@ -155,18 +155,23 @@ const CourseReviewBoxContent = ({
     Record<string, ReviewDisplayData>
   >(initialReviewStates);
 
+  const buildDefaultReviewCallback = useCallback(
+    (a, b) => buildDefaultReview(a, b),
+    [courseReviews],
+  );
+
   useEffect(() => {
     if (allProfs && teaching) {
       const newReviewStates: Record<string, ReviewDisplayData> = {};
       for (const course of courseReviews) {
-        newReviewStates[course.course.code] = buildDefaultReview(
+        newReviewStates[course.course.code] = buildDefaultReviewCallback(
           course.course,
           course.review,
         );
       }
       setReviewStates(newReviewStates);
     }
-  }, [allProfs, teaching, courseReviews]);
+  }, [allProfs, teaching, courseReviews, buildDefaultReviewCallback]);
 
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState<boolean>(
     false,
