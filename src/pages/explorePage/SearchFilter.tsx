@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { X } from 'react-feather';
 import { useTheme } from 'styled-components';
 
@@ -69,20 +69,20 @@ const SearchFilter = ({
     hasRoomAvailable,
   } = filterState;
 
-  const setFilterState = <K extends SearchFilterStateKey>(
-    key: K,
-    val: SearchFilterState[K],
-  ) => {
-    setFilter((prev) => {
-      return { ...prev, key: val };
-    });
-  };
+  const setFilterKeyVal = useCallback(
+    <K extends SearchFilterStateKey>(key: K, val: SearchFilterState[K]) => {
+      setFilter((prev) => {
+        return { ...prev, key: val };
+      });
+    },
+    [setFilter],
+  );
 
   useEffect(() => {
     if (!currentTerm && !nextTerm) {
-      setFilterState('hasRoomAvailable', false);
+      setFilterKeyVal('hasRoomAvailable', false);
     }
-  }, [currentTerm, nextTerm]);
+  }, [currentTerm, nextTerm, setFilterKeyVal]);
 
   return (
     <SearchFilterWrapper>
@@ -97,7 +97,7 @@ const SearchFilter = ({
               options={courseNumberOptions}
               selected={courseCodes}
               onClick={(idx) => {
-                setFilterState('courseCodes', [
+                setFilterKeyVal('courseCodes', [
                   ...courseCodes.slice(0, idx),
                   !courseCodes[idx],
                   ...courseCodes.slice(idx + 1),
@@ -108,7 +108,7 @@ const SearchFilter = ({
           <SearchFilterSection>
             <RatingsSlider
               currentIndex={numCourseRatings}
-              setSlider={(val) => setFilterState('numCourseRatings', val)}
+              setSlider={(val) => setFilterKeyVal('numCourseRatings', val)}
             />
           </SearchFilterSection>
           <SearchFilterSection>
@@ -120,7 +120,7 @@ const SearchFilter = ({
                 options={[`This term (${currentTermString})`]}
                 margin="8px 16px 0 0"
                 onClick={() => {
-                  setFilterState('currentTerm', !filterState.currentTerm);
+                  setFilterKeyVal('currentTerm', !filterState.currentTerm);
                 }}
                 toggle
               />
@@ -130,7 +130,7 @@ const SearchFilter = ({
                 options={[`Next term (${nextTermString})`]}
                 margin="8px 0 0 0"
                 onClick={() => {
-                  setFilterState('nextTerm', !filterState.nextTerm);
+                  setFilterKeyVal('nextTerm', !filterState.nextTerm);
                 }}
                 toggle
               />
@@ -146,7 +146,7 @@ const SearchFilter = ({
                   options={['Seats available']}
                   margin="8px 0 0 0"
                   onClick={() =>
-                    setFilterState(
+                    setFilterKeyVal(
                       'hasRoomAvailable',
                       !filterState.hasRoomAvailable,
                     )
@@ -162,7 +162,7 @@ const SearchFilter = ({
           <SearchFilterSection>
             <RatingsSlider
               currentIndex={numProfRatings}
-              setSlider={(val) => setFilterState('numProfRatings', val)}
+              setSlider={(val) => setFilterKeyVal('numProfRatings', val)}
             />
           </SearchFilterSection>
           <SearchFilterSection>
@@ -177,7 +177,7 @@ const SearchFilter = ({
                     code === 'all courses' ? code : formatCourseCode(code),
                   )}
                   color={theme.courses}
-                  onChange={(idx) => setFilterState('courseTaught', idx)}
+                  onChange={(idx) => setFilterKeyVal('courseTaught', idx)}
                   searchable
                 />
               </CourseFilterDropdown>

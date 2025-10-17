@@ -103,46 +103,52 @@ const CourseReviewBoxContent = ({
     profsTeaching: ReviewProfsFragment['prof'][];
   }
 
-  function buildDefaultReview(
-    course: Course,
-    userReview: ReviewInfoFragment | null,
-  ): ReviewDisplayData {
-    let combinedProfs: ReviewProfsFragment['prof'][] = [];
-    if (allProfs) {
-      // We want to show profs from previous reviews first, then all other profs
-      const reviewedProfessors = teaching[course.id];
+  const buildDefaultReview = useCallback(
+    (
+      course: Course,
+      userReview: ReviewInfoFragment | null,
+    ): ReviewDisplayData => {
+      let combinedProfs: ReviewProfsFragment['prof'][] = [];
+      if (allProfs) {
+        // We want to show profs from previous reviews first, then all other profs
+        const reviewedProfessors = teaching[course.id];
 
-      const ids = new Set(reviewedProfessors?.map((prof) => prof?.id));
+        const ids = new Set(reviewedProfessors?.map((prof) => prof?.id));
 
-      const remaining = allProfs?.filter((prof) => !ids.has(prof.id));
+        const remaining = allProfs?.filter((prof) => !ids.has(prof.id));
 
-      combinedProfs = [...(teaching[course.id] || []), ...remaining];
-    }
+        combinedProfs = [...(teaching[course.id] || []), ...remaining];
+      }
 
-    return {
-      id: course.id,
-      liked: userReview
-        ? userReview.liked !== null
-          ? 1 - userReview.liked
-          : -1
-        : -1,
-      useful: (userReview && userReview.course_useful) || 0,
-      usefulSelected: userReview ? userReview.course_useful !== null : false,
-      easy: (userReview && userReview.course_easy) || 0,
-      easySelected: userReview ? userReview.course_easy !== null : false,
-      courseComment: (userReview && userReview.course_comment) || '',
-      selectedProf: combinedProfs?.findIndex(
-        (prof) => prof && prof.id === userReview?.prof_id,
-      ),
-      clear: (userReview && userReview.prof_clear) || 0,
-      clearSelected: userReview ? userReview.prof_clear !== null : false,
-      engaging: (userReview && userReview.prof_engaging) || 0,
-      engagingSelected: userReview ? userReview.prof_engaging !== null : false,
-      profComment: (userReview && userReview.prof_comment) || '',
-      selectedAnonymous: userReview && userReview.public ? 1 : 0,
-      profsTeaching: combinedProfs || [],
-    };
-  }
+      return {
+        id: course.id,
+        liked: userReview
+          ? userReview.liked !== null
+            ? 1 - userReview.liked
+            : -1
+          : -1,
+        useful: (userReview && userReview.course_useful) || 0,
+        usefulSelected: userReview ? userReview.course_useful !== null : false,
+        easy: (userReview && userReview.course_easy) || 0,
+        easySelected: userReview ? userReview.course_easy !== null : false,
+        courseComment: (userReview && userReview.course_comment) || '',
+        selectedProf: combinedProfs?.findIndex(
+          (prof) => prof && prof.id === userReview?.prof_id,
+        ),
+        clear: (userReview && userReview.prof_clear) || 0,
+        clearSelected: userReview ? userReview.prof_clear !== null : false,
+        engaging: (userReview && userReview.prof_engaging) || 0,
+        engagingSelected: userReview
+          ? userReview.prof_engaging !== null
+          : false,
+        profComment: (userReview && userReview.prof_comment) || '',
+        selectedAnonymous: userReview && userReview.public ? 1 : 0,
+        profsTeaching: combinedProfs || [],
+      };
+    },
+    [allProfs, teaching],
+  );
+
   const initialReviewStates: Record<string, ReviewDisplayData> = {};
   for (const course of courseReviews) {
     initialReviewStates[course.course.code] = buildDefaultReview(
@@ -155,23 +161,18 @@ const CourseReviewBoxContent = ({
     Record<string, ReviewDisplayData>
   >(initialReviewStates);
 
-  const buildDefaultReviewCallback = useCallback(
-    (a, b) => buildDefaultReview(a, b),
-    [courseReviews],
-  );
-
   useEffect(() => {
     if (allProfs && teaching) {
       const newReviewStates: Record<string, ReviewDisplayData> = {};
       for (const course of courseReviews) {
-        newReviewStates[course.course.code] = buildDefaultReviewCallback(
+        newReviewStates[course.course.code] = buildDefaultReview(
           course.course,
           course.review,
         );
       }
       setReviewStates(newReviewStates);
     }
-  }, [allProfs, teaching, courseReviews, buildDefaultReviewCallback]);
+  }, [allProfs, teaching, courseReviews, buildDefaultReview]);
 
   const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState<boolean>(
     false,

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React from 'react';
 import { useTheme } from 'styled-components';
 
 import DiscreteSlider from 'components/input/DiscreteSlider';
