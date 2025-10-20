@@ -143,11 +143,14 @@ const SearchFilter = ({
                 <RadioButtonWrapper style={{ marginTop: '8px' }}>
                   <RadioButton
                     color={theme.primary}
-                    selected={filterState.hasOnlineCourse}
+                    selected={filterState.hasOnlineSection}
                     options={['Online courses']}
                     margin="8px 16px 0 0"
                     onClick={() =>
-                      setOnlineCourses(!filterState.hasOnlineCourse)
+                      setFilterState(
+                        'hasOnlineSection',
+                        !filterState.hasOnlineSection,
+                      )
                     }
                     toggle
                   />

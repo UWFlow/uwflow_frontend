@@ -11896,6 +11896,7 @@ export type CourseSearchFragment = {
   | 'useful'
   | 'terms'
   | 'terms_with_seats'
+  | 'terms_with_online_sections'
   | 'ratings'
   | 'prof_ids'
   | 'liked'
@@ -12699,6 +12700,7 @@ export const CourseSearchFragmentDoc = gql`
     useful
     terms
     terms_with_seats
+    terms_with_online_sections
     ratings
     prof_ids
     liked
