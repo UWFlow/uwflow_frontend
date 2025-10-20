@@ -1,11 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import FadeIn from 'react-fade-in';
 import { DefaultTheme, useTheme } from 'styled-components';
 
 const AnnouncementBanner = () => {
   const theme: DefaultTheme = useTheme();
-
-  const bannerRef = useRef<HTMLDivElement>(null);
 
   // Create a localStorage key based on the banner ID
   const localStorageKey = `banner-dismissed`;

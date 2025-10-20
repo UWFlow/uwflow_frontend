@@ -77,6 +77,7 @@ const ExplorePageContent = ({
       }),
     ),
   );
+
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
   const exploreAll = query === '';

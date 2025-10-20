@@ -5,17 +5,14 @@ import {
   ProfRatingFragment,
   ProfReviewDistributionFragment,
 } from 'generated/graphql';
-import { getCoursePageRoute } from 'Routes';
 
 import RatingBox, {
   RATING_BOX_HEIGHT,
   RATING_BOX_WIDTH,
 } from 'components/display/RatingBox';
-import { formatCourseCode } from 'utils/Misc';
 import { Distribution } from 'utils/Ratings';
 
 import {
-  CourseLink,
   ProfDescriptionSection,
   ProfInfoHeaderWrapper,
   ProfName,
@@ -37,18 +34,6 @@ type ProfInfoHeaderProps = {
 
 const ProfInfoHeader = ({ prof, distributions }: ProfInfoHeaderProps) => {
   const { liked, clear, engaging, filled_count, comment_count } = prof.rating!;
-
-  const profCourses = prof.prof_courses.map(
-    (courseObj) => courseObj.course!.code,
-  );
-  const profCourseLinks = profCourses.map((courseCode, i) => (
-    <span key={courseCode}>
-      <CourseLink to={getCoursePageRoute(courseCode)}>
-        {formatCourseCode(courseCode)}
-      </CourseLink>
-      {i < profCourses.length - 1 && ','}
-    </span>
-  ));
 
   return (
     <ProfInfoHeaderWrapper>
