@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { CourseRequirementsFragment } from 'generated/graphql';
 import { getCoursePageRoute } from 'Routes';
 
-import { COURSE_CODE_REGEX, formatCourseCode } from 'utils/Misc';
+import { formatCourseCode } from 'utils/Misc';
 
 import {
   CourseRequisitesWrapper,
@@ -10,8 +10,6 @@ import {
   GreyText,
   Header,
   LineOfText,
-  ReqInfo,
-  ReqText,
 } from './styles/CourseRequisites';
 
 type CourseRequisitesProps = {
