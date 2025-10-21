@@ -141,7 +141,7 @@ const SearchBar = ({
   }, [selectedResultIndex, selectedResultRef, inputRef]);
 
   useEffect(() => {
-    if (inputRef.current && !isLanding && navigator.maxTouchPoints) {
+    if (inputRef.current && (!isLanding || navigator.maxTouchPoints)) {
       setOpen(false);
       inputRef.current.blur();
     }
