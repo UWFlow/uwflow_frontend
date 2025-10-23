@@ -108,6 +108,7 @@ const SearchResults = ({
       terms: result.terms,
       terms_with_seats: result.terms_with_seats,
       has_prereqs: result.has_prereqs ? result.has_prereqs?.valueOf() : false,
+      terms_with_online_section: result.terms_with_online_sections,
     }));
 
     const newProfs: ProfSearchResult[] = allProfs.map((result) => ({
@@ -173,13 +174,27 @@ const SearchResults = ({
           }
         }
 
+        let hasOnlineSection = true;
+        if (filterState.hasOnlineSection) {
+          if (filterState.currentTerm) {
+            hasOnlineSection = course.terms_with_online_section.some(
+              (term) => Number(term) === currentTermCode,
+            );
+          } else if (filterState.nextTerm) {
+            hasOnlineSection = course.terms_with_online_section.some(
+              (term) => Number(term) === nextTermCode,
+            );
+          }
+        }
+
         // All conditions must be true for the course to be included
         return (
           matchesCodePattern &&
           meetsRatingThreshold &&
           isOfferedInCurrentTerm &&
           isOfferedInNextTerm &&
-          hasSeatsAvailable
+          hasSeatsAvailable &&
+          hasOnlineSection
         );
       })
     : [];

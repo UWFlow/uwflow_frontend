@@ -28,6 +28,7 @@ export type SearchFilterState = {
   nextTerm: boolean;
   courseTaught: number;
   hasRoomAvailable: boolean;
+  hasOnlineSection: boolean;
 };
 
 export type Nullable<T> = {
@@ -46,6 +47,7 @@ export type CourseSearchResult = {
   useful: number;
   terms: number[];
   terms_with_seats: number[];
+  terms_with_online_section: number[];
   has_prereqs: boolean;
 };
 

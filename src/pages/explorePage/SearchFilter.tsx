@@ -53,7 +53,7 @@ type SearchFilterProps = {
 const SearchFilter = ({
   profCourses,
   filterState,
-  setFilterState: setFilter,
+  setFilterState,
   resetFilters,
   courseSearch,
 }: SearchFilterProps) => {
@@ -71,11 +71,11 @@ const SearchFilter = ({
 
   const setFilterKeyVal = useCallback(
     <K extends SearchFilterStateKey>(key: K, val: SearchFilterState[K]) => {
-      setFilter((prev) => {
-        return { ...prev, key: val };
+      setFilterState((prev) => {
+        return { ...prev, [key]: val };
       });
     },
-    [setFilter],
+    [setFilterState],
   );
 
   useEffect(() => {
@@ -139,21 +139,39 @@ const SearchFilter = ({
           <SearchFilterSection style={{ marginTop: '24px' }}>
             <SearchFilterText>Requirements</SearchFilterText>
             {(filterState.currentTerm || filterState.nextTerm) && (
-              <RadioButtonWrapper style={{ marginTop: '8px' }}>
-                <RadioButton
-                  color={theme.primary}
-                  selected={hasRoomAvailable}
-                  options={['Seats available']}
-                  margin="8px 0 0 0"
-                  onClick={() =>
-                    setFilterKeyVal(
-                      'hasRoomAvailable',
-                      !filterState.hasRoomAvailable,
-                    )
-                  }
-                  toggle
-                />
-              </RadioButtonWrapper>
+              <>
+                <RadioButtonWrapper style={{ marginTop: '8px' }}>
+                  <RadioButton
+                    color={theme.primary}
+                    selected={filterState.hasOnlineSection}
+                    options={['Online courses']}
+                    margin="8px 16px 0 0"
+                    onClick={() =>
+                      setFilterKeyVal(
+                        'hasOnlineSection',
+                        !filterState.hasOnlineSection,
+                      )
+                    }
+                    toggle
+                  />
+                </RadioButtonWrapper>
+
+                <RadioButtonWrapper style={{ marginTop: '8px' }}>
+                  <RadioButton
+                    color={theme.primary}
+                    selected={hasRoomAvailable}
+                    options={['Seats available']}
+                    margin="8px 0 0 0"
+                    onClick={() =>
+                      setFilterKeyVal(
+                        'hasRoomAvailable',
+                        !filterState.hasRoomAvailable,
+                      )
+                    }
+                    toggle
+                  />
+                </RadioButtonWrapper>
+              </>
             )}
           </SearchFilterSection>
         </>

@@ -66,6 +66,7 @@ const ExplorePageContent = ({
       nextTerm: Boolean(pq.nextTerm) || false,
       courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
       hasRoomAvailable: Boolean(pq.hasRoomAvailable) || false,
+      hasOnlineSection: Boolean(pq.hasOnlineCourse) || false,
     };
   };
 
@@ -76,6 +77,7 @@ const ExplorePageContent = ({
       }),
     ),
   );
+
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
   const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
   const exploreAll = query === '';
@@ -117,6 +119,7 @@ const ExplorePageContent = ({
       nextTerm: sf.nextTerm ? sf.nextTerm : null,
       courseTaught: sf.courseTaught !== 0 ? sf.courseTaught : null,
       hasRoomAvailable: sf.hasRoomAvailable ? sf.hasRoomAvailable : null,
+      hasOnlineSection: sf.hasOnlineSection ? sf.hasOnlineSection : null,
     };
   };
 
