@@ -140,17 +140,12 @@ const SearchBar = ({
     }
   }, [selectedResultIndex, selectedResultRef, inputRef]);
 
-  const hasMounted = useRef(false);
   useEffect(() => {
-    hasMounted.current = true;
-  }, []);
-
-  useEffect(() => {
-    if (inputRef.current && navigator.maxTouchPoints) {
+    if (inputRef.current && (!isLanding || navigator.maxTouchPoints)) {
       setOpen(false);
       inputRef.current.blur();
     }
-  }, [inputRef]);
+  }, [isLanding, navigator.maxTouchPoints]);
 
   useOnClickOutside(searchBarRef, () => setOpen(false));
 
@@ -375,8 +370,7 @@ const SearchBar = ({
         maxLength={100}
         forwardRef={inputRef}
         onFocus={() => {
-          // Don't show dropdown on initial render
-          if (hasMounted.current) setOpen(true);
+          setOpen(true);
         }}
       />
       {open && renderSearchResults()}
