@@ -167,7 +167,7 @@ class SearchClient {
     const courseCodeSet = new Set<string>([]);
     const courseCodeRatings: { [key: string]: number } = {};
 
-    const courses = parsedSearchData.courses.map((course) => {
+    const courses = (parsedSearchData.courses || []).map((course) => {
       const courseLetters = formatCourseCode(course.code).split(' ')[0];
       courseCodeSet.add(courseLetters);
 
@@ -187,7 +187,7 @@ class SearchClient {
       };
     });
 
-    const profs = parsedSearchData.profs.map((prof) => {
+    const profs = (parsedSearchData.profs || []).map((prof) => {
       return {
         ...prof,
         courses:
