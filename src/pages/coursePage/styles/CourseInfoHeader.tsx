@@ -136,14 +136,7 @@ export const RatingsSection = styled(FadeIn)`
   ${breakpoint('tablet')`
     position: absolute;
     right: 0;
-    bottom: 50%;
-  `}
-`;
-
-export const RatingsCardStack = styled.div<{ ratingBoxHeight: number }>`
-  ${breakpoint('tablet')`
-    height: ${({ ratingBoxHeight }: { ratingBoxHeight: number }) =>
-      ratingBoxHeight}px;
+    bottom: 20%;
   `}
 `;
 

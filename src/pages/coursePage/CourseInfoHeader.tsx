@@ -7,10 +7,7 @@ import {
   CourseReviewDistributionFragment,
 } from 'generated/graphql';
 
-import RatingBox, {
-  RATING_BOX_HEIGHT,
-  RATING_BOX_WIDTH,
-} from 'components/display/RatingBox';
+import RatingBox, { RATING_BOX_WIDTH } from 'components/display/RatingBox';
 import ShortlistStar from 'components/input/ShortlistStar';
 import { formatCourseCode } from 'utils/Misc';
 import { Distribution } from 'utils/Ratings';
@@ -24,7 +21,6 @@ import {
   CourseName,
   CourseNameWrapper,
   Description,
-  RatingsCardStack,
   RatingsSection,
   RedditSearchButton,
   RedditSearchButtonText,
@@ -77,41 +73,39 @@ const CourseInfoHeader = ({
       </CourseCodeAndNameSection>
       <CourseDescriptionSection>
         <RatingsSection>
-          <RatingsCardStack ratingBoxHeight={RATING_BOX_HEIGHT}>
-            <RatingBox
-              numRatings={filled_count}
-              numComments={comment_count}
-              percentages={[
-                {
-                  displayName: 'Likes',
-                  percent: liked,
-                },
-                {
-                  displayName: 'Easy',
-                  percent: easy,
-                  distribution: distributions.easy,
-                  hasDistribution: distributions.easy.hasDistribution,
-                },
-                {
-                  displayName: 'Useful',
-                  percent: useful,
-                  distribution: distributions.useful,
-                  hasDistribution: distributions.useful.hasDistribution,
-                },
-              ]}
-            />
-            <RedditSearchButton
-              href={redditSearchUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Search Reddit for ${redditSearchTerm}`}
-            >
-              <FontAwesomeIcon icon={faRedditAlien} />
-              <RedditSearchButtonText>
-                {`search reddit for '${redditSearchTerm}'`}
-              </RedditSearchButtonText>
-            </RedditSearchButton>
-          </RatingsCardStack>
+          <RatingBox
+            numRatings={filled_count}
+            numComments={comment_count}
+            percentages={[
+              {
+                displayName: 'Likes',
+                percent: liked,
+              },
+              {
+                displayName: 'Easy',
+                percent: easy,
+                distribution: distributions.easy,
+                hasDistribution: distributions.easy.hasDistribution,
+              },
+              {
+                displayName: 'Useful',
+                percent: useful,
+                distribution: distributions.useful,
+                hasDistribution: distributions.useful.hasDistribution,
+              },
+            ]}
+          />
+          <RedditSearchButton
+            href={redditSearchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Search Reddit for ${redditSearchTerm}`}
+          >
+            <FontAwesomeIcon icon={faRedditAlien} />
+            <RedditSearchButtonText>
+              {`search reddit for '${redditSearchTerm}'`}
+            </RedditSearchButtonText>
+          </RedditSearchButton>
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
           {course.description}
