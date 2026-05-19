@@ -2,7 +2,14 @@ import FadeIn from 'react-fade-in';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
-import { Body, Heading1, Heading2, PageContent } from 'constants/Mixins';
+import {
+  Body,
+  BoxShadow,
+  Heading1,
+  Heading2,
+  HoverTransition,
+  PageContent,
+} from 'constants/Mixins';
 import CourseHeader from 'img/course.svg';
 
 export const CourseInfoHeaderWrapper = styled.div`
@@ -131,4 +138,53 @@ export const RatingsSection = styled(FadeIn)`
     right: 0;
     bottom: 50%;
   `}
+`;
+
+export const RatingsCardStack = styled.div<{ ratingBoxHeight: number }>`
+  ${breakpoint('tablet')`
+    height: ${({ ratingBoxHeight }: { ratingBoxHeight: number }) =>
+      ratingBoxHeight}px;
+  `}
+`;
+
+export const RedditSearchButton = styled.a`
+  ${Body}
+  ${BoxShadow}
+  ${HoverTransition('background-color, color')}
+  align-items: center;
+  background-color: ${({ theme }) => theme.white};
+  border-radius: 4px;
+  color: ${({ theme }) => theme.dark2};
+  display: flex;
+  justify-content: center;
+  margin: 12px 32px 0 auto;
+  padding: 10px 12px;
+  text-decoration: none;
+  width: 40%;
+
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.light2};
+    color: ${({ theme }) => theme.primary};
+    cursor: pointer;
+  }
+
+  svg {
+    color: #ff4500;
+    flex: none;
+    font-size: 13px;
+    margin-right: 8px;
+  }
+
+  ${breakpoint('zero', 'tablet')`
+    margin: 12px 16px 24px auto;
+    width: calc(100% - 32px);
+  `}
+`;
+
+export const RedditSearchButtonText = styled.span`
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.25;
+  text-align: center;
 `;
