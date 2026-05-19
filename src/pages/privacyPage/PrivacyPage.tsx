@@ -45,9 +45,9 @@ const PrivacyPage = () => (
         <PageBodyParagraph>
           UW Flow follows a standard procedure of using log files. These files
           log visitors when they visit websites. All hosting companies do this
-          and a part of hosting services&apos; analytics. The information
-          collected by log files include internet protocol (IP) addresses,
-          browser type, Internet Service Provider (ISP), date and time stamp,
+          as a part of hosting services&apos; analytics. The information
+          collected by log files includes internet protocol (IP) addresses,
+          browser type, internet service provider (ISP), date and time stamp,
           referring/exit pages, and possibly the number of clicks. These are not
           linked to any information that is personally identifiable. The purpose
           of the information is for analyzing trends, administering the site,
@@ -73,7 +73,7 @@ const PrivacyPage = () => (
         </PageBodyParagraph>
         <PageBodyHeader>Third Party Privacy Policies</PageBodyHeader>
         <PageBodyParagraph>
-          UW Flow&apos;s Privacy Policy does not apply other software. Thus, we
+          UW Flow&apos;s Privacy Policy does not apply to other software. Thus, we
           are advising you to consult the respective Privacy Policies of these
           third parties for more detailed information. This may include their
           practices and instructions about how to opt-out of certain options.
