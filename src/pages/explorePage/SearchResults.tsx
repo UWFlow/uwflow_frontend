@@ -144,50 +144,41 @@ const SearchResults = ({
 
   const filteredCourses = courses
     ? courses.filter((course) => {
-        // Filter by course code (e.g., 1XX, 2XX)
+        // The seats/online filters only apply to the selected term; if both
+        // term filters are on, the current term takes priority.
+        const requiredTermCode = filterState.currentTerm
+          ? currentTermCode
+          : filterState.nextTerm
+          ? nextTermCode
+          : null;
+
+        const offeredInRequiredTerm = (terms: number[]) =>
+          requiredTermCode === null || terms.includes(requiredTermCode);
+
+        // Course code matches one of the selected levels (e.g. 1XX, 2XX)
         const matchesCodePattern = courseCodeRegex.test(course.code);
 
-        // Filter by minimum rating requirement
+        // Meets the minimum number of ratings
         const meetsRatingThreshold =
           course.ratings >= RATING_MULTIPLES[filterState.numCourseRatings];
 
-        // Filter by term availability (this term and/or next term)
+        // Offered in the term(s) the user asked for
         const isOfferedInCurrentTerm =
-          !filterState.currentTerm ||
-          course.terms.some((term) => Number(term) === currentTermCode);
+          !filterState.currentTerm || course.terms.includes(currentTermCode);
 
         const isOfferedInNextTerm =
-          !filterState.nextTerm ||
-          course.terms.some((term) => Number(term) === nextTermCode);
+          !filterState.nextTerm || course.terms.includes(nextTermCode);
 
-        // Filter by seat availability
-        let hasSeatsAvailable = true;
-        if (filterState.hasRoomAvailable) {
-          if (filterState.currentTerm) {
-            hasSeatsAvailable = course.terms_with_seats.some(
-              (term) => Number(term) === currentTermCode,
-            );
-          } else if (filterState.nextTerm) {
-            hasSeatsAvailable = course.terms_with_seats.some(
-              (term) => Number(term) === nextTermCode,
-            );
-          }
-        }
+        // Has open seats / an online section in the selected term
+        const hasSeatsAvailable =
+          !filterState.hasRoomAvailable ||
+          offeredInRequiredTerm(course.terms_with_seats);
 
-        let hasOnlineSection = true;
-        if (filterState.hasOnlineSection) {
-          if (filterState.currentTerm) {
-            hasOnlineSection = course.terms_with_online_section.some(
-              (term) => Number(term) === currentTermCode,
-            );
-          } else if (filterState.nextTerm) {
-            hasOnlineSection = course.terms_with_online_section.some(
-              (term) => Number(term) === nextTermCode,
-            );
-          }
-        }
+        const hasOnlineSection =
+          !filterState.hasOnlineSection ||
+          offeredInRequiredTerm(course.terms_with_online_section);
 
-        // All conditions must be true for the course to be included
+        // A course is shown only if it passes every active filter
         return (
           matchesCodePattern &&
           meetsRatingThreshold &&
