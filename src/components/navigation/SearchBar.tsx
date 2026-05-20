@@ -382,11 +382,7 @@ const SearchBar = ({
         icon={
           <Search size={20} color={isLanding ? theme.primary : theme.dark3} />
         }
-        rightElement={
-          !open && !searchText ? (
-            <ShortcutBadge>{isMac ? '⌘K' : 'Ctrl+K'}</ShortcutBadge>
-          ) : undefined
-        }
+        rightElement={<ShortcutBadge>{isMac ? '⌘K' : 'Ctrl+K'}</ShortcutBadge>}
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Search for courses, subjects or professors"
