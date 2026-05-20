@@ -11,6 +11,7 @@ export const SearchInput = styled.input<{
   options: TextBoxOptions;
   error: boolean;
   hasIcon: boolean;
+  hasRightElement: boolean;
 }>`
   position: relative;
   border: ${({ options, error, theme }) =>
@@ -32,6 +33,8 @@ export const SearchInput = styled.input<{
   background-color: ${({ options }) =>
     options ? options.backgroundColor : ''};
   padding-left: ${({ hasIcon }) => (hasIcon ? '48px' : 'auto')};
+  padding-right: ${({ hasRightElement }) =>
+    hasRightElement ? '60px' : '16px'};
 
   // ellipsis for long placeholder
   ${({ value }) =>
@@ -76,4 +79,13 @@ export const Icon = styled.div`
   @media only screen and (max-width: 800px) {
     left: 16px;
   }
+`;
+
+export const RightIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  z-index: 3;
+  pointer-events: none;
 `;
