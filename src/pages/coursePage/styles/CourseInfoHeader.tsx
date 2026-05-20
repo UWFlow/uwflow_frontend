@@ -4,11 +4,11 @@ import breakpoint from 'styled-components-breakpoint';
 
 import {
   Body,
-  BoxShadow,
   Heading1,
   Heading2,
   HoverTransition,
   PageContent,
+  Small,
 } from 'constants/Mixins';
 import CourseHeader from 'img/course.svg';
 
@@ -141,43 +141,49 @@ export const RatingsSection = styled(FadeIn)`
 `;
 
 export const RedditSearchButton = styled.a`
-  ${Body}
-  ${BoxShadow}
-  ${HoverTransition('background-color, color')}
+  ${Small}
+  ${HoverTransition(
+    'background-color, color, border-color',
+  )}
   align-items: center;
-  background-color: ${({ theme }) => theme.white};
-  border-radius: 4px;
+  background-color: transparent;
+  border: 1.5px solid ${({ theme }) => theme.light3};
+  border-radius: 20px;
   color: ${({ theme }) => theme.dark2};
   display: flex;
   justify-content: center;
-  margin: 12px 32px 0 auto;
-  padding: 10px 12px;
+  margin: 12px 0 0 auto;
+  padding: 6px 14px;
   text-decoration: none;
-  width: 40%;
+  width: fit-content;
 
   &:hover,
   &:focus {
     background-color: ${({ theme }) => theme.light2};
-    color: ${({ theme }) => theme.primary};
+    border-color: ${({ theme }) => theme.light4};
+    color: ${({ theme }) => theme.dark1};
     cursor: pointer;
+
+    svg {
+      color: #ff4500;
+    }
   }
 
   svg {
-    color: #ff4500;
+    color: ${({ theme }) => theme.dark3};
     flex: none;
-    font-size: 13px;
-    margin-right: 8px;
+    font-size: 14px;
+    margin-right: 6px;
+    ${HoverTransition('color')}
   }
 
   ${breakpoint('zero', 'tablet')`
     margin: 12px 16px 24px auto;
     width: calc(100% - 32px);
+    justify-content: center;
   `}
 `;
 
 export const RedditSearchButtonText = styled.span`
-  font-size: 13px;
-  font-style: italic;
   line-height: 1.25;
-  text-align: center;
 `;
