@@ -228,7 +228,15 @@ const SearchResults = ({
   const resultsToReturn = useMemo(() => {
     let filtered = courseSearch ? filteredCourses : filteredProfs;
 
-    if (tableSortBy.length > 0) {
+    // Sort keys are tab-specific (e.g. `name` only exists on courses, while
+    // `clear` only exists on profs), so skip sorting when the persisted key
+    // isn't present on the current tab's rows.
+    const sortKeyApplies =
+      tableSortBy.length > 0 &&
+      filtered.length > 0 &&
+      tableSortBy[0].id in (filtered[0] as object);
+
+    if (sortKeyApplies) {
       const { id: sortKey, desc } = tableSortBy[0];
 
       filtered = filtered.sort((a: any, b: any) =>
