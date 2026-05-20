@@ -45,7 +45,7 @@ const CourseInfoHeader = ({
 }: CourseInfoHeaderProps) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating!;
   const redditSearchTerm = course.code.replace(/\s+/g, '').toLowerCase();
-  const redditSearchUrl = `https://www.reddit.com/search/?q=${encodeURIComponent(
+  const redditSearchUrl = `https://www.reddit.com/r/uwaterloo/search/?q=${encodeURIComponent(
     redditSearchTerm,
   )}`;
 
