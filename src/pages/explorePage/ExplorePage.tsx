@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
@@ -46,6 +46,7 @@ const FILTER_PARAM = {
   hasRoomAvailable: 'hasRoomAvailable',
   hasOnlineCourse: 'hasOnlineCourse',
   sortBy: 'sortBy',
+  exploreTab: 'tab',
 };
 
 // SearchFilterState -> plain object ready for queryString.stringify.
@@ -66,6 +67,7 @@ const filterStateToUrlQuery = (sf: SearchFilterState) => {
     [FILTER_PARAM.hasRoomAvailable]: sf.hasRoomAvailable || null,
     [FILTER_PARAM.hasOnlineCourse]: sf.hasOnlineSection || null,
     [FILTER_PARAM.sortBy]: sf.sortBy || null,
+    [FILTER_PARAM.exploreTab]: sf.exploreTab === 1 ? 'prof' : null,
   };
 };
 
@@ -93,13 +95,19 @@ const urlQueryToFilterState = (search: string): SearchFilterState => {
     hasRoomAvailable: Boolean(pq[FILTER_PARAM.hasRoomAvailable]),
     hasOnlineSection: Boolean(pq[FILTER_PARAM.hasOnlineCourse]),
     sortBy: (pq[FILTER_PARAM.sortBy] as string) || '',
+    // Falls back to the legacy `?t=p` written by the search bar so deep
+    // links into the profs results still land on the right tab.
+    exploreTab:
+      pq[FILTER_PARAM.exploreTab] === 'prof' ||
+      (!pq[FILTER_PARAM.exploreTab] && (pq.t === 'p' || pq.t === 'prof'))
+        ? 1
+        : 0,
   };
 };
 
 type ExplorePageContentProps = {
   query: string;
   codeSearch: boolean;
-  courseTab: boolean;
   error: boolean;
   loading: boolean;
   data?: ExploreAllQuery | ExploreQuery;
@@ -108,7 +116,6 @@ type ExplorePageContentProps = {
 const ExplorePageContent = ({
   query,
   codeSearch,
-  courseTab,
   data,
   error,
   loading,
@@ -120,7 +127,13 @@ const ExplorePageContent = ({
   );
 
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
-  const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
+  const { exploreTab } = filterState;
+  const setExploreTab: Dispatch<SetStateAction<number>> = (value) => {
+    setFilterState((prev) => ({
+      ...prev,
+      exploreTab: typeof value === 'function' ? value(prev.exploreTab) : value,
+    }));
+  };
   const exploreAll = query === '';
 
   useEffect(() => {
@@ -192,7 +205,12 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setFilterState={setFilterState}
-            resetFilters={() => setFilterState(urlQueryToFilterState(''))}
+            resetFilters={() =>
+              setFilterState((prev) => ({
+                ...urlQueryToFilterState(''),
+                exploreTab: prev.exploreTab,
+              }))
+            }
             courseSearch={exploreTab === 0}
           />
         </Column2>
@@ -221,10 +239,9 @@ const processRawQuery = (query = '', codeOnly = false) => {
 
 const ExplorePage = () => {
   const location = useLocation();
-  const { q, t: type, c: code } = queryString.parse(location.search);
+  const { q, c: code } = queryString.parse(location.search);
 
   const query: string = (q as string) || '';
-  const courseTab: boolean = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
 
   const processedQueryText = processRawQuery(query, codeSearch);
@@ -256,7 +273,6 @@ const ExplorePage = () => {
       <ExplorePageContent
         query={query || ''}
         codeSearch={codeSearch || false}
-        courseTab={courseTab}
         data={data}
         error={!!error}
         loading={loading}

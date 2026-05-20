@@ -30,6 +30,8 @@ export type SearchFilterState = {
   hasRoomAvailable: boolean;
   hasOnlineSection: boolean;
   sortBy: string;
+  // 0 = courses tab, 1 = profs tab
+  exploreTab: number;
 };
 
 export type Nullable<T> = {
