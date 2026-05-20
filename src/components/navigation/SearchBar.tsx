@@ -44,9 +44,7 @@ import {
   UnderlinedText,
 } from './styles/SearchBar';
 
-const isMac =
-  typeof navigator !== 'undefined' &&
-  /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+const isMac = navigator.userAgent.includes('Mac');
 
 type HighlightProps = {
   children: ReactNode;
