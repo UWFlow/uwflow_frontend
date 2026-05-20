@@ -73,12 +73,12 @@ const PrivacyPage = () => (
         </PageBodyParagraph>
         <PageBodyHeader>Third Party Privacy Policies</PageBodyHeader>
         <PageBodyParagraph>
-          UW Flow&apos;s Privacy Policy does not apply to other software. Thus, we
-          are advising you to consult the respective Privacy Policies of these
-          third parties for more detailed information. This may include their
-          practices and instructions about how to opt-out of certain options.
-          You may find a complete list of these Privacy Policies and their links
-          here:{' '}
+          UW Flow&apos;s Privacy Policy does not apply to other software. Thus,
+          we are advising you to consult the respective Privacy Policies of
+          these third parties for more detailed information. This may include
+          their practices and instructions about how to opt-out of certain
+          options. You may find a complete list of these Privacy Policies and
+          their links here:{' '}
           <a
             href="https://facebook.com/about/privacy"
             target="_blank"
