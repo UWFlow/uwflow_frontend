@@ -45,6 +45,7 @@ const FILTER_PARAM = {
   nextTerm: 'nextTerm',
   hasRoomAvailable: 'hasRoomAvailable',
   hasOnlineCourse: 'hasOnlineCourse',
+  sortBy: 'sortBy',
 };
 
 // SearchFilterState -> plain object ready for queryString.stringify.
@@ -64,6 +65,7 @@ const filterStateToUrlQuery = (sf: SearchFilterState) => {
     [FILTER_PARAM.nextTerm]: sf.nextTerm || null,
     [FILTER_PARAM.hasRoomAvailable]: sf.hasRoomAvailable || null,
     [FILTER_PARAM.hasOnlineCourse]: sf.hasOnlineSection || null,
+    [FILTER_PARAM.sortBy]: sf.sortBy || null,
   };
 };
 
@@ -90,6 +92,7 @@ const urlQueryToFilterState = (search: string): SearchFilterState => {
     nextTerm: Boolean(pq[FILTER_PARAM.nextTerm]),
     hasRoomAvailable: Boolean(pq[FILTER_PARAM.hasRoomAvailable]),
     hasOnlineSection: Boolean(pq[FILTER_PARAM.hasOnlineCourse]),
+    sortBy: (pq[FILTER_PARAM.sortBy] as string) || '',
   };
 };
 
@@ -174,6 +177,7 @@ const ExplorePageContent = ({
         <Column1>
           <SearchResults
             filterState={filterState}
+            setFilterState={setFilterState}
             data={data}
             error={error}
             exploreTab={exploreTab}
