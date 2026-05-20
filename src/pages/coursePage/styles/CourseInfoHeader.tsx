@@ -148,7 +148,7 @@ export const RedditSearchButton = styled.a`
   align-items: center;
   background-color: transparent;
   border: 1.5px solid ${({ theme }) => theme.light3};
-  border-radius: 20px;
+  border-radius: 5px;
   color: ${({ theme }) => theme.dark2};
   display: flex;
   justify-content: center;
@@ -156,6 +156,10 @@ export const RedditSearchButton = styled.a`
   padding: 6px 14px;
   text-decoration: none;
   width: fit-content;
+
+  ${breakpoint('tablet')`
+    margin-right: 32px;
+  `}
 
   &:hover,
   &:focus {

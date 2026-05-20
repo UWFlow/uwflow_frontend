@@ -102,7 +102,7 @@ const CourseInfoHeader = ({
             aria-label={`Search Reddit for ${redditSearchTerm}`}
           >
             <FontAwesomeIcon icon={faRedditAlien} />
-            <RedditSearchButtonText>Search on Reddit</RedditSearchButtonText>
+            <RedditSearchButtonText>Search Reddit</RedditSearchButtonText>
           </RedditSearchButton>
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
