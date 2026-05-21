@@ -1,4 +1,5 @@
-@README
+@README.md
+
 ## Skills
 
 This project keeps reusable skills under `.AGENTS/skills/`. Each subdirectory contains a `SKILL.md` describing when and how to use it.
