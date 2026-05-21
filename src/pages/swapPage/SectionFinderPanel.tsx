@@ -2,9 +2,11 @@ import React from 'react';
 import { useQuery } from 'react-apollo';
 import { AlertTriangle, CheckCircle, MousePointer } from 'react-feather';
 import { UserScheduleFragment } from 'generated/graphql';
+import moment from 'moment/moment';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
+import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import {
   GET_COURSE_FOR_SWAP,
@@ -30,6 +32,7 @@ import {
   PanelSectionCount,
   PanelWrapper,
   ProfAnchor,
+  ProfNameText,
   RatingsText,
   SeatsLabel,
   SectionCard,
@@ -141,6 +144,8 @@ const SectionFinderPanel = ({
     skip: !displayCode,
   });
 
+  console.log(data);
+
   if (!displayCode) {
     return (
       <PanelWrapper>
@@ -177,6 +182,7 @@ const SectionFinderPanel = ({
   }
 
   const enrolledSectionId = getEnrolledSectionId(schedule, displayCode || '');
+  const updatedAt = moment.max(sections.map((s) => moment(s.updated_at)));
 
   // Sort sections: enrolled first (query already orders by section_name)
   const sortedSections = [...sections].sort((a, b) => {
@@ -186,132 +192,142 @@ const SectionFinderPanel = ({
   });
 
   return (
-    <PanelWrapper>
-      <PanelHeader>
-        <PanelCourseInfo>
-          <PanelCourseCode>{formatCourseCode(courseData.code)}</PanelCourseCode>
-          <PanelSectionCount>
-            {sections.length} section
-            {sections.length !== 1 ? 's' : ''}
-          </PanelSectionCount>
-          <PanelCourseName>{courseData.name}</PanelCourseName>
-        </PanelCourseInfo>
-        <PanelCloseBtn onClick={onClose} title="Close">
-          ✕
-        </PanelCloseBtn>
-      </PanelHeader>
+    <>
+      <LastUpdatedSchedule
+        updatedAt={updatedAt}
+        fontSize="80%"
+        margin="0 0 8px"
+      />
+      <PanelWrapper>
+        <PanelHeader>
+          <PanelCourseInfo>
+            <PanelCourseCode>
+              {formatCourseCode(courseData.code)}
+            </PanelCourseCode>
+            <PanelSectionCount>
+              {sections.length} section
+              {sections.length !== 1 ? 's' : ''}
+            </PanelSectionCount>
+            <PanelCourseName>{courseData.name}</PanelCourseName>
+          </PanelCourseInfo>
+          <PanelCloseBtn onClick={onClose} title="Close">
+            ✕
+          </PanelCloseBtn>
+        </PanelHeader>
+        <SectionListScroll>
+          {sortedSections.map((section) => {
+            const isEnrolled = section.id === enrolledSectionId;
+            const isFull =
+              section.enrollment_total >= section.enrollment_capacity;
+            const hasConflict =
+              !isEnrolled &&
+              sectionConflictsWithSchedule(
+                section,
+                schedule,
+                selectedCourseCode || '',
+              );
+            const isDisabled = !isEnrolled && (isFull || hasConflict);
 
-      <SectionListScroll>
-        {sortedSections.map((section) => {
-          const isEnrolled = section.id === enrolledSectionId;
-          const isFull =
-            section.enrollment_total >= section.enrollment_capacity;
-          const hasConflict =
-            !isEnrolled &&
-            sectionConflictsWithSchedule(
-              section,
-              schedule,
-              selectedCourseCode || '',
+            const primaryMeeting = section.meetings.find(
+              (m) => (m.days as string[]).length > 0 && !m.is_cancelled,
             );
-          const isDisabled = !isEnrolled && (isFull || hasConflict);
 
-          const primaryMeeting = section.meetings.find(
-            (m) => (m.days as string[]).length > 0 && !m.is_cancelled,
-          );
+            const prof = primaryMeeting?.prof;
+            console.log(prof);
+            const clearPct =
+              prof?.rating?.clear != null
+                ? `${Math.round(prof.rating.clear * 100)}%`
+                : null;
+            const engagingPct =
+              prof?.rating?.engaging != null
+                ? `${Math.round(prof.rating.engaging * 100)}%`
+                : null;
 
-          const prof = primaryMeeting?.prof;
-          const clearPct =
-            prof?.rating?.clear != null
-              ? `${Math.round(prof.rating.clear * 100)}%`
-              : null;
-          const engagingPct =
-            prof?.rating?.engaging != null
-              ? `${Math.round(prof.rating.engaging * 100)}%`
-              : null;
-
-          return (
-            <SectionCard
-              key={section.id}
-              enrolled={isEnrolled}
-              disabled={isDisabled}
-              onMouseEnter={() => !isEnrolled && onHoverSection(section)}
-              onMouseLeave={() => onHoverSection(null)}
-            >
-              <SectionCardTop>
-                <SectionPill>{section.section_name}</SectionPill>
-                {isEnrolled && (
-                  <EnrolledBadge>
-                    <CheckCircle size={13} /> Enrolled
-                  </EnrolledBadge>
-                )}
-                {!isEnrolled && hasConflict && (
-                  <ConflictBadge>
-                    <AlertTriangle size={13} /> Conflicts
-                  </ConflictBadge>
-                )}
-                {!isEnrolled && !hasConflict && isFull && (
-                  <FullBadge>Full</FullBadge>
-                )}
-              </SectionCardTop>
-
-              {section.meetings.map((meeting, i) => {
-                const meetingDays = (meeting.days as string[]).filter(
-                  (d) => ['M', 'T', 'W', 'Th', 'F'].indexOf(d) !== -1,
-                );
-                const isOnline = meeting.is_tba || meetingDays.length === 0;
-                if (isOnline) {
-                  return <SectionTimesText key={i}>ONLINE</SectionTimesText>;
-                }
-                const meetingForDisplay = { ...meeting, days: meetingDays };
-                return (
-                  <React.Fragment key={i}>
-                    <SectionTimesText>
-                      {formatMeetingTime(meetingForDisplay as SwapMeeting)}
-                    </SectionTimesText>
-                    {meeting.location && (
-                      <SectionRoomText>{meeting.location}</SectionRoomText>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-
-              {prof && (
-                <>
-                  <ProfAnchor to={getProfPageRoute(prof.code)}>
-                    {prof.name}
-                  </ProfAnchor>
-                  {(clearPct || engagingPct) && (
-                    <RatingsText>
-                      {clearPct && (
-                        <>
-                          <strong>{clearPct}</strong> clear
-                        </>
-                      )}
-                      {clearPct && engagingPct && '  '}
-                      {engagingPct && (
-                        <>
-                          <strong>{engagingPct}</strong> engaging
-                        </>
-                      )}
-                    </RatingsText>
+            return (
+              <SectionCard
+                key={section.id}
+                enrolled={isEnrolled}
+                disabled={isDisabled}
+                onMouseEnter={() => !isEnrolled && onHoverSection(section)}
+                onMouseLeave={() => onHoverSection(null)}
+              >
+                <SectionCardTop>
+                  <SectionPill>{section.section_name}</SectionPill>
+                  {isEnrolled && (
+                    <EnrolledBadge>
+                      <CheckCircle size={13} /> Enrolled
+                    </EnrolledBadge>
                   )}
-                </>
-              )}
+                  {!isEnrolled && hasConflict && (
+                    <ConflictBadge>
+                      <AlertTriangle size={13} /> Conflicts
+                    </ConflictBadge>
+                  )}
+                  {!isEnrolled && !hasConflict && isFull && (
+                    <FullBadge>Full</FullBadge>
+                  )}
+                </SectionCardTop>
 
-              <SectionCardBottom>
-                <SeatsLabel full={isFull}>
-                  {isFull
-                    ? `0 of ${section.enrollment_capacity} seats`
-                    : `${
-                        section.enrollment_capacity - section.enrollment_total
-                      } of ${section.enrollment_capacity} open`}
-                </SeatsLabel>
-              </SectionCardBottom>
-            </SectionCard>
-          );
-        })}
-      </SectionListScroll>
-    </PanelWrapper>
+                {section.meetings.map((meeting, i) => {
+                  const meetingDays = (meeting.days as string[]).filter(
+                    (d) => ['M', 'T', 'W', 'Th', 'F'].indexOf(d) !== -1,
+                  );
+                  const isOnline = meeting.is_tba || meetingDays.length === 0;
+                  if (isOnline) {
+                    return <SectionTimesText key={i}>ONLINE</SectionTimesText>;
+                  }
+                  const meetingForDisplay = { ...meeting, days: meetingDays };
+                  return (
+                    <React.Fragment key={i}>
+                      <SectionTimesText>
+                        {formatMeetingTime(meetingForDisplay as SwapMeeting)}
+                      </SectionTimesText>
+                      {meeting.location && (
+                        <SectionRoomText>{meeting.location}</SectionRoomText>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+
+                {prof && (
+                  <>
+                    {prof.code ? (
+                      <ProfAnchor to={getProfPageRoute(prof.code)}>
+                        {prof.name}
+                      </ProfAnchor>
+                    ) : (
+                      <ProfNameText>{prof.name}</ProfNameText>
+                    )}
+                    {(clearPct || engagingPct) && (
+                      <RatingsText>
+                        {clearPct && (
+                          <>
+                            <strong>{clearPct}</strong> clear
+                          </>
+                        )}
+                        {clearPct && engagingPct && '  '}
+                        {engagingPct && (
+                          <>
+                            <strong>{engagingPct}</strong> engaging
+                          </>
+                        )}
+                      </RatingsText>
+                    )}
+                  </>
+                )}
+
+                <SectionCardBottom>
+                  <SeatsLabel full={isFull}>
+                    {section.enrollment_total}/{section.enrollment_capacity}{' '}
+                    Enrolled
+                  </SeatsLabel>
+                </SectionCardBottom>
+              </SectionCard>
+            );
+          })}
+        </SectionListScroll>
+      </PanelWrapper>
+    </>
   );
 };
 

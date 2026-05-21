@@ -7,6 +7,7 @@ const COURSE_SECTION_FIELDS = `
   term_id
   enrollment_capacity
   enrollment_total
+  updated_at
   exams {
     date
     day
@@ -121,6 +122,7 @@ export type SwapSection = {
   term_id: number;
   enrollment_capacity: number;
   enrollment_total: number;
+  updated_at: string;
   exams: Array<{
     date: string;
     day: string | null;

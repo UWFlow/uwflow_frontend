@@ -1,6 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 
+import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import { Body, Heading3 } from 'constants/Mixins';
 
 export const PanelWrapper = styled.div`
@@ -167,6 +168,14 @@ export const ProfAnchor = styled(RouterLink)`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+export const ProfNameText = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.dark2};
+  display: inline-block;
+  margin-bottom: 2px;
 `;
 
 export const RatingsText = styled.div`
