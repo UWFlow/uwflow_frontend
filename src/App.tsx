@@ -14,6 +14,7 @@ import {
   LoadablePrivacyPage,
   LoadableProfilePage,
   LoadableProfPage,
+  LoadableSwapPage,
   LoadableWelcomePage,
 } from 'LoadableComponents';
 import {
@@ -25,6 +26,7 @@ import {
   PROF_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
   SHORT_PROF_PAGE_ROUTE,
+  SWAP_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
 } from 'Routes';
 
@@ -162,6 +164,11 @@ const App = () => {
           exact
           path={WELCOME_PAGE_ROUTE}
           component={() => <LoadableWelcomePage />}
+        />
+        <SentryRoute
+          exact
+          path={SWAP_PAGE_ROUTE}
+          component={() => <LoadableSwapPage />}
         />
         <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>

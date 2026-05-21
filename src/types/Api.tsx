@@ -79,6 +79,16 @@ export type ScheduleParseResponse = {
   failed_classes: number[];
 };
 
+export type ParseOnlyScheduleClass = {
+  Number: number;
+  Location: string;
+};
+
+export type ParseOnlyScheduleResponse = {
+  TermId: number;
+  Classes: ParseOnlyScheduleClass[];
+};
+
 export type TranscriptParseResponse = {
   courses_imported: number;
 };

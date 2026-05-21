@@ -18,6 +18,7 @@ import Step1Image from 'img/upload/calendar-step-1.png';
 import Step2Image from 'img/upload/calendar-step-2.png';
 import {
   ErrorResponse,
+  ParseOnlyScheduleResponse,
   ScheduleParseBody,
   ScheduleParseResponse,
 } from 'types/Api';
@@ -59,7 +60,7 @@ const clipboardKeys = {
 };
 
 export type ScheduleUploadModalContentProps = {
-  onAfterUploadSuccess?: () => void;
+  onAfterUploadSuccess?: (data?: ParseOnlyScheduleResponse) => void;
   onSkip?: () => void;
   showSkipStepButton?: boolean;
 };
@@ -104,7 +105,10 @@ const ScheduleUploadModalContent = ({
       setUploadState(UPLOAD_SUCCESSFUL);
       toast(DATA_UPLOAD_SUCCESS);
       if (onAfterUploadSuccess) {
-        onAfterUploadSuccess();
+        const parseOnly = (response as unknown) as ParseOnlyScheduleResponse;
+        onAfterUploadSuccess(
+          parseOnly.TermId !== undefined ? parseOnly : undefined,
+        );
       }
       onSkip();
     } else {

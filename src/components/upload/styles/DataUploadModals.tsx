@@ -24,7 +24,7 @@ export const ContentWrapper = styled(FadeIn)`
   background: white;
   ${BoxShadow}
   padding: 32px;
-  margin: 0 auto;
+  margin: 0;
   border-radius: 4px;
   width: max-content;
 `;
