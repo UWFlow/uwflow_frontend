@@ -7,22 +7,15 @@
 
 ## Backend (highly recommended)
 
-The frontend is mostly useless without a running backend — there is no data to
-render, so most pages will be empty or broken. It is **highly recommended** to
-fork and run the backend before doing frontend development.
+The frontend is mostly useless without a running backend — there is no data to render, so most pages will be empty or broken. It is **highly recommended** to fork and run the backend before doing frontend development.
 
-1. Fork and clone the backend from https://github.com/UWFlow (the `uwflow` repo)
-2. From the backend repo root, run the relevant `make` targets:
+1. Fork and clone the backend from https://github.com/UWFlow/uwflow (the `uwflow` repo)
+2. Reference the documentation in the backend README.md
 
-   - `make setup-contrib` — initialize the database from scratch using
-     migrations and the UW API (one-time, for contributors)
-   - `make start` — start backend services in dev mode (api, postgres, hasura,
-     uw, email)
-   - `make migrate` — apply Hasura migrations (requires the `hasura` CLI)
-   - `make stop` — stop all running services
-   - `make ps` — show status of all services
-   - `make clean` — tear down containers/volumes and reset the environment
-   - `make help` — list all available targets
+All references to the uwflow repo refer to this backend repo. 
 
-   Once running, the backend exposes GraphQL at http://localhost:8080 and the
-   API server at http://localhost:8081, which this frontend talks to.
+## Skills
+
+This project keeps reusable skills under `.AGENTS/skills/`. Each subdirectory contains a `SKILL.md` describing when and how to use it.
+
+Before starting any non-trivial task, list `.AGENTS/skills/` and read the `SKILL.md` of every skill whose description plausibly matches the task. Multiple skills may apply to one task — read all relevant ones before writing code or files. Treat each `SKILL.md` as authoritative for its domain.
