@@ -27,6 +27,7 @@ export const ContentWrapper = styled(FadeIn)`
   margin: 0;
   border-radius: 4px;
   width: max-content;
+  align-items: center;
 `;
 
 export const ContentSteps = styled.div`
