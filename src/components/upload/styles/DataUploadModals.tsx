@@ -28,25 +28,52 @@ export const ContentWrapper = styled(FadeIn)`
   border-radius: 4px;
   width: max-content;
   align-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    padding: 16px;
+  }
 `;
 
 export const ContentSteps = styled.div`
   display: flex;
   height: 100%;
+
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const StepWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    align-items: center;
+  }
 `;
 
 export const ArrowWrapper = styled.div`
   margin: auto;
+
+  @media only screen and (max-width: 800px) {
+    margin: 8px auto;
+    transform: rotate(90deg);
+  }
 `;
 
 export const Header = styled.div`
   ${Heading2}
   margin-bottom: 64px;
+
+  @media only screen and (max-width: 800px) {
+    margin-bottom: 24px;
+    text-align: center;
+  }
 `;
 
 export const InstructionWrapper = styled.div`
@@ -55,6 +82,11 @@ export const InstructionWrapper = styled.div`
   max-width: 300px;
   margin-bottom: 16px;
   min-height: 80px;
+
+  @media only screen and (max-width: 800px) {
+    max-width: 100%;
+    min-height: 0;
+  }
 `;
 
 export const InstructionText = styled.div`
@@ -82,6 +114,14 @@ export const NumberCircle = styled.div`
   border-radius: 32px;
   background: ${({ theme }) => theme.accent};
   padding: 3px 1px 0 0;
+
+  @media only screen and (max-width: 800px) {
+    height: 48px;
+    width: 48px;
+    min-width: 48px;
+    border-radius: 24px;
+    font-size: 24px;
+  }
 `;
 
 export const ScheduleStepPicture = styled.img`
@@ -89,11 +129,22 @@ export const ScheduleStepPicture = styled.img`
   width: 300px;
   background: ${({ theme }) => theme.light4};
   border-radius: 4px;
+
+  @media only screen and (max-width: 800px) {
+    height: auto;
+    width: 100%;
+    max-width: 300px;
+  }
 `;
 
 export const ScheduleStep3Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    align-items: center;
+  }
 `;
 
 export const SchedulePasteBoxWrapper = styled.div<{
@@ -119,6 +170,11 @@ export const SchedulePasteBoxWrapper = styled.div<{
         : theme.red};
 
   ${Hover()}
+
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    max-width: 300px;
+  }
 `;
 
 export const SchedulePasteBox = styled.textarea<{ error: boolean }>`
@@ -180,6 +236,11 @@ export const LongInstructionWrapper = styled.div`
   max-width: 500px;
   margin-bottom: 16px;
   min-height: 64px;
+
+  @media only screen and (max-width: 800px) {
+    max-width: 100%;
+    min-height: 0;
+  }
 `;
 
 export const TranscriptStep1Video = styled.video`
@@ -187,6 +248,12 @@ export const TranscriptStep1Video = styled.video`
   width: 500px;
   background: ${({ theme }) => theme.light4};
   border-radius: 4px;
+
+  @media only screen and (max-width: 800px) {
+    height: auto;
+    width: 100%;
+    max-width: 500px;
+  }
 `;
 
 export const TranscriptUploadBox = styled.div<{ uploadState: DataUploadState }>`
@@ -209,6 +276,12 @@ export const TranscriptUploadBox = styled.div<{ uploadState: DataUploadState }>`
         : theme.red};
 
   ${Hover()}
+
+  @media only screen and (max-width: 800px) {
+    width: 100%;
+    max-width: 500px;
+    height: 240px;
+  }
 `;
 
 export const TranscriptPrivacyPolicyWrapper = styled.div`
@@ -216,6 +289,10 @@ export const TranscriptPrivacyPolicyWrapper = styled.div`
   flex-direction: column;
   margin-top: 16px;
   max-width: 500px;
+
+  @media only screen and (max-width: 800px) {
+    max-width: 100%;
+  }
 `;
 
 export const ErrorMessage = styled.div`
