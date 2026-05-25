@@ -14,8 +14,7 @@
 
 ## 🌐 Interacting with the Backend 🌐
 
-- Run the backend Docker containers, which should start the GraphQL server at [localhost:8080](localhost:8080)
-  and the API server at [localhost:8081](localhost:8081)
+Clone the [backend repository](https://github.com/UWFlow/uwflow) and follow its [README](https://github.com/UWFlow/uwflow/blob/main/README.md)
 
 ## 📚 Documentation 📚
 

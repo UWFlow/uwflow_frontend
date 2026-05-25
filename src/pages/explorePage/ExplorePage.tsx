@@ -192,7 +192,12 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setFilterState={setFilterState}
-            resetFilters={() => setFilterState(urlQueryToFilterState(''))}
+            resetFilters={() =>
+              setFilterState((prev) => ({
+                ...urlQueryToFilterState(''),
+                sortBy: prev.sortBy,
+              }))
+            }
             courseSearch={exploreTab === 0}
           />
         </Column2>

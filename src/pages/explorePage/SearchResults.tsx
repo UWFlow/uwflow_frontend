@@ -47,43 +47,30 @@ const formatSortBy = (sortBy: TableSortBy[]): string => {
   return desc ? `-${id}` : id;
 };
 
-type SortValue = string | number | null;
-type SortValueGetter = (row: any) => SortValue;
-
-// How to pull the comparable value out of a row, one entry per sortable
-// column. Per-tab so an unknown key (e.g. a course `name` sort surviving in
-// the URL while the user is on the profs tab) simply has no entry and we
-// skip sorting instead of crashing on `undefined.localeCompare`.
-const courseSortValue: Record<string, SortValueGetter> = {
-  code: (c) => c.code,
-  name: (c) => c.name,
-  ratings: (c) => c.ratings,
-  useful: (c) => c.useful,
-  easy: (c) => c.easy,
-  liked: (c) => c.liked,
+const compareNull = (a: string | number | null, b: string | number | null) => {
+  if (a === null && b === null) {
+    return 0;
+  }
+  if (a === null) {
+    return 1;
+  }
+  return -1;
 };
 
-const profSortValue: Record<string, SortValueGetter> = {
-  code_name: (p) => p.code_name?.name ?? null,
-  ratings: (p) => p.ratings,
-  clear: (p) => p.clear,
-  engaging: (p) => p.engaging,
-  liked: (p) => p.liked,
-};
-
-// Generic comparator. Nulls always go to the end. Strings default to A→Z
-// (natural reading order); numbers default to largest-first (so e.g. the
-// best-rated course shows up on top by default). `desc` flips whichever
-// direction is the column's default.
-const compare = (a: SortValue, b: SortValue, desc: boolean): number => {
+const numberSort = (a: number | null, b: number | null, desc: boolean) => {
   if (a === null || b === null) {
-    if (a === b) return 0;
-    return a === null ? 1 : -1;
+    return compareNull(a, b);
   }
-  if (typeof a === 'string' && typeof b === 'string') {
-    return desc ? b.localeCompare(a) : a.localeCompare(b);
+
+  return desc ? a - b : b - a;
+};
+
+const stringSort = (a: string | null, b: string | null, desc: boolean) => {
+  if (a === null || b === null) {
+    return compareNull(a, b);
   }
-  return desc ? (a as number) - (b as number) : (b as number) - (a as number);
+
+  return desc ? b.localeCompare(a) : a.localeCompare(b);
 };
 
 type SearchResultsProps = {
@@ -239,19 +226,21 @@ const SearchResults = ({
   const courseSearch = exploreTab === 0;
 
   const resultsToReturn = useMemo(() => {
-    const rows = courseSearch ? filteredCourses : filteredProfs;
-    const sort = tableSortBy[0];
-    const getValue = sort
-      ? (courseSearch ? courseSortValue : profSortValue)[sort.id]
-      : undefined;
+    let filtered = courseSearch ? filteredCourses : filteredProfs;
 
-    // No sort, or the persisted key doesn't belong to this tab — leave the
-    // rows in their natural order.
-    if (!getValue || !sort) return rows;
+    if (tableSortBy.length > 0) {
+      const { id: sortKey, desc } = tableSortBy[0];
 
-    return [...rows].sort((a: any, b: any) =>
-      compare(getValue(a), getValue(b), sort.desc),
-    );
+      filtered = filtered.sort((a: any, b: any) =>
+        ['code', 'name'].includes(sortKey)
+          ? stringSort(a[sortKey], b[sortKey], desc)
+          : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
+          ? stringSort(a[sortKey].name, b[sortKey].name, desc)
+          : numberSort(a[sortKey], b[sortKey], desc),
+      );
+    }
+
+    return filtered;
   }, [courseSearch, filteredCourses, filteredProfs, tableSortBy]);
 
   const tableProps = {
