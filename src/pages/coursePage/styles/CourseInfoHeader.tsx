@@ -2,7 +2,14 @@ import FadeIn from 'react-fade-in';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
-import { Body, Heading1, Heading2, PageContent } from 'constants/Mixins';
+import {
+  Body,
+  Heading1,
+  Heading2,
+  HoverTransition,
+  PageContent,
+  Small,
+} from 'constants/Mixins';
 import CourseHeader from 'img/course.svg';
 
 export const CourseInfoHeaderWrapper = styled.div`
@@ -129,6 +136,58 @@ export const RatingsSection = styled(FadeIn)`
   ${breakpoint('tablet')`
     position: absolute;
     right: 0;
-    bottom: 50%;
+    bottom: 20%;
   `}
+`;
+
+export const RedditSearchButton = styled.a`
+  ${Small}
+  ${HoverTransition(
+    'background-color, color, border-color',
+  )}
+  align-items: center;
+  background-color: transparent;
+  border: 1.5px solid ${({ theme }) => theme.light3};
+  border-radius: 5px;
+  color: ${({ theme }) => theme.dark2};
+  display: flex;
+  justify-content: center;
+  margin: 12px 0 0 auto;
+  padding: 6px 14px;
+  text-decoration: none;
+  width: fit-content;
+
+  ${breakpoint('tablet')`
+    margin-right: 32px;
+  `}
+
+  &:hover,
+  &:focus {
+    background-color: ${({ theme }) => theme.light2};
+    border-color: ${({ theme }) => theme.light4};
+    color: ${({ theme }) => theme.dark1};
+    cursor: pointer;
+
+    svg {
+      color: #ff4500;
+    }
+  }
+
+  svg {
+    color: ${({ theme }) => theme.dark3};
+    flex: none;
+    font-size: 14px;
+    margin-right: 6px;
+    ${HoverTransition('color')}
+  }
+
+  ${breakpoint('zero', 'tablet')`
+    margin: 12px 16px 24px auto;
+    width: calc(100% - 32px);
+    justify-content: center;
+  `}
+`;
+
+export const RedditSearchButtonText = styled.span`
+  line-height: 1.25;
 `;

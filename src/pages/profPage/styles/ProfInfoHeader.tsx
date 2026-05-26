@@ -84,7 +84,7 @@ export const RatingsSection = styled(FadeIn)<{ ratingBoxHeight: number }>`
   ${breakpoint('tablet')`
     position: absolute;
     right: 0;
-    bottom: 50%;
+    bottom: 20%;
   `}
 `;
 

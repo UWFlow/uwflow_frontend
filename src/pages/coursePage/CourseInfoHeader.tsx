@@ -1,4 +1,6 @@
 import React from 'react';
+import { faRedditAlien } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   CourseInfoFragment,
   CourseRatingFragment,
@@ -20,6 +22,8 @@ import {
   CourseNameWrapper,
   Description,
   RatingsSection,
+  RedditSearchButton,
+  RedditSearchButtonText,
   StarAlignmentWrapper,
 } from './styles/CourseInfoHeader';
 
@@ -40,6 +44,10 @@ const CourseInfoHeader = ({
   distributions,
 }: CourseInfoHeaderProps) => {
   const { liked, easy, useful, filled_count, comment_count } = course.rating!;
+  const redditSearchTerm = course.code.replace(/\s+/g, '').toLowerCase();
+  const redditSearchUrl = `https://www.reddit.com/r/uwaterloo/search/?q=${encodeURIComponent(
+    redditSearchTerm,
+  )}`;
 
   return (
     <CourseInfoHeaderWrapper>
@@ -87,6 +95,15 @@ const CourseInfoHeader = ({
               },
             ]}
           />
+          <RedditSearchButton
+            href={redditSearchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Search Reddit for ${redditSearchTerm}`}
+          >
+            <FontAwesomeIcon icon={faRedditAlien} />
+            <RedditSearchButtonText>Search Reddit</RedditSearchButtonText>
+          </RedditSearchButton>
         </RatingsSection>
         <Description ratingBoxWidth={RATING_BOX_WIDTH}>
           {course.description}
