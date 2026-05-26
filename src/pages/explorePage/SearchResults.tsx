@@ -31,6 +31,10 @@ const nextTermCode = getNextTermCode();
 // dirties the URL.
 const DEFAULT_SORT_BY: TableSortBy = { id: 'ratings', desc: false };
 
+// Sort keys that only exist on course rows; applying them to prof rows would
+// produce undefined values and crash stringSort.
+const COURSE_ONLY_SORT_KEYS = ['code', 'name'];
+
 // 'name' -> asc, '-name' -> desc, '' -> default sort.
 const parseSortBy = (sortBy: string): TableSortBy[] => {
   if (!sortBy) return [DEFAULT_SORT_BY];
@@ -231,13 +235,20 @@ const SearchResults = ({
     if (tableSortBy.length > 0) {
       const { id: sortKey, desc } = tableSortBy[0];
 
-      filtered = filtered.sort((a: any, b: any) =>
-        ['code', 'name'].includes(sortKey)
-          ? stringSort(a[sortKey], b[sortKey], desc)
-          : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
-          ? stringSort(a[sortKey].name, b[sortKey].name, desc)
-          : numberSort(a[sortKey], b[sortKey], desc),
-      );
+      // Skip sorting when the active key belongs to the other tab's schema
+      // (e.g. 'name'/'code' stale in filterState after switching to Profs).
+      const keyAppliesToTab =
+        courseSearch || !COURSE_ONLY_SORT_KEYS.includes(sortKey);
+
+      if (keyAppliesToTab) {
+        filtered = filtered.sort((a: any, b: any) =>
+          ['code', 'name'].includes(sortKey)
+            ? stringSort(a[sortKey], b[sortKey], desc)
+            : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
+            ? stringSort(a[sortKey].name, b[sortKey].name, desc)
+            : numberSort(a[sortKey], b[sortKey], desc),
+        );
+      }
     }
 
     return filtered;
