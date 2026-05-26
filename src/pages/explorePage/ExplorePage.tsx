@@ -8,7 +8,7 @@ import {
   ExploreQuery,
   ExploreQueryVariables,
 } from 'generated/graphql';
-import queryString, { ParsedQuery } from 'query-string';
+import queryString from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { MAX_SEARCH_TERMS } from 'constants/Search';
@@ -16,7 +16,7 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
-import { Nullable, SearchFilterState } from 'types/Common';
+import { SearchFilterState } from 'types/Common';
 
 import { EXPLORE_PAGE_ROUTE } from '../../Routes';
 
@@ -32,6 +32,69 @@ import SearchFilter from './SearchFilter';
 import SearchResults from './SearchResults';
 
 export const NUM_COURSE_CODE_FILTERS = 5;
+
+// Single source of truth for the URL query param name behind each filter.
+// Serializing and reading back through the SAME names is what keeps filters
+// alive across browser navigation (e.g. /explore -> /course/xyz -> back).
+const FILTER_PARAM = {
+  excludedCourses: 'exclude',
+  minCourseRatings: 'minCourseRatings',
+  minProfRatings: 'minProfRatings',
+  courseTaught: 'courseTaught',
+  currentTerm: 'currentTerm',
+  nextTerm: 'nextTerm',
+  hasRoomAvailable: 'hasRoomAvailable',
+  hasOnlineCourse: 'hasOnlineCourse',
+  sortBy: 'sortBy',
+};
+
+// SearchFilterState -> plain object ready for queryString.stringify.
+// Falsy filters become null so `skipNull` drops them and the URL stays clean.
+const filterStateToUrlQuery = (sf: SearchFilterState) => {
+  const excludedCourses = sf.courseCodes
+    .map((isIncluded, index) => (isIncluded ? -1 : index))
+    .filter((index) => index >= 0);
+
+  return {
+    [FILTER_PARAM.excludedCourses]:
+      excludedCourses.length > 0 ? excludedCourses : null,
+    [FILTER_PARAM.minCourseRatings]: sf.numCourseRatings || null,
+    [FILTER_PARAM.minProfRatings]: sf.numProfRatings || null,
+    [FILTER_PARAM.courseTaught]: sf.courseTaught || null,
+    [FILTER_PARAM.currentTerm]: sf.currentTerm || null,
+    [FILTER_PARAM.nextTerm]: sf.nextTerm || null,
+    [FILTER_PARAM.hasRoomAvailable]: sf.hasRoomAvailable || null,
+    [FILTER_PARAM.hasOnlineCourse]: sf.hasOnlineSection || null,
+    [FILTER_PARAM.sortBy]: sf.sortBy || null,
+  };
+};
+
+// location.search -> SearchFilterState. Inverse of filterStateToUrlQuery.
+const urlQueryToFilterState = (search: string): SearchFilterState => {
+  const pq = queryString.parse(search, { arrayFormat: 'comma' });
+
+  // query-string gives a string for one value and an array for many, so
+  // normalize to an array before reading the excluded course indices.
+  const rawExcluded = pq[FILTER_PARAM.excludedCourses] || [];
+  const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
+  ([] as string[]).concat(rawExcluded).forEach((index) => {
+    courseCodes[parseInt(index, 10)] = false;
+  });
+
+  const asNumber = (value: any) => parseInt(value, 10) || 0;
+
+  return {
+    courseCodes,
+    numCourseRatings: asNumber(pq[FILTER_PARAM.minCourseRatings]),
+    numProfRatings: asNumber(pq[FILTER_PARAM.minProfRatings]),
+    courseTaught: asNumber(pq[FILTER_PARAM.courseTaught]),
+    currentTerm: Boolean(pq[FILTER_PARAM.currentTerm]),
+    nextTerm: Boolean(pq[FILTER_PARAM.nextTerm]),
+    hasRoomAvailable: Boolean(pq[FILTER_PARAM.hasRoomAvailable]),
+    hasOnlineSection: Boolean(pq[FILTER_PARAM.hasOnlineCourse]),
+    sortBy: (pq[FILTER_PARAM.sortBy] as string) || '',
+  };
+};
 
 type ExplorePageContentProps = {
   query: string;
@@ -51,31 +114,9 @@ const ExplorePageContent = ({
   loading,
 }: ExplorePageContentProps) => {
   const location = useLocation();
-  const getDefaultFilterState = (pq: ParsedQuery): SearchFilterState => {
-    const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
-    if (pq.exclude && pq.exclude instanceof Array) {
-      pq.exclude.forEach((index) => {
-        courseCodes[parseInt(index, 10)] = false;
-      });
-    }
-    return {
-      courseCodes,
-      numCourseRatings: parseInt(pq.minCourseRatings as string, 10) || 0,
-      numProfRatings: parseInt(pq.minProfRatings as string, 10) || 0,
-      currentTerm: Boolean(pq.currentTerm) || false,
-      nextTerm: Boolean(pq.nextTerm) || false,
-      courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
-      hasRoomAvailable: Boolean(pq.hasRoomAvailable) || false,
-      hasOnlineSection: Boolean(pq.hasOnlineCourse) || false,
-    };
-  };
 
   const [filterState, setFilterState] = useState<SearchFilterState>(
-    getDefaultFilterState(
-      queryString.parse(location.search, {
-        arrayFormat: 'comma',
-      }),
-    ),
+    urlQueryToFilterState(location.search),
   );
 
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
@@ -108,41 +149,16 @@ const ExplorePageContent = ({
     setProfCourses(['all courses'].concat(parsedProfCourses));
   }, [data, exploreAll]);
 
-  const mapFilterStateToURL = (
-    sf: SearchFilterState,
-  ): Nullable<SearchFilterState> => {
-    return {
-      courseCodes: sf.courseCodes.some((code) => !code) ? sf.courseCodes : [],
-      numCourseRatings: sf.numCourseRatings !== 0 ? sf.numCourseRatings : null,
-      numProfRatings: sf.numProfRatings !== 0 ? sf.numProfRatings : null,
-      currentTerm: sf.currentTerm ? sf.currentTerm : null,
-      nextTerm: sf.nextTerm ? sf.nextTerm : null,
-      courseTaught: sf.courseTaught !== 0 ? sf.courseTaught : null,
-      hasRoomAvailable: sf.hasRoomAvailable ? sf.hasRoomAvailable : null,
-      hasOnlineSection: sf.hasOnlineSection ? sf.hasOnlineSection : null,
-    };
-  };
-
   useEffect(() => {
-    const filterStateURL: Nullable<SearchFilterState> = mapFilterStateToURL(
-      filterState,
-    );
-
-    // Add a comma to the end of the URL if there is only one filter, otherwise query-string can't parse single-element arrays
-    const addComma = filterStateURL.courseCodes?.length === 1 ? ',' : '';
+    const urlQuery = queryString.stringify(filterStateToUrlQuery(filterState), {
+      arrayFormat: 'comma',
+      skipNull: true,
+    });
 
     window.history.replaceState(
       {},
       '',
-      `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(filterStateURL, {
-        arrayFormat: 'comma',
-        skipNull: true,
-        sort: (a, b) => {
-          if (a === 'exclude') return 1; // Always sort 'exclude' to the end
-          if (b === 'exclude') return -1; // Always sort 'exclude' to the end
-          return 0;
-        },
-      })}${addComma}`,
+      urlQuery ? `${EXPLORE_PAGE_ROUTE}?${urlQuery}` : EXPLORE_PAGE_ROUTE,
     );
   }, [filterState]);
 
@@ -161,6 +177,7 @@ const ExplorePageContent = ({
         <Column1>
           <SearchResults
             filterState={filterState}
+            setFilterState={setFilterState}
             data={data}
             error={error}
             exploreTab={exploreTab}
@@ -176,7 +193,10 @@ const ExplorePageContent = ({
             filterState={filterState}
             setFilterState={setFilterState}
             resetFilters={() =>
-              setFilterState(getDefaultFilterState(queryString.parse('')))
+              setFilterState((prev) => ({
+                ...urlQueryToFilterState(''),
+                sortBy: prev.sortBy,
+              }))
             }
             courseSearch={exploreTab === 0}
           />

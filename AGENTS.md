@@ -1,18 +1,4 @@
-# AGENTS.md
-
-## Setup
-
-- `yarn install` — install dependencies
-- `yarn start` — run dev server at http://localhost:3000
-
-## Backend (highly recommended)
-
-The frontend is mostly useless without a running backend — there is no data to render, so most pages will be empty or broken. It is **highly recommended** to fork and run the backend before doing frontend development.
-
-1. Fork and clone the backend from https://github.com/UWFlow/uwflow (the `uwflow` repo)
-2. Reference the documentation in the backend README.md
-
-All references to the uwflow repo refer to this backend repo. 
+@README.md
 
 ## Skills
 

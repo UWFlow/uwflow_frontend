@@ -29,6 +29,7 @@ export type SearchFilterState = {
   courseTaught: number;
   hasRoomAvailable: boolean;
   hasOnlineSection: boolean;
+  sortBy: string;
 };
 
 export type Nullable<T> = {
