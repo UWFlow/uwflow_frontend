@@ -40,8 +40,11 @@ import {
   SearchBarWrapper,
   SearchResult,
   SearchResultsWrapper,
+  ShortcutBadge,
   UnderlinedText,
 } from './styles/SearchBar';
+
+const isMac = navigator.userAgent.includes('Mac');
 
 type HighlightProps = {
   children: ReactNode;
@@ -131,6 +134,21 @@ const SearchBar = ({
       window.removeEventListener('keydown', handleUserKeyPress);
     };
   }, [selectedResultIndex, searchResults, searchWorker]);
+
+  useEffect(() => {
+    const handleCmdK = (event: globalThis.KeyboardEvent) => {
+      if (
+        (isMac ? event.metaKey : event.ctrlKey) &&
+        event.key.toLowerCase() === 'k'
+      ) {
+        event.preventDefault();
+        inputRef.current?.focus();
+        setOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleCmdK);
+    return () => window.removeEventListener('keydown', handleCmdK);
+  }, []);
 
   useEffect(() => {
     if (selectedResultIndex === -1 && inputRef.current) {
@@ -362,6 +380,7 @@ const SearchBar = ({
         icon={
           <Search size={20} color={isLanding ? theme.primary : theme.dark3} />
         }
+        rightElement={<ShortcutBadge>{isMac ? '⌘K' : 'Ctrl+K'}</ShortcutBadge>}
         text={searchText}
         setText={handleKeyStroke}
         placeholder="Search for courses, subjects or professors"
