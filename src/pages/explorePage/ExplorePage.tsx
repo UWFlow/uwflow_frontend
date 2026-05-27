@@ -95,13 +95,7 @@ const urlQueryToFilterState = (search: string): SearchFilterState => {
     hasRoomAvailable: Boolean(pq[FILTER_PARAM.hasRoomAvailable]),
     hasOnlineSection: Boolean(pq[FILTER_PARAM.hasOnlineCourse]),
     sortBy: (pq[FILTER_PARAM.sortBy] as string) || '',
-    // Falls back to the legacy `?t=p` written by the search bar so deep
-    // links into the profs results still land on the right tab.
-    exploreTab:
-      pq[FILTER_PARAM.exploreTab] === 'prof' ||
-      (!pq[FILTER_PARAM.exploreTab] && (pq.t === 'p' || pq.t === 'prof'))
-        ? 1
-        : 0,
+    exploreTab: pq[FILTER_PARAM.exploreTab] === 'prof' ? 1 : 0,
   };
 };
 
@@ -205,12 +199,7 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setFilterState={setFilterState}
-            resetFilters={() =>
-              setFilterState((prev) => ({
-                ...urlQueryToFilterState(''),
-                exploreTab: prev.exploreTab,
-              }))
-            }
+            resetFilters={() => setFilterState(urlQueryToFilterState(''))}
             courseSearch={exploreTab === 0}
           />
         </Column2>
