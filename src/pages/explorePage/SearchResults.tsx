@@ -50,10 +50,6 @@ const formatSortBy = (sortBy: TableSortBy[]): string => {
 type SortValue = string | number | null;
 type SortValueGetter = (row: any) => SortValue;
 
-// How to pull the comparable value out of a row, one entry per sortable
-// column. Per-tab so an unknown key (e.g. a course `name` sort surviving in
-// the URL while the user is on the profs tab) simply has no entry and we
-// skip sorting instead of crashing on `undefined.localeCompare`.
 const courseSortValue: Record<string, SortValueGetter> = {
   code: (c) => c.code,
   name: (c) => c.name,
@@ -71,10 +67,6 @@ const profSortValue: Record<string, SortValueGetter> = {
   liked: (p) => p.liked,
 };
 
-// Generic comparator. Nulls always go to the end. Strings default to A→Z
-// (natural reading order); numbers default to largest-first (so e.g. the
-// best-rated course shows up on top by default). `desc` flips whichever
-// direction is the column's default.
 const compare = (a: SortValue, b: SortValue, desc: boolean): number => {
   if (a === null || b === null) {
     if (a === b) return 0;
@@ -245,8 +237,6 @@ const SearchResults = ({
       ? (courseSearch ? courseSortValue : profSortValue)[sort.id]
       : undefined;
 
-    // No sort, or the persisted key doesn't belong to this tab — leave the
-    // rows in their natural order.
     if (!getValue || !sort) return rows;
 
     return [...rows].sort((a: any, b: any) =>
