@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
@@ -122,11 +122,8 @@ const ExplorePageContent = ({
 
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
   const { exploreTab } = filterState;
-  const setExploreTab: Dispatch<SetStateAction<number>> = (value) => {
-    setFilterState((prev) => ({
-      ...prev,
-      exploreTab: typeof value === 'function' ? value(prev.exploreTab) : value,
-    }));
+  const setExploreTab = (tab: number) => {
+    setFilterState((prev) => ({ ...prev, exploreTab: tab }));
   };
   const exploreAll = query === '';
 

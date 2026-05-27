@@ -87,7 +87,7 @@ type SearchResultsProps = {
   setFilterState: Dispatch<SetStateAction<SearchFilterState>>;
   error: boolean;
   exploreTab: number;
-  setExploreTab: Dispatch<SetStateAction<number>>;
+  setExploreTab: (tab: number) => void;
   profCourses: string[];
   loading: boolean;
   exploreAll: boolean;
