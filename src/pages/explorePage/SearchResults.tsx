@@ -31,6 +31,10 @@ const nextTermCode = getNextTermCode();
 // dirties the URL.
 const DEFAULT_SORT_BY: TableSortBy = { id: 'ratings', desc: false };
 
+// Sort keys that only exist on course rows; applying them to prof rows would
+// produce undefined values and crash stringSort.
+const COURSE_ONLY_SORT_KEYS = ['code', 'name'];
+
 // 'name' -> asc, '-name' -> desc, '' -> default sort.
 const parseSortBy = (sortBy: string): TableSortBy[] => {
   if (!sortBy) return [DEFAULT_SORT_BY];
