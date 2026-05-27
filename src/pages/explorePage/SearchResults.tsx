@@ -51,30 +51,35 @@ const formatSortBy = (sortBy: TableSortBy[]): string => {
   return desc ? `-${id}` : id;
 };
 
-const compareNull = (a: string | number | null, b: string | number | null) => {
-  if (a === null && b === null) {
-    return 0;
-  }
-  if (a === null) {
-    return 1;
-  }
-  return -1;
+type SortValue = string | number | null;
+type SortValueGetter = (row: any) => SortValue;
+
+const courseSortValue: Record<string, SortValueGetter> = {
+  code: (c) => c.code,
+  name: (c) => c.name,
+  ratings: (c) => c.ratings,
+  useful: (c) => c.useful,
+  easy: (c) => c.easy,
+  liked: (c) => c.liked,
 };
 
-const numberSort = (a: number | null, b: number | null, desc: boolean) => {
-  if (a === null || b === null) {
-    return compareNull(a, b);
-  }
-
-  return desc ? a - b : b - a;
+const profSortValue: Record<string, SortValueGetter> = {
+  code_name: (p) => p.code_name?.name ?? null,
+  ratings: (p) => p.ratings,
+  clear: (p) => p.clear,
+  engaging: (p) => p.engaging,
+  liked: (p) => p.liked,
 };
 
-const stringSort = (a: string | null, b: string | null, desc: boolean) => {
+const compare = (a: SortValue, b: SortValue, desc: boolean): number => {
   if (a === null || b === null) {
-    return compareNull(a, b);
+    if (a === b) return 0;
+    return a === null ? 1 : -1;
   }
-
-  return desc ? b.localeCompare(a) : a.localeCompare(b);
+  if (typeof a === 'string' && typeof b === 'string') {
+    return desc ? b.localeCompare(a) : a.localeCompare(b);
+  }
+  return desc ? (a as number) - (b as number) : (b as number) - (a as number);
 };
 
 type SearchResultsProps = {
@@ -82,7 +87,7 @@ type SearchResultsProps = {
   setFilterState: Dispatch<SetStateAction<SearchFilterState>>;
   error: boolean;
   exploreTab: number;
-  setExploreTab: Dispatch<SetStateAction<number>>;
+  setExploreTab: (tab: number) => void;
   profCourses: string[];
   loading: boolean;
   exploreAll: boolean;
@@ -230,28 +235,17 @@ const SearchResults = ({
   const courseSearch = exploreTab === 0;
 
   const resultsToReturn = useMemo(() => {
-    let filtered = courseSearch ? filteredCourses : filteredProfs;
+    const rows = courseSearch ? filteredCourses : filteredProfs;
+    const sort = tableSortBy[0];
+    const getValue = sort
+      ? (courseSearch ? courseSortValue : profSortValue)[sort.id]
+      : undefined;
 
-    if (tableSortBy.length > 0) {
-      const { id: sortKey, desc } = tableSortBy[0];
+    if (!getValue || !sort) return rows;
 
-      // Skip sorting when the active key belongs to the other tab's schema
-      // (e.g. 'name'/'code' stale in filterState after switching to Profs).
-      const keyAppliesToTab =
-        courseSearch || !COURSE_ONLY_SORT_KEYS.includes(sortKey);
-
-      if (keyAppliesToTab) {
-        filtered = filtered.sort((a: any, b: any) =>
-          ['code', 'name'].includes(sortKey)
-            ? stringSort(a[sortKey], b[sortKey], desc)
-            : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
-            ? stringSort(a[sortKey].name, b[sortKey].name, desc)
-            : numberSort(a[sortKey], b[sortKey], desc),
-        );
-      }
-    }
-
-    return filtered;
+    return [...rows].sort((a: any, b: any) =>
+      compare(getValue(a), getValue(b), sort.desc),
+    );
   }, [courseSearch, filteredCourses, filteredProfs, tableSortBy]);
 
   const tableProps = {

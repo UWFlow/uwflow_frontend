@@ -46,6 +46,7 @@ const FILTER_PARAM = {
   hasRoomAvailable: 'hasRoomAvailable',
   hasOnlineCourse: 'hasOnlineCourse',
   sortBy: 'sortBy',
+  exploreTab: 'tab',
 };
 
 // SearchFilterState -> plain object ready for queryString.stringify.
@@ -66,6 +67,7 @@ const filterStateToUrlQuery = (sf: SearchFilterState) => {
     [FILTER_PARAM.hasRoomAvailable]: sf.hasRoomAvailable || null,
     [FILTER_PARAM.hasOnlineCourse]: sf.hasOnlineSection || null,
     [FILTER_PARAM.sortBy]: sf.sortBy || null,
+    [FILTER_PARAM.exploreTab]: sf.exploreTab === 1 ? 'prof' : null,
   };
 };
 
@@ -93,13 +95,13 @@ const urlQueryToFilterState = (search: string): SearchFilterState => {
     hasRoomAvailable: Boolean(pq[FILTER_PARAM.hasRoomAvailable]),
     hasOnlineSection: Boolean(pq[FILTER_PARAM.hasOnlineCourse]),
     sortBy: (pq[FILTER_PARAM.sortBy] as string) || '',
+    exploreTab: pq[FILTER_PARAM.exploreTab] === 'prof' ? 1 : 0,
   };
 };
 
 type ExplorePageContentProps = {
   query: string;
   codeSearch: boolean;
-  courseTab: boolean;
   error: boolean;
   loading: boolean;
   data?: ExploreAllQuery | ExploreQuery;
@@ -108,7 +110,6 @@ type ExplorePageContentProps = {
 const ExplorePageContent = ({
   query,
   codeSearch,
-  courseTab,
   data,
   error,
   loading,
@@ -120,7 +121,10 @@ const ExplorePageContent = ({
   );
 
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
-  const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
+  const { exploreTab } = filterState;
+  const setExploreTab = (tab: number) => {
+    setFilterState((prev) => ({ ...prev, exploreTab: tab }));
+  };
   const exploreAll = query === '';
 
   useEffect(() => {
@@ -192,12 +196,7 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setFilterState={setFilterState}
-            resetFilters={() =>
-              setFilterState((prev) => ({
-                ...urlQueryToFilterState(''),
-                sortBy: prev.sortBy,
-              }))
-            }
+            resetFilters={() => setFilterState(urlQueryToFilterState(''))}
             courseSearch={exploreTab === 0}
           />
         </Column2>
@@ -226,10 +225,9 @@ const processRawQuery = (query = '', codeOnly = false) => {
 
 const ExplorePage = () => {
   const location = useLocation();
-  const { q, t: type, c: code } = queryString.parse(location.search);
+  const { q, c: code } = queryString.parse(location.search);
 
   const query: string = (q as string) || '';
-  const courseTab: boolean = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
 
   const processedQueryText = processRawQuery(query, codeSearch);
@@ -261,7 +259,6 @@ const ExplorePage = () => {
       <ExplorePageContent
         query={query || ''}
         codeSearch={codeSearch || false}
-        courseTab={courseTab}
         data={data}
         error={!!error}
         loading={loading}
