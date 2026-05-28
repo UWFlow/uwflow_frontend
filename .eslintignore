@@ -7,6 +7,8 @@ scripts/**
 
 Dockerfile
 LICENSE
+tailwind.config.js
 *.lock
 *.json
 *.md
+*.css
