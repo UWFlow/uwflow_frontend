@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import FadeIn from 'react-fade-in';
+import { X } from 'lucide-react';
 import { DefaultTheme, useTheme } from 'styled-components';
+
+import { Button } from 'components/ui/button';
 
 const AnnouncementBanner = () => {
   const theme: DefaultTheme = useTheme();
@@ -38,18 +41,15 @@ const AnnouncementBanner = () => {
             announcement here!
           </a>
         </div>
-        <button
-          style={{
-            background: 'none',
-            fontSize: '20px',
-            opacity: '50%',
-            border: 'none',
-            cursor: 'pointer',
-          }}
+        <Button
+          aria-label="Dismiss announcement"
+          className="h-8 w-8 shrink-0 text-foreground/60 hover:text-foreground"
+          size="icon"
+          variant="ghost"
           onClick={handleDismiss}
         >
-          x
-        </button>
+          <X aria-hidden="true" size={18} />
+        </Button>
       </div>
     </FadeIn>
   );

@@ -295,6 +295,27 @@ module.exports = function(webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
+        '@radix-ui/react-slot$': path.join(
+          paths.appNodeModules,
+          '@radix-ui/react-slot/dist/index.js'
+        ),
+        '@radix-ui/react-compose-refs$': path.join(
+          paths.appNodeModules,
+          '@radix-ui/react-compose-refs/dist/index.js'
+        ),
+        'class-variance-authority$': path.join(
+          paths.appNodeModules,
+          'class-variance-authority/dist/index.js'
+        ),
+        clsx$: path.join(paths.appNodeModules, 'clsx/dist/clsx.js'),
+        'lucide-react$': path.join(
+          paths.appNodeModules,
+          'lucide-react/dist/cjs/lucide-react.js'
+        ),
+        'tailwind-merge$': path.join(
+          paths.appNodeModules,
+          'tailwind-merge/dist/index.js'
+        ),
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
           'react-dom$': 'react-dom/profiling',
