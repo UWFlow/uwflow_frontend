@@ -78,4 +78,11 @@ module.exports = {
     browser: true,
   },
   plugins: ['simple-import-sort'],
+  overrides: [
+    {
+      // Config files are plain JS, not part of the TS project
+      files: ['*.config.js', '*.config.ts', 'vite.config.ts'],
+      parserOptions: { project: null },
+    },
+  ],
 };

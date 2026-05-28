@@ -16,6 +16,8 @@ import SearchProvider from 'search/SearchProvider';
 
 import './sentry';
 
+import './tailwind.css';
+
 const StartApp = () => {
   const store = configureStore();
 
