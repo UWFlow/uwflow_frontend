@@ -1,4 +1,4 @@
-import { defaultDataIdFromObject, InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
@@ -7,6 +7,8 @@ import { HttpLink } from 'apollo-link-http';
 
 import { GRAPHQL_ENDPOINT } from 'constants/Api';
 import { logOut } from 'utils/Auth';
+
+import { getApolloDataId } from './cacheId';
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -51,24 +53,7 @@ const link = ApolloLink.from([
 ]);
 
 const cache = new InMemoryCache({
-  dataIdFromObject: (object) => {
-    switch (object.__typename) {
-      case 'course_search_index':
-        return `${object.course_id}`;
-      case 'prof_search_index':
-        return `${object.prof_id}`;
-      case 'queue_section_subscribed':
-        return `${object.section_id}:${object.user_id}`;
-      case 'user_shortlist':
-        return `${object.course_id}:${object.user_id}`;
-      case 'user_schedule':
-        return `${object.user_id}:${object.section.id}`;
-      case 'user_course_taken':
-        return `${object.term_id}:${object.course_id}`;
-      default:
-        return defaultDataIdFromObject(object);
-    }
-  },
+  dataIdFromObject: getApolloDataId,
 });
 
 const client = new ApolloClient({
