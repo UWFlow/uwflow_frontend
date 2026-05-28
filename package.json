@@ -22,6 +22,7 @@
     "apollo-link-http": "^1.5.16",
     "class-variance-authority": "^0.7",
     "clsx": "^2.1",
+    "events": "^3.3.0",
     "fuzzysort": "^1.1.4",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",

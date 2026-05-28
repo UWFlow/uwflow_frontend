@@ -5,7 +5,14 @@ import { defineConfig } from 'vite';
 const src = (dir: string) => path.resolve(__dirname, `src/${dir}`);
 
 export default defineConfig({
-  plugins: [react({ jsxRuntime: 'classic' })],
+  plugins: [
+    react({
+      jsxRuntime: 'classic',
+      // Web workers have no `window`; exclude them so the React Refresh
+      // preamble (which references window) is not injected into worker bundles.
+      exclude: /\.worker\.[tj]sx?$/,
+    }),
+  ],
   resolve: {
     // Vite's default puts .mjs first, but graphql-tag's src/index.js uses CJS
     // require() and accidentally loads graphql/language/parser.mjs (ESM) instead
