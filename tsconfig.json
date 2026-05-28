@@ -15,7 +15,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "codegen.js", "vite.config.ts"]
 }

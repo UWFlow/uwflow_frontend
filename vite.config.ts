@@ -16,6 +16,8 @@ export default defineConfig({
         find: /^graphql\/(queries|mutations|fragments|apollo\.js)(.*)/,
         replacement: `${src('graphql')}/$1$2`,
       },
+      // shadcn/ui convention: @/foo → src/foo
+      { find: '@/', replacement: `${src('')}/` },
       { find: 'App', replacement: src('App') },
       { find: 'browserhistory', replacement: src('browserhistory') },
       { find: 'components', replacement: src('components') },

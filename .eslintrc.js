@@ -24,7 +24,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', {
       devDependencies: ['vite.config.ts', '**/*.config.ts', '**/*.test.ts', '**/*.spec.ts'],
     }],
-    'import/no-unresolved': ['error', { ignore: ['\\?worker$'] }],
+    'import/no-unresolved': ['error', { ignore: ['\\?worker$', '^@/'] }],
     'import/first': 'error',
     'import/newline-after-import': 'error',
     'import/no-duplicates': 'error',
