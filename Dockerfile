@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM node:16-alpine AS builder
+FROM node:18-alpine AS builder
 WORKDIR /work
 COPY . .
 RUN yarn install
