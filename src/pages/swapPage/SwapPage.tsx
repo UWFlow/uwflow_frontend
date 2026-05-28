@@ -93,14 +93,7 @@ const SwapPage = () => {
         )}
       </Helmet>
 
-      <SwapCalendar
-        schedule={schedule}
-        refetchAll={
-          isLoggedIn
-            ? () => refetch({ id: Number(localStorage.getItem('user_id')) })
-            : undefined
-        }
-      />
+      <SwapCalendar schedule={schedule} />
 
       {/* Upload overlay — shown when no schedule is available */}
       <div

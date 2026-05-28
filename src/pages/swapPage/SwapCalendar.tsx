@@ -1,10 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { ApolloQueryResult } from 'apollo-client';
-import {
-  GetUserQuery,
-  GetUserQueryVariables,
-  UserScheduleFragment,
-} from 'generated/graphql';
+import { UserScheduleFragment } from 'generated/graphql';
 
 import { SwapSection } from 'graphql/queries/course/SwapCourse';
 import {
@@ -142,12 +137,9 @@ const buildGhostBlocks = (section: SwapSection | null): BlockPos[] =>
 
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
-  refetchAll?: (
-    variables?: GetUserQueryVariables,
-  ) => Promise<ApolloQueryResult<GetUserQuery>>;
 };
 
-const SwapCalendar = ({ schedule, refetchAll }: SwapCalendarProps) => {
+const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
   const thisTermCode = getCurrentTermCode();
   const nextTermCode = getNextTermCode();
