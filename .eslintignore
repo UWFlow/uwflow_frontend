@@ -1,6 +1,9 @@
 **/node_modules/**
 public/**
 build/**
+config/**
+coverage/**
+scripts/**
 
 Dockerfile
 LICENSE
