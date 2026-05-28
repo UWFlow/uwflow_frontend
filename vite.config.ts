@@ -12,6 +12,17 @@ export default defineConfig({
       // preamble (which references window) is not injected into worker bundles.
       exclude: /\.worker\.[tj]sx?$/,
     }),
+    // @vitejs/plugin-react's refresh-runtime.js references `window` at module
+    // scope with no guard. When bundled into the search worker IIFE, `window`
+    // is undefined. Prepend a shim so it resolves to globalThis instead.
+    {
+      name: 'worker-safe-react-refresh',
+      enforce: 'post',
+      transform(code: string, id: string) {
+        if (!id.includes('refresh-runtime.js')) return undefined;
+        return `const window = typeof globalThis.window !== "undefined" ? globalThis.window : globalThis;\n${code}`;
+      },
+    },
   ],
   resolve: {
     // Vite's default puts .mjs first, but graphql-tag's src/index.js uses CJS
@@ -52,6 +63,6 @@ export default defineConfig({
     sourcemap: true,
   },
   server: {
-    port: 3000,
+    port: 3001,
   },
 });
