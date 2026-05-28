@@ -7,12 +7,11 @@ import App from 'App';
 import { history } from 'browserhistory';
 import { configureStore } from 'Store';
 import { ThemeProvider } from 'styled-components';
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import SearchWorker from 'worker-loader!search/search.worker';
 
 import ModalProvider from 'components/modal/ModalProvider';
 import Theme from 'constants/GlobalTheme';
 import client from 'graphql/apollo.js';
+import SearchWorker from 'search/search.worker?worker';
 import SearchProvider from 'search/SearchProvider';
 
 import './sentry';

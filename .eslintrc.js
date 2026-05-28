@@ -21,6 +21,10 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'import/extensions': 'off',
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: ['vite.config.ts', '**/*.config.ts', '**/*.test.ts', '**/*.spec.ts'],
+    }],
+    'import/no-unresolved': ['error', { ignore: ['\\?worker$'] }],
     'import/first': 'error',
     'import/newline-after-import': 'error',
     'import/no-duplicates': 'error',

@@ -5,10 +5,9 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import SearchWorker from 'worker-loader!search/search.worker';
 
 import { LAST_INDEXED_ID, SEARCH_DATA_ID } from 'constants/Search';
+import SearchWorker from 'search/search.worker?worker';
 import { millisecondsPerDay } from 'utils/Misc';
 
 type SearchContextType = {
