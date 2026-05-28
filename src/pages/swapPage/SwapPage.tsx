@@ -2,28 +2,22 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
-import {
-  GetUserQuery,
-  GetUserQueryVariables,
-  UserScheduleFragment,
-} from 'generated/graphql';
+import { UserScheduleFragment } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
 import { RootState } from 'data/reducers/RootReducer';
 import {
   GET_SECTIONS_BY_CLASS_NUMBERS,
-  GetSectionsByClassNumbersQuery,
+  GET_USER_SCHEDULE,
 } from 'graphql/queries/course/SwapCourse';
-import { GET_USER } from 'graphql/queries/user/User';
 import { ParseOnlyScheduleResponse } from 'types/Api';
 
-import {
-  ScheduleImportCard,
-  ScheduleImportOverlay,
-  SwapPageWrapper,
-} from './styles/SwapPage';
 import SwapCalendar from './SwapCalendar';
+
+type GetUserScheduleQuery = {
+  user: Array<{ id: number; schedule: UserScheduleFragment['schedule'] }>;
+};
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
@@ -32,72 +26,63 @@ const SwapPage = () => {
     setEphemeralParseData,
   ] = useState<ParseOnlyScheduleResponse | null>(null);
 
-  const { loading, data, refetch } = useQuery<
-    GetUserQuery,
-    GetUserQueryVariables
-  >(GET_USER, {
-    variables: { id: Number(localStorage.getItem('user_id')) },
-    skip: !isLoggedIn,
-  });
-
-  const { loading: sectionsLoading, data: sectionsData } = useQuery<
-    GetSectionsByClassNumbersQuery
-  >(GET_SECTIONS_BY_CLASS_NUMBERS, {
-    variables: {
-      classNumbers: ephemeralParseData?.Classes.map((c) => c.Number) ?? [],
-      termId: ephemeralParseData?.TermId ?? 0,
+  const { loading, data, refetch } = useQuery<GetUserScheduleQuery>(
+    GET_USER_SCHEDULE,
+    {
+      variables: { id: Number(localStorage.getItem('user_id')) },
+      skip: !isLoggedIn,
     },
-    skip: !ephemeralParseData || isLoggedIn,
-  });
+  );
+
+  const { loading: sectionsLoading, data: sectionsData } = useQuery(
+    GET_SECTIONS_BY_CLASS_NUMBERS,
+    {
+      variables: {
+        classNumbers: ephemeralParseData?.Classes.map((c) => c.Number) ?? [],
+        termId: ephemeralParseData?.TermId ?? 0,
+      },
+      skip: !ephemeralParseData || isLoggedIn,
+    },
+  );
 
   const ephemeralSchedule = useMemo<
     UserScheduleFragment['schedule'] | null
   >(() => {
     if (!sectionsData?.course_section) return null;
-    return sectionsData.course_section.map((section) => ({
+    return sectionsData.course_section.map((section: unknown) => ({
       section,
     })) as UserScheduleFragment['schedule'];
   }, [sectionsData]);
 
-  const user = isLoggedIn ? data?.user[0] : null;
-  const schedule = isLoggedIn ? user?.schedule ?? [] : ephemeralSchedule ?? [];
+  const schedule = isLoggedIn
+    ? data?.user[0]?.schedule ?? []
+    : ephemeralSchedule ?? [];
   const hasSchedule = schedule.length > 0;
 
   useEffect(() => {
-    if (!hasSchedule) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = hasSchedule ? '' : 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
   }, [hasSchedule]);
 
-  if (isLoggedIn && (loading || !data)) {
-    return (
-      <SwapPageWrapper>
-        <Helmet>
-          <title>Section Swap - UW Flow</title>
-        </Helmet>
-        <LoadingSpinner />
-      </SwapPageWrapper>
-    );
-  }
+  const isLoading =
+    (isLoggedIn && (loading || !data)) ||
+    (!isLoggedIn && !!ephemeralParseData && sectionsLoading);
 
-  if (!isLoggedIn && ephemeralParseData && sectionsLoading) {
+  if (isLoading) {
     return (
-      <SwapPageWrapper>
+      <div className="relative min-h-screen bg-gray-50">
         <Helmet>
           <title>Section Swap - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
-      </SwapPageWrapper>
+      </div>
     );
   }
 
   return (
-    <SwapPageWrapper>
+    <div className="relative min-h-screen bg-gray-50">
       <Helmet>
         <title>Section Swap - UW Flow</title>
         {hasSchedule && (
@@ -107,26 +92,36 @@ const SwapPage = () => {
           />
         )}
       </Helmet>
+
       <SwapCalendar
         schedule={schedule}
-        refetchAll={isLoggedIn ? refetch : undefined}
+        refetchAll={
+          isLoggedIn
+            ? () => refetch({ id: Number(localStorage.getItem('user_id')) })
+            : undefined
+        }
       />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <ScheduleImportOverlay visible={!hasSchedule}>
-          <ScheduleImportCard>
-            <ScheduleUploadModalContent
-              onAfterUploadSuccess={
-                isLoggedIn
-                  ? () =>
-                      refetch({ id: Number(localStorage.getItem('user_id')) })
-                  : (parseData) => parseData && setEphemeralParseData(parseData)
-              }
-              showSkipStepButton={false}
-            />
-          </ScheduleImportCard>
-        </ScheduleImportOverlay>
+
+      {/* Upload overlay — shown when no schedule is available */}
+      <div
+        className={[
+          'fixed inset-0 z-10 flex items-start justify-center overflow-y-auto transition-opacity duration-300',
+          'bg-white/55 backdrop-blur-sm',
+          hasSchedule ? 'pointer-events-none opacity-0' : 'opacity-100',
+        ].join(' ')}
+      >
+        <div className="mt-36 flex justify-center">
+          <ScheduleUploadModalContent
+            onAfterUploadSuccess={
+              isLoggedIn
+                ? () => refetch({ id: Number(localStorage.getItem('user_id')) })
+                : (parseData) => parseData && setEphemeralParseData(parseData)
+            }
+            showSkipStepButton={false}
+          />
+        </div>
       </div>
-    </SwapPageWrapper>
+    </div>
   );
 };
 

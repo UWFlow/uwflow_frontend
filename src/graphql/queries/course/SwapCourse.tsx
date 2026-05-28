@@ -1,5 +1,17 @@
 import gql from 'graphql-tag';
 
+import UserFragment from 'graphql/fragments/UserFragment';
+
+export const GET_USER_SCHEDULE = gql`
+  query getUserSchedule($id: Int) {
+    user(where: { id: { _eq: $id } }) {
+      id
+      ...UserSchedule
+    }
+  }
+  ${UserFragment.userSchedule}
+`;
+
 const COURSE_SECTION_FIELDS = `
   id
   section_name
