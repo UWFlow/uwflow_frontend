@@ -7,6 +7,11 @@ const src = (dir: string) => path.resolve(__dirname, `src/${dir}`);
 export default defineConfig({
   plugins: [react({ jsxRuntime: 'classic' })],
   resolve: {
+    // Vite's default puts .mjs first, but graphql-tag's src/index.js uses CJS
+    // require() and accidentally loads graphql/language/parser.mjs (ESM) instead
+    // of parser.js (CJS), breaking esbuild's CJS/ESM interop at runtime.
+    // Putting .js before .mjs restores correct CJS resolution.
+    extensions: ['.ts', '.tsx', '.mts', '.js', '.mjs', '.jsx', '.json'],
     alias: [
       // 'graphql' would conflict with the npm 'graphql' package, so we match
       // only our internal subpaths (queries, mutations, fragments, apollo.js).
