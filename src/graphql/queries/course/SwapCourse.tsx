@@ -81,15 +81,6 @@ export const GET_COURSE_FOR_SWAP = gql`
   }
 `;
 
-export const COURSE_DROPDOWN_QUERY = gql`
-  query courseDropdown {
-    course(order_by: { code: asc }) {
-      code
-      name
-    }
-  }
-`;
-
 export const COURSE_DROPDOWN_TERM_QUERY = gql`
   query courseDropdownByTerm($termId: Int!) {
     course(
