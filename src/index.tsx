@@ -15,10 +15,8 @@ import Theme from 'constants/GlobalTheme';
 import client from 'graphql/apollo.js';
 import SearchProvider from 'search/SearchProvider';
 
-import './sentry';
-
 import './index.css';
-
+import './sentry';
 const StartApp = () => {
   const store = configureStore();
 
