@@ -2,6 +2,7 @@ import React, {
   Dispatch,
   SetStateAction,
   SyntheticEvent,
+  useEffect,
   useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
@@ -47,6 +48,12 @@ const AuthForm = ({
   const dispatch = useDispatch();
 
   const [showLoginForm, setShowLoginForm] = useState(true);
+  const [socialReady, setSocialReady] = useState(false);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setSocialReady(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -132,7 +139,7 @@ const AuthForm = ({
             />
           )}
           <OrWrapper>OR</OrWrapper>
-          <SocialLoginContent onAuthSuccess={onAuthSuccess} />
+          {socialReady && <SocialLoginContent onAuthSuccess={onAuthSuccess} />}
           <PrivacyWrapper>
             <GreyText>Read our </GreyText>
             <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE} onClick={closeAuthModal}>
