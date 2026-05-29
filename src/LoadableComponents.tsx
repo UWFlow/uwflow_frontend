@@ -1,37 +1,37 @@
 import loadable from '@loadable/component';
 
 export const LoadableLandingPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/landingPage/LandingPage'),
+  import('./pages/landingPage/LandingPage'),
 );
 
 export const LoadableProfilePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/profilePage/ProfilePage'),
+  import('./pages/profilePage/ProfilePage'),
 );
 
 export const LoadableCoursePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/coursePage/CoursePage'),
+  import('./pages/coursePage/CoursePage'),
 );
 
 export const LoadableProfPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/profPage/ProfPage'),
+  import('./pages/profPage/ProfPage'),
 );
 
 export const LoadableExplorePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/explorePage/ExplorePage'),
+  import('./pages/explorePage/ExplorePage'),
 );
 
 export const LoadableNotFoundPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/notFoundPage/NotFoundPage'),
+  import('./pages/notFoundPage/NotFoundPage'),
 );
 
 export const LoadableAboutPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/aboutPage/AboutPage'),
+  import('./pages/aboutPage/AboutPage'),
 );
 
 export const LoadablePrivacyPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/privacyPage/PrivacyPage'),
+  import('./pages/privacyPage/PrivacyPage'),
 );
 
 export const LoadableWelcomePage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/welcomePage/WelcomePage'),
+  import('./pages/welcomePage/WelcomePage'),
 );
