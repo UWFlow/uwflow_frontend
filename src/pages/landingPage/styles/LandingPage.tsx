@@ -100,7 +100,6 @@ export const BackgroundImage = styled.div`
   background-size: cover;
   background-position: left center;
   background-repeat: no-repeat;
-  will-change: transform;
 `;
 
 export const AuthContent = styled.div<{ loggedIn?: boolean }>`

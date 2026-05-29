@@ -31,7 +31,6 @@ export const CourseCodeAndNameSection = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: left center;
-  will-change: transform;
   position: relative;
   min-height: 160px;
   padding: 16px;

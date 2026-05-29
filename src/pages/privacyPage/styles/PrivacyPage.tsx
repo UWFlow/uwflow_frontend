@@ -25,7 +25,6 @@ export const PageHeader = styled.div`
   background-color: ${({ theme }) => theme.primaryExtraDark};
   background-size: cover;
   background-repeat: no-repeat;
-  will-change: transform;
   padding-bottom: 32px;
   margin-bottom: 32px;
 
