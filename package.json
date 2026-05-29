@@ -235,5 +235,8 @@
     "plugins": [
       "babel-plugin-styled-components"
     ]
+  },
+  "resolutions": {
+    "nan": "2.22.0"
   }
 }
