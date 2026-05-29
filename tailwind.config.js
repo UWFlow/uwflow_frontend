@@ -40,6 +40,14 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        // UW Flow course-type accents, shared by every calendar surface.
+        courses: '#ff8b00',
+        section: {
+          lecture: '#b3d4ff',
+          lab: '#b3f3ff',
+          tutorial: '#c0b6f2',
+          exam: '#ff8b00',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

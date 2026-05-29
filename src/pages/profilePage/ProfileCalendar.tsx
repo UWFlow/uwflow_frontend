@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'react-feather';
+import { Link } from 'react-router-dom';
 import { ApolloQueryResult } from 'apollo-client';
 import {
   GetUserQuery,
@@ -6,37 +8,29 @@ import {
   UserScheduleFragment,
 } from 'generated/graphql';
 import moment, { Moment } from 'moment/moment';
+import { getCoursePageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
-import Button from 'components/input/Button';
+import { Calendar, CalendarEvent } from 'components/calendar';
 import DropdownList from 'components/input/DropdownList';
+import { Button } from 'components/ui/button';
+import { Card } from 'components/ui/card';
 import {
   BACKEND_ENDPOINT,
   CALENDAR_EXPORT_ENDPOINT,
   GOOGLE_CALENDAR_URL,
 } from 'constants/Api';
+import { LAB, LEC } from 'constants/CourseSection';
 import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
 import { EventsByDate, ScheduleInterval } from 'types/Common';
 import {
+  formatCourseCode,
   getDateWithSeconds,
   millisecondsPerDay,
   weekDayLetters,
 } from 'utils/Misc';
 import { randString } from 'utils/Random';
-
-import {
-  ButtonWrapper,
-  CalendarWithButtonsWrapper,
-  ExportCalendarText,
-  ExportCalendarWrapper,
-  ProfileCalendarHeading,
-  ProfileCalendarText,
-  ProfileCalendarWrapper,
-  RecentCalendarText,
-  RecentCalendarWrapper,
-} from './styles/ProfileCalendar';
-import Calendar from './Calendar';
 
 const getScheduleRange = (
   schedule: UserScheduleFragment['schedule'],
@@ -173,6 +167,22 @@ const getInitialMonday = (eventsByDate: EventsByDate) => {
   return currentWeekMonday;
 };
 
+const getDateRangeString = (start: Moment, end: Moment) => {
+  if (start.year() !== end.year()) {
+    return `${start.format('MMM Do, YYYY')} - ${end.format('MMM Do, YYYY')}`;
+  }
+  if (start.month() !== end.month()) {
+    return `${start.format('MMM Do')} - ${end.format('MMM Do, YYYY')}`;
+  }
+  return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
+};
+
+const sectionVariant = (section: string): CalendarEvent['variant'] => {
+  if (section.includes(LEC)) return 'lecture';
+  if (section.includes(LAB)) return 'lab';
+  return 'tutorial';
+};
+
 type ProfileCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
   secretId: string;
@@ -188,6 +198,21 @@ const ProfileCalendar = ({
 }: ProfileCalendarProps) => {
   const [openModal, closeModal] = useModal();
   const theme = useTheme();
+
+  const hasSchedule = Boolean(schedule && schedule.length);
+
+  const eventsByDate = React.useMemo(() => {
+    if (!hasSchedule) return {} as EventsByDate;
+    const [minDate, dayRange] = getScheduleRange(schedule);
+    return getEventsByDate(
+      getEventIntervals(moment(minDate), dayRange, schedule),
+    );
+  }, [schedule, hasSchedule]);
+
+  const initialMonday = React.useMemo(() => getInitialMonday(eventsByDate), [
+    eventsByDate,
+  ]);
+  const [weekStart, setWeekStart] = useState<Moment>(initialMonday);
 
   const handleCalendarExport = async (download: boolean) => {
     const response = await fetch(
@@ -210,65 +235,150 @@ const ProfileCalendar = ({
     onAfterUploadSuccess: refetchAll,
   };
 
-  const ScheduleModalButton = (
-    <Button
-      handleClick={() => openModal(SCHEDULE_UPLOAD_MODAL, scheduleModalProps)}
-      margin="0"
-      padding="8px 24px"
-      maxHeight="48px"
-      hasShadow={false}
-      width="100%"
-    >
-      Add current / upcoming term
-    </Button>
+  const openScheduleModal = () =>
+    openModal(SCHEDULE_UPLOAD_MODAL, scheduleModalProps);
+
+  if (!hasSchedule) {
+    return (
+      <Card className="mb-8 p-6">
+        <div className="mb-4 text-2xl font-semibold text-[#172b4d]">
+          Import your class schedule
+        </div>
+        <div className="mb-8 text-xl font-light text-[#505f79]">
+          To export it to Google Calendar, Calendar.app, etc...
+        </div>
+        <Button className="w-full" onClick={openScheduleModal}>
+          Add current / upcoming term
+        </Button>
+      </Card>
+    );
+  }
+
+  // Show Saturday only when something is scheduled on it.
+  const saturday = weekStart.clone().add(5, 'days');
+  const numDays =
+    eventsByDate[saturday.format('YYYY-MM-DD')] === undefined ? 5 : 6;
+  const days = Array.from({ length: numDays }, (_, i) =>
+    weekStart.clone().add(i, 'days'),
   );
 
-  if (!schedule || schedule.length === 0)
-    return (
-      <ProfileCalendarWrapper>
-        <ProfileCalendarHeading>
-          Import your class schedule
-        </ProfileCalendarHeading>
-        <ProfileCalendarText>
-          To export it to Google Calendar, Calendar.app, etc...
-        </ProfileCalendarText>
-        {ScheduleModalButton}
-      </ProfileCalendarWrapper>
-    );
+  // Dynamic vertical bounds: default to a 9am–5pm window, then widen to fit.
+  let minHour = 9;
+  let maxHour = 17;
+  let totalMinutes = 0;
+  const calendarEvents: CalendarEvent[] = [];
 
-  const [minDate, dayRange] = getScheduleRange(schedule);
-  const events = getEventIntervals(moment(minDate), dayRange, schedule);
-  const eventsByDate = getEventsByDate(events);
-  const initialStartDate = getInitialMonday(eventsByDate);
+  days.forEach((day, dayIndex) => {
+    const intervals = eventsByDate[day.format('YYYY-MM-DD')] ?? [];
+    intervals.forEach((event, i) => {
+      if (event.start.hour() <= minHour) {
+        minHour = event.start.hour();
+        if (event.start.minutes() === 0) minHour -= 1;
+      }
+      if (event.end.hour() >= maxHour) {
+        maxHour = event.end.hour();
+        if (event.end.minutes() > 0) maxHour += 1;
+      }
+      totalMinutes += Math.abs(
+        moment.duration(event.start.diff(event.end)).asMinutes(),
+      );
+
+      calendarEvents.push({
+        id: `${day.format('YYYY-MM-DD')}-${i}`,
+        dayIndex,
+        startMinutes: event.start.hour() * 60 + event.start.minutes(),
+        endMinutes: event.end.hour() * 60 + event.end.minutes(),
+        variant: sectionVariant(event.section),
+        title: (
+          <Link
+            to={getCoursePageRoute(event.courseCode)}
+            className="text-courses hover:underline"
+          >
+            {formatCourseCode(event.courseCode)}
+          </Link>
+        ),
+        subtitle: event.section,
+        timeLabel: `${event.start.format('h:mma')} - ${event.end.format(
+          'h:mma',
+        )}`,
+        location: event.location,
+      });
+    });
+  });
+
+  const navHeader = (
+    <div className="flex items-center justify-between border-0 border-b-2 border-solid border-[#dfe1e5] px-8 py-4 max-[768px]:px-4">
+      <div className="flex flex-col">
+        <div className="text-base font-semibold text-[#172b4d]">
+          {getDateRangeString(weekStart, days[days.length - 1])}
+        </div>
+        <div className="text-sm font-normal text-[#505f79]">
+          ({Math.round((2 * totalMinutes) / 60) / 2} hours this week)
+        </div>
+      </div>
+      <div className="flex gap-1">
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-solid max-[480px]:hidden"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => setWeekStart(initialMonday)}
+        >
+          Current Week
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 border-solid"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => setWeekStart(weekStart.clone().subtract(7, 'days'))}
+        >
+          <ChevronLeft size={18} />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 border-solid"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => setWeekStart(weekStart.clone().add(7, 'days'))}
+        >
+          <ChevronRight size={18} />
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
-    <CalendarWithButtonsWrapper>
-      <ExportCalendarWrapper>
-        <ExportCalendarText>Export your calendar</ExportCalendarText>
+    <Card className="mb-8 overflow-hidden">
+      <div className="flex items-center justify-between border-0 border-b-2 border-solid border-[#dfe1e5] px-8 py-8 max-[768px]:px-4">
+        <div className="text-lg font-semibold leading-relaxed text-[#172b4d]">
+          Export your calendar
+        </div>
         <DropdownList
           selectedIndex={-1}
           options={['Google', 'iCalendar']}
           margin="auto 0"
-          onChange={(value) => {
-            if (value === 0) {
-              handleCalendarExport(false);
-            } else {
-              handleCalendarExport(true);
-            }
-          }}
+          onChange={(value) => handleCalendarExport(value !== 0)}
           color={theme.primary}
           placeholder="Export as"
         />
-      </ExportCalendarWrapper>
+      </div>
+
       <Calendar
-        eventsByDate={eventsByDate}
-        initialStartDate={initialStartDate}
+        header={navHeader}
+        dayLabels={days.map((day) => day.format('ddd MMM D'))}
+        events={calendarEvents}
+        minHour={minHour}
+        maxHour={maxHour}
       />
-      <RecentCalendarWrapper>
-        <RecentCalendarText>Have a more recent schedule?</RecentCalendarText>
-        <ButtonWrapper>{ScheduleModalButton}</ButtonWrapper>
-      </RecentCalendarWrapper>
-    </CalendarWithButtonsWrapper>
+
+      <div className="flex items-center justify-between gap-4 px-6 py-6 max-[768px]:px-4 max-[500px]:flex-col max-[500px]:items-start">
+        <div className="text-base font-semibold text-[#172b4d]">
+          Have a more recent schedule?
+        </div>
+        <Button onClick={openScheduleModal}>Add current / upcoming term</Button>
+      </div>
+    </Card>
   );
 };
 
