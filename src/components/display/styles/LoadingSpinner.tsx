@@ -13,11 +13,11 @@ const DashAnimation = keyframes`
   }
   50% {
     stroke-dasharray: 89, 200;
-    stroke-dashoffset: -32px;
+    stroke-dashoffset: -32;
   }
   100% {
     stroke-dasharray: 89, 200;
-    stroke-dashoffset: -100px;
+    stroke-dashoffset: -100;
   }
 `;
 
