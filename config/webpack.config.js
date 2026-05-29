@@ -330,6 +330,16 @@ module.exports = function(webpackEnv) {
       rules: [
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
+        // Webpack 4 parses `.mjs` as strict ESM (`javascript/esm`), which
+        // forbids named imports from CommonJS modules. Some deps (e.g.
+        // @radix-ui/react-slot used by shadcn/ui) ship `.mjs` that does
+        // `import { Children } from 'react'` — and React is CJS. Treating
+        // node_modules `.mjs` as `javascript/auto` enables loose interop.
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto',
+        },
 
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
