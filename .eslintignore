@@ -5,6 +5,8 @@ config/**
 coverage/**
 scripts/**
 
+tailwind.config.js
+*.css
 Dockerfile
 LICENSE
 *.lock

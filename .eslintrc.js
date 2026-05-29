@@ -45,7 +45,7 @@ module.exports = {
           // Packages, `react` related packages come first.
           ['^react', '^@?\\w'],
           // Internal packages
-          ['^(@|constants|components|data|graphql|hooks|img|pages|search|types|utils)(/.*|$)'],
+          ['^(@|constants|components|data|graphql|hooks|img|lib|pages|search|types|utils)(/.*|$)'],
           // Side effect imports
           ['^\\u0000'],
           // Parent imports, put `..` last
