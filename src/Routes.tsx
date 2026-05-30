@@ -23,28 +23,28 @@ export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const WELCOME_PAGE_TESTER = pathToRegexp(WELCOME_PAGE_ROUTE);
 
 /* Page Testers */
-export const isOnLandingPageRoute = (location: Location<unknown>) =>
+export const isOnLandingPageRoute = (location: Location) =>
   LANDING_PAGE_TESTER.test(location.pathname);
 
-export const isOnProfilePageRoute = (location: Location<unknown>) =>
+export const isOnProfilePageRoute = (location: Location) =>
   PROFILE_PAGE_TESTER.test(location.pathname);
 
-export const isOnCoursePageRoute = (location: Location<unknown>) =>
+export const isOnCoursePageRoute = (location: Location) =>
   COURSE_PAGE_TESTER.test(location.pathname);
 
-export const isOnProfPageRoute = (location: Location<unknown>) =>
+export const isOnProfPageRoute = (location: Location) =>
   PROF_PAGE_TESTER.test(location.pathname);
 
-export const isOnExplorePageRoute = (location: Location<unknown>) =>
+export const isOnExplorePageRoute = (location: Location) =>
   EXPLORE_PAGE_TESTER.test(location.pathname);
 
-export const isOnAboutPageRoute = (location: Location<unknown>) =>
+export const isOnAboutPageRoute = (location: Location) =>
   ABOUT_PAGE_TESTER.test(location.pathname);
 
-export const isOnPrivacyPageRoute = (location: Location<unknown>) =>
+export const isOnPrivacyPageRoute = (location: Location) =>
   PRIVACY_PAGE_TESTER.test(location.pathname);
 
-export const isOnWelcomePageRoute = (location: Location<unknown>) => {
+export const isOnWelcomePageRoute = (location: Location) => {
   WELCOME_PAGE_TESTER.test(location.pathname);
 };
 
