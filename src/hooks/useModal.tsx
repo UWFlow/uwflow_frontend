@@ -16,10 +16,10 @@ const useModal = (): [
     (modal: ModalName, props: any = {}) => openModal(modal, id, props),
     [id, openModal],
   );
-  const close = useCallback((modal: ModalName) => closeModal(modal, id), [
-    id,
-    closeModal,
-  ]);
+  const close = useCallback(
+    (modal: ModalName) => closeModal(modal, id),
+    [id, closeModal],
+  );
   return [open, close];
 };
 
