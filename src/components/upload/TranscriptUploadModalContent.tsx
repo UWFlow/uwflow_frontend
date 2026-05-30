@@ -66,9 +66,8 @@ const TranscriptUploadModalContent = ({
   const theme = useTheme();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadState, setUploadState] = useState<DataUploadState>(
-    AWAITING_UPLOAD,
-  );
+  const [uploadState, setUploadState] =
+    useState<DataUploadState>(AWAITING_UPLOAD);
   const [fileSizeError, setFileSizeError] = useState(false);
 
   const handleTranscriptClick = () => {

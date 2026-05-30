@@ -30,8 +30,8 @@ export const MemberPhoto = styled.div<{ img: string }>`
 `;
 
 export const MemberWrapper = styled.div`
-    ${Heading4}
-    ${breakpoint('tablet')`
+  ${Heading4}
+  ${breakpoint('tablet')`
         flex: 1;
         padding-left: 32px;
     `}

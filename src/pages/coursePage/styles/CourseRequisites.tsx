@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { Body, BoxShadow, Card, Heading3, Hover } from 'constants/Mixins';
 
 export const CourseRequisitesWrapper = styled.div`
-${Card('32px 24px')}
-${BoxShadow}
+  ${Card('32px 24px')}
+  ${BoxShadow}
 ${Heading3}
 margin-bottom: 32px;
 `;
