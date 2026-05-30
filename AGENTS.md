@@ -1,5 +1,9 @@
 @README.md
 
+## Pre-commit requirement
+
+Before every commit, run `yarn lint-nofix` and confirm it exits clean. This is required by CI/CD — commits that fail it will not pass the pipeline.
+
 ## Skills
 
 This project keeps reusable skills under `.AGENTS/skills/`. Each subdirectory contains a `SKILL.md` describing when and how to use it.
