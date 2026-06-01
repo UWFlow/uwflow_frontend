@@ -33,19 +33,14 @@ type ProfInfoHeaderProps = {
 };
 
 const ProfInfoHeader = ({ prof, distributions }: ProfInfoHeaderProps) => {
-  const {
-    liked,
-    clear,
-    engaging,
-    filled_count,
-    comment_count,
-  } = prof.rating || {
-    liked: 0,
-    clear: 0,
-    engaging: 0,
-    filled_count: 0,
-    comment_count: 0,
-  };
+  const { liked, clear, engaging, filled_count, comment_count } =
+    prof.rating || {
+      liked: 0,
+      clear: 0,
+      engaging: 0,
+      filled_count: 0,
+      comment_count: 0,
+    };
 
   return (
     <ProfInfoHeaderWrapper>

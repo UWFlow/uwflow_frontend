@@ -55,7 +55,7 @@ type TimeRange = {
 type InfoGroup = {
   time: string;
   location?: string | null;
-  prof?: Pick<Prof, 'id' | 'code' | 'name'> | {};
+  prof?: Pick<Prof, 'id' | 'code' | 'name'> | object;
   timeRanges: TimeRange[];
   cancelled: boolean;
   isTba: boolean;

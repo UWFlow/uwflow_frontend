@@ -37,21 +37,21 @@ export const courseColumns: ColumnOverride[] = [
     accessor: 'useful',
     align: 'right',
     minWidth: 88,
-    Cell: ({ cell }) => processRating(cell.value),
+    Cell: ({ cell }) => <>{processRating(cell.value)}</>,
   },
   {
     Header: 'Easy',
     accessor: 'easy',
     align: 'right',
     minWidth: 80,
-    Cell: ({ cell }) => processRating(cell.value),
+    Cell: ({ cell }) => <>{processRating(cell.value)}</>,
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     minWidth: 88,
-    Cell: ({ cell }) => processRating(cell.value),
+    Cell: ({ cell }) => <>{processRating(cell.value)}</>,
   },
 ];
 
@@ -77,20 +77,20 @@ export const profColumns: ColumnOverride[] = [
     accessor: 'clear',
     align: 'right',
     minWidth: 72,
-    Cell: ({ cell }) => processRating(cell.value),
+    Cell: ({ cell }) => <>{processRating(cell.value)}</>,
   },
   {
     Header: 'Engaging',
     accessor: 'engaging',
     align: 'right',
     minWidth: 80,
-    Cell: ({ cell }) => processRating(cell.value),
+    Cell: ({ cell }) => <>{processRating(cell.value)}</>,
   },
   {
     Header: 'Liked',
     accessor: 'liked',
     align: 'right',
     minWidth: 72,
-    Cell: ({ cell }) => processRating(cell.value),
+    Cell: ({ cell }) => <>{processRating(cell.value)}</>,
   },
 ];

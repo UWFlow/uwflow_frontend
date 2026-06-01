@@ -157,9 +157,8 @@ const CourseReviewBoxContent = ({
     );
   }
 
-  const [reviewStates, setReviewStates] = useState<
-    Record<string, ReviewDisplayData>
-  >(initialReviewStates);
+  const [reviewStates, setReviewStates] =
+    useState<Record<string, ReviewDisplayData>>(initialReviewStates);
 
   useEffect(() => {
     if (allProfs && teaching) {
@@ -174,9 +173,8 @@ const CourseReviewBoxContent = ({
     }
   }, [allProfs, teaching, courseReviews, buildDefaultReview]);
 
-  const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState<boolean>(
-    false,
-  );
+  const [deleteReviewModalOpen, setDeleteReviewModalOpen] =
+    useState<boolean>(false);
   const [reviewUpdating, setReviewUpdating] = useState<boolean>(false);
   const [reviewDeleting, setReviewDeleting] = useState<boolean>(false);
 
