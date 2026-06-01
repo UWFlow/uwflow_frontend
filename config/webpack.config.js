@@ -94,6 +94,10 @@ module.exports = function(webpackEnv) {
             // https://github.com/facebook/create-react-app/issues/2677
             ident: 'postcss',
             plugins: [
+              // Tailwind must run first so `@tailwind` directives are expanded
+              // before postcss-preset-env applies autoprefixing. Reads
+              // tailwind.config.js from the project root.
+              require('tailwindcss'),
               require('postcss-preset-env')({
                 autoprefixer: {
                   flexbox: 'no-2009',
@@ -329,6 +333,16 @@ module.exports = function(webpackEnv) {
       rules: [
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
+        // Webpack 4 parses `.mjs` as strict ESM (`javascript/esm`), which
+        // forbids named imports from CommonJS modules. Some deps (e.g.
+        // @radix-ui/react-slot used by shadcn/ui) ship `.mjs` that does
+        // `import { Children } from 'react'` — and React is CJS. Treating
+        // node_modules `.mjs` as `javascript/auto` enables loose interop.
+        {
+          test: /\.mjs$/,
+          include: /node_modules/,
+          type: 'javascript/auto',
+        },
 
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
