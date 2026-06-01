@@ -17,6 +17,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -74,5 +75,5 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  plugins: ['simple-import-sort'],
+  plugins: ['simple-import-sort', 'import'],
 };

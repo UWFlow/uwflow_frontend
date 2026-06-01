@@ -299,6 +299,9 @@ module.exports = function(webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
+        // react-redux 7.2.8+ ESM build has an unresolvable named-export in
+        // webpack 4; force the CJS build instead.
+        'react-redux': require.resolve('react-redux/lib/index.js'),
         // Allows for better profiling with ReactDevTools
         ...(isEnvProductionProfile && {
           'react-dom$': 'react-dom/profiling',

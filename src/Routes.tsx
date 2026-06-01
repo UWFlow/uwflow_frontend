@@ -1,4 +1,4 @@
-import { History, Location } from 'history';
+import { Location } from 'history';
 import { compile, pathToRegexp } from 'path-to-regexp';
 
 /* Page Routes */
@@ -23,37 +23,28 @@ export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const WELCOME_PAGE_TESTER = pathToRegexp(WELCOME_PAGE_ROUTE);
 
 /* Page Testers */
-export const isOnLandingPageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => LANDING_PAGE_TESTER.test(location.pathname);
+export const isOnLandingPageRoute = (location: Location) =>
+  LANDING_PAGE_TESTER.test(location.pathname);
 
-export const isOnProfilePageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => PROFILE_PAGE_TESTER.test(location.pathname);
+export const isOnProfilePageRoute = (location: Location) =>
+  PROFILE_PAGE_TESTER.test(location.pathname);
 
-export const isOnCoursePageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => COURSE_PAGE_TESTER.test(location.pathname);
+export const isOnCoursePageRoute = (location: Location) =>
+  COURSE_PAGE_TESTER.test(location.pathname);
 
-export const isOnProfPageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => PROF_PAGE_TESTER.test(location.pathname);
+export const isOnProfPageRoute = (location: Location) =>
+  PROF_PAGE_TESTER.test(location.pathname);
 
-export const isOnExplorePageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => EXPLORE_PAGE_TESTER.test(location.pathname);
+export const isOnExplorePageRoute = (location: Location) =>
+  EXPLORE_PAGE_TESTER.test(location.pathname);
 
-export const isOnAboutPageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => ABOUT_PAGE_TESTER.test(location.pathname);
+export const isOnAboutPageRoute = (location: Location) =>
+  ABOUT_PAGE_TESTER.test(location.pathname);
 
-export const isOnPrivacyPageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => PRIVACY_PAGE_TESTER.test(location.pathname);
+export const isOnPrivacyPageRoute = (location: Location) =>
+  PRIVACY_PAGE_TESTER.test(location.pathname);
 
-export const isOnWelcomePageRoute = (
-  location: Location<History.PoorMansUnknown>,
-) => {
+export const isOnWelcomePageRoute = (location: Location) => {
   WELCOME_PAGE_TESTER.test(location.pathname);
 };
 
