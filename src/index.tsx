@@ -1,6 +1,6 @@
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import App from 'App';
@@ -19,8 +19,13 @@ import './sentry';
 
 const StartApp = () => {
   const store = configureStore();
+  const container = document.getElementById('root');
 
-  ReactDOM.render(
+  if (!container) {
+    throw new Error('Could not find root element');
+  }
+
+  createRoot(container).render(
     <ApolloProvider client={client}>
       <ModalProvider>
         <SearchProvider searchWorker={new SearchWorker()}>
@@ -34,7 +39,6 @@ const StartApp = () => {
         </SearchProvider>
       </ModalProvider>
     </ApolloProvider>,
-    document.getElementById('root'),
   );
 };
 

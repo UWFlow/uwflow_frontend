@@ -71,9 +71,8 @@ const ScheduleUploadModalContent = ({
 }: ScheduleUploadModalContentProps) => {
   const theme = useTheme();
 
-  const [uploadState, setUploadState] = useState<DataUploadState>(
-    AWAITING_UPLOAD,
-  );
+  const [uploadState, setUploadState] =
+    useState<DataUploadState>(AWAITING_UPLOAD);
   const [scheduleText, setScheduleText] = useState('');
   const [uploadError, setUploadError] = useState('');
 

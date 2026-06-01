@@ -47,7 +47,7 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
   currentModalsById.current = modalsById;
 
   const injectOnAfterCloseIntoProps = useCallback(
-    (modal, id, props) => {
+    (modal: ModalName, id: string, props: any) => {
       const originalOnAfterClose = props.onAfterClose;
       props.onAfterClose = () => {
         const newModalsById = [...currentModalsById.current];

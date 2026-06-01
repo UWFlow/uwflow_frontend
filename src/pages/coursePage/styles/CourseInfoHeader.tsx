@@ -142,9 +142,7 @@ export const RatingsSection = styled(FadeIn)`
 
 export const RedditSearchButton = styled.a`
   ${Small}
-  ${HoverTransition(
-    'background-color, color, border-color',
-  )}
+  ${HoverTransition('background-color, color, border-color')}
   align-items: center;
   background-color: transparent;
   border: 1.5px solid ${({ theme }) => theme.light3};
