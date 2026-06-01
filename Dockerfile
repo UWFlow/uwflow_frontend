@@ -1,9 +1,6 @@
 # syntax=docker/dockerfile:1.4
-FROM oven/bun:1.3.14-alpine AS bun
-
-FROM node:22-alpine AS builder
+FROM oven/bun:1.3.14-alpine AS builder
 WORKDIR /work
-COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 COPY . .
@@ -17,7 +14,7 @@ RUN --mount=type=secret,id=sentry_auth_token,required=false \
         bun run build; \
     else \
         echo "No sentry_auth_token secret provided — building without Sentry sourcemap upload" && \
-        node scripts/build.js; \
+        bun scripts/build.js; \
     fi
 
 FROM nginx:alpine
