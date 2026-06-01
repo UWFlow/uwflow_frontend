@@ -17,6 +17,8 @@ import SearchProvider from 'search/SearchProvider';
 
 import './sentry';
 
+import './index.css';
+
 const StartApp = () => {
   const store = configureStore();
   const container = document.getElementById('root');
