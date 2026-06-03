@@ -100,7 +100,7 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "bun scripts/start.js",
     "build": "bun scripts/build.js && bun run sentry:sourcemaps",
     "test": "CI=true node scripts/test.js --env=jsdom --coverage",
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix -c .eslintrc.js --quiet",
@@ -237,6 +237,7 @@
   },
   "resolutions": {
     "@fortawesome/fontawesome-common-types": "0.3.0",
+    "@types/minimatch": "3.0.3",
     "@types/react": "18.3.29",
     "@types/react-dom": "18.3.5",
     "@types/react-router": "5.1.20",
