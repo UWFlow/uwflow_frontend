@@ -429,11 +429,25 @@ module.exports = function(webpackEnv) {
                   ],
                 ],
                 plugins: [
-                  // graphql@16 ships untranspiled class fields (e.g. `line = 1`)
-                  // in both its CJS and ESM builds. The CRA dependencies preset
-                  // (Babel 7.9 / preset-env) doesn't enable class properties, so
-                  // add the transform here. preset-env already handles the `?.`
-                  // and `??` operators graphql@16 also uses.
+                  // graphql@16 ships untranspiled class fields (e.g.
+                  // `line = 1;`) in both its CJS and ESM builds.
+                  //
+                  // Why the standard dependencies pass doesn't already handle
+                  // them: `babel-preset-react-app/dependencies` is a thin
+                  // wrapper over `@babel/preset-env`, and preset-env only emits
+                  // the class-fields transform when `shippedProposals: true` is
+                  // set. That flag didn't start covering class properties until
+                  // Babel 7.10, but this project is pinned to `@babel/core@7.9.0`
+                  // (via `babel-preset-react-app@9.1.2`), so the preset parses
+                  // the syntax but leaves it as-is. Webpack 4's bundler then
+                  // re-parses the emitted code with acorn, which rejects the
+                  // class-field syntax and fails the build.
+                  //
+                  // Adding the transform explicitly is the minimal fix.
+                  // preset-env already down-levels the `?.` / `??` operators
+                  // graphql@16 also uses, so only class fields need this.
+                  // TODO: drop this once the Babel/preset-env stack is bumped
+                  // (>=7.10 with `shippedProposals`) or the build moves to Vite.
                   require.resolve('@babel/plugin-proposal-class-properties'),
                 ],
                 cacheDirectory: true,

@@ -59,7 +59,7 @@ Key mapping rules:
 Queries live in `src/graphql/queries/`. Create or edit a file there:
 
 ```tsx
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_MY_DATA = gql`
   query getMyData($id: Int!) {

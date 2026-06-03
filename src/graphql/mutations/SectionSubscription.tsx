@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const INSERT_SECTION_SUBSCRIPTION = gql`
   mutation insertSectionSubscription($section_id: Int, $user_id: Int) {

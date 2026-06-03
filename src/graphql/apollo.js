@@ -10,8 +10,6 @@ import { onError } from '@apollo/client/link/error';
 import { GRAPHQL_ENDPOINT } from 'constants/Api';
 import { logOut } from 'utils/Auth';
 
-import { dataIdFromObject } from './dataIdFromObject';
-
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token');
@@ -54,8 +52,35 @@ const link = ApolloLink.from([
   httpLink, // terminating link must be added last
 ]);
 
-const cache = new InMemoryCache({
-  dataIdFromObject,
+// UWFlow exposes a number of Hasura views / composite-key relationships whose
+// primary key isn't a plain `id`/`_id` field. Declare per-type `keyFields` so
+// Apollo's cache normalizes them correctly; every other type falls back to the
+// default `id`/`_id` heuristic.
+export const cache = new InMemoryCache({
+  typePolicies: {
+    course_search_index: {
+      keyFields: ['course_id'],
+    },
+    prof_search_index: {
+      keyFields: ['prof_id'],
+    },
+    queue_section_subscribed: {
+      keyFields: ['section_id', 'user_id'],
+    },
+    user_shortlist: {
+      keyFields: ['course_id', 'user_id'],
+    },
+    user_course_taken: {
+      keyFields: ['term_id', 'course_id'],
+    },
+    user_schedule: {
+      // `user_id` plus the nested `section.id`. The trailing `['id']` declares
+      // the subfields of the preceding `section` object field — this is not the
+      // same as `['user_id', ['section', 'id']]`, which would (wrongly) treat
+      // `section`/`id` as subfields of the scalar `user_id`.
+      keyFields: ['user_id', 'section', ['id']],
+    },
+  },
 });
 
 const client = new ApolloClient({
