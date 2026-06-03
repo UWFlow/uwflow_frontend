@@ -1,7 +1,7 @@
 import React from 'react';
-import { Query } from 'react-apollo';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import { GetUserQuery } from 'generated/graphql';
 import { Dispatch } from 'redux';
 import { isOnLandingPageRoute, PROFILE_PAGE_ROUTE } from 'Routes';
@@ -22,7 +22,7 @@ import {
 } from './styles/ProfileDropdown';
 
 const renderProfilePicture = (
-  data: GetUserQuery,
+  data: GetUserQuery | undefined,
   dispatch: Dispatch,
   isLanding: boolean,
 ) => {
@@ -58,6 +58,11 @@ const ProfileDropdown = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const isLanding = isOnLandingPageRoute(location);
 
+  const { data } = useQuery<GetUserQuery>(GET_USER, {
+    variables: { id: Number(localStorage.getItem('user_id')) },
+    skip: !isLoggedIn,
+  });
+
   const handleProfileButtonClick = () =>
     isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : openModal(AUTH_MODAL);
 
@@ -65,19 +70,9 @@ const ProfileDropdown = () => {
     <ProfileDropdownWrapper>
       {isLoggedIn ? (
         <>
-          <Query
-            query={GET_USER}
-            variables={{ id: Number(localStorage.getItem('user_id')) }}
-          >
-            {({ data }: { data: GetUserQuery }) => (
-              <ProfileText
-                onClick={handleProfileButtonClick}
-                isLanding={isLanding}
-              >
-                {renderProfilePicture(data, dispatch, isLanding)}
-              </ProfileText>
-            )}
-          </Query>
+          <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
+            {renderProfilePicture(data, dispatch, isLanding)}
+          </ProfileText>
           <DropdownList
             selectedIndex={-1}
             width={130}

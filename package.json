@@ -4,8 +4,7 @@
   "private": true,
   "packageManager": "bun@1.3.14",
   "dependencies": {
-    "@apollo/react-common": "^3.1.4",
-    "@apollo/react-hooks": "^4.0.0",
+    "@apollo/client": "^3.14.1",
     "@babel/core": "7.9.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
@@ -17,12 +16,6 @@
     "@svgr/webpack": "4.3.3",
     "@tippyjs/react": "^4.2.6",
     "@types/react-window": "^1.8.8",
-    "apollo-cache-inmemory": "^1.6.5",
-    "apollo-client": "^2.6.8",
-    "apollo-link": "^1.2.13",
-    "apollo-link-context": "^1.0.19",
-    "apollo-link-error": "^1.1.12",
-    "apollo-link-http": "^1.5.16",
     "babel-eslint": "10.1.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "8.1.0",
@@ -41,7 +34,7 @@
     "file-loader": "4.3.0",
     "fs-extra": "^8.1.0",
     "fuzzysort": "^1.1.4",
-    "graphql": "^14.5.8",
+    "graphql": "^16.11.0",
     "graphql-tag": "^2.10.1",
     "history": "^4.10.1",
     "html-webpack-plugin": "4.0.0-beta.11",
@@ -65,7 +58,6 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.10.1",
     "react": "^18.3.1",
-    "react-apollo": "^3.1.5",
     "react-app-polyfill": "^1.0.6",
     "react-collapsible": "^2.6.2",
     "react-compound-slider": "^2.5.0",
@@ -127,11 +119,11 @@
   ],
   "devDependencies": {
     "@babel/helper-create-regexp-features-plugin": "7.8.8",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
     "@graphql-codegen/cli": "^1.17.6",
     "@graphql-codegen/typescript": "^1.17.6",
     "@graphql-codegen/typescript-operations": "^1.17.6",
     "@graphql-codegen/typescript-react-apollo": "^1.17.6",
-    "@types/graphql": "^14.5.0",
     "@types/jest": "^25.2.1",
     "@types/loadable__component": "^5.10.0",
     "@types/lodash": "^4.14.150",
@@ -208,7 +200,7 @@
       "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "modulePaths": [
@@ -249,6 +241,7 @@
     "@types/react-dom": "18.3.5",
     "@types/react-router": "5.1.20",
     "@types/react-router-dom": "5.3.3",
+    "graceful-fs": "4.2.11",
     "nan": "2.22.0"
   }
 }

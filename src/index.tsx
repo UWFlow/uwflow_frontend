@@ -1,8 +1,8 @@
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
 import App from 'App';
 import { history } from 'browserhistory';
 import { configureStore } from 'Store';

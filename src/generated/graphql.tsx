@@ -1,5 +1,4 @@
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import * as Apollo from '@apollo/client';
 import gql from 'graphql-tag';
 
 export type Maybe<T> = T | null;
@@ -12790,7 +12789,7 @@ export const UpdateUserEmailDocument = gql`
     }
   }
 `;
-export type UpdateUserEmailMutationFn = ApolloReactCommon.MutationFunction<
+export type UpdateUserEmailMutationFn = Apollo.MutationFunction<
   UpdateUserEmailMutation,
   UpdateUserEmailMutationVariables
 >;
@@ -12814,12 +12813,12 @@ export type UpdateUserEmailMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUpdateUserEmailMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     UpdateUserEmailMutation,
     UpdateUserEmailMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     UpdateUserEmailMutation,
     UpdateUserEmailMutationVariables
   >(UpdateUserEmailDocument, baseOptions);
@@ -12828,12 +12827,11 @@ export type UpdateUserEmailMutationHookResult = ReturnType<
   typeof useUpdateUserEmailMutation
 >;
 export type UpdateUserEmailMutationResult =
-  ApolloReactCommon.MutationResult<UpdateUserEmailMutation>;
-export type UpdateUserEmailMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    UpdateUserEmailMutation,
-    UpdateUserEmailMutationVariables
-  >;
+  Apollo.MutationResult<UpdateUserEmailMutation>;
+export type UpdateUserEmailMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserEmailMutation,
+  UpdateUserEmailMutationVariables
+>;
 export const UpsertReviewDocument = gql`
   mutation upsertReview(
     $user_id: Int
@@ -12884,7 +12882,7 @@ export const UpsertReviewDocument = gql`
   }
   ${ReviewUpdateInfoFragmentDoc}
 `;
-export type UpsertReviewMutationFn = ApolloReactCommon.MutationFunction<
+export type UpsertReviewMutationFn = Apollo.MutationFunction<
   UpsertReviewMutation,
   UpsertReviewMutationVariables
 >;
@@ -12917,12 +12915,12 @@ export type UpsertReviewMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUpsertReviewMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     UpsertReviewMutation,
     UpsertReviewMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     UpsertReviewMutation,
     UpsertReviewMutationVariables
   >(UpsertReviewDocument, baseOptions);
@@ -12931,8 +12929,8 @@ export type UpsertReviewMutationHookResult = ReturnType<
   typeof useUpsertReviewMutation
 >;
 export type UpsertReviewMutationResult =
-  ApolloReactCommon.MutationResult<UpsertReviewMutation>;
-export type UpsertReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  Apollo.MutationResult<UpsertReviewMutation>;
+export type UpsertReviewMutationOptions = Apollo.BaseMutationOptions<
   UpsertReviewMutation,
   UpsertReviewMutationVariables
 >;
@@ -12946,7 +12944,7 @@ export const DeleteReviewDocument = gql`
   }
   ${ReviewUpdateInfoFragmentDoc}
 `;
-export type DeleteReviewMutationFn = ApolloReactCommon.MutationFunction<
+export type DeleteReviewMutationFn = Apollo.MutationFunction<
   DeleteReviewMutation,
   DeleteReviewMutationVariables
 >;
@@ -12969,12 +12967,12 @@ export type DeleteReviewMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useDeleteReviewMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     DeleteReviewMutation,
     DeleteReviewMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     DeleteReviewMutation,
     DeleteReviewMutationVariables
   >(DeleteReviewDocument, baseOptions);
@@ -12983,8 +12981,8 @@ export type DeleteReviewMutationHookResult = ReturnType<
   typeof useDeleteReviewMutation
 >;
 export type DeleteReviewMutationResult =
-  ApolloReactCommon.MutationResult<DeleteReviewMutation>;
-export type DeleteReviewMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  Apollo.MutationResult<DeleteReviewMutation>;
+export type DeleteReviewMutationOptions = Apollo.BaseMutationOptions<
   DeleteReviewMutation,
   DeleteReviewMutationVariables
 >;
@@ -13009,7 +13007,7 @@ export const UpsertLikedReviewDocument = gql`
     }
   }
 `;
-export type UpsertLikedReviewMutationFn = ApolloReactCommon.MutationFunction<
+export type UpsertLikedReviewMutationFn = Apollo.MutationFunction<
   UpsertLikedReviewMutation,
   UpsertLikedReviewMutationVariables
 >;
@@ -13034,12 +13032,12 @@ export type UpsertLikedReviewMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useUpsertLikedReviewMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     UpsertLikedReviewMutation,
     UpsertLikedReviewMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     UpsertLikedReviewMutation,
     UpsertLikedReviewMutationVariables
   >(UpsertLikedReviewDocument, baseOptions);
@@ -13048,12 +13046,11 @@ export type UpsertLikedReviewMutationHookResult = ReturnType<
   typeof useUpsertLikedReviewMutation
 >;
 export type UpsertLikedReviewMutationResult =
-  ApolloReactCommon.MutationResult<UpsertLikedReviewMutation>;
-export type UpsertLikedReviewMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    UpsertLikedReviewMutation,
-    UpsertLikedReviewMutationVariables
-  >;
+  Apollo.MutationResult<UpsertLikedReviewMutation>;
+export type UpsertLikedReviewMutationOptions = Apollo.BaseMutationOptions<
+  UpsertLikedReviewMutation,
+  UpsertLikedReviewMutationVariables
+>;
 export const InsertSectionSubscriptionDocument = gql`
   mutation insertSectionSubscription($section_id: Int, $user_id: Int) {
     insert_queue_section_subscribed(
@@ -13063,11 +13060,10 @@ export const InsertSectionSubscriptionDocument = gql`
     }
   }
 `;
-export type InsertSectionSubscriptionMutationFn =
-  ApolloReactCommon.MutationFunction<
-    InsertSectionSubscriptionMutation,
-    InsertSectionSubscriptionMutationVariables
-  >;
+export type InsertSectionSubscriptionMutationFn = Apollo.MutationFunction<
+  InsertSectionSubscriptionMutation,
+  InsertSectionSubscriptionMutationVariables
+>;
 
 /**
  * __useInsertSectionSubscriptionMutation__
@@ -13088,12 +13084,12 @@ export type InsertSectionSubscriptionMutationFn =
  * });
  */
 export function useInsertSectionSubscriptionMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     InsertSectionSubscriptionMutation,
     InsertSectionSubscriptionMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     InsertSectionSubscriptionMutation,
     InsertSectionSubscriptionMutationVariables
   >(InsertSectionSubscriptionDocument, baseOptions);
@@ -13102,9 +13098,9 @@ export type InsertSectionSubscriptionMutationHookResult = ReturnType<
   typeof useInsertSectionSubscriptionMutation
 >;
 export type InsertSectionSubscriptionMutationResult =
-  ApolloReactCommon.MutationResult<InsertSectionSubscriptionMutation>;
+  Apollo.MutationResult<InsertSectionSubscriptionMutation>;
 export type InsertSectionSubscriptionMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
+  Apollo.BaseMutationOptions<
     InsertSectionSubscriptionMutation,
     InsertSectionSubscriptionMutationVariables
   >;
@@ -13117,11 +13113,10 @@ export const DeleteSectionSubscriptionDocument = gql`
     }
   }
 `;
-export type DeleteSectionSubscriptionMutationFn =
-  ApolloReactCommon.MutationFunction<
-    DeleteSectionSubscriptionMutation,
-    DeleteSectionSubscriptionMutationVariables
-  >;
+export type DeleteSectionSubscriptionMutationFn = Apollo.MutationFunction<
+  DeleteSectionSubscriptionMutation,
+  DeleteSectionSubscriptionMutationVariables
+>;
 
 /**
  * __useDeleteSectionSubscriptionMutation__
@@ -13141,12 +13136,12 @@ export type DeleteSectionSubscriptionMutationFn =
  * });
  */
 export function useDeleteSectionSubscriptionMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     DeleteSectionSubscriptionMutation,
     DeleteSectionSubscriptionMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     DeleteSectionSubscriptionMutation,
     DeleteSectionSubscriptionMutationVariables
   >(DeleteSectionSubscriptionDocument, baseOptions);
@@ -13155,9 +13150,9 @@ export type DeleteSectionSubscriptionMutationHookResult = ReturnType<
   typeof useDeleteSectionSubscriptionMutation
 >;
 export type DeleteSectionSubscriptionMutationResult =
-  ApolloReactCommon.MutationResult<DeleteSectionSubscriptionMutation>;
+  Apollo.MutationResult<DeleteSectionSubscriptionMutation>;
 export type DeleteSectionSubscriptionMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
+  Apollo.BaseMutationOptions<
     DeleteSectionSubscriptionMutation,
     DeleteSectionSubscriptionMutationVariables
   >;
@@ -13170,7 +13165,7 @@ export const InsertUserShortlistDocument = gql`
     }
   }
 `;
-export type InsertUserShortlistMutationFn = ApolloReactCommon.MutationFunction<
+export type InsertUserShortlistMutationFn = Apollo.MutationFunction<
   InsertUserShortlistMutation,
   InsertUserShortlistMutationVariables
 >;
@@ -13194,12 +13189,12 @@ export type InsertUserShortlistMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useInsertUserShortlistMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     InsertUserShortlistMutation,
     InsertUserShortlistMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     InsertUserShortlistMutation,
     InsertUserShortlistMutationVariables
   >(InsertUserShortlistDocument, baseOptions);
@@ -13208,12 +13203,11 @@ export type InsertUserShortlistMutationHookResult = ReturnType<
   typeof useInsertUserShortlistMutation
 >;
 export type InsertUserShortlistMutationResult =
-  ApolloReactCommon.MutationResult<InsertUserShortlistMutation>;
-export type InsertUserShortlistMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    InsertUserShortlistMutation,
-    InsertUserShortlistMutationVariables
-  >;
+  Apollo.MutationResult<InsertUserShortlistMutation>;
+export type InsertUserShortlistMutationOptions = Apollo.BaseMutationOptions<
+  InsertUserShortlistMutation,
+  InsertUserShortlistMutationVariables
+>;
 export const DeleteUserShortlistDocument = gql`
   mutation deleteUserShortlist($course_id: Int) {
     delete_user_shortlist(where: { course_id: { _eq: $course_id } }) {
@@ -13221,7 +13215,7 @@ export const DeleteUserShortlistDocument = gql`
     }
   }
 `;
-export type DeleteUserShortlistMutationFn = ApolloReactCommon.MutationFunction<
+export type DeleteUserShortlistMutationFn = Apollo.MutationFunction<
   DeleteUserShortlistMutation,
   DeleteUserShortlistMutationVariables
 >;
@@ -13244,12 +13238,12 @@ export type DeleteUserShortlistMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useDeleteUserShortlistMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     DeleteUserShortlistMutation,
     DeleteUserShortlistMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     DeleteUserShortlistMutation,
     DeleteUserShortlistMutationVariables
   >(DeleteUserShortlistDocument, baseOptions);
@@ -13258,12 +13252,11 @@ export type DeleteUserShortlistMutationHookResult = ReturnType<
   typeof useDeleteUserShortlistMutation
 >;
 export type DeleteUserShortlistMutationResult =
-  ApolloReactCommon.MutationResult<DeleteUserShortlistMutation>;
-export type DeleteUserShortlistMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    DeleteUserShortlistMutation,
-    DeleteUserShortlistMutationVariables
-  >;
+  Apollo.MutationResult<DeleteUserShortlistMutation>;
+export type DeleteUserShortlistMutationOptions = Apollo.BaseMutationOptions<
+  DeleteUserShortlistMutation,
+  DeleteUserShortlistMutationVariables
+>;
 export const InsertCourseReviewVoteDocument = gql`
   mutation insertCourseReviewVote($user_id: Int, $review_id: Int) {
     insert_course_review_upvote(
@@ -13273,11 +13266,10 @@ export const InsertCourseReviewVoteDocument = gql`
     }
   }
 `;
-export type InsertCourseReviewVoteMutationFn =
-  ApolloReactCommon.MutationFunction<
-    InsertCourseReviewVoteMutation,
-    InsertCourseReviewVoteMutationVariables
-  >;
+export type InsertCourseReviewVoteMutationFn = Apollo.MutationFunction<
+  InsertCourseReviewVoteMutation,
+  InsertCourseReviewVoteMutationVariables
+>;
 
 /**
  * __useInsertCourseReviewVoteMutation__
@@ -13298,12 +13290,12 @@ export type InsertCourseReviewVoteMutationFn =
  * });
  */
 export function useInsertCourseReviewVoteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     InsertCourseReviewVoteMutation,
     InsertCourseReviewVoteMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     InsertCourseReviewVoteMutation,
     InsertCourseReviewVoteMutationVariables
   >(InsertCourseReviewVoteDocument, baseOptions);
@@ -13312,12 +13304,11 @@ export type InsertCourseReviewVoteMutationHookResult = ReturnType<
   typeof useInsertCourseReviewVoteMutation
 >;
 export type InsertCourseReviewVoteMutationResult =
-  ApolloReactCommon.MutationResult<InsertCourseReviewVoteMutation>;
-export type InsertCourseReviewVoteMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    InsertCourseReviewVoteMutation,
-    InsertCourseReviewVoteMutationVariables
-  >;
+  Apollo.MutationResult<InsertCourseReviewVoteMutation>;
+export type InsertCourseReviewVoteMutationOptions = Apollo.BaseMutationOptions<
+  InsertCourseReviewVoteMutation,
+  InsertCourseReviewVoteMutationVariables
+>;
 export const DeleteCourseReviewVoteDocument = gql`
   mutation deleteCourseReviewVote($user_id: Int, $review_id: Int) {
     delete_course_review_upvote(
@@ -13327,11 +13318,10 @@ export const DeleteCourseReviewVoteDocument = gql`
     }
   }
 `;
-export type DeleteCourseReviewVoteMutationFn =
-  ApolloReactCommon.MutationFunction<
-    DeleteCourseReviewVoteMutation,
-    DeleteCourseReviewVoteMutationVariables
-  >;
+export type DeleteCourseReviewVoteMutationFn = Apollo.MutationFunction<
+  DeleteCourseReviewVoteMutation,
+  DeleteCourseReviewVoteMutationVariables
+>;
 
 /**
  * __useDeleteCourseReviewVoteMutation__
@@ -13352,12 +13342,12 @@ export type DeleteCourseReviewVoteMutationFn =
  * });
  */
 export function useDeleteCourseReviewVoteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     DeleteCourseReviewVoteMutation,
     DeleteCourseReviewVoteMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     DeleteCourseReviewVoteMutation,
     DeleteCourseReviewVoteMutationVariables
   >(DeleteCourseReviewVoteDocument, baseOptions);
@@ -13366,12 +13356,11 @@ export type DeleteCourseReviewVoteMutationHookResult = ReturnType<
   typeof useDeleteCourseReviewVoteMutation
 >;
 export type DeleteCourseReviewVoteMutationResult =
-  ApolloReactCommon.MutationResult<DeleteCourseReviewVoteMutation>;
-export type DeleteCourseReviewVoteMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    DeleteCourseReviewVoteMutation,
-    DeleteCourseReviewVoteMutationVariables
-  >;
+  Apollo.MutationResult<DeleteCourseReviewVoteMutation>;
+export type DeleteCourseReviewVoteMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCourseReviewVoteMutation,
+  DeleteCourseReviewVoteMutationVariables
+>;
 export const InsertProfReviewVoteDocument = gql`
   mutation insertProfReviewVote($user_id: Int, $review_id: Int) {
     insert_prof_review_upvote(
@@ -13381,7 +13370,7 @@ export const InsertProfReviewVoteDocument = gql`
     }
   }
 `;
-export type InsertProfReviewVoteMutationFn = ApolloReactCommon.MutationFunction<
+export type InsertProfReviewVoteMutationFn = Apollo.MutationFunction<
   InsertProfReviewVoteMutation,
   InsertProfReviewVoteMutationVariables
 >;
@@ -13405,12 +13394,12 @@ export type InsertProfReviewVoteMutationFn = ApolloReactCommon.MutationFunction<
  * });
  */
 export function useInsertProfReviewVoteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     InsertProfReviewVoteMutation,
     InsertProfReviewVoteMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     InsertProfReviewVoteMutation,
     InsertProfReviewVoteMutationVariables
   >(InsertProfReviewVoteDocument, baseOptions);
@@ -13419,12 +13408,11 @@ export type InsertProfReviewVoteMutationHookResult = ReturnType<
   typeof useInsertProfReviewVoteMutation
 >;
 export type InsertProfReviewVoteMutationResult =
-  ApolloReactCommon.MutationResult<InsertProfReviewVoteMutation>;
-export type InsertProfReviewVoteMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    InsertProfReviewVoteMutation,
-    InsertProfReviewVoteMutationVariables
-  >;
+  Apollo.MutationResult<InsertProfReviewVoteMutation>;
+export type InsertProfReviewVoteMutationOptions = Apollo.BaseMutationOptions<
+  InsertProfReviewVoteMutation,
+  InsertProfReviewVoteMutationVariables
+>;
 export const Delete_Prof_Review_VoteDocument = gql`
   mutation DELETE_PROF_REVIEW_VOTE($user_id: Int, $review_id: Int) {
     delete_prof_review_upvote(
@@ -13434,11 +13422,10 @@ export const Delete_Prof_Review_VoteDocument = gql`
     }
   }
 `;
-export type Delete_Prof_Review_VoteMutationFn =
-  ApolloReactCommon.MutationFunction<
-    Delete_Prof_Review_VoteMutation,
-    Delete_Prof_Review_VoteMutationVariables
-  >;
+export type Delete_Prof_Review_VoteMutationFn = Apollo.MutationFunction<
+  Delete_Prof_Review_VoteMutation,
+  Delete_Prof_Review_VoteMutationVariables
+>;
 
 /**
  * __useDelete_Prof_Review_VoteMutation__
@@ -13459,12 +13446,12 @@ export type Delete_Prof_Review_VoteMutationFn =
  * });
  */
 export function useDelete_Prof_Review_VoteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     Delete_Prof_Review_VoteMutation,
     Delete_Prof_Review_VoteMutationVariables
   >,
 ) {
-  return ApolloReactHooks.useMutation<
+  return Apollo.useMutation<
     Delete_Prof_Review_VoteMutation,
     Delete_Prof_Review_VoteMutationVariables
   >(Delete_Prof_Review_VoteDocument, baseOptions);
@@ -13473,12 +13460,11 @@ export type Delete_Prof_Review_VoteMutationHookResult = ReturnType<
   typeof useDelete_Prof_Review_VoteMutation
 >;
 export type Delete_Prof_Review_VoteMutationResult =
-  ApolloReactCommon.MutationResult<Delete_Prof_Review_VoteMutation>;
-export type Delete_Prof_Review_VoteMutationOptions =
-  ApolloReactCommon.BaseMutationOptions<
-    Delete_Prof_Review_VoteMutation,
-    Delete_Prof_Review_VoteMutationVariables
-  >;
+  Apollo.MutationResult<Delete_Prof_Review_VoteMutation>;
+export type Delete_Prof_Review_VoteMutationOptions = Apollo.BaseMutationOptions<
+  Delete_Prof_Review_VoteMutation,
+  Delete_Prof_Review_VoteMutationVariables
+>;
 export const GetCourseDocument = gql`
   query getCourse($code: String) {
     course(where: { code: { _eq: $code } }) {
@@ -13513,23 +13499,23 @@ export const GetCourseDocument = gql`
  * });
  */
 export function useGetCourseQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     GetCourseQuery,
     GetCourseQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<GetCourseQuery, GetCourseQueryVariables>(
+  return Apollo.useQuery<GetCourseQuery, GetCourseQueryVariables>(
     GetCourseDocument,
     baseOptions,
   );
 }
 export function useGetCourseLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     GetCourseQuery,
     GetCourseQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<GetCourseQuery, GetCourseQueryVariables>(
+  return Apollo.useLazyQuery<GetCourseQuery, GetCourseQueryVariables>(
     GetCourseDocument,
     baseOptions,
   );
@@ -13538,7 +13524,7 @@ export type GetCourseQueryHookResult = ReturnType<typeof useGetCourseQuery>;
 export type GetCourseLazyQueryHookResult = ReturnType<
   typeof useGetCourseLazyQuery
 >;
-export type GetCourseQueryResult = ApolloReactCommon.QueryResult<
+export type GetCourseQueryResult = Apollo.QueryResult<
   GetCourseQuery,
   GetCourseQueryVariables
 >;
@@ -13610,23 +13596,23 @@ export const GetCourseWithUserDataDocument = gql`
  * });
  */
 export function useGetCourseWithUserDataQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     GetCourseWithUserDataQuery,
     GetCourseWithUserDataQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     GetCourseWithUserDataQuery,
     GetCourseWithUserDataQueryVariables
   >(GetCourseWithUserDataDocument, baseOptions);
 }
 export function useGetCourseWithUserDataLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     GetCourseWithUserDataQuery,
     GetCourseWithUserDataQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     GetCourseWithUserDataQuery,
     GetCourseWithUserDataQueryVariables
   >(GetCourseWithUserDataDocument, baseOptions);
@@ -13637,7 +13623,7 @@ export type GetCourseWithUserDataQueryHookResult = ReturnType<
 export type GetCourseWithUserDataLazyQueryHookResult = ReturnType<
   typeof useGetCourseWithUserDataLazyQuery
 >;
-export type GetCourseWithUserDataQueryResult = ApolloReactCommon.QueryResult<
+export type GetCourseWithUserDataQueryResult = Apollo.QueryResult<
   GetCourseWithUserDataQuery,
   GetCourseWithUserDataQueryVariables
 >;
@@ -13670,23 +13656,23 @@ export const RefetchCourseShortlistDocument = gql`
  * });
  */
 export function useRefetchCourseShortlistQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchCourseShortlistQuery,
     RefetchCourseShortlistQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     RefetchCourseShortlistQuery,
     RefetchCourseShortlistQueryVariables
   >(RefetchCourseShortlistDocument, baseOptions);
 }
 export function useRefetchCourseShortlistLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchCourseShortlistQuery,
     RefetchCourseShortlistQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     RefetchCourseShortlistQuery,
     RefetchCourseShortlistQueryVariables
   >(RefetchCourseShortlistDocument, baseOptions);
@@ -13697,7 +13683,7 @@ export type RefetchCourseShortlistQueryHookResult = ReturnType<
 export type RefetchCourseShortlistLazyQueryHookResult = ReturnType<
   typeof useRefetchCourseShortlistLazyQuery
 >;
-export type RefetchCourseShortlistQueryResult = ApolloReactCommon.QueryResult<
+export type RefetchCourseShortlistQueryResult = Apollo.QueryResult<
   RefetchCourseShortlistQuery,
   RefetchCourseShortlistQueryVariables
 >;
@@ -13732,26 +13718,26 @@ export const RefetchRatingsDocument = gql`
  * });
  */
 export function useRefetchRatingsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchRatingsQuery,
     RefetchRatingsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
-    RefetchRatingsQuery,
-    RefetchRatingsQueryVariables
-  >(RefetchRatingsDocument, baseOptions);
+  return Apollo.useQuery<RefetchRatingsQuery, RefetchRatingsQueryVariables>(
+    RefetchRatingsDocument,
+    baseOptions,
+  );
 }
 export function useRefetchRatingsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchRatingsQuery,
     RefetchRatingsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    RefetchRatingsQuery,
-    RefetchRatingsQueryVariables
-  >(RefetchRatingsDocument, baseOptions);
+  return Apollo.useLazyQuery<RefetchRatingsQuery, RefetchRatingsQueryVariables>(
+    RefetchRatingsDocument,
+    baseOptions,
+  );
 }
 export type RefetchRatingsQueryHookResult = ReturnType<
   typeof useRefetchRatingsQuery
@@ -13759,7 +13745,7 @@ export type RefetchRatingsQueryHookResult = ReturnType<
 export type RefetchRatingsLazyQueryHookResult = ReturnType<
   typeof useRefetchRatingsLazyQuery
 >;
-export type RefetchRatingsQueryResult = ApolloReactCommon.QueryResult<
+export type RefetchRatingsQueryResult = Apollo.QueryResult<
   RefetchRatingsQuery,
   RefetchRatingsQueryVariables
 >;
@@ -13795,23 +13781,23 @@ export const RefetchSectionSubscriptionsDocument = gql`
  * });
  */
 export function useRefetchSectionSubscriptionsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchSectionSubscriptionsQuery,
     RefetchSectionSubscriptionsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     RefetchSectionSubscriptionsQuery,
     RefetchSectionSubscriptionsQueryVariables
   >(RefetchSectionSubscriptionsDocument, baseOptions);
 }
 export function useRefetchSectionSubscriptionsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchSectionSubscriptionsQuery,
     RefetchSectionSubscriptionsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     RefetchSectionSubscriptionsQuery,
     RefetchSectionSubscriptionsQueryVariables
   >(RefetchSectionSubscriptionsDocument, baseOptions);
@@ -13822,11 +13808,10 @@ export type RefetchSectionSubscriptionsQueryHookResult = ReturnType<
 export type RefetchSectionSubscriptionsLazyQueryHookResult = ReturnType<
   typeof useRefetchSectionSubscriptionsLazyQuery
 >;
-export type RefetchSectionSubscriptionsQueryResult =
-  ApolloReactCommon.QueryResult<
-    RefetchSectionSubscriptionsQuery,
-    RefetchSectionSubscriptionsQueryVariables
-  >;
+export type RefetchSectionSubscriptionsQueryResult = Apollo.QueryResult<
+  RefetchSectionSubscriptionsQuery,
+  RefetchSectionSubscriptionsQueryVariables
+>;
 export const RefetchCourseReviewsDocument = gql`
   query refetchCourseReviews($code: String, $user_id: Int) {
     review(
@@ -13859,23 +13844,23 @@ export const RefetchCourseReviewsDocument = gql`
  * });
  */
 export function useRefetchCourseReviewsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchCourseReviewsQuery,
     RefetchCourseReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     RefetchCourseReviewsQuery,
     RefetchCourseReviewsQueryVariables
   >(RefetchCourseReviewsDocument, baseOptions);
 }
 export function useRefetchCourseReviewsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchCourseReviewsQuery,
     RefetchCourseReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     RefetchCourseReviewsQuery,
     RefetchCourseReviewsQueryVariables
   >(RefetchCourseReviewsDocument, baseOptions);
@@ -13886,7 +13871,7 @@ export type RefetchCourseReviewsQueryHookResult = ReturnType<
 export type RefetchCourseReviewsLazyQueryHookResult = ReturnType<
   typeof useRefetchCourseReviewsLazyQuery
 >;
-export type RefetchCourseReviewsQueryResult = ApolloReactCommon.QueryResult<
+export type RefetchCourseReviewsQueryResult = Apollo.QueryResult<
   RefetchCourseReviewsQuery,
   RefetchCourseReviewsQueryVariables
 >;
@@ -13926,26 +13911,26 @@ export const CourseReviewsDocument = gql`
  * });
  */
 export function useCourseReviewsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     CourseReviewsQuery,
     CourseReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
-    CourseReviewsQuery,
-    CourseReviewsQueryVariables
-  >(CourseReviewsDocument, baseOptions);
+  return Apollo.useQuery<CourseReviewsQuery, CourseReviewsQueryVariables>(
+    CourseReviewsDocument,
+    baseOptions,
+  );
 }
 export function useCourseReviewsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     CourseReviewsQuery,
     CourseReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    CourseReviewsQuery,
-    CourseReviewsQueryVariables
-  >(CourseReviewsDocument, baseOptions);
+  return Apollo.useLazyQuery<CourseReviewsQuery, CourseReviewsQueryVariables>(
+    CourseReviewsDocument,
+    baseOptions,
+  );
 }
 export type CourseReviewsQueryHookResult = ReturnType<
   typeof useCourseReviewsQuery
@@ -13953,7 +13938,7 @@ export type CourseReviewsQueryHookResult = ReturnType<
 export type CourseReviewsLazyQueryHookResult = ReturnType<
   typeof useCourseReviewsLazyQuery
 >;
-export type CourseReviewsQueryResult = ApolloReactCommon.QueryResult<
+export type CourseReviewsQueryResult = Apollo.QueryResult<
   CourseReviewsQuery,
   CourseReviewsQueryVariables
 >;
@@ -13995,23 +13980,23 @@ export const CourseReviewsWithUserDataDocument = gql`
  * });
  */
 export function useCourseReviewsWithUserDataQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     CourseReviewsWithUserDataQuery,
     CourseReviewsWithUserDataQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     CourseReviewsWithUserDataQuery,
     CourseReviewsWithUserDataQueryVariables
   >(CourseReviewsWithUserDataDocument, baseOptions);
 }
 export function useCourseReviewsWithUserDataLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     CourseReviewsWithUserDataQuery,
     CourseReviewsWithUserDataQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     CourseReviewsWithUserDataQuery,
     CourseReviewsWithUserDataQueryVariables
   >(CourseReviewsWithUserDataDocument, baseOptions);
@@ -14022,11 +14007,10 @@ export type CourseReviewsWithUserDataQueryHookResult = ReturnType<
 export type CourseReviewsWithUserDataLazyQueryHookResult = ReturnType<
   typeof useCourseReviewsWithUserDataLazyQuery
 >;
-export type CourseReviewsWithUserDataQueryResult =
-  ApolloReactCommon.QueryResult<
-    CourseReviewsWithUserDataQuery,
-    CourseReviewsWithUserDataQueryVariables
-  >;
+export type CourseReviewsWithUserDataQueryResult = Apollo.QueryResult<
+  CourseReviewsWithUserDataQuery,
+  CourseReviewsWithUserDataQueryVariables
+>;
 export const RefetchCourseReviewUpvoteDocument = gql`
   query refetchCourseReviewUpvote($review_id: Int) {
     review(where: { id: { _eq: $review_id } }) {
@@ -14053,23 +14037,23 @@ export const RefetchCourseReviewUpvoteDocument = gql`
  * });
  */
 export function useRefetchCourseReviewUpvoteQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchCourseReviewUpvoteQuery,
     RefetchCourseReviewUpvoteQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     RefetchCourseReviewUpvoteQuery,
     RefetchCourseReviewUpvoteQueryVariables
   >(RefetchCourseReviewUpvoteDocument, baseOptions);
 }
 export function useRefetchCourseReviewUpvoteLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchCourseReviewUpvoteQuery,
     RefetchCourseReviewUpvoteQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     RefetchCourseReviewUpvoteQuery,
     RefetchCourseReviewUpvoteQueryVariables
   >(RefetchCourseReviewUpvoteDocument, baseOptions);
@@ -14080,11 +14064,10 @@ export type RefetchCourseReviewUpvoteQueryHookResult = ReturnType<
 export type RefetchCourseReviewUpvoteLazyQueryHookResult = ReturnType<
   typeof useRefetchCourseReviewUpvoteLazyQuery
 >;
-export type RefetchCourseReviewUpvoteQueryResult =
-  ApolloReactCommon.QueryResult<
-    RefetchCourseReviewUpvoteQuery,
-    RefetchCourseReviewUpvoteQueryVariables
-  >;
+export type RefetchCourseReviewUpvoteQueryResult = Apollo.QueryResult<
+  RefetchCourseReviewUpvoteQuery,
+  RefetchCourseReviewUpvoteQueryVariables
+>;
 export const CourseReviewProfsDocument = gql`
   query courseReviewProfs($courseIds: [Int!]) {
     allProfs: prof(order_by: { name: asc }) {
@@ -14123,23 +14106,23 @@ export const CourseReviewProfsDocument = gql`
  * });
  */
 export function useCourseReviewProfsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     CourseReviewProfsQuery,
     CourseReviewProfsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     CourseReviewProfsQuery,
     CourseReviewProfsQueryVariables
   >(CourseReviewProfsDocument, baseOptions);
 }
 export function useCourseReviewProfsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     CourseReviewProfsQuery,
     CourseReviewProfsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     CourseReviewProfsQuery,
     CourseReviewProfsQueryVariables
   >(CourseReviewProfsDocument, baseOptions);
@@ -14150,7 +14133,7 @@ export type CourseReviewProfsQueryHookResult = ReturnType<
 export type CourseReviewProfsLazyQueryHookResult = ReturnType<
   typeof useCourseReviewProfsLazyQuery
 >;
-export type CourseReviewProfsQueryResult = ApolloReactCommon.QueryResult<
+export type CourseReviewProfsQueryResult = Apollo.QueryResult<
   CourseReviewProfsQuery,
   CourseReviewProfsQueryVariables
 >;
@@ -14183,32 +14166,32 @@ export const ExploreAllDocument = gql`
  * });
  */
 export function useExploreAllQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     ExploreAllQuery,
     ExploreAllQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<ExploreAllQuery, ExploreAllQueryVariables>(
+  return Apollo.useQuery<ExploreAllQuery, ExploreAllQueryVariables>(
     ExploreAllDocument,
     baseOptions,
   );
 }
 export function useExploreAllLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     ExploreAllQuery,
     ExploreAllQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    ExploreAllQuery,
-    ExploreAllQueryVariables
-  >(ExploreAllDocument, baseOptions);
+  return Apollo.useLazyQuery<ExploreAllQuery, ExploreAllQueryVariables>(
+    ExploreAllDocument,
+    baseOptions,
+  );
 }
 export type ExploreAllQueryHookResult = ReturnType<typeof useExploreAllQuery>;
 export type ExploreAllLazyQueryHookResult = ReturnType<
   typeof useExploreAllLazyQuery
 >;
-export type ExploreAllQueryResult = ApolloReactCommon.QueryResult<
+export type ExploreAllQueryResult = Apollo.QueryResult<
   ExploreAllQuery,
   ExploreAllQueryVariables
 >;
@@ -14243,30 +14226,27 @@ export const ExploreDocument = gql`
  * });
  */
 export function useExploreQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    ExploreQuery,
-    ExploreQueryVariables
-  >,
+  baseOptions?: Apollo.QueryHookOptions<ExploreQuery, ExploreQueryVariables>,
 ) {
-  return ApolloReactHooks.useQuery<ExploreQuery, ExploreQueryVariables>(
+  return Apollo.useQuery<ExploreQuery, ExploreQueryVariables>(
     ExploreDocument,
     baseOptions,
   );
 }
 export function useExploreLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     ExploreQuery,
     ExploreQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<ExploreQuery, ExploreQueryVariables>(
+  return Apollo.useLazyQuery<ExploreQuery, ExploreQueryVariables>(
     ExploreDocument,
     baseOptions,
   );
 }
 export type ExploreQueryHookResult = ReturnType<typeof useExploreQuery>;
 export type ExploreLazyQueryHookResult = ReturnType<typeof useExploreLazyQuery>;
-export type ExploreQueryResult = ApolloReactCommon.QueryResult<
+export type ExploreQueryResult = Apollo.QueryResult<
   ExploreQuery,
   ExploreQueryVariables
 >;
@@ -14302,30 +14282,27 @@ export const GetProfDocument = gql`
  * });
  */
 export function useGetProfQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetProfQuery,
-    GetProfQueryVariables
-  >,
+  baseOptions?: Apollo.QueryHookOptions<GetProfQuery, GetProfQueryVariables>,
 ) {
-  return ApolloReactHooks.useQuery<GetProfQuery, GetProfQueryVariables>(
+  return Apollo.useQuery<GetProfQuery, GetProfQueryVariables>(
     GetProfDocument,
     baseOptions,
   );
 }
 export function useGetProfLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     GetProfQuery,
     GetProfQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<GetProfQuery, GetProfQueryVariables>(
+  return Apollo.useLazyQuery<GetProfQuery, GetProfQueryVariables>(
     GetProfDocument,
     baseOptions,
   );
 }
 export type GetProfQueryHookResult = ReturnType<typeof useGetProfQuery>;
 export type GetProfLazyQueryHookResult = ReturnType<typeof useGetProfLazyQuery>;
-export type GetProfQueryResult = ApolloReactCommon.QueryResult<
+export type GetProfQueryResult = Apollo.QueryResult<
   GetProfQuery,
   GetProfQueryVariables
 >;
@@ -14359,32 +14336,32 @@ export const ProfReviewsDocument = gql`
  * });
  */
 export function useProfReviewsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     ProfReviewsQuery,
     ProfReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
+  return Apollo.useQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
     ProfReviewsDocument,
     baseOptions,
   );
 }
 export function useProfReviewsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     ProfReviewsQuery,
     ProfReviewsQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
-    ProfReviewsQuery,
-    ProfReviewsQueryVariables
-  >(ProfReviewsDocument, baseOptions);
+  return Apollo.useLazyQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
+    ProfReviewsDocument,
+    baseOptions,
+  );
 }
 export type ProfReviewsQueryHookResult = ReturnType<typeof useProfReviewsQuery>;
 export type ProfReviewsLazyQueryHookResult = ReturnType<
   typeof useProfReviewsLazyQuery
 >;
-export type ProfReviewsQueryResult = ApolloReactCommon.QueryResult<
+export type ProfReviewsQueryResult = Apollo.QueryResult<
   ProfReviewsQuery,
   ProfReviewsQueryVariables
 >;
@@ -14420,23 +14397,23 @@ export const ProfReviewsWithUserDataDocument = gql`
  * });
  */
 export function useProfReviewsWithUserDataQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     ProfReviewsWithUserDataQuery,
     ProfReviewsWithUserDataQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     ProfReviewsWithUserDataQuery,
     ProfReviewsWithUserDataQueryVariables
   >(ProfReviewsWithUserDataDocument, baseOptions);
 }
 export function useProfReviewsWithUserDataLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     ProfReviewsWithUserDataQuery,
     ProfReviewsWithUserDataQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     ProfReviewsWithUserDataQuery,
     ProfReviewsWithUserDataQueryVariables
   >(ProfReviewsWithUserDataDocument, baseOptions);
@@ -14447,7 +14424,7 @@ export type ProfReviewsWithUserDataQueryHookResult = ReturnType<
 export type ProfReviewsWithUserDataLazyQueryHookResult = ReturnType<
   typeof useProfReviewsWithUserDataLazyQuery
 >;
-export type ProfReviewsWithUserDataQueryResult = ApolloReactCommon.QueryResult<
+export type ProfReviewsWithUserDataQueryResult = Apollo.QueryResult<
   ProfReviewsWithUserDataQuery,
   ProfReviewsWithUserDataQueryVariables
 >;
@@ -14477,23 +14454,23 @@ export const Refetch_Prof_Review_UpvoteDocument = gql`
  * });
  */
 export function useRefetch_Prof_Review_UpvoteQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     Refetch_Prof_Review_UpvoteQuery,
     Refetch_Prof_Review_UpvoteQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     Refetch_Prof_Review_UpvoteQuery,
     Refetch_Prof_Review_UpvoteQueryVariables
   >(Refetch_Prof_Review_UpvoteDocument, baseOptions);
 }
 export function useRefetch_Prof_Review_UpvoteLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     Refetch_Prof_Review_UpvoteQuery,
     Refetch_Prof_Review_UpvoteQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     Refetch_Prof_Review_UpvoteQuery,
     Refetch_Prof_Review_UpvoteQueryVariables
   >(Refetch_Prof_Review_UpvoteDocument, baseOptions);
@@ -14504,11 +14481,10 @@ export type Refetch_Prof_Review_UpvoteQueryHookResult = ReturnType<
 export type Refetch_Prof_Review_UpvoteLazyQueryHookResult = ReturnType<
   typeof useRefetch_Prof_Review_UpvoteLazyQuery
 >;
-export type Refetch_Prof_Review_UpvoteQueryResult =
-  ApolloReactCommon.QueryResult<
-    Refetch_Prof_Review_UpvoteQuery,
-    Refetch_Prof_Review_UpvoteQueryVariables
-  >;
+export type Refetch_Prof_Review_UpvoteQueryResult = Apollo.QueryResult<
+  Refetch_Prof_Review_UpvoteQuery,
+  Refetch_Prof_Review_UpvoteQueryVariables
+>;
 export const GetUserDocument = gql`
   query getUser($id: Int) {
     user(where: { id: { _eq: $id } }) {
@@ -14547,30 +14523,27 @@ export const GetUserDocument = gql`
  * });
  */
 export function useGetUserQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetUserQuery,
-    GetUserQueryVariables
-  >,
+  baseOptions?: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>,
 ) {
-  return ApolloReactHooks.useQuery<GetUserQuery, GetUserQueryVariables>(
+  return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(
     GetUserDocument,
     baseOptions,
   );
 }
 export function useGetUserLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     GetUserQuery,
     GetUserQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<GetUserQuery, GetUserQueryVariables>(
+  return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(
     GetUserDocument,
     baseOptions,
   );
 }
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
-export type GetUserQueryResult = ApolloReactCommon.QueryResult<
+export type GetUserQueryResult = Apollo.QueryResult<
   GetUserQuery,
   GetUserQueryVariables
 >;
@@ -14601,23 +14574,23 @@ export const RefetchUserShortlistDocument = gql`
  * });
  */
 export function useRefetchUserShortlistQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchUserShortlistQuery,
     RefetchUserShortlistQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     RefetchUserShortlistQuery,
     RefetchUserShortlistQueryVariables
   >(RefetchUserShortlistDocument, baseOptions);
 }
 export function useRefetchUserShortlistLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchUserShortlistQuery,
     RefetchUserShortlistQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     RefetchUserShortlistQuery,
     RefetchUserShortlistQueryVariables
   >(RefetchUserShortlistDocument, baseOptions);
@@ -14628,7 +14601,7 @@ export type RefetchUserShortlistQueryHookResult = ReturnType<
 export type RefetchUserShortlistLazyQueryHookResult = ReturnType<
   typeof useRefetchUserShortlistLazyQuery
 >;
-export type RefetchUserShortlistQueryResult = ApolloReactCommon.QueryResult<
+export type RefetchUserShortlistQueryResult = Apollo.QueryResult<
   RefetchUserShortlistQuery,
   RefetchUserShortlistQueryVariables
 >;
@@ -14658,23 +14631,23 @@ export const RefetchUserReviewDocument = gql`
  * });
  */
 export function useRefetchUserReviewQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     RefetchUserReviewQuery,
     RefetchUserReviewQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useQuery<
+  return Apollo.useQuery<
     RefetchUserReviewQuery,
     RefetchUserReviewQueryVariables
   >(RefetchUserReviewDocument, baseOptions);
 }
 export function useRefetchUserReviewLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     RefetchUserReviewQuery,
     RefetchUserReviewQueryVariables
   >,
 ) {
-  return ApolloReactHooks.useLazyQuery<
+  return Apollo.useLazyQuery<
     RefetchUserReviewQuery,
     RefetchUserReviewQueryVariables
   >(RefetchUserReviewDocument, baseOptions);
@@ -14685,7 +14658,7 @@ export type RefetchUserReviewQueryHookResult = ReturnType<
 export type RefetchUserReviewLazyQueryHookResult = ReturnType<
   typeof useRefetchUserReviewLazyQuery
 >;
-export type RefetchUserReviewQueryResult = ApolloReactCommon.QueryResult<
+export type RefetchUserReviewQueryResult = Apollo.QueryResult<
   RefetchUserReviewQuery,
   RefetchUserReviewQueryVariables
 >;

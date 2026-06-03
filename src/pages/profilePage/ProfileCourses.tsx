@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Edit, PlusSquare } from 'react-feather';
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult } from '@apollo/client';
 import {
   GetUserQuery,
   GetUserQueryVariables,

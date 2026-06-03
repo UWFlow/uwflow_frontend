@@ -428,6 +428,14 @@ module.exports = function(webpackEnv) {
                     { helpers: true },
                   ],
                 ],
+                plugins: [
+                  // graphql@16 ships untranspiled class fields (e.g. `line = 1`)
+                  // in both its CJS and ESM builds. The CRA dependencies preset
+                  // (Babel 7.9 / preset-env) doesn't enable class properties, so
+                  // add the transform here. preset-env already handles the `?.`
+                  // and `??` operators graphql@16 also uses.
+                  require.resolve('@babel/plugin-proposal-class-properties'),
+                ],
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,

@@ -79,7 +79,7 @@ Reuse shared fragments from `src/graphql/fragments/` where possible.
 ### Step 2 — Use the query in a component
 
 ```tsx
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/client';
 import { GET_MY_DATA } from 'graphql/queries/my_feature/MyFeature';
 
 const MyComponent = ({ id }: { id: number }) => {
