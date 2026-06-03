@@ -25,13 +25,17 @@ const renderProfilePicture = (
   data: GetUserQuery | undefined,
   dispatch: Dispatch,
   isLanding: boolean,
+  loading: boolean,
 ) => {
   let user: { id?: number | null; picture_url?: string | null } = {
     id: null,
     picture_url: null,
   };
 
-  if (data && data.user) {
+  // While the query is in flight `data` is still undefined; show the fallback
+  // kitten and hold off on the "empty user => log out" check until the real
+  // response arrives, so a slow load can't trigger a spurious logout.
+  if (!loading && data && data.user) {
     if (data.user.length > 0) {
       [user] = data.user;
     } else {
@@ -58,7 +62,7 @@ const ProfileDropdown = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const isLanding = isOnLandingPageRoute(location);
 
-  const { data } = useQuery<GetUserQuery>(GET_USER, {
+  const { data, loading } = useQuery<GetUserQuery>(GET_USER, {
     variables: { id: Number(localStorage.getItem('user_id')) },
     skip: !isLoggedIn,
   });
@@ -71,7 +75,7 @@ const ProfileDropdown = () => {
       {isLoggedIn ? (
         <>
           <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
-            {renderProfilePicture(data, dispatch, isLanding)}
+            {renderProfilePicture(data, dispatch, isLanding, loading)}
           </ProfileText>
           <DropdownList
             selectedIndex={-1}
