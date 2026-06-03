@@ -1,8 +1,10 @@
 import React from 'react';
+import { LoadableCoursePage, LoadableProfPage } from 'LoadableComponents';
 import { getCoursePageRoute, getProfPageRoute } from 'Routes';
 
 import { ColumnOverride } from 'components/display/Table';
 import { formatCourseCode, processRating } from 'utils/Misc';
+import { preloadProps } from 'utils/preload';
 
 import { CourseCode, ProfName } from './styles/ExplorePage';
 
@@ -13,7 +15,10 @@ export const courseColumns: ColumnOverride[] = [
     align: 'left',
     minWidth: 120,
     Cell: ({ cell }) => (
-      <CourseCode to={getCoursePageRoute(cell.value)}>
+      <CourseCode
+        to={getCoursePageRoute(cell.value)}
+        {...preloadProps(LoadableCoursePage)}
+      >
         {formatCourseCode(cell.value)}
       </CourseCode>
     ),
@@ -61,7 +66,10 @@ export const profColumns: ColumnOverride[] = [
     accessor: 'code_name',
     align: 'left',
     Cell: ({ cell }) => (
-      <ProfName to={getProfPageRoute(cell.value.code)}>
+      <ProfName
+        to={getProfPageRoute(cell.value.code)}
+        {...preloadProps(LoadableProfPage)}
+      >
         {cell.value.name}
       </ProfName>
     ),

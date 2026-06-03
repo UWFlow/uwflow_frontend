@@ -9,6 +9,11 @@ import React, {
 import { Layers, Search, Square, User, Users } from 'react-feather';
 import Highlighter from 'react-highlight-words';
 import { useHistory, useLocation } from 'react-router-dom';
+import {
+  LoadableCoursePage,
+  LoadableExplorePage,
+  LoadableProfPage,
+} from 'LoadableComponents';
 import queryString from 'query-string';
 import {
   EXPLORE_PAGE_ROUTE,
@@ -28,6 +33,7 @@ import {
 } from 'search/SearchClient';
 import { useSearchContext } from 'search/SearchProvider';
 import { formatCourseCode } from 'utils/Misc';
+import { preloadProps } from 'utils/preload';
 
 import {
   BoldText,
@@ -236,6 +242,7 @@ const SearchBar = ({
       key={code}
       ref={ref}
       isLanding={isLanding}
+      {...preloadProps(LoadableExplorePage)}
     >
       <ResultIcon color={theme.primary} className="primaryicon">
         <Layers />
@@ -262,6 +269,7 @@ const SearchBar = ({
       key={course.code}
       ref={ref}
       isLanding={isLanding}
+      {...preloadProps(LoadableCoursePage)}
     >
       <ResultIcon color={theme.courses}>
         <Square />
@@ -296,6 +304,7 @@ const SearchBar = ({
       key={prof.code}
       ref={ref}
       isLanding={isLanding}
+      {...preloadProps(LoadableProfPage)}
     >
       <ResultIcon color={theme.professors}>
         <User />
