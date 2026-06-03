@@ -1,9 +1,11 @@
-import { defaultDataIdFromObject, InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
-import { setContext } from 'apollo-link-context';
-import { onError } from 'apollo-link-error';
-import { HttpLink } from 'apollo-link-http';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
 
 import { GRAPHQL_ENDPOINT } from 'constants/Api';
 import { logOut } from 'utils/Auth';
@@ -50,24 +52,34 @@ const link = ApolloLink.from([
   httpLink, // terminating link must be added last
 ]);
 
-const cache = new InMemoryCache({
-  dataIdFromObject: (object) => {
-    switch (object.__typename) {
-      case 'course_search_index':
-        return `${object.course_id}`;
-      case 'prof_search_index':
-        return `${object.prof_id}`;
-      case 'queue_section_subscribed':
-        return `${object.section_id}:${object.user_id}`;
-      case 'user_shortlist':
-        return `${object.course_id}:${object.user_id}`;
-      case 'user_schedule':
-        return `${object.user_id}:${object.section.id}`;
-      case 'user_course_taken':
-        return `${object.term_id}:${object.course_id}`;
-      default:
-        return defaultDataIdFromObject(object);
-    }
+// UWFlow exposes a number of Hasura views / composite-key relationships whose
+// primary key isn't a plain `id`/`_id` field. Declare per-type `keyFields` so
+// Apollo's cache normalizes them correctly; every other type falls back to the
+// default `id`/`_id` heuristic.
+export const cache = new InMemoryCache({
+  typePolicies: {
+    course_search_index: {
+      keyFields: ['course_id'],
+    },
+    prof_search_index: {
+      keyFields: ['prof_id'],
+    },
+    queue_section_subscribed: {
+      keyFields: ['section_id', 'user_id'],
+    },
+    user_shortlist: {
+      keyFields: ['course_id', 'user_id'],
+    },
+    user_course_taken: {
+      keyFields: ['term_id', 'course_id'],
+    },
+    user_schedule: {
+      // `user_id` plus the nested `section.id`. The trailing `['id']` declares
+      // the subfields of the preceding `section` object field — this is not the
+      // same as `['user_id', ['section', 'id']]`, which would (wrongly) treat
+      // `section`/`id` as subfields of the scalar `user_id`.
+      keyFields: ['user_id', 'section', ['id']],
+    },
   },
 });
 

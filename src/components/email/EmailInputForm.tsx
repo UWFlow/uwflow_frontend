@@ -1,6 +1,6 @@
 import React, { ReactNode, SyntheticEvent, useState } from 'react';
-import { useMutation } from 'react-apollo';
 import { toast } from 'react-toastify';
+import { useMutation } from '@apollo/client';
 import { useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';

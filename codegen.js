@@ -18,6 +18,12 @@ module.exports = {
         'typescript-react-apollo',
       ],
       config: {
+        // Emit a single `import * as Apollo from '@apollo/client'` instead of
+        // the legacy split `@apollo/react-common` / `@apollo/react-hooks` imports.
+        reactApolloVersion: 3,
+        // Import `gql` from `@apollo/client` (which re-exports it) so we don't
+        // depend on the separate `graphql-tag` package.
+        gqlImport: '@apollo/client#gql',
         skipTypename: false,
         withHooks: true,
         withHOC: false,

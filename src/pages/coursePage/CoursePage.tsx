@@ -1,8 +1,8 @@
 import React from 'react';
-import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import {
   CourseInfoFragment,
   CourseRatingFragment,

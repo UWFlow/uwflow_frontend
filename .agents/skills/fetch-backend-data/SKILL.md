@@ -59,7 +59,7 @@ Key mapping rules:
 Queries live in `src/graphql/queries/`. Create or edit a file there:
 
 ```tsx
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const GET_MY_DATA = gql`
   query getMyData($id: Int!) {
@@ -79,7 +79,7 @@ Reuse shared fragments from `src/graphql/fragments/` where possible.
 ### Step 2 — Use the query in a component
 
 ```tsx
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/client';
 import { GET_MY_DATA } from 'graphql/queries/my_feature/MyFeature';
 
 const MyComponent = ({ id }: { id: number }) => {

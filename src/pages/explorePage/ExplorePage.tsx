@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import {
   ExploreAllQuery,
   ExploreAllQueryVariables,

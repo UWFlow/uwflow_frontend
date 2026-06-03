@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-apollo';
 import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Course,
   CourseReviewProfsQuery,
