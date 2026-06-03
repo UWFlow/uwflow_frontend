@@ -86,6 +86,11 @@ export const cache = new InMemoryCache({
 const client = new ApolloClient({
   link,
   cache,
+  // Apollo Client v3 gates the DevTools connection on `globalThis.__DEV__`,
+  // which our Webpack build never defines — so without this it defaults to
+  // enabled and attaches DevTools in production/staging. Tie it to NODE_ENV
+  // instead (DefinePlugin statically replaces this), disabling it in prod.
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
 });
 
 export default client;
