@@ -618,7 +618,12 @@ const CourseReviewBox = ({
   });
 
   const allProfs = data?.allProfs;
-  const reviewProfs = data?.reviewProfs.sort((a, b) => b.id - a.id);
+  // Apollo Client v3 returns frozen (immutable) query results, so copy the
+  // array before sorting — Array.prototype.sort() mutates in place and would
+  // otherwise throw "Cannot assign to read only property '0'".
+  const reviewProfs = data?.reviewProfs
+    ? [...data.reviewProfs].sort((a, b) => b.id - a.id)
+    : undefined;
 
   // eg: teaching = ['CS135': [{id: 1, code: 'john_doe', name: 'John Doe'}], 'CS136': []]
   const teaching: Record<string, ReviewProfsFragment['prof'][]> = {};
