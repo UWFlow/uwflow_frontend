@@ -26,7 +26,10 @@ type ShortlistBoxProps = {
 const ShortlistBox = ({ shortlistCourses }: ShortlistBoxProps) => {
   const isBrowserDesktop = useSelector(getIsBrowserDesktop);
 
-  const sortedShortlist = shortlistCourses.sort((a, b) =>
+  // Apollo Client v3 returns frozen (immutable) query results, so copy the
+  // array before sorting — Array.prototype.sort() mutates in place and would
+  // otherwise throw "Cannot assign to read only property '0'".
+  const sortedShortlist = [...shortlistCourses].sort((a, b) =>
     a.course!.code.localeCompare(b.course!.code),
   );
 
