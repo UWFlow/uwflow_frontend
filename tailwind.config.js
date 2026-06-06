@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -11,8 +13,7 @@ module.exports = {
   },
   theme: {
     extend: {
-      // Mirrors src/constants/GlobalTheme.tsx so styled-components and Tailwind
-      // share a single palette. Keep these two files in sync.
+      // Mirrors src/constants/GlobalTheme.tsx. Keep the two files in sync.
       colors: {
         primary: '#0052cc',
         primaryDark: '#0747a6',
@@ -51,7 +52,103 @@ module.exports = {
         tablet: '800px',
         desktop: '1200px',
       },
+      fontFamily: {
+        inter: [
+          'Inter',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'San Francisco',
+          'Roboto',
+          'Segoe UI',
+          'Helvetica Neue',
+          'sans-serif',
+        ],
+        anderson: [
+          'Anderson Grotesk',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'San Francisco',
+          'Roboto',
+          'Segoe UI',
+          'Helvetica Neue',
+          'sans-serif',
+        ],
+      },
+      fontSize: {
+        xs: '12px',
+        s: '14px',
+        md: '16px',
+        lg: '18px',
+        xl: '20px',
+        'heading-2-mobile': '28px',
+        'heading-2': '32px',
+        'heading-1': '40px',
+      },
+      fontWeight: {
+        light: '300',
+        regular: '400',
+        semibold: '600',
+        extrabold: '800',
+      },
+      spacing: {
+        page: '32px',
+      },
+      width: {
+        'wide-column': '70%',
+        'thin-column': '30%',
+      },
+      maxWidth: {
+        page: '1200px',
+      },
+      minHeight: {
+        page: 'calc(100vh - 70px - 32px)',
+      },
+      zIndex: {
+        'page-content': '-1',
+        modal: '2000',
+      },
+      borderRadius: {
+        card: '4px',
+      },
+      boxShadow: {
+        box: '0px 2px 5px rgba(236, 237, 237, 0.4), 0px 0px 5px rgba(142, 147, 148, 0.2)',
+        'dark-box': '0px 0px 10px #042049',
+        'bottom-box':
+          '0px 1px 3px rgba(236, 237, 237, 0.4), 0px 1px 3px rgba(142, 147, 148, 0.2)',
+      },
+      textShadow: {
+        DEFAULT:
+          '0px 2px 5px rgba(236, 237, 237, 0.4), 0px 0px 5px rgba(142, 147, 148, 0.2)',
+      },
+      brightness: {
+        hover: '0.85',
+        'hover-dark': '0.6',
+      },
+      transitionDuration: {
+        hover: '100ms',
+      },
+      transitionTimingFunction: {
+        hover: 'ease-in',
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.2s',
+      },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    plugin(({ addUtilities, theme }) => {
+      addUtilities({
+        '.text-shadow': {
+          textShadow: theme('textShadow.DEFAULT'),
+        },
+      });
+    }),
+  ],
 };
