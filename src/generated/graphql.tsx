@@ -11904,40 +11904,40 @@ export type UserScheduleFragment = { __typename?: 'user' } & Pick<
   'id'
 > & {
     schedule: Array<
-      { __typename?: 'user_schedule' } & {
-        section: { __typename?: 'course_section' } & Pick<
-          Course_Section,
-          'id' | 'section_name'
-        > & {
-            exams: Array<
-              { __typename?: 'section_exam' } & Pick<
-                Section_Exam,
-                'date' | 'day' | 'location' | 'start_seconds' | 'end_seconds'
-              >
-            >;
-            meetings: Array<
-              { __typename?: 'section_meeting' } & Pick<
-                Section_Meeting,
-                | 'days'
-                | 'end_date'
-                | 'end_seconds'
-                | 'is_cancelled'
-                | 'location'
-                | 'section_id'
-                | 'start_date'
-                | 'start_seconds'
-              > & {
-                  prof?: Maybe<
-                    { __typename?: 'prof' } & Pick<Prof, 'id' | 'name'>
-                  >;
-                }
-            >;
-            course: { __typename?: 'course' } & Pick<
-              Course,
-              'id' | 'name' | 'code'
-            >;
-          };
-      }
+      { __typename?: 'user_schedule' } & Pick<User_Schedule, 'user_id'> & {
+          section: { __typename?: 'course_section' } & Pick<
+            Course_Section,
+            'id' | 'section_name'
+          > & {
+              exams: Array<
+                { __typename?: 'section_exam' } & Pick<
+                  Section_Exam,
+                  'date' | 'day' | 'location' | 'start_seconds' | 'end_seconds'
+                >
+              >;
+              meetings: Array<
+                { __typename?: 'section_meeting' } & Pick<
+                  Section_Meeting,
+                  | 'days'
+                  | 'end_date'
+                  | 'end_seconds'
+                  | 'is_cancelled'
+                  | 'location'
+                  | 'section_id'
+                  | 'start_date'
+                  | 'start_seconds'
+                > & {
+                    prof?: Maybe<
+                      { __typename?: 'prof' } & Pick<Prof, 'id' | 'name'>
+                    >;
+                  }
+              >;
+              course: { __typename?: 'course' } & Pick<
+                Course,
+                'id' | 'name' | 'code'
+              >;
+            };
+        }
     >;
   };
 
@@ -12710,6 +12710,7 @@ export const UserScheduleFragmentDoc = gql`
   fragment UserSchedule on user {
     id
     schedule {
+      user_id
       section {
         id
         exams {

@@ -29,6 +29,7 @@ const UserFragment = {
     fragment UserSchedule on user {
       id
       schedule {
+        user_id
         section {
           id
           exams {
