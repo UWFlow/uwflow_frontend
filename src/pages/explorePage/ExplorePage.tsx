@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -8,6 +8,7 @@ import {
   ExploreQuery,
   ExploreQueryVariables,
 } from 'generated/graphql';
+import { debounce } from 'lodash';
 import queryString from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
@@ -153,18 +154,36 @@ const ExplorePageContent = ({
     setProfCourses(['all courses'].concat(parsedProfCourses));
   }, [data, exploreAll]);
 
+  // Debounced URL sync. A slider drag fires setFilterState on every pointer
+  // move (dozens per second on touch devices); writing window.history on each
+  // one trips Safari's "100 replaceState calls / 10s" limit and throws a
+  // SecurityError. Debouncing collapses a drag into a single trailing write
+  // once the value settles, and the identity check skips no-op writes.
+  const syncUrlToHistory = useMemo(
+    () =>
+      debounce((nextUrl: string) => {
+        const currentUrl = `${window.location.pathname}${window.location.search}`;
+        if (nextUrl !== currentUrl) {
+          window.history.replaceState({}, '', nextUrl);
+        }
+      }, 150),
+    [],
+  );
+
+  // Cancel any pending write on unmount so a trailing call can't fire after the
+  // user has navigated to another route and overwrite that route's URL.
+  useEffect(() => () => syncUrlToHistory.cancel(), [syncUrlToHistory]);
+
   useEffect(() => {
     const urlQuery = queryString.stringify(filterStateToUrlQuery(filterState), {
       arrayFormat: 'comma',
       skipNull: true,
     });
 
-    window.history.replaceState(
-      {},
-      '',
+    syncUrlToHistory(
       urlQuery ? `${EXPLORE_PAGE_ROUTE}?${urlQuery}` : EXPLORE_PAGE_ROUTE,
     );
-  }, [filterState]);
+  }, [filterState, syncUrlToHistory]);
 
   return (
     <ExplorePageWrapper>
