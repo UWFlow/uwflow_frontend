@@ -1,58 +1,125 @@
-import * as Apollo from '@apollo/client';
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 import { gql } from '@apollo/client';
-
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type InputMaybe<T> = Maybe<T>;
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  bigint: any;
-  smallint: any;
-  numeric: any;
-  timestamptz: any;
-  date: any;
-  _text: any;
-  tsvector: any;
-  _int4: any;
-  join_source: any;
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  _int4: { input: any; output: any };
+  _text: { input: any; output: any };
+  bigint: { input: any; output: any };
+  date: { input: any; output: any };
+  join_source: { input: any; output: any };
+  numeric: { input: any; output: any };
+  smallint: { input: any; output: any };
+  timestamptz: { input: any; output: any };
+  tsvector: { input: any; output: any };
+};
+
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
+export type Int_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Int']['input']>;
+  _gt?: InputMaybe<Scalars['Int']['input']>;
+  _gte?: InputMaybe<Scalars['Int']['input']>;
+  _in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Int']['input']>;
+  _lte?: InputMaybe<Scalars['Int']['input']>;
+  _neq?: InputMaybe<Scalars['Int']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
+export type String_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['String']['input']>;
+  _gt?: InputMaybe<Scalars['String']['input']>;
+  _gte?: InputMaybe<Scalars['String']['input']>;
+  /** does the column match the given case-insensitive pattern */
+  _ilike?: InputMaybe<Scalars['String']['input']>;
+  _in?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** does the column match the given POSIX regular expression, case insensitive */
+  _iregex?: InputMaybe<Scalars['String']['input']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  /** does the column match the given pattern */
+  _like?: InputMaybe<Scalars['String']['input']>;
+  _lt?: InputMaybe<Scalars['String']['input']>;
+  _lte?: InputMaybe<Scalars['String']['input']>;
+  _neq?: InputMaybe<Scalars['String']['input']>;
+  /** does the column NOT match the given case-insensitive pattern */
+  _nilike?: InputMaybe<Scalars['String']['input']>;
+  _nin?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** does the column NOT match the given POSIX regular expression, case insensitive */
+  _niregex?: InputMaybe<Scalars['String']['input']>;
+  /** does the column NOT match the given pattern */
+  _nlike?: InputMaybe<Scalars['String']['input']>;
+  /** does the column NOT match the given POSIX regular expression, case sensitive */
+  _nregex?: InputMaybe<Scalars['String']['input']>;
+  /** does the column NOT match the given SQL regular expression */
+  _nsimilar?: InputMaybe<Scalars['String']['input']>;
+  /** does the column match the given POSIX regular expression, case sensitive */
+  _regex?: InputMaybe<Scalars['String']['input']>;
+  /** does the column match the given SQL regular expression */
+  _similar?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Boolean expression to compare columns of type "_int4". All fields are combined with logical 'AND'. */
 export type _Int4_Comparison_Exp = {
-  _eq?: Maybe<Scalars['_int4']>;
-  _gt?: Maybe<Scalars['_int4']>;
-  _gte?: Maybe<Scalars['_int4']>;
-  _in?: Maybe<Array<Scalars['_int4']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['_int4']>;
-  _lte?: Maybe<Scalars['_int4']>;
-  _neq?: Maybe<Scalars['_int4']>;
-  _nin?: Maybe<Array<Scalars['_int4']>>;
+  _eq?: InputMaybe<Scalars['_int4']['input']>;
+  _gt?: InputMaybe<Scalars['_int4']['input']>;
+  _gte?: InputMaybe<Scalars['_int4']['input']>;
+  _in?: InputMaybe<Array<Scalars['_int4']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['_int4']['input']>;
+  _lte?: InputMaybe<Scalars['_int4']['input']>;
+  _neq?: InputMaybe<Scalars['_int4']['input']>;
+  _nin?: InputMaybe<Array<Scalars['_int4']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
 export type _Text_Comparison_Exp = {
-  _eq?: Maybe<Scalars['_text']>;
-  _gt?: Maybe<Scalars['_text']>;
-  _gte?: Maybe<Scalars['_text']>;
-  _in?: Maybe<Array<Scalars['_text']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['_text']>;
-  _lte?: Maybe<Scalars['_text']>;
-  _neq?: Maybe<Scalars['_text']>;
-  _nin?: Maybe<Array<Scalars['_text']>>;
+  _eq?: InputMaybe<Scalars['_text']['input']>;
+  _gt?: InputMaybe<Scalars['_text']['input']>;
+  _gte?: InputMaybe<Scalars['_text']['input']>;
+  _in?: InputMaybe<Array<Scalars['_text']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['_text']['input']>;
+  _lte?: InputMaybe<Scalars['_text']['input']>;
+  _neq?: InputMaybe<Scalars['_text']['input']>;
+  _nin?: InputMaybe<Array<Scalars['_text']['input']>>;
 };
 
 /** columns and relationships of "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets = {
   __typename?: 'aggregate_course_easy_buckets';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** aggregated selection of "aggregate.course_easy_buckets" */
@@ -63,13 +130,13 @@ export type Aggregate_Course_Easy_Buckets_Aggregate = {
 };
 
 export type Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp = {
-  count?: Maybe<Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp_Count>;
 };
 
 export type Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  arguments?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -77,7 +144,7 @@ export type Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp_Count = {
 export type Aggregate_Course_Easy_Buckets_Aggregate_Fields = {
   __typename?: 'aggregate_course_easy_buckets_aggregate_fields';
   avg?: Maybe<Aggregate_Course_Easy_Buckets_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Course_Easy_Buckets_Max_Fields>;
   min?: Maybe<Aggregate_Course_Easy_Buckets_Min_Fields>;
   stddev?: Maybe<Aggregate_Course_Easy_Buckets_Stddev_Fields>;
@@ -91,23 +158,23 @@ export type Aggregate_Course_Easy_Buckets_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Aggregate_Order_By = {
-  avg?: Maybe<Aggregate_Course_Easy_Buckets_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Aggregate_Course_Easy_Buckets_Max_Order_By>;
-  min?: Maybe<Aggregate_Course_Easy_Buckets_Min_Order_By>;
-  stddev?: Maybe<Aggregate_Course_Easy_Buckets_Stddev_Order_By>;
-  stddev_pop?: Maybe<Aggregate_Course_Easy_Buckets_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Aggregate_Course_Easy_Buckets_Stddev_Samp_Order_By>;
-  sum?: Maybe<Aggregate_Course_Easy_Buckets_Sum_Order_By>;
-  var_pop?: Maybe<Aggregate_Course_Easy_Buckets_Var_Pop_Order_By>;
-  var_samp?: Maybe<Aggregate_Course_Easy_Buckets_Var_Samp_Order_By>;
-  variance?: Maybe<Aggregate_Course_Easy_Buckets_Variance_Order_By>;
+  avg?: InputMaybe<Aggregate_Course_Easy_Buckets_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Aggregate_Course_Easy_Buckets_Max_Order_By>;
+  min?: InputMaybe<Aggregate_Course_Easy_Buckets_Min_Order_By>;
+  stddev?: InputMaybe<Aggregate_Course_Easy_Buckets_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Aggregate_Course_Easy_Buckets_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Aggregate_Course_Easy_Buckets_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Aggregate_Course_Easy_Buckets_Sum_Order_By>;
+  var_pop?: InputMaybe<Aggregate_Course_Easy_Buckets_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Aggregate_Course_Easy_Buckets_Var_Samp_Order_By>;
+  variance?: InputMaybe<Aggregate_Course_Easy_Buckets_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "aggregate.course_easy_buckets" */
@@ -118,73 +185,70 @@ export type Aggregate_Course_Easy_Buckets_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Aggregate_Course_Easy_Buckets_Avg_Fields = {
   __typename?: 'aggregate_course_easy_buckets_avg_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Avg_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "aggregate.course_easy_buckets". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "aggregate.course_easy_buckets". All fields are combined with a logical 'AND'. */
 export type Aggregate_Course_Easy_Buckets_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Course_Easy_Buckets_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Course_Easy_Buckets_Bool_Exp>>;
-  count?: Maybe<Bigint_Comparison_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  value?: Maybe<Smallint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Bool_Exp>>;
+  count?: InputMaybe<Bigint_Comparison_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  value?: InputMaybe<Smallint_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Insert_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Course_Easy_Buckets_Max_Fields = {
   __typename?: 'aggregate_course_easy_buckets_max_fields';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by max() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Max_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Course_Easy_Buckets_Min_Fields = {
   __typename?: 'aggregate_course_easy_buckets_min_fields';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by min() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Min_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Ordering options when selecting data from "aggregate.course_easy_buckets". */
 export type Aggregate_Course_Easy_Buckets_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.course_easy_buckets" */
@@ -200,46 +264,46 @@ export enum Aggregate_Course_Easy_Buckets_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Course_Easy_Buckets_Stddev_Fields = {
   __typename?: 'aggregate_course_easy_buckets_stddev_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Stddev_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Course_Easy_Buckets_Stddev_Pop_Fields = {
   __typename?: 'aggregate_course_easy_buckets_stddev_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Stddev_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Course_Easy_Buckets_Stddev_Samp_Fields = {
   __typename?: 'aggregate_course_easy_buckets_stddev_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Stddev_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "aggregate_course_easy_buckets" */
@@ -247,85 +311,85 @@ export type Aggregate_Course_Easy_Buckets_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Course_Easy_Buckets_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Course_Easy_Buckets_Stream_Cursor_Value_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Course_Easy_Buckets_Sum_Fields = {
   __typename?: 'aggregate_course_easy_buckets_sum_fields';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by sum() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Sum_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Course_Easy_Buckets_Var_Pop_Fields = {
   __typename?: 'aggregate_course_easy_buckets_var_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Var_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Course_Easy_Buckets_Var_Samp_Fields = {
   __typename?: 'aggregate_course_easy_buckets_var_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Var_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Course_Easy_Buckets_Variance_Fields = {
   __typename?: 'aggregate_course_easy_buckets_variance_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "aggregate.course_easy_buckets" */
 export type Aggregate_Course_Easy_Buckets_Variance_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "aggregate.course_rating" */
 export type Aggregate_Course_Rating = {
   __typename?: 'aggregate_course_rating';
-  comment_count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  useful?: Maybe<Scalars['numeric']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** aggregated selection of "aggregate.course_rating" */
@@ -339,7 +403,7 @@ export type Aggregate_Course_Rating_Aggregate = {
 export type Aggregate_Course_Rating_Aggregate_Fields = {
   __typename?: 'aggregate_course_rating_aggregate_fields';
   avg?: Maybe<Aggregate_Course_Rating_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Course_Rating_Max_Fields>;
   min?: Maybe<Aggregate_Course_Rating_Min_Fields>;
   stddev?: Maybe<Aggregate_Course_Rating_Stddev_Fields>;
@@ -353,64 +417,64 @@ export type Aggregate_Course_Rating_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.course_rating" */
 export type Aggregate_Course_Rating_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Course_Rating_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Course_Rating_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Aggregate_Course_Rating_Avg_Fields = {
   __typename?: 'aggregate_course_rating_avg_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "aggregate.course_rating". All fields are combined with a logical 'AND'. */
 export type Aggregate_Course_Rating_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Course_Rating_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Course_Rating_Bool_Exp>>;
-  comment_count?: Maybe<Bigint_Comparison_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  easy?: Maybe<Numeric_Comparison_Exp>;
-  filled_count?: Maybe<Bigint_Comparison_Exp>;
-  liked?: Maybe<Numeric_Comparison_Exp>;
-  useful?: Maybe<Numeric_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Course_Rating_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Course_Rating_Bool_Exp>>;
+  comment_count?: InputMaybe<Bigint_Comparison_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  easy?: InputMaybe<Numeric_Comparison_Exp>;
+  filled_count?: InputMaybe<Bigint_Comparison_Exp>;
+  liked?: InputMaybe<Numeric_Comparison_Exp>;
+  useful?: InputMaybe<Numeric_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.course_rating" */
 export type Aggregate_Course_Rating_Insert_Input = {
-  comment_count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  useful?: Maybe<Scalars['numeric']>;
+  comment_count?: InputMaybe<Scalars['bigint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  easy?: InputMaybe<Scalars['numeric']['input']>;
+  filled_count?: InputMaybe<Scalars['bigint']['input']>;
+  liked?: InputMaybe<Scalars['numeric']['input']>;
+  useful?: InputMaybe<Scalars['numeric']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Course_Rating_Max_Fields = {
   __typename?: 'aggregate_course_rating_max_fields';
-  comment_count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  useful?: Maybe<Scalars['numeric']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Course_Rating_Min_Fields = {
   __typename?: 'aggregate_course_rating_min_fields';
-  comment_count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  useful?: Maybe<Scalars['numeric']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** input type for inserting object relation for remote table "aggregate.course_rating" */
@@ -420,12 +484,12 @@ export type Aggregate_Course_Rating_Obj_Rel_Insert_Input = {
 
 /** Ordering options when selecting data from "aggregate.course_rating". */
 export type Aggregate_Course_Rating_Order_By = {
-  comment_count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  easy?: Maybe<Order_By>;
-  filled_count?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  useful?: Maybe<Order_By>;
+  comment_count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  easy?: InputMaybe<Order_By>;
+  filled_count?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  useful?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.course_rating" */
@@ -447,34 +511,34 @@ export enum Aggregate_Course_Rating_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Course_Rating_Stddev_Fields = {
   __typename?: 'aggregate_course_rating_stddev_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Course_Rating_Stddev_Pop_Fields = {
   __typename?: 'aggregate_course_rating_stddev_pop_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Course_Rating_Stddev_Samp_Fields = {
   __typename?: 'aggregate_course_rating_stddev_samp_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "aggregate_course_rating" */
@@ -482,68 +546,68 @@ export type Aggregate_Course_Rating_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Course_Rating_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Course_Rating_Stream_Cursor_Value_Input = {
-  comment_count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  useful?: Maybe<Scalars['numeric']>;
+  comment_count?: InputMaybe<Scalars['bigint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  easy?: InputMaybe<Scalars['numeric']['input']>;
+  filled_count?: InputMaybe<Scalars['bigint']['input']>;
+  liked?: InputMaybe<Scalars['numeric']['input']>;
+  useful?: InputMaybe<Scalars['numeric']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Course_Rating_Sum_Fields = {
   __typename?: 'aggregate_course_rating_sum_fields';
-  comment_count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  useful?: Maybe<Scalars['numeric']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Course_Rating_Var_Pop_Fields = {
   __typename?: 'aggregate_course_rating_var_pop_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Course_Rating_Var_Samp_Fields = {
   __typename?: 'aggregate_course_rating_var_samp_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Course_Rating_Variance_Fields = {
   __typename?: 'aggregate_course_rating_variance_fields';
-  comment_count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "aggregate.course_review_rating" */
 export type Aggregate_Course_Review_Rating = {
   __typename?: 'aggregate_course_review_rating';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregated selection of "aggregate.course_review_rating" */
@@ -557,7 +621,7 @@ export type Aggregate_Course_Review_Rating_Aggregate = {
 export type Aggregate_Course_Review_Rating_Aggregate_Fields = {
   __typename?: 'aggregate_course_review_rating_aggregate_fields';
   avg?: Maybe<Aggregate_Course_Review_Rating_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Course_Review_Rating_Max_Fields>;
   min?: Maybe<Aggregate_Course_Review_Rating_Min_Fields>;
   stddev?: Maybe<Aggregate_Course_Review_Rating_Stddev_Fields>;
@@ -571,47 +635,44 @@ export type Aggregate_Course_Review_Rating_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.course_review_rating" */
 export type Aggregate_Course_Review_Rating_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Aggregate_Course_Review_Rating_Avg_Fields = {
   __typename?: 'aggregate_course_review_rating_avg_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "aggregate.course_review_rating". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "aggregate.course_review_rating". All fields are combined with a logical 'AND'. */
 export type Aggregate_Course_Review_Rating_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Course_Review_Rating_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Course_Review_Rating_Bool_Exp>>;
-  review_id?: Maybe<Int_Comparison_Exp>;
-  upvote_count?: Maybe<Bigint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Course_Review_Rating_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Course_Review_Rating_Bool_Exp>>;
+  review_id?: InputMaybe<Int_Comparison_Exp>;
+  upvote_count?: InputMaybe<Bigint_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.course_review_rating" */
 export type Aggregate_Course_Review_Rating_Insert_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  upvote_count?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Course_Review_Rating_Max_Fields = {
   __typename?: 'aggregate_course_review_rating_max_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Course_Review_Rating_Min_Fields = {
   __typename?: 'aggregate_course_review_rating_min_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** input type for inserting object relation for remote table "aggregate.course_review_rating" */
@@ -621,8 +682,8 @@ export type Aggregate_Course_Review_Rating_Obj_Rel_Insert_Input = {
 
 /** Ordering options when selecting data from "aggregate.course_review_rating". */
 export type Aggregate_Course_Review_Rating_Order_By = {
-  review_id?: Maybe<Order_By>;
-  upvote_count?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  upvote_count?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.course_review_rating" */
@@ -636,22 +697,22 @@ export enum Aggregate_Course_Review_Rating_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Course_Review_Rating_Stddev_Fields = {
   __typename?: 'aggregate_course_review_rating_stddev_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Course_Review_Rating_Stddev_Pop_Fields = {
   __typename?: 'aggregate_course_review_rating_stddev_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Course_Review_Rating_Stddev_Samp_Fields = {
   __typename?: 'aggregate_course_review_rating_stddev_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "aggregate_course_review_rating" */
@@ -659,49 +720,49 @@ export type Aggregate_Course_Review_Rating_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Course_Review_Rating_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Course_Review_Rating_Stream_Cursor_Value_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  upvote_count?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Course_Review_Rating_Sum_Fields = {
   __typename?: 'aggregate_course_review_rating_sum_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Course_Review_Rating_Var_Pop_Fields = {
   __typename?: 'aggregate_course_review_rating_var_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Course_Review_Rating_Var_Samp_Fields = {
   __typename?: 'aggregate_course_review_rating_var_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Course_Review_Rating_Variance_Fields = {
   __typename?: 'aggregate_course_review_rating_variance_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets = {
   __typename?: 'aggregate_course_useful_buckets';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** aggregated selection of "aggregate.course_useful_buckets" */
@@ -712,13 +773,13 @@ export type Aggregate_Course_Useful_Buckets_Aggregate = {
 };
 
 export type Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp = {
-  count?: Maybe<Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp_Count>;
 };
 
 export type Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  arguments?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -726,7 +787,7 @@ export type Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp_Count = {
 export type Aggregate_Course_Useful_Buckets_Aggregate_Fields = {
   __typename?: 'aggregate_course_useful_buckets_aggregate_fields';
   avg?: Maybe<Aggregate_Course_Useful_Buckets_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Course_Useful_Buckets_Max_Fields>;
   min?: Maybe<Aggregate_Course_Useful_Buckets_Min_Fields>;
   stddev?: Maybe<Aggregate_Course_Useful_Buckets_Stddev_Fields>;
@@ -740,23 +801,23 @@ export type Aggregate_Course_Useful_Buckets_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Aggregate_Order_By = {
-  avg?: Maybe<Aggregate_Course_Useful_Buckets_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Aggregate_Course_Useful_Buckets_Max_Order_By>;
-  min?: Maybe<Aggregate_Course_Useful_Buckets_Min_Order_By>;
-  stddev?: Maybe<Aggregate_Course_Useful_Buckets_Stddev_Order_By>;
-  stddev_pop?: Maybe<Aggregate_Course_Useful_Buckets_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Aggregate_Course_Useful_Buckets_Stddev_Samp_Order_By>;
-  sum?: Maybe<Aggregate_Course_Useful_Buckets_Sum_Order_By>;
-  var_pop?: Maybe<Aggregate_Course_Useful_Buckets_Var_Pop_Order_By>;
-  var_samp?: Maybe<Aggregate_Course_Useful_Buckets_Var_Samp_Order_By>;
-  variance?: Maybe<Aggregate_Course_Useful_Buckets_Variance_Order_By>;
+  avg?: InputMaybe<Aggregate_Course_Useful_Buckets_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Aggregate_Course_Useful_Buckets_Max_Order_By>;
+  min?: InputMaybe<Aggregate_Course_Useful_Buckets_Min_Order_By>;
+  stddev?: InputMaybe<Aggregate_Course_Useful_Buckets_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Aggregate_Course_Useful_Buckets_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Aggregate_Course_Useful_Buckets_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Aggregate_Course_Useful_Buckets_Sum_Order_By>;
+  var_pop?: InputMaybe<Aggregate_Course_Useful_Buckets_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Aggregate_Course_Useful_Buckets_Var_Samp_Order_By>;
+  variance?: InputMaybe<Aggregate_Course_Useful_Buckets_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "aggregate.course_useful_buckets" */
@@ -767,73 +828,70 @@ export type Aggregate_Course_Useful_Buckets_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Aggregate_Course_Useful_Buckets_Avg_Fields = {
   __typename?: 'aggregate_course_useful_buckets_avg_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Avg_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "aggregate.course_useful_buckets". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "aggregate.course_useful_buckets". All fields are combined with a logical 'AND'. */
 export type Aggregate_Course_Useful_Buckets_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Course_Useful_Buckets_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Course_Useful_Buckets_Bool_Exp>>;
-  count?: Maybe<Bigint_Comparison_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  value?: Maybe<Smallint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Bool_Exp>>;
+  count?: InputMaybe<Bigint_Comparison_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  value?: InputMaybe<Smallint_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Insert_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Course_Useful_Buckets_Max_Fields = {
   __typename?: 'aggregate_course_useful_buckets_max_fields';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by max() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Max_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Course_Useful_Buckets_Min_Fields = {
   __typename?: 'aggregate_course_useful_buckets_min_fields';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by min() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Min_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Ordering options when selecting data from "aggregate.course_useful_buckets". */
 export type Aggregate_Course_Useful_Buckets_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.course_useful_buckets" */
@@ -849,46 +907,46 @@ export enum Aggregate_Course_Useful_Buckets_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Course_Useful_Buckets_Stddev_Fields = {
   __typename?: 'aggregate_course_useful_buckets_stddev_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Stddev_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Course_Useful_Buckets_Stddev_Pop_Fields = {
   __typename?: 'aggregate_course_useful_buckets_stddev_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Stddev_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Course_Useful_Buckets_Stddev_Samp_Fields = {
   __typename?: 'aggregate_course_useful_buckets_stddev_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Stddev_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "aggregate_course_useful_buckets" */
@@ -896,82 +954,82 @@ export type Aggregate_Course_Useful_Buckets_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Course_Useful_Buckets_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Course_Useful_Buckets_Stream_Cursor_Value_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Course_Useful_Buckets_Sum_Fields = {
   __typename?: 'aggregate_course_useful_buckets_sum_fields';
-  count?: Maybe<Scalars['bigint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by sum() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Sum_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Course_Useful_Buckets_Var_Pop_Fields = {
   __typename?: 'aggregate_course_useful_buckets_var_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Var_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Course_Useful_Buckets_Var_Samp_Fields = {
   __typename?: 'aggregate_course_useful_buckets_var_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Var_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Course_Useful_Buckets_Variance_Fields = {
   __typename?: 'aggregate_course_useful_buckets_variance_fields';
-  count?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "aggregate.course_useful_buckets" */
 export type Aggregate_Course_Useful_Buckets_Variance_Order_By = {
-  count?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets = {
   __typename?: 'aggregate_prof_clear_buckets';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** aggregated selection of "aggregate.prof_clear_buckets" */
@@ -982,13 +1040,13 @@ export type Aggregate_Prof_Clear_Buckets_Aggregate = {
 };
 
 export type Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp = {
-  count?: Maybe<Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp_Count>;
 };
 
 export type Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  arguments?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -996,7 +1054,7 @@ export type Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp_Count = {
 export type Aggregate_Prof_Clear_Buckets_Aggregate_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_aggregate_fields';
   avg?: Maybe<Aggregate_Prof_Clear_Buckets_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Prof_Clear_Buckets_Max_Fields>;
   min?: Maybe<Aggregate_Prof_Clear_Buckets_Min_Fields>;
   stddev?: Maybe<Aggregate_Prof_Clear_Buckets_Stddev_Fields>;
@@ -1010,23 +1068,23 @@ export type Aggregate_Prof_Clear_Buckets_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Aggregate_Order_By = {
-  avg?: Maybe<Aggregate_Prof_Clear_Buckets_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Aggregate_Prof_Clear_Buckets_Max_Order_By>;
-  min?: Maybe<Aggregate_Prof_Clear_Buckets_Min_Order_By>;
-  stddev?: Maybe<Aggregate_Prof_Clear_Buckets_Stddev_Order_By>;
-  stddev_pop?: Maybe<Aggregate_Prof_Clear_Buckets_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Aggregate_Prof_Clear_Buckets_Stddev_Samp_Order_By>;
-  sum?: Maybe<Aggregate_Prof_Clear_Buckets_Sum_Order_By>;
-  var_pop?: Maybe<Aggregate_Prof_Clear_Buckets_Var_Pop_Order_By>;
-  var_samp?: Maybe<Aggregate_Prof_Clear_Buckets_Var_Samp_Order_By>;
-  variance?: Maybe<Aggregate_Prof_Clear_Buckets_Variance_Order_By>;
+  avg?: InputMaybe<Aggregate_Prof_Clear_Buckets_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Aggregate_Prof_Clear_Buckets_Max_Order_By>;
+  min?: InputMaybe<Aggregate_Prof_Clear_Buckets_Min_Order_By>;
+  stddev?: InputMaybe<Aggregate_Prof_Clear_Buckets_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Aggregate_Prof_Clear_Buckets_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Aggregate_Prof_Clear_Buckets_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Aggregate_Prof_Clear_Buckets_Sum_Order_By>;
+  var_pop?: InputMaybe<Aggregate_Prof_Clear_Buckets_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Aggregate_Prof_Clear_Buckets_Var_Samp_Order_By>;
+  variance?: InputMaybe<Aggregate_Prof_Clear_Buckets_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "aggregate.prof_clear_buckets" */
@@ -1037,73 +1095,70 @@ export type Aggregate_Prof_Clear_Buckets_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Aggregate_Prof_Clear_Buckets_Avg_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_avg_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Avg_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
-/**
- * Boolean expression to filter rows from the table "aggregate.prof_clear_buckets".
- * All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "aggregate.prof_clear_buckets". All fields are combined with a logical 'AND'. */
 export type Aggregate_Prof_Clear_Buckets_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Bool_Exp>>;
-  count?: Maybe<Bigint_Comparison_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
-  value?: Maybe<Smallint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Bool_Exp>>;
+  count?: InputMaybe<Bigint_Comparison_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
+  value?: InputMaybe<Smallint_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Insert_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Prof_Clear_Buckets_Max_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_max_fields';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by max() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Max_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Prof_Clear_Buckets_Min_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_min_fields';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by min() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Min_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Ordering options when selecting data from "aggregate.prof_clear_buckets". */
 export type Aggregate_Prof_Clear_Buckets_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.prof_clear_buckets" */
@@ -1119,46 +1174,46 @@ export enum Aggregate_Prof_Clear_Buckets_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Prof_Clear_Buckets_Stddev_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_stddev_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Stddev_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Prof_Clear_Buckets_Stddev_Pop_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_stddev_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Stddev_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Prof_Clear_Buckets_Stddev_Samp_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_stddev_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Stddev_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "aggregate_prof_clear_buckets" */
@@ -1166,82 +1221,82 @@ export type Aggregate_Prof_Clear_Buckets_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Prof_Clear_Buckets_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Prof_Clear_Buckets_Stream_Cursor_Value_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Prof_Clear_Buckets_Sum_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_sum_fields';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by sum() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Sum_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Prof_Clear_Buckets_Var_Pop_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_var_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Var_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Prof_Clear_Buckets_Var_Samp_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_var_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Var_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Prof_Clear_Buckets_Variance_Fields = {
   __typename?: 'aggregate_prof_clear_buckets_variance_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "aggregate.prof_clear_buckets" */
 export type Aggregate_Prof_Clear_Buckets_Variance_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets = {
   __typename?: 'aggregate_prof_engaging_buckets';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** aggregated selection of "aggregate.prof_engaging_buckets" */
@@ -1252,13 +1307,13 @@ export type Aggregate_Prof_Engaging_Buckets_Aggregate = {
 };
 
 export type Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp = {
-  count?: Maybe<Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp_Count>;
 };
 
 export type Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  arguments?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -1266,7 +1321,7 @@ export type Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp_Count = {
 export type Aggregate_Prof_Engaging_Buckets_Aggregate_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_aggregate_fields';
   avg?: Maybe<Aggregate_Prof_Engaging_Buckets_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Prof_Engaging_Buckets_Max_Fields>;
   min?: Maybe<Aggregate_Prof_Engaging_Buckets_Min_Fields>;
   stddev?: Maybe<Aggregate_Prof_Engaging_Buckets_Stddev_Fields>;
@@ -1280,23 +1335,23 @@ export type Aggregate_Prof_Engaging_Buckets_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Aggregate_Order_By = {
-  avg?: Maybe<Aggregate_Prof_Engaging_Buckets_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Aggregate_Prof_Engaging_Buckets_Max_Order_By>;
-  min?: Maybe<Aggregate_Prof_Engaging_Buckets_Min_Order_By>;
-  stddev?: Maybe<Aggregate_Prof_Engaging_Buckets_Stddev_Order_By>;
-  stddev_pop?: Maybe<Aggregate_Prof_Engaging_Buckets_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Aggregate_Prof_Engaging_Buckets_Stddev_Samp_Order_By>;
-  sum?: Maybe<Aggregate_Prof_Engaging_Buckets_Sum_Order_By>;
-  var_pop?: Maybe<Aggregate_Prof_Engaging_Buckets_Var_Pop_Order_By>;
-  var_samp?: Maybe<Aggregate_Prof_Engaging_Buckets_Var_Samp_Order_By>;
-  variance?: Maybe<Aggregate_Prof_Engaging_Buckets_Variance_Order_By>;
+  avg?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Max_Order_By>;
+  min?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Min_Order_By>;
+  stddev?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Sum_Order_By>;
+  var_pop?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Var_Samp_Order_By>;
+  variance?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "aggregate.prof_engaging_buckets" */
@@ -1307,73 +1362,70 @@ export type Aggregate_Prof_Engaging_Buckets_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Aggregate_Prof_Engaging_Buckets_Avg_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_avg_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Avg_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
-/**
- * Boolean expression to filter rows from the table
- * "aggregate.prof_engaging_buckets". All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "aggregate.prof_engaging_buckets". All fields are combined with a logical 'AND'. */
 export type Aggregate_Prof_Engaging_Buckets_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Bool_Exp>>;
-  count?: Maybe<Bigint_Comparison_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
-  value?: Maybe<Smallint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Bool_Exp>>;
+  count?: InputMaybe<Bigint_Comparison_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
+  value?: InputMaybe<Smallint_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Insert_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Prof_Engaging_Buckets_Max_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_max_fields';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by max() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Max_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Prof_Engaging_Buckets_Min_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_min_fields';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by min() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Min_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Ordering options when selecting data from "aggregate.prof_engaging_buckets". */
 export type Aggregate_Prof_Engaging_Buckets_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.prof_engaging_buckets" */
@@ -1389,46 +1441,46 @@ export enum Aggregate_Prof_Engaging_Buckets_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Prof_Engaging_Buckets_Stddev_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_stddev_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Stddev_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Prof_Engaging_Buckets_Stddev_Pop_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_stddev_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Stddev_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Prof_Engaging_Buckets_Stddev_Samp_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_stddev_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Stddev_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "aggregate_prof_engaging_buckets" */
@@ -1436,85 +1488,85 @@ export type Aggregate_Prof_Engaging_Buckets_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Prof_Engaging_Buckets_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Prof_Engaging_Buckets_Stream_Cursor_Value_Input = {
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: InputMaybe<Scalars['bigint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  value?: InputMaybe<Scalars['smallint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Prof_Engaging_Buckets_Sum_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_sum_fields';
-  count?: Maybe<Scalars['bigint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  value?: Maybe<Scalars['smallint']>;
+  count?: Maybe<Scalars['bigint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  value?: Maybe<Scalars['smallint']['output']>;
 };
 
 /** order by sum() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Sum_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Prof_Engaging_Buckets_Var_Pop_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_var_pop_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Var_Pop_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Prof_Engaging_Buckets_Var_Samp_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_var_samp_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Var_Samp_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Prof_Engaging_Buckets_Variance_Fields = {
   __typename?: 'aggregate_prof_engaging_buckets_variance_fields';
-  count?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  value?: Maybe<Scalars['Float']>;
+  count?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  value?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "aggregate.prof_engaging_buckets" */
 export type Aggregate_Prof_Engaging_Buckets_Variance_Order_By = {
-  count?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  value?: Maybe<Order_By>;
+  count?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "aggregate.prof_rating" */
 export type Aggregate_Prof_Rating = {
   __typename?: 'aggregate_prof_rating';
-  clear?: Maybe<Scalars['numeric']>;
-  comment_count?: Maybe<Scalars['bigint']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "aggregate.prof_rating" */
@@ -1528,7 +1580,7 @@ export type Aggregate_Prof_Rating_Aggregate = {
 export type Aggregate_Prof_Rating_Aggregate_Fields = {
   __typename?: 'aggregate_prof_rating_aggregate_fields';
   avg?: Maybe<Aggregate_Prof_Rating_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Prof_Rating_Max_Fields>;
   min?: Maybe<Aggregate_Prof_Rating_Min_Fields>;
   stddev?: Maybe<Aggregate_Prof_Rating_Stddev_Fields>;
@@ -1542,64 +1594,64 @@ export type Aggregate_Prof_Rating_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.prof_rating" */
 export type Aggregate_Prof_Rating_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Prof_Rating_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Prof_Rating_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Aggregate_Prof_Rating_Avg_Fields = {
   __typename?: 'aggregate_prof_rating_avg_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "aggregate.prof_rating". All fields are combined with a logical 'AND'. */
 export type Aggregate_Prof_Rating_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Prof_Rating_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Prof_Rating_Bool_Exp>>;
-  clear?: Maybe<Numeric_Comparison_Exp>;
-  comment_count?: Maybe<Bigint_Comparison_Exp>;
-  engaging?: Maybe<Numeric_Comparison_Exp>;
-  filled_count?: Maybe<Bigint_Comparison_Exp>;
-  liked?: Maybe<Numeric_Comparison_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Prof_Rating_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Prof_Rating_Bool_Exp>>;
+  clear?: InputMaybe<Numeric_Comparison_Exp>;
+  comment_count?: InputMaybe<Bigint_Comparison_Exp>;
+  engaging?: InputMaybe<Numeric_Comparison_Exp>;
+  filled_count?: InputMaybe<Bigint_Comparison_Exp>;
+  liked?: InputMaybe<Numeric_Comparison_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.prof_rating" */
 export type Aggregate_Prof_Rating_Insert_Input = {
-  clear?: Maybe<Scalars['numeric']>;
-  comment_count?: Maybe<Scalars['bigint']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  clear?: InputMaybe<Scalars['numeric']['input']>;
+  comment_count?: InputMaybe<Scalars['bigint']['input']>;
+  engaging?: InputMaybe<Scalars['numeric']['input']>;
+  filled_count?: InputMaybe<Scalars['bigint']['input']>;
+  liked?: InputMaybe<Scalars['numeric']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Prof_Rating_Max_Fields = {
   __typename?: 'aggregate_prof_rating_max_fields';
-  clear?: Maybe<Scalars['numeric']>;
-  comment_count?: Maybe<Scalars['bigint']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Prof_Rating_Min_Fields = {
   __typename?: 'aggregate_prof_rating_min_fields';
-  clear?: Maybe<Scalars['numeric']>;
-  comment_count?: Maybe<Scalars['bigint']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** input type for inserting object relation for remote table "aggregate.prof_rating" */
@@ -1609,12 +1661,12 @@ export type Aggregate_Prof_Rating_Obj_Rel_Insert_Input = {
 
 /** Ordering options when selecting data from "aggregate.prof_rating". */
 export type Aggregate_Prof_Rating_Order_By = {
-  clear?: Maybe<Order_By>;
-  comment_count?: Maybe<Order_By>;
-  engaging?: Maybe<Order_By>;
-  filled_count?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  clear?: InputMaybe<Order_By>;
+  comment_count?: InputMaybe<Order_By>;
+  engaging?: InputMaybe<Order_By>;
+  filled_count?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.prof_rating" */
@@ -1636,34 +1688,34 @@ export enum Aggregate_Prof_Rating_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Prof_Rating_Stddev_Fields = {
   __typename?: 'aggregate_prof_rating_stddev_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Prof_Rating_Stddev_Pop_Fields = {
   __typename?: 'aggregate_prof_rating_stddev_pop_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Prof_Rating_Stddev_Samp_Fields = {
   __typename?: 'aggregate_prof_rating_stddev_samp_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "aggregate_prof_rating" */
@@ -1671,68 +1723,68 @@ export type Aggregate_Prof_Rating_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Prof_Rating_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Prof_Rating_Stream_Cursor_Value_Input = {
-  clear?: Maybe<Scalars['numeric']>;
-  comment_count?: Maybe<Scalars['bigint']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  clear?: InputMaybe<Scalars['numeric']['input']>;
+  comment_count?: InputMaybe<Scalars['bigint']['input']>;
+  engaging?: InputMaybe<Scalars['numeric']['input']>;
+  filled_count?: InputMaybe<Scalars['bigint']['input']>;
+  liked?: InputMaybe<Scalars['numeric']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Prof_Rating_Sum_Fields = {
   __typename?: 'aggregate_prof_rating_sum_fields';
-  clear?: Maybe<Scalars['numeric']>;
-  comment_count?: Maybe<Scalars['bigint']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  filled_count?: Maybe<Scalars['bigint']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  comment_count?: Maybe<Scalars['bigint']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  filled_count?: Maybe<Scalars['bigint']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Prof_Rating_Var_Pop_Fields = {
   __typename?: 'aggregate_prof_rating_var_pop_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Prof_Rating_Var_Samp_Fields = {
   __typename?: 'aggregate_prof_rating_var_samp_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Prof_Rating_Variance_Fields = {
   __typename?: 'aggregate_prof_rating_variance_fields';
-  clear?: Maybe<Scalars['Float']>;
-  comment_count?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  filled_count?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  comment_count?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  filled_count?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "aggregate.prof_review_rating" */
 export type Aggregate_Prof_Review_Rating = {
   __typename?: 'aggregate_prof_review_rating';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregated selection of "aggregate.prof_review_rating" */
@@ -1746,7 +1798,7 @@ export type Aggregate_Prof_Review_Rating_Aggregate = {
 export type Aggregate_Prof_Review_Rating_Aggregate_Fields = {
   __typename?: 'aggregate_prof_review_rating_aggregate_fields';
   avg?: Maybe<Aggregate_Prof_Review_Rating_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Aggregate_Prof_Review_Rating_Max_Fields>;
   min?: Maybe<Aggregate_Prof_Review_Rating_Min_Fields>;
   stddev?: Maybe<Aggregate_Prof_Review_Rating_Stddev_Fields>;
@@ -1760,47 +1812,44 @@ export type Aggregate_Prof_Review_Rating_Aggregate_Fields = {
 
 /** aggregate fields of "aggregate.prof_review_rating" */
 export type Aggregate_Prof_Review_Rating_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Aggregate_Prof_Review_Rating_Avg_Fields = {
   __typename?: 'aggregate_prof_review_rating_avg_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
-/**
- * Boolean expression to filter rows from the table "aggregate.prof_review_rating".
- * All fields are combined with a logical 'AND'.
- */
+/** Boolean expression to filter rows from the table "aggregate.prof_review_rating". All fields are combined with a logical 'AND'. */
 export type Aggregate_Prof_Review_Rating_Bool_Exp = {
-  _and?: Maybe<Array<Aggregate_Prof_Review_Rating_Bool_Exp>>;
-  _not?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
-  _or?: Maybe<Array<Aggregate_Prof_Review_Rating_Bool_Exp>>;
-  review_id?: Maybe<Int_Comparison_Exp>;
-  upvote_count?: Maybe<Bigint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Bool_Exp>>;
+  _not?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  _or?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Bool_Exp>>;
+  review_id?: InputMaybe<Int_Comparison_Exp>;
+  upvote_count?: InputMaybe<Bigint_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "aggregate.prof_review_rating" */
 export type Aggregate_Prof_Review_Rating_Insert_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  upvote_count?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** aggregate max on columns */
 export type Aggregate_Prof_Review_Rating_Max_Fields = {
   __typename?: 'aggregate_prof_review_rating_max_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregate min on columns */
 export type Aggregate_Prof_Review_Rating_Min_Fields = {
   __typename?: 'aggregate_prof_review_rating_min_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** input type for inserting object relation for remote table "aggregate.prof_review_rating" */
@@ -1810,8 +1859,8 @@ export type Aggregate_Prof_Review_Rating_Obj_Rel_Insert_Input = {
 
 /** Ordering options when selecting data from "aggregate.prof_review_rating". */
 export type Aggregate_Prof_Review_Rating_Order_By = {
-  review_id?: Maybe<Order_By>;
-  upvote_count?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  upvote_count?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "aggregate.prof_review_rating" */
@@ -1825,22 +1874,22 @@ export enum Aggregate_Prof_Review_Rating_Select_Column {
 /** aggregate stddev on columns */
 export type Aggregate_Prof_Review_Rating_Stddev_Fields = {
   __typename?: 'aggregate_prof_review_rating_stddev_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Aggregate_Prof_Review_Rating_Stddev_Pop_Fields = {
   __typename?: 'aggregate_prof_review_rating_stddev_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Aggregate_Prof_Review_Rating_Stddev_Samp_Fields = {
   __typename?: 'aggregate_prof_review_rating_stddev_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "aggregate_prof_review_rating" */
@@ -1848,80 +1897,67 @@ export type Aggregate_Prof_Review_Rating_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Aggregate_Prof_Review_Rating_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Aggregate_Prof_Review_Rating_Stream_Cursor_Value_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  upvote_count?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Aggregate_Prof_Review_Rating_Sum_Fields = {
   __typename?: 'aggregate_prof_review_rating_sum_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  upvote_count?: Maybe<Scalars['bigint']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  upvote_count?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Aggregate_Prof_Review_Rating_Var_Pop_Fields = {
   __typename?: 'aggregate_prof_review_rating_var_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Aggregate_Prof_Review_Rating_Var_Samp_Fields = {
   __typename?: 'aggregate_prof_review_rating_var_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Aggregate_Prof_Review_Rating_Variance_Fields = {
   __typename?: 'aggregate_prof_review_rating_variance_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  upvote_count?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  upvote_count?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
 export type Bigint_Comparison_Exp = {
-  _eq?: Maybe<Scalars['bigint']>;
-  _gt?: Maybe<Scalars['bigint']>;
-  _gte?: Maybe<Scalars['bigint']>;
-  _in?: Maybe<Array<Scalars['bigint']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['bigint']>;
-  _lte?: Maybe<Scalars['bigint']>;
-  _neq?: Maybe<Scalars['bigint']>;
-  _nin?: Maybe<Array<Scalars['bigint']>>;
-};
-
-/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
-export type Boolean_Comparison_Exp = {
-  _eq?: Maybe<Scalars['Boolean']>;
-  _gt?: Maybe<Scalars['Boolean']>;
-  _gte?: Maybe<Scalars['Boolean']>;
-  _in?: Maybe<Array<Scalars['Boolean']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['Boolean']>;
-  _lte?: Maybe<Scalars['Boolean']>;
-  _neq?: Maybe<Scalars['Boolean']>;
-  _nin?: Maybe<Array<Scalars['Boolean']>>;
+  _eq?: InputMaybe<Scalars['bigint']['input']>;
+  _gt?: InputMaybe<Scalars['bigint']['input']>;
+  _gte?: InputMaybe<Scalars['bigint']['input']>;
+  _in?: InputMaybe<Array<Scalars['bigint']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['bigint']['input']>;
+  _lte?: InputMaybe<Scalars['bigint']['input']>;
+  _neq?: InputMaybe<Scalars['bigint']['input']>;
+  _nin?: InputMaybe<Array<Scalars['bigint']['input']>>;
 };
 
 /** columns and relationships of "course" */
 export type Course = {
   __typename?: 'course';
-  antireqs?: Maybe<Scalars['String']>;
+  antireqs?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   antirequisites: Array<Course_Antirequisite>;
   /** An aggregate relationship */
   antirequisites_aggregate: Course_Antirequisite_Aggregate;
-  authoritative: Scalars['Boolean'];
-  code: Scalars['String'];
-  coreqs?: Maybe<Scalars['String']>;
+  authoritative: Scalars['Boolean']['output'];
+  code: Scalars['String']['output'];
+  coreqs?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   course_easy_buckets: Array<Aggregate_Course_Easy_Buckets>;
   /** An aggregate relationship */
@@ -1930,14 +1966,14 @@ export type Course = {
   course_useful_buckets: Array<Aggregate_Course_Useful_Buckets>;
   /** An aggregate relationship */
   course_useful_buckets_aggregate: Aggregate_Course_Useful_Buckets_Aggregate;
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
-  name: Scalars['String'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
   /** An array relationship */
   postrequisites: Array<Course_Postrequisite>;
   /** An aggregate relationship */
   postrequisites_aggregate: Course_Postrequisite_Aggregate;
-  prereqs?: Maybe<Scalars['String']>;
+  prereqs?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   prerequisites: Array<Course_Prerequisite>;
   /** An aggregate relationship */
@@ -1960,146 +1996,150 @@ export type Course = {
 
 /** columns and relationships of "course" */
 export type CourseAntirequisitesArgs = {
-  distinct_on?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Antirequisite_Order_By>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Antirequisite_Order_By>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseAntirequisites_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Antirequisite_Order_By>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Antirequisite_Order_By>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseCourse_Easy_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseCourse_Easy_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseCourse_Useful_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Course_Useful_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseCourse_Useful_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Course_Useful_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CoursePostrequisitesArgs = {
-  distinct_on?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Postrequisite_Order_By>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Postrequisite_Order_By>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CoursePostrequisites_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Postrequisite_Order_By>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Postrequisite_Order_By>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CoursePrerequisitesArgs = {
-  distinct_on?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Prerequisite_Order_By>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Prerequisite_Order_By>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CoursePrerequisites_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Prerequisite_Order_By>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Prerequisite_Order_By>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseProfs_TeachingArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseProfs_Teaching_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseReviewsArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseReviews_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseSectionsArgs = {
-  distinct_on?: Maybe<Array<Course_Section_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Section_Order_By>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Section_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Section_Order_By>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 /** columns and relationships of "course" */
 export type CourseSections_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Section_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Section_Order_By>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Section_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Section_Order_By>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 /** aggregated selection of "course" */
@@ -2113,7 +2153,7 @@ export type Course_Aggregate = {
 export type Course_Aggregate_Fields = {
   __typename?: 'course_aggregate_fields';
   avg?: Maybe<Course_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Max_Fields>;
   min?: Maybe<Course_Min_Fields>;
   stddev?: Maybe<Course_Stddev_Fields>;
@@ -2127,8 +2167,8 @@ export type Course_Aggregate_Fields = {
 
 /** aggregate fields of "course" */
 export type Course_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** columns and relationships of "course_antirequisite" */
@@ -2136,10 +2176,10 @@ export type Course_Antirequisite = {
   __typename?: 'course_antirequisite';
   /** An object relationship */
   antirequisite?: Maybe<Course>;
-  antirequisite_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "course_antirequisite" */
@@ -2150,13 +2190,13 @@ export type Course_Antirequisite_Aggregate = {
 };
 
 export type Course_Antirequisite_Aggregate_Bool_Exp = {
-  count?: Maybe<Course_Antirequisite_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Course_Antirequisite_Aggregate_Bool_Exp_Count>;
 };
 
 export type Course_Antirequisite_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Antirequisite_Bool_Exp>;
+  arguments?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Antirequisite_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -2164,7 +2204,7 @@ export type Course_Antirequisite_Aggregate_Bool_Exp_Count = {
 export type Course_Antirequisite_Aggregate_Fields = {
   __typename?: 'course_antirequisite_aggregate_fields';
   avg?: Maybe<Course_Antirequisite_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Antirequisite_Max_Fields>;
   min?: Maybe<Course_Antirequisite_Min_Fields>;
   stddev?: Maybe<Course_Antirequisite_Stddev_Fields>;
@@ -2178,54 +2218,54 @@ export type Course_Antirequisite_Aggregate_Fields = {
 
 /** aggregate fields of "course_antirequisite" */
 export type Course_Antirequisite_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "course_antirequisite" */
 export type Course_Antirequisite_Aggregate_Order_By = {
-  avg?: Maybe<Course_Antirequisite_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Course_Antirequisite_Max_Order_By>;
-  min?: Maybe<Course_Antirequisite_Min_Order_By>;
-  stddev?: Maybe<Course_Antirequisite_Stddev_Order_By>;
-  stddev_pop?: Maybe<Course_Antirequisite_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Course_Antirequisite_Stddev_Samp_Order_By>;
-  sum?: Maybe<Course_Antirequisite_Sum_Order_By>;
-  var_pop?: Maybe<Course_Antirequisite_Var_Pop_Order_By>;
-  var_samp?: Maybe<Course_Antirequisite_Var_Samp_Order_By>;
-  variance?: Maybe<Course_Antirequisite_Variance_Order_By>;
+  avg?: InputMaybe<Course_Antirequisite_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Course_Antirequisite_Max_Order_By>;
+  min?: InputMaybe<Course_Antirequisite_Min_Order_By>;
+  stddev?: InputMaybe<Course_Antirequisite_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Course_Antirequisite_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Course_Antirequisite_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Course_Antirequisite_Sum_Order_By>;
+  var_pop?: InputMaybe<Course_Antirequisite_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Course_Antirequisite_Var_Samp_Order_By>;
+  variance?: InputMaybe<Course_Antirequisite_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "course_antirequisite" */
 export type Course_Antirequisite_Arr_Rel_Insert_Input = {
   data: Array<Course_Antirequisite_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Course_Antirequisite_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Antirequisite_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type Course_Antirequisite_Avg_Fields = {
   __typename?: 'course_antirequisite_avg_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Avg_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "course_antirequisite". All fields are combined with a logical 'AND'. */
 export type Course_Antirequisite_Bool_Exp = {
-  _and?: Maybe<Array<Course_Antirequisite_Bool_Exp>>;
-  _not?: Maybe<Course_Antirequisite_Bool_Exp>;
-  _or?: Maybe<Array<Course_Antirequisite_Bool_Exp>>;
-  antirequisite?: Maybe<Course_Bool_Exp>;
-  antirequisite_id?: Maybe<Int_Comparison_Exp>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Course_Antirequisite_Bool_Exp>>;
+  _not?: InputMaybe<Course_Antirequisite_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Antirequisite_Bool_Exp>>;
+  antirequisite?: InputMaybe<Course_Bool_Exp>;
+  antirequisite_id?: InputMaybe<Int_Comparison_Exp>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "course_antirequisite" */
@@ -2236,49 +2276,49 @@ export enum Course_Antirequisite_Constraint {
 
 /** input type for incrementing numeric columns in table "course_antirequisite" */
 export type Course_Antirequisite_Inc_Input = {
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: InputMaybe<Scalars['Int']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course_antirequisite" */
 export type Course_Antirequisite_Insert_Input = {
-  antirequisite?: Maybe<Course_Obj_Rel_Insert_Input>;
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  antirequisite_id?: InputMaybe<Scalars['Int']['input']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Course_Antirequisite_Max_Fields = {
   __typename?: 'course_antirequisite_max_fields';
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: Maybe<Scalars['Int']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Max_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Course_Antirequisite_Min_Fields = {
   __typename?: 'course_antirequisite_min_fields';
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: Maybe<Scalars['Int']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Min_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "course_antirequisite" */
 export type Course_Antirequisite_Mutation_Response = {
   __typename?: 'course_antirequisite_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Course_Antirequisite>;
 };
@@ -2286,16 +2326,16 @@ export type Course_Antirequisite_Mutation_Response = {
 /** on_conflict condition type for table "course_antirequisite" */
 export type Course_Antirequisite_On_Conflict = {
   constraint: Course_Antirequisite_Constraint;
-  update_columns: Array<Course_Antirequisite_Update_Column>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  update_columns?: Array<Course_Antirequisite_Update_Column>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "course_antirequisite". */
 export type Course_Antirequisite_Order_By = {
-  antirequisite?: Maybe<Course_Order_By>;
-  antirequisite_id?: Maybe<Order_By>;
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite?: InputMaybe<Course_Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "course_antirequisite" */
@@ -2308,47 +2348,47 @@ export enum Course_Antirequisite_Select_Column {
 
 /** input type for updating data in table "course_antirequisite" */
 export type Course_Antirequisite_Set_Input = {
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: InputMaybe<Scalars['Int']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Course_Antirequisite_Stddev_Fields = {
   __typename?: 'course_antirequisite_stddev_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Stddev_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Antirequisite_Stddev_Pop_Fields = {
   __typename?: 'course_antirequisite_stddev_pop_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Stddev_Pop_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Antirequisite_Stddev_Samp_Fields = {
   __typename?: 'course_antirequisite_stddev_samp_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Stddev_Samp_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "course_antirequisite" */
@@ -2356,26 +2396,26 @@ export type Course_Antirequisite_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Antirequisite_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Antirequisite_Stream_Cursor_Value_Input = {
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: InputMaybe<Scalars['Int']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Antirequisite_Sum_Fields = {
   __typename?: 'course_antirequisite_sum_fields';
-  antirequisite_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  antirequisite_id?: Maybe<Scalars['Int']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Sum_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "course_antirequisite" */
@@ -2388,9 +2428,9 @@ export enum Course_Antirequisite_Update_Column {
 
 export type Course_Antirequisite_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Course_Antirequisite_Inc_Input>;
+  _inc?: InputMaybe<Course_Antirequisite_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Course_Antirequisite_Set_Input>;
+  _set?: InputMaybe<Course_Antirequisite_Set_Input>;
   /** filter the rows which have to be updated */
   where: Course_Antirequisite_Bool_Exp;
 };
@@ -2398,78 +2438,78 @@ export type Course_Antirequisite_Updates = {
 /** aggregate var_pop on columns */
 export type Course_Antirequisite_Var_Pop_Fields = {
   __typename?: 'course_antirequisite_var_pop_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Var_Pop_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Antirequisite_Var_Samp_Fields = {
   __typename?: 'course_antirequisite_var_samp_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Var_Samp_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Course_Antirequisite_Variance_Fields = {
   __typename?: 'course_antirequisite_variance_fields';
-  antirequisite_id?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
+  antirequisite_id?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "course_antirequisite" */
 export type Course_Antirequisite_Variance_Order_By = {
-  antirequisite_id?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
+  antirequisite_id?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate avg on columns */
 export type Course_Avg_Fields = {
   __typename?: 'course_avg_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "course". All fields are combined with a logical 'AND'. */
 export type Course_Bool_Exp = {
-  _and?: Maybe<Array<Course_Bool_Exp>>;
-  _not?: Maybe<Course_Bool_Exp>;
-  _or?: Maybe<Array<Course_Bool_Exp>>;
-  antireqs?: Maybe<String_Comparison_Exp>;
-  antirequisites?: Maybe<Course_Antirequisite_Bool_Exp>;
-  antirequisites_aggregate?: Maybe<Course_Antirequisite_Aggregate_Bool_Exp>;
-  authoritative?: Maybe<Boolean_Comparison_Exp>;
-  code?: Maybe<String_Comparison_Exp>;
-  coreqs?: Maybe<String_Comparison_Exp>;
-  course_easy_buckets?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
-  course_easy_buckets_aggregate?: Maybe<Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp>;
-  course_useful_buckets?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
-  course_useful_buckets_aggregate?: Maybe<Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp>;
-  description?: Maybe<String_Comparison_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  postrequisites?: Maybe<Course_Postrequisite_Bool_Exp>;
-  postrequisites_aggregate?: Maybe<Course_Postrequisite_Aggregate_Bool_Exp>;
-  prereqs?: Maybe<String_Comparison_Exp>;
-  prerequisites?: Maybe<Course_Prerequisite_Bool_Exp>;
-  prerequisites_aggregate?: Maybe<Course_Prerequisite_Aggregate_Bool_Exp>;
-  profs_teaching?: Maybe<Prof_Teaches_Course_Bool_Exp>;
-  profs_teaching_aggregate?: Maybe<Prof_Teaches_Course_Aggregate_Bool_Exp>;
-  rating?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
-  reviews?: Maybe<Review_Bool_Exp>;
-  reviews_aggregate?: Maybe<Review_Aggregate_Bool_Exp>;
-  sections?: Maybe<Course_Section_Bool_Exp>;
-  sections_aggregate?: Maybe<Course_Section_Aggregate_Bool_Exp>;
+  _and?: InputMaybe<Array<Course_Bool_Exp>>;
+  _not?: InputMaybe<Course_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Bool_Exp>>;
+  antireqs?: InputMaybe<String_Comparison_Exp>;
+  antirequisites?: InputMaybe<Course_Antirequisite_Bool_Exp>;
+  antirequisites_aggregate?: InputMaybe<Course_Antirequisite_Aggregate_Bool_Exp>;
+  authoritative?: InputMaybe<Boolean_Comparison_Exp>;
+  code?: InputMaybe<String_Comparison_Exp>;
+  coreqs?: InputMaybe<String_Comparison_Exp>;
+  course_easy_buckets?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  course_easy_buckets_aggregate?: InputMaybe<Aggregate_Course_Easy_Buckets_Aggregate_Bool_Exp>;
+  course_useful_buckets?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  course_useful_buckets_aggregate?: InputMaybe<Aggregate_Course_Useful_Buckets_Aggregate_Bool_Exp>;
+  description?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  postrequisites?: InputMaybe<Course_Postrequisite_Bool_Exp>;
+  postrequisites_aggregate?: InputMaybe<Course_Postrequisite_Aggregate_Bool_Exp>;
+  prereqs?: InputMaybe<String_Comparison_Exp>;
+  prerequisites?: InputMaybe<Course_Prerequisite_Bool_Exp>;
+  prerequisites_aggregate?: InputMaybe<Course_Prerequisite_Aggregate_Bool_Exp>;
+  profs_teaching?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
+  profs_teaching_aggregate?: InputMaybe<Prof_Teaches_Course_Aggregate_Bool_Exp>;
+  rating?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
+  reviews?: InputMaybe<Review_Bool_Exp>;
+  reviews_aggregate?: InputMaybe<Review_Aggregate_Bool_Exp>;
+  sections?: InputMaybe<Course_Section_Bool_Exp>;
+  sections_aggregate?: InputMaybe<Course_Section_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "course" */
@@ -2482,59 +2522,59 @@ export enum Course_Constraint {
 
 /** input type for incrementing numeric columns in table "course" */
 export type Course_Inc_Input = {
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course" */
 export type Course_Insert_Input = {
-  antireqs?: Maybe<Scalars['String']>;
-  antirequisites?: Maybe<Course_Antirequisite_Arr_Rel_Insert_Input>;
-  authoritative?: Maybe<Scalars['Boolean']>;
-  code?: Maybe<Scalars['String']>;
-  coreqs?: Maybe<Scalars['String']>;
-  course_easy_buckets?: Maybe<Aggregate_Course_Easy_Buckets_Arr_Rel_Insert_Input>;
-  course_useful_buckets?: Maybe<Aggregate_Course_Useful_Buckets_Arr_Rel_Insert_Input>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  postrequisites?: Maybe<Course_Postrequisite_Arr_Rel_Insert_Input>;
-  prereqs?: Maybe<Scalars['String']>;
-  prerequisites?: Maybe<Course_Prerequisite_Arr_Rel_Insert_Input>;
-  profs_teaching?: Maybe<Prof_Teaches_Course_Arr_Rel_Insert_Input>;
-  rating?: Maybe<Aggregate_Course_Rating_Obj_Rel_Insert_Input>;
-  reviews?: Maybe<Review_Arr_Rel_Insert_Input>;
-  sections?: Maybe<Course_Section_Arr_Rel_Insert_Input>;
+  antireqs?: InputMaybe<Scalars['String']['input']>;
+  antirequisites?: InputMaybe<Course_Antirequisite_Arr_Rel_Insert_Input>;
+  authoritative?: InputMaybe<Scalars['Boolean']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  coreqs?: InputMaybe<Scalars['String']['input']>;
+  course_easy_buckets?: InputMaybe<Aggregate_Course_Easy_Buckets_Arr_Rel_Insert_Input>;
+  course_useful_buckets?: InputMaybe<Aggregate_Course_Useful_Buckets_Arr_Rel_Insert_Input>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  postrequisites?: InputMaybe<Course_Postrequisite_Arr_Rel_Insert_Input>;
+  prereqs?: InputMaybe<Scalars['String']['input']>;
+  prerequisites?: InputMaybe<Course_Prerequisite_Arr_Rel_Insert_Input>;
+  profs_teaching?: InputMaybe<Prof_Teaches_Course_Arr_Rel_Insert_Input>;
+  rating?: InputMaybe<Aggregate_Course_Rating_Obj_Rel_Insert_Input>;
+  reviews?: InputMaybe<Review_Arr_Rel_Insert_Input>;
+  sections?: InputMaybe<Course_Section_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
 export type Course_Max_Fields = {
   __typename?: 'course_max_fields';
-  antireqs?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  coreqs?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  prereqs?: Maybe<Scalars['String']>;
+  antireqs?: Maybe<Scalars['String']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  coreqs?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  prereqs?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Course_Min_Fields = {
   __typename?: 'course_min_fields';
-  antireqs?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  coreqs?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  prereqs?: Maybe<Scalars['String']>;
+  antireqs?: Maybe<Scalars['String']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  coreqs?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  prereqs?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "course" */
 export type Course_Mutation_Response = {
   __typename?: 'course_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Course>;
 };
@@ -2543,40 +2583,40 @@ export type Course_Mutation_Response = {
 export type Course_Obj_Rel_Insert_Input = {
   data: Course_Insert_Input;
   /** upsert condition */
-  on_conflict?: Maybe<Course_On_Conflict>;
+  on_conflict?: InputMaybe<Course_On_Conflict>;
 };
 
 /** on_conflict condition type for table "course" */
 export type Course_On_Conflict = {
   constraint: Course_Constraint;
-  update_columns: Array<Course_Update_Column>;
-  where?: Maybe<Course_Bool_Exp>;
+  update_columns?: Array<Course_Update_Column>;
+  where?: InputMaybe<Course_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "course". */
 export type Course_Order_By = {
-  antireqs?: Maybe<Order_By>;
-  antirequisites_aggregate?: Maybe<Course_Antirequisite_Aggregate_Order_By>;
-  authoritative?: Maybe<Order_By>;
-  code?: Maybe<Order_By>;
-  coreqs?: Maybe<Order_By>;
-  course_easy_buckets_aggregate?: Maybe<Aggregate_Course_Easy_Buckets_Aggregate_Order_By>;
-  course_useful_buckets_aggregate?: Maybe<Aggregate_Course_Useful_Buckets_Aggregate_Order_By>;
-  description?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  postrequisites_aggregate?: Maybe<Course_Postrequisite_Aggregate_Order_By>;
-  prereqs?: Maybe<Order_By>;
-  prerequisites_aggregate?: Maybe<Course_Prerequisite_Aggregate_Order_By>;
-  profs_teaching_aggregate?: Maybe<Prof_Teaches_Course_Aggregate_Order_By>;
-  rating?: Maybe<Aggregate_Course_Rating_Order_By>;
-  reviews_aggregate?: Maybe<Review_Aggregate_Order_By>;
-  sections_aggregate?: Maybe<Course_Section_Aggregate_Order_By>;
+  antireqs?: InputMaybe<Order_By>;
+  antirequisites_aggregate?: InputMaybe<Course_Antirequisite_Aggregate_Order_By>;
+  authoritative?: InputMaybe<Order_By>;
+  code?: InputMaybe<Order_By>;
+  coreqs?: InputMaybe<Order_By>;
+  course_easy_buckets_aggregate?: InputMaybe<Aggregate_Course_Easy_Buckets_Aggregate_Order_By>;
+  course_useful_buckets_aggregate?: InputMaybe<Aggregate_Course_Useful_Buckets_Aggregate_Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  postrequisites_aggregate?: InputMaybe<Course_Postrequisite_Aggregate_Order_By>;
+  prereqs?: InputMaybe<Order_By>;
+  prerequisites_aggregate?: InputMaybe<Course_Prerequisite_Aggregate_Order_By>;
+  profs_teaching_aggregate?: InputMaybe<Prof_Teaches_Course_Aggregate_Order_By>;
+  rating?: InputMaybe<Aggregate_Course_Rating_Order_By>;
+  reviews_aggregate?: InputMaybe<Review_Aggregate_Order_By>;
+  sections_aggregate?: InputMaybe<Course_Section_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: course */
 export type Course_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** columns and relationships of "course_postrequisite" */
@@ -2584,11 +2624,11 @@ export type Course_Postrequisite = {
   __typename?: 'course_postrequisite';
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  is_corequisite?: Maybe<Scalars['Boolean']['output']>;
   /** An object relationship */
   postrequisite?: Maybe<Course>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  postrequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "course_postrequisite" */
@@ -2599,29 +2639,29 @@ export type Course_Postrequisite_Aggregate = {
 };
 
 export type Course_Postrequisite_Aggregate_Bool_Exp = {
-  bool_and?: Maybe<Course_Postrequisite_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: Maybe<Course_Postrequisite_Aggregate_Bool_Exp_Bool_Or>;
-  count?: Maybe<Course_Postrequisite_Aggregate_Bool_Exp_Count>;
+  bool_and?: InputMaybe<Course_Postrequisite_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Course_Postrequisite_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Course_Postrequisite_Aggregate_Bool_Exp_Count>;
 };
 
 export type Course_Postrequisite_Aggregate_Bool_Exp_Bool_And = {
   arguments: Course_Postrequisite_Select_Column_Course_Postrequisite_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Postrequisite_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Postrequisite_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Course_Postrequisite_Select_Column_Course_Postrequisite_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Postrequisite_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Postrequisite_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Postrequisite_Bool_Exp>;
+  arguments?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Postrequisite_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -2629,7 +2669,7 @@ export type Course_Postrequisite_Aggregate_Bool_Exp_Count = {
 export type Course_Postrequisite_Aggregate_Fields = {
   __typename?: 'course_postrequisite_aggregate_fields';
   avg?: Maybe<Course_Postrequisite_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Postrequisite_Max_Fields>;
   min?: Maybe<Course_Postrequisite_Min_Fields>;
   stddev?: Maybe<Course_Postrequisite_Stddev_Fields>;
@@ -2643,23 +2683,23 @@ export type Course_Postrequisite_Aggregate_Fields = {
 
 /** aggregate fields of "course_postrequisite" */
 export type Course_Postrequisite_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "course_postrequisite" */
 export type Course_Postrequisite_Aggregate_Order_By = {
-  avg?: Maybe<Course_Postrequisite_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Course_Postrequisite_Max_Order_By>;
-  min?: Maybe<Course_Postrequisite_Min_Order_By>;
-  stddev?: Maybe<Course_Postrequisite_Stddev_Order_By>;
-  stddev_pop?: Maybe<Course_Postrequisite_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Course_Postrequisite_Stddev_Samp_Order_By>;
-  sum?: Maybe<Course_Postrequisite_Sum_Order_By>;
-  var_pop?: Maybe<Course_Postrequisite_Var_Pop_Order_By>;
-  var_samp?: Maybe<Course_Postrequisite_Var_Samp_Order_By>;
-  variance?: Maybe<Course_Postrequisite_Variance_Order_By>;
+  avg?: InputMaybe<Course_Postrequisite_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Course_Postrequisite_Max_Order_By>;
+  min?: InputMaybe<Course_Postrequisite_Min_Order_By>;
+  stddev?: InputMaybe<Course_Postrequisite_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Course_Postrequisite_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Course_Postrequisite_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Course_Postrequisite_Sum_Order_By>;
+  var_pop?: InputMaybe<Course_Postrequisite_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Course_Postrequisite_Var_Samp_Order_By>;
+  variance?: InputMaybe<Course_Postrequisite_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "course_postrequisite" */
@@ -2670,85 +2710,85 @@ export type Course_Postrequisite_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Course_Postrequisite_Avg_Fields = {
   __typename?: 'course_postrequisite_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Avg_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "course_postrequisite". All fields are combined with a logical 'AND'. */
 export type Course_Postrequisite_Bool_Exp = {
-  _and?: Maybe<Array<Course_Postrequisite_Bool_Exp>>;
-  _not?: Maybe<Course_Postrequisite_Bool_Exp>;
-  _or?: Maybe<Array<Course_Postrequisite_Bool_Exp>>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  is_corequisite?: Maybe<Boolean_Comparison_Exp>;
-  postrequisite?: Maybe<Course_Bool_Exp>;
-  postrequisite_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Course_Postrequisite_Bool_Exp>>;
+  _not?: InputMaybe<Course_Postrequisite_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Postrequisite_Bool_Exp>>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  is_corequisite?: InputMaybe<Boolean_Comparison_Exp>;
+  postrequisite?: InputMaybe<Course_Bool_Exp>;
+  postrequisite_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** input type for incrementing numeric columns in table "course_postrequisite" */
 export type Course_Postrequisite_Inc_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  postrequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course_postrequisite" */
 export type Course_Postrequisite_Insert_Input = {
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
-  postrequisite?: Maybe<Course_Obj_Rel_Insert_Input>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  is_corequisite?: InputMaybe<Scalars['Boolean']['input']>;
+  postrequisite?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  postrequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Course_Postrequisite_Max_Fields = {
   __typename?: 'course_postrequisite_max_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  postrequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Max_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Course_Postrequisite_Min_Fields = {
   __typename?: 'course_postrequisite_min_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  postrequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Min_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "course_postrequisite" */
 export type Course_Postrequisite_Mutation_Response = {
   __typename?: 'course_postrequisite_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Course_Postrequisite>;
 };
 
 /** Ordering options when selecting data from "course_postrequisite". */
 export type Course_Postrequisite_Order_By = {
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
-  is_corequisite?: Maybe<Order_By>;
-  postrequisite?: Maybe<Course_Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  is_corequisite?: InputMaybe<Order_By>;
+  postrequisite?: InputMaybe<Course_Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "course_postrequisite" */
@@ -2775,48 +2815,48 @@ export enum Course_Postrequisite_Select_Column_Course_Postrequisite_Aggregate_Bo
 
 /** input type for updating data in table "course_postrequisite" */
 export type Course_Postrequisite_Set_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  is_corequisite?: InputMaybe<Scalars['Boolean']['input']>;
+  postrequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Course_Postrequisite_Stddev_Fields = {
   __typename?: 'course_postrequisite_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Stddev_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Postrequisite_Stddev_Pop_Fields = {
   __typename?: 'course_postrequisite_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Stddev_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Postrequisite_Stddev_Samp_Fields = {
   __typename?: 'course_postrequisite_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Stddev_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "course_postrequisite" */
@@ -2824,34 +2864,34 @@ export type Course_Postrequisite_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Postrequisite_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Postrequisite_Stream_Cursor_Value_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  is_corequisite?: InputMaybe<Scalars['Boolean']['input']>;
+  postrequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Postrequisite_Sum_Fields = {
   __typename?: 'course_postrequisite_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  postrequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  postrequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Sum_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 export type Course_Postrequisite_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Course_Postrequisite_Inc_Input>;
+  _inc?: InputMaybe<Course_Postrequisite_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Course_Postrequisite_Set_Input>;
+  _set?: InputMaybe<Course_Postrequisite_Set_Input>;
   /** filter the rows which have to be updated */
   where: Course_Postrequisite_Bool_Exp;
 };
@@ -2859,40 +2899,40 @@ export type Course_Postrequisite_Updates = {
 /** aggregate var_pop on columns */
 export type Course_Postrequisite_Var_Pop_Fields = {
   __typename?: 'course_postrequisite_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Var_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Postrequisite_Var_Samp_Fields = {
   __typename?: 'course_postrequisite_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Var_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Course_Postrequisite_Variance_Fields = {
   __typename?: 'course_postrequisite_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  postrequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  postrequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "course_postrequisite" */
 export type Course_Postrequisite_Variance_Order_By = {
-  course_id?: Maybe<Order_By>;
-  postrequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  postrequisite_id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "course_prerequisite" */
@@ -2900,11 +2940,11 @@ export type Course_Prerequisite = {
   __typename?: 'course_prerequisite';
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite: Scalars['Boolean'];
+  course_id?: Maybe<Scalars['Int']['output']>;
+  is_corequisite: Scalars['Boolean']['output'];
   /** An object relationship */
   prerequisite?: Maybe<Course>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  prerequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "course_prerequisite" */
@@ -2915,29 +2955,29 @@ export type Course_Prerequisite_Aggregate = {
 };
 
 export type Course_Prerequisite_Aggregate_Bool_Exp = {
-  bool_and?: Maybe<Course_Prerequisite_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: Maybe<Course_Prerequisite_Aggregate_Bool_Exp_Bool_Or>;
-  count?: Maybe<Course_Prerequisite_Aggregate_Bool_Exp_Count>;
+  bool_and?: InputMaybe<Course_Prerequisite_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Course_Prerequisite_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Course_Prerequisite_Aggregate_Bool_Exp_Count>;
 };
 
 export type Course_Prerequisite_Aggregate_Bool_Exp_Bool_And = {
   arguments: Course_Prerequisite_Select_Column_Course_Prerequisite_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Prerequisite_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Prerequisite_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Course_Prerequisite_Select_Column_Course_Prerequisite_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Prerequisite_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Prerequisite_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Prerequisite_Bool_Exp>;
+  arguments?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Prerequisite_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -2945,7 +2985,7 @@ export type Course_Prerequisite_Aggregate_Bool_Exp_Count = {
 export type Course_Prerequisite_Aggregate_Fields = {
   __typename?: 'course_prerequisite_aggregate_fields';
   avg?: Maybe<Course_Prerequisite_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Prerequisite_Max_Fields>;
   min?: Maybe<Course_Prerequisite_Min_Fields>;
   stddev?: Maybe<Course_Prerequisite_Stddev_Fields>;
@@ -2959,55 +2999,55 @@ export type Course_Prerequisite_Aggregate_Fields = {
 
 /** aggregate fields of "course_prerequisite" */
 export type Course_Prerequisite_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "course_prerequisite" */
 export type Course_Prerequisite_Aggregate_Order_By = {
-  avg?: Maybe<Course_Prerequisite_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Course_Prerequisite_Max_Order_By>;
-  min?: Maybe<Course_Prerequisite_Min_Order_By>;
-  stddev?: Maybe<Course_Prerequisite_Stddev_Order_By>;
-  stddev_pop?: Maybe<Course_Prerequisite_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Course_Prerequisite_Stddev_Samp_Order_By>;
-  sum?: Maybe<Course_Prerequisite_Sum_Order_By>;
-  var_pop?: Maybe<Course_Prerequisite_Var_Pop_Order_By>;
-  var_samp?: Maybe<Course_Prerequisite_Var_Samp_Order_By>;
-  variance?: Maybe<Course_Prerequisite_Variance_Order_By>;
+  avg?: InputMaybe<Course_Prerequisite_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Course_Prerequisite_Max_Order_By>;
+  min?: InputMaybe<Course_Prerequisite_Min_Order_By>;
+  stddev?: InputMaybe<Course_Prerequisite_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Course_Prerequisite_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Course_Prerequisite_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Course_Prerequisite_Sum_Order_By>;
+  var_pop?: InputMaybe<Course_Prerequisite_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Course_Prerequisite_Var_Samp_Order_By>;
+  variance?: InputMaybe<Course_Prerequisite_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "course_prerequisite" */
 export type Course_Prerequisite_Arr_Rel_Insert_Input = {
   data: Array<Course_Prerequisite_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Course_Prerequisite_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Prerequisite_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type Course_Prerequisite_Avg_Fields = {
   __typename?: 'course_prerequisite_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Avg_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "course_prerequisite". All fields are combined with a logical 'AND'. */
 export type Course_Prerequisite_Bool_Exp = {
-  _and?: Maybe<Array<Course_Prerequisite_Bool_Exp>>;
-  _not?: Maybe<Course_Prerequisite_Bool_Exp>;
-  _or?: Maybe<Array<Course_Prerequisite_Bool_Exp>>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  is_corequisite?: Maybe<Boolean_Comparison_Exp>;
-  prerequisite?: Maybe<Course_Bool_Exp>;
-  prerequisite_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Course_Prerequisite_Bool_Exp>>;
+  _not?: InputMaybe<Course_Prerequisite_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Prerequisite_Bool_Exp>>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  is_corequisite?: InputMaybe<Boolean_Comparison_Exp>;
+  prerequisite?: InputMaybe<Course_Bool_Exp>;
+  prerequisite_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "course_prerequisite" */
@@ -3018,50 +3058,50 @@ export enum Course_Prerequisite_Constraint {
 
 /** input type for incrementing numeric columns in table "course_prerequisite" */
 export type Course_Prerequisite_Inc_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  prerequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course_prerequisite" */
 export type Course_Prerequisite_Insert_Input = {
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
-  prerequisite?: Maybe<Course_Obj_Rel_Insert_Input>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  is_corequisite?: InputMaybe<Scalars['Boolean']['input']>;
+  prerequisite?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  prerequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Course_Prerequisite_Max_Fields = {
   __typename?: 'course_prerequisite_max_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  prerequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Max_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Course_Prerequisite_Min_Fields = {
   __typename?: 'course_prerequisite_min_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  prerequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Min_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "course_prerequisite" */
 export type Course_Prerequisite_Mutation_Response = {
   __typename?: 'course_prerequisite_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Course_Prerequisite>;
 };
@@ -3069,17 +3109,17 @@ export type Course_Prerequisite_Mutation_Response = {
 /** on_conflict condition type for table "course_prerequisite" */
 export type Course_Prerequisite_On_Conflict = {
   constraint: Course_Prerequisite_Constraint;
-  update_columns: Array<Course_Prerequisite_Update_Column>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  update_columns?: Array<Course_Prerequisite_Update_Column>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "course_prerequisite". */
 export type Course_Prerequisite_Order_By = {
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
-  is_corequisite?: Maybe<Order_By>;
-  prerequisite?: Maybe<Course_Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  is_corequisite?: InputMaybe<Order_By>;
+  prerequisite?: InputMaybe<Course_Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "course_prerequisite" */
@@ -3106,48 +3146,48 @@ export enum Course_Prerequisite_Select_Column_Course_Prerequisite_Aggregate_Bool
 
 /** input type for updating data in table "course_prerequisite" */
 export type Course_Prerequisite_Set_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  is_corequisite?: InputMaybe<Scalars['Boolean']['input']>;
+  prerequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Course_Prerequisite_Stddev_Fields = {
   __typename?: 'course_prerequisite_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Stddev_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Prerequisite_Stddev_Pop_Fields = {
   __typename?: 'course_prerequisite_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Stddev_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Prerequisite_Stddev_Samp_Fields = {
   __typename?: 'course_prerequisite_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Stddev_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "course_prerequisite" */
@@ -3155,27 +3195,27 @@ export type Course_Prerequisite_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Prerequisite_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Prerequisite_Stream_Cursor_Value_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  is_corequisite?: Maybe<Scalars['Boolean']>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  is_corequisite?: InputMaybe<Scalars['Boolean']['input']>;
+  prerequisite_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Prerequisite_Sum_Fields = {
   __typename?: 'course_prerequisite_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  prerequisite_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  prerequisite_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Sum_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "course_prerequisite" */
@@ -3190,9 +3230,9 @@ export enum Course_Prerequisite_Update_Column {
 
 export type Course_Prerequisite_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Course_Prerequisite_Inc_Input>;
+  _inc?: InputMaybe<Course_Prerequisite_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Course_Prerequisite_Set_Input>;
+  _set?: InputMaybe<Course_Prerequisite_Set_Input>;
   /** filter the rows which have to be updated */
   where: Course_Prerequisite_Bool_Exp;
 };
@@ -3200,47 +3240,47 @@ export type Course_Prerequisite_Updates = {
 /** aggregate var_pop on columns */
 export type Course_Prerequisite_Var_Pop_Fields = {
   __typename?: 'course_prerequisite_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Var_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Prerequisite_Var_Samp_Fields = {
   __typename?: 'course_prerequisite_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Var_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Course_Prerequisite_Variance_Fields = {
   __typename?: 'course_prerequisite_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prerequisite_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prerequisite_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "course_prerequisite" */
 export type Course_Prerequisite_Variance_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prerequisite_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prerequisite_id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "course_review_upvote" */
 export type Course_Review_Upvote = {
   __typename?: 'course_review_upvote';
-  review_id: Scalars['Int'];
-  user_id?: Maybe<Scalars['Int']>;
+  review_id: Scalars['Int']['output'];
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "course_review_upvote" */
@@ -3251,13 +3291,13 @@ export type Course_Review_Upvote_Aggregate = {
 };
 
 export type Course_Review_Upvote_Aggregate_Bool_Exp = {
-  count?: Maybe<Course_Review_Upvote_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Course_Review_Upvote_Aggregate_Bool_Exp_Count>;
 };
 
 export type Course_Review_Upvote_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  arguments?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -3265,7 +3305,7 @@ export type Course_Review_Upvote_Aggregate_Bool_Exp_Count = {
 export type Course_Review_Upvote_Aggregate_Fields = {
   __typename?: 'course_review_upvote_aggregate_fields';
   avg?: Maybe<Course_Review_Upvote_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Review_Upvote_Max_Fields>;
   min?: Maybe<Course_Review_Upvote_Min_Fields>;
   stddev?: Maybe<Course_Review_Upvote_Stddev_Fields>;
@@ -3279,52 +3319,52 @@ export type Course_Review_Upvote_Aggregate_Fields = {
 
 /** aggregate fields of "course_review_upvote" */
 export type Course_Review_Upvote_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "course_review_upvote" */
 export type Course_Review_Upvote_Aggregate_Order_By = {
-  avg?: Maybe<Course_Review_Upvote_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Course_Review_Upvote_Max_Order_By>;
-  min?: Maybe<Course_Review_Upvote_Min_Order_By>;
-  stddev?: Maybe<Course_Review_Upvote_Stddev_Order_By>;
-  stddev_pop?: Maybe<Course_Review_Upvote_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Course_Review_Upvote_Stddev_Samp_Order_By>;
-  sum?: Maybe<Course_Review_Upvote_Sum_Order_By>;
-  var_pop?: Maybe<Course_Review_Upvote_Var_Pop_Order_By>;
-  var_samp?: Maybe<Course_Review_Upvote_Var_Samp_Order_By>;
-  variance?: Maybe<Course_Review_Upvote_Variance_Order_By>;
+  avg?: InputMaybe<Course_Review_Upvote_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Course_Review_Upvote_Max_Order_By>;
+  min?: InputMaybe<Course_Review_Upvote_Min_Order_By>;
+  stddev?: InputMaybe<Course_Review_Upvote_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Course_Review_Upvote_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Course_Review_Upvote_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Course_Review_Upvote_Sum_Order_By>;
+  var_pop?: InputMaybe<Course_Review_Upvote_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Course_Review_Upvote_Var_Samp_Order_By>;
+  variance?: InputMaybe<Course_Review_Upvote_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "course_review_upvote" */
 export type Course_Review_Upvote_Arr_Rel_Insert_Input = {
   data: Array<Course_Review_Upvote_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Course_Review_Upvote_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Review_Upvote_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type Course_Review_Upvote_Avg_Fields = {
   __typename?: 'course_review_upvote_avg_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Avg_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "course_review_upvote". All fields are combined with a logical 'AND'. */
 export type Course_Review_Upvote_Bool_Exp = {
-  _and?: Maybe<Array<Course_Review_Upvote_Bool_Exp>>;
-  _not?: Maybe<Course_Review_Upvote_Bool_Exp>;
-  _or?: Maybe<Array<Course_Review_Upvote_Bool_Exp>>;
-  review_id?: Maybe<Int_Comparison_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Course_Review_Upvote_Bool_Exp>>;
+  _not?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Review_Upvote_Bool_Exp>>;
+  review_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "course_review_upvote" */
@@ -3335,47 +3375,47 @@ export enum Course_Review_Upvote_Constraint {
 
 /** input type for incrementing numeric columns in table "course_review_upvote" */
 export type Course_Review_Upvote_Inc_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course_review_upvote" */
 export type Course_Review_Upvote_Insert_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Course_Review_Upvote_Max_Fields = {
   __typename?: 'course_review_upvote_max_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Max_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Course_Review_Upvote_Min_Fields = {
   __typename?: 'course_review_upvote_min_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Min_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "course_review_upvote" */
 export type Course_Review_Upvote_Mutation_Response = {
   __typename?: 'course_review_upvote_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Course_Review_Upvote>;
 };
@@ -3383,14 +3423,14 @@ export type Course_Review_Upvote_Mutation_Response = {
 /** on_conflict condition type for table "course_review_upvote" */
 export type Course_Review_Upvote_On_Conflict = {
   constraint: Course_Review_Upvote_Constraint;
-  update_columns: Array<Course_Review_Upvote_Update_Column>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  update_columns?: Array<Course_Review_Upvote_Update_Column>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "course_review_upvote". */
 export type Course_Review_Upvote_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "course_review_upvote" */
@@ -3403,47 +3443,47 @@ export enum Course_Review_Upvote_Select_Column {
 
 /** input type for updating data in table "course_review_upvote" */
 export type Course_Review_Upvote_Set_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Course_Review_Upvote_Stddev_Fields = {
   __typename?: 'course_review_upvote_stddev_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Stddev_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Review_Upvote_Stddev_Pop_Fields = {
   __typename?: 'course_review_upvote_stddev_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Stddev_Pop_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Review_Upvote_Stddev_Samp_Fields = {
   __typename?: 'course_review_upvote_stddev_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Stddev_Samp_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "course_review_upvote" */
@@ -3451,26 +3491,26 @@ export type Course_Review_Upvote_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Review_Upvote_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Review_Upvote_Stream_Cursor_Value_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Review_Upvote_Sum_Fields = {
   __typename?: 'course_review_upvote_sum_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Sum_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "course_review_upvote" */
@@ -3483,9 +3523,9 @@ export enum Course_Review_Upvote_Update_Column {
 
 export type Course_Review_Upvote_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Course_Review_Upvote_Inc_Input>;
+  _inc?: InputMaybe<Course_Review_Upvote_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Course_Review_Upvote_Set_Input>;
+  _set?: InputMaybe<Course_Review_Upvote_Set_Input>;
   /** filter the rows which have to be updated */
   where: Course_Review_Upvote_Bool_Exp;
 };
@@ -3493,59 +3533,59 @@ export type Course_Review_Upvote_Updates = {
 /** aggregate var_pop on columns */
 export type Course_Review_Upvote_Var_Pop_Fields = {
   __typename?: 'course_review_upvote_var_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Var_Pop_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Review_Upvote_Var_Samp_Fields = {
   __typename?: 'course_review_upvote_var_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Var_Samp_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Course_Review_Upvote_Variance_Fields = {
   __typename?: 'course_review_upvote_variance_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "course_review_upvote" */
 export type Course_Review_Upvote_Variance_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "course_search_index" */
 export type Course_Search_Index = {
   __typename?: 'course_search_index';
-  code?: Maybe<Scalars['String']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_letters?: Maybe<Scalars['String']>;
-  document?: Maybe<Scalars['tsvector']>;
-  easy?: Maybe<Scalars['numeric']>;
-  has_prereqs?: Maybe<Scalars['Boolean']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  prof_ids?: Maybe<Scalars['_int4']>;
-  ratings?: Maybe<Scalars['bigint']>;
-  terms?: Maybe<Scalars['_int4']>;
-  terms_with_online_sections?: Maybe<Scalars['_int4']>;
-  terms_with_seats?: Maybe<Scalars['_int4']>;
-  useful?: Maybe<Scalars['numeric']>;
+  code?: Maybe<Scalars['String']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  course_letters?: Maybe<Scalars['String']['output']>;
+  document?: Maybe<Scalars['tsvector']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  has_prereqs?: Maybe<Scalars['Boolean']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  prof_ids?: Maybe<Scalars['_int4']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
+  terms?: Maybe<Scalars['_int4']['output']>;
+  terms_with_online_sections?: Maybe<Scalars['_int4']['output']>;
+  terms_with_seats?: Maybe<Scalars['_int4']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** aggregated selection of "course_search_index" */
@@ -3559,7 +3599,7 @@ export type Course_Search_Index_Aggregate = {
 export type Course_Search_Index_Aggregate_Fields = {
   __typename?: 'course_search_index_aggregate_fields';
   avg?: Maybe<Course_Search_Index_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Search_Index_Max_Fields>;
   min?: Maybe<Course_Search_Index_Min_Fields>;
   stddev?: Maybe<Course_Search_Index_Stddev_Fields>;
@@ -3573,83 +3613,83 @@ export type Course_Search_Index_Aggregate_Fields = {
 
 /** aggregate fields of "course_search_index" */
 export type Course_Search_Index_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Course_Search_Index_Avg_Fields = {
   __typename?: 'course_search_index_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "course_search_index". All fields are combined with a logical 'AND'. */
 export type Course_Search_Index_Bool_Exp = {
-  _and?: Maybe<Array<Course_Search_Index_Bool_Exp>>;
-  _not?: Maybe<Course_Search_Index_Bool_Exp>;
-  _or?: Maybe<Array<Course_Search_Index_Bool_Exp>>;
-  code?: Maybe<String_Comparison_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  course_letters?: Maybe<String_Comparison_Exp>;
-  document?: Maybe<Tsvector_Comparison_Exp>;
-  easy?: Maybe<Numeric_Comparison_Exp>;
-  has_prereqs?: Maybe<Boolean_Comparison_Exp>;
-  liked?: Maybe<Numeric_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  prof_ids?: Maybe<_Int4_Comparison_Exp>;
-  ratings?: Maybe<Bigint_Comparison_Exp>;
-  terms?: Maybe<_Int4_Comparison_Exp>;
-  terms_with_online_sections?: Maybe<_Int4_Comparison_Exp>;
-  terms_with_seats?: Maybe<_Int4_Comparison_Exp>;
-  useful?: Maybe<Numeric_Comparison_Exp>;
+  _and?: InputMaybe<Array<Course_Search_Index_Bool_Exp>>;
+  _not?: InputMaybe<Course_Search_Index_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Search_Index_Bool_Exp>>;
+  code?: InputMaybe<String_Comparison_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  course_letters?: InputMaybe<String_Comparison_Exp>;
+  document?: InputMaybe<Tsvector_Comparison_Exp>;
+  easy?: InputMaybe<Numeric_Comparison_Exp>;
+  has_prereqs?: InputMaybe<Boolean_Comparison_Exp>;
+  liked?: InputMaybe<Numeric_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  prof_ids?: InputMaybe<_Int4_Comparison_Exp>;
+  ratings?: InputMaybe<Bigint_Comparison_Exp>;
+  terms?: InputMaybe<_Int4_Comparison_Exp>;
+  terms_with_online_sections?: InputMaybe<_Int4_Comparison_Exp>;
+  terms_with_seats?: InputMaybe<_Int4_Comparison_Exp>;
+  useful?: InputMaybe<Numeric_Comparison_Exp>;
 };
 
 /** aggregate max on columns */
 export type Course_Search_Index_Max_Fields = {
   __typename?: 'course_search_index_max_fields';
-  code?: Maybe<Scalars['String']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_letters?: Maybe<Scalars['String']>;
-  easy?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  ratings?: Maybe<Scalars['bigint']>;
-  useful?: Maybe<Scalars['numeric']>;
+  code?: Maybe<Scalars['String']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  course_letters?: Maybe<Scalars['String']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** aggregate min on columns */
 export type Course_Search_Index_Min_Fields = {
   __typename?: 'course_search_index_min_fields';
-  code?: Maybe<Scalars['String']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_letters?: Maybe<Scalars['String']>;
-  easy?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  ratings?: Maybe<Scalars['bigint']>;
-  useful?: Maybe<Scalars['numeric']>;
+  code?: Maybe<Scalars['String']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  course_letters?: Maybe<Scalars['String']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** Ordering options when selecting data from "course_search_index". */
 export type Course_Search_Index_Order_By = {
-  code?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_letters?: Maybe<Order_By>;
-  document?: Maybe<Order_By>;
-  easy?: Maybe<Order_By>;
-  has_prereqs?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  prof_ids?: Maybe<Order_By>;
-  ratings?: Maybe<Order_By>;
-  terms?: Maybe<Order_By>;
-  terms_with_online_sections?: Maybe<Order_By>;
-  terms_with_seats?: Maybe<Order_By>;
-  useful?: Maybe<Order_By>;
+  code?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_letters?: InputMaybe<Order_By>;
+  document?: InputMaybe<Order_By>;
+  easy?: InputMaybe<Order_By>;
+  has_prereqs?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  prof_ids?: InputMaybe<Order_By>;
+  ratings?: InputMaybe<Order_By>;
+  terms?: InputMaybe<Order_By>;
+  terms_with_online_sections?: InputMaybe<Order_By>;
+  terms_with_seats?: InputMaybe<Order_By>;
+  useful?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "course_search_index" */
@@ -3687,31 +3727,31 @@ export enum Course_Search_Index_Select_Column {
 /** aggregate stddev on columns */
 export type Course_Search_Index_Stddev_Fields = {
   __typename?: 'course_search_index_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Search_Index_Stddev_Pop_Fields = {
   __typename?: 'course_search_index_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Search_Index_Stddev_Samp_Fields = {
   __typename?: 'course_search_index_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "course_search_index" */
@@ -3719,125 +3759,125 @@ export type Course_Search_Index_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Search_Index_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Search_Index_Stream_Cursor_Value_Input = {
-  code?: Maybe<Scalars['String']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_letters?: Maybe<Scalars['String']>;
-  document?: Maybe<Scalars['tsvector']>;
-  easy?: Maybe<Scalars['numeric']>;
-  has_prereqs?: Maybe<Scalars['Boolean']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  prof_ids?: Maybe<Scalars['_int4']>;
-  ratings?: Maybe<Scalars['bigint']>;
-  terms?: Maybe<Scalars['_int4']>;
-  terms_with_online_sections?: Maybe<Scalars['_int4']>;
-  terms_with_seats?: Maybe<Scalars['_int4']>;
-  useful?: Maybe<Scalars['numeric']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  course_letters?: InputMaybe<Scalars['String']['input']>;
+  document?: InputMaybe<Scalars['tsvector']['input']>;
+  easy?: InputMaybe<Scalars['numeric']['input']>;
+  has_prereqs?: InputMaybe<Scalars['Boolean']['input']>;
+  liked?: InputMaybe<Scalars['numeric']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  prof_ids?: InputMaybe<Scalars['_int4']['input']>;
+  ratings?: InputMaybe<Scalars['bigint']['input']>;
+  terms?: InputMaybe<Scalars['_int4']['input']>;
+  terms_with_online_sections?: InputMaybe<Scalars['_int4']['input']>;
+  terms_with_seats?: InputMaybe<Scalars['_int4']['input']>;
+  useful?: InputMaybe<Scalars['numeric']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Search_Index_Sum_Fields = {
   __typename?: 'course_search_index_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  easy?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  ratings?: Maybe<Scalars['bigint']>;
-  useful?: Maybe<Scalars['numeric']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  easy?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
+  useful?: Maybe<Scalars['numeric']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Course_Search_Index_Var_Pop_Fields = {
   __typename?: 'course_search_index_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Search_Index_Var_Samp_Fields = {
   __typename?: 'course_search_index_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Course_Search_Index_Variance_Fields = {
   __typename?: 'course_search_index_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  easy?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
-  useful?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  easy?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
+  useful?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "course_section" */
 export type Course_Section = {
   __typename?: 'course_section';
-  class_number: Scalars['Int'];
+  class_number: Scalars['Int']['output'];
   /** An object relationship */
   course: Course;
-  course_id: Scalars['Int'];
-  enrollment_capacity: Scalars['Int'];
-  enrollment_total: Scalars['Int'];
+  course_id: Scalars['Int']['output'];
+  enrollment_capacity: Scalars['Int']['output'];
+  enrollment_total: Scalars['Int']['output'];
   /** An array relationship */
   exams: Array<Section_Exam>;
   /** An aggregate relationship */
   exams_aggregate: Section_Exam_Aggregate;
-  id: Scalars['Int'];
-  is_online: Scalars['Boolean'];
+  id: Scalars['Int']['output'];
+  is_online: Scalars['Boolean']['output'];
   /** An array relationship */
   meetings: Array<Section_Meeting>;
   /** An aggregate relationship */
   meetings_aggregate: Section_Meeting_Aggregate;
-  section_name: Scalars['String'];
-  term_id: Scalars['Int'];
-  updated_at: Scalars['timestamptz'];
+  section_name: Scalars['String']['output'];
+  term_id: Scalars['Int']['output'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** columns and relationships of "course_section" */
 export type Course_SectionExamsArgs = {
-  distinct_on?: Maybe<Array<Section_Exam_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Exam_Order_By>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Exam_Order_By>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 /** columns and relationships of "course_section" */
 export type Course_SectionExams_AggregateArgs = {
-  distinct_on?: Maybe<Array<Section_Exam_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Exam_Order_By>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Exam_Order_By>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 /** columns and relationships of "course_section" */
 export type Course_SectionMeetingsArgs = {
-  distinct_on?: Maybe<Array<Section_Meeting_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Meeting_Order_By>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 /** columns and relationships of "course_section" */
 export type Course_SectionMeetings_AggregateArgs = {
-  distinct_on?: Maybe<Array<Section_Meeting_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Meeting_Order_By>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 /** aggregated selection of "course_section" */
@@ -3848,29 +3888,29 @@ export type Course_Section_Aggregate = {
 };
 
 export type Course_Section_Aggregate_Bool_Exp = {
-  bool_and?: Maybe<Course_Section_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: Maybe<Course_Section_Aggregate_Bool_Exp_Bool_Or>;
-  count?: Maybe<Course_Section_Aggregate_Bool_Exp_Count>;
+  bool_and?: InputMaybe<Course_Section_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Course_Section_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Course_Section_Aggregate_Bool_Exp_Count>;
 };
 
 export type Course_Section_Aggregate_Bool_Exp_Bool_And = {
   arguments: Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Section_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Section_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Section_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Section_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Section_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Course_Section_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Course_Section_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Course_Section_Bool_Exp>;
+  arguments?: InputMaybe<Array<Course_Section_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Course_Section_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -3878,7 +3918,7 @@ export type Course_Section_Aggregate_Bool_Exp_Count = {
 export type Course_Section_Aggregate_Fields = {
   __typename?: 'course_section_aggregate_fields';
   avg?: Maybe<Course_Section_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Course_Section_Max_Fields>;
   min?: Maybe<Course_Section_Min_Fields>;
   stddev?: Maybe<Course_Section_Stddev_Fields>;
@@ -3892,72 +3932,72 @@ export type Course_Section_Aggregate_Fields = {
 
 /** aggregate fields of "course_section" */
 export type Course_Section_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Course_Section_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Course_Section_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "course_section" */
 export type Course_Section_Aggregate_Order_By = {
-  avg?: Maybe<Course_Section_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Course_Section_Max_Order_By>;
-  min?: Maybe<Course_Section_Min_Order_By>;
-  stddev?: Maybe<Course_Section_Stddev_Order_By>;
-  stddev_pop?: Maybe<Course_Section_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Course_Section_Stddev_Samp_Order_By>;
-  sum?: Maybe<Course_Section_Sum_Order_By>;
-  var_pop?: Maybe<Course_Section_Var_Pop_Order_By>;
-  var_samp?: Maybe<Course_Section_Var_Samp_Order_By>;
-  variance?: Maybe<Course_Section_Variance_Order_By>;
+  avg?: InputMaybe<Course_Section_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Course_Section_Max_Order_By>;
+  min?: InputMaybe<Course_Section_Min_Order_By>;
+  stddev?: InputMaybe<Course_Section_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Course_Section_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Course_Section_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Course_Section_Sum_Order_By>;
+  var_pop?: InputMaybe<Course_Section_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Course_Section_Var_Samp_Order_By>;
+  variance?: InputMaybe<Course_Section_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "course_section" */
 export type Course_Section_Arr_Rel_Insert_Input = {
   data: Array<Course_Section_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Course_Section_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Section_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type Course_Section_Avg_Fields = {
   __typename?: 'course_section_avg_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "course_section" */
 export type Course_Section_Avg_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "course_section". All fields are combined with a logical 'AND'. */
 export type Course_Section_Bool_Exp = {
-  _and?: Maybe<Array<Course_Section_Bool_Exp>>;
-  _not?: Maybe<Course_Section_Bool_Exp>;
-  _or?: Maybe<Array<Course_Section_Bool_Exp>>;
-  class_number?: Maybe<Int_Comparison_Exp>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  enrollment_capacity?: Maybe<Int_Comparison_Exp>;
-  enrollment_total?: Maybe<Int_Comparison_Exp>;
-  exams?: Maybe<Section_Exam_Bool_Exp>;
-  exams_aggregate?: Maybe<Section_Exam_Aggregate_Bool_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  is_online?: Maybe<Boolean_Comparison_Exp>;
-  meetings?: Maybe<Section_Meeting_Bool_Exp>;
-  meetings_aggregate?: Maybe<Section_Meeting_Aggregate_Bool_Exp>;
-  section_name?: Maybe<String_Comparison_Exp>;
-  term_id?: Maybe<Int_Comparison_Exp>;
-  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  _and?: InputMaybe<Array<Course_Section_Bool_Exp>>;
+  _not?: InputMaybe<Course_Section_Bool_Exp>;
+  _or?: InputMaybe<Array<Course_Section_Bool_Exp>>;
+  class_number?: InputMaybe<Int_Comparison_Exp>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  enrollment_capacity?: InputMaybe<Int_Comparison_Exp>;
+  enrollment_total?: InputMaybe<Int_Comparison_Exp>;
+  exams?: InputMaybe<Section_Exam_Bool_Exp>;
+  exams_aggregate?: InputMaybe<Section_Exam_Aggregate_Bool_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  is_online?: InputMaybe<Boolean_Comparison_Exp>;
+  meetings?: InputMaybe<Section_Meeting_Bool_Exp>;
+  meetings_aggregate?: InputMaybe<Section_Meeting_Aggregate_Bool_Exp>;
+  section_name?: InputMaybe<String_Comparison_Exp>;
+  term_id?: InputMaybe<Int_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "course_section" */
@@ -3970,85 +4010,85 @@ export enum Course_Section_Constraint {
 
 /** input type for incrementing numeric columns in table "course_section" */
 export type Course_Section_Inc_Input = {
-  class_number?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  term_id?: Maybe<Scalars['Int']>;
+  class_number?: InputMaybe<Scalars['Int']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_capacity?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_total?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course_section" */
 export type Course_Section_Insert_Input = {
-  class_number?: Maybe<Scalars['Int']>;
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  exams?: Maybe<Section_Exam_Arr_Rel_Insert_Input>;
-  id?: Maybe<Scalars['Int']>;
-  is_online?: Maybe<Scalars['Boolean']>;
-  meetings?: Maybe<Section_Meeting_Arr_Rel_Insert_Input>;
-  section_name?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  class_number?: InputMaybe<Scalars['Int']['input']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_capacity?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_total?: InputMaybe<Scalars['Int']['input']>;
+  exams?: InputMaybe<Section_Exam_Arr_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_online?: InputMaybe<Scalars['Boolean']['input']>;
+  meetings?: InputMaybe<Section_Meeting_Arr_Rel_Insert_Input>;
+  section_name?: InputMaybe<Scalars['String']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type Course_Section_Max_Fields = {
   __typename?: 'course_section_max_fields';
-  class_number?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  section_name?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  class_number?: Maybe<Scalars['Int']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Int']['output']>;
+  enrollment_total?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  section_name?: Maybe<Scalars['String']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "course_section" */
 export type Course_Section_Max_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  section_name?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  section_name?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Course_Section_Min_Fields = {
   __typename?: 'course_section_min_fields';
-  class_number?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  section_name?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  class_number?: Maybe<Scalars['Int']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Int']['output']>;
+  enrollment_total?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  section_name?: Maybe<Scalars['String']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "course_section" */
 export type Course_Section_Min_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  section_name?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  section_name?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "course_section" */
 export type Course_Section_Mutation_Response = {
   __typename?: 'course_section_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Course_Section>;
 };
@@ -4057,35 +4097,35 @@ export type Course_Section_Mutation_Response = {
 export type Course_Section_Obj_Rel_Insert_Input = {
   data: Course_Section_Insert_Input;
   /** upsert condition */
-  on_conflict?: Maybe<Course_Section_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Section_On_Conflict>;
 };
 
 /** on_conflict condition type for table "course_section" */
 export type Course_Section_On_Conflict = {
   constraint: Course_Section_Constraint;
-  update_columns: Array<Course_Section_Update_Column>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  update_columns?: Array<Course_Section_Update_Column>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "course_section". */
 export type Course_Section_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  exams_aggregate?: Maybe<Section_Exam_Aggregate_Order_By>;
-  id?: Maybe<Order_By>;
-  is_online?: Maybe<Order_By>;
-  meetings_aggregate?: Maybe<Section_Meeting_Aggregate_Order_By>;
-  section_name?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  exams_aggregate?: InputMaybe<Section_Exam_Aggregate_Order_By>;
+  id?: InputMaybe<Order_By>;
+  is_online?: InputMaybe<Order_By>;
+  meetings_aggregate?: InputMaybe<Section_Meeting_Aggregate_Order_By>;
+  section_name?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: course_section */
 export type Course_Section_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** select columns of table "course_section" */
@@ -4124,78 +4164,78 @@ export enum Course_Section_Select_Column_Course_Section_Aggregate_Bool_Exp_Bool_
 
 /** input type for updating data in table "course_section" */
 export type Course_Section_Set_Input = {
-  class_number?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  is_online?: Maybe<Scalars['Boolean']>;
-  section_name?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  class_number?: InputMaybe<Scalars['Int']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_capacity?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_total?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_online?: InputMaybe<Scalars['Boolean']['input']>;
+  section_name?: InputMaybe<Scalars['String']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Course_Section_Stddev_Fields = {
   __typename?: 'course_section_stddev_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "course_section" */
 export type Course_Section_Stddev_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Section_Stddev_Pop_Fields = {
   __typename?: 'course_section_stddev_pop_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "course_section" */
 export type Course_Section_Stddev_Pop_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Section_Stddev_Samp_Fields = {
   __typename?: 'course_section_stddev_samp_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "course_section" */
 export type Course_Section_Stddev_Samp_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "course_section" */
@@ -4203,41 +4243,41 @@ export type Course_Section_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Section_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Section_Stream_Cursor_Value_Input = {
-  class_number?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  is_online?: Maybe<Scalars['Boolean']>;
-  section_name?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  class_number?: InputMaybe<Scalars['Int']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_capacity?: InputMaybe<Scalars['Int']['input']>;
+  enrollment_total?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_online?: InputMaybe<Scalars['Boolean']['input']>;
+  section_name?: InputMaybe<Scalars['String']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Section_Sum_Fields = {
   __typename?: 'course_section_sum_fields';
-  class_number?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  enrollment_capacity?: Maybe<Scalars['Int']>;
-  enrollment_total?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['Int']>;
-  term_id?: Maybe<Scalars['Int']>;
+  class_number?: Maybe<Scalars['Int']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Int']['output']>;
+  enrollment_total?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "course_section" */
 export type Course_Section_Sum_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "course_section" */
@@ -4264,9 +4304,9 @@ export enum Course_Section_Update_Column {
 
 export type Course_Section_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Course_Section_Inc_Input>;
+  _inc?: InputMaybe<Course_Section_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Course_Section_Set_Input>;
+  _set?: InputMaybe<Course_Section_Set_Input>;
   /** filter the rows which have to be updated */
   where: Course_Section_Bool_Exp;
 };
@@ -4274,64 +4314,64 @@ export type Course_Section_Updates = {
 /** aggregate var_pop on columns */
 export type Course_Section_Var_Pop_Fields = {
   __typename?: 'course_section_var_pop_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "course_section" */
 export type Course_Section_Var_Pop_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Section_Var_Samp_Fields = {
   __typename?: 'course_section_var_samp_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "course_section" */
 export type Course_Section_Var_Samp_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Course_Section_Variance_Fields = {
   __typename?: 'course_section_variance_fields';
-  class_number?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  enrollment_capacity?: Maybe<Scalars['Float']>;
-  enrollment_total?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
+  class_number?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  enrollment_capacity?: Maybe<Scalars['Float']['output']>;
+  enrollment_total?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "course_section" */
 export type Course_Section_Variance_Order_By = {
-  class_number?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  enrollment_capacity?: Maybe<Order_By>;
-  enrollment_total?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
+  class_number?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  enrollment_capacity?: InputMaybe<Order_By>;
+  enrollment_total?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "course" */
@@ -4356,32 +4396,32 @@ export enum Course_Select_Column {
 
 /** input type for updating data in table "course" */
 export type Course_Set_Input = {
-  antireqs?: Maybe<Scalars['String']>;
-  authoritative?: Maybe<Scalars['Boolean']>;
-  code?: Maybe<Scalars['String']>;
-  coreqs?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  prereqs?: Maybe<Scalars['String']>;
+  antireqs?: InputMaybe<Scalars['String']['input']>;
+  authoritative?: InputMaybe<Scalars['Boolean']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  coreqs?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  prereqs?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Course_Stddev_Fields = {
   __typename?: 'course_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Stddev_Pop_Fields = {
   __typename?: 'course_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Stddev_Samp_Fields = {
   __typename?: 'course_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "course" */
@@ -4389,25 +4429,25 @@ export type Course_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Course_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Course_Stream_Cursor_Value_Input = {
-  antireqs?: Maybe<Scalars['String']>;
-  authoritative?: Maybe<Scalars['Boolean']>;
-  code?: Maybe<Scalars['String']>;
-  coreqs?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  prereqs?: Maybe<Scalars['String']>;
+  antireqs?: InputMaybe<Scalars['String']['input']>;
+  authoritative?: InputMaybe<Scalars['Boolean']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  coreqs?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  prereqs?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Course_Sum_Fields = {
   __typename?: 'course_sum_fields';
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "course" */
@@ -4432,9 +4472,9 @@ export enum Course_Update_Column {
 
 export type Course_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Course_Inc_Input>;
+  _inc?: InputMaybe<Course_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Course_Set_Input>;
+  _set?: InputMaybe<Course_Set_Input>;
   /** filter the rows which have to be updated */
   where: Course_Bool_Exp;
 };
@@ -4442,19 +4482,19 @@ export type Course_Updates = {
 /** aggregate var_pop on columns */
 export type Course_Var_Pop_Fields = {
   __typename?: 'course_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Var_Samp_Fields = {
   __typename?: 'course_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Course_Variance_Fields = {
   __typename?: 'course_variance_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** ordering argument of a cursor */
@@ -4467,41 +4507,28 @@ export enum Cursor_Ordering {
 
 /** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
 export type Date_Comparison_Exp = {
-  _eq?: Maybe<Scalars['date']>;
-  _gt?: Maybe<Scalars['date']>;
-  _gte?: Maybe<Scalars['date']>;
-  _in?: Maybe<Array<Scalars['date']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['date']>;
-  _lte?: Maybe<Scalars['date']>;
-  _neq?: Maybe<Scalars['date']>;
-  _nin?: Maybe<Array<Scalars['date']>>;
-};
-
-/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
-export type Int_Comparison_Exp = {
-  _eq?: Maybe<Scalars['Int']>;
-  _gt?: Maybe<Scalars['Int']>;
-  _gte?: Maybe<Scalars['Int']>;
-  _in?: Maybe<Array<Scalars['Int']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['Int']>;
-  _lte?: Maybe<Scalars['Int']>;
-  _neq?: Maybe<Scalars['Int']>;
-  _nin?: Maybe<Array<Scalars['Int']>>;
+  _eq?: InputMaybe<Scalars['date']['input']>;
+  _gt?: InputMaybe<Scalars['date']['input']>;
+  _gte?: InputMaybe<Scalars['date']['input']>;
+  _in?: InputMaybe<Array<Scalars['date']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['date']['input']>;
+  _lte?: InputMaybe<Scalars['date']['input']>;
+  _neq?: InputMaybe<Scalars['date']['input']>;
+  _nin?: InputMaybe<Array<Scalars['date']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "join_source". All fields are combined with logical 'AND'. */
 export type Join_Source_Comparison_Exp = {
-  _eq?: Maybe<Scalars['join_source']>;
-  _gt?: Maybe<Scalars['join_source']>;
-  _gte?: Maybe<Scalars['join_source']>;
-  _in?: Maybe<Array<Scalars['join_source']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['join_source']>;
-  _lte?: Maybe<Scalars['join_source']>;
-  _neq?: Maybe<Scalars['join_source']>;
-  _nin?: Maybe<Array<Scalars['join_source']>>;
+  _eq?: InputMaybe<Scalars['join_source']['input']>;
+  _gt?: InputMaybe<Scalars['join_source']['input']>;
+  _gte?: InputMaybe<Scalars['join_source']['input']>;
+  _in?: InputMaybe<Array<Scalars['join_source']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['join_source']['input']>;
+  _lte?: InputMaybe<Scalars['join_source']['input']>;
+  _neq?: InputMaybe<Scalars['join_source']['input']>;
+  _nin?: InputMaybe<Array<Scalars['join_source']['input']>>;
 };
 
 /** mutation root */
@@ -4741,7 +4768,7 @@ export type Mutation_RootDelete_Course_AntirequisiteArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Course_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4766,7 +4793,7 @@ export type Mutation_RootDelete_Course_SectionArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Course_Section_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4776,7 +4803,7 @@ export type Mutation_RootDelete_ProfArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Prof_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4791,7 +4818,7 @@ export type Mutation_RootDelete_Queue_Section_SubscribedArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Queue_Section_Subscribed_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4801,7 +4828,7 @@ export type Mutation_RootDelete_ReviewArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Review_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4826,7 +4853,7 @@ export type Mutation_RootDelete_UserArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_User_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4847,25 +4874,25 @@ export type Mutation_RootDelete_User_ShortlistArgs = {
 /** mutation root */
 export type Mutation_RootInsert_CourseArgs = {
   objects: Array<Course_Insert_Input>;
-  on_conflict?: Maybe<Course_On_Conflict>;
+  on_conflict?: InputMaybe<Course_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_AntirequisiteArgs = {
   objects: Array<Course_Antirequisite_Insert_Input>;
-  on_conflict?: Maybe<Course_Antirequisite_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Antirequisite_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_Antirequisite_OneArgs = {
   object: Course_Antirequisite_Insert_Input;
-  on_conflict?: Maybe<Course_Antirequisite_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Antirequisite_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_OneArgs = {
   object: Course_Insert_Input;
-  on_conflict?: Maybe<Course_On_Conflict>;
+  on_conflict?: InputMaybe<Course_On_Conflict>;
 };
 
 /** mutation root */
@@ -4881,85 +4908,85 @@ export type Mutation_RootInsert_Course_Postrequisite_OneArgs = {
 /** mutation root */
 export type Mutation_RootInsert_Course_PrerequisiteArgs = {
   objects: Array<Course_Prerequisite_Insert_Input>;
-  on_conflict?: Maybe<Course_Prerequisite_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Prerequisite_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_Prerequisite_OneArgs = {
   object: Course_Prerequisite_Insert_Input;
-  on_conflict?: Maybe<Course_Prerequisite_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Prerequisite_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_Review_UpvoteArgs = {
   objects: Array<Course_Review_Upvote_Insert_Input>;
-  on_conflict?: Maybe<Course_Review_Upvote_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Review_Upvote_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_Review_Upvote_OneArgs = {
   object: Course_Review_Upvote_Insert_Input;
-  on_conflict?: Maybe<Course_Review_Upvote_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Review_Upvote_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_SectionArgs = {
   objects: Array<Course_Section_Insert_Input>;
-  on_conflict?: Maybe<Course_Section_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Section_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Course_Section_OneArgs = {
   object: Course_Section_Insert_Input;
-  on_conflict?: Maybe<Course_Section_On_Conflict>;
+  on_conflict?: InputMaybe<Course_Section_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_ProfArgs = {
   objects: Array<Prof_Insert_Input>;
-  on_conflict?: Maybe<Prof_On_Conflict>;
+  on_conflict?: InputMaybe<Prof_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Prof_OneArgs = {
   object: Prof_Insert_Input;
-  on_conflict?: Maybe<Prof_On_Conflict>;
+  on_conflict?: InputMaybe<Prof_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Prof_Review_UpvoteArgs = {
   objects: Array<Prof_Review_Upvote_Insert_Input>;
-  on_conflict?: Maybe<Prof_Review_Upvote_On_Conflict>;
+  on_conflict?: InputMaybe<Prof_Review_Upvote_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Prof_Review_Upvote_OneArgs = {
   object: Prof_Review_Upvote_Insert_Input;
-  on_conflict?: Maybe<Prof_Review_Upvote_On_Conflict>;
+  on_conflict?: InputMaybe<Prof_Review_Upvote_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Queue_Section_SubscribedArgs = {
   objects: Array<Queue_Section_Subscribed_Insert_Input>;
-  on_conflict?: Maybe<Queue_Section_Subscribed_On_Conflict>;
+  on_conflict?: InputMaybe<Queue_Section_Subscribed_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Queue_Section_Subscribed_OneArgs = {
   object: Queue_Section_Subscribed_Insert_Input;
-  on_conflict?: Maybe<Queue_Section_Subscribed_On_Conflict>;
+  on_conflict?: InputMaybe<Queue_Section_Subscribed_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_ReviewArgs = {
   objects: Array<Review_Insert_Input>;
-  on_conflict?: Maybe<Review_On_Conflict>;
+  on_conflict?: InputMaybe<Review_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Review_OneArgs = {
   object: Review_Insert_Input;
-  on_conflict?: Maybe<Review_On_Conflict>;
+  on_conflict?: InputMaybe<Review_On_Conflict>;
 };
 
 /** mutation root */
@@ -4975,13 +5002,13 @@ export type Mutation_RootInsert_Review_User_Id_OneArgs = {
 /** mutation root */
 export type Mutation_RootInsert_Section_ExamArgs = {
   objects: Array<Section_Exam_Insert_Input>;
-  on_conflict?: Maybe<Section_Exam_On_Conflict>;
+  on_conflict?: InputMaybe<Section_Exam_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_Section_Exam_OneArgs = {
   object: Section_Exam_Insert_Input;
-  on_conflict?: Maybe<Section_Exam_On_Conflict>;
+  on_conflict?: InputMaybe<Section_Exam_On_Conflict>;
 };
 
 /** mutation root */
@@ -4997,62 +5024,62 @@ export type Mutation_RootInsert_Section_Meeting_OneArgs = {
 /** mutation root */
 export type Mutation_RootInsert_UserArgs = {
   objects: Array<User_Insert_Input>;
-  on_conflict?: Maybe<User_On_Conflict>;
+  on_conflict?: InputMaybe<User_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_Course_TakenArgs = {
   objects: Array<User_Course_Taken_Insert_Input>;
-  on_conflict?: Maybe<User_Course_Taken_On_Conflict>;
+  on_conflict?: InputMaybe<User_Course_Taken_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_Course_Taken_OneArgs = {
   object: User_Course_Taken_Insert_Input;
-  on_conflict?: Maybe<User_Course_Taken_On_Conflict>;
+  on_conflict?: InputMaybe<User_Course_Taken_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_OneArgs = {
   object: User_Insert_Input;
-  on_conflict?: Maybe<User_On_Conflict>;
+  on_conflict?: InputMaybe<User_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_ScheduleArgs = {
   objects: Array<User_Schedule_Insert_Input>;
-  on_conflict?: Maybe<User_Schedule_On_Conflict>;
+  on_conflict?: InputMaybe<User_Schedule_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_Schedule_OneArgs = {
   object: User_Schedule_Insert_Input;
-  on_conflict?: Maybe<User_Schedule_On_Conflict>;
+  on_conflict?: InputMaybe<User_Schedule_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_ShortlistArgs = {
   objects: Array<User_Shortlist_Insert_Input>;
-  on_conflict?: Maybe<User_Shortlist_On_Conflict>;
+  on_conflict?: InputMaybe<User_Shortlist_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootInsert_User_Shortlist_OneArgs = {
   object: User_Shortlist_Insert_Input;
-  on_conflict?: Maybe<User_Shortlist_On_Conflict>;
+  on_conflict?: InputMaybe<User_Shortlist_On_Conflict>;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_CourseArgs = {
-  _inc?: Maybe<Course_Inc_Input>;
-  _set?: Maybe<Course_Set_Input>;
+  _inc?: InputMaybe<Course_Inc_Input>;
+  _set?: InputMaybe<Course_Set_Input>;
   where: Course_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_AntirequisiteArgs = {
-  _inc?: Maybe<Course_Antirequisite_Inc_Input>;
-  _set?: Maybe<Course_Antirequisite_Set_Input>;
+  _inc?: InputMaybe<Course_Antirequisite_Inc_Input>;
+  _set?: InputMaybe<Course_Antirequisite_Set_Input>;
   where: Course_Antirequisite_Bool_Exp;
 };
 
@@ -5063,8 +5090,8 @@ export type Mutation_RootUpdate_Course_Antirequisite_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_By_PkArgs = {
-  _inc?: Maybe<Course_Inc_Input>;
-  _set?: Maybe<Course_Set_Input>;
+  _inc?: InputMaybe<Course_Inc_Input>;
+  _set?: InputMaybe<Course_Set_Input>;
   pk_columns: Course_Pk_Columns_Input;
 };
 
@@ -5075,8 +5102,8 @@ export type Mutation_RootUpdate_Course_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_PostrequisiteArgs = {
-  _inc?: Maybe<Course_Postrequisite_Inc_Input>;
-  _set?: Maybe<Course_Postrequisite_Set_Input>;
+  _inc?: InputMaybe<Course_Postrequisite_Inc_Input>;
+  _set?: InputMaybe<Course_Postrequisite_Set_Input>;
   where: Course_Postrequisite_Bool_Exp;
 };
 
@@ -5087,8 +5114,8 @@ export type Mutation_RootUpdate_Course_Postrequisite_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_PrerequisiteArgs = {
-  _inc?: Maybe<Course_Prerequisite_Inc_Input>;
-  _set?: Maybe<Course_Prerequisite_Set_Input>;
+  _inc?: InputMaybe<Course_Prerequisite_Inc_Input>;
+  _set?: InputMaybe<Course_Prerequisite_Set_Input>;
   where: Course_Prerequisite_Bool_Exp;
 };
 
@@ -5099,8 +5126,8 @@ export type Mutation_RootUpdate_Course_Prerequisite_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_Review_UpvoteArgs = {
-  _inc?: Maybe<Course_Review_Upvote_Inc_Input>;
-  _set?: Maybe<Course_Review_Upvote_Set_Input>;
+  _inc?: InputMaybe<Course_Review_Upvote_Inc_Input>;
+  _set?: InputMaybe<Course_Review_Upvote_Set_Input>;
   where: Course_Review_Upvote_Bool_Exp;
 };
 
@@ -5111,15 +5138,15 @@ export type Mutation_RootUpdate_Course_Review_Upvote_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_SectionArgs = {
-  _inc?: Maybe<Course_Section_Inc_Input>;
-  _set?: Maybe<Course_Section_Set_Input>;
+  _inc?: InputMaybe<Course_Section_Inc_Input>;
+  _set?: InputMaybe<Course_Section_Set_Input>;
   where: Course_Section_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Course_Section_By_PkArgs = {
-  _inc?: Maybe<Course_Section_Inc_Input>;
-  _set?: Maybe<Course_Section_Set_Input>;
+  _inc?: InputMaybe<Course_Section_Inc_Input>;
+  _set?: InputMaybe<Course_Section_Set_Input>;
   pk_columns: Course_Section_Pk_Columns_Input;
 };
 
@@ -5130,15 +5157,15 @@ export type Mutation_RootUpdate_Course_Section_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_ProfArgs = {
-  _inc?: Maybe<Prof_Inc_Input>;
-  _set?: Maybe<Prof_Set_Input>;
+  _inc?: InputMaybe<Prof_Inc_Input>;
+  _set?: InputMaybe<Prof_Set_Input>;
   where: Prof_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Prof_By_PkArgs = {
-  _inc?: Maybe<Prof_Inc_Input>;
-  _set?: Maybe<Prof_Set_Input>;
+  _inc?: InputMaybe<Prof_Inc_Input>;
+  _set?: InputMaybe<Prof_Set_Input>;
   pk_columns: Prof_Pk_Columns_Input;
 };
 
@@ -5149,8 +5176,8 @@ export type Mutation_RootUpdate_Prof_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Prof_Review_UpvoteArgs = {
-  _inc?: Maybe<Prof_Review_Upvote_Inc_Input>;
-  _set?: Maybe<Prof_Review_Upvote_Set_Input>;
+  _inc?: InputMaybe<Prof_Review_Upvote_Inc_Input>;
+  _set?: InputMaybe<Prof_Review_Upvote_Set_Input>;
   where: Prof_Review_Upvote_Bool_Exp;
 };
 
@@ -5161,15 +5188,15 @@ export type Mutation_RootUpdate_Prof_Review_Upvote_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Queue_Section_SubscribedArgs = {
-  _inc?: Maybe<Queue_Section_Subscribed_Inc_Input>;
-  _set?: Maybe<Queue_Section_Subscribed_Set_Input>;
+  _inc?: InputMaybe<Queue_Section_Subscribed_Inc_Input>;
+  _set?: InputMaybe<Queue_Section_Subscribed_Set_Input>;
   where: Queue_Section_Subscribed_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Queue_Section_Subscribed_By_PkArgs = {
-  _inc?: Maybe<Queue_Section_Subscribed_Inc_Input>;
-  _set?: Maybe<Queue_Section_Subscribed_Set_Input>;
+  _inc?: InputMaybe<Queue_Section_Subscribed_Inc_Input>;
+  _set?: InputMaybe<Queue_Section_Subscribed_Set_Input>;
   pk_columns: Queue_Section_Subscribed_Pk_Columns_Input;
 };
 
@@ -5180,15 +5207,15 @@ export type Mutation_RootUpdate_Queue_Section_Subscribed_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_ReviewArgs = {
-  _inc?: Maybe<Review_Inc_Input>;
-  _set?: Maybe<Review_Set_Input>;
+  _inc?: InputMaybe<Review_Inc_Input>;
+  _set?: InputMaybe<Review_Set_Input>;
   where: Review_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Review_By_PkArgs = {
-  _inc?: Maybe<Review_Inc_Input>;
-  _set?: Maybe<Review_Set_Input>;
+  _inc?: InputMaybe<Review_Inc_Input>;
+  _set?: InputMaybe<Review_Set_Input>;
   pk_columns: Review_Pk_Columns_Input;
 };
 
@@ -5199,8 +5226,8 @@ export type Mutation_RootUpdate_Review_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Review_User_IdArgs = {
-  _inc?: Maybe<Review_User_Id_Inc_Input>;
-  _set?: Maybe<Review_User_Id_Set_Input>;
+  _inc?: InputMaybe<Review_User_Id_Inc_Input>;
+  _set?: InputMaybe<Review_User_Id_Set_Input>;
   where: Review_User_Id_Bool_Exp;
 };
 
@@ -5211,8 +5238,8 @@ export type Mutation_RootUpdate_Review_User_Id_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Section_ExamArgs = {
-  _inc?: Maybe<Section_Exam_Inc_Input>;
-  _set?: Maybe<Section_Exam_Set_Input>;
+  _inc?: InputMaybe<Section_Exam_Inc_Input>;
+  _set?: InputMaybe<Section_Exam_Set_Input>;
   where: Section_Exam_Bool_Exp;
 };
 
@@ -5223,8 +5250,8 @@ export type Mutation_RootUpdate_Section_Exam_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Section_MeetingArgs = {
-  _inc?: Maybe<Section_Meeting_Inc_Input>;
-  _set?: Maybe<Section_Meeting_Set_Input>;
+  _inc?: InputMaybe<Section_Meeting_Inc_Input>;
+  _set?: InputMaybe<Section_Meeting_Set_Input>;
   where: Section_Meeting_Bool_Exp;
 };
 
@@ -5235,22 +5262,22 @@ export type Mutation_RootUpdate_Section_Meeting_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_UserArgs = {
-  _inc?: Maybe<User_Inc_Input>;
-  _set?: Maybe<User_Set_Input>;
+  _inc?: InputMaybe<User_Inc_Input>;
+  _set?: InputMaybe<User_Set_Input>;
   where: User_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_User_By_PkArgs = {
-  _inc?: Maybe<User_Inc_Input>;
-  _set?: Maybe<User_Set_Input>;
+  _inc?: InputMaybe<User_Inc_Input>;
+  _set?: InputMaybe<User_Set_Input>;
   pk_columns: User_Pk_Columns_Input;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_User_Course_TakenArgs = {
-  _inc?: Maybe<User_Course_Taken_Inc_Input>;
-  _set?: Maybe<User_Course_Taken_Set_Input>;
+  _inc?: InputMaybe<User_Course_Taken_Inc_Input>;
+  _set?: InputMaybe<User_Course_Taken_Set_Input>;
   where: User_Course_Taken_Bool_Exp;
 };
 
@@ -5266,8 +5293,8 @@ export type Mutation_RootUpdate_User_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_User_ScheduleArgs = {
-  _inc?: Maybe<User_Schedule_Inc_Input>;
-  _set?: Maybe<User_Schedule_Set_Input>;
+  _inc?: InputMaybe<User_Schedule_Inc_Input>;
+  _set?: InputMaybe<User_Schedule_Set_Input>;
   where: User_Schedule_Bool_Exp;
 };
 
@@ -5278,8 +5305,8 @@ export type Mutation_RootUpdate_User_Schedule_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_User_ShortlistArgs = {
-  _inc?: Maybe<User_Shortlist_Inc_Input>;
-  _set?: Maybe<User_Shortlist_Set_Input>;
+  _inc?: InputMaybe<User_Shortlist_Inc_Input>;
+  _set?: InputMaybe<User_Shortlist_Set_Input>;
   where: User_Shortlist_Bool_Exp;
 };
 
@@ -5290,15 +5317,15 @@ export type Mutation_RootUpdate_User_Shortlist_ManyArgs = {
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type Numeric_Comparison_Exp = {
-  _eq?: Maybe<Scalars['numeric']>;
-  _gt?: Maybe<Scalars['numeric']>;
-  _gte?: Maybe<Scalars['numeric']>;
-  _in?: Maybe<Array<Scalars['numeric']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['numeric']>;
-  _lte?: Maybe<Scalars['numeric']>;
-  _neq?: Maybe<Scalars['numeric']>;
-  _nin?: Maybe<Array<Scalars['numeric']>>;
+  _eq?: InputMaybe<Scalars['numeric']['input']>;
+  _gt?: InputMaybe<Scalars['numeric']['input']>;
+  _gte?: InputMaybe<Scalars['numeric']['input']>;
+  _in?: InputMaybe<Array<Scalars['numeric']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['numeric']['input']>;
+  _lte?: InputMaybe<Scalars['numeric']['input']>;
+  _neq?: InputMaybe<Scalars['numeric']['input']>;
+  _nin?: InputMaybe<Array<Scalars['numeric']['input']>>;
 };
 
 /** column ordering options */
@@ -5320,10 +5347,10 @@ export enum Order_By {
 /** columns and relationships of "prof" */
 export type Prof = {
   __typename?: 'prof';
-  code: Scalars['String'];
-  id: Scalars['Int'];
-  name: Scalars['String'];
-  picture_url?: Maybe<Scalars['String']>;
+  code: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  picture_url?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   prof_clear_buckets: Array<Aggregate_Prof_Clear_Buckets>;
   /** An aggregate relationship */
@@ -5346,74 +5373,78 @@ export type Prof = {
 
 /** columns and relationships of "prof" */
 export type ProfProf_Clear_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfProf_Clear_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfProf_CoursesArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfProf_Courses_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfProf_Engaging_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Prof_Engaging_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfProf_Engaging_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Prof_Engaging_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfReviewsArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** columns and relationships of "prof" */
 export type ProfReviews_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** aggregated selection of "prof" */
@@ -5427,7 +5458,7 @@ export type Prof_Aggregate = {
 export type Prof_Aggregate_Fields = {
   __typename?: 'prof_aggregate_fields';
   avg?: Maybe<Prof_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Prof_Max_Fields>;
   min?: Maybe<Prof_Min_Fields>;
   stddev?: Maybe<Prof_Stddev_Fields>;
@@ -5441,34 +5472,34 @@ export type Prof_Aggregate_Fields = {
 
 /** aggregate fields of "prof" */
 export type Prof_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Prof_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Prof_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Prof_Avg_Fields = {
   __typename?: 'prof_avg_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "prof". All fields are combined with a logical 'AND'. */
 export type Prof_Bool_Exp = {
-  _and?: Maybe<Array<Prof_Bool_Exp>>;
-  _not?: Maybe<Prof_Bool_Exp>;
-  _or?: Maybe<Array<Prof_Bool_Exp>>;
-  code?: Maybe<String_Comparison_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  picture_url?: Maybe<String_Comparison_Exp>;
-  prof_clear_buckets?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
-  prof_clear_buckets_aggregate?: Maybe<Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp>;
-  prof_courses?: Maybe<Prof_Teaches_Course_Bool_Exp>;
-  prof_courses_aggregate?: Maybe<Prof_Teaches_Course_Aggregate_Bool_Exp>;
-  prof_engaging_buckets?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
-  prof_engaging_buckets_aggregate?: Maybe<Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp>;
-  rating?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
-  reviews?: Maybe<Review_Bool_Exp>;
-  reviews_aggregate?: Maybe<Review_Aggregate_Bool_Exp>;
+  _and?: InputMaybe<Array<Prof_Bool_Exp>>;
+  _not?: InputMaybe<Prof_Bool_Exp>;
+  _or?: InputMaybe<Array<Prof_Bool_Exp>>;
+  code?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  picture_url?: InputMaybe<String_Comparison_Exp>;
+  prof_clear_buckets?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  prof_clear_buckets_aggregate?: InputMaybe<Aggregate_Prof_Clear_Buckets_Aggregate_Bool_Exp>;
+  prof_courses?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
+  prof_courses_aggregate?: InputMaybe<Prof_Teaches_Course_Aggregate_Bool_Exp>;
+  prof_engaging_buckets?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  prof_engaging_buckets_aggregate?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Aggregate_Bool_Exp>;
+  rating?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
+  reviews?: InputMaybe<Review_Bool_Exp>;
+  reviews_aggregate?: InputMaybe<Review_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "prof" */
@@ -5481,45 +5512,45 @@ export enum Prof_Constraint {
 
 /** input type for incrementing numeric columns in table "prof" */
 export type Prof_Inc_Input = {
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "prof" */
 export type Prof_Insert_Input = {
-  code?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  prof_clear_buckets?: Maybe<Aggregate_Prof_Clear_Buckets_Arr_Rel_Insert_Input>;
-  prof_courses?: Maybe<Prof_Teaches_Course_Arr_Rel_Insert_Input>;
-  prof_engaging_buckets?: Maybe<Aggregate_Prof_Engaging_Buckets_Arr_Rel_Insert_Input>;
-  rating?: Maybe<Aggregate_Prof_Rating_Obj_Rel_Insert_Input>;
-  reviews?: Maybe<Review_Arr_Rel_Insert_Input>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
+  prof_clear_buckets?: InputMaybe<Aggregate_Prof_Clear_Buckets_Arr_Rel_Insert_Input>;
+  prof_courses?: InputMaybe<Prof_Teaches_Course_Arr_Rel_Insert_Input>;
+  prof_engaging_buckets?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Arr_Rel_Insert_Input>;
+  rating?: InputMaybe<Aggregate_Prof_Rating_Obj_Rel_Insert_Input>;
+  reviews?: InputMaybe<Review_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
 export type Prof_Max_Fields = {
   __typename?: 'prof_max_fields';
-  code?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Prof_Min_Fields = {
   __typename?: 'prof_min_fields';
-  code?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "prof" */
 export type Prof_Mutation_Response = {
   __typename?: 'prof_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Prof>;
 };
@@ -5528,39 +5559,39 @@ export type Prof_Mutation_Response = {
 export type Prof_Obj_Rel_Insert_Input = {
   data: Prof_Insert_Input;
   /** upsert condition */
-  on_conflict?: Maybe<Prof_On_Conflict>;
+  on_conflict?: InputMaybe<Prof_On_Conflict>;
 };
 
 /** on_conflict condition type for table "prof" */
 export type Prof_On_Conflict = {
   constraint: Prof_Constraint;
-  update_columns: Array<Prof_Update_Column>;
-  where?: Maybe<Prof_Bool_Exp>;
+  update_columns?: Array<Prof_Update_Column>;
+  where?: InputMaybe<Prof_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "prof". */
 export type Prof_Order_By = {
-  code?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  picture_url?: Maybe<Order_By>;
-  prof_clear_buckets_aggregate?: Maybe<Aggregate_Prof_Clear_Buckets_Aggregate_Order_By>;
-  prof_courses_aggregate?: Maybe<Prof_Teaches_Course_Aggregate_Order_By>;
-  prof_engaging_buckets_aggregate?: Maybe<Aggregate_Prof_Engaging_Buckets_Aggregate_Order_By>;
-  rating?: Maybe<Aggregate_Prof_Rating_Order_By>;
-  reviews_aggregate?: Maybe<Review_Aggregate_Order_By>;
+  code?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  picture_url?: InputMaybe<Order_By>;
+  prof_clear_buckets_aggregate?: InputMaybe<Aggregate_Prof_Clear_Buckets_Aggregate_Order_By>;
+  prof_courses_aggregate?: InputMaybe<Prof_Teaches_Course_Aggregate_Order_By>;
+  prof_engaging_buckets_aggregate?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Aggregate_Order_By>;
+  rating?: InputMaybe<Aggregate_Prof_Rating_Order_By>;
+  reviews_aggregate?: InputMaybe<Review_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: prof */
 export type Prof_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** columns and relationships of "prof_review_upvote" */
 export type Prof_Review_Upvote = {
   __typename?: 'prof_review_upvote';
-  review_id: Scalars['Int'];
-  user_id?: Maybe<Scalars['Int']>;
+  review_id: Scalars['Int']['output'];
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "prof_review_upvote" */
@@ -5571,13 +5602,13 @@ export type Prof_Review_Upvote_Aggregate = {
 };
 
 export type Prof_Review_Upvote_Aggregate_Bool_Exp = {
-  count?: Maybe<Prof_Review_Upvote_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Prof_Review_Upvote_Aggregate_Bool_Exp_Count>;
 };
 
 export type Prof_Review_Upvote_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  arguments?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -5585,7 +5616,7 @@ export type Prof_Review_Upvote_Aggregate_Bool_Exp_Count = {
 export type Prof_Review_Upvote_Aggregate_Fields = {
   __typename?: 'prof_review_upvote_aggregate_fields';
   avg?: Maybe<Prof_Review_Upvote_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Prof_Review_Upvote_Max_Fields>;
   min?: Maybe<Prof_Review_Upvote_Min_Fields>;
   stddev?: Maybe<Prof_Review_Upvote_Stddev_Fields>;
@@ -5599,52 +5630,52 @@ export type Prof_Review_Upvote_Aggregate_Fields = {
 
 /** aggregate fields of "prof_review_upvote" */
 export type Prof_Review_Upvote_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Aggregate_Order_By = {
-  avg?: Maybe<Prof_Review_Upvote_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Prof_Review_Upvote_Max_Order_By>;
-  min?: Maybe<Prof_Review_Upvote_Min_Order_By>;
-  stddev?: Maybe<Prof_Review_Upvote_Stddev_Order_By>;
-  stddev_pop?: Maybe<Prof_Review_Upvote_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Prof_Review_Upvote_Stddev_Samp_Order_By>;
-  sum?: Maybe<Prof_Review_Upvote_Sum_Order_By>;
-  var_pop?: Maybe<Prof_Review_Upvote_Var_Pop_Order_By>;
-  var_samp?: Maybe<Prof_Review_Upvote_Var_Samp_Order_By>;
-  variance?: Maybe<Prof_Review_Upvote_Variance_Order_By>;
+  avg?: InputMaybe<Prof_Review_Upvote_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Prof_Review_Upvote_Max_Order_By>;
+  min?: InputMaybe<Prof_Review_Upvote_Min_Order_By>;
+  stddev?: InputMaybe<Prof_Review_Upvote_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Prof_Review_Upvote_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Prof_Review_Upvote_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Prof_Review_Upvote_Sum_Order_By>;
+  var_pop?: InputMaybe<Prof_Review_Upvote_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Prof_Review_Upvote_Var_Samp_Order_By>;
+  variance?: InputMaybe<Prof_Review_Upvote_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "prof_review_upvote" */
 export type Prof_Review_Upvote_Arr_Rel_Insert_Input = {
   data: Array<Prof_Review_Upvote_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Prof_Review_Upvote_On_Conflict>;
+  on_conflict?: InputMaybe<Prof_Review_Upvote_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type Prof_Review_Upvote_Avg_Fields = {
   __typename?: 'prof_review_upvote_avg_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Avg_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "prof_review_upvote". All fields are combined with a logical 'AND'. */
 export type Prof_Review_Upvote_Bool_Exp = {
-  _and?: Maybe<Array<Prof_Review_Upvote_Bool_Exp>>;
-  _not?: Maybe<Prof_Review_Upvote_Bool_Exp>;
-  _or?: Maybe<Array<Prof_Review_Upvote_Bool_Exp>>;
-  review_id?: Maybe<Int_Comparison_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Prof_Review_Upvote_Bool_Exp>>;
+  _not?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
+  _or?: InputMaybe<Array<Prof_Review_Upvote_Bool_Exp>>;
+  review_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "prof_review_upvote" */
@@ -5655,47 +5686,47 @@ export enum Prof_Review_Upvote_Constraint {
 
 /** input type for incrementing numeric columns in table "prof_review_upvote" */
 export type Prof_Review_Upvote_Inc_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "prof_review_upvote" */
 export type Prof_Review_Upvote_Insert_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Prof_Review_Upvote_Max_Fields = {
   __typename?: 'prof_review_upvote_max_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Max_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Prof_Review_Upvote_Min_Fields = {
   __typename?: 'prof_review_upvote_min_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Min_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "prof_review_upvote" */
 export type Prof_Review_Upvote_Mutation_Response = {
   __typename?: 'prof_review_upvote_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Prof_Review_Upvote>;
 };
@@ -5703,14 +5734,14 @@ export type Prof_Review_Upvote_Mutation_Response = {
 /** on_conflict condition type for table "prof_review_upvote" */
 export type Prof_Review_Upvote_On_Conflict = {
   constraint: Prof_Review_Upvote_Constraint;
-  update_columns: Array<Prof_Review_Upvote_Update_Column>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  update_columns?: Array<Prof_Review_Upvote_Update_Column>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "prof_review_upvote". */
 export type Prof_Review_Upvote_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "prof_review_upvote" */
@@ -5723,47 +5754,47 @@ export enum Prof_Review_Upvote_Select_Column {
 
 /** input type for updating data in table "prof_review_upvote" */
 export type Prof_Review_Upvote_Set_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Prof_Review_Upvote_Stddev_Fields = {
   __typename?: 'prof_review_upvote_stddev_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Stddev_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Prof_Review_Upvote_Stddev_Pop_Fields = {
   __typename?: 'prof_review_upvote_stddev_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Stddev_Pop_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Prof_Review_Upvote_Stddev_Samp_Fields = {
   __typename?: 'prof_review_upvote_stddev_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Stddev_Samp_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "prof_review_upvote" */
@@ -5771,26 +5802,26 @@ export type Prof_Review_Upvote_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Prof_Review_Upvote_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Prof_Review_Upvote_Stream_Cursor_Value_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Prof_Review_Upvote_Sum_Fields = {
   __typename?: 'prof_review_upvote_sum_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Sum_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "prof_review_upvote" */
@@ -5803,9 +5834,9 @@ export enum Prof_Review_Upvote_Update_Column {
 
 export type Prof_Review_Upvote_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Prof_Review_Upvote_Inc_Input>;
+  _inc?: InputMaybe<Prof_Review_Upvote_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Prof_Review_Upvote_Set_Input>;
+  _set?: InputMaybe<Prof_Review_Upvote_Set_Input>;
   /** filter the rows which have to be updated */
   where: Prof_Review_Upvote_Bool_Exp;
 };
@@ -5813,55 +5844,55 @@ export type Prof_Review_Upvote_Updates = {
 /** aggregate var_pop on columns */
 export type Prof_Review_Upvote_Var_Pop_Fields = {
   __typename?: 'prof_review_upvote_var_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Var_Pop_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Prof_Review_Upvote_Var_Samp_Fields = {
   __typename?: 'prof_review_upvote_var_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Var_Samp_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Prof_Review_Upvote_Variance_Fields = {
   __typename?: 'prof_review_upvote_variance_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "prof_review_upvote" */
 export type Prof_Review_Upvote_Variance_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "prof_search_index" */
 export type Prof_Search_Index = {
   __typename?: 'prof_search_index';
-  clear?: Maybe<Scalars['numeric']>;
-  code?: Maybe<Scalars['String']>;
-  course_codes?: Maybe<Scalars['_text']>;
-  course_ids?: Maybe<Scalars['_int4']>;
-  document?: Maybe<Scalars['tsvector']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  ratings?: Maybe<Scalars['bigint']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  course_codes?: Maybe<Scalars['_text']['output']>;
+  course_ids?: Maybe<Scalars['_int4']['output']>;
+  document?: Maybe<Scalars['tsvector']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregated selection of "prof_search_index" */
@@ -5875,7 +5906,7 @@ export type Prof_Search_Index_Aggregate = {
 export type Prof_Search_Index_Aggregate_Fields = {
   __typename?: 'prof_search_index_aggregate_fields';
   avg?: Maybe<Prof_Search_Index_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Prof_Search_Index_Max_Fields>;
   min?: Maybe<Prof_Search_Index_Min_Fields>;
   stddev?: Maybe<Prof_Search_Index_Stddev_Fields>;
@@ -5889,73 +5920,73 @@ export type Prof_Search_Index_Aggregate_Fields = {
 
 /** aggregate fields of "prof_search_index" */
 export type Prof_Search_Index_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Prof_Search_Index_Avg_Fields = {
   __typename?: 'prof_search_index_avg_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "prof_search_index". All fields are combined with a logical 'AND'. */
 export type Prof_Search_Index_Bool_Exp = {
-  _and?: Maybe<Array<Prof_Search_Index_Bool_Exp>>;
-  _not?: Maybe<Prof_Search_Index_Bool_Exp>;
-  _or?: Maybe<Array<Prof_Search_Index_Bool_Exp>>;
-  clear?: Maybe<Numeric_Comparison_Exp>;
-  code?: Maybe<String_Comparison_Exp>;
-  course_codes?: Maybe<_Text_Comparison_Exp>;
-  course_ids?: Maybe<_Int4_Comparison_Exp>;
-  document?: Maybe<Tsvector_Comparison_Exp>;
-  engaging?: Maybe<Numeric_Comparison_Exp>;
-  liked?: Maybe<Numeric_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
-  ratings?: Maybe<Bigint_Comparison_Exp>;
+  _and?: InputMaybe<Array<Prof_Search_Index_Bool_Exp>>;
+  _not?: InputMaybe<Prof_Search_Index_Bool_Exp>;
+  _or?: InputMaybe<Array<Prof_Search_Index_Bool_Exp>>;
+  clear?: InputMaybe<Numeric_Comparison_Exp>;
+  code?: InputMaybe<String_Comparison_Exp>;
+  course_codes?: InputMaybe<_Text_Comparison_Exp>;
+  course_ids?: InputMaybe<_Int4_Comparison_Exp>;
+  document?: InputMaybe<Tsvector_Comparison_Exp>;
+  engaging?: InputMaybe<Numeric_Comparison_Exp>;
+  liked?: InputMaybe<Numeric_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
+  ratings?: InputMaybe<Bigint_Comparison_Exp>;
 };
 
 /** aggregate max on columns */
 export type Prof_Search_Index_Max_Fields = {
   __typename?: 'prof_search_index_max_fields';
-  clear?: Maybe<Scalars['numeric']>;
-  code?: Maybe<Scalars['String']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  ratings?: Maybe<Scalars['bigint']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregate min on columns */
 export type Prof_Search_Index_Min_Fields = {
   __typename?: 'prof_search_index_min_fields';
-  clear?: Maybe<Scalars['numeric']>;
-  code?: Maybe<Scalars['String']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  ratings?: Maybe<Scalars['bigint']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** Ordering options when selecting data from "prof_search_index". */
 export type Prof_Search_Index_Order_By = {
-  clear?: Maybe<Order_By>;
-  code?: Maybe<Order_By>;
-  course_codes?: Maybe<Order_By>;
-  course_ids?: Maybe<Order_By>;
-  document?: Maybe<Order_By>;
-  engaging?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  ratings?: Maybe<Order_By>;
+  clear?: InputMaybe<Order_By>;
+  code?: InputMaybe<Order_By>;
+  course_codes?: InputMaybe<Order_By>;
+  course_ids?: InputMaybe<Order_By>;
+  document?: InputMaybe<Order_By>;
+  engaging?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  ratings?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "prof_search_index" */
@@ -5985,31 +6016,31 @@ export enum Prof_Search_Index_Select_Column {
 /** aggregate stddev on columns */
 export type Prof_Search_Index_Stddev_Fields = {
   __typename?: 'prof_search_index_stddev_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Prof_Search_Index_Stddev_Pop_Fields = {
   __typename?: 'prof_search_index_stddev_pop_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Prof_Search_Index_Stddev_Samp_Fields = {
   __typename?: 'prof_search_index_stddev_samp_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "prof_search_index" */
@@ -6017,61 +6048,61 @@ export type Prof_Search_Index_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Prof_Search_Index_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Prof_Search_Index_Stream_Cursor_Value_Input = {
-  clear?: Maybe<Scalars['numeric']>;
-  code?: Maybe<Scalars['String']>;
-  course_codes?: Maybe<Scalars['_text']>;
-  course_ids?: Maybe<Scalars['_int4']>;
-  document?: Maybe<Scalars['tsvector']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  name?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  ratings?: Maybe<Scalars['bigint']>;
+  clear?: InputMaybe<Scalars['numeric']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  course_codes?: InputMaybe<Scalars['_text']['input']>;
+  course_ids?: InputMaybe<Scalars['_int4']['input']>;
+  document?: InputMaybe<Scalars['tsvector']['input']>;
+  engaging?: InputMaybe<Scalars['numeric']['input']>;
+  liked?: InputMaybe<Scalars['numeric']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  ratings?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Prof_Search_Index_Sum_Fields = {
   __typename?: 'prof_search_index_sum_fields';
-  clear?: Maybe<Scalars['numeric']>;
-  engaging?: Maybe<Scalars['numeric']>;
-  liked?: Maybe<Scalars['numeric']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  ratings?: Maybe<Scalars['bigint']>;
+  clear?: Maybe<Scalars['numeric']['output']>;
+  engaging?: Maybe<Scalars['numeric']['output']>;
+  liked?: Maybe<Scalars['numeric']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  ratings?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Prof_Search_Index_Var_Pop_Fields = {
   __typename?: 'prof_search_index_var_pop_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Prof_Search_Index_Var_Samp_Fields = {
   __typename?: 'prof_search_index_var_samp_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Prof_Search_Index_Variance_Fields = {
   __typename?: 'prof_search_index_variance_fields';
-  clear?: Maybe<Scalars['Float']>;
-  engaging?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  ratings?: Maybe<Scalars['Float']>;
+  clear?: Maybe<Scalars['Float']['output']>;
+  engaging?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  ratings?: Maybe<Scalars['Float']['output']>;
 };
 
 /** select columns of table "prof" */
@@ -6088,28 +6119,28 @@ export enum Prof_Select_Column {
 
 /** input type for updating data in table "prof" */
 export type Prof_Set_Input = {
-  code?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Prof_Stddev_Fields = {
   __typename?: 'prof_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Prof_Stddev_Pop_Fields = {
   __typename?: 'prof_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Prof_Stddev_Samp_Fields = {
   __typename?: 'prof_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "prof" */
@@ -6117,21 +6148,21 @@ export type Prof_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Prof_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Prof_Stream_Cursor_Value_Input = {
-  code?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Prof_Sum_Fields = {
   __typename?: 'prof_sum_fields';
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** columns and relationships of "prof_teaches_course" */
@@ -6139,10 +6170,10 @@ export type Prof_Teaches_Course = {
   __typename?: 'prof_teaches_course';
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   prof?: Maybe<Prof>;
-  prof_id?: Maybe<Scalars['Int']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "prof_teaches_course" */
@@ -6153,13 +6184,13 @@ export type Prof_Teaches_Course_Aggregate = {
 };
 
 export type Prof_Teaches_Course_Aggregate_Bool_Exp = {
-  count?: Maybe<Prof_Teaches_Course_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<Prof_Teaches_Course_Aggregate_Bool_Exp_Count>;
 };
 
 export type Prof_Teaches_Course_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  arguments?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -6167,7 +6198,7 @@ export type Prof_Teaches_Course_Aggregate_Bool_Exp_Count = {
 export type Prof_Teaches_Course_Aggregate_Fields = {
   __typename?: 'prof_teaches_course_aggregate_fields';
   avg?: Maybe<Prof_Teaches_Course_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Prof_Teaches_Course_Max_Fields>;
   min?: Maybe<Prof_Teaches_Course_Min_Fields>;
   stddev?: Maybe<Prof_Teaches_Course_Stddev_Fields>;
@@ -6181,23 +6212,23 @@ export type Prof_Teaches_Course_Aggregate_Fields = {
 
 /** aggregate fields of "prof_teaches_course" */
 export type Prof_Teaches_Course_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Aggregate_Order_By = {
-  avg?: Maybe<Prof_Teaches_Course_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Prof_Teaches_Course_Max_Order_By>;
-  min?: Maybe<Prof_Teaches_Course_Min_Order_By>;
-  stddev?: Maybe<Prof_Teaches_Course_Stddev_Order_By>;
-  stddev_pop?: Maybe<Prof_Teaches_Course_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Prof_Teaches_Course_Stddev_Samp_Order_By>;
-  sum?: Maybe<Prof_Teaches_Course_Sum_Order_By>;
-  var_pop?: Maybe<Prof_Teaches_Course_Var_Pop_Order_By>;
-  var_samp?: Maybe<Prof_Teaches_Course_Var_Samp_Order_By>;
-  variance?: Maybe<Prof_Teaches_Course_Variance_Order_By>;
+  avg?: InputMaybe<Prof_Teaches_Course_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Prof_Teaches_Course_Max_Order_By>;
+  min?: InputMaybe<Prof_Teaches_Course_Min_Order_By>;
+  stddev?: InputMaybe<Prof_Teaches_Course_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Prof_Teaches_Course_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Prof_Teaches_Course_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Prof_Teaches_Course_Sum_Order_By>;
+  var_pop?: InputMaybe<Prof_Teaches_Course_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Prof_Teaches_Course_Var_Samp_Order_By>;
+  variance?: InputMaybe<Prof_Teaches_Course_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "prof_teaches_course" */
@@ -6208,67 +6239,67 @@ export type Prof_Teaches_Course_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Prof_Teaches_Course_Avg_Fields = {
   __typename?: 'prof_teaches_course_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Avg_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "prof_teaches_course". All fields are combined with a logical 'AND'. */
 export type Prof_Teaches_Course_Bool_Exp = {
-  _and?: Maybe<Array<Prof_Teaches_Course_Bool_Exp>>;
-  _not?: Maybe<Prof_Teaches_Course_Bool_Exp>;
-  _or?: Maybe<Array<Prof_Teaches_Course_Bool_Exp>>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  prof?: Maybe<Prof_Bool_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Prof_Teaches_Course_Bool_Exp>>;
+  _not?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
+  _or?: InputMaybe<Array<Prof_Teaches_Course_Bool_Exp>>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  prof?: InputMaybe<Prof_Bool_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "prof_teaches_course" */
 export type Prof_Teaches_Course_Insert_Input = {
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
-  prof?: Maybe<Prof_Obj_Rel_Insert_Input>;
-  prof_id?: Maybe<Scalars['Int']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  prof?: InputMaybe<Prof_Obj_Rel_Insert_Input>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Prof_Teaches_Course_Max_Fields = {
   __typename?: 'prof_teaches_course_max_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Max_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Prof_Teaches_Course_Min_Fields = {
   __typename?: 'prof_teaches_course_min_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Min_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** Ordering options when selecting data from "prof_teaches_course". */
 export type Prof_Teaches_Course_Order_By = {
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
-  prof?: Maybe<Prof_Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof?: InputMaybe<Prof_Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "prof_teaches_course" */
@@ -6282,40 +6313,40 @@ export enum Prof_Teaches_Course_Select_Column {
 /** aggregate stddev on columns */
 export type Prof_Teaches_Course_Stddev_Fields = {
   __typename?: 'prof_teaches_course_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Stddev_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Prof_Teaches_Course_Stddev_Pop_Fields = {
   __typename?: 'prof_teaches_course_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Stddev_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Prof_Teaches_Course_Stddev_Samp_Fields = {
   __typename?: 'prof_teaches_course_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Stddev_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "prof_teaches_course" */
@@ -6323,65 +6354,65 @@ export type Prof_Teaches_Course_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Prof_Teaches_Course_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Prof_Teaches_Course_Stream_Cursor_Value_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Prof_Teaches_Course_Sum_Fields = {
   __typename?: 'prof_teaches_course_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Sum_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
 export type Prof_Teaches_Course_Var_Pop_Fields = {
   __typename?: 'prof_teaches_course_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Var_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Prof_Teaches_Course_Var_Samp_Fields = {
   __typename?: 'prof_teaches_course_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Var_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Prof_Teaches_Course_Variance_Fields = {
   __typename?: 'prof_teaches_course_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "prof_teaches_course" */
 export type Prof_Teaches_Course_Variance_Order_By = {
-  course_id?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "prof" */
@@ -6398,9 +6429,9 @@ export enum Prof_Update_Column {
 
 export type Prof_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Prof_Inc_Input>;
+  _inc?: InputMaybe<Prof_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Prof_Set_Input>;
+  _set?: InputMaybe<Prof_Set_Input>;
   /** filter the rows which have to be updated */
   where: Prof_Bool_Exp;
 };
@@ -6408,19 +6439,19 @@ export type Prof_Updates = {
 /** aggregate var_pop on columns */
 export type Prof_Var_Pop_Fields = {
   __typename?: 'prof_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Prof_Var_Samp_Fields = {
   __typename?: 'prof_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Prof_Variance_Fields = {
   __typename?: 'prof_variance_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 export type Query_Root = {
@@ -6564,541 +6595,549 @@ export type Query_Root = {
 };
 
 export type Query_RootAggregate_Course_Easy_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_Easy_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_Review_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_Review_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_Useful_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Course_Useful_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Course_Useful_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Course_Useful_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Clear_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Clear_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Engaging_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Prof_Engaging_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Engaging_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Prof_Engaging_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Review_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
 };
 
 export type Query_RootAggregate_Prof_Review_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
 };
 
 export type Query_RootCourseArgs = {
-  distinct_on?: Maybe<Array<Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Order_By>>;
-  where?: Maybe<Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Order_By>>;
+  where?: InputMaybe<Course_Bool_Exp>;
 };
 
 export type Query_RootCourse_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Order_By>>;
-  where?: Maybe<Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Order_By>>;
+  where?: InputMaybe<Course_Bool_Exp>;
 };
 
 export type Query_RootCourse_AntirequisiteArgs = {
-  distinct_on?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Antirequisite_Order_By>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Antirequisite_Order_By>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 export type Query_RootCourse_Antirequisite_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Antirequisite_Order_By>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Antirequisite_Order_By>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 export type Query_RootCourse_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootCourse_PostrequisiteArgs = {
-  distinct_on?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Postrequisite_Order_By>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Postrequisite_Order_By>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 export type Query_RootCourse_Postrequisite_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Postrequisite_Order_By>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Postrequisite_Order_By>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 export type Query_RootCourse_PrerequisiteArgs = {
-  distinct_on?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Prerequisite_Order_By>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Prerequisite_Order_By>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 export type Query_RootCourse_Prerequisite_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Prerequisite_Order_By>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Prerequisite_Order_By>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 export type Query_RootCourse_Review_UpvoteArgs = {
-  distinct_on?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Review_Upvote_Order_By>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 export type Query_RootCourse_Review_Upvote_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Review_Upvote_Order_By>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 export type Query_RootCourse_Search_IndexArgs = {
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootCourse_Search_Index_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootCourse_SectionArgs = {
-  distinct_on?: Maybe<Array<Course_Section_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Section_Order_By>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Section_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Section_Order_By>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 export type Query_RootCourse_Section_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Section_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Section_Order_By>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Section_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Section_Order_By>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 export type Query_RootCourse_Section_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootProfArgs = {
-  distinct_on?: Maybe<Array<Prof_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Order_By>>;
-  where?: Maybe<Prof_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Order_By>>;
+  where?: InputMaybe<Prof_Bool_Exp>;
 };
 
 export type Query_RootProf_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Order_By>>;
-  where?: Maybe<Prof_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Order_By>>;
+  where?: InputMaybe<Prof_Bool_Exp>;
 };
 
 export type Query_RootProf_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootProf_Review_UpvoteArgs = {
-  distinct_on?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Review_Upvote_Order_By>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 export type Query_RootProf_Review_Upvote_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Review_Upvote_Order_By>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 export type Query_RootProf_Search_IndexArgs = {
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootProf_Search_Index_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootProf_Teaches_CourseArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 export type Query_RootProf_Teaches_Course_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 export type Query_RootQueue_Section_SubscribedArgs = {
-  distinct_on?: Maybe<Array<Queue_Section_Subscribed_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Queue_Section_Subscribed_Order_By>>;
-  where?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Queue_Section_Subscribed_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Queue_Section_Subscribed_Order_By>>;
+  where?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
 };
 
 export type Query_RootQueue_Section_Subscribed_AggregateArgs = {
-  distinct_on?: Maybe<Array<Queue_Section_Subscribed_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Queue_Section_Subscribed_Order_By>>;
-  where?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Queue_Section_Subscribed_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Queue_Section_Subscribed_Order_By>>;
+  where?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
 };
 
 export type Query_RootQueue_Section_Subscribed_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootReviewArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 export type Query_RootReview_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 export type Query_RootReview_AuthorArgs = {
-  distinct_on?: Maybe<Array<Review_Author_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Author_Order_By>>;
-  where?: Maybe<Review_Author_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Author_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Author_Order_By>>;
+  where?: InputMaybe<Review_Author_Bool_Exp>;
 };
 
 export type Query_RootReview_Author_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Author_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Author_Order_By>>;
-  where?: Maybe<Review_Author_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Author_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Author_Order_By>>;
+  where?: InputMaybe<Review_Author_Bool_Exp>;
 };
 
 export type Query_RootReview_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootReview_User_IdArgs = {
-  distinct_on?: Maybe<Array<Review_User_Id_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_User_Id_Order_By>>;
-  where?: Maybe<Review_User_Id_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_User_Id_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_User_Id_Order_By>>;
+  where?: InputMaybe<Review_User_Id_Bool_Exp>;
 };
 
 export type Query_RootReview_User_Id_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_User_Id_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_User_Id_Order_By>>;
-  where?: Maybe<Review_User_Id_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_User_Id_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_User_Id_Order_By>>;
+  where?: InputMaybe<Review_User_Id_Bool_Exp>;
 };
 
 export type Query_RootSearch_CoursesArgs = {
   args: Search_Courses_Args;
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootSearch_Courses_AggregateArgs = {
   args: Search_Courses_Args;
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootSearch_ProfsArgs = {
   args: Search_Profs_Args;
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootSearch_Profs_AggregateArgs = {
   args: Search_Profs_Args;
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Query_RootSection_ExamArgs = {
-  distinct_on?: Maybe<Array<Section_Exam_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Exam_Order_By>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Exam_Order_By>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 export type Query_RootSection_Exam_AggregateArgs = {
-  distinct_on?: Maybe<Array<Section_Exam_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Exam_Order_By>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Exam_Order_By>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 export type Query_RootSection_MeetingArgs = {
-  distinct_on?: Maybe<Array<Section_Meeting_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Meeting_Order_By>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 export type Query_RootSection_Meeting_AggregateArgs = {
-  distinct_on?: Maybe<Array<Section_Meeting_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Meeting_Order_By>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 export type Query_RootUserArgs = {
-  distinct_on?: Maybe<Array<User_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Order_By>>;
-  where?: Maybe<User_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 export type Query_RootUser_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Order_By>>;
-  where?: Maybe<User_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 export type Query_RootUser_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootUser_Course_TakenArgs = {
-  distinct_on?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Course_Taken_Order_By>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Taken_Order_By>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 export type Query_RootUser_Course_Taken_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Course_Taken_Order_By>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Taken_Order_By>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 export type Query_RootUser_ScheduleArgs = {
-  distinct_on?: Maybe<Array<User_Schedule_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Schedule_Order_By>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 export type Query_RootUser_Schedule_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Schedule_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Schedule_Order_By>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 export type Query_RootUser_ShortlistArgs = {
-  distinct_on?: Maybe<Array<User_Shortlist_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Shortlist_Order_By>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Shortlist_Order_By>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 export type Query_RootUser_Shortlist_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Shortlist_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Shortlist_Order_By>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Shortlist_Order_By>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 /** columns and relationships of "queue.section_subscribed" */
 export type Queue_Section_Subscribed = {
   __typename?: 'queue_section_subscribed';
-  created_at: Scalars['timestamptz'];
-  id: Scalars['Int'];
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['Int']['output'];
   /** An object relationship */
   section: Course_Section;
-  section_id: Scalars['Int'];
-  seen_at?: Maybe<Scalars['timestamptz']>;
+  section_id: Scalars['Int']['output'];
+  seen_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   user: User;
-  user_id: Scalars['Int'];
+  user_id: Scalars['Int']['output'];
 };
 
 /** aggregated selection of "queue.section_subscribed" */
@@ -7112,7 +7151,7 @@ export type Queue_Section_Subscribed_Aggregate = {
 export type Queue_Section_Subscribed_Aggregate_Fields = {
   __typename?: 'queue_section_subscribed_aggregate_fields';
   avg?: Maybe<Queue_Section_Subscribed_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Queue_Section_Subscribed_Max_Fields>;
   min?: Maybe<Queue_Section_Subscribed_Min_Fields>;
   stddev?: Maybe<Queue_Section_Subscribed_Stddev_Fields>;
@@ -7126,30 +7165,30 @@ export type Queue_Section_Subscribed_Aggregate_Fields = {
 
 /** aggregate fields of "queue.section_subscribed" */
 export type Queue_Section_Subscribed_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Queue_Section_Subscribed_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Queue_Section_Subscribed_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Queue_Section_Subscribed_Avg_Fields = {
   __typename?: 'queue_section_subscribed_avg_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "queue.section_subscribed". All fields are combined with a logical 'AND'. */
 export type Queue_Section_Subscribed_Bool_Exp = {
-  _and?: Maybe<Array<Queue_Section_Subscribed_Bool_Exp>>;
-  _not?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
-  _or?: Maybe<Array<Queue_Section_Subscribed_Bool_Exp>>;
-  created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  section?: Maybe<Course_Section_Bool_Exp>;
-  section_id?: Maybe<Int_Comparison_Exp>;
-  seen_at?: Maybe<Timestamptz_Comparison_Exp>;
-  user?: Maybe<User_Bool_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Queue_Section_Subscribed_Bool_Exp>>;
+  _not?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
+  _or?: InputMaybe<Array<Queue_Section_Subscribed_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  section?: InputMaybe<Course_Section_Bool_Exp>;
+  section_id?: InputMaybe<Int_Comparison_Exp>;
+  seen_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<User_Bool_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "queue.section_subscribed" */
@@ -7162,47 +7201,47 @@ export enum Queue_Section_Subscribed_Constraint {
 
 /** input type for incrementing numeric columns in table "queue.section_subscribed" */
 export type Queue_Section_Subscribed_Inc_Input = {
-  id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "queue.section_subscribed" */
 export type Queue_Section_Subscribed_Insert_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  section?: Maybe<Course_Section_Obj_Rel_Insert_Input>;
-  section_id?: Maybe<Scalars['Int']>;
-  seen_at?: Maybe<Scalars['timestamptz']>;
-  user?: Maybe<User_Obj_Rel_Insert_Input>;
-  user_id?: Maybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  section?: InputMaybe<Course_Section_Obj_Rel_Insert_Input>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  seen_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Queue_Section_Subscribed_Max_Fields = {
   __typename?: 'queue_section_subscribed_max_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  seen_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  seen_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type Queue_Section_Subscribed_Min_Fields = {
   __typename?: 'queue_section_subscribed_min_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  seen_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  seen_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** response of any mutation on the table "queue.section_subscribed" */
 export type Queue_Section_Subscribed_Mutation_Response = {
   __typename?: 'queue_section_subscribed_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Queue_Section_Subscribed>;
 };
@@ -7210,24 +7249,24 @@ export type Queue_Section_Subscribed_Mutation_Response = {
 /** on_conflict condition type for table "queue.section_subscribed" */
 export type Queue_Section_Subscribed_On_Conflict = {
   constraint: Queue_Section_Subscribed_Constraint;
-  update_columns: Array<Queue_Section_Subscribed_Update_Column>;
-  where?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
+  update_columns?: Array<Queue_Section_Subscribed_Update_Column>;
+  where?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "queue.section_subscribed". */
 export type Queue_Section_Subscribed_Order_By = {
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  section?: Maybe<Course_Section_Order_By>;
-  section_id?: Maybe<Order_By>;
-  seen_at?: Maybe<Order_By>;
-  user?: Maybe<User_Order_By>;
-  user_id?: Maybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  section?: InputMaybe<Course_Section_Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  seen_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<User_Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: queue.section_subscribed */
 export type Queue_Section_Subscribed_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** select columns of table "queue.section_subscribed" */
@@ -7246,35 +7285,35 @@ export enum Queue_Section_Subscribed_Select_Column {
 
 /** input type for updating data in table "queue.section_subscribed" */
 export type Queue_Section_Subscribed_Set_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  seen_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  seen_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Queue_Section_Subscribed_Stddev_Fields = {
   __typename?: 'queue_section_subscribed_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Queue_Section_Subscribed_Stddev_Pop_Fields = {
   __typename?: 'queue_section_subscribed_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Queue_Section_Subscribed_Stddev_Samp_Fields = {
   __typename?: 'queue_section_subscribed_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "queue_section_subscribed" */
@@ -7282,24 +7321,24 @@ export type Queue_Section_Subscribed_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Queue_Section_Subscribed_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Queue_Section_Subscribed_Stream_Cursor_Value_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  seen_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  seen_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Queue_Section_Subscribed_Sum_Fields = {
   __typename?: 'queue_section_subscribed_sum_fields';
-  id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "queue.section_subscribed" */
@@ -7318,9 +7357,9 @@ export enum Queue_Section_Subscribed_Update_Column {
 
 export type Queue_Section_Subscribed_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Queue_Section_Subscribed_Inc_Input>;
+  _inc?: InputMaybe<Queue_Section_Subscribed_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Queue_Section_Subscribed_Set_Input>;
+  _set?: InputMaybe<Queue_Section_Subscribed_Set_Input>;
   /** filter the rows which have to be updated */
   where: Queue_Section_Subscribed_Bool_Exp;
 };
@@ -7328,25 +7367,25 @@ export type Queue_Section_Subscribed_Updates = {
 /** aggregate var_pop on columns */
 export type Queue_Section_Subscribed_Var_Pop_Fields = {
   __typename?: 'queue_section_subscribed_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Queue_Section_Subscribed_Var_Samp_Fields = {
   __typename?: 'queue_section_subscribed_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Queue_Section_Subscribed_Variance_Fields = {
   __typename?: 'queue_section_subscribed_variance_fields';
-  id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "review" */
@@ -7356,73 +7395,73 @@ export type Review = {
   author?: Maybe<Review_Author>;
   /** An object relationship */
   course?: Maybe<Course>;
-  course_comment?: Maybe<Scalars['String']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
+  course_comment?: Maybe<Scalars['String']['output']>;
+  course_easy?: Maybe<Scalars['smallint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   course_review_rating?: Maybe<Aggregate_Course_Review_Rating>;
   /** An array relationship */
   course_review_upvotes: Array<Course_Review_Upvote>;
   /** An aggregate relationship */
   course_review_upvotes_aggregate: Course_Review_Upvote_Aggregate;
-  course_useful?: Maybe<Scalars['smallint']>;
-  created_at: Scalars['timestamptz'];
-  id: Scalars['Int'];
-  legacy: Scalars['Boolean'];
-  liked?: Maybe<Scalars['smallint']>;
+  course_useful?: Maybe<Scalars['smallint']['output']>;
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['Int']['output'];
+  legacy: Scalars['Boolean']['output'];
+  liked?: Maybe<Scalars['smallint']['output']>;
   /** An object relationship */
   prof?: Maybe<Prof>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  prof_clear?: Maybe<Scalars['smallint']['output']>;
+  prof_comment?: Maybe<Scalars['String']['output']>;
+  prof_engaging?: Maybe<Scalars['smallint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   prof_review_rating?: Maybe<Aggregate_Prof_Review_Rating>;
   /** An array relationship */
   prof_review_upvotes: Array<Prof_Review_Upvote>;
   /** An aggregate relationship */
   prof_review_upvotes_aggregate: Prof_Review_Upvote_Aggregate;
-  public: Scalars['Boolean'];
-  updated_at: Scalars['timestamptz'];
+  public: Scalars['Boolean']['output'];
+  updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
   user?: Maybe<Review_User_Id>;
-  user_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** columns and relationships of "review" */
 export type ReviewCourse_Review_UpvotesArgs = {
-  distinct_on?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Review_Upvote_Order_By>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 /** columns and relationships of "review" */
 export type ReviewCourse_Review_Upvotes_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Review_Upvote_Order_By>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 /** columns and relationships of "review" */
 export type ReviewProf_Review_UpvotesArgs = {
-  distinct_on?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Review_Upvote_Order_By>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 /** columns and relationships of "review" */
 export type ReviewProf_Review_Upvotes_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Review_Upvote_Order_By>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 /** aggregated selection of "review" */
@@ -7433,29 +7472,29 @@ export type Review_Aggregate = {
 };
 
 export type Review_Aggregate_Bool_Exp = {
-  bool_and?: Maybe<Review_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: Maybe<Review_Aggregate_Bool_Exp_Bool_Or>;
-  count?: Maybe<Review_Aggregate_Bool_Exp_Count>;
+  bool_and?: InputMaybe<Review_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Review_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Review_Aggregate_Bool_Exp_Count>;
 };
 
 export type Review_Aggregate_Bool_Exp_Bool_And = {
   arguments: Review_Select_Column_Review_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Review_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Review_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Review_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Review_Select_Column_Review_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Review_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Review_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Review_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Review_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Review_Bool_Exp>;
+  arguments?: InputMaybe<Array<Review_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Review_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -7463,7 +7502,7 @@ export type Review_Aggregate_Bool_Exp_Count = {
 export type Review_Aggregate_Fields = {
   __typename?: 'review_aggregate_fields';
   avg?: Maybe<Review_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Review_Max_Fields>;
   min?: Maybe<Review_Min_Fields>;
   stddev?: Maybe<Review_Stddev_Fields>;
@@ -7477,39 +7516,39 @@ export type Review_Aggregate_Fields = {
 
 /** aggregate fields of "review" */
 export type Review_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Review_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Review_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "review" */
 export type Review_Aggregate_Order_By = {
-  avg?: Maybe<Review_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Review_Max_Order_By>;
-  min?: Maybe<Review_Min_Order_By>;
-  stddev?: Maybe<Review_Stddev_Order_By>;
-  stddev_pop?: Maybe<Review_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Review_Stddev_Samp_Order_By>;
-  sum?: Maybe<Review_Sum_Order_By>;
-  var_pop?: Maybe<Review_Var_Pop_Order_By>;
-  var_samp?: Maybe<Review_Var_Samp_Order_By>;
-  variance?: Maybe<Review_Variance_Order_By>;
+  avg?: InputMaybe<Review_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Review_Max_Order_By>;
+  min?: InputMaybe<Review_Min_Order_By>;
+  stddev?: InputMaybe<Review_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Review_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Review_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Review_Sum_Order_By>;
+  var_pop?: InputMaybe<Review_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Review_Var_Samp_Order_By>;
+  variance?: InputMaybe<Review_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "review" */
 export type Review_Arr_Rel_Insert_Input = {
   data: Array<Review_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Review_On_Conflict>;
+  on_conflict?: InputMaybe<Review_On_Conflict>;
 };
 
 /** columns and relationships of "review_author" */
 export type Review_Author = {
   __typename?: 'review_author';
-  full_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  review_id?: Maybe<Scalars['Int']>;
+  full_name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
+  program?: Maybe<Scalars['String']['output']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "review_author" */
@@ -7523,7 +7562,7 @@ export type Review_Author_Aggregate = {
 export type Review_Author_Aggregate_Fields = {
   __typename?: 'review_author_aggregate_fields';
   avg?: Maybe<Review_Author_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Review_Author_Max_Fields>;
   min?: Maybe<Review_Author_Min_Fields>;
   stddev?: Maybe<Review_Author_Stddev_Fields>;
@@ -7537,51 +7576,51 @@ export type Review_Author_Aggregate_Fields = {
 
 /** aggregate fields of "review_author" */
 export type Review_Author_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Review_Author_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Review_Author_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Review_Author_Avg_Fields = {
   __typename?: 'review_author_avg_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "review_author". All fields are combined with a logical 'AND'. */
 export type Review_Author_Bool_Exp = {
-  _and?: Maybe<Array<Review_Author_Bool_Exp>>;
-  _not?: Maybe<Review_Author_Bool_Exp>;
-  _or?: Maybe<Array<Review_Author_Bool_Exp>>;
-  full_name?: Maybe<String_Comparison_Exp>;
-  picture_url?: Maybe<String_Comparison_Exp>;
-  program?: Maybe<String_Comparison_Exp>;
-  review_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Review_Author_Bool_Exp>>;
+  _not?: InputMaybe<Review_Author_Bool_Exp>;
+  _or?: InputMaybe<Array<Review_Author_Bool_Exp>>;
+  full_name?: InputMaybe<String_Comparison_Exp>;
+  picture_url?: InputMaybe<String_Comparison_Exp>;
+  program?: InputMaybe<String_Comparison_Exp>;
+  review_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** input type for inserting data into table "review_author" */
 export type Review_Author_Insert_Input = {
-  full_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  review_id?: Maybe<Scalars['Int']>;
+  full_name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
+  program?: InputMaybe<Scalars['String']['input']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Review_Author_Max_Fields = {
   __typename?: 'review_author_max_fields';
-  full_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  review_id?: Maybe<Scalars['Int']>;
+  full_name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
+  program?: Maybe<Scalars['String']['output']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type Review_Author_Min_Fields = {
   __typename?: 'review_author_min_fields';
-  full_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  review_id?: Maybe<Scalars['Int']>;
+  full_name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
+  program?: Maybe<Scalars['String']['output']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** input type for inserting object relation for remote table "review_author" */
@@ -7591,10 +7630,10 @@ export type Review_Author_Obj_Rel_Insert_Input = {
 
 /** Ordering options when selecting data from "review_author". */
 export type Review_Author_Order_By = {
-  full_name?: Maybe<Order_By>;
-  picture_url?: Maybe<Order_By>;
-  program?: Maybe<Order_By>;
-  review_id?: Maybe<Order_By>;
+  full_name?: InputMaybe<Order_By>;
+  picture_url?: InputMaybe<Order_By>;
+  program?: InputMaybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "review_author" */
@@ -7612,19 +7651,19 @@ export enum Review_Author_Select_Column {
 /** aggregate stddev on columns */
 export type Review_Author_Stddev_Fields = {
   __typename?: 'review_author_stddev_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Review_Author_Stddev_Pop_Fields = {
   __typename?: 'review_author_stddev_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Review_Author_Stddev_Samp_Fields = {
   __typename?: 'review_author_stddev_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "review_author" */
@@ -7632,98 +7671,98 @@ export type Review_Author_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Review_Author_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Review_Author_Stream_Cursor_Value_Input = {
-  full_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  review_id?: Maybe<Scalars['Int']>;
+  full_name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
+  program?: InputMaybe<Scalars['String']['input']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Review_Author_Sum_Fields = {
   __typename?: 'review_author_sum_fields';
-  review_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Review_Author_Var_Pop_Fields = {
   __typename?: 'review_author_var_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Review_Author_Var_Samp_Fields = {
   __typename?: 'review_author_var_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Review_Author_Variance_Fields = {
   __typename?: 'review_author_variance_fields';
-  review_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate avg on columns */
 export type Review_Avg_Fields = {
   __typename?: 'review_avg_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "review" */
 export type Review_Avg_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "review". All fields are combined with a logical 'AND'. */
 export type Review_Bool_Exp = {
-  _and?: Maybe<Array<Review_Bool_Exp>>;
-  _not?: Maybe<Review_Bool_Exp>;
-  _or?: Maybe<Array<Review_Bool_Exp>>;
-  author?: Maybe<Review_Author_Bool_Exp>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_comment?: Maybe<String_Comparison_Exp>;
-  course_easy?: Maybe<Smallint_Comparison_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  course_review_rating?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
-  course_review_upvotes?: Maybe<Course_Review_Upvote_Bool_Exp>;
-  course_review_upvotes_aggregate?: Maybe<Course_Review_Upvote_Aggregate_Bool_Exp>;
-  course_useful?: Maybe<Smallint_Comparison_Exp>;
-  created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  legacy?: Maybe<Boolean_Comparison_Exp>;
-  liked?: Maybe<Smallint_Comparison_Exp>;
-  prof?: Maybe<Prof_Bool_Exp>;
-  prof_clear?: Maybe<Smallint_Comparison_Exp>;
-  prof_comment?: Maybe<String_Comparison_Exp>;
-  prof_engaging?: Maybe<Smallint_Comparison_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
-  prof_review_rating?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
-  prof_review_upvotes?: Maybe<Prof_Review_Upvote_Bool_Exp>;
-  prof_review_upvotes_aggregate?: Maybe<Prof_Review_Upvote_Aggregate_Bool_Exp>;
-  public?: Maybe<Boolean_Comparison_Exp>;
-  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  user?: Maybe<Review_User_Id_Bool_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Review_Bool_Exp>>;
+  _not?: InputMaybe<Review_Bool_Exp>;
+  _or?: InputMaybe<Array<Review_Bool_Exp>>;
+  author?: InputMaybe<Review_Author_Bool_Exp>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_comment?: InputMaybe<String_Comparison_Exp>;
+  course_easy?: InputMaybe<Smallint_Comparison_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  course_review_rating?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  course_review_upvotes?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
+  course_review_upvotes_aggregate?: InputMaybe<Course_Review_Upvote_Aggregate_Bool_Exp>;
+  course_useful?: InputMaybe<Smallint_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  legacy?: InputMaybe<Boolean_Comparison_Exp>;
+  liked?: InputMaybe<Smallint_Comparison_Exp>;
+  prof?: InputMaybe<Prof_Bool_Exp>;
+  prof_clear?: InputMaybe<Smallint_Comparison_Exp>;
+  prof_comment?: InputMaybe<String_Comparison_Exp>;
+  prof_engaging?: InputMaybe<Smallint_Comparison_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
+  prof_review_rating?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  prof_review_upvotes?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
+  prof_review_upvotes_aggregate?: InputMaybe<Prof_Review_Upvote_Aggregate_Bool_Exp>;
+  public?: InputMaybe<Boolean_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<Review_User_Id_Bool_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "review" */
@@ -7736,119 +7775,119 @@ export enum Review_Constraint {
 
 /** input type for incrementing numeric columns in table "review" */
 export type Review_Inc_Input = {
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  id?: Maybe<Scalars['Int']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_easy?: InputMaybe<Scalars['smallint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  course_useful?: InputMaybe<Scalars['smallint']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  liked?: InputMaybe<Scalars['smallint']['input']>;
+  prof_clear?: InputMaybe<Scalars['smallint']['input']>;
+  prof_engaging?: InputMaybe<Scalars['smallint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "review" */
 export type Review_Insert_Input = {
-  author?: Maybe<Review_Author_Obj_Rel_Insert_Input>;
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_comment?: Maybe<Scalars['String']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_review_rating?: Maybe<Aggregate_Course_Review_Rating_Obj_Rel_Insert_Input>;
-  course_review_upvotes?: Maybe<Course_Review_Upvote_Arr_Rel_Insert_Input>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  legacy?: Maybe<Scalars['Boolean']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof?: Maybe<Prof_Obj_Rel_Insert_Input>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  prof_review_rating?: Maybe<Aggregate_Prof_Review_Rating_Obj_Rel_Insert_Input>;
-  prof_review_upvotes?: Maybe<Prof_Review_Upvote_Arr_Rel_Insert_Input>;
-  public?: Maybe<Scalars['Boolean']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user?: Maybe<Review_User_Id_Obj_Rel_Insert_Input>;
-  user_id?: Maybe<Scalars['Int']>;
+  author?: InputMaybe<Review_Author_Obj_Rel_Insert_Input>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_comment?: InputMaybe<Scalars['String']['input']>;
+  course_easy?: InputMaybe<Scalars['smallint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  course_review_rating?: InputMaybe<Aggregate_Course_Review_Rating_Obj_Rel_Insert_Input>;
+  course_review_upvotes?: InputMaybe<Course_Review_Upvote_Arr_Rel_Insert_Input>;
+  course_useful?: InputMaybe<Scalars['smallint']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  legacy?: InputMaybe<Scalars['Boolean']['input']>;
+  liked?: InputMaybe<Scalars['smallint']['input']>;
+  prof?: InputMaybe<Prof_Obj_Rel_Insert_Input>;
+  prof_clear?: InputMaybe<Scalars['smallint']['input']>;
+  prof_comment?: InputMaybe<Scalars['String']['input']>;
+  prof_engaging?: InputMaybe<Scalars['smallint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  prof_review_rating?: InputMaybe<Aggregate_Prof_Review_Rating_Obj_Rel_Insert_Input>;
+  prof_review_upvotes?: InputMaybe<Prof_Review_Upvote_Arr_Rel_Insert_Input>;
+  public?: InputMaybe<Scalars['Boolean']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<Review_User_Id_Obj_Rel_Insert_Input>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Review_Max_Fields = {
   __typename?: 'review_max_fields';
-  course_comment?: Maybe<Scalars['String']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_comment?: Maybe<Scalars['String']['output']>;
+  course_easy?: Maybe<Scalars['smallint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  course_useful?: Maybe<Scalars['smallint']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  liked?: Maybe<Scalars['smallint']['output']>;
+  prof_clear?: Maybe<Scalars['smallint']['output']>;
+  prof_comment?: Maybe<Scalars['String']['output']>;
+  prof_engaging?: Maybe<Scalars['smallint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "review" */
 export type Review_Max_Order_By = {
-  course_comment?: Maybe<Order_By>;
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_comment?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_comment?: InputMaybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_comment?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Review_Min_Fields = {
   __typename?: 'review_min_fields';
-  course_comment?: Maybe<Scalars['String']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_comment?: Maybe<Scalars['String']['output']>;
+  course_easy?: Maybe<Scalars['smallint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  course_useful?: Maybe<Scalars['smallint']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  liked?: Maybe<Scalars['smallint']['output']>;
+  prof_clear?: Maybe<Scalars['smallint']['output']>;
+  prof_comment?: Maybe<Scalars['String']['output']>;
+  prof_engaging?: Maybe<Scalars['smallint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "review" */
 export type Review_Min_Order_By = {
-  course_comment?: Maybe<Order_By>;
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_comment?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_comment?: InputMaybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_comment?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "review" */
 export type Review_Mutation_Response = {
   __typename?: 'review_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Review>;
 };
@@ -7856,40 +7895,40 @@ export type Review_Mutation_Response = {
 /** on_conflict condition type for table "review" */
 export type Review_On_Conflict = {
   constraint: Review_Constraint;
-  update_columns: Array<Review_Update_Column>;
-  where?: Maybe<Review_Bool_Exp>;
+  update_columns?: Array<Review_Update_Column>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "review". */
 export type Review_Order_By = {
-  author?: Maybe<Review_Author_Order_By>;
-  course?: Maybe<Course_Order_By>;
-  course_comment?: Maybe<Order_By>;
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_review_rating?: Maybe<Aggregate_Course_Review_Rating_Order_By>;
-  course_review_upvotes_aggregate?: Maybe<Course_Review_Upvote_Aggregate_Order_By>;
-  course_useful?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  legacy?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof?: Maybe<Prof_Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_comment?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  prof_review_rating?: Maybe<Aggregate_Prof_Review_Rating_Order_By>;
-  prof_review_upvotes_aggregate?: Maybe<Prof_Review_Upvote_Aggregate_Order_By>;
-  public?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-  user?: Maybe<Review_User_Id_Order_By>;
-  user_id?: Maybe<Order_By>;
+  author?: InputMaybe<Review_Author_Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_comment?: InputMaybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_review_rating?: InputMaybe<Aggregate_Course_Review_Rating_Order_By>;
+  course_review_upvotes_aggregate?: InputMaybe<Course_Review_Upvote_Aggregate_Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  legacy?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof?: InputMaybe<Prof_Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_comment?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  prof_review_rating?: InputMaybe<Aggregate_Prof_Review_Rating_Order_By>;
+  prof_review_upvotes_aggregate?: InputMaybe<Prof_Review_Upvote_Aggregate_Order_By>;
+  public?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<Review_User_Id_Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: review */
 export type Review_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** select columns of table "review" */
@@ -7944,102 +7983,102 @@ export enum Review_Select_Column_Review_Aggregate_Bool_Exp_Bool_Or_Arguments_Col
 
 /** input type for updating data in table "review" */
 export type Review_Set_Input = {
-  course_comment?: Maybe<Scalars['String']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  legacy?: Maybe<Scalars['Boolean']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  public?: Maybe<Scalars['Boolean']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_comment?: InputMaybe<Scalars['String']['input']>;
+  course_easy?: InputMaybe<Scalars['smallint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  course_useful?: InputMaybe<Scalars['smallint']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  legacy?: InputMaybe<Scalars['Boolean']['input']>;
+  liked?: InputMaybe<Scalars['smallint']['input']>;
+  prof_clear?: InputMaybe<Scalars['smallint']['input']>;
+  prof_comment?: InputMaybe<Scalars['String']['input']>;
+  prof_engaging?: InputMaybe<Scalars['smallint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  public?: InputMaybe<Scalars['Boolean']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Review_Stddev_Fields = {
   __typename?: 'review_stddev_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "review" */
 export type Review_Stddev_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Review_Stddev_Pop_Fields = {
   __typename?: 'review_stddev_pop_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "review" */
 export type Review_Stddev_Pop_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Review_Stddev_Samp_Fields = {
   __typename?: 'review_stddev_samp_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "review" */
 export type Review_Stddev_Samp_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "review" */
@@ -8047,53 +8086,53 @@ export type Review_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Review_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Review_Stream_Cursor_Value_Input = {
-  course_comment?: Maybe<Scalars['String']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['Int']>;
-  legacy?: Maybe<Scalars['Boolean']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  public?: Maybe<Scalars['Boolean']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_comment?: InputMaybe<Scalars['String']['input']>;
+  course_easy?: InputMaybe<Scalars['smallint']['input']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  course_useful?: InputMaybe<Scalars['smallint']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  legacy?: InputMaybe<Scalars['Boolean']['input']>;
+  liked?: InputMaybe<Scalars['smallint']['input']>;
+  prof_clear?: InputMaybe<Scalars['smallint']['input']>;
+  prof_comment?: InputMaybe<Scalars['String']['input']>;
+  prof_engaging?: InputMaybe<Scalars['smallint']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  public?: InputMaybe<Scalars['Boolean']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Review_Sum_Fields = {
   __typename?: 'review_sum_fields';
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_id?: Maybe<Scalars['Int']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  id?: Maybe<Scalars['Int']>;
-  liked?: Maybe<Scalars['smallint']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_easy?: Maybe<Scalars['smallint']['output']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  course_useful?: Maybe<Scalars['smallint']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  liked?: Maybe<Scalars['smallint']['output']>;
+  prof_clear?: Maybe<Scalars['smallint']['output']>;
+  prof_engaging?: Maybe<Scalars['smallint']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "review" */
 export type Review_Sum_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "review" */
@@ -8132,9 +8171,9 @@ export enum Review_Update_Column {
 
 export type Review_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Review_Inc_Input>;
+  _inc?: InputMaybe<Review_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Review_Set_Input>;
+  _set?: InputMaybe<Review_Set_Input>;
   /** filter the rows which have to be updated */
   where: Review_Bool_Exp;
 };
@@ -8142,8 +8181,8 @@ export type Review_Updates = {
 /** columns and relationships of "review_user_id" */
 export type Review_User_Id = {
   __typename?: 'review_user_id';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "review_user_id" */
@@ -8157,7 +8196,7 @@ export type Review_User_Id_Aggregate = {
 export type Review_User_Id_Aggregate_Fields = {
   __typename?: 'review_user_id_aggregate_fields';
   avg?: Maybe<Review_User_Id_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Review_User_Id_Max_Fields>;
   min?: Maybe<Review_User_Id_Min_Fields>;
   stddev?: Maybe<Review_User_Id_Stddev_Fields>;
@@ -8171,57 +8210,57 @@ export type Review_User_Id_Aggregate_Fields = {
 
 /** aggregate fields of "review_user_id" */
 export type Review_User_Id_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Review_User_Id_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Review_User_Id_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type Review_User_Id_Avg_Fields = {
   __typename?: 'review_user_id_avg_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "review_user_id". All fields are combined with a logical 'AND'. */
 export type Review_User_Id_Bool_Exp = {
-  _and?: Maybe<Array<Review_User_Id_Bool_Exp>>;
-  _not?: Maybe<Review_User_Id_Bool_Exp>;
-  _or?: Maybe<Array<Review_User_Id_Bool_Exp>>;
-  review_id?: Maybe<Int_Comparison_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Review_User_Id_Bool_Exp>>;
+  _not?: InputMaybe<Review_User_Id_Bool_Exp>;
+  _or?: InputMaybe<Array<Review_User_Id_Bool_Exp>>;
+  review_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** input type for incrementing numeric columns in table "review_user_id" */
 export type Review_User_Id_Inc_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "review_user_id" */
 export type Review_User_Id_Insert_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Review_User_Id_Max_Fields = {
   __typename?: 'review_user_id_max_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type Review_User_Id_Min_Fields = {
   __typename?: 'review_user_id_min_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** response of any mutation on the table "review_user_id" */
 export type Review_User_Id_Mutation_Response = {
   __typename?: 'review_user_id_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Review_User_Id>;
 };
@@ -8233,8 +8272,8 @@ export type Review_User_Id_Obj_Rel_Insert_Input = {
 
 /** Ordering options when selecting data from "review_user_id". */
 export type Review_User_Id_Order_By = {
-  review_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  review_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "review_user_id" */
@@ -8247,29 +8286,29 @@ export enum Review_User_Id_Select_Column {
 
 /** input type for updating data in table "review_user_id" */
 export type Review_User_Id_Set_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Review_User_Id_Stddev_Fields = {
   __typename?: 'review_user_id_stddev_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Review_User_Id_Stddev_Pop_Fields = {
   __typename?: 'review_user_id_stddev_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Review_User_Id_Stddev_Samp_Fields = {
   __typename?: 'review_user_id_stddev_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "review_user_id" */
@@ -8277,27 +8316,27 @@ export type Review_User_Id_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Review_User_Id_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Review_User_Id_Stream_Cursor_Value_Input = {
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Review_User_Id_Sum_Fields = {
   __typename?: 'review_user_id_sum_fields';
-  review_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  review_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Review_User_Id_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Review_User_Id_Inc_Input>;
+  _inc?: InputMaybe<Review_User_Id_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Review_User_Id_Set_Input>;
+  _set?: InputMaybe<Review_User_Id_Set_Input>;
   /** filter the rows which have to be updated */
   where: Review_User_Id_Bool_Exp;
 };
@@ -8305,125 +8344,125 @@ export type Review_User_Id_Updates = {
 /** aggregate var_pop on columns */
 export type Review_User_Id_Var_Pop_Fields = {
   __typename?: 'review_user_id_var_pop_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Review_User_Id_Var_Samp_Fields = {
   __typename?: 'review_user_id_var_samp_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Review_User_Id_Variance_Fields = {
   __typename?: 'review_user_id_variance_fields';
-  review_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  review_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_pop on columns */
 export type Review_Var_Pop_Fields = {
   __typename?: 'review_var_pop_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "review" */
 export type Review_Var_Pop_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Review_Var_Samp_Fields = {
   __typename?: 'review_var_samp_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "review" */
 export type Review_Var_Samp_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Review_Variance_Fields = {
   __typename?: 'review_variance_fields';
-  course_easy?: Maybe<Scalars['Float']>;
-  course_id?: Maybe<Scalars['Float']>;
-  course_useful?: Maybe<Scalars['Float']>;
-  id?: Maybe<Scalars['Float']>;
-  liked?: Maybe<Scalars['Float']>;
-  prof_clear?: Maybe<Scalars['Float']>;
-  prof_engaging?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_easy?: Maybe<Scalars['Float']['output']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  course_useful?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  liked?: Maybe<Scalars['Float']['output']>;
+  prof_clear?: Maybe<Scalars['Float']['output']>;
+  prof_engaging?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "review" */
 export type Review_Variance_Order_By = {
-  course_easy?: Maybe<Order_By>;
-  course_id?: Maybe<Order_By>;
-  course_useful?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  liked?: Maybe<Order_By>;
-  prof_clear?: Maybe<Order_By>;
-  prof_engaging?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_easy?: InputMaybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  course_useful?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  liked?: InputMaybe<Order_By>;
+  prof_clear?: InputMaybe<Order_By>;
+  prof_engaging?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 export type Search_Courses_Args = {
-  code_only?: Maybe<Scalars['Boolean']>;
-  query?: Maybe<Scalars['String']>;
+  code_only?: InputMaybe<Scalars['Boolean']['input']>;
+  query?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Search_Profs_Args = {
-  code_only?: Maybe<Scalars['Boolean']>;
-  query?: Maybe<Scalars['String']>;
+  code_only?: InputMaybe<Scalars['Boolean']['input']>;
+  query?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** columns and relationships of "section_exam" */
 export type Section_Exam = {
   __typename?: 'section_exam';
-  date?: Maybe<Scalars['date']>;
-  day?: Maybe<Scalars['String']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_tba: Scalars['Boolean'];
-  location?: Maybe<Scalars['String']>;
-  section_id: Scalars['Int'];
-  start_seconds?: Maybe<Scalars['Int']>;
+  date?: Maybe<Scalars['date']['output']>;
+  day?: Maybe<Scalars['String']['output']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  is_tba: Scalars['Boolean']['output'];
+  location?: Maybe<Scalars['String']['output']>;
+  section_id: Scalars['Int']['output'];
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "section_exam" */
@@ -8434,29 +8473,29 @@ export type Section_Exam_Aggregate = {
 };
 
 export type Section_Exam_Aggregate_Bool_Exp = {
-  bool_and?: Maybe<Section_Exam_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: Maybe<Section_Exam_Aggregate_Bool_Exp_Bool_Or>;
-  count?: Maybe<Section_Exam_Aggregate_Bool_Exp_Count>;
+  bool_and?: InputMaybe<Section_Exam_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Section_Exam_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Section_Exam_Aggregate_Bool_Exp_Count>;
 };
 
 export type Section_Exam_Aggregate_Bool_Exp_Bool_And = {
   arguments: Section_Exam_Select_Column_Section_Exam_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Section_Exam_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Section_Exam_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Section_Exam_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Section_Exam_Select_Column_Section_Exam_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Section_Exam_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Section_Exam_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Section_Exam_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Section_Exam_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Section_Exam_Bool_Exp>;
+  arguments?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Section_Exam_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -8464,7 +8503,7 @@ export type Section_Exam_Aggregate_Bool_Exp_Count = {
 export type Section_Exam_Aggregate_Fields = {
   __typename?: 'section_exam_aggregate_fields';
   avg?: Maybe<Section_Exam_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Section_Exam_Max_Fields>;
   min?: Maybe<Section_Exam_Min_Fields>;
   stddev?: Maybe<Section_Exam_Stddev_Fields>;
@@ -8478,59 +8517,59 @@ export type Section_Exam_Aggregate_Fields = {
 
 /** aggregate fields of "section_exam" */
 export type Section_Exam_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Section_Exam_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "section_exam" */
 export type Section_Exam_Aggregate_Order_By = {
-  avg?: Maybe<Section_Exam_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Section_Exam_Max_Order_By>;
-  min?: Maybe<Section_Exam_Min_Order_By>;
-  stddev?: Maybe<Section_Exam_Stddev_Order_By>;
-  stddev_pop?: Maybe<Section_Exam_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Section_Exam_Stddev_Samp_Order_By>;
-  sum?: Maybe<Section_Exam_Sum_Order_By>;
-  var_pop?: Maybe<Section_Exam_Var_Pop_Order_By>;
-  var_samp?: Maybe<Section_Exam_Var_Samp_Order_By>;
-  variance?: Maybe<Section_Exam_Variance_Order_By>;
+  avg?: InputMaybe<Section_Exam_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Section_Exam_Max_Order_By>;
+  min?: InputMaybe<Section_Exam_Min_Order_By>;
+  stddev?: InputMaybe<Section_Exam_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Section_Exam_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Section_Exam_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Section_Exam_Sum_Order_By>;
+  var_pop?: InputMaybe<Section_Exam_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Section_Exam_Var_Samp_Order_By>;
+  variance?: InputMaybe<Section_Exam_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "section_exam" */
 export type Section_Exam_Arr_Rel_Insert_Input = {
   data: Array<Section_Exam_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<Section_Exam_On_Conflict>;
+  on_conflict?: InputMaybe<Section_Exam_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type Section_Exam_Avg_Fields = {
   __typename?: 'section_exam_avg_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "section_exam" */
 export type Section_Exam_Avg_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "section_exam". All fields are combined with a logical 'AND'. */
 export type Section_Exam_Bool_Exp = {
-  _and?: Maybe<Array<Section_Exam_Bool_Exp>>;
-  _not?: Maybe<Section_Exam_Bool_Exp>;
-  _or?: Maybe<Array<Section_Exam_Bool_Exp>>;
-  date?: Maybe<Date_Comparison_Exp>;
-  day?: Maybe<String_Comparison_Exp>;
-  end_seconds?: Maybe<Int_Comparison_Exp>;
-  is_tba?: Maybe<Boolean_Comparison_Exp>;
-  location?: Maybe<String_Comparison_Exp>;
-  section_id?: Maybe<Int_Comparison_Exp>;
-  start_seconds?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Section_Exam_Bool_Exp>>;
+  _not?: InputMaybe<Section_Exam_Bool_Exp>;
+  _or?: InputMaybe<Array<Section_Exam_Bool_Exp>>;
+  date?: InputMaybe<Date_Comparison_Exp>;
+  day?: InputMaybe<String_Comparison_Exp>;
+  end_seconds?: InputMaybe<Int_Comparison_Exp>;
+  is_tba?: InputMaybe<Boolean_Comparison_Exp>;
+  location?: InputMaybe<String_Comparison_Exp>;
+  section_id?: InputMaybe<Int_Comparison_Exp>;
+  start_seconds?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "section_exam" */
@@ -8541,69 +8580,69 @@ export enum Section_Exam_Constraint {
 
 /** input type for incrementing numeric columns in table "section_exam" */
 export type Section_Exam_Inc_Input = {
-  end_seconds?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "section_exam" */
 export type Section_Exam_Insert_Input = {
-  date?: Maybe<Scalars['date']>;
-  day?: Maybe<Scalars['String']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_tba?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Scalars['String']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  date?: InputMaybe<Scalars['date']['input']>;
+  day?: InputMaybe<Scalars['String']['input']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  is_tba?: InputMaybe<Scalars['Boolean']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Section_Exam_Max_Fields = {
   __typename?: 'section_exam_max_fields';
-  date?: Maybe<Scalars['date']>;
-  day?: Maybe<Scalars['String']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  date?: Maybe<Scalars['date']['output']>;
+  day?: Maybe<Scalars['String']['output']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "section_exam" */
 export type Section_Exam_Max_Order_By = {
-  date?: Maybe<Order_By>;
-  day?: Maybe<Order_By>;
-  end_seconds?: Maybe<Order_By>;
-  location?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  date?: InputMaybe<Order_By>;
+  day?: InputMaybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Section_Exam_Min_Fields = {
   __typename?: 'section_exam_min_fields';
-  date?: Maybe<Scalars['date']>;
-  day?: Maybe<Scalars['String']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  date?: Maybe<Scalars['date']['output']>;
+  day?: Maybe<Scalars['String']['output']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "section_exam" */
 export type Section_Exam_Min_Order_By = {
-  date?: Maybe<Order_By>;
-  day?: Maybe<Order_By>;
-  end_seconds?: Maybe<Order_By>;
-  location?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  date?: InputMaybe<Order_By>;
+  day?: InputMaybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "section_exam" */
 export type Section_Exam_Mutation_Response = {
   __typename?: 'section_exam_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Section_Exam>;
 };
@@ -8611,19 +8650,19 @@ export type Section_Exam_Mutation_Response = {
 /** on_conflict condition type for table "section_exam" */
 export type Section_Exam_On_Conflict = {
   constraint: Section_Exam_Constraint;
-  update_columns: Array<Section_Exam_Update_Column>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  update_columns?: Array<Section_Exam_Update_Column>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "section_exam". */
 export type Section_Exam_Order_By = {
-  date?: Maybe<Order_By>;
-  day?: Maybe<Order_By>;
-  end_seconds?: Maybe<Order_By>;
-  is_tba?: Maybe<Order_By>;
-  location?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  date?: InputMaybe<Order_By>;
+  day?: InputMaybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  is_tba?: InputMaybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "section_exam" */
@@ -8658,58 +8697,58 @@ export enum Section_Exam_Select_Column_Section_Exam_Aggregate_Bool_Exp_Bool_Or_A
 
 /** input type for updating data in table "section_exam" */
 export type Section_Exam_Set_Input = {
-  date?: Maybe<Scalars['date']>;
-  day?: Maybe<Scalars['String']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_tba?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Scalars['String']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  date?: InputMaybe<Scalars['date']['input']>;
+  day?: InputMaybe<Scalars['String']['input']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  is_tba?: InputMaybe<Scalars['Boolean']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Section_Exam_Stddev_Fields = {
   __typename?: 'section_exam_stddev_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "section_exam" */
 export type Section_Exam_Stddev_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Section_Exam_Stddev_Pop_Fields = {
   __typename?: 'section_exam_stddev_pop_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "section_exam" */
 export type Section_Exam_Stddev_Pop_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Section_Exam_Stddev_Samp_Fields = {
   __typename?: 'section_exam_stddev_samp_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "section_exam" */
 export type Section_Exam_Stddev_Samp_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "section_exam" */
@@ -8717,33 +8756,33 @@ export type Section_Exam_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Section_Exam_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Section_Exam_Stream_Cursor_Value_Input = {
-  date?: Maybe<Scalars['date']>;
-  day?: Maybe<Scalars['String']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_tba?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Scalars['String']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  date?: InputMaybe<Scalars['date']['input']>;
+  day?: InputMaybe<Scalars['String']['input']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  is_tba?: InputMaybe<Scalars['Boolean']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Section_Exam_Sum_Fields = {
   __typename?: 'section_exam_sum_fields';
-  end_seconds?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "section_exam" */
 export type Section_Exam_Sum_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "section_exam" */
@@ -8766,9 +8805,9 @@ export enum Section_Exam_Update_Column {
 
 export type Section_Exam_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Section_Exam_Inc_Input>;
+  _inc?: InputMaybe<Section_Exam_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Section_Exam_Set_Input>;
+  _set?: InputMaybe<Section_Exam_Set_Input>;
   /** filter the rows which have to be updated */
   where: Section_Exam_Bool_Exp;
 };
@@ -8776,64 +8815,64 @@ export type Section_Exam_Updates = {
 /** aggregate var_pop on columns */
 export type Section_Exam_Var_Pop_Fields = {
   __typename?: 'section_exam_var_pop_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "section_exam" */
 export type Section_Exam_Var_Pop_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Section_Exam_Var_Samp_Fields = {
   __typename?: 'section_exam_var_samp_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "section_exam" */
 export type Section_Exam_Var_Samp_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Section_Exam_Variance_Fields = {
   __typename?: 'section_exam_variance_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "section_exam" */
 export type Section_Exam_Variance_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "section_meeting" */
 export type Section_Meeting = {
   __typename?: 'section_meeting';
-  days: Scalars['_text'];
-  end_date: Scalars['date'];
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_cancelled: Scalars['Boolean'];
-  is_closed: Scalars['Boolean'];
-  is_tba: Scalars['Boolean'];
-  location?: Maybe<Scalars['String']>;
+  days: Scalars['_text']['output'];
+  end_date: Scalars['date']['output'];
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  is_cancelled: Scalars['Boolean']['output'];
+  is_closed: Scalars['Boolean']['output'];
+  is_tba: Scalars['Boolean']['output'];
+  location?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   prof?: Maybe<Prof>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id: Scalars['Int'];
-  start_date: Scalars['date'];
-  start_seconds?: Maybe<Scalars['Int']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  section_id: Scalars['Int']['output'];
+  start_date: Scalars['date']['output'];
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "section_meeting" */
@@ -8844,29 +8883,29 @@ export type Section_Meeting_Aggregate = {
 };
 
 export type Section_Meeting_Aggregate_Bool_Exp = {
-  bool_and?: Maybe<Section_Meeting_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: Maybe<Section_Meeting_Aggregate_Bool_Exp_Bool_Or>;
-  count?: Maybe<Section_Meeting_Aggregate_Bool_Exp_Count>;
+  bool_and?: InputMaybe<Section_Meeting_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Section_Meeting_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Section_Meeting_Aggregate_Bool_Exp_Count>;
 };
 
 export type Section_Meeting_Aggregate_Bool_Exp_Bool_And = {
   arguments: Section_Meeting_Select_Column_Section_Meeting_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Section_Meeting_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Section_Meeting_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Section_Meeting_Select_Column_Section_Meeting_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Section_Meeting_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type Section_Meeting_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<Section_Meeting_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<Section_Meeting_Bool_Exp>;
+  arguments?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Section_Meeting_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -8874,7 +8913,7 @@ export type Section_Meeting_Aggregate_Bool_Exp_Count = {
 export type Section_Meeting_Aggregate_Fields = {
   __typename?: 'section_meeting_aggregate_fields';
   avg?: Maybe<Section_Meeting_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Section_Meeting_Max_Fields>;
   min?: Maybe<Section_Meeting_Min_Fields>;
   stddev?: Maybe<Section_Meeting_Stddev_Fields>;
@@ -8888,23 +8927,23 @@ export type Section_Meeting_Aggregate_Fields = {
 
 /** aggregate fields of "section_meeting" */
 export type Section_Meeting_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Section_Meeting_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "section_meeting" */
 export type Section_Meeting_Aggregate_Order_By = {
-  avg?: Maybe<Section_Meeting_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Section_Meeting_Max_Order_By>;
-  min?: Maybe<Section_Meeting_Min_Order_By>;
-  stddev?: Maybe<Section_Meeting_Stddev_Order_By>;
-  stddev_pop?: Maybe<Section_Meeting_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Section_Meeting_Stddev_Samp_Order_By>;
-  sum?: Maybe<Section_Meeting_Sum_Order_By>;
-  var_pop?: Maybe<Section_Meeting_Var_Pop_Order_By>;
-  var_samp?: Maybe<Section_Meeting_Var_Samp_Order_By>;
-  variance?: Maybe<Section_Meeting_Variance_Order_By>;
+  avg?: InputMaybe<Section_Meeting_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Section_Meeting_Max_Order_By>;
+  min?: InputMaybe<Section_Meeting_Min_Order_By>;
+  stddev?: InputMaybe<Section_Meeting_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Section_Meeting_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Section_Meeting_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Section_Meeting_Sum_Order_By>;
+  var_pop?: InputMaybe<Section_Meeting_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Section_Meeting_Var_Samp_Order_By>;
+  variance?: InputMaybe<Section_Meeting_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "section_meeting" */
@@ -8915,132 +8954,132 @@ export type Section_Meeting_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Section_Meeting_Avg_Fields = {
   __typename?: 'section_meeting_avg_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "section_meeting" */
 export type Section_Meeting_Avg_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "section_meeting". All fields are combined with a logical 'AND'. */
 export type Section_Meeting_Bool_Exp = {
-  _and?: Maybe<Array<Section_Meeting_Bool_Exp>>;
-  _not?: Maybe<Section_Meeting_Bool_Exp>;
-  _or?: Maybe<Array<Section_Meeting_Bool_Exp>>;
-  days?: Maybe<_Text_Comparison_Exp>;
-  end_date?: Maybe<Date_Comparison_Exp>;
-  end_seconds?: Maybe<Int_Comparison_Exp>;
-  is_cancelled?: Maybe<Boolean_Comparison_Exp>;
-  is_closed?: Maybe<Boolean_Comparison_Exp>;
-  is_tba?: Maybe<Boolean_Comparison_Exp>;
-  location?: Maybe<String_Comparison_Exp>;
-  prof?: Maybe<Prof_Bool_Exp>;
-  prof_id?: Maybe<Int_Comparison_Exp>;
-  section_id?: Maybe<Int_Comparison_Exp>;
-  start_date?: Maybe<Date_Comparison_Exp>;
-  start_seconds?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<Section_Meeting_Bool_Exp>>;
+  _not?: InputMaybe<Section_Meeting_Bool_Exp>;
+  _or?: InputMaybe<Array<Section_Meeting_Bool_Exp>>;
+  days?: InputMaybe<_Text_Comparison_Exp>;
+  end_date?: InputMaybe<Date_Comparison_Exp>;
+  end_seconds?: InputMaybe<Int_Comparison_Exp>;
+  is_cancelled?: InputMaybe<Boolean_Comparison_Exp>;
+  is_closed?: InputMaybe<Boolean_Comparison_Exp>;
+  is_tba?: InputMaybe<Boolean_Comparison_Exp>;
+  location?: InputMaybe<String_Comparison_Exp>;
+  prof?: InputMaybe<Prof_Bool_Exp>;
+  prof_id?: InputMaybe<Int_Comparison_Exp>;
+  section_id?: InputMaybe<Int_Comparison_Exp>;
+  start_date?: InputMaybe<Date_Comparison_Exp>;
+  start_seconds?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** input type for incrementing numeric columns in table "section_meeting" */
 export type Section_Meeting_Inc_Input = {
-  end_seconds?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "section_meeting" */
 export type Section_Meeting_Insert_Input = {
-  days?: Maybe<Scalars['_text']>;
-  end_date?: Maybe<Scalars['date']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_cancelled?: Maybe<Scalars['Boolean']>;
-  is_closed?: Maybe<Scalars['Boolean']>;
-  is_tba?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Scalars['String']>;
-  prof?: Maybe<Prof_Obj_Rel_Insert_Input>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_date?: Maybe<Scalars['date']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  days?: InputMaybe<Scalars['_text']['input']>;
+  end_date?: InputMaybe<Scalars['date']['input']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  is_cancelled?: InputMaybe<Scalars['Boolean']['input']>;
+  is_closed?: InputMaybe<Scalars['Boolean']['input']>;
+  is_tba?: InputMaybe<Scalars['Boolean']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  prof?: InputMaybe<Prof_Obj_Rel_Insert_Input>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_date?: InputMaybe<Scalars['date']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type Section_Meeting_Max_Fields = {
   __typename?: 'section_meeting_max_fields';
-  end_date?: Maybe<Scalars['date']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_date?: Maybe<Scalars['date']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  end_date?: Maybe<Scalars['date']['output']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  start_date?: Maybe<Scalars['date']['output']>;
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "section_meeting" */
 export type Section_Meeting_Max_Order_By = {
-  end_date?: Maybe<Order_By>;
-  end_seconds?: Maybe<Order_By>;
-  location?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_date?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_date?: InputMaybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_date?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Section_Meeting_Min_Fields = {
   __typename?: 'section_meeting_min_fields';
-  end_date?: Maybe<Scalars['date']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  location?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_date?: Maybe<Scalars['date']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  end_date?: Maybe<Scalars['date']['output']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  start_date?: Maybe<Scalars['date']['output']>;
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "section_meeting" */
 export type Section_Meeting_Min_Order_By = {
-  end_date?: Maybe<Order_By>;
-  end_seconds?: Maybe<Order_By>;
-  location?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_date?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_date?: InputMaybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_date?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "section_meeting" */
 export type Section_Meeting_Mutation_Response = {
   __typename?: 'section_meeting_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Section_Meeting>;
 };
 
 /** Ordering options when selecting data from "section_meeting". */
 export type Section_Meeting_Order_By = {
-  days?: Maybe<Order_By>;
-  end_date?: Maybe<Order_By>;
-  end_seconds?: Maybe<Order_By>;
-  is_cancelled?: Maybe<Order_By>;
-  is_closed?: Maybe<Order_By>;
-  is_tba?: Maybe<Order_By>;
-  location?: Maybe<Order_By>;
-  prof?: Maybe<Prof_Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_date?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  days?: InputMaybe<Order_By>;
+  end_date?: InputMaybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  is_cancelled?: InputMaybe<Order_By>;
+  is_closed?: InputMaybe<Order_By>;
+  is_tba?: InputMaybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  prof?: InputMaybe<Prof_Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_date?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "section_meeting" */
@@ -9091,68 +9130,68 @@ export enum Section_Meeting_Select_Column_Section_Meeting_Aggregate_Bool_Exp_Boo
 
 /** input type for updating data in table "section_meeting" */
 export type Section_Meeting_Set_Input = {
-  days?: Maybe<Scalars['_text']>;
-  end_date?: Maybe<Scalars['date']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_cancelled?: Maybe<Scalars['Boolean']>;
-  is_closed?: Maybe<Scalars['Boolean']>;
-  is_tba?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_date?: Maybe<Scalars['date']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  days?: InputMaybe<Scalars['_text']['input']>;
+  end_date?: InputMaybe<Scalars['date']['input']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  is_cancelled?: InputMaybe<Scalars['Boolean']['input']>;
+  is_closed?: InputMaybe<Scalars['Boolean']['input']>;
+  is_tba?: InputMaybe<Scalars['Boolean']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_date?: InputMaybe<Scalars['date']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Section_Meeting_Stddev_Fields = {
   __typename?: 'section_meeting_stddev_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "section_meeting" */
 export type Section_Meeting_Stddev_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Section_Meeting_Stddev_Pop_Fields = {
   __typename?: 'section_meeting_stddev_pop_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "section_meeting" */
 export type Section_Meeting_Stddev_Pop_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Section_Meeting_Stddev_Samp_Fields = {
   __typename?: 'section_meeting_stddev_samp_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "section_meeting" */
 export type Section_Meeting_Stddev_Samp_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "section_meeting" */
@@ -9160,46 +9199,46 @@ export type Section_Meeting_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: Section_Meeting_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type Section_Meeting_Stream_Cursor_Value_Input = {
-  days?: Maybe<Scalars['_text']>;
-  end_date?: Maybe<Scalars['date']>;
-  end_seconds?: Maybe<Scalars['Int']>;
-  is_cancelled?: Maybe<Scalars['Boolean']>;
-  is_closed?: Maybe<Scalars['Boolean']>;
-  is_tba?: Maybe<Scalars['Boolean']>;
-  location?: Maybe<Scalars['String']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_date?: Maybe<Scalars['date']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  days?: InputMaybe<Scalars['_text']['input']>;
+  end_date?: InputMaybe<Scalars['date']['input']>;
+  end_seconds?: InputMaybe<Scalars['Int']['input']>;
+  is_cancelled?: InputMaybe<Scalars['Boolean']['input']>;
+  is_closed?: InputMaybe<Scalars['Boolean']['input']>;
+  is_tba?: InputMaybe<Scalars['Boolean']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  prof_id?: InputMaybe<Scalars['Int']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  start_date?: InputMaybe<Scalars['date']['input']>;
+  start_seconds?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Section_Meeting_Sum_Fields = {
   __typename?: 'section_meeting_sum_fields';
-  end_seconds?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  section_id?: Maybe<Scalars['Int']>;
-  start_seconds?: Maybe<Scalars['Int']>;
+  end_seconds?: Maybe<Scalars['Int']['output']>;
+  prof_id?: Maybe<Scalars['Int']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  start_seconds?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "section_meeting" */
 export type Section_Meeting_Sum_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 export type Section_Meeting_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<Section_Meeting_Inc_Input>;
+  _inc?: InputMaybe<Section_Meeting_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<Section_Meeting_Set_Input>;
+  _set?: InputMaybe<Section_Meeting_Set_Input>;
   /** filter the rows which have to be updated */
   where: Section_Meeting_Bool_Exp;
 };
@@ -9207,98 +9246,65 @@ export type Section_Meeting_Updates = {
 /** aggregate var_pop on columns */
 export type Section_Meeting_Var_Pop_Fields = {
   __typename?: 'section_meeting_var_pop_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "section_meeting" */
 export type Section_Meeting_Var_Pop_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Section_Meeting_Var_Samp_Fields = {
   __typename?: 'section_meeting_var_samp_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "section_meeting" */
 export type Section_Meeting_Var_Samp_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Section_Meeting_Variance_Fields = {
   __typename?: 'section_meeting_variance_fields';
-  end_seconds?: Maybe<Scalars['Float']>;
-  prof_id?: Maybe<Scalars['Float']>;
-  section_id?: Maybe<Scalars['Float']>;
-  start_seconds?: Maybe<Scalars['Float']>;
+  end_seconds?: Maybe<Scalars['Float']['output']>;
+  prof_id?: Maybe<Scalars['Float']['output']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  start_seconds?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "section_meeting" */
 export type Section_Meeting_Variance_Order_By = {
-  end_seconds?: Maybe<Order_By>;
-  prof_id?: Maybe<Order_By>;
-  section_id?: Maybe<Order_By>;
-  start_seconds?: Maybe<Order_By>;
+  end_seconds?: InputMaybe<Order_By>;
+  prof_id?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  start_seconds?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "smallint". All fields are combined with logical 'AND'. */
 export type Smallint_Comparison_Exp = {
-  _eq?: Maybe<Scalars['smallint']>;
-  _gt?: Maybe<Scalars['smallint']>;
-  _gte?: Maybe<Scalars['smallint']>;
-  _in?: Maybe<Array<Scalars['smallint']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['smallint']>;
-  _lte?: Maybe<Scalars['smallint']>;
-  _neq?: Maybe<Scalars['smallint']>;
-  _nin?: Maybe<Array<Scalars['smallint']>>;
-};
-
-/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
-export type String_Comparison_Exp = {
-  _eq?: Maybe<Scalars['String']>;
-  _gt?: Maybe<Scalars['String']>;
-  _gte?: Maybe<Scalars['String']>;
-  /** does the column match the given case-insensitive pattern */
-  _ilike?: Maybe<Scalars['String']>;
-  _in?: Maybe<Array<Scalars['String']>>;
-  /** does the column match the given POSIX regular expression, case insensitive */
-  _iregex?: Maybe<Scalars['String']>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  /** does the column match the given pattern */
-  _like?: Maybe<Scalars['String']>;
-  _lt?: Maybe<Scalars['String']>;
-  _lte?: Maybe<Scalars['String']>;
-  _neq?: Maybe<Scalars['String']>;
-  /** does the column NOT match the given case-insensitive pattern */
-  _nilike?: Maybe<Scalars['String']>;
-  _nin?: Maybe<Array<Scalars['String']>>;
-  /** does the column NOT match the given POSIX regular expression, case insensitive */
-  _niregex?: Maybe<Scalars['String']>;
-  /** does the column NOT match the given pattern */
-  _nlike?: Maybe<Scalars['String']>;
-  /** does the column NOT match the given POSIX regular expression, case sensitive */
-  _nregex?: Maybe<Scalars['String']>;
-  /** does the column NOT match the given SQL regular expression */
-  _nsimilar?: Maybe<Scalars['String']>;
-  /** does the column match the given POSIX regular expression, case sensitive */
-  _regex?: Maybe<Scalars['String']>;
-  /** does the column match the given SQL regular expression */
-  _similar?: Maybe<Scalars['String']>;
+  _eq?: InputMaybe<Scalars['smallint']['input']>;
+  _gt?: InputMaybe<Scalars['smallint']['input']>;
+  _gte?: InputMaybe<Scalars['smallint']['input']>;
+  _in?: InputMaybe<Array<Scalars['smallint']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['smallint']['input']>;
+  _lte?: InputMaybe<Scalars['smallint']['input']>;
+  _neq?: InputMaybe<Scalars['smallint']['input']>;
+  _nin?: InputMaybe<Array<Scalars['smallint']['input']>>;
 };
 
 export type Subscription_Root = {
@@ -9500,727 +9506,739 @@ export type Subscription_Root = {
 };
 
 export type Subscription_RootAggregate_Course_Easy_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Easy_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Easy_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Easy_Buckets_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Course_Easy_Buckets_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Aggregate_Course_Easy_Buckets_Stream_Cursor_Input>>;
+  where?: InputMaybe<Aggregate_Course_Easy_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Rating_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Course_Rating_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Course_Rating_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Aggregate_Course_Rating_Stream_Cursor_Input>>;
+  where?: InputMaybe<Aggregate_Course_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Review_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Review_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Course_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Review_Rating_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Course_Review_Rating_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Course_Review_Rating_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Aggregate_Course_Review_Rating_Stream_Cursor_Input>>;
+  where?: InputMaybe<Aggregate_Course_Review_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Useful_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Course_Useful_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Useful_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Course_Useful_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Course_Useful_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Course_Useful_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Course_Useful_Buckets_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Course_Useful_Buckets_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<
+    InputMaybe<Aggregate_Course_Useful_Buckets_Stream_Cursor_Input>
+  >;
+  where?: InputMaybe<Aggregate_Course_Useful_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Clear_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Clear_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Clear_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Clear_Buckets_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Prof_Clear_Buckets_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Aggregate_Prof_Clear_Buckets_Stream_Cursor_Input>>;
+  where?: InputMaybe<Aggregate_Prof_Clear_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Engaging_BucketsArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Prof_Engaging_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Engaging_Buckets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  distinct_on?: InputMaybe<
+    Array<Aggregate_Prof_Engaging_Buckets_Select_Column>
+  >;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Engaging_Buckets_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Engaging_Buckets_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Prof_Engaging_Buckets_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<
+    InputMaybe<Aggregate_Prof_Engaging_Buckets_Stream_Cursor_Input>
+  >;
+  where?: InputMaybe<Aggregate_Prof_Engaging_Buckets_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Rating_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Prof_Rating_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Prof_Rating_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Aggregate_Prof_Rating_Stream_Cursor_Input>>;
+  where?: InputMaybe<Aggregate_Prof_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Review_RatingArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Review_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
-  where?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
+  where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootAggregate_Prof_Review_Rating_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Aggregate_Prof_Review_Rating_Stream_Cursor_Input>>;
-  where?: Maybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Aggregate_Prof_Review_Rating_Stream_Cursor_Input>>;
+  where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
 };
 
 export type Subscription_RootCourseArgs = {
-  distinct_on?: Maybe<Array<Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Order_By>>;
-  where?: Maybe<Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Order_By>>;
+  where?: InputMaybe<Course_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Order_By>>;
-  where?: Maybe<Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Order_By>>;
+  where?: InputMaybe<Course_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_AntirequisiteArgs = {
-  distinct_on?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Antirequisite_Order_By>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Antirequisite_Order_By>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Antirequisite_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Antirequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Antirequisite_Order_By>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Antirequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Antirequisite_Order_By>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Antirequisite_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Antirequisite_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Antirequisite_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Antirequisite_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Antirequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Subscription_RootCourse_PostrequisiteArgs = {
-  distinct_on?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Postrequisite_Order_By>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Postrequisite_Order_By>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Postrequisite_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Postrequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Postrequisite_Order_By>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Postrequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Postrequisite_Order_By>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Postrequisite_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Postrequisite_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Postrequisite_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Postrequisite_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Postrequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_PrerequisiteArgs = {
-  distinct_on?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Prerequisite_Order_By>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Prerequisite_Order_By>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Prerequisite_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Prerequisite_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Prerequisite_Order_By>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Prerequisite_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Prerequisite_Order_By>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Prerequisite_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Prerequisite_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Prerequisite_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Prerequisite_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Prerequisite_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Review_UpvoteArgs = {
-  distinct_on?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Review_Upvote_Order_By>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Review_Upvote_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Review_Upvote_Order_By>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Review_Upvote_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Review_Upvote_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Review_Upvote_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Review_Upvote_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Review_Upvote_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Search_IndexArgs = {
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Search_Index_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Search_Index_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Search_Index_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Search_Index_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_SectionArgs = {
-  distinct_on?: Maybe<Array<Course_Section_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Section_Order_By>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Section_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Section_Order_By>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Section_AggregateArgs = {
-  distinct_on?: Maybe<Array<Course_Section_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Section_Order_By>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Section_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Section_Order_By>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_Section_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Subscription_RootCourse_Section_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Section_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Section_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Section_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Section_Bool_Exp>;
 };
 
 export type Subscription_RootCourse_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Course_Stream_Cursor_Input>>;
-  where?: Maybe<Course_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Course_Stream_Cursor_Input>>;
+  where?: InputMaybe<Course_Bool_Exp>;
 };
 
 export type Subscription_RootProfArgs = {
-  distinct_on?: Maybe<Array<Prof_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Order_By>>;
-  where?: Maybe<Prof_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Order_By>>;
+  where?: InputMaybe<Prof_Bool_Exp>;
 };
 
 export type Subscription_RootProf_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Order_By>>;
-  where?: Maybe<Prof_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Order_By>>;
+  where?: InputMaybe<Prof_Bool_Exp>;
 };
 
 export type Subscription_RootProf_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Subscription_RootProf_Review_UpvoteArgs = {
-  distinct_on?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Review_Upvote_Order_By>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Review_Upvote_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Review_Upvote_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Review_Upvote_Order_By>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Review_Upvote_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Review_Upvote_Order_By>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Review_Upvote_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Prof_Review_Upvote_Stream_Cursor_Input>>;
-  where?: Maybe<Prof_Review_Upvote_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Prof_Review_Upvote_Stream_Cursor_Input>>;
+  where?: InputMaybe<Prof_Review_Upvote_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Search_IndexArgs = {
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Search_Index_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Search_Index_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Prof_Search_Index_Stream_Cursor_Input>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Prof_Search_Index_Stream_Cursor_Input>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootProf_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Prof_Stream_Cursor_Input>>;
-  where?: Maybe<Prof_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Prof_Stream_Cursor_Input>>;
+  where?: InputMaybe<Prof_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Teaches_CourseArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Teaches_Course_AggregateArgs = {
-  distinct_on?: Maybe<Array<Prof_Teaches_Course_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Teaches_Course_Order_By>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Teaches_Course_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Teaches_Course_Order_By>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 export type Subscription_RootProf_Teaches_Course_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Prof_Teaches_Course_Stream_Cursor_Input>>;
-  where?: Maybe<Prof_Teaches_Course_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Prof_Teaches_Course_Stream_Cursor_Input>>;
+  where?: InputMaybe<Prof_Teaches_Course_Bool_Exp>;
 };
 
 export type Subscription_RootQueue_Section_SubscribedArgs = {
-  distinct_on?: Maybe<Array<Queue_Section_Subscribed_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Queue_Section_Subscribed_Order_By>>;
-  where?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Queue_Section_Subscribed_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Queue_Section_Subscribed_Order_By>>;
+  where?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
 };
 
 export type Subscription_RootQueue_Section_Subscribed_AggregateArgs = {
-  distinct_on?: Maybe<Array<Queue_Section_Subscribed_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Queue_Section_Subscribed_Order_By>>;
-  where?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Queue_Section_Subscribed_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Queue_Section_Subscribed_Order_By>>;
+  where?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
 };
 
 export type Subscription_RootQueue_Section_Subscribed_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Subscription_RootQueue_Section_Subscribed_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Queue_Section_Subscribed_Stream_Cursor_Input>>;
-  where?: Maybe<Queue_Section_Subscribed_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Queue_Section_Subscribed_Stream_Cursor_Input>>;
+  where?: InputMaybe<Queue_Section_Subscribed_Bool_Exp>;
 };
 
 export type Subscription_RootReviewArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 export type Subscription_RootReview_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 export type Subscription_RootReview_AuthorArgs = {
-  distinct_on?: Maybe<Array<Review_Author_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Author_Order_By>>;
-  where?: Maybe<Review_Author_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Author_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Author_Order_By>>;
+  where?: InputMaybe<Review_Author_Bool_Exp>;
 };
 
 export type Subscription_RootReview_Author_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Author_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Author_Order_By>>;
-  where?: Maybe<Review_Author_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Author_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Author_Order_By>>;
+  where?: InputMaybe<Review_Author_Bool_Exp>;
 };
 
 export type Subscription_RootReview_Author_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Review_Author_Stream_Cursor_Input>>;
-  where?: Maybe<Review_Author_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Review_Author_Stream_Cursor_Input>>;
+  where?: InputMaybe<Review_Author_Bool_Exp>;
 };
 
 export type Subscription_RootReview_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Subscription_RootReview_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Review_Stream_Cursor_Input>>;
-  where?: Maybe<Review_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Review_Stream_Cursor_Input>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 export type Subscription_RootReview_User_IdArgs = {
-  distinct_on?: Maybe<Array<Review_User_Id_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_User_Id_Order_By>>;
-  where?: Maybe<Review_User_Id_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_User_Id_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_User_Id_Order_By>>;
+  where?: InputMaybe<Review_User_Id_Bool_Exp>;
 };
 
 export type Subscription_RootReview_User_Id_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_User_Id_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_User_Id_Order_By>>;
-  where?: Maybe<Review_User_Id_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_User_Id_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_User_Id_Order_By>>;
+  where?: InputMaybe<Review_User_Id_Bool_Exp>;
 };
 
 export type Subscription_RootReview_User_Id_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Review_User_Id_Stream_Cursor_Input>>;
-  where?: Maybe<Review_User_Id_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Review_User_Id_Stream_Cursor_Input>>;
+  where?: InputMaybe<Review_User_Id_Bool_Exp>;
 };
 
 export type Subscription_RootSearch_CoursesArgs = {
   args: Search_Courses_Args;
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootSearch_Courses_AggregateArgs = {
   args: Search_Courses_Args;
-  distinct_on?: Maybe<Array<Course_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Course_Search_Index_Order_By>>;
-  where?: Maybe<Course_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Course_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Course_Search_Index_Order_By>>;
+  where?: InputMaybe<Course_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootSearch_ProfsArgs = {
   args: Search_Profs_Args;
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootSearch_Profs_AggregateArgs = {
   args: Search_Profs_Args;
-  distinct_on?: Maybe<Array<Prof_Search_Index_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Prof_Search_Index_Order_By>>;
-  where?: Maybe<Prof_Search_Index_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Prof_Search_Index_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Prof_Search_Index_Order_By>>;
+  where?: InputMaybe<Prof_Search_Index_Bool_Exp>;
 };
 
 export type Subscription_RootSection_ExamArgs = {
-  distinct_on?: Maybe<Array<Section_Exam_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Exam_Order_By>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Exam_Order_By>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 export type Subscription_RootSection_Exam_AggregateArgs = {
-  distinct_on?: Maybe<Array<Section_Exam_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Exam_Order_By>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Exam_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Exam_Order_By>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 export type Subscription_RootSection_Exam_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Section_Exam_Stream_Cursor_Input>>;
-  where?: Maybe<Section_Exam_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Section_Exam_Stream_Cursor_Input>>;
+  where?: InputMaybe<Section_Exam_Bool_Exp>;
 };
 
 export type Subscription_RootSection_MeetingArgs = {
-  distinct_on?: Maybe<Array<Section_Meeting_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Meeting_Order_By>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 export type Subscription_RootSection_Meeting_AggregateArgs = {
-  distinct_on?: Maybe<Array<Section_Meeting_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Section_Meeting_Order_By>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Section_Meeting_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 export type Subscription_RootSection_Meeting_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<Section_Meeting_Stream_Cursor_Input>>;
-  where?: Maybe<Section_Meeting_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Section_Meeting_Stream_Cursor_Input>>;
+  where?: InputMaybe<Section_Meeting_Bool_Exp>;
 };
 
 export type Subscription_RootUserArgs = {
-  distinct_on?: Maybe<Array<User_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Order_By>>;
-  where?: Maybe<User_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 export type Subscription_RootUser_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Order_By>>;
-  where?: Maybe<User_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 export type Subscription_RootUser_By_PkArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 export type Subscription_RootUser_Course_TakenArgs = {
-  distinct_on?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Course_Taken_Order_By>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Taken_Order_By>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 export type Subscription_RootUser_Course_Taken_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Course_Taken_Order_By>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Taken_Order_By>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 export type Subscription_RootUser_Course_Taken_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<User_Course_Taken_Stream_Cursor_Input>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<User_Course_Taken_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 export type Subscription_RootUser_ScheduleArgs = {
-  distinct_on?: Maybe<Array<User_Schedule_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Schedule_Order_By>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 export type Subscription_RootUser_Schedule_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Schedule_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Schedule_Order_By>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 export type Subscription_RootUser_Schedule_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<User_Schedule_Stream_Cursor_Input>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<User_Schedule_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 export type Subscription_RootUser_ShortlistArgs = {
-  distinct_on?: Maybe<Array<User_Shortlist_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Shortlist_Order_By>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Shortlist_Order_By>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 export type Subscription_RootUser_Shortlist_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Shortlist_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Shortlist_Order_By>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Shortlist_Order_By>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 export type Subscription_RootUser_Shortlist_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<User_Shortlist_Stream_Cursor_Input>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<User_Shortlist_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 export type Subscription_RootUser_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<Maybe<User_Stream_Cursor_Input>>;
-  where?: Maybe<User_Bool_Exp>;
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<User_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
-  _eq?: Maybe<Scalars['timestamptz']>;
-  _gt?: Maybe<Scalars['timestamptz']>;
-  _gte?: Maybe<Scalars['timestamptz']>;
-  _in?: Maybe<Array<Scalars['timestamptz']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['timestamptz']>;
-  _lte?: Maybe<Scalars['timestamptz']>;
-  _neq?: Maybe<Scalars['timestamptz']>;
-  _nin?: Maybe<Array<Scalars['timestamptz']>>;
+  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "tsvector". All fields are combined with logical 'AND'. */
 export type Tsvector_Comparison_Exp = {
-  _eq?: Maybe<Scalars['tsvector']>;
-  _gt?: Maybe<Scalars['tsvector']>;
-  _gte?: Maybe<Scalars['tsvector']>;
-  _in?: Maybe<Array<Scalars['tsvector']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['tsvector']>;
-  _lte?: Maybe<Scalars['tsvector']>;
-  _neq?: Maybe<Scalars['tsvector']>;
-  _nin?: Maybe<Array<Scalars['tsvector']>>;
+  _eq?: InputMaybe<Scalars['tsvector']['input']>;
+  _gt?: InputMaybe<Scalars['tsvector']['input']>;
+  _gte?: InputMaybe<Scalars['tsvector']['input']>;
+  _in?: InputMaybe<Array<Scalars['tsvector']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['tsvector']['input']>;
+  _lte?: InputMaybe<Scalars['tsvector']['input']>;
+  _neq?: InputMaybe<Scalars['tsvector']['input']>;
+  _nin?: InputMaybe<Array<Scalars['tsvector']['input']>>;
 };
 
 /** columns and relationships of "user" */
@@ -10230,15 +10248,15 @@ export type User = {
   courses_taken: Array<User_Course_Taken>;
   /** An aggregate relationship */
   courses_taken_aggregate: User_Course_Taken_Aggregate;
-  email?: Maybe<Scalars['String']>;
-  first_name: Scalars['String'];
-  full_name: Scalars['String'];
-  id: Scalars['Int'];
-  join_date: Scalars['timestamptz'];
-  join_source: Scalars['join_source'];
-  last_name: Scalars['String'];
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']['output']>;
+  first_name: Scalars['String']['output'];
+  full_name: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  join_date: Scalars['timestamptz']['output'];
+  join_source: Scalars['join_source']['output'];
+  last_name: Scalars['String']['output'];
+  picture_url?: Maybe<Scalars['String']['output']>;
+  program?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   reviews: Array<Review>;
   /** An aggregate relationship */
@@ -10247,7 +10265,7 @@ export type User = {
   schedule: Array<User_Schedule>;
   /** An aggregate relationship */
   schedule_aggregate: User_Schedule_Aggregate;
-  secret_id: Scalars['String'];
+  secret_id: Scalars['String']['output'];
   /** An array relationship */
   shortlist: Array<User_Shortlist>;
   /** An aggregate relationship */
@@ -10256,74 +10274,74 @@ export type User = {
 
 /** columns and relationships of "user" */
 export type UserCourses_TakenArgs = {
-  distinct_on?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Course_Taken_Order_By>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Taken_Order_By>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserCourses_Taken_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Course_Taken_Order_By>>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Taken_Order_By>>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserReviewsArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserReviews_AggregateArgs = {
-  distinct_on?: Maybe<Array<Review_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Review_Order_By>>;
-  where?: Maybe<Review_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<Review_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Review_Order_By>>;
+  where?: InputMaybe<Review_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserScheduleArgs = {
-  distinct_on?: Maybe<Array<User_Schedule_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Schedule_Order_By>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserSchedule_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Schedule_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Schedule_Order_By>>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserShortlistArgs = {
-  distinct_on?: Maybe<Array<User_Shortlist_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Shortlist_Order_By>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Shortlist_Order_By>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 /** columns and relationships of "user" */
 export type UserShortlist_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Shortlist_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Shortlist_Order_By>>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  distinct_on?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Shortlist_Order_By>>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 /** aggregated selection of "user" */
@@ -10337,7 +10355,7 @@ export type User_Aggregate = {
 export type User_Aggregate_Fields = {
   __typename?: 'user_aggregate_fields';
   avg?: Maybe<User_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<User_Max_Fields>;
   min?: Maybe<User_Min_Fields>;
   stddev?: Maybe<User_Stddev_Fields>;
@@ -10351,39 +10369,39 @@ export type User_Aggregate_Fields = {
 
 /** aggregate fields of "user" */
 export type User_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<User_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<User_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type User_Avg_Fields = {
   __typename?: 'user_avg_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'. */
 export type User_Bool_Exp = {
-  _and?: Maybe<Array<User_Bool_Exp>>;
-  _not?: Maybe<User_Bool_Exp>;
-  _or?: Maybe<Array<User_Bool_Exp>>;
-  courses_taken?: Maybe<User_Course_Taken_Bool_Exp>;
-  courses_taken_aggregate?: Maybe<User_Course_Taken_Aggregate_Bool_Exp>;
-  email?: Maybe<String_Comparison_Exp>;
-  first_name?: Maybe<String_Comparison_Exp>;
-  full_name?: Maybe<String_Comparison_Exp>;
-  id?: Maybe<Int_Comparison_Exp>;
-  join_date?: Maybe<Timestamptz_Comparison_Exp>;
-  join_source?: Maybe<Join_Source_Comparison_Exp>;
-  last_name?: Maybe<String_Comparison_Exp>;
-  picture_url?: Maybe<String_Comparison_Exp>;
-  program?: Maybe<String_Comparison_Exp>;
-  reviews?: Maybe<Review_Bool_Exp>;
-  reviews_aggregate?: Maybe<Review_Aggregate_Bool_Exp>;
-  schedule?: Maybe<User_Schedule_Bool_Exp>;
-  schedule_aggregate?: Maybe<User_Schedule_Aggregate_Bool_Exp>;
-  secret_id?: Maybe<String_Comparison_Exp>;
-  shortlist?: Maybe<User_Shortlist_Bool_Exp>;
-  shortlist_aggregate?: Maybe<User_Shortlist_Aggregate_Bool_Exp>;
+  _and?: InputMaybe<Array<User_Bool_Exp>>;
+  _not?: InputMaybe<User_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Bool_Exp>>;
+  courses_taken?: InputMaybe<User_Course_Taken_Bool_Exp>;
+  courses_taken_aggregate?: InputMaybe<User_Course_Taken_Aggregate_Bool_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
+  first_name?: InputMaybe<String_Comparison_Exp>;
+  full_name?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  join_date?: InputMaybe<Timestamptz_Comparison_Exp>;
+  join_source?: InputMaybe<Join_Source_Comparison_Exp>;
+  last_name?: InputMaybe<String_Comparison_Exp>;
+  picture_url?: InputMaybe<String_Comparison_Exp>;
+  program?: InputMaybe<String_Comparison_Exp>;
+  reviews?: InputMaybe<Review_Bool_Exp>;
+  reviews_aggregate?: InputMaybe<Review_Aggregate_Bool_Exp>;
+  schedule?: InputMaybe<User_Schedule_Bool_Exp>;
+  schedule_aggregate?: InputMaybe<User_Schedule_Aggregate_Bool_Exp>;
+  secret_id?: InputMaybe<String_Comparison_Exp>;
+  shortlist?: InputMaybe<User_Shortlist_Bool_Exp>;
+  shortlist_aggregate?: InputMaybe<User_Shortlist_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "user" */
@@ -10399,10 +10417,10 @@ export type User_Course_Taken = {
   __typename?: 'user_course_taken';
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
-  level?: Maybe<Scalars['String']>;
-  term_id: Scalars['Int'];
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  term_id: Scalars['Int']['output'];
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "user_course_taken" */
@@ -10413,13 +10431,13 @@ export type User_Course_Taken_Aggregate = {
 };
 
 export type User_Course_Taken_Aggregate_Bool_Exp = {
-  count?: Maybe<User_Course_Taken_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<User_Course_Taken_Aggregate_Bool_Exp_Count>;
 };
 
 export type User_Course_Taken_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<User_Course_Taken_Bool_Exp>;
+  arguments?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<User_Course_Taken_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -10427,7 +10445,7 @@ export type User_Course_Taken_Aggregate_Bool_Exp_Count = {
 export type User_Course_Taken_Aggregate_Fields = {
   __typename?: 'user_course_taken_aggregate_fields';
   avg?: Maybe<User_Course_Taken_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<User_Course_Taken_Max_Fields>;
   min?: Maybe<User_Course_Taken_Min_Fields>;
   stddev?: Maybe<User_Course_Taken_Stddev_Fields>;
@@ -10441,57 +10459,57 @@ export type User_Course_Taken_Aggregate_Fields = {
 
 /** aggregate fields of "user_course_taken" */
 export type User_Course_Taken_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<User_Course_Taken_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "user_course_taken" */
 export type User_Course_Taken_Aggregate_Order_By = {
-  avg?: Maybe<User_Course_Taken_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<User_Course_Taken_Max_Order_By>;
-  min?: Maybe<User_Course_Taken_Min_Order_By>;
-  stddev?: Maybe<User_Course_Taken_Stddev_Order_By>;
-  stddev_pop?: Maybe<User_Course_Taken_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<User_Course_Taken_Stddev_Samp_Order_By>;
-  sum?: Maybe<User_Course_Taken_Sum_Order_By>;
-  var_pop?: Maybe<User_Course_Taken_Var_Pop_Order_By>;
-  var_samp?: Maybe<User_Course_Taken_Var_Samp_Order_By>;
-  variance?: Maybe<User_Course_Taken_Variance_Order_By>;
+  avg?: InputMaybe<User_Course_Taken_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<User_Course_Taken_Max_Order_By>;
+  min?: InputMaybe<User_Course_Taken_Min_Order_By>;
+  stddev?: InputMaybe<User_Course_Taken_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<User_Course_Taken_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<User_Course_Taken_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<User_Course_Taken_Sum_Order_By>;
+  var_pop?: InputMaybe<User_Course_Taken_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<User_Course_Taken_Var_Samp_Order_By>;
+  variance?: InputMaybe<User_Course_Taken_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "user_course_taken" */
 export type User_Course_Taken_Arr_Rel_Insert_Input = {
   data: Array<User_Course_Taken_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<User_Course_Taken_On_Conflict>;
+  on_conflict?: InputMaybe<User_Course_Taken_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type User_Course_Taken_Avg_Fields = {
   __typename?: 'user_course_taken_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "user_course_taken" */
 export type User_Course_Taken_Avg_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "user_course_taken". All fields are combined with a logical 'AND'. */
 export type User_Course_Taken_Bool_Exp = {
-  _and?: Maybe<Array<User_Course_Taken_Bool_Exp>>;
-  _not?: Maybe<User_Course_Taken_Bool_Exp>;
-  _or?: Maybe<Array<User_Course_Taken_Bool_Exp>>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  level?: Maybe<String_Comparison_Exp>;
-  term_id?: Maybe<Int_Comparison_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<User_Course_Taken_Bool_Exp>>;
+  _not?: InputMaybe<User_Course_Taken_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Course_Taken_Bool_Exp>>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  level?: InputMaybe<String_Comparison_Exp>;
+  term_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user_course_taken" */
@@ -10502,59 +10520,59 @@ export enum User_Course_Taken_Constraint {
 
 /** input type for incrementing numeric columns in table "user_course_taken" */
 export type User_Course_Taken_Inc_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "user_course_taken" */
 export type User_Course_Taken_Insert_Input = {
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
-  level?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type User_Course_Taken_Max_Fields = {
   __typename?: 'user_course_taken_max_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  level?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "user_course_taken" */
 export type User_Course_Taken_Max_Order_By = {
-  course_id?: Maybe<Order_By>;
-  level?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  level?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type User_Course_Taken_Min_Fields = {
   __typename?: 'user_course_taken_min_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  level?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "user_course_taken" */
 export type User_Course_Taken_Min_Order_By = {
-  course_id?: Maybe<Order_By>;
-  level?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  level?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "user_course_taken" */
 export type User_Course_Taken_Mutation_Response = {
   __typename?: 'user_course_taken_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<User_Course_Taken>;
 };
@@ -10562,17 +10580,17 @@ export type User_Course_Taken_Mutation_Response = {
 /** on_conflict condition type for table "user_course_taken" */
 export type User_Course_Taken_On_Conflict = {
   constraint: User_Course_Taken_Constraint;
-  update_columns: Array<User_Course_Taken_Update_Column>;
-  where?: Maybe<User_Course_Taken_Bool_Exp>;
+  update_columns?: Array<User_Course_Taken_Update_Column>;
+  where?: InputMaybe<User_Course_Taken_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "user_course_taken". */
 export type User_Course_Taken_Order_By = {
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
-  level?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  level?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "user_course_taken" */
@@ -10589,55 +10607,55 @@ export enum User_Course_Taken_Select_Column {
 
 /** input type for updating data in table "user_course_taken" */
 export type User_Course_Taken_Set_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  level?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type User_Course_Taken_Stddev_Fields = {
   __typename?: 'user_course_taken_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "user_course_taken" */
 export type User_Course_Taken_Stddev_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type User_Course_Taken_Stddev_Pop_Fields = {
   __typename?: 'user_course_taken_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "user_course_taken" */
 export type User_Course_Taken_Stddev_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type User_Course_Taken_Stddev_Samp_Fields = {
   __typename?: 'user_course_taken_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "user_course_taken" */
 export type User_Course_Taken_Stddev_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "user_course_taken" */
@@ -10645,30 +10663,30 @@ export type User_Course_Taken_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: User_Course_Taken_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type User_Course_Taken_Stream_Cursor_Value_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  level?: Maybe<Scalars['String']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  level?: InputMaybe<Scalars['String']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type User_Course_Taken_Sum_Fields = {
   __typename?: 'user_course_taken_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  term_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "user_course_taken" */
 export type User_Course_Taken_Sum_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "user_course_taken" */
@@ -10685,9 +10703,9 @@ export enum User_Course_Taken_Update_Column {
 
 export type User_Course_Taken_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<User_Course_Taken_Inc_Input>;
+  _inc?: InputMaybe<User_Course_Taken_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<User_Course_Taken_Set_Input>;
+  _set?: InputMaybe<User_Course_Taken_Set_Input>;
   /** filter the rows which have to be updated */
   where: User_Course_Taken_Bool_Exp;
 };
@@ -10695,105 +10713,105 @@ export type User_Course_Taken_Updates = {
 /** aggregate var_pop on columns */
 export type User_Course_Taken_Var_Pop_Fields = {
   __typename?: 'user_course_taken_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "user_course_taken" */
 export type User_Course_Taken_Var_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type User_Course_Taken_Var_Samp_Fields = {
   __typename?: 'user_course_taken_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "user_course_taken" */
 export type User_Course_Taken_Var_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type User_Course_Taken_Variance_Fields = {
   __typename?: 'user_course_taken_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  term_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "user_course_taken" */
 export type User_Course_Taken_Variance_Order_By = {
-  course_id?: Maybe<Order_By>;
-  term_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** input type for incrementing numeric columns in table "user" */
 export type User_Inc_Input = {
-  id?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
-  courses_taken?: Maybe<User_Course_Taken_Arr_Rel_Insert_Input>;
-  email?: Maybe<Scalars['String']>;
-  first_name?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  join_date?: Maybe<Scalars['timestamptz']>;
-  join_source?: Maybe<Scalars['join_source']>;
-  last_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  reviews?: Maybe<Review_Arr_Rel_Insert_Input>;
-  schedule?: Maybe<User_Schedule_Arr_Rel_Insert_Input>;
-  secret_id?: Maybe<Scalars['String']>;
-  shortlist?: Maybe<User_Shortlist_Arr_Rel_Insert_Input>;
+  courses_taken?: InputMaybe<User_Course_Taken_Arr_Rel_Insert_Input>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  first_name?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  join_date?: InputMaybe<Scalars['timestamptz']['input']>;
+  join_source?: InputMaybe<Scalars['join_source']['input']>;
+  last_name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
+  program?: InputMaybe<Scalars['String']['input']>;
+  reviews?: InputMaybe<Review_Arr_Rel_Insert_Input>;
+  schedule?: InputMaybe<User_Schedule_Arr_Rel_Insert_Input>;
+  secret_id?: InputMaybe<Scalars['String']['input']>;
+  shortlist?: InputMaybe<User_Shortlist_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
 export type User_Max_Fields = {
   __typename?: 'user_max_fields';
-  email?: Maybe<Scalars['String']>;
-  first_name?: Maybe<Scalars['String']>;
-  full_name?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  join_date?: Maybe<Scalars['timestamptz']>;
-  join_source?: Maybe<Scalars['join_source']>;
-  last_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  secret_id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']['output']>;
+  first_name?: Maybe<Scalars['String']['output']>;
+  full_name?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  join_date?: Maybe<Scalars['timestamptz']['output']>;
+  join_source?: Maybe<Scalars['join_source']['output']>;
+  last_name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
+  program?: Maybe<Scalars['String']['output']>;
+  secret_id?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type User_Min_Fields = {
   __typename?: 'user_min_fields';
-  email?: Maybe<Scalars['String']>;
-  first_name?: Maybe<Scalars['String']>;
-  full_name?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  join_date?: Maybe<Scalars['timestamptz']>;
-  join_source?: Maybe<Scalars['join_source']>;
-  last_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  secret_id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']['output']>;
+  first_name?: Maybe<Scalars['String']['output']>;
+  full_name?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  join_date?: Maybe<Scalars['timestamptz']['output']>;
+  join_source?: Maybe<Scalars['join_source']['output']>;
+  last_name?: Maybe<Scalars['String']['output']>;
+  picture_url?: Maybe<Scalars['String']['output']>;
+  program?: Maybe<Scalars['String']['output']>;
+  secret_id?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "user" */
 export type User_Mutation_Response = {
   __typename?: 'user_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<User>;
 };
@@ -10802,48 +10820,49 @@ export type User_Mutation_Response = {
 export type User_Obj_Rel_Insert_Input = {
   data: User_Insert_Input;
   /** upsert condition */
-  on_conflict?: Maybe<User_On_Conflict>;
+  on_conflict?: InputMaybe<User_On_Conflict>;
 };
 
 /** on_conflict condition type for table "user" */
 export type User_On_Conflict = {
   constraint: User_Constraint;
-  update_columns: Array<User_Update_Column>;
-  where?: Maybe<User_Bool_Exp>;
+  update_columns?: Array<User_Update_Column>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "user". */
 export type User_Order_By = {
-  courses_taken_aggregate?: Maybe<User_Course_Taken_Aggregate_Order_By>;
-  email?: Maybe<Order_By>;
-  first_name?: Maybe<Order_By>;
-  full_name?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  join_date?: Maybe<Order_By>;
-  join_source?: Maybe<Order_By>;
-  last_name?: Maybe<Order_By>;
-  picture_url?: Maybe<Order_By>;
-  program?: Maybe<Order_By>;
-  reviews_aggregate?: Maybe<Review_Aggregate_Order_By>;
-  schedule_aggregate?: Maybe<User_Schedule_Aggregate_Order_By>;
-  secret_id?: Maybe<Order_By>;
-  shortlist_aggregate?: Maybe<User_Shortlist_Aggregate_Order_By>;
+  courses_taken_aggregate?: InputMaybe<User_Course_Taken_Aggregate_Order_By>;
+  email?: InputMaybe<Order_By>;
+  first_name?: InputMaybe<Order_By>;
+  full_name?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  join_date?: InputMaybe<Order_By>;
+  join_source?: InputMaybe<Order_By>;
+  last_name?: InputMaybe<Order_By>;
+  picture_url?: InputMaybe<Order_By>;
+  program?: InputMaybe<Order_By>;
+  reviews_aggregate?: InputMaybe<Review_Aggregate_Order_By>;
+  schedule_aggregate?: InputMaybe<User_Schedule_Aggregate_Order_By>;
+  secret_id?: InputMaybe<Order_By>;
+  shortlist_aggregate?: InputMaybe<User_Shortlist_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: user */
 export type User_Pk_Columns_Input = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 /** columns and relationships of "user_schedule" */
 export type User_Schedule = {
   __typename?: 'user_schedule';
+  location?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   section: Course_Section;
-  section_id: Scalars['Int'];
+  section_id: Scalars['Int']['output'];
   /** An object relationship */
   user: User;
-  user_id: Scalars['Int'];
+  user_id: Scalars['Int']['output'];
 };
 
 /** aggregated selection of "user_schedule" */
@@ -10854,13 +10873,13 @@ export type User_Schedule_Aggregate = {
 };
 
 export type User_Schedule_Aggregate_Bool_Exp = {
-  count?: Maybe<User_Schedule_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<User_Schedule_Aggregate_Bool_Exp_Count>;
 };
 
 export type User_Schedule_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<User_Schedule_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<User_Schedule_Bool_Exp>;
+  arguments?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<User_Schedule_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -10868,7 +10887,7 @@ export type User_Schedule_Aggregate_Bool_Exp_Count = {
 export type User_Schedule_Aggregate_Fields = {
   __typename?: 'user_schedule_aggregate_fields';
   avg?: Maybe<User_Schedule_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<User_Schedule_Max_Fields>;
   min?: Maybe<User_Schedule_Min_Fields>;
   stddev?: Maybe<User_Schedule_Stddev_Fields>;
@@ -10882,54 +10901,55 @@ export type User_Schedule_Aggregate_Fields = {
 
 /** aggregate fields of "user_schedule" */
 export type User_Schedule_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<User_Schedule_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<User_Schedule_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "user_schedule" */
 export type User_Schedule_Aggregate_Order_By = {
-  avg?: Maybe<User_Schedule_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<User_Schedule_Max_Order_By>;
-  min?: Maybe<User_Schedule_Min_Order_By>;
-  stddev?: Maybe<User_Schedule_Stddev_Order_By>;
-  stddev_pop?: Maybe<User_Schedule_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<User_Schedule_Stddev_Samp_Order_By>;
-  sum?: Maybe<User_Schedule_Sum_Order_By>;
-  var_pop?: Maybe<User_Schedule_Var_Pop_Order_By>;
-  var_samp?: Maybe<User_Schedule_Var_Samp_Order_By>;
-  variance?: Maybe<User_Schedule_Variance_Order_By>;
+  avg?: InputMaybe<User_Schedule_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<User_Schedule_Max_Order_By>;
+  min?: InputMaybe<User_Schedule_Min_Order_By>;
+  stddev?: InputMaybe<User_Schedule_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<User_Schedule_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<User_Schedule_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<User_Schedule_Sum_Order_By>;
+  var_pop?: InputMaybe<User_Schedule_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<User_Schedule_Var_Samp_Order_By>;
+  variance?: InputMaybe<User_Schedule_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "user_schedule" */
 export type User_Schedule_Arr_Rel_Insert_Input = {
   data: Array<User_Schedule_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<User_Schedule_On_Conflict>;
+  on_conflict?: InputMaybe<User_Schedule_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type User_Schedule_Avg_Fields = {
   __typename?: 'user_schedule_avg_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "user_schedule" */
 export type User_Schedule_Avg_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "user_schedule". All fields are combined with a logical 'AND'. */
 export type User_Schedule_Bool_Exp = {
-  _and?: Maybe<Array<User_Schedule_Bool_Exp>>;
-  _not?: Maybe<User_Schedule_Bool_Exp>;
-  _or?: Maybe<Array<User_Schedule_Bool_Exp>>;
-  section?: Maybe<Course_Section_Bool_Exp>;
-  section_id?: Maybe<Int_Comparison_Exp>;
-  user?: Maybe<User_Bool_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<User_Schedule_Bool_Exp>>;
+  _not?: InputMaybe<User_Schedule_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Schedule_Bool_Exp>>;
+  location?: InputMaybe<String_Comparison_Exp>;
+  section?: InputMaybe<Course_Section_Bool_Exp>;
+  section_id?: InputMaybe<Int_Comparison_Exp>;
+  user?: InputMaybe<User_Bool_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user_schedule" */
@@ -10940,49 +10960,54 @@ export enum User_Schedule_Constraint {
 
 /** input type for incrementing numeric columns in table "user_schedule" */
 export type User_Schedule_Inc_Input = {
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "user_schedule" */
 export type User_Schedule_Insert_Input = {
-  section?: Maybe<Course_Section_Obj_Rel_Insert_Input>;
-  section_id?: Maybe<Scalars['Int']>;
-  user?: Maybe<User_Obj_Rel_Insert_Input>;
-  user_id?: Maybe<Scalars['Int']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  section?: InputMaybe<Course_Section_Obj_Rel_Insert_Input>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  user?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type User_Schedule_Max_Fields = {
   __typename?: 'user_schedule_max_fields';
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "user_schedule" */
 export type User_Schedule_Max_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type User_Schedule_Min_Fields = {
   __typename?: 'user_schedule_min_fields';
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  location?: Maybe<Scalars['String']['output']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "user_schedule" */
 export type User_Schedule_Min_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "user_schedule" */
 export type User_Schedule_Mutation_Response = {
   __typename?: 'user_schedule_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<User_Schedule>;
 };
@@ -10990,20 +11015,23 @@ export type User_Schedule_Mutation_Response = {
 /** on_conflict condition type for table "user_schedule" */
 export type User_Schedule_On_Conflict = {
   constraint: User_Schedule_Constraint;
-  update_columns: Array<User_Schedule_Update_Column>;
-  where?: Maybe<User_Schedule_Bool_Exp>;
+  update_columns?: Array<User_Schedule_Update_Column>;
+  where?: InputMaybe<User_Schedule_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "user_schedule". */
 export type User_Schedule_Order_By = {
-  section?: Maybe<Course_Section_Order_By>;
-  section_id?: Maybe<Order_By>;
-  user?: Maybe<User_Order_By>;
-  user_id?: Maybe<Order_By>;
+  location?: InputMaybe<Order_By>;
+  section?: InputMaybe<Course_Section_Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user?: InputMaybe<User_Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "user_schedule" */
 export enum User_Schedule_Select_Column {
+  /** column name */
+  Location = 'location',
   /** column name */
   SectionId = 'section_id',
   /** column name */
@@ -11012,47 +11040,48 @@ export enum User_Schedule_Select_Column {
 
 /** input type for updating data in table "user_schedule" */
 export type User_Schedule_Set_Input = {
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type User_Schedule_Stddev_Fields = {
   __typename?: 'user_schedule_stddev_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "user_schedule" */
 export type User_Schedule_Stddev_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type User_Schedule_Stddev_Pop_Fields = {
   __typename?: 'user_schedule_stddev_pop_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "user_schedule" */
 export type User_Schedule_Stddev_Pop_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type User_Schedule_Stddev_Samp_Fields = {
   __typename?: 'user_schedule_stddev_samp_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "user_schedule" */
 export type User_Schedule_Stddev_Samp_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "user_schedule" */
@@ -11060,30 +11089,33 @@ export type User_Schedule_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: User_Schedule_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type User_Schedule_Stream_Cursor_Value_Input = {
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type User_Schedule_Sum_Fields = {
   __typename?: 'user_schedule_sum_fields';
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "user_schedule" */
 export type User_Schedule_Sum_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "user_schedule" */
 export enum User_Schedule_Update_Column {
+  /** column name */
+  Location = 'location',
   /** column name */
   SectionId = 'section_id',
   /** column name */
@@ -11092,9 +11124,9 @@ export enum User_Schedule_Update_Column {
 
 export type User_Schedule_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<User_Schedule_Inc_Input>;
+  _inc?: InputMaybe<User_Schedule_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<User_Schedule_Set_Input>;
+  _set?: InputMaybe<User_Schedule_Set_Input>;
   /** filter the rows which have to be updated */
   where: User_Schedule_Bool_Exp;
 };
@@ -11102,40 +11134,40 @@ export type User_Schedule_Updates = {
 /** aggregate var_pop on columns */
 export type User_Schedule_Var_Pop_Fields = {
   __typename?: 'user_schedule_var_pop_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "user_schedule" */
 export type User_Schedule_Var_Pop_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type User_Schedule_Var_Samp_Fields = {
   __typename?: 'user_schedule_var_samp_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "user_schedule" */
 export type User_Schedule_Var_Samp_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type User_Schedule_Variance_Fields = {
   __typename?: 'user_schedule_variance_fields';
-  section_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "user_schedule" */
 export type User_Schedule_Variance_Order_By = {
-  section_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "user" */
@@ -11164,15 +11196,15 @@ export enum User_Select_Column {
 
 /** input type for updating data in table "user" */
 export type User_Set_Input = {
-  email?: Maybe<Scalars['String']>;
-  first_name?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  join_date?: Maybe<Scalars['timestamptz']>;
-  join_source?: Maybe<Scalars['join_source']>;
-  last_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  secret_id?: Maybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  first_name?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  join_date?: InputMaybe<Scalars['timestamptz']['input']>;
+  join_source?: InputMaybe<Scalars['join_source']['input']>;
+  last_name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
+  program?: InputMaybe<Scalars['String']['input']>;
+  secret_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** columns and relationships of "user_shortlist" */
@@ -11180,8 +11212,8 @@ export type User_Shortlist = {
   __typename?: 'user_shortlist';
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregated selection of "user_shortlist" */
@@ -11192,13 +11224,13 @@ export type User_Shortlist_Aggregate = {
 };
 
 export type User_Shortlist_Aggregate_Bool_Exp = {
-  count?: Maybe<User_Shortlist_Aggregate_Bool_Exp_Count>;
+  count?: InputMaybe<User_Shortlist_Aggregate_Bool_Exp_Count>;
 };
 
 export type User_Shortlist_Aggregate_Bool_Exp_Count = {
-  arguments?: Maybe<Array<User_Shortlist_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-  filter?: Maybe<User_Shortlist_Bool_Exp>;
+  arguments?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<User_Shortlist_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
 
@@ -11206,7 +11238,7 @@ export type User_Shortlist_Aggregate_Bool_Exp_Count = {
 export type User_Shortlist_Aggregate_Fields = {
   __typename?: 'user_shortlist_aggregate_fields';
   avg?: Maybe<User_Shortlist_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<User_Shortlist_Max_Fields>;
   min?: Maybe<User_Shortlist_Min_Fields>;
   stddev?: Maybe<User_Shortlist_Stddev_Fields>;
@@ -11220,53 +11252,53 @@ export type User_Shortlist_Aggregate_Fields = {
 
 /** aggregate fields of "user_shortlist" */
 export type User_Shortlist_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<User_Shortlist_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
+  columns?: InputMaybe<Array<User_Shortlist_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "user_shortlist" */
 export type User_Shortlist_Aggregate_Order_By = {
-  avg?: Maybe<User_Shortlist_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<User_Shortlist_Max_Order_By>;
-  min?: Maybe<User_Shortlist_Min_Order_By>;
-  stddev?: Maybe<User_Shortlist_Stddev_Order_By>;
-  stddev_pop?: Maybe<User_Shortlist_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<User_Shortlist_Stddev_Samp_Order_By>;
-  sum?: Maybe<User_Shortlist_Sum_Order_By>;
-  var_pop?: Maybe<User_Shortlist_Var_Pop_Order_By>;
-  var_samp?: Maybe<User_Shortlist_Var_Samp_Order_By>;
-  variance?: Maybe<User_Shortlist_Variance_Order_By>;
+  avg?: InputMaybe<User_Shortlist_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<User_Shortlist_Max_Order_By>;
+  min?: InputMaybe<User_Shortlist_Min_Order_By>;
+  stddev?: InputMaybe<User_Shortlist_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<User_Shortlist_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<User_Shortlist_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<User_Shortlist_Sum_Order_By>;
+  var_pop?: InputMaybe<User_Shortlist_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<User_Shortlist_Var_Samp_Order_By>;
+  variance?: InputMaybe<User_Shortlist_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "user_shortlist" */
 export type User_Shortlist_Arr_Rel_Insert_Input = {
   data: Array<User_Shortlist_Insert_Input>;
   /** upsert condition */
-  on_conflict?: Maybe<User_Shortlist_On_Conflict>;
+  on_conflict?: InputMaybe<User_Shortlist_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type User_Shortlist_Avg_Fields = {
   __typename?: 'user_shortlist_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "user_shortlist" */
 export type User_Shortlist_Avg_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "user_shortlist". All fields are combined with a logical 'AND'. */
 export type User_Shortlist_Bool_Exp = {
-  _and?: Maybe<Array<User_Shortlist_Bool_Exp>>;
-  _not?: Maybe<User_Shortlist_Bool_Exp>;
-  _or?: Maybe<Array<User_Shortlist_Bool_Exp>>;
-  course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
+  _and?: InputMaybe<Array<User_Shortlist_Bool_Exp>>;
+  _not?: InputMaybe<User_Shortlist_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Shortlist_Bool_Exp>>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user_shortlist" */
@@ -11277,48 +11309,48 @@ export enum User_Shortlist_Constraint {
 
 /** input type for incrementing numeric columns in table "user_shortlist" */
 export type User_Shortlist_Inc_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "user_shortlist" */
 export type User_Shortlist_Insert_Input = {
-  course?: Maybe<Course_Obj_Rel_Insert_Input>;
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type User_Shortlist_Max_Fields = {
   __typename?: 'user_shortlist_max_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "user_shortlist" */
 export type User_Shortlist_Max_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type User_Shortlist_Min_Fields = {
   __typename?: 'user_shortlist_min_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "user_shortlist" */
 export type User_Shortlist_Min_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "user_shortlist" */
 export type User_Shortlist_Mutation_Response = {
   __typename?: 'user_shortlist_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<User_Shortlist>;
 };
@@ -11326,15 +11358,15 @@ export type User_Shortlist_Mutation_Response = {
 /** on_conflict condition type for table "user_shortlist" */
 export type User_Shortlist_On_Conflict = {
   constraint: User_Shortlist_Constraint;
-  update_columns: Array<User_Shortlist_Update_Column>;
-  where?: Maybe<User_Shortlist_Bool_Exp>;
+  update_columns?: Array<User_Shortlist_Update_Column>;
+  where?: InputMaybe<User_Shortlist_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "user_shortlist". */
 export type User_Shortlist_Order_By = {
-  course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "user_shortlist" */
@@ -11347,47 +11379,47 @@ export enum User_Shortlist_Select_Column {
 
 /** input type for updating data in table "user_shortlist" */
 export type User_Shortlist_Set_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type User_Shortlist_Stddev_Fields = {
   __typename?: 'user_shortlist_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "user_shortlist" */
 export type User_Shortlist_Stddev_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type User_Shortlist_Stddev_Pop_Fields = {
   __typename?: 'user_shortlist_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "user_shortlist" */
 export type User_Shortlist_Stddev_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type User_Shortlist_Stddev_Samp_Fields = {
   __typename?: 'user_shortlist_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "user_shortlist" */
 export type User_Shortlist_Stddev_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "user_shortlist" */
@@ -11395,26 +11427,26 @@ export type User_Shortlist_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: User_Shortlist_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type User_Shortlist_Stream_Cursor_Value_Input = {
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type User_Shortlist_Sum_Fields = {
   __typename?: 'user_shortlist_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "user_shortlist" */
 export type User_Shortlist_Sum_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "user_shortlist" */
@@ -11427,9 +11459,9 @@ export enum User_Shortlist_Update_Column {
 
 export type User_Shortlist_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<User_Shortlist_Inc_Input>;
+  _inc?: InputMaybe<User_Shortlist_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<User_Shortlist_Set_Input>;
+  _set?: InputMaybe<User_Shortlist_Set_Input>;
   /** filter the rows which have to be updated */
   where: User_Shortlist_Bool_Exp;
 };
@@ -11437,58 +11469,58 @@ export type User_Shortlist_Updates = {
 /** aggregate var_pop on columns */
 export type User_Shortlist_Var_Pop_Fields = {
   __typename?: 'user_shortlist_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "user_shortlist" */
 export type User_Shortlist_Var_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type User_Shortlist_Var_Samp_Fields = {
   __typename?: 'user_shortlist_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "user_shortlist" */
 export type User_Shortlist_Var_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type User_Shortlist_Variance_Fields = {
   __typename?: 'user_shortlist_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
+  course_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "user_shortlist" */
 export type User_Shortlist_Variance_Order_By = {
-  course_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev on columns */
 export type User_Stddev_Fields = {
   __typename?: 'user_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type User_Stddev_Pop_Fields = {
   __typename?: 'user_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type User_Stddev_Samp_Fields = {
   __typename?: 'user_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "user" */
@@ -11496,27 +11528,27 @@ export type User_Stream_Cursor_Input = {
   /** Stream column input with initial value */
   initial_value: User_Stream_Cursor_Value_Input;
   /** cursor ordering */
-  ordering?: Maybe<Cursor_Ordering>;
+  ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
 export type User_Stream_Cursor_Value_Input = {
-  email?: Maybe<Scalars['String']>;
-  first_name?: Maybe<Scalars['String']>;
-  full_name?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
-  join_date?: Maybe<Scalars['timestamptz']>;
-  join_source?: Maybe<Scalars['join_source']>;
-  last_name?: Maybe<Scalars['String']>;
-  picture_url?: Maybe<Scalars['String']>;
-  program?: Maybe<Scalars['String']>;
-  secret_id?: Maybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  first_name?: InputMaybe<Scalars['String']['input']>;
+  full_name?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  join_date?: InputMaybe<Scalars['timestamptz']['input']>;
+  join_source?: InputMaybe<Scalars['join_source']['input']>;
+  last_name?: InputMaybe<Scalars['String']['input']>;
+  picture_url?: InputMaybe<Scalars['String']['input']>;
+  program?: InputMaybe<Scalars['String']['input']>;
+  secret_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
 export type User_Sum_Fields = {
   __typename?: 'user_sum_fields';
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "user" */
@@ -11543,9 +11575,9 @@ export enum User_Update_Column {
 
 export type User_Updates = {
   /** increments the numeric columns with given value of the filtered values */
-  _inc?: Maybe<User_Inc_Input>;
+  _inc?: InputMaybe<User_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
-  _set?: Maybe<User_Set_Input>;
+  _set?: InputMaybe<User_Set_Input>;
   /** filter the rows which have to be updated */
   where: User_Bool_Exp;
 };
@@ -11553,628 +11585,424 @@ export type User_Updates = {
 /** aggregate var_pop on columns */
 export type User_Var_Pop_Fields = {
   __typename?: 'user_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type User_Var_Samp_Fields = {
   __typename?: 'user_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type User_Variance_Fields = {
   __typename?: 'user_variance_fields';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
-export type CourseInfoFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id' | 'code' | 'name' | 'description'
-> & {
-    profs_teaching: Array<
-      { __typename?: 'prof_teaches_course' } & {
-        prof?: Maybe<
-          { __typename?: 'prof' } & Pick<Prof, 'id' | 'code' | 'name'> & {
-              rating?: Maybe<
-                { __typename?: 'aggregate_prof_rating' } & Pick<
-                  Aggregate_Prof_Rating,
-                  'liked' | 'comment_count'
-                >
-              >;
-            }
-        >;
-      }
-    >;
-  };
+export type CourseInfoFragment = {
+  id: number;
+  code: string;
+  name: string;
+  description: string | null;
+  profs_teaching: Array<{
+    prof: {
+      id: number;
+      code: string;
+      name: string;
+      rating: { liked: any; comment_count: any } | null;
+    } | null;
+  }>;
+};
 
-export type CourseTermFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id'
-> & {
-    sections: Array<
-      { __typename?: 'course_section' } & Pick<Course_Section, 'id' | 'term_id'>
-    >;
-  };
+export type CourseTermFragment = {
+  id: number;
+  sections: Array<{ id: number; term_id: number }>;
+};
 
-export type CourseScheduleFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id'
-> & {
-    sections: Array<
-      { __typename?: 'course_section' } & Pick<
-        Course_Section,
-        | 'id'
-        | 'enrollment_capacity'
-        | 'enrollment_total'
-        | 'class_number'
-        | 'section_name'
-        | 'term_id'
-        | 'updated_at'
-      > & {
-          meetings: Array<
-            { __typename?: 'section_meeting' } & Pick<
-              Section_Meeting,
-              | 'days'
-              | 'start_date'
-              | 'end_date'
-              | 'start_seconds'
-              | 'end_seconds'
-              | 'location'
-              | 'is_closed'
-              | 'is_cancelled'
-              | 'is_tba'
-            > & {
-                prof?: Maybe<
-                  { __typename?: 'prof' } & Pick<Prof, 'id' | 'code' | 'name'>
-                >;
-              }
-          >;
-          exams: Array<
-            { __typename?: 'section_exam' } & Pick<
-              Section_Exam,
-              | 'date'
-              | 'day'
-              | 'end_seconds'
-              | 'is_tba'
-              | 'location'
-              | 'section_id'
-              | 'start_seconds'
-            >
-          >;
-        }
-    >;
-  };
+export type CourseScheduleFragment = {
+  id: number;
+  sections: Array<{
+    id: number;
+    enrollment_capacity: number;
+    enrollment_total: number;
+    class_number: number;
+    section_name: string;
+    term_id: number;
+    updated_at: any;
+    meetings: Array<{
+      days: any;
+      start_date: any;
+      end_date: any;
+      start_seconds: number | null;
+      end_seconds: number | null;
+      location: string | null;
+      is_closed: boolean;
+      is_cancelled: boolean;
+      is_tba: boolean;
+      prof: { id: number; code: string; name: string } | null;
+    }>;
+    exams: Array<{
+      date: any;
+      day: string | null;
+      end_seconds: number | null;
+      is_tba: boolean;
+      location: string | null;
+      section_id: number;
+      start_seconds: number | null;
+    }>;
+  }>;
+};
 
-export type CourseRequirementsFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id' | 'antireqs' | 'prereqs' | 'coreqs'
-> & {
-    postrequisites: Array<
-      { __typename?: 'course_postrequisite' } & {
-        postrequisite?: Maybe<
-          { __typename?: 'course' } & Pick<Course, 'id' | 'code' | 'name'>
-        >;
-      }
-    >;
-  };
+export type CourseRequirementsFragment = {
+  id: number;
+  antireqs: string | null;
+  prereqs: string | null;
+  coreqs: string | null;
+  postrequisites: Array<{
+    postrequisite: { id: number; code: string; name: string } | null;
+  }>;
+};
 
-export type CourseRatingFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id'
-> & {
-    rating?: Maybe<
-      { __typename?: 'aggregate_course_rating' } & Pick<
-        Aggregate_Course_Rating,
-        'liked' | 'easy' | 'useful' | 'filled_count' | 'comment_count'
-      >
-    >;
-  };
+export type CourseRatingFragment = {
+  id: number;
+  rating: {
+    liked: any;
+    easy: any;
+    useful: any;
+    filled_count: any;
+    comment_count: any;
+  } | null;
+};
 
-export type CourseReviewDistributionFragment = { __typename?: 'course' } & Pick<
-  Course,
-  'id'
-> & {
-    course_useful_buckets: Array<
-      { __typename?: 'aggregate_course_useful_buckets' } & Pick<
-        Aggregate_Course_Useful_Buckets,
-        'value' | 'count'
-      >
-    >;
-    course_easy_buckets: Array<
-      { __typename?: 'aggregate_course_easy_buckets' } & Pick<
-        Aggregate_Course_Easy_Buckets,
-        'value' | 'count'
-      >
-    >;
-  };
+export type CourseReviewDistributionFragment = {
+  id: number;
+  course_useful_buckets: Array<{ value: any; count: any }>;
+  course_easy_buckets: Array<{ value: any; count: any }>;
+};
 
-export type ProfInfoFragment = { __typename?: 'prof' } & Pick<
-  Prof,
-  'id' | 'name' | 'code'
->;
+export type ProfInfoFragment = { id: number; name: string; code: string };
 
-export type ProfCoursesTaughtFragment = { __typename?: 'prof' } & Pick<
-  Prof,
-  'id'
-> & {
-    prof_courses: Array<
-      { __typename?: 'prof_teaches_course' } & {
-        course?: Maybe<{ __typename?: 'course' } & Pick<Course, 'id' | 'code'>>;
-      }
-    >;
-  };
+export type ProfCoursesTaughtFragment = {
+  id: number;
+  prof_courses: Array<{ course: { id: number; code: string } | null }>;
+};
 
-export type ProfRatingFragment = { __typename?: 'prof' } & Pick<Prof, 'id'> & {
-    rating?: Maybe<
-      { __typename?: 'aggregate_prof_rating' } & Pick<
-        Aggregate_Prof_Rating,
-        'liked' | 'clear' | 'engaging' | 'filled_count' | 'comment_count'
-      >
-    >;
-  };
+export type ProfRatingFragment = {
+  id: number;
+  rating: {
+    liked: any;
+    clear: any;
+    engaging: any;
+    filled_count: any;
+    comment_count: any;
+  } | null;
+};
 
-export type ProfReviewDistributionFragment = { __typename?: 'prof' } & Pick<
-  Prof,
-  'id'
-> & {
-    prof_engaging_buckets: Array<
-      { __typename?: 'aggregate_prof_engaging_buckets' } & Pick<
-        Aggregate_Prof_Engaging_Buckets,
-        'value' | 'count'
-      >
-    >;
-    prof_clear_buckets: Array<
-      { __typename?: 'aggregate_prof_clear_buckets' } & Pick<
-        Aggregate_Prof_Clear_Buckets,
-        'value' | 'count'
-      >
-    >;
-  };
+export type ProfReviewDistributionFragment = {
+  id: number;
+  prof_engaging_buckets: Array<{ value: any; count: any }>;
+  prof_clear_buckets: Array<{ value: any; count: any }>;
+};
 
-export type ReviewInfoFragment = { __typename?: 'review' } & Pick<
-  Review,
-  | 'id'
-  | 'created_at'
-  | 'updated_at'
-  | 'public'
-  | 'liked'
-  | 'course_comment'
-  | 'course_easy'
-  | 'course_useful'
-  | 'prof_engaging'
-  | 'prof_comment'
-  | 'prof_clear'
-  | 'course_id'
-  | 'prof_id'
-> & {
-    author?: Maybe<
-      { __typename?: 'review_author' } & Pick<
-        Review_Author,
-        'full_name' | 'picture_url' | 'program'
-      >
-    >;
-    course?: Maybe<
-      { __typename?: 'course' } & Pick<Course, 'id' | 'code' | 'name'> & {
-          profs_teaching: Array<
-            { __typename?: 'prof_teaches_course' } & {
-              prof?: Maybe<{ __typename?: 'prof' } & Pick<Prof, 'id' | 'name'>>;
-            }
-          >;
-          rating?: Maybe<
-            { __typename?: 'aggregate_course_rating' } & Pick<
-              Aggregate_Course_Rating,
-              'liked'
-            >
-          >;
-        }
-    >;
-    prof?: Maybe<
-      { __typename?: 'prof' } & Pick<
-        Prof,
-        'id' | 'name' | 'code' | 'picture_url'
-      > & {
-          rating?: Maybe<
-            { __typename?: 'aggregate_prof_rating' } & Pick<
-              Aggregate_Prof_Rating,
-              'liked'
-            >
-          >;
-        }
-    >;
-  };
+export type ReviewInfoFragment = {
+  id: number;
+  created_at: any;
+  updated_at: any;
+  public: boolean;
+  liked: any;
+  course_comment: string | null;
+  course_easy: any;
+  course_useful: any;
+  prof_engaging: any;
+  prof_comment: string | null;
+  prof_clear: any;
+  course_id: number | null;
+  prof_id: number | null;
+  author: {
+    full_name: string | null;
+    picture_url: string | null;
+    program: string | null;
+  } | null;
+  course: {
+    id: number;
+    code: string;
+    name: string;
+    profs_teaching: Array<{ prof: { id: number; name: string } | null }>;
+    rating: { liked: any } | null;
+  } | null;
+  prof: {
+    id: number;
+    name: string;
+    code: string;
+    picture_url: string | null;
+    rating: { liked: any } | null;
+  } | null;
+};
 
-export type ReviewUpdateInfoFragment = { __typename?: 'review' } & Pick<
-  Review,
-  | 'id'
-  | 'created_at'
-  | 'updated_at'
-  | 'public'
-  | 'liked'
-  | 'course_comment'
-  | 'course_easy'
-  | 'course_useful'
-  | 'prof_engaging'
-  | 'prof_comment'
-  | 'prof_clear'
-  | 'course_id'
-  | 'prof_id'
->;
+export type ReviewUpdateInfoFragment = {
+  id: number;
+  created_at: any;
+  updated_at: any;
+  public: boolean;
+  liked: any;
+  course_comment: string | null;
+  course_easy: any;
+  course_useful: any;
+  prof_engaging: any;
+  prof_comment: string | null;
+  prof_clear: any;
+  course_id: number | null;
+  prof_id: number | null;
+};
 
-export type ReviewVoteCountsFragment = { __typename?: 'review' } & Pick<
-  Review,
-  'id'
-> & {
-    course_review_rating?: Maybe<
-      { __typename?: 'aggregate_course_review_rating' } & Pick<
-        Aggregate_Course_Review_Rating,
-        'upvote_count'
-      >
-    >;
-    prof_review_rating?: Maybe<
-      { __typename?: 'aggregate_prof_review_rating' } & Pick<
-        Aggregate_Prof_Review_Rating,
-        'upvote_count'
-      >
-    >;
-  };
+export type ReviewVoteCountsFragment = {
+  id: number;
+  course_review_rating: { upvote_count: any } | null;
+  prof_review_rating: { upvote_count: any } | null;
+};
 
-export type UserReviewFieldsFragment = { __typename?: 'review' } & Pick<
-  Review,
-  'id'
-> & {
-    course_review_upvotes: Array<
-      { __typename?: 'course_review_upvote' } & Pick<
-        Course_Review_Upvote,
-        'user_id'
-      >
-    >;
-    prof_review_upvotes: Array<
-      { __typename?: 'prof_review_upvote' } & Pick<
-        Prof_Review_Upvote,
-        'user_id'
-      >
-    >;
-    user?: Maybe<
-      { __typename?: 'review_user_id' } & Pick<Review_User_Id, 'user_id'>
-    >;
-  };
+export type UserReviewFieldsFragment = {
+  id: number;
+  course_review_upvotes: Array<{ user_id: number | null }>;
+  prof_review_upvotes: Array<{ user_id: number | null }>;
+  user: { user_id: number | null } | null;
+};
 
-export type ReviewProfsFragment = { __typename?: 'review' } & Pick<
-  Review,
-  'id' | 'course_id'
-> & {
-    prof?: Maybe<{ __typename?: 'prof' } & Pick<Prof, 'id' | 'name' | 'code'>>;
-  };
+export type ReviewProfsFragment = {
+  id: number;
+  course_id: number | null;
+  prof: { id: number; name: string; code: string } | null;
+};
 
 export type CourseSearchFragment = {
-  __typename?: 'course_search_index';
-} & Pick<
-  Course_Search_Index,
-  | 'course_id'
-  | 'name'
-  | 'code'
-  | 'useful'
-  | 'terms'
-  | 'terms_with_seats'
-  | 'terms_with_online_sections'
-  | 'ratings'
-  | 'prof_ids'
-  | 'liked'
-  | 'easy'
-  | 'has_prereqs'
->;
+  course_id: number | null;
+  name: string | null;
+  code: string | null;
+  useful: any;
+  terms: any;
+  terms_with_seats: any;
+  terms_with_online_sections: any;
+  ratings: any;
+  prof_ids: any;
+  liked: any;
+  easy: any;
+  has_prereqs: boolean | null;
+};
 
-export type ProfSearchFragment = { __typename?: 'prof_search_index' } & Pick<
-  Prof_Search_Index,
-  | 'prof_id'
-  | 'name'
-  | 'code'
-  | 'clear'
-  | 'course_ids'
-  | 'course_codes'
-  | 'engaging'
-  | 'liked'
-  | 'ratings'
->;
+export type ProfSearchFragment = {
+  prof_id: number | null;
+  name: string | null;
+  code: string | null;
+  clear: any;
+  course_ids: any;
+  course_codes: any;
+  engaging: any;
+  liked: any;
+  ratings: any;
+};
 
-export type UserInfoFragment = { __typename?: 'user' } & Pick<
-  User,
-  'id' | 'full_name' | 'program' | 'picture_url' | 'secret_id' | 'email'
->;
+export type UserInfoFragment = {
+  id: number;
+  full_name: string;
+  program: string | null;
+  picture_url: string | null;
+  secret_id: string;
+  email: string | null;
+};
 
-export type UserShortlistFragment = { __typename?: 'user' } & Pick<
-  User,
-  'id'
-> & {
-    shortlist: Array<
-      { __typename?: 'user_shortlist' } & Pick<
-        User_Shortlist,
-        'course_id' | 'user_id'
-      > & {
-          course?: Maybe<
-            { __typename?: 'course' } & Pick<Course, 'id' | 'code' | 'name'>
-          >;
-        }
-    >;
-  };
+export type UserShortlistFragment = {
+  id: number;
+  shortlist: Array<{
+    course_id: number | null;
+    user_id: number | null;
+    course: { id: number; code: string; name: string } | null;
+  }>;
+};
 
-export type UserScheduleFragment = { __typename?: 'user' } & Pick<
-  User,
-  'id'
-> & {
-    schedule: Array<
-      { __typename?: 'user_schedule' } & Pick<User_Schedule, 'user_id'> & {
-          section: { __typename?: 'course_section' } & Pick<
-            Course_Section,
-            'id' | 'section_name'
-          > & {
-              exams: Array<
-                { __typename?: 'section_exam' } & Pick<
-                  Section_Exam,
-                  'date' | 'day' | 'location' | 'start_seconds' | 'end_seconds'
-                >
-              >;
-              meetings: Array<
-                { __typename?: 'section_meeting' } & Pick<
-                  Section_Meeting,
-                  | 'days'
-                  | 'end_date'
-                  | 'end_seconds'
-                  | 'is_cancelled'
-                  | 'location'
-                  | 'section_id'
-                  | 'start_date'
-                  | 'start_seconds'
-                > & {
-                    prof?: Maybe<
-                      { __typename?: 'prof' } & Pick<Prof, 'id' | 'name'>
-                    >;
-                  }
-              >;
-              course: { __typename?: 'course' } & Pick<
-                Course,
-                'id' | 'name' | 'code'
-              >;
-            };
-        }
-    >;
-  };
+export type UserScheduleFragment = {
+  id: number;
+  schedule: Array<{
+    user_id: number;
+    section: {
+      id: number;
+      section_name: string;
+      exams: Array<{
+        date: any;
+        day: string | null;
+        location: string | null;
+        start_seconds: number | null;
+        end_seconds: number | null;
+      }>;
+      meetings: Array<{
+        days: any;
+        end_date: any;
+        end_seconds: number | null;
+        is_cancelled: boolean;
+        location: string | null;
+        section_id: number;
+        start_date: any;
+        start_seconds: number | null;
+        prof: { id: number; name: string } | null;
+      }>;
+      course: { id: number; name: string; code: string };
+    };
+  }>;
+};
 
 export type UserCoursesTakenFragment = {
-  __typename?: 'user_course_taken';
-} & Pick<User_Course_Taken, 'term_id' | 'course_id'> & {
-    course?: Maybe<
-      { __typename?: 'course' } & Pick<Course, 'id' | 'code' | 'name'> & {
-          rating?: Maybe<
-            { __typename?: 'aggregate_course_rating' } & Pick<
-              Aggregate_Course_Rating,
-              'liked'
-            >
-          >;
-          profs_teaching: Array<
-            { __typename?: 'prof_teaches_course' } & {
-              prof?: Maybe<
-                { __typename?: 'prof' } & Pick<Prof, 'id' | 'code' | 'name'>
-              >;
-            }
-          >;
-          sections: Array<
-            { __typename?: 'course_section' } & Pick<
-              Course_Section,
-              'id' | 'term_id' | 'updated_at'
-            > & {
-                exams: Array<
-                  { __typename?: 'section_exam' } & Pick<
-                    Section_Exam,
-                    | 'date'
-                    | 'day'
-                    | 'end_seconds'
-                    | 'is_tba'
-                    | 'location'
-                    | 'section_id'
-                    | 'start_seconds'
-                  >
-                >;
-              }
-          >;
-        }
-    >;
-  };
+  term_id: number;
+  course_id: number | null;
+  course: {
+    id: number;
+    code: string;
+    name: string;
+    rating: { liked: any } | null;
+    profs_teaching: Array<{
+      prof: { id: number; code: string; name: string } | null;
+    }>;
+    sections: Array<{
+      id: number;
+      term_id: number;
+      updated_at: any;
+      exams: Array<{
+        date: any;
+        day: string | null;
+        end_seconds: number | null;
+        is_tba: boolean;
+        location: string | null;
+        section_id: number;
+        start_seconds: number | null;
+      }>;
+    }>;
+  } | null;
+};
 
 export type UpdateUserEmailMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  email?: Maybe<Scalars['String']>;
+  user_id?: number | null | undefined;
+  email?: string | null | undefined;
 }>;
 
-export type UpdateUserEmailMutation = { __typename?: 'mutation_root' } & {
-  update_user?: Maybe<
-    { __typename?: 'user_mutation_response' } & Pick<
-      User_Mutation_Response,
-      'affected_rows'
-    > & {
-        returning: Array<{ __typename?: 'user' } & Pick<User, 'id' | 'email'>>;
-      }
-  >;
+export type UpdateUserEmailMutation = {
+  update_user: {
+    affected_rows: number;
+    returning: Array<{ id: number; email: string | null }>;
+  } | null;
 };
 
 export type UpsertReviewMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
-  liked?: Maybe<Scalars['smallint']>;
-  public?: Maybe<Scalars['Boolean']>;
-  course_easy?: Maybe<Scalars['smallint']>;
-  course_useful?: Maybe<Scalars['smallint']>;
-  course_comment?: Maybe<Scalars['String']>;
-  prof_clear?: Maybe<Scalars['smallint']>;
-  prof_engaging?: Maybe<Scalars['smallint']>;
-  prof_comment?: Maybe<Scalars['String']>;
+  user_id?: number | null | undefined;
+  course_id?: number | null | undefined;
+  prof_id?: number | null | undefined;
+  liked?: any;
+  public?: boolean | null | undefined;
+  course_easy?: any;
+  course_useful?: any;
+  course_comment?: string | null | undefined;
+  prof_clear?: any;
+  prof_engaging?: any;
+  prof_comment?: string | null | undefined;
 }>;
 
-export type UpsertReviewMutation = { __typename?: 'mutation_root' } & {
-  insert_review?: Maybe<
-    { __typename?: 'review_mutation_response' } & {
-      returning: Array<{ __typename?: 'review' } & ReviewUpdateInfoFragment>;
-    }
-  >;
+export type UpsertReviewMutation = {
+  insert_review: { returning: Array<ReviewUpdateInfoFragment> } | null;
 };
 
 export type DeleteReviewMutationVariables = Exact<{
-  review_id?: Maybe<Scalars['Int']>;
+  review_id?: number | null | undefined;
 }>;
 
-export type DeleteReviewMutation = { __typename?: 'mutation_root' } & {
-  delete_review?: Maybe<
-    { __typename?: 'review_mutation_response' } & {
-      returning: Array<{ __typename?: 'review' } & ReviewUpdateInfoFragment>;
-    }
-  >;
+export type DeleteReviewMutation = {
+  delete_review: { returning: Array<ReviewUpdateInfoFragment> } | null;
 };
 
 export type UpsertLikedReviewMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
-  liked?: Maybe<Scalars['smallint']>;
+  user_id?: number | null | undefined;
+  course_id?: number | null | undefined;
+  liked?: any;
 }>;
 
-export type UpsertLikedReviewMutation = { __typename?: 'mutation_root' } & {
-  insert_review?: Maybe<
-    { __typename?: 'review_mutation_response' } & {
-      returning: Array<
-        { __typename?: 'review' } & Pick<Review, 'id' | 'liked'>
-      >;
-    }
-  >;
+export type UpsertLikedReviewMutation = {
+  insert_review: { returning: Array<{ id: number; liked: any }> } | null;
 };
 
 export type InsertSectionSubscriptionMutationVariables = Exact<{
-  section_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  section_id?: number | null | undefined;
+  user_id?: number | null | undefined;
 }>;
 
 export type InsertSectionSubscriptionMutation = {
-  __typename?: 'mutation_root';
-} & {
-  insert_queue_section_subscribed?: Maybe<
-    { __typename?: 'queue_section_subscribed_mutation_response' } & Pick<
-      Queue_Section_Subscribed_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+  insert_queue_section_subscribed: { affected_rows: number } | null;
 };
 
 export type DeleteSectionSubscriptionMutationVariables = Exact<{
-  section_id?: Maybe<Scalars['Int']>;
+  section_id?: number | null | undefined;
 }>;
 
 export type DeleteSectionSubscriptionMutation = {
-  __typename?: 'mutation_root';
-} & {
-  delete_queue_section_subscribed?: Maybe<
-    { __typename?: 'queue_section_subscribed_mutation_response' } & Pick<
-      Queue_Section_Subscribed_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+  delete_queue_section_subscribed: { affected_rows: number } | null;
 };
 
 export type InsertUserShortlistMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  course_id?: Maybe<Scalars['Int']>;
+  user_id?: number | null | undefined;
+  course_id?: number | null | undefined;
 }>;
 
-export type InsertUserShortlistMutation = { __typename?: 'mutation_root' } & {
-  insert_user_shortlist?: Maybe<
-    { __typename?: 'user_shortlist_mutation_response' } & Pick<
-      User_Shortlist_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+export type InsertUserShortlistMutation = {
+  insert_user_shortlist: { affected_rows: number } | null;
 };
 
 export type DeleteUserShortlistMutationVariables = Exact<{
-  course_id?: Maybe<Scalars['Int']>;
+  course_id?: number | null | undefined;
 }>;
 
-export type DeleteUserShortlistMutation = { __typename?: 'mutation_root' } & {
-  delete_user_shortlist?: Maybe<
-    { __typename?: 'user_shortlist_mutation_response' } & Pick<
-      User_Shortlist_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+export type DeleteUserShortlistMutation = {
+  delete_user_shortlist: { affected_rows: number } | null;
 };
 
 export type InsertCourseReviewVoteMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  review_id?: Maybe<Scalars['Int']>;
+  user_id?: number | null | undefined;
+  review_id?: number | null | undefined;
 }>;
 
 export type InsertCourseReviewVoteMutation = {
-  __typename?: 'mutation_root';
-} & {
-  insert_course_review_upvote?: Maybe<
-    { __typename?: 'course_review_upvote_mutation_response' } & Pick<
-      Course_Review_Upvote_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+  insert_course_review_upvote: { affected_rows: number } | null;
 };
 
 export type DeleteCourseReviewVoteMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  review_id?: Maybe<Scalars['Int']>;
+  user_id?: number | null | undefined;
+  review_id?: number | null | undefined;
 }>;
 
 export type DeleteCourseReviewVoteMutation = {
-  __typename?: 'mutation_root';
-} & {
-  delete_course_review_upvote?: Maybe<
-    { __typename?: 'course_review_upvote_mutation_response' } & Pick<
-      Course_Review_Upvote_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+  delete_course_review_upvote: { affected_rows: number } | null;
 };
 
 export type InsertProfReviewVoteMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  review_id?: Maybe<Scalars['Int']>;
+  user_id?: number | null | undefined;
+  review_id?: number | null | undefined;
 }>;
 
-export type InsertProfReviewVoteMutation = { __typename?: 'mutation_root' } & {
-  insert_prof_review_upvote?: Maybe<
-    { __typename?: 'prof_review_upvote_mutation_response' } & Pick<
-      Prof_Review_Upvote_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+export type InsertProfReviewVoteMutation = {
+  insert_prof_review_upvote: { affected_rows: number } | null;
 };
 
 export type Delete_Prof_Review_VoteMutationVariables = Exact<{
-  user_id?: Maybe<Scalars['Int']>;
-  review_id?: Maybe<Scalars['Int']>;
+  user_id?: number | null | undefined;
+  review_id?: number | null | undefined;
 }>;
 
 export type Delete_Prof_Review_VoteMutation = {
-  __typename?: 'mutation_root';
-} & {
-  delete_prof_review_upvote?: Maybe<
-    { __typename?: 'prof_review_upvote_mutation_response' } & Pick<
-      Prof_Review_Upvote_Mutation_Response,
-      'affected_rows'
-    >
-  >;
+  delete_prof_review_upvote: { affected_rows: number } | null;
 };
 
 export type GetCourseQueryVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
+  code?: string | null | undefined;
 }>;
 
-export type GetCourseQuery = { __typename?: 'query_root' } & {
+export type GetCourseQuery = {
   course: Array<
-    { __typename?: 'course' } & CourseInfoFragment &
+    CourseInfoFragment &
       CourseScheduleFragment &
       CourseRequirementsFragment &
       CourseRatingFragment &
@@ -12183,158 +12011,119 @@ export type GetCourseQuery = { __typename?: 'query_root' } & {
 };
 
 export type GetCourseWithUserDataQueryVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['Int']>;
+  code?: string | null | undefined;
+  user_id?: number | null | undefined;
 }>;
 
-export type GetCourseWithUserDataQuery = { __typename?: 'query_root' } & {
+export type GetCourseWithUserDataQuery = {
   course: Array<
-    { __typename?: 'course' } & CourseInfoFragment &
+    CourseInfoFragment &
       CourseScheduleFragment &
       CourseRequirementsFragment &
       CourseRatingFragment &
       CourseReviewDistributionFragment
   >;
-  user_shortlist: Array<
-    { __typename?: 'user_shortlist' } & Pick<
-      User_Shortlist,
-      'course_id' | 'user_id'
-    >
-  >;
-  user_course_taken: Array<
-    { __typename?: 'user_course_taken' } & Pick<
-      User_Course_Taken,
-      'term_id' | 'course_id'
-    >
-  >;
-  queue_section_subscribed: Array<
-    { __typename?: 'queue_section_subscribed' } & Pick<
-      Queue_Section_Subscribed,
-      'section_id' | 'user_id'
-    >
-  >;
-  review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
-  user: Array<{ __typename?: 'user' } & Pick<User, 'email'>>;
+  user_shortlist: Array<{ course_id: number | null; user_id: number | null }>;
+  user_course_taken: Array<{ term_id: number; course_id: number | null }>;
+  queue_section_subscribed: Array<{ section_id: number; user_id: number }>;
+  review: Array<ReviewInfoFragment>;
+  user: Array<{ email: string | null }>;
 };
 
 export type RefetchCourseShortlistQueryVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['Int']>;
+  code?: string | null | undefined;
+  user_id?: number | null | undefined;
 }>;
 
-export type RefetchCourseShortlistQuery = { __typename?: 'query_root' } & {
-  user_shortlist: Array<
-    { __typename?: 'user_shortlist' } & Pick<
-      User_Shortlist,
-      'course_id' | 'user_id'
-    >
-  >;
+export type RefetchCourseShortlistQuery = {
+  user_shortlist: Array<{ course_id: number | null; user_id: number | null }>;
 };
 
 export type RefetchRatingsQueryVariables = Exact<{
-  course_id?: Maybe<Scalars['Int']>;
-  prof_id?: Maybe<Scalars['Int']>;
+  course_id?: number | null | undefined;
+  prof_id?: number | null | undefined;
 }>;
 
-export type RefetchRatingsQuery = { __typename?: 'query_root' } & {
-  course: Array<{ __typename?: 'course' } & CourseRatingFragment>;
-  prof: Array<{ __typename?: 'prof' } & ProfRatingFragment>;
+export type RefetchRatingsQuery = {
+  course: Array<CourseRatingFragment>;
+  prof: Array<ProfRatingFragment>;
 };
 
 export type RefetchSectionSubscriptionsQueryVariables = Exact<{
-  course_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
+  course_id?: number | null | undefined;
+  user_id?: number | null | undefined;
 }>;
 
-export type RefetchSectionSubscriptionsQuery = { __typename?: 'query_root' } & {
-  queue_section_subscribed: Array<
-    { __typename?: 'queue_section_subscribed' } & Pick<
-      Queue_Section_Subscribed,
-      'section_id' | 'user_id'
-    >
-  >;
+export type RefetchSectionSubscriptionsQuery = {
+  queue_section_subscribed: Array<{ section_id: number; user_id: number }>;
 };
 
 export type RefetchCourseReviewsQueryVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['Int']>;
+  code?: string | null | undefined;
+  user_id?: number | null | undefined;
 }>;
 
-export type RefetchCourseReviewsQuery = { __typename?: 'query_root' } & {
-  review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
-};
+export type RefetchCourseReviewsQuery = { review: Array<ReviewInfoFragment> };
 
 export type CourseReviewsQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type CourseReviewsQuery = { __typename?: 'query_root' } & {
-  review: Array<
-    { __typename?: 'review' } & ReviewInfoFragment & ReviewVoteCountsFragment
-  >;
+export type CourseReviewsQuery = {
+  review: Array<ReviewInfoFragment & ReviewVoteCountsFragment>;
 };
 
 export type CourseReviewsWithUserDataQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type CourseReviewsWithUserDataQuery = { __typename?: 'query_root' } & {
+export type CourseReviewsWithUserDataQuery = {
   review: Array<
-    { __typename?: 'review' } & ReviewInfoFragment &
-      ReviewVoteCountsFragment &
-      UserReviewFieldsFragment
+    ReviewInfoFragment & ReviewVoteCountsFragment & UserReviewFieldsFragment
   >;
 };
 
 export type RefetchCourseReviewUpvoteQueryVariables = Exact<{
-  review_id?: Maybe<Scalars['Int']>;
+  review_id?: number | null | undefined;
 }>;
 
-export type RefetchCourseReviewUpvoteQuery = { __typename?: 'query_root' } & {
-  review: Array<{ __typename?: 'review' } & ReviewVoteCountsFragment>;
+export type RefetchCourseReviewUpvoteQuery = {
+  review: Array<ReviewVoteCountsFragment>;
 };
 
 export type CourseReviewProfsQueryVariables = Exact<{
-  courseIds?: Maybe<Array<Scalars['Int']>>;
+  courseIds?: Array<number> | number | null | undefined;
 }>;
 
-export type CourseReviewProfsQuery = { __typename?: 'query_root' } & {
-  allProfs: Array<{ __typename?: 'prof' } & ProfInfoFragment>;
-  reviewProfs: Array<{ __typename?: 'review' } & ReviewProfsFragment>;
+export type CourseReviewProfsQuery = {
+  allProfs: Array<ProfInfoFragment>;
+  reviewProfs: Array<ReviewProfsFragment>;
 };
 
 export type ExploreAllQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ExploreAllQuery = { __typename?: 'query_root' } & {
-  course_search_index: Array<
-    { __typename?: 'course_search_index' } & CourseSearchFragment
-  >;
-  prof_search_index: Array<
-    { __typename?: 'prof_search_index' } & ProfSearchFragment
-  >;
+export type ExploreAllQuery = {
+  course_search_index: Array<CourseSearchFragment>;
+  prof_search_index: Array<ProfSearchFragment>;
 };
 
 export type ExploreQueryVariables = Exact<{
-  query?: Maybe<Scalars['String']>;
-  code_only?: Maybe<Scalars['Boolean']>;
+  query?: string | null | undefined;
+  code_only?: boolean | null | undefined;
 }>;
 
-export type ExploreQuery = { __typename?: 'query_root' } & {
-  search_courses: Array<
-    { __typename?: 'course_search_index' } & CourseSearchFragment
-  >;
-  search_profs: Array<
-    { __typename?: 'prof_search_index' } & ProfSearchFragment
-  >;
+export type ExploreQuery = {
+  search_courses: Array<CourseSearchFragment>;
+  search_profs: Array<ProfSearchFragment>;
 };
 
 export type GetProfQueryVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
+  code?: string | null | undefined;
 }>;
 
-export type GetProfQuery = { __typename?: 'query_root' } & {
+export type GetProfQuery = {
   prof: Array<
-    { __typename?: 'prof' } & ProfInfoFragment &
+    ProfInfoFragment &
       ProfCoursesTaughtFragment &
       ProfRatingFragment &
       ProfReviewDistributionFragment
@@ -12342,68 +12131,54 @@ export type GetProfQuery = { __typename?: 'query_root' } & {
 };
 
 export type ProfReviewsQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type ProfReviewsQuery = { __typename?: 'query_root' } & {
-  review: Array<
-    { __typename?: 'review' } & ReviewInfoFragment & ReviewVoteCountsFragment
-  >;
+export type ProfReviewsQuery = {
+  review: Array<ReviewInfoFragment & ReviewVoteCountsFragment>;
 };
 
 export type ProfReviewsWithUserDataQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type ProfReviewsWithUserDataQuery = { __typename?: 'query_root' } & {
+export type ProfReviewsWithUserDataQuery = {
   review: Array<
-    { __typename?: 'review' } & ReviewInfoFragment &
-      ReviewVoteCountsFragment &
-      UserReviewFieldsFragment
+    ReviewInfoFragment & ReviewVoteCountsFragment & UserReviewFieldsFragment
   >;
 };
 
 export type Refetch_Prof_Review_UpvoteQueryVariables = Exact<{
-  review_id?: Maybe<Scalars['Int']>;
+  review_id?: number | null | undefined;
 }>;
 
-export type Refetch_Prof_Review_UpvoteQuery = { __typename?: 'query_root' } & {
-  review: Array<{ __typename?: 'review' } & ReviewVoteCountsFragment>;
+export type Refetch_Prof_Review_UpvoteQuery = {
+  review: Array<ReviewVoteCountsFragment>;
 };
 
 export type GetUserQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type GetUserQuery = { __typename?: 'query_root' } & {
-  user: Array<
-    { __typename?: 'user' } & UserInfoFragment &
-      UserShortlistFragment &
-      UserScheduleFragment
-  >;
-  user_course_taken: Array<
-    { __typename?: 'user_course_taken' } & UserCoursesTakenFragment
-  >;
-  review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
+export type GetUserQuery = {
+  user: Array<UserInfoFragment & UserShortlistFragment & UserScheduleFragment>;
+  user_course_taken: Array<UserCoursesTakenFragment>;
+  review: Array<ReviewInfoFragment>;
 };
 
 export type RefetchUserShortlistQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type RefetchUserShortlistQuery = { __typename?: 'query_root' } & {
-  user: Array<
-    { __typename?: 'user' } & Pick<User, 'id'> & UserShortlistFragment
-  >;
+export type RefetchUserShortlistQuery = {
+  user: Array<{ id: number } & UserShortlistFragment>;
 };
 
 export type RefetchUserReviewQueryVariables = Exact<{
-  id?: Maybe<Scalars['Int']>;
+  id?: number | null | undefined;
 }>;
 
-export type RefetchUserReviewQuery = { __typename?: 'query_root' } & {
-  review: Array<{ __typename?: 'review' } & ReviewInfoFragment>;
-};
+export type RefetchUserReviewQuery = { review: Array<ReviewInfoFragment> };
 
 export const CourseInfoFragmentDoc = gql`
   fragment CourseInfo on course {
@@ -12819,10 +12594,11 @@ export function useUpdateUserEmailMutation(
     UpdateUserEmailMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     UpdateUserEmailMutation,
     UpdateUserEmailMutationVariables
-  >(UpdateUserEmailDocument, baseOptions);
+  >(UpdateUserEmailDocument, options);
 }
 export type UpdateUserEmailMutationHookResult = ReturnType<
   typeof useUpdateUserEmailMutation
@@ -12921,10 +12697,11 @@ export function useUpsertReviewMutation(
     UpsertReviewMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     UpsertReviewMutation,
     UpsertReviewMutationVariables
-  >(UpsertReviewDocument, baseOptions);
+  >(UpsertReviewDocument, options);
 }
 export type UpsertReviewMutationHookResult = ReturnType<
   typeof useUpsertReviewMutation
@@ -12973,10 +12750,11 @@ export function useDeleteReviewMutation(
     DeleteReviewMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     DeleteReviewMutation,
     DeleteReviewMutationVariables
-  >(DeleteReviewDocument, baseOptions);
+  >(DeleteReviewDocument, options);
 }
 export type DeleteReviewMutationHookResult = ReturnType<
   typeof useDeleteReviewMutation
@@ -13038,10 +12816,11 @@ export function useUpsertLikedReviewMutation(
     UpsertLikedReviewMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     UpsertLikedReviewMutation,
     UpsertLikedReviewMutationVariables
-  >(UpsertLikedReviewDocument, baseOptions);
+  >(UpsertLikedReviewDocument, options);
 }
 export type UpsertLikedReviewMutationHookResult = ReturnType<
   typeof useUpsertLikedReviewMutation
@@ -13090,10 +12869,11 @@ export function useInsertSectionSubscriptionMutation(
     InsertSectionSubscriptionMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     InsertSectionSubscriptionMutation,
     InsertSectionSubscriptionMutationVariables
-  >(InsertSectionSubscriptionDocument, baseOptions);
+  >(InsertSectionSubscriptionDocument, options);
 }
 export type InsertSectionSubscriptionMutationHookResult = ReturnType<
   typeof useInsertSectionSubscriptionMutation
@@ -13142,10 +12922,11 @@ export function useDeleteSectionSubscriptionMutation(
     DeleteSectionSubscriptionMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     DeleteSectionSubscriptionMutation,
     DeleteSectionSubscriptionMutationVariables
-  >(DeleteSectionSubscriptionDocument, baseOptions);
+  >(DeleteSectionSubscriptionDocument, options);
 }
 export type DeleteSectionSubscriptionMutationHookResult = ReturnType<
   typeof useDeleteSectionSubscriptionMutation
@@ -13195,10 +12976,11 @@ export function useInsertUserShortlistMutation(
     InsertUserShortlistMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     InsertUserShortlistMutation,
     InsertUserShortlistMutationVariables
-  >(InsertUserShortlistDocument, baseOptions);
+  >(InsertUserShortlistDocument, options);
 }
 export type InsertUserShortlistMutationHookResult = ReturnType<
   typeof useInsertUserShortlistMutation
@@ -13244,10 +13026,11 @@ export function useDeleteUserShortlistMutation(
     DeleteUserShortlistMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     DeleteUserShortlistMutation,
     DeleteUserShortlistMutationVariables
-  >(DeleteUserShortlistDocument, baseOptions);
+  >(DeleteUserShortlistDocument, options);
 }
 export type DeleteUserShortlistMutationHookResult = ReturnType<
   typeof useDeleteUserShortlistMutation
@@ -13296,10 +13079,11 @@ export function useInsertCourseReviewVoteMutation(
     InsertCourseReviewVoteMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     InsertCourseReviewVoteMutation,
     InsertCourseReviewVoteMutationVariables
-  >(InsertCourseReviewVoteDocument, baseOptions);
+  >(InsertCourseReviewVoteDocument, options);
 }
 export type InsertCourseReviewVoteMutationHookResult = ReturnType<
   typeof useInsertCourseReviewVoteMutation
@@ -13348,10 +13132,11 @@ export function useDeleteCourseReviewVoteMutation(
     DeleteCourseReviewVoteMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     DeleteCourseReviewVoteMutation,
     DeleteCourseReviewVoteMutationVariables
-  >(DeleteCourseReviewVoteDocument, baseOptions);
+  >(DeleteCourseReviewVoteDocument, options);
 }
 export type DeleteCourseReviewVoteMutationHookResult = ReturnType<
   typeof useDeleteCourseReviewVoteMutation
@@ -13400,10 +13185,11 @@ export function useInsertProfReviewVoteMutation(
     InsertProfReviewVoteMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     InsertProfReviewVoteMutation,
     InsertProfReviewVoteMutationVariables
-  >(InsertProfReviewVoteDocument, baseOptions);
+  >(InsertProfReviewVoteDocument, options);
 }
 export type InsertProfReviewVoteMutationHookResult = ReturnType<
   typeof useInsertProfReviewVoteMutation
@@ -13452,10 +13238,11 @@ export function useDelete_Prof_Review_VoteMutation(
     Delete_Prof_Review_VoteMutationVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
     Delete_Prof_Review_VoteMutation,
     Delete_Prof_Review_VoteMutationVariables
-  >(Delete_Prof_Review_VoteDocument, baseOptions);
+  >(Delete_Prof_Review_VoteDocument, options);
 }
 export type Delete_Prof_Review_VoteMutationHookResult = ReturnType<
   typeof useDelete_Prof_Review_VoteMutation
@@ -13505,9 +13292,10 @@ export function useGetCourseQuery(
     GetCourseQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetCourseQuery, GetCourseQueryVariables>(
     GetCourseDocument,
-    baseOptions,
+    options,
   );
 }
 export function useGetCourseLazyQuery(
@@ -13516,14 +13304,47 @@ export function useGetCourseLazyQuery(
     GetCourseQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetCourseQuery, GetCourseQueryVariables>(
     GetCourseDocument,
-    baseOptions,
+    options,
+  );
+}
+// @ts-ignore
+export function useGetCourseSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetCourseQuery,
+    GetCourseQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<GetCourseQuery, GetCourseQueryVariables>;
+export function useGetCourseSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetCourseQuery, GetCourseQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  GetCourseQuery | undefined,
+  GetCourseQueryVariables
+>;
+export function useGetCourseSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetCourseQuery, GetCourseQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GetCourseQuery, GetCourseQueryVariables>(
+    GetCourseDocument,
+    options,
   );
 }
 export type GetCourseQueryHookResult = ReturnType<typeof useGetCourseQuery>;
 export type GetCourseLazyQueryHookResult = ReturnType<
   typeof useGetCourseLazyQuery
+>;
+export type GetCourseSuspenseQueryHookResult = ReturnType<
+  typeof useGetCourseSuspenseQuery
 >;
 export type GetCourseQueryResult = Apollo.QueryResult<
   GetCourseQuery,
@@ -13602,10 +13423,11 @@ export function useGetCourseWithUserDataQuery(
     GetCourseWithUserDataQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     GetCourseWithUserDataQuery,
     GetCourseWithUserDataQueryVariables
-  >(GetCourseWithUserDataDocument, baseOptions);
+  >(GetCourseWithUserDataDocument, options);
 }
 export function useGetCourseWithUserDataLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -13613,16 +13435,58 @@ export function useGetCourseWithUserDataLazyQuery(
     GetCourseWithUserDataQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     GetCourseWithUserDataQuery,
     GetCourseWithUserDataQueryVariables
-  >(GetCourseWithUserDataDocument, baseOptions);
+  >(GetCourseWithUserDataDocument, options);
+}
+// @ts-ignore
+export function useGetCourseWithUserDataSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetCourseWithUserDataQuery,
+    GetCourseWithUserDataQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  GetCourseWithUserDataQuery,
+  GetCourseWithUserDataQueryVariables
+>;
+export function useGetCourseWithUserDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetCourseWithUserDataQuery,
+        GetCourseWithUserDataQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  GetCourseWithUserDataQuery | undefined,
+  GetCourseWithUserDataQueryVariables
+>;
+export function useGetCourseWithUserDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetCourseWithUserDataQuery,
+        GetCourseWithUserDataQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetCourseWithUserDataQuery,
+    GetCourseWithUserDataQueryVariables
+  >(GetCourseWithUserDataDocument, options);
 }
 export type GetCourseWithUserDataQueryHookResult = ReturnType<
   typeof useGetCourseWithUserDataQuery
 >;
 export type GetCourseWithUserDataLazyQueryHookResult = ReturnType<
   typeof useGetCourseWithUserDataLazyQuery
+>;
+export type GetCourseWithUserDataSuspenseQueryHookResult = ReturnType<
+  typeof useGetCourseWithUserDataSuspenseQuery
 >;
 export type GetCourseWithUserDataQueryResult = Apollo.QueryResult<
   GetCourseWithUserDataQuery,
@@ -13662,10 +13526,11 @@ export function useRefetchCourseShortlistQuery(
     RefetchCourseShortlistQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     RefetchCourseShortlistQuery,
     RefetchCourseShortlistQueryVariables
-  >(RefetchCourseShortlistDocument, baseOptions);
+  >(RefetchCourseShortlistDocument, options);
 }
 export function useRefetchCourseShortlistLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -13673,16 +13538,58 @@ export function useRefetchCourseShortlistLazyQuery(
     RefetchCourseShortlistQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     RefetchCourseShortlistQuery,
     RefetchCourseShortlistQueryVariables
-  >(RefetchCourseShortlistDocument, baseOptions);
+  >(RefetchCourseShortlistDocument, options);
+}
+// @ts-ignore
+export function useRefetchCourseShortlistSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchCourseShortlistQuery,
+    RefetchCourseShortlistQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchCourseShortlistQuery,
+  RefetchCourseShortlistQueryVariables
+>;
+export function useRefetchCourseShortlistSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchCourseShortlistQuery,
+        RefetchCourseShortlistQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchCourseShortlistQuery | undefined,
+  RefetchCourseShortlistQueryVariables
+>;
+export function useRefetchCourseShortlistSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchCourseShortlistQuery,
+        RefetchCourseShortlistQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchCourseShortlistQuery,
+    RefetchCourseShortlistQueryVariables
+  >(RefetchCourseShortlistDocument, options);
 }
 export type RefetchCourseShortlistQueryHookResult = ReturnType<
   typeof useRefetchCourseShortlistQuery
 >;
 export type RefetchCourseShortlistLazyQueryHookResult = ReturnType<
   typeof useRefetchCourseShortlistLazyQuery
+>;
+export type RefetchCourseShortlistSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchCourseShortlistSuspenseQuery
 >;
 export type RefetchCourseShortlistQueryResult = Apollo.QueryResult<
   RefetchCourseShortlistQuery,
@@ -13724,9 +13631,10 @@ export function useRefetchRatingsQuery(
     RefetchRatingsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<RefetchRatingsQuery, RefetchRatingsQueryVariables>(
     RefetchRatingsDocument,
-    baseOptions,
+    options,
   );
 }
 export function useRefetchRatingsLazyQuery(
@@ -13735,16 +13643,58 @@ export function useRefetchRatingsLazyQuery(
     RefetchRatingsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<RefetchRatingsQuery, RefetchRatingsQueryVariables>(
     RefetchRatingsDocument,
-    baseOptions,
+    options,
   );
+}
+// @ts-ignore
+export function useRefetchRatingsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchRatingsQuery,
+    RefetchRatingsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchRatingsQuery,
+  RefetchRatingsQueryVariables
+>;
+export function useRefetchRatingsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchRatingsQuery,
+        RefetchRatingsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchRatingsQuery | undefined,
+  RefetchRatingsQueryVariables
+>;
+export function useRefetchRatingsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchRatingsQuery,
+        RefetchRatingsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchRatingsQuery,
+    RefetchRatingsQueryVariables
+  >(RefetchRatingsDocument, options);
 }
 export type RefetchRatingsQueryHookResult = ReturnType<
   typeof useRefetchRatingsQuery
 >;
 export type RefetchRatingsLazyQueryHookResult = ReturnType<
   typeof useRefetchRatingsLazyQuery
+>;
+export type RefetchRatingsSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchRatingsSuspenseQuery
 >;
 export type RefetchRatingsQueryResult = Apollo.QueryResult<
   RefetchRatingsQuery,
@@ -13787,10 +13737,11 @@ export function useRefetchSectionSubscriptionsQuery(
     RefetchSectionSubscriptionsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     RefetchSectionSubscriptionsQuery,
     RefetchSectionSubscriptionsQueryVariables
-  >(RefetchSectionSubscriptionsDocument, baseOptions);
+  >(RefetchSectionSubscriptionsDocument, options);
 }
 export function useRefetchSectionSubscriptionsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -13798,16 +13749,58 @@ export function useRefetchSectionSubscriptionsLazyQuery(
     RefetchSectionSubscriptionsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     RefetchSectionSubscriptionsQuery,
     RefetchSectionSubscriptionsQueryVariables
-  >(RefetchSectionSubscriptionsDocument, baseOptions);
+  >(RefetchSectionSubscriptionsDocument, options);
+}
+// @ts-ignore
+export function useRefetchSectionSubscriptionsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchSectionSubscriptionsQuery,
+    RefetchSectionSubscriptionsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchSectionSubscriptionsQuery,
+  RefetchSectionSubscriptionsQueryVariables
+>;
+export function useRefetchSectionSubscriptionsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchSectionSubscriptionsQuery,
+        RefetchSectionSubscriptionsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchSectionSubscriptionsQuery | undefined,
+  RefetchSectionSubscriptionsQueryVariables
+>;
+export function useRefetchSectionSubscriptionsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchSectionSubscriptionsQuery,
+        RefetchSectionSubscriptionsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchSectionSubscriptionsQuery,
+    RefetchSectionSubscriptionsQueryVariables
+  >(RefetchSectionSubscriptionsDocument, options);
 }
 export type RefetchSectionSubscriptionsQueryHookResult = ReturnType<
   typeof useRefetchSectionSubscriptionsQuery
 >;
 export type RefetchSectionSubscriptionsLazyQueryHookResult = ReturnType<
   typeof useRefetchSectionSubscriptionsLazyQuery
+>;
+export type RefetchSectionSubscriptionsSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchSectionSubscriptionsSuspenseQuery
 >;
 export type RefetchSectionSubscriptionsQueryResult = Apollo.QueryResult<
   RefetchSectionSubscriptionsQuery,
@@ -13850,10 +13843,11 @@ export function useRefetchCourseReviewsQuery(
     RefetchCourseReviewsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     RefetchCourseReviewsQuery,
     RefetchCourseReviewsQueryVariables
-  >(RefetchCourseReviewsDocument, baseOptions);
+  >(RefetchCourseReviewsDocument, options);
 }
 export function useRefetchCourseReviewsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -13861,16 +13855,58 @@ export function useRefetchCourseReviewsLazyQuery(
     RefetchCourseReviewsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     RefetchCourseReviewsQuery,
     RefetchCourseReviewsQueryVariables
-  >(RefetchCourseReviewsDocument, baseOptions);
+  >(RefetchCourseReviewsDocument, options);
+}
+// @ts-ignore
+export function useRefetchCourseReviewsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchCourseReviewsQuery,
+    RefetchCourseReviewsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchCourseReviewsQuery,
+  RefetchCourseReviewsQueryVariables
+>;
+export function useRefetchCourseReviewsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchCourseReviewsQuery,
+        RefetchCourseReviewsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchCourseReviewsQuery | undefined,
+  RefetchCourseReviewsQueryVariables
+>;
+export function useRefetchCourseReviewsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchCourseReviewsQuery,
+        RefetchCourseReviewsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchCourseReviewsQuery,
+    RefetchCourseReviewsQueryVariables
+  >(RefetchCourseReviewsDocument, options);
 }
 export type RefetchCourseReviewsQueryHookResult = ReturnType<
   typeof useRefetchCourseReviewsQuery
 >;
 export type RefetchCourseReviewsLazyQueryHookResult = ReturnType<
   typeof useRefetchCourseReviewsLazyQuery
+>;
+export type RefetchCourseReviewsSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchCourseReviewsSuspenseQuery
 >;
 export type RefetchCourseReviewsQueryResult = Apollo.QueryResult<
   RefetchCourseReviewsQuery,
@@ -13917,9 +13953,10 @@ export function useCourseReviewsQuery(
     CourseReviewsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<CourseReviewsQuery, CourseReviewsQueryVariables>(
     CourseReviewsDocument,
-    baseOptions,
+    options,
   );
 }
 export function useCourseReviewsLazyQuery(
@@ -13928,16 +13965,58 @@ export function useCourseReviewsLazyQuery(
     CourseReviewsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<CourseReviewsQuery, CourseReviewsQueryVariables>(
     CourseReviewsDocument,
-    baseOptions,
+    options,
   );
+}
+// @ts-ignore
+export function useCourseReviewsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    CourseReviewsQuery,
+    CourseReviewsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  CourseReviewsQuery,
+  CourseReviewsQueryVariables
+>;
+export function useCourseReviewsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseReviewsQuery,
+        CourseReviewsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  CourseReviewsQuery | undefined,
+  CourseReviewsQueryVariables
+>;
+export function useCourseReviewsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseReviewsQuery,
+        CourseReviewsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    CourseReviewsQuery,
+    CourseReviewsQueryVariables
+  >(CourseReviewsDocument, options);
 }
 export type CourseReviewsQueryHookResult = ReturnType<
   typeof useCourseReviewsQuery
 >;
 export type CourseReviewsLazyQueryHookResult = ReturnType<
   typeof useCourseReviewsLazyQuery
+>;
+export type CourseReviewsSuspenseQueryHookResult = ReturnType<
+  typeof useCourseReviewsSuspenseQuery
 >;
 export type CourseReviewsQueryResult = Apollo.QueryResult<
   CourseReviewsQuery,
@@ -13986,10 +14065,11 @@ export function useCourseReviewsWithUserDataQuery(
     CourseReviewsWithUserDataQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     CourseReviewsWithUserDataQuery,
     CourseReviewsWithUserDataQueryVariables
-  >(CourseReviewsWithUserDataDocument, baseOptions);
+  >(CourseReviewsWithUserDataDocument, options);
 }
 export function useCourseReviewsWithUserDataLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -13997,16 +14077,58 @@ export function useCourseReviewsWithUserDataLazyQuery(
     CourseReviewsWithUserDataQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     CourseReviewsWithUserDataQuery,
     CourseReviewsWithUserDataQueryVariables
-  >(CourseReviewsWithUserDataDocument, baseOptions);
+  >(CourseReviewsWithUserDataDocument, options);
+}
+// @ts-ignore
+export function useCourseReviewsWithUserDataSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    CourseReviewsWithUserDataQuery,
+    CourseReviewsWithUserDataQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  CourseReviewsWithUserDataQuery,
+  CourseReviewsWithUserDataQueryVariables
+>;
+export function useCourseReviewsWithUserDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseReviewsWithUserDataQuery,
+        CourseReviewsWithUserDataQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  CourseReviewsWithUserDataQuery | undefined,
+  CourseReviewsWithUserDataQueryVariables
+>;
+export function useCourseReviewsWithUserDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseReviewsWithUserDataQuery,
+        CourseReviewsWithUserDataQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    CourseReviewsWithUserDataQuery,
+    CourseReviewsWithUserDataQueryVariables
+  >(CourseReviewsWithUserDataDocument, options);
 }
 export type CourseReviewsWithUserDataQueryHookResult = ReturnType<
   typeof useCourseReviewsWithUserDataQuery
 >;
 export type CourseReviewsWithUserDataLazyQueryHookResult = ReturnType<
   typeof useCourseReviewsWithUserDataLazyQuery
+>;
+export type CourseReviewsWithUserDataSuspenseQueryHookResult = ReturnType<
+  typeof useCourseReviewsWithUserDataSuspenseQuery
 >;
 export type CourseReviewsWithUserDataQueryResult = Apollo.QueryResult<
   CourseReviewsWithUserDataQuery,
@@ -14043,10 +14165,11 @@ export function useRefetchCourseReviewUpvoteQuery(
     RefetchCourseReviewUpvoteQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     RefetchCourseReviewUpvoteQuery,
     RefetchCourseReviewUpvoteQueryVariables
-  >(RefetchCourseReviewUpvoteDocument, baseOptions);
+  >(RefetchCourseReviewUpvoteDocument, options);
 }
 export function useRefetchCourseReviewUpvoteLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -14054,16 +14177,58 @@ export function useRefetchCourseReviewUpvoteLazyQuery(
     RefetchCourseReviewUpvoteQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     RefetchCourseReviewUpvoteQuery,
     RefetchCourseReviewUpvoteQueryVariables
-  >(RefetchCourseReviewUpvoteDocument, baseOptions);
+  >(RefetchCourseReviewUpvoteDocument, options);
+}
+// @ts-ignore
+export function useRefetchCourseReviewUpvoteSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchCourseReviewUpvoteQuery,
+    RefetchCourseReviewUpvoteQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchCourseReviewUpvoteQuery,
+  RefetchCourseReviewUpvoteQueryVariables
+>;
+export function useRefetchCourseReviewUpvoteSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchCourseReviewUpvoteQuery,
+        RefetchCourseReviewUpvoteQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchCourseReviewUpvoteQuery | undefined,
+  RefetchCourseReviewUpvoteQueryVariables
+>;
+export function useRefetchCourseReviewUpvoteSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchCourseReviewUpvoteQuery,
+        RefetchCourseReviewUpvoteQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchCourseReviewUpvoteQuery,
+    RefetchCourseReviewUpvoteQueryVariables
+  >(RefetchCourseReviewUpvoteDocument, options);
 }
 export type RefetchCourseReviewUpvoteQueryHookResult = ReturnType<
   typeof useRefetchCourseReviewUpvoteQuery
 >;
 export type RefetchCourseReviewUpvoteLazyQueryHookResult = ReturnType<
   typeof useRefetchCourseReviewUpvoteLazyQuery
+>;
+export type RefetchCourseReviewUpvoteSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchCourseReviewUpvoteSuspenseQuery
 >;
 export type RefetchCourseReviewUpvoteQueryResult = Apollo.QueryResult<
   RefetchCourseReviewUpvoteQuery,
@@ -14112,10 +14277,11 @@ export function useCourseReviewProfsQuery(
     CourseReviewProfsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     CourseReviewProfsQuery,
     CourseReviewProfsQueryVariables
-  >(CourseReviewProfsDocument, baseOptions);
+  >(CourseReviewProfsDocument, options);
 }
 export function useCourseReviewProfsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -14123,16 +14289,58 @@ export function useCourseReviewProfsLazyQuery(
     CourseReviewProfsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     CourseReviewProfsQuery,
     CourseReviewProfsQueryVariables
-  >(CourseReviewProfsDocument, baseOptions);
+  >(CourseReviewProfsDocument, options);
+}
+// @ts-ignore
+export function useCourseReviewProfsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    CourseReviewProfsQuery,
+    CourseReviewProfsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  CourseReviewProfsQuery,
+  CourseReviewProfsQueryVariables
+>;
+export function useCourseReviewProfsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseReviewProfsQuery,
+        CourseReviewProfsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  CourseReviewProfsQuery | undefined,
+  CourseReviewProfsQueryVariables
+>;
+export function useCourseReviewProfsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseReviewProfsQuery,
+        CourseReviewProfsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    CourseReviewProfsQuery,
+    CourseReviewProfsQueryVariables
+  >(CourseReviewProfsDocument, options);
 }
 export type CourseReviewProfsQueryHookResult = ReturnType<
   typeof useCourseReviewProfsQuery
 >;
 export type CourseReviewProfsLazyQueryHookResult = ReturnType<
   typeof useCourseReviewProfsLazyQuery
+>;
+export type CourseReviewProfsSuspenseQueryHookResult = ReturnType<
+  typeof useCourseReviewProfsSuspenseQuery
 >;
 export type CourseReviewProfsQueryResult = Apollo.QueryResult<
   CourseReviewProfsQuery,
@@ -14172,9 +14380,10 @@ export function useExploreAllQuery(
     ExploreAllQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<ExploreAllQuery, ExploreAllQueryVariables>(
     ExploreAllDocument,
-    baseOptions,
+    options,
   );
 }
 export function useExploreAllLazyQuery(
@@ -14183,14 +14392,53 @@ export function useExploreAllLazyQuery(
     ExploreAllQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<ExploreAllQuery, ExploreAllQueryVariables>(
     ExploreAllDocument,
-    baseOptions,
+    options,
+  );
+}
+// @ts-ignore
+export function useExploreAllSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ExploreAllQuery,
+    ExploreAllQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<ExploreAllQuery, ExploreAllQueryVariables>;
+export function useExploreAllSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ExploreAllQuery,
+        ExploreAllQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  ExploreAllQuery | undefined,
+  ExploreAllQueryVariables
+>;
+export function useExploreAllSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ExploreAllQuery,
+        ExploreAllQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ExploreAllQuery, ExploreAllQueryVariables>(
+    ExploreAllDocument,
+    options,
   );
 }
 export type ExploreAllQueryHookResult = ReturnType<typeof useExploreAllQuery>;
 export type ExploreAllLazyQueryHookResult = ReturnType<
   typeof useExploreAllLazyQuery
+>;
+export type ExploreAllSuspenseQueryHookResult = ReturnType<
+  typeof useExploreAllSuspenseQuery
 >;
 export type ExploreAllQueryResult = Apollo.QueryResult<
   ExploreAllQuery,
@@ -14229,9 +14477,10 @@ export const ExploreDocument = gql`
 export function useExploreQuery(
   baseOptions?: Apollo.QueryHookOptions<ExploreQuery, ExploreQueryVariables>,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<ExploreQuery, ExploreQueryVariables>(
     ExploreDocument,
-    baseOptions,
+    options,
   );
 }
 export function useExploreLazyQuery(
@@ -14240,13 +14489,46 @@ export function useExploreLazyQuery(
     ExploreQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<ExploreQuery, ExploreQueryVariables>(
     ExploreDocument,
-    baseOptions,
+    options,
+  );
+}
+// @ts-ignore
+export function useExploreSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ExploreQuery,
+    ExploreQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<ExploreQuery, ExploreQueryVariables>;
+export function useExploreSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ExploreQuery, ExploreQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  ExploreQuery | undefined,
+  ExploreQueryVariables
+>;
+export function useExploreSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ExploreQuery, ExploreQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ExploreQuery, ExploreQueryVariables>(
+    ExploreDocument,
+    options,
   );
 }
 export type ExploreQueryHookResult = ReturnType<typeof useExploreQuery>;
 export type ExploreLazyQueryHookResult = ReturnType<typeof useExploreLazyQuery>;
+export type ExploreSuspenseQueryHookResult = ReturnType<
+  typeof useExploreSuspenseQuery
+>;
 export type ExploreQueryResult = Apollo.QueryResult<
   ExploreQuery,
   ExploreQueryVariables
@@ -14285,9 +14567,10 @@ export const GetProfDocument = gql`
 export function useGetProfQuery(
   baseOptions?: Apollo.QueryHookOptions<GetProfQuery, GetProfQueryVariables>,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetProfQuery, GetProfQueryVariables>(
     GetProfDocument,
-    baseOptions,
+    options,
   );
 }
 export function useGetProfLazyQuery(
@@ -14296,13 +14579,46 @@ export function useGetProfLazyQuery(
     GetProfQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetProfQuery, GetProfQueryVariables>(
     GetProfDocument,
-    baseOptions,
+    options,
+  );
+}
+// @ts-ignore
+export function useGetProfSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetProfQuery,
+    GetProfQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<GetProfQuery, GetProfQueryVariables>;
+export function useGetProfSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetProfQuery, GetProfQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  GetProfQuery | undefined,
+  GetProfQueryVariables
+>;
+export function useGetProfSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetProfQuery, GetProfQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GetProfQuery, GetProfQueryVariables>(
+    GetProfDocument,
+    options,
   );
 }
 export type GetProfQueryHookResult = ReturnType<typeof useGetProfQuery>;
 export type GetProfLazyQueryHookResult = ReturnType<typeof useGetProfLazyQuery>;
+export type GetProfSuspenseQueryHookResult = ReturnType<
+  typeof useGetProfSuspenseQuery
+>;
 export type GetProfQueryResult = Apollo.QueryResult<
   GetProfQuery,
   GetProfQueryVariables
@@ -14342,9 +14658,10 @@ export function useProfReviewsQuery(
     ProfReviewsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
     ProfReviewsDocument,
-    baseOptions,
+    options,
   );
 }
 export function useProfReviewsLazyQuery(
@@ -14353,14 +14670,53 @@ export function useProfReviewsLazyQuery(
     ProfReviewsQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
     ProfReviewsDocument,
-    baseOptions,
+    options,
+  );
+}
+// @ts-ignore
+export function useProfReviewsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ProfReviewsQuery,
+    ProfReviewsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<ProfReviewsQuery, ProfReviewsQueryVariables>;
+export function useProfReviewsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ProfReviewsQuery,
+        ProfReviewsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  ProfReviewsQuery | undefined,
+  ProfReviewsQueryVariables
+>;
+export function useProfReviewsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ProfReviewsQuery,
+        ProfReviewsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ProfReviewsQuery, ProfReviewsQueryVariables>(
+    ProfReviewsDocument,
+    options,
   );
 }
 export type ProfReviewsQueryHookResult = ReturnType<typeof useProfReviewsQuery>;
 export type ProfReviewsLazyQueryHookResult = ReturnType<
   typeof useProfReviewsLazyQuery
+>;
+export type ProfReviewsSuspenseQueryHookResult = ReturnType<
+  typeof useProfReviewsSuspenseQuery
 >;
 export type ProfReviewsQueryResult = Apollo.QueryResult<
   ProfReviewsQuery,
@@ -14403,10 +14759,11 @@ export function useProfReviewsWithUserDataQuery(
     ProfReviewsWithUserDataQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     ProfReviewsWithUserDataQuery,
     ProfReviewsWithUserDataQueryVariables
-  >(ProfReviewsWithUserDataDocument, baseOptions);
+  >(ProfReviewsWithUserDataDocument, options);
 }
 export function useProfReviewsWithUserDataLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -14414,16 +14771,58 @@ export function useProfReviewsWithUserDataLazyQuery(
     ProfReviewsWithUserDataQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     ProfReviewsWithUserDataQuery,
     ProfReviewsWithUserDataQueryVariables
-  >(ProfReviewsWithUserDataDocument, baseOptions);
+  >(ProfReviewsWithUserDataDocument, options);
+}
+// @ts-ignore
+export function useProfReviewsWithUserDataSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ProfReviewsWithUserDataQuery,
+    ProfReviewsWithUserDataQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  ProfReviewsWithUserDataQuery,
+  ProfReviewsWithUserDataQueryVariables
+>;
+export function useProfReviewsWithUserDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ProfReviewsWithUserDataQuery,
+        ProfReviewsWithUserDataQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  ProfReviewsWithUserDataQuery | undefined,
+  ProfReviewsWithUserDataQueryVariables
+>;
+export function useProfReviewsWithUserDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ProfReviewsWithUserDataQuery,
+        ProfReviewsWithUserDataQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    ProfReviewsWithUserDataQuery,
+    ProfReviewsWithUserDataQueryVariables
+  >(ProfReviewsWithUserDataDocument, options);
 }
 export type ProfReviewsWithUserDataQueryHookResult = ReturnType<
   typeof useProfReviewsWithUserDataQuery
 >;
 export type ProfReviewsWithUserDataLazyQueryHookResult = ReturnType<
   typeof useProfReviewsWithUserDataLazyQuery
+>;
+export type ProfReviewsWithUserDataSuspenseQueryHookResult = ReturnType<
+  typeof useProfReviewsWithUserDataSuspenseQuery
 >;
 export type ProfReviewsWithUserDataQueryResult = Apollo.QueryResult<
   ProfReviewsWithUserDataQuery,
@@ -14460,10 +14859,11 @@ export function useRefetch_Prof_Review_UpvoteQuery(
     Refetch_Prof_Review_UpvoteQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     Refetch_Prof_Review_UpvoteQuery,
     Refetch_Prof_Review_UpvoteQueryVariables
-  >(Refetch_Prof_Review_UpvoteDocument, baseOptions);
+  >(Refetch_Prof_Review_UpvoteDocument, options);
 }
 export function useRefetch_Prof_Review_UpvoteLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -14471,16 +14871,58 @@ export function useRefetch_Prof_Review_UpvoteLazyQuery(
     Refetch_Prof_Review_UpvoteQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     Refetch_Prof_Review_UpvoteQuery,
     Refetch_Prof_Review_UpvoteQueryVariables
-  >(Refetch_Prof_Review_UpvoteDocument, baseOptions);
+  >(Refetch_Prof_Review_UpvoteDocument, options);
+}
+// @ts-ignore
+export function useRefetch_Prof_Review_UpvoteSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    Refetch_Prof_Review_UpvoteQuery,
+    Refetch_Prof_Review_UpvoteQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  Refetch_Prof_Review_UpvoteQuery,
+  Refetch_Prof_Review_UpvoteQueryVariables
+>;
+export function useRefetch_Prof_Review_UpvoteSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        Refetch_Prof_Review_UpvoteQuery,
+        Refetch_Prof_Review_UpvoteQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  Refetch_Prof_Review_UpvoteQuery | undefined,
+  Refetch_Prof_Review_UpvoteQueryVariables
+>;
+export function useRefetch_Prof_Review_UpvoteSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        Refetch_Prof_Review_UpvoteQuery,
+        Refetch_Prof_Review_UpvoteQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    Refetch_Prof_Review_UpvoteQuery,
+    Refetch_Prof_Review_UpvoteQueryVariables
+  >(Refetch_Prof_Review_UpvoteDocument, options);
 }
 export type Refetch_Prof_Review_UpvoteQueryHookResult = ReturnType<
   typeof useRefetch_Prof_Review_UpvoteQuery
 >;
 export type Refetch_Prof_Review_UpvoteLazyQueryHookResult = ReturnType<
   typeof useRefetch_Prof_Review_UpvoteLazyQuery
+>;
+export type Refetch_Prof_Review_UpvoteSuspenseQueryHookResult = ReturnType<
+  typeof useRefetch_Prof_Review_UpvoteSuspenseQuery
 >;
 export type Refetch_Prof_Review_UpvoteQueryResult = Apollo.QueryResult<
   Refetch_Prof_Review_UpvoteQuery,
@@ -14526,9 +14968,10 @@ export const GetUserDocument = gql`
 export function useGetUserQuery(
   baseOptions?: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables>,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(
     GetUserDocument,
-    baseOptions,
+    options,
   );
 }
 export function useGetUserLazyQuery(
@@ -14537,13 +14980,46 @@ export function useGetUserLazyQuery(
     GetUserQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(
     GetUserDocument,
-    baseOptions,
+    options,
+  );
+}
+// @ts-ignore
+export function useGetUserSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetUserQuery,
+    GetUserQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<GetUserQuery, GetUserQueryVariables>;
+export function useGetUserSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetUserQuery, GetUserQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  GetUserQuery | undefined,
+  GetUserQueryVariables
+>;
+export function useGetUserSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GetUserQuery, GetUserQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<GetUserQuery, GetUserQueryVariables>(
+    GetUserDocument,
+    options,
   );
 }
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserSuspenseQueryHookResult = ReturnType<
+  typeof useGetUserSuspenseQuery
+>;
 export type GetUserQueryResult = Apollo.QueryResult<
   GetUserQuery,
   GetUserQueryVariables
@@ -14580,10 +15056,11 @@ export function useRefetchUserShortlistQuery(
     RefetchUserShortlistQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     RefetchUserShortlistQuery,
     RefetchUserShortlistQueryVariables
-  >(RefetchUserShortlistDocument, baseOptions);
+  >(RefetchUserShortlistDocument, options);
 }
 export function useRefetchUserShortlistLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -14591,16 +15068,58 @@ export function useRefetchUserShortlistLazyQuery(
     RefetchUserShortlistQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     RefetchUserShortlistQuery,
     RefetchUserShortlistQueryVariables
-  >(RefetchUserShortlistDocument, baseOptions);
+  >(RefetchUserShortlistDocument, options);
+}
+// @ts-ignore
+export function useRefetchUserShortlistSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchUserShortlistQuery,
+    RefetchUserShortlistQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchUserShortlistQuery,
+  RefetchUserShortlistQueryVariables
+>;
+export function useRefetchUserShortlistSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchUserShortlistQuery,
+        RefetchUserShortlistQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchUserShortlistQuery | undefined,
+  RefetchUserShortlistQueryVariables
+>;
+export function useRefetchUserShortlistSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchUserShortlistQuery,
+        RefetchUserShortlistQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchUserShortlistQuery,
+    RefetchUserShortlistQueryVariables
+  >(RefetchUserShortlistDocument, options);
 }
 export type RefetchUserShortlistQueryHookResult = ReturnType<
   typeof useRefetchUserShortlistQuery
 >;
 export type RefetchUserShortlistLazyQueryHookResult = ReturnType<
   typeof useRefetchUserShortlistLazyQuery
+>;
+export type RefetchUserShortlistSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchUserShortlistSuspenseQuery
 >;
 export type RefetchUserShortlistQueryResult = Apollo.QueryResult<
   RefetchUserShortlistQuery,
@@ -14637,10 +15156,11 @@ export function useRefetchUserReviewQuery(
     RefetchUserReviewQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
     RefetchUserReviewQuery,
     RefetchUserReviewQueryVariables
-  >(RefetchUserReviewDocument, baseOptions);
+  >(RefetchUserReviewDocument, options);
 }
 export function useRefetchUserReviewLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
@@ -14648,16 +15168,58 @@ export function useRefetchUserReviewLazyQuery(
     RefetchUserReviewQueryVariables
   >,
 ) {
+  const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
     RefetchUserReviewQuery,
     RefetchUserReviewQueryVariables
-  >(RefetchUserReviewDocument, baseOptions);
+  >(RefetchUserReviewDocument, options);
+}
+// @ts-ignore
+export function useRefetchUserReviewSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    RefetchUserReviewQuery,
+    RefetchUserReviewQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchUserReviewQuery,
+  RefetchUserReviewQueryVariables
+>;
+export function useRefetchUserReviewSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchUserReviewQuery,
+        RefetchUserReviewQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  RefetchUserReviewQuery | undefined,
+  RefetchUserReviewQueryVariables
+>;
+export function useRefetchUserReviewSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        RefetchUserReviewQuery,
+        RefetchUserReviewQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    RefetchUserReviewQuery,
+    RefetchUserReviewQueryVariables
+  >(RefetchUserReviewDocument, options);
 }
 export type RefetchUserReviewQueryHookResult = ReturnType<
   typeof useRefetchUserReviewQuery
 >;
 export type RefetchUserReviewLazyQueryHookResult = ReturnType<
   typeof useRefetchUserReviewLazyQuery
+>;
+export type RefetchUserReviewSuspenseQueryHookResult = ReturnType<
+  typeof useRefetchUserReviewSuspenseQuery
 >;
 export type RefetchUserReviewQueryResult = Apollo.QueryResult<
   RefetchUserReviewQuery,

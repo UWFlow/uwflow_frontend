@@ -14,6 +14,7 @@ import {
   RefetchUserReviewQueryVariables,
   ReviewInfoFragment,
   ReviewProfsFragment,
+  ReviewUpdateInfoFragment,
   UpsertReviewMutation,
   UpsertReviewMutationVariables,
 } from 'generated/graphql';
@@ -291,6 +292,12 @@ const CourseReviewBoxContent = ({
 
     upsertReview({
       variables: reviewData,
+      // Hand-built optimistic stand-in. Two casts cover impedance the generated
+      // types can't express here: the spread `reviewData` are optional mutation
+      // inputs being placed into a required result element (cast to the
+      // fragment), and Apollo injects `__typename` at every query level at
+      // runtime — required for cache writes — but codegen omits it from
+      // operation types (cast the wrapper to the mutation type).
       optimisticResponse: {
         __typename: 'mutation_root',
         insert_review: {
@@ -303,10 +310,10 @@ const CourseReviewBoxContent = ({
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
               public: Boolean(selectedAnonymous !== 0),
-            },
+            } as ReviewUpdateInfoFragment,
           ],
         },
-      },
+      } as UpsertReviewMutation,
     }).then(() => {
       if (review) {
         notifyUpdate();
