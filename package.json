@@ -101,7 +101,7 @@
   "scripts": {
     "start": "bun scripts/start.js",
     "build": "bun scripts/build.js && bun run sentry:sourcemaps",
-    "build:vercel": "REACT_APP_GRAPHQL_ENDPOINT=https://uwflow.com/graphql REACT_APP_BACKEND_ENDPOINT=https://uwflow.com/api bun scripts/build.js",
+    "build:vercel": "bun scripts/build.js",
     "test": "CI=true node scripts/test.js --env=jsdom --coverage",
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix -c .eslintrc.js --quiet",
     "lint-nofix": "eslint src/ --ext .ts,.tsx,.js,.jsx -c .eslintrc.js --quiet",
