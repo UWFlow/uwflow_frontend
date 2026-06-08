@@ -31,10 +31,6 @@ const nextTermCode = getNextTermCode();
 // dirties the URL.
 const DEFAULT_SORT_BY: TableSortBy = { id: 'ratings', desc: false };
 
-// Sort keys that only exist on course rows; applying them to prof rows would
-// produce undefined values and crash stringSort.
-const COURSE_ONLY_SORT_KEYS = ['code', 'name'];
-
 // 'name' -> asc, '-name' -> desc, '' -> default sort.
 const parseSortBy = (sortBy: string): TableSortBy[] => {
   if (!sortBy) return [DEFAULT_SORT_BY];
@@ -130,9 +126,9 @@ const SearchResults = ({
       : (data as ExploreQuery).search_profs;
 
     const newCourses: CourseSearchResult[] = allCourses.map((result) => ({
-      id: result.course_id!,
-      code: result.code!,
-      name: result.name!,
+      id: result.course_id ?? 0,
+      code: result.code ?? '',
+      name: result.name ?? '',
       ratings: result.ratings,
       liked: result.liked,
       easy: result.easy,
@@ -144,10 +140,10 @@ const SearchResults = ({
     }));
 
     const newProfs: ProfSearchResult[] = allProfs.map((result) => ({
-      id: result.prof_id!,
+      id: result.prof_id ?? 0,
       code_name: {
-        code: result.code!,
-        name: result.name!,
+        code: result.code ?? '',
+        name: result.name ?? '',
       },
       ratings: result.ratings,
       liked: result.liked,

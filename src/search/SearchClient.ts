@@ -151,7 +151,10 @@ class SearchClient {
     let indexedDate = lastIndexedDate;
 
     if (searchData !== null) {
-      parsedSearchData = JSON.parse(LZString.decompressFromUTF16(searchData)!);
+      const decompressed = LZString.decompressFromUTF16(searchData);
+      if (decompressed !== null) {
+        parsedSearchData = JSON.parse(decompressed);
+      }
     }
 
     // Fetch data if not available from local storage
