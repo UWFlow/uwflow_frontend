@@ -9,10 +9,9 @@ const LOCAL_BACKEND_ENDPOINT = 'http://localhost:8081';
 
 // Endpoints can be overridden at build time via REACT_APP_* env vars. This lets
 // deployments that don't share an origin with the backend (e.g. Vercel preview
-// builds served from *.vercel.app) target an absolute backend URL. See
-// .env.production, which points production builds at the backend on uwflow.com.
-// When the override is unset, fall back to same-origin relative paths, which is
-// correct when the frontend is served from the host that proxies /graphql + /api.
+// builds served from *.vercel.app) target an absolute backend URL (see
+// package.json's build:vercel + vercel.json). When unset, fall back to
+// same-origin relative paths, which is correct when the frontend is served from the host that proxies /graphql + /api.
 export const GRAPHQL_ENDPOINT =
   process.env.REACT_APP_GRAPHQL_ENDPOINT ||
   (process.env.NODE_ENV === 'development'
