@@ -45,7 +45,7 @@ const renderProfilePicture = (
 
   return (
     <ProfilePicture
-      image={user.picture_url ? user.picture_url! : getKittenFromID(user.id)}
+      image={user.picture_url || getKittenFromID(user.id)}
       isLanding={isLanding}
       onMouseDown={(e) => e.preventDefault()}
     />

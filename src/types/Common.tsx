@@ -1,4 +1,3 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { Moment } from 'moment';
 
 /* Table */

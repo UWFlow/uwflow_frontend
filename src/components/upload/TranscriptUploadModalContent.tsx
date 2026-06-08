@@ -122,8 +122,8 @@ const TranscriptUploadModalContent = ({
     e.preventDefault();
     e.stopPropagation();
 
-    if (fileInputRef && fileInputRef.current) {
-      await makeTranscriptRequest(fileInputRef.current.files![0]);
+    if (fileInputRef && fileInputRef.current && fileInputRef.current.files) {
+      await makeTranscriptRequest(fileInputRef.current.files[0]);
     }
   };
 
