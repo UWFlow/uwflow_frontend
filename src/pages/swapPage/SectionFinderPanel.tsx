@@ -45,8 +45,11 @@ const formatMeetingTime = (meeting: SwapMeeting): string => {
   const days = (meeting.days as string[])
     .map((d) => WEEKDAY_NAMES[d] || d)
     .join(' ');
-  return `${days} · ${formatTime(meeting.start_seconds!)}–${formatTime(
-    meeting.end_seconds!,
+  if (meeting.start_seconds == null || meeting.end_seconds == null) {
+    return days;
+  }
+  return `${days} · ${formatTime(meeting.start_seconds)}–${formatTime(
+    meeting.end_seconds,
   )}`;
 };
 
@@ -63,7 +66,9 @@ const sectionConflictsWithSchedule = (
   );
 
   return candidate.meetings.some((cm) => {
-    if (cm.start_seconds == null || cm.end_seconds == null) return false;
+    const cmStart = cm.start_seconds;
+    const cmEnd = cm.end_seconds;
+    if (cmStart == null || cmEnd == null) return false;
     const cmDays = cm.days as string[];
     return cmDays.some((day) =>
       otherSections.some((e) =>
@@ -73,12 +78,7 @@ const sectionConflictsWithSchedule = (
             emDays.includes(day) &&
             em.start_seconds != null &&
             em.end_seconds != null &&
-            timesOverlap(
-              cm.start_seconds!,
-              cm.end_seconds!,
-              em.start_seconds,
-              em.end_seconds,
-            )
+            timesOverlap(cmStart, cmEnd, em.start_seconds, em.end_seconds)
           );
         }),
       ),

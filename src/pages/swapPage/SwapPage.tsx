@@ -104,10 +104,7 @@ const SwapPage = () => {
           />
         )}
       </Helmet>
-      <SwapCalendar
-        schedule={schedule}
-        refetchAll={isLoggedIn ? refetch : undefined}
-      />
+      <SwapCalendar schedule={schedule} />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <ScheduleImportOverlay visible={!hasSchedule}>
           <ScheduleImportCard>

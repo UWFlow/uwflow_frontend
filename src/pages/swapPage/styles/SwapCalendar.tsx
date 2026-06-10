@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Body, FadeInAnimation, Heading1 } from 'constants/Mixins';
+import { Body, Heading1 } from 'constants/Mixins';
 import { CalendarWithButtonsWrapper } from 'pages/profilePage/styles/ProfileCalendar';
 
 export const SWAP_HOUR_HEIGHT = 64;
