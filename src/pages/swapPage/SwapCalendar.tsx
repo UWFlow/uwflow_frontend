@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { Download } from 'react-feather';
 import { ApolloQueryResult } from 'apollo-client';
 import {
   GetUserQuery,
@@ -7,6 +8,11 @@ import {
 } from 'generated/graphql';
 
 import { FadeInWrapper } from 'components/navigation/styles/Footer';
+import {
+  BACKEND_ENDPOINT,
+  CALENDAR_EXPORT_ENDPOINT,
+  GOOGLE_CALENDAR_URL,
+} from 'constants/Api';
 import { SwapSection } from 'graphql/queries/course/SwapCourse';
 import {
   formatCourseCode,
@@ -14,6 +20,7 @@ import {
   getNextTermCode,
   termCodeToDate,
 } from 'utils/Misc';
+import { randString } from 'utils/Random';
 
 import {
   BlockCode,
@@ -33,12 +40,16 @@ import {
   DropdownCourseCode,
   DropdownCourseName,
   EventBlock,
+  ExportButton,
+  ExportMenu,
+  ExportMenuItem,
   GhostEventBlock,
   GridBody,
   HalfHourLine,
   HourLineFull,
   LegendDot,
   LegendItem,
+  NewBadge,
   SectionFinderContainer,
   SWAP_GRID_END_HOUR,
   SWAP_GRID_START_HOUR,
@@ -183,12 +194,18 @@ const buildGhostBlocks = (section: SwapSection | null): BlockPos[] =>
 
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
+  /** Enables the calendar export menu; absent for ephemeral schedules. */
+  secretId?: string;
   refetchAll?: (
     variables: GetUserQueryVariables,
   ) => Promise<ApolloQueryResult<GetUserQuery>>;
 };
 
-const SwapCalendar = ({ schedule, refetchAll }: SwapCalendarProps) => {
+const SwapCalendar = ({
+  schedule,
+  secretId,
+  refetchAll,
+}: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
 
   const thisTermCode = getCurrentTermCode();
@@ -212,6 +229,24 @@ const SwapCalendar = ({ schedule, refetchAll }: SwapCalendarProps) => {
   >(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSourceDropdownOpen, setIsSourceDropdownOpen] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
+
+  const handleCalendarExport = async (download: boolean) => {
+    if (!secretId) return;
+    const response = await fetch(
+      `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretId)}`,
+    );
+    if (download) {
+      window.location.assign(response.url);
+    } else {
+      // Replace https:// with webcal:// and append random query
+      // parameter to avoid cache issues with Google Calendar
+      const calendarUrl = response.url
+        .replace(/^https:\/\//, 'webcal://')
+        .concat(`?noCache=${randString()}`);
+      window.open(`${GOOGLE_CALENDAR_URL}${calendarUrl}`, '_blank');
+    }
+  };
 
   useEffect(() => {
     setSelectedSwapCourseCode(null);
@@ -259,7 +294,9 @@ const SwapCalendar = ({ schedule, refetchAll }: SwapCalendarProps) => {
     <FadeInWrapper>
       <SwapCalendarOuter>
         <SwapTitleRow>
-          <SwapPageTitle>Your schedule</SwapPageTitle>
+          <SwapPageTitle>
+            Swap classes <NewBadge>New</NewBadge>
+          </SwapPageTitle>
           <SwapPageSubtitle>
             Click any class to see other sections or swap it for a different
             course.
@@ -353,6 +390,37 @@ const SwapCalendar = ({ schedule, refetchAll }: SwapCalendarProps) => {
               'Select course from schedule'
             )}
           </CourseSelectTrigger>
+
+          {secretId && (
+            <CourseSelectBadgeWrapper>
+              <ExportButton onClick={() => setIsExportOpen((o) => !o)}>
+                <Download size={15} /> Export
+              </ExportButton>
+              {isExportOpen && (
+                <>
+                  <SwapDropdownOverlay onClick={() => setIsExportOpen(false)} />
+                  <ExportMenu>
+                    <ExportMenuItem
+                      onClick={() => {
+                        handleCalendarExport(false);
+                        setIsExportOpen(false);
+                      }}
+                    >
+                      Add to Google Calendar
+                    </ExportMenuItem>
+                    <ExportMenuItem
+                      onClick={() => {
+                        handleCalendarExport(true);
+                        setIsExportOpen(false);
+                      }}
+                    >
+                      Download .ics file
+                    </ExportMenuItem>
+                  </ExportMenu>
+                </>
+              )}
+            </CourseSelectBadgeWrapper>
+          )}
         </SwapHeaderRow>
 
         <SwapBodyWrapper>

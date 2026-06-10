@@ -109,6 +109,7 @@ const SwapPage = () => {
       </Helmet>
       <SwapCalendar
         schedule={schedule}
+        secretId={user?.secret_id}
         refetchAll={isLoggedIn ? refetch : undefined}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
