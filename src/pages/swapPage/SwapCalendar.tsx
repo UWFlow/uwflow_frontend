@@ -539,11 +539,14 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
                 <button
                   aria-label="Reset swapped sections"
                   title="Reset swapped sections"
-                  className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-solid border-light3 bg-white text-dark2 transition-colors hover:bg-light1"
+                  className="flex w-9 shrink-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-lg border border-solid border-light3 bg-white py-1.5 text-dark2 transition-colors hover:bg-light1"
                   onClick={() => window.location.reload()}
                   type="button"
                 >
-                  <RotateCcw aria-hidden="true" size={16} />
+                  <RotateCcw aria-hidden="true" size={14} />
+                  <span className="text-[9px] font-semibold leading-none">
+                    Reset
+                  </span>
                 </button>
               ) : (
                 secretId && (
