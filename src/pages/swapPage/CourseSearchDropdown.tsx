@@ -4,17 +4,10 @@ import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
+import { cn } from 'lib/utils';
 
-import {
-  DropdownCourseCode,
-  DropdownCourseName,
-  DropdownEmptyState,
-  SwapDropdownItem,
-  SwapDropdownList,
-  SwapDropdownOverlay,
-  SwapDropdownSearchInput,
-  SwapDropdownWrapper,
-} from './styles/SwapCalendar';
+const dropdownEmptyStateClasses =
+  'px-3.5 py-4 text-center text-[13px] text-dark3';
 
 type CourseItem = { code: string; name: string };
 
@@ -45,16 +38,29 @@ const CourseRow = ({
 }: ListChildComponentProps<RowData>) => {
   const { courses, selectedCode, onSelect } = data;
   const course = courses[index];
+  const isSelected = course.code === selectedCode;
+  const isEnrolled = false;
   return (
-    <SwapDropdownItem
+    <button
+      type="button"
       style={style}
-      isSelected={course.code === selectedCode}
-      isEnrolled={false}
+      className={cn(
+        'flex w-full cursor-pointer items-center border-0 border-b border-solid border-light2 px-3.5 py-2.5 text-left text-[13px] text-dark1 last:border-b-0 hover:bg-light1',
+        isSelected
+          ? 'bg-[#eef4ff]'
+          : isEnrolled
+          ? 'bg-[#f5f8ff]'
+          : 'bg-transparent',
+      )}
       onClick={() => onSelect(course.code)}
     >
-      <DropdownCourseCode>{course.code.toUpperCase()}</DropdownCourseCode>
-      <DropdownCourseName>{course.name}</DropdownCourseName>
-    </SwapDropdownItem>
+      <span className="shrink-0 text-[13px] font-bold text-courses">
+        {course.code.toUpperCase()}
+      </span>
+      <span className="ml-2 min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-dark3">
+        {course.name}
+      </span>
+    </button>
   );
 };
 
@@ -125,13 +131,13 @@ const CourseSearchDropdown = ({
 
   const renderBody = () => {
     if (loading) {
-      return <DropdownEmptyState>Loading courses…</DropdownEmptyState>;
+      return <div className={dropdownEmptyStateClasses}>Loading courses…</div>;
     }
     if (filteredCourses.length === 0) {
       return (
-        <DropdownEmptyState>
+        <div className={dropdownEmptyStateClasses}>
           No courses found for &quot;{searchQuery}&quot;
-        </DropdownEmptyState>
+        </div>
       );
     }
     return (
@@ -149,16 +155,17 @@ const CourseSearchDropdown = ({
 
   return (
     <>
-      <SwapDropdownOverlay onClick={onClose} />
-      <SwapDropdownWrapper>
-        <SwapDropdownSearchInput
+      <div className="fixed inset-0 z-[199]" onClick={onClose} />
+      <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded-md border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+        <input
           ref={inputRef}
+          className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
           placeholder="Search courses…"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <SwapDropdownList>{renderBody()}</SwapDropdownList>
-      </SwapDropdownWrapper>
+        <div className="flex-1 overflow-y-auto">{renderBody()}</div>
+      </div>
     </>
   );
 };

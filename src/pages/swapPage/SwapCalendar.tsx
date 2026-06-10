@@ -11,7 +11,6 @@ import {
   CalendarEventVariant,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
-import { FadeInWrapper } from 'components/navigation/styles/Footer';
 import { BACKEND_ENDPOINT, CALENDAR_EXPORT_ENDPOINT } from 'constants/Api';
 import {
   GET_COURSE_FOR_SWAP,
@@ -437,7 +436,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
   const hasSwaps = Object.keys(overriddenByTerm).length > 0;
 
   return (
-    <FadeInWrapper>
+    <div className="relative z-0 w-screen animate-fade-in">
       <div className="mx-auto box-border flex w-full max-w-[1280px] flex-col px-8 pb-8 pt-6">
         <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
@@ -585,7 +584,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
           </div>
         </div>
       </div>
-    </FadeInWrapper>
+    </div>
   );
 };
 

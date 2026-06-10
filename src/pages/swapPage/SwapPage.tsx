@@ -16,14 +16,15 @@ import {
   GetSectionsByClassNumbersQuery,
 } from 'graphql/queries/course/SwapCourse';
 import { GET_USER } from 'graphql/queries/user/User';
+import { cn } from 'lib/utils';
 import { ParseOnlyScheduleResponse } from 'types/Api';
 
-import {
-  ScheduleImportCard,
-  ScheduleImportOverlay,
-  SwapPageWrapper,
-} from './styles/SwapPage';
 import SwapCalendar from './SwapCalendar';
+
+// PageWrapper mixin (min-height accounts for FOOTER_HEIGHT 70px +
+// FOOTER_MARGIN_TOP 32px) on the app's light1 background, with a fade-in.
+const swapPageWrapperClasses =
+  'relative flex min-h-[calc(100vh-102px)] w-screen animate-[fadeIn_0.3s_ease] flex-col bg-light1 pb-8';
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
@@ -73,28 +74,28 @@ const SwapPage = () => {
 
   if (isLoggedIn && (loading || !data)) {
     return (
-      <SwapPageWrapper>
+      <div className={swapPageWrapperClasses}>
         <Helmet>
           <title>Section Swap - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
-      </SwapPageWrapper>
+      </div>
     );
   }
 
   if (!isLoggedIn && ephemeralParseData && sectionsLoading) {
     return (
-      <SwapPageWrapper>
+      <div className={swapPageWrapperClasses}>
         <Helmet>
           <title>Section Swap - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
-      </SwapPageWrapper>
+      </div>
     );
   }
 
   return (
-    <SwapPageWrapper>
+    <div className={swapPageWrapperClasses}>
       <Helmet>
         <title>Section Swap - UW Flow</title>
         {hasSchedule && (
@@ -106,8 +107,15 @@ const SwapPage = () => {
       </Helmet>
       <SwapCalendar schedule={schedule} secretId={user?.secret_id ?? null} />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <ScheduleImportOverlay visible={!hasSchedule}>
-          <ScheduleImportCard>
+        <div
+          className={cn(
+            'fixed inset-0 z-10 box-border flex items-start justify-center overflow-y-auto bg-white/55 backdrop-blur [transition:opacity_0.4s_ease]',
+            !hasSchedule
+              ? 'pointer-events-auto opacity-100'
+              : 'pointer-events-none opacity-0',
+          )}
+        >
+          <div className="mt-[150px] flex justify-center">
             <ScheduleUploadModalContent
               onAfterUploadSuccess={
                 isLoggedIn
@@ -117,10 +125,10 @@ const SwapPage = () => {
               }
               showSkipStepButton={false}
             />
-          </ScheduleImportCard>
-        </ScheduleImportOverlay>
+          </div>
+        </div>
       </div>
-    </SwapPageWrapper>
+    </div>
   );
 };
 
