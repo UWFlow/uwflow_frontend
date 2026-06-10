@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ChevronDown, Download } from 'react-feather';
 import { useQuery } from '@apollo/client';
 import { UserScheduleFragment } from 'generated/graphql';
 import moment from 'moment/moment';
@@ -11,6 +12,7 @@ import {
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import { FadeInWrapper } from 'components/navigation/styles/Footer';
+import { BACKEND_ENDPOINT, CALENDAR_EXPORT_ENDPOINT } from 'constants/Api';
 import {
   GET_COURSE_FOR_SWAP,
   GetCourseForSwapQuery,
@@ -184,9 +186,12 @@ const toScheduleEntry = (section: SwapSection, userId: number): ScheduleEntry =>
 
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
+  // iCalendar export id of the logged-in user; null hides the Export button
+  // (logged-out / ephemeral schedules have nothing to export).
+  secretId?: string | null;
 };
 
-const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
+const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
 
   const thisTermCode = getCurrentTermCode();
@@ -368,6 +373,15 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
     [swapSections, termSections, selectedCourseCode, selectedTerm],
   );
 
+  // iCalendar export, same flow as ProfileCalendar's handleCalendarExport.
+  const handleExport = useCallback(async () => {
+    if (!secretId) return;
+    const response = await fetch(
+      `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretId)}`,
+    );
+    window.location.assign(response.url);
+  }, [secretId]);
+
   const handleClose = useCallback(() => {
     setSelectedCourseCode(null);
     setSelectedSwapCourseCode(null);
@@ -413,58 +427,20 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
               course.
             </p>
           </div>
-          <div className="flex shrink-0 flex-wrap items-center gap-3">
-            <div className="inline-flex rounded border border-solid border-light3 bg-light1 p-1">
-              {availableTerms.map((term) => (
-                <button
-                  className={cn(
-                    'h-8 cursor-pointer rounded border-none bg-transparent px-3 text-sm font-semibold text-dark2 transition-colors',
-                    selectedTermCode === term.id &&
-                      'bg-white text-dark1 shadow-sm',
-                  )}
-                  key={term.id}
-                  onClick={() => handleTermChange(term.id)}
-                  type="button"
-                >
-                  {term.label}
-                </button>
-              ))}
-            </div>
-            <div className="flex h-10 items-center gap-2 rounded-md border border-solid border-light3 bg-white px-3">
-              {selectedCourseCode ? (
-                <>
-                  <span className="text-sm font-semibold text-dark1">Swap</span>
-                  <span className="whitespace-nowrap text-sm font-semibold text-courses">
-                    {formatCourseCode(selectedCourseCode)}
-                  </span>
-                  <span className="text-sm text-dark2">with</span>
-                  <div className="relative">
-                    <button
-                      className="h-8 cursor-pointer whitespace-nowrap rounded border border-solid border-light3 bg-white px-2 text-sm font-semibold text-courses outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      onClick={() => setIsSwapDropdownOpen((open) => !open)}
-                      type="button"
-                    >
-                      {formatCourseCode(swapTargetCode ?? selectedCourseCode)} ▾
-                    </button>
-                    {isSwapDropdownOpen && (
-                      <CourseSearchDropdown
-                        selectedCode={swapTargetCode}
-                        onSelect={(code) => {
-                          setIsSwapDropdownOpen(false);
-                          handleCourseChange(code);
-                        }}
-                        onClose={() => setIsSwapDropdownOpen(false)}
-                        termId={selectedTermCode}
-                      />
-                    )}
-                  </div>
-                </>
-              ) : (
-                <span className="text-sm text-dark3">
-                  Select a class on your schedule
-                </span>
-              )}
-            </div>
+          <div className="inline-flex shrink-0 rounded-lg border border-solid border-light3 bg-white p-1">
+            {availableTerms.map((term) => (
+              <button
+                className={cn(
+                  'h-8 cursor-pointer rounded-md border-none bg-transparent px-4 text-sm font-semibold text-dark3 transition-colors',
+                  selectedTermCode === term.id && 'bg-light2 text-dark1',
+                )}
+                key={term.id}
+                onClick={() => handleTermChange(term.id)}
+                type="button"
+              >
+                {term.label}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -479,12 +455,68 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
             />
           </div>
 
-          <div className="flex w-[360px] shrink-0 flex-col">
+          <div className="flex w-[360px] shrink-0 flex-col gap-3">
+            <div className="flex items-stretch gap-2">
+              <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2.5 shadow-box">
+                {selectedCourseCode ? (
+                  <>
+                    <span className="text-sm font-semibold text-dark1">
+                      Swap
+                    </span>
+                    <span className="whitespace-nowrap text-sm font-semibold text-courses">
+                      {formatCourseCode(selectedCourseCode)}
+                    </span>
+                    <span className="text-sm font-semibold text-dark1">
+                      with
+                    </span>
+                    <div className="relative">
+                      <button
+                        className="flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-lg border-none bg-light2 px-2.5 text-sm font-semibold text-courses outline-none focus:ring-2 focus:ring-primary/20"
+                        onClick={() => setIsSwapDropdownOpen((open) => !open)}
+                        type="button"
+                      >
+                        {formatCourseCode(swapTargetCode ?? selectedCourseCode)}
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="text-dark2"
+                          size={14}
+                        />
+                      </button>
+                      {isSwapDropdownOpen && (
+                        <CourseSearchDropdown
+                          selectedCode={swapTargetCode}
+                          onSelect={(code) => {
+                            setIsSwapDropdownOpen(false);
+                            handleCourseChange(code);
+                          }}
+                          onClose={() => setIsSwapDropdownOpen(false)}
+                          termId={selectedTermCode}
+                        />
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <span className="text-sm text-dark3">
+                    Select a class on your schedule
+                  </span>
+                )}
+              </div>
+              {secretId && (
+                <button
+                  className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border-none bg-primary px-4 text-sm font-semibold text-white transition-colors hover:bg-primaryDark"
+                  onClick={handleExport}
+                  type="button"
+                >
+                  <Download aria-hidden="true" size={16} />
+                  Export
+                </button>
+              )}
+            </div>
             {updatedAt && (
               <LastUpdatedSchedule
                 updatedAt={updatedAt}
                 fontSize="80%"
-                margin="0 0 8px"
+                margin="0"
               />
             )}
             <ScheduleSwapPanel

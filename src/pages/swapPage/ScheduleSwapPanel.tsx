@@ -92,19 +92,20 @@ const getMeetingTime = (meeting: SwapMeeting) => {
   )}`;
 };
 
+// Light blue for enrolled and available sections alike; gray for conflicts.
 const SectionBadge = ({
   sectionName,
-  isEnrolled,
+  hasConflict,
 }: {
   sectionName: string;
-  isEnrolled: boolean;
+  hasConflict: boolean;
 }) => (
   <span
     className={cn(
-      'inline-flex h-6 items-center rounded border border-solid px-2 text-xs font-semibold',
-      isEnrolled
-        ? 'border-primary/20 bg-primary/10 text-primary'
-        : 'border-light3 bg-light1 text-dark2',
+      'inline-flex h-6 items-center rounded-md border border-solid px-2 text-xs font-semibold',
+      hasConflict
+        ? 'border-light3 bg-light1 text-dark3'
+        : 'border-primary/20 bg-primary/5 text-primary',
     )}
   >
     {sectionName}
@@ -129,13 +130,15 @@ const MeetingInstructor = ({
     <div className="min-w-0">
       {professor.code ? (
         <RouterLink
-          className="font-semibold text-professors no-underline underline-offset-2 hover:underline"
+          className="text-sm font-semibold text-professors underline underline-offset-2"
           to={getProfPageRoute(professor.code)}
         >
           {professor.name}
         </RouterLink>
       ) : (
-        <span className="font-semibold text-dark2">{professor.name}</span>
+        <span className="text-sm font-semibold text-dark2">
+          {professor.name}
+        </span>
       )}
       {stats && (
         <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-dark2">
@@ -182,8 +185,8 @@ const MeetingLine = ({
   meeting: SwapMeeting;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
 }) => (
-  <div className="grid gap-1 text-sm text-dark2">
-    <div className="text-dark2">
+  <div className="grid gap-1 text-xs text-dark2">
+    <div className="text-dark1">
       <span>{formatDays(meeting.days) || 'No days listed'}</span>
       <span className="mx-1">·</span>
       <span>{getMeetingTime(meeting)}</span>
@@ -241,10 +244,12 @@ const ScheduleSectionRow = ({
     }
   };
 
+  const openSeats = getOpenSeats(section);
+
   return (
     <div
       className={cn(
-        'border-0 border-l-4 border-solid border-transparent bg-white px-5 py-4 outline-none transition-colors',
+        'border-0 border-l-4 border-solid border-transparent bg-white px-4 py-3 outline-none transition-colors',
         'focus-within:bg-light1 hover:bg-light1',
         isEnrolled && 'border-primary bg-primary/5',
         hasConflict && 'bg-light1/60 text-dark3',
@@ -255,10 +260,10 @@ const ScheduleSectionRow = ({
       onPointerLeave={clearPreview}
       tabIndex={0}
     >
-      <div className="mb-3 flex items-start justify-between gap-3">
+      <div className="mb-2 flex items-start justify-between gap-2">
         <SectionBadge
           sectionName={section.section_name}
-          isEnrolled={isEnrolled}
+          hasConflict={hasConflict}
         />
         {isEnrolled && (
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
@@ -273,9 +278,9 @@ const ScheduleSectionRow = ({
           </span>
         )}
       </div>
-      <div className="grid gap-3">
+      <div className="grid gap-2">
         {section.meetings.length === 0 ? (
-          <div className="text-sm text-dark3">No meeting times listed</div>
+          <div className="text-xs text-dark3">No meeting times listed</div>
         ) : (
           section.meetings.map((meeting, index) => (
             <MeetingLine
@@ -286,16 +291,21 @@ const ScheduleSectionRow = ({
           ))
         )}
       </div>
-      <div className="mt-4 flex items-center justify-between gap-4">
-        <div className="text-sm text-dark2">
-          <strong className="font-semibold text-dark1">
-            {getOpenSeats(section)}
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="text-xs text-dark2">
+          <strong
+            className={cn(
+              'font-semibold',
+              openSeats === 0 ? 'text-red' : 'text-dark1',
+            )}
+          >
+            {openSeats}
           </strong>{' '}
-          of {section.enrollment_capacity} open
+          of {section.enrollment_capacity} {openSeats === 0 ? 'seats' : 'open'}
         </div>
         {!isEnrolled && !hasConflict && (
           <Button
-            className="h-9 px-4"
+            className="h-8 rounded-lg px-3"
             onClick={() => onSwitchSection(section.id)}
             size="sm"
             type="button"
@@ -346,7 +356,7 @@ const ScheduleSwapPanel = ({
   };
 
   return (
-    <aside className="w-full overflow-hidden rounded border border-solid border-light3 bg-white shadow-box tablet:max-w-[360px]">
+    <aside className="w-full overflow-hidden rounded-xl border border-solid border-light3 bg-white shadow-box tablet:max-w-[360px]">
       {isLoading ? (
         <div className="flex min-h-[178px] items-center justify-center p-4">
           <LoadingSpinner />
@@ -360,14 +370,14 @@ const ScheduleSwapPanel = ({
           <div className="flex items-start justify-between gap-3 border-0 border-b border-solid border-light3 px-4 py-3">
             <div className="min-w-0">
               <div className="flex items-baseline gap-2">
-                <h2 className="m-0 text-base font-semibold text-primary">
+                <h2 className="m-0 text-md font-semibold text-courses">
                   {formatCourseCode(selectedCourse.code)}
                 </h2>
-                <span className="text-sm text-dark3">
+                <span className="text-xs text-dark3">
                   {sections.length} section{sections.length === 1 ? '' : 's'}
                 </span>
               </div>
-              <p className="mb-0 mt-1 text-sm text-dark3">
+              <p className="mb-0 mt-0.5 text-sm text-dark3">
                 {selectedCourse.name}
               </p>
             </div>
