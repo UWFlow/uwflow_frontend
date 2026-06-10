@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Download } from 'react-feather';
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult } from '@apollo/client';
 import {
   GetUserQuery,
   GetUserQueryVariables,
@@ -276,12 +276,14 @@ const SwapCalendar = ({
       });
   }, [termSections]);
 
-  const enrolledBlocks = useMemo(() => buildEnrolledBlocks(termSections), [
-    termSections,
-  ]);
-  const ghostBlocks = useMemo(() => buildGhostBlocks(hoveredSection), [
-    hoveredSection,
-  ]);
+  const enrolledBlocks = useMemo(
+    () => buildEnrolledBlocks(termSections),
+    [termSections],
+  );
+  const ghostBlocks = useMemo(
+    () => buildGhostBlocks(hoveredSection),
+    [hoveredSection],
+  );
   const weekDates = useMemo(getWeekDates, []);
 
   const blocksByCol: EnrolledBlock[][] = Array.from({ length: 5 }, () => []);

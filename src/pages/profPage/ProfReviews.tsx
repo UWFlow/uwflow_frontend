@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-apollo';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@apollo/client';
 import { getCoursePageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 

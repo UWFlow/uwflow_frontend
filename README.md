@@ -4,13 +4,13 @@
 
 ## ⚙️ Frontend Setup ⚙
 
-1. `yarn install` to install dependencies
-2. `yarn start` to run the server locally at [localhost:3000](localhost:3000)
+1. `bun install` to install dependencies
+2. `bun run start` to run the server locally at [localhost:3000](localhost:3000)
 
 ## 🎬 Building for Production 🎬
 
-1. `yarn lint` to check that there are no linter errors, otherwise the site will not compile
-2. `yarn build` to create a new production build in the `build` folder
+1. `bun run lint` to check that there are no linter errors, otherwise the site will not compile
+2. `bun run build` to create a new production build in the `build` folder
 
 ## 🌐 Interacting with the Backend 🌐
 

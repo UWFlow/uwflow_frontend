@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 const COURSE_SECTION_FIELDS = `
   id
@@ -65,15 +65,6 @@ export const GET_COURSE_FOR_SWAP = gql`
       order_by: { section_name: asc }
     ) {
       ${COURSE_SECTION_FIELDS}
-    }
-  }
-`;
-
-export const COURSE_DROPDOWN_QUERY = gql`
-  query courseDropdown {
-    course(order_by: { code: asc }) {
-      code
-      name
     }
   }
 `;

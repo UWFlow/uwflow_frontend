@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-apollo';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@apollo/client';
 import {
   CourseReviewsQuery,
   CourseReviewsQueryVariables,

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-apollo';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import {
   ExploreAllQuery,
   ExploreAllQueryVariables,
   ExploreQuery,
   ExploreQueryVariables,
 } from 'generated/graphql';
-import queryString, { ParsedQuery } from 'query-string';
+import { debounce } from 'lodash';
+import queryString from 'query-string';
 
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { MAX_SEARCH_TERMS } from 'constants/Search';
@@ -16,7 +17,7 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
-import { Nullable, SearchFilterState } from 'types/Common';
+import { SearchFilterState } from 'types/Common';
 
 import { EXPLORE_PAGE_ROUTE } from '../../Routes';
 
@@ -33,10 +34,75 @@ import SearchResults from './SearchResults';
 
 export const NUM_COURSE_CODE_FILTERS = 5;
 
+// Single source of truth for the URL query param name behind each filter.
+// Serializing and reading back through the SAME names is what keeps filters
+// alive across browser navigation (e.g. /explore -> /course/xyz -> back).
+const FILTER_PARAM = {
+  excludedCourses: 'exclude',
+  minCourseRatings: 'minCourseRatings',
+  minProfRatings: 'minProfRatings',
+  courseTaught: 'courseTaught',
+  currentTerm: 'currentTerm',
+  nextTerm: 'nextTerm',
+  hasRoomAvailable: 'hasRoomAvailable',
+  hasOnlineCourse: 'hasOnlineCourse',
+  sortBy: 'sortBy',
+  exploreTab: 'tab',
+};
+
+// SearchFilterState -> plain object ready for queryString.stringify.
+// Falsy filters become null so `skipNull` drops them and the URL stays clean.
+const filterStateToUrlQuery = (sf: SearchFilterState) => {
+  const excludedCourses = sf.courseCodes
+    .map((isIncluded, index) => (isIncluded ? -1 : index))
+    .filter((index) => index >= 0);
+
+  return {
+    [FILTER_PARAM.excludedCourses]:
+      excludedCourses.length > 0 ? excludedCourses : null,
+    [FILTER_PARAM.minCourseRatings]: sf.numCourseRatings || null,
+    [FILTER_PARAM.minProfRatings]: sf.numProfRatings || null,
+    [FILTER_PARAM.courseTaught]: sf.courseTaught || null,
+    [FILTER_PARAM.currentTerm]: sf.currentTerm || null,
+    [FILTER_PARAM.nextTerm]: sf.nextTerm || null,
+    [FILTER_PARAM.hasRoomAvailable]: sf.hasRoomAvailable || null,
+    [FILTER_PARAM.hasOnlineCourse]: sf.hasOnlineSection || null,
+    [FILTER_PARAM.sortBy]: sf.sortBy || null,
+    [FILTER_PARAM.exploreTab]: sf.exploreTab === 1 ? 'prof' : null,
+  };
+};
+
+// location.search -> SearchFilterState. Inverse of filterStateToUrlQuery.
+const urlQueryToFilterState = (search: string): SearchFilterState => {
+  const pq = queryString.parse(search, { arrayFormat: 'comma' });
+
+  // query-string gives a string for one value and an array for many, so
+  // normalize to an array before reading the excluded course indices.
+  const rawExcluded = pq[FILTER_PARAM.excludedCourses] || [];
+  const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
+  ([] as string[]).concat(rawExcluded).forEach((index) => {
+    courseCodes[parseInt(index, 10)] = false;
+  });
+
+  const asNumber = (value: any) => parseInt(value, 10) || 0;
+
+  return {
+    courseCodes,
+    numCourseRatings: asNumber(pq[FILTER_PARAM.minCourseRatings]),
+    numProfRatings: asNumber(pq[FILTER_PARAM.minProfRatings]),
+    courseTaught: asNumber(pq[FILTER_PARAM.courseTaught]),
+    currentTerm: Boolean(pq[FILTER_PARAM.currentTerm]),
+    nextTerm: Boolean(pq[FILTER_PARAM.nextTerm]),
+    hasRoomAvailable: Boolean(pq[FILTER_PARAM.hasRoomAvailable]),
+    hasOnlineSection: Boolean(pq[FILTER_PARAM.hasOnlineCourse]),
+    sortBy: (pq[FILTER_PARAM.sortBy] as string) || '',
+    exploreTab: pq[FILTER_PARAM.exploreTab] === 'prof' ? 1 : 0,
+  };
+};
+
 type ExplorePageContentProps = {
   query: string;
   codeSearch: boolean;
-  courseTab: boolean;
   error: boolean;
   loading: boolean;
   data?: ExploreAllQuery | ExploreQuery;
@@ -45,41 +111,21 @@ type ExplorePageContentProps = {
 const ExplorePageContent = ({
   query,
   codeSearch,
-  courseTab,
   data,
   error,
   loading,
 }: ExplorePageContentProps) => {
   const location = useLocation();
-  const getDefaultFilterState = (pq: ParsedQuery): SearchFilterState => {
-    const courseCodes = Array(NUM_COURSE_CODE_FILTERS).fill(true);
-    if (pq.exclude && pq.exclude instanceof Array) {
-      pq.exclude.forEach((index) => {
-        courseCodes[parseInt(index, 10)] = false;
-      });
-    }
-    return {
-      courseCodes,
-      numCourseRatings: parseInt(pq.minCourseRatings as string, 10) || 0,
-      numProfRatings: parseInt(pq.minProfRatings as string, 10) || 0,
-      currentTerm: Boolean(pq.currentTerm) || false,
-      nextTerm: Boolean(pq.nextTerm) || false,
-      courseTaught: parseInt(pq.courseTaught as string, 10) || 0,
-      hasRoomAvailable: Boolean(pq.hasRoomAvailable) || false,
-      hasOnlineSection: Boolean(pq.hasOnlineCourse) || false,
-    };
-  };
 
   const [filterState, setFilterState] = useState<SearchFilterState>(
-    getDefaultFilterState(
-      queryString.parse(location.search, {
-        arrayFormat: 'comma',
-      }),
-    ),
+    urlQueryToFilterState(location.search),
   );
 
   const [profCourses, setProfCourses] = useState<string[]>(['all courses']);
-  const [exploreTab, setExploreTab] = useState(courseTab ? 0 : 1);
+  const { exploreTab } = filterState;
+  const setExploreTab = (tab: number) => {
+    setFilterState((prev) => ({ ...prev, exploreTab: tab }));
+  };
   const exploreAll = query === '';
 
   useEffect(() => {
@@ -108,43 +154,36 @@ const ExplorePageContent = ({
     setProfCourses(['all courses'].concat(parsedProfCourses));
   }, [data, exploreAll]);
 
-  const mapFilterStateToURL = (
-    sf: SearchFilterState,
-  ): Nullable<SearchFilterState> => {
-    return {
-      courseCodes: sf.courseCodes.some((code) => !code) ? sf.courseCodes : [],
-      numCourseRatings: sf.numCourseRatings !== 0 ? sf.numCourseRatings : null,
-      numProfRatings: sf.numProfRatings !== 0 ? sf.numProfRatings : null,
-      currentTerm: sf.currentTerm ? sf.currentTerm : null,
-      nextTerm: sf.nextTerm ? sf.nextTerm : null,
-      courseTaught: sf.courseTaught !== 0 ? sf.courseTaught : null,
-      hasRoomAvailable: sf.hasRoomAvailable ? sf.hasRoomAvailable : null,
-      hasOnlineSection: sf.hasOnlineSection ? sf.hasOnlineSection : null,
-    };
-  };
+  // Debounced URL sync. A slider drag fires setFilterState on every pointer
+  // move (dozens per second on touch devices); writing window.history on each
+  // one trips Safari's "100 replaceState calls / 10s" limit and throws a
+  // SecurityError. Debouncing collapses a drag into a single trailing write
+  // once the value settles, and the identity check skips no-op writes.
+  const syncUrlToHistory = useMemo(
+    () =>
+      debounce((nextUrl: string) => {
+        const currentUrl = `${window.location.pathname}${window.location.search}`;
+        if (nextUrl !== currentUrl) {
+          window.history.replaceState({}, '', nextUrl);
+        }
+      }, 150),
+    [],
+  );
+
+  // Cancel any pending write on unmount so a trailing call can't fire after the
+  // user has navigated to another route and overwrite that route's URL.
+  useEffect(() => () => syncUrlToHistory.cancel(), [syncUrlToHistory]);
 
   useEffect(() => {
-    const filterStateURL: Nullable<SearchFilterState> = mapFilterStateToURL(
-      filterState,
-    );
+    const urlQuery = queryString.stringify(filterStateToUrlQuery(filterState), {
+      arrayFormat: 'comma',
+      skipNull: true,
+    });
 
-    // Add a comma to the end of the URL if there is only one filter, otherwise query-string can't parse single-element arrays
-    const addComma = filterStateURL.courseCodes?.length === 1 ? ',' : '';
-
-    window.history.replaceState(
-      {},
-      '',
-      `${EXPLORE_PAGE_ROUTE}?${queryString.stringify(filterStateURL, {
-        arrayFormat: 'comma',
-        skipNull: true,
-        sort: (a, b) => {
-          if (a === 'exclude') return 1; // Always sort 'exclude' to the end
-          if (b === 'exclude') return -1; // Always sort 'exclude' to the end
-          return 0;
-        },
-      })}${addComma}`,
+    syncUrlToHistory(
+      urlQuery ? `${EXPLORE_PAGE_ROUTE}?${urlQuery}` : EXPLORE_PAGE_ROUTE,
     );
-  }, [filterState]);
+  }, [filterState, syncUrlToHistory]);
 
   return (
     <ExplorePageWrapper>
@@ -161,6 +200,7 @@ const ExplorePageContent = ({
         <Column1>
           <SearchResults
             filterState={filterState}
+            setFilterState={setFilterState}
             data={data}
             error={error}
             exploreTab={exploreTab}
@@ -175,9 +215,7 @@ const ExplorePageContent = ({
             profCourses={profCourses}
             filterState={filterState}
             setFilterState={setFilterState}
-            resetFilters={() =>
-              setFilterState(getDefaultFilterState(queryString.parse('')))
-            }
+            resetFilters={() => setFilterState(urlQueryToFilterState(''))}
             courseSearch={exploreTab === 0}
           />
         </Column2>
@@ -206,10 +244,9 @@ const processRawQuery = (query = '', codeOnly = false) => {
 
 const ExplorePage = () => {
   const location = useLocation();
-  const { q, t: type, c: code } = queryString.parse(location.search);
+  const { q, c: code } = queryString.parse(location.search);
 
   const query: string = (q as string) || '';
-  const courseTab: boolean = !type || type === 'course' || type === 'c';
   const codeSearch = !!code;
 
   const processedQueryText = processRawQuery(query, codeSearch);
@@ -241,7 +278,6 @@ const ExplorePage = () => {
       <ExplorePageContent
         query={query || ''}
         codeSearch={codeSearch || false}
-        courseTab={courseTab}
         data={data}
         error={!!error}
         loading={loading}

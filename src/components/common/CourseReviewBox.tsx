@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-apollo';
 import Collapsible from 'react-collapsible';
 import { Trash2 } from 'react-feather';
 import { toast } from 'react-toastify';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Course,
   CourseReviewProfsQuery,
@@ -14,6 +14,7 @@ import {
   RefetchUserReviewQueryVariables,
   ReviewInfoFragment,
   ReviewProfsFragment,
+  ReviewUpdateInfoFragment,
   UpsertReviewMutation,
   UpsertReviewMutationVariables,
 } from 'generated/graphql';
@@ -157,9 +158,8 @@ const CourseReviewBoxContent = ({
     );
   }
 
-  const [reviewStates, setReviewStates] = useState<
-    Record<string, ReviewDisplayData>
-  >(initialReviewStates);
+  const [reviewStates, setReviewStates] =
+    useState<Record<string, ReviewDisplayData>>(initialReviewStates);
 
   useEffect(() => {
     if (allProfs && teaching) {
@@ -174,9 +174,8 @@ const CourseReviewBoxContent = ({
     }
   }, [allProfs, teaching, courseReviews, buildDefaultReview]);
 
-  const [deleteReviewModalOpen, setDeleteReviewModalOpen] = useState<boolean>(
-    false,
-  );
+  const [deleteReviewModalOpen, setDeleteReviewModalOpen] =
+    useState<boolean>(false);
   const [reviewUpdating, setReviewUpdating] = useState<boolean>(false);
   const [reviewDeleting, setReviewDeleting] = useState<boolean>(false);
 
@@ -293,6 +292,12 @@ const CourseReviewBoxContent = ({
 
     upsertReview({
       variables: reviewData,
+      // Hand-built optimistic stand-in. Two casts cover impedance the generated
+      // types can't express here: the spread `reviewData` are optional mutation
+      // inputs being placed into a required result element (cast to the
+      // fragment), and Apollo injects `__typename` at every query level at
+      // runtime — required for cache writes — but codegen omits it from
+      // operation types (cast the wrapper to the mutation type).
       optimisticResponse: {
         __typename: 'mutation_root',
         insert_review: {
@@ -305,10 +310,10 @@ const CourseReviewBoxContent = ({
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
               public: Boolean(selectedAnonymous !== 0),
-            },
+            } as ReviewUpdateInfoFragment,
           ],
         },
-      },
+      } as UpsertReviewMutation,
     }).then(() => {
       if (review) {
         notifyUpdate();
@@ -620,7 +625,12 @@ const CourseReviewBox = ({
   });
 
   const allProfs = data?.allProfs;
-  const reviewProfs = data?.reviewProfs.sort((a, b) => b.id - a.id);
+  // Apollo Client v3 returns frozen (immutable) query results, so copy the
+  // array before sorting — Array.prototype.sort() mutates in place and would
+  // otherwise throw "Cannot assign to read only property '0'".
+  const reviewProfs = data?.reviewProfs
+    ? [...data.reviewProfs].sort((a, b) => b.id - a.id)
+    : undefined;
 
   // eg: teaching = ['CS135': [{id: 1, code: 'john_doe', name: 'John Doe'}], 'CS136': []]
   const teaching: Record<string, ReviewProfsFragment['prof'][]> = {};

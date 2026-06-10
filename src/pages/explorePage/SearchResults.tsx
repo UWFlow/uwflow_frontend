@@ -26,37 +26,64 @@ import { RATING_MULTIPLES } from './RatingSlider';
 const currentTermCode = getCurrentTermCode();
 const nextTermCode = getNextTermCode();
 
-const compareNull = (a: string | number | null, b: string | number | null) => {
-  if (a === null && b === null) {
-    return 0;
-  }
-  if (a === null) {
-    return 1;
-  }
-  return -1;
+// Default sort applied when the URL has no `sortBy` filter; the empty
+// string and this value are treated as equivalent so the default never
+// dirties the URL.
+const DEFAULT_SORT_BY: TableSortBy = { id: 'ratings', desc: false };
+
+// 'name' -> asc, '-name' -> desc, '' -> default sort.
+const parseSortBy = (sortBy: string): TableSortBy[] => {
+  if (!sortBy) return [DEFAULT_SORT_BY];
+  const desc = sortBy.startsWith('-');
+  return [{ id: desc ? sortBy.slice(1) : sortBy, desc }];
 };
 
-const numberSort = (a: number | null, b: number | null, desc: boolean) => {
-  if (a === null || b === null) {
-    return compareNull(a, b);
-  }
-
-  return desc ? a - b : b - a;
+// Inverse of parseSortBy. Returns '' for the default sort so the URL
+// stays clean while the table still renders sorted on first load.
+const formatSortBy = (sortBy: TableSortBy[]): string => {
+  if (sortBy.length === 0) return '';
+  const { id, desc } = sortBy[0];
+  if (id === DEFAULT_SORT_BY.id && desc === DEFAULT_SORT_BY.desc) return '';
+  return desc ? `-${id}` : id;
 };
 
-const stringSort = (a: string | null, b: string | null, desc: boolean) => {
-  if (a === null || b === null) {
-    return compareNull(a, b);
-  }
+type SortValue = string | number | null;
+type SortValueGetter = (row: any) => SortValue;
 
-  return desc ? b.localeCompare(a) : a.localeCompare(b);
+const courseSortValue: Record<string, SortValueGetter> = {
+  code: (c) => c.code,
+  name: (c) => c.name,
+  ratings: (c) => c.ratings,
+  useful: (c) => c.useful,
+  easy: (c) => c.easy,
+  liked: (c) => c.liked,
+};
+
+const profSortValue: Record<string, SortValueGetter> = {
+  code_name: (p) => p.code_name?.name ?? null,
+  ratings: (p) => p.ratings,
+  clear: (p) => p.clear,
+  engaging: (p) => p.engaging,
+  liked: (p) => p.liked,
+};
+
+const compare = (a: SortValue, b: SortValue, desc: boolean): number => {
+  if (a === null || b === null) {
+    if (a === b) return 0;
+    return a === null ? 1 : -1;
+  }
+  if (typeof a === 'string' && typeof b === 'string') {
+    return desc ? b.localeCompare(a) : a.localeCompare(b);
+  }
+  return desc ? (a as number) - (b as number) : (b as number) - (a as number);
 };
 
 type SearchResultsProps = {
   filterState: SearchFilterState;
+  setFilterState: Dispatch<SetStateAction<SearchFilterState>>;
   error: boolean;
   exploreTab: number;
-  setExploreTab: Dispatch<SetStateAction<number>>;
+  setExploreTab: (tab: number) => void;
   profCourses: string[];
   loading: boolean;
   exploreAll: boolean;
@@ -65,6 +92,7 @@ type SearchResultsProps = {
 
 const SearchResults = ({
   filterState,
+  setFilterState,
   data,
   error,
   exploreTab,
@@ -76,9 +104,9 @@ const SearchResults = ({
   const [numRendered, setNumRendered] = useState(SEARCH_RESULTS_PER_PAGE);
   const [courses, setCourses] = useState<CourseSearchResult[] | null>(null);
   const [profs, setProfs] = useState<ProfSearchResult[] | null>(null);
-  const [tableState, setTableState] = useState<{ sortBy: TableSortBy[] }>({
-    sortBy: [],
-  });
+
+  // Table sort lives in filterState so it can be shared with the URL.
+  const tableSortBy = parseSortBy(filterState.sortBy);
 
   useEffect(() => {
     setNumRendered(SEARCH_RESULTS_PER_PAGE);
@@ -98,9 +126,9 @@ const SearchResults = ({
       : (data as ExploreQuery).search_profs;
 
     const newCourses: CourseSearchResult[] = allCourses.map((result) => ({
-      id: result.course_id!,
-      code: result.code!,
-      name: result.name!,
+      id: result.course_id ?? 0,
+      code: result.code ?? '',
+      name: result.name ?? '',
       ratings: result.ratings,
       liked: result.liked,
       easy: result.easy,
@@ -112,10 +140,10 @@ const SearchResults = ({
     }));
 
     const newProfs: ProfSearchResult[] = allProfs.map((result) => ({
-      id: result.prof_id!,
+      id: result.prof_id ?? 0,
       code_name: {
-        code: result.code!,
-        name: result.name!,
+        code: result.code ?? '',
+        name: result.name ?? '',
       },
       ratings: result.ratings,
       liked: result.liked,
@@ -144,50 +172,41 @@ const SearchResults = ({
 
   const filteredCourses = courses
     ? courses.filter((course) => {
-        // Filter by course code (e.g., 1XX, 2XX)
+        // The seats/online filters only apply to the selected term; if both
+        // term filters are on, the current term takes priority.
+        const requiredTermCode = filterState.currentTerm
+          ? currentTermCode
+          : filterState.nextTerm
+          ? nextTermCode
+          : null;
+
+        const offeredInRequiredTerm = (terms: number[]) =>
+          requiredTermCode === null || terms.includes(requiredTermCode);
+
+        // Course code matches one of the selected levels (e.g. 1XX, 2XX)
         const matchesCodePattern = courseCodeRegex.test(course.code);
 
-        // Filter by minimum rating requirement
+        // Meets the minimum number of ratings
         const meetsRatingThreshold =
           course.ratings >= RATING_MULTIPLES[filterState.numCourseRatings];
 
-        // Filter by term availability (this term and/or next term)
+        // Offered in the term(s) the user asked for
         const isOfferedInCurrentTerm =
-          !filterState.currentTerm ||
-          course.terms.some((term) => Number(term) === currentTermCode);
+          !filterState.currentTerm || course.terms.includes(currentTermCode);
 
         const isOfferedInNextTerm =
-          !filterState.nextTerm ||
-          course.terms.some((term) => Number(term) === nextTermCode);
+          !filterState.nextTerm || course.terms.includes(nextTermCode);
 
-        // Filter by seat availability
-        let hasSeatsAvailable = true;
-        if (filterState.hasRoomAvailable) {
-          if (filterState.currentTerm) {
-            hasSeatsAvailable = course.terms_with_seats.some(
-              (term) => Number(term) === currentTermCode,
-            );
-          } else if (filterState.nextTerm) {
-            hasSeatsAvailable = course.terms_with_seats.some(
-              (term) => Number(term) === nextTermCode,
-            );
-          }
-        }
+        // Has open seats / an online section in the selected term
+        const hasSeatsAvailable =
+          !filterState.hasRoomAvailable ||
+          offeredInRequiredTerm(course.terms_with_seats);
 
-        let hasOnlineSection = true;
-        if (filterState.hasOnlineSection) {
-          if (filterState.currentTerm) {
-            hasOnlineSection = course.terms_with_online_section.some(
-              (term) => Number(term) === currentTermCode,
-            );
-          } else if (filterState.nextTerm) {
-            hasOnlineSection = course.terms_with_online_section.some(
-              (term) => Number(term) === nextTermCode,
-            );
-          }
-        }
+        const hasOnlineSection =
+          !filterState.hasOnlineSection ||
+          offeredInRequiredTerm(course.terms_with_online_section);
 
-        // All conditions must be true for the course to be included
+        // A course is shown only if it passes every active filter
         return (
           matchesCodePattern &&
           meetsRatingThreshold &&
@@ -212,22 +231,18 @@ const SearchResults = ({
   const courseSearch = exploreTab === 0;
 
   const resultsToReturn = useMemo(() => {
-    let filtered = courseSearch ? filteredCourses : filteredProfs;
+    const rows = courseSearch ? filteredCourses : filteredProfs;
+    const sort = tableSortBy[0];
+    const getValue = sort
+      ? (courseSearch ? courseSortValue : profSortValue)[sort.id]
+      : undefined;
 
-    if (tableState.sortBy.length > 0) {
-      const { id: sortKey, desc } = tableState.sortBy[0];
+    if (!getValue || !sort) return rows;
 
-      filtered = filtered.sort((a: any, b: any) =>
-        ['code', 'name'].includes(sortKey)
-          ? stringSort(a[sortKey], b[sortKey], desc)
-          : sortKey === 'code_name' && a[sortKey] && a[sortKey].name
-          ? stringSort(a[sortKey].name, b[sortKey].name, desc)
-          : numberSort(a[sortKey], b[sortKey], desc),
-      );
-    }
-
-    return filtered;
-  }, [courseSearch, filteredCourses, filteredProfs, tableState.sortBy]);
+    return [...rows].sort((a: any, b: any) =>
+      compare(getValue(a), getValue(b), sort.desc),
+    );
+  }, [courseSearch, filteredCourses, filteredProfs, tableSortBy]);
 
   const tableProps = {
     cellPadding: '16px 0',
@@ -235,8 +250,10 @@ const SearchResults = ({
     sortable: true,
     manualSortBy: true,
     setTableState: (state: any) => {
+      const nextSortBy = formatSortBy((state.sortBy || []) as TableSortBy[]);
+      if (nextSortBy === filterState.sortBy) return;
       setNumRendered(50);
-      setTableState(state);
+      setFilterState((prev) => ({ ...prev, sortBy: nextSortBy }));
     },
   };
 
@@ -262,9 +279,7 @@ const SearchResults = ({
             ),
           )
         }
-        initialState={{
-          sortBy: [{ id: 'ratings', desc: false }],
-        }}
+        initialState={{ sortBy: tableSortBy }}
         doneFetching={doneFetching}
       />
     </SearchResultsContent>

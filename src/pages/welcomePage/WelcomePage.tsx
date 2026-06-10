@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useApolloClient } from 'react-apollo';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
 import { LANDING_PAGE_ROUTE, PROFILE_PAGE_ROUTE } from 'Routes';
 
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';

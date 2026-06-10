@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-apollo';
 import { Bell } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useMutation } from '@apollo/client';
 
 import Tooltip from 'components/display/Tooltip';
 import {
