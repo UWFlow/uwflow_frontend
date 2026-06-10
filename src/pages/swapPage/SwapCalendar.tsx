@@ -1,5 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@apollo/client';
 import { UserScheduleFragment } from 'generated/graphql';
+import moment from 'moment/moment';
 
 import {
   Calendar,
@@ -7,8 +9,14 @@ import {
   CalendarEventState,
   CalendarEventVariant,
 } from 'components/calendar';
+import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import { FadeInWrapper } from 'components/navigation/styles/Footer';
-import { SwapSection } from 'graphql/queries/course/SwapCourse';
+import {
+  GET_COURSE_FOR_SWAP,
+  GetCourseForSwapQuery,
+  GetCourseForSwapQueryVariables,
+  SwapSection,
+} from 'graphql/queries/course/SwapCourse';
 import {
   formatCourseCode,
   getCurrentTermCode,
@@ -16,22 +24,11 @@ import {
   termCodeToDate,
 } from 'utils/Misc';
 
-import {
-  CourseCodeBadge,
-  CourseSelectBadgeWrapper,
-  CourseSelectTrigger,
-  DropdownCourseCode,
-  DropdownCourseName,
-  SwapDropdownItem,
-  SwapDropdownList,
-  SwapDropdownOverlay,
-  SwapDropdownWrapper,
-  SwapLabelText,
-  TermTab,
-  TermTabGroup,
-} from './styles/SwapCalendar';
-import CourseSearchDropdown from './CourseSearchDropdown';
-import SectionFinderPanel from './SectionFinderPanel';
+import ScheduleSwapPanel, {
+  ProfessorSwapStats,
+  SwapCandidateCourse,
+  SwapPreview,
+} from './ScheduleSwapPanel';
 
 const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
 // Visible hour range of the grid: 8am to 10pm.
@@ -90,6 +87,39 @@ const groupScheduleByTerm = (schedule: UserScheduleFragment['schedule']) => {
   return map;
 };
 
+const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
+  s1 < e2 && s2 < e1;
+
+const sectionConflictsWithSchedule = (
+  candidate: SwapSection,
+  schedule: UserScheduleFragment['schedule'],
+  excludedCourseCode: string,
+): boolean => {
+  const otherSections = schedule.filter(
+    (e) => e.section.course.code !== excludedCourseCode,
+  );
+
+  return candidate.meetings.some((cm) => {
+    const cmStart = cm.start_seconds;
+    const cmEnd = cm.end_seconds;
+    if (cmStart == null || cmEnd == null) return false;
+    const cmDays = cm.days as string[];
+    return cmDays.some((day) =>
+      otherSections.some((e) =>
+        e.section.meetings.some((em) => {
+          const emDays = em.days as string[];
+          return (
+            emDays.includes(day) &&
+            em.start_seconds != null &&
+            em.end_seconds != null &&
+            timesOverlap(cmStart, cmEnd, em.start_seconds, em.end_seconds)
+          );
+        }),
+      ),
+    );
+  });
+};
+
 // Map the term's enrolled sections onto generic calendar events. The selected
 // course renders gold (`selected`), or fades to `dimmed` while a candidate
 // section is being previewed from the side panel.
@@ -128,7 +158,7 @@ const buildEnrolledEvents = (
     });
   });
 
-// Ghost blocks for the candidate section hovered in the side panel.
+// Ghost blocks for the candidate section previewed from the side panel.
 const buildPreviewEvents = (section: SwapSection | null): CalendarEvent[] =>
   section
     ? section.meetings.flatMap((m, meetingIndex) => {
@@ -168,58 +198,159 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
   const [selectedCourseCode, setSelectedCourseCode] = useState<string | null>(
     null,
   );
+  // Ghost preview while the pointer is over a section row in the panel.
   const [hoveredSection, setHoveredSection] = useState<SwapSection | null>(
     null,
   );
+  // Section chosen via "Switch section": kept on the calendar as a persistent
+  // preview (there is no backend mutation for changing enrolled sections).
+  const [pinnedSection, setPinnedSection] = useState<SwapSection | null>(null);
   const [selectedSwapCourseCode, setSelectedSwapCourseCode] = useState<
     string | null
   >(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isSourceDropdownOpen, setIsSourceDropdownOpen] = useState(false);
 
   useEffect(() => {
     setSelectedSwapCourseCode(null);
-    setIsDropdownOpen(false);
-    setIsSourceDropdownOpen(false);
     setHoveredSection(null);
+    setPinnedSection(null);
   }, [selectedCourseCode]);
 
   const selectedTermCode =
     selectedTerm === nextTermLabel ? nextTermCode : thisTermCode;
   const termSections = termMap[selectedTerm] ?? [];
 
-  const enrolledCourses = useMemo(() => {
-    const seen = new Set<string>();
-    return termSections
-      .map((e) => ({
-        code: e.section.course.code,
-        name: e.section.course.name ?? '',
-      }))
-      .filter(({ code }) => {
-        if (seen.has(code)) return false;
-        seen.add(code);
-        return true;
-      });
-  }, [termSections]);
+  // Sections of the course shown in the panel: the chosen swap target, or the
+  // course selected on the calendar while no target is chosen yet.
+  const displayCode = selectedSwapCourseCode ?? selectedCourseCode;
+  const { loading: sectionsLoading, data: sectionsData } = useQuery<
+    GetCourseForSwapQuery,
+    GetCourseForSwapQueryVariables
+  >(GET_COURSE_FOR_SWAP, {
+    variables: { code: displayCode || '', termId: selectedTermCode },
+    skip: !displayCode,
+  });
+
+  const swapSections = useMemo(
+    () => (displayCode ? sectionsData?.course_section ?? [] : []),
+    [displayCode, sectionsData],
+  );
+  const displayedCourse = swapSections[0]?.course;
+
+  // Bridge the panel's id-based API with this page's course-code state.
+  const candidateCourses = useMemo<SwapCandidateCourse[]>(
+    () =>
+      displayedCourse
+        ? [
+            {
+              id: displayedCourse.id,
+              code: displayedCourse.code,
+              name: displayedCourse.name ?? '',
+              sections: swapSections,
+            },
+          ]
+        : [],
+    [displayedCourse, swapSections],
+  );
+
+  const enrolledSectionIds = useMemo(
+    () => termSections.map((e) => e.section.id),
+    [termSections],
+  );
+
+  const conflictSectionIds = useMemo(
+    () =>
+      swapSections
+        .filter(
+          (section) =>
+            !enrolledSectionIds.includes(section.id) &&
+            sectionConflictsWithSchedule(
+              section,
+              termSections,
+              selectedCourseCode || '',
+            ),
+        )
+        .map((section) => section.id),
+    [swapSections, enrolledSectionIds, termSections, selectedCourseCode],
+  );
+
+  const professorStatsById = useMemo(() => {
+    const stats: Record<number, ProfessorSwapStats | undefined> = {};
+    for (const section of swapSections) {
+      for (const meeting of section.meetings) {
+        if (meeting.prof?.rating) {
+          stats[meeting.prof.id] = {
+            clear: meeting.prof.rating.clear,
+            engaging: meeting.prof.rating.engaging,
+          };
+        }
+      }
+    }
+    return stats;
+  }, [swapSections]);
+
+  const sourceCourseId =
+    termSections.find((e) => e.section.course.code === selectedCourseCode)
+      ?.section.course.id ?? null;
+
+  const updatedAt = useMemo(
+    () =>
+      swapSections.length > 0
+        ? moment.max(swapSections.map((s) => moment(s.updated_at)))
+        : null,
+    [swapSections],
+  );
+
+  const previewSection = hoveredSection ?? pinnedSection;
+
+  const handlePreviewChange = useCallback(
+    (preview: SwapPreview | null) =>
+      setHoveredSection(preview?.section ?? null),
+    [],
+  );
+
+  const handleTermChange = useCallback((termId: number) => {
+    setSelectedTerm(termCodeToDate(termId));
+    setSelectedCourseCode(null);
+    setSelectedSwapCourseCode(null);
+    setHoveredSection(null);
+    setPinnedSection(null);
+  }, []);
+
+  const handleCourseChange = useCallback((courseCode: string | null) => {
+    setSelectedSwapCourseCode(courseCode);
+    setHoveredSection(null);
+    setPinnedSection(null);
+  }, []);
+
+  const handleSwitchSection = useCallback(
+    (sectionId: number) => {
+      const section = swapSections.find((s) => s.id === sectionId) ?? null;
+      setPinnedSection(section);
+    },
+    [swapSections],
+  );
+
+  const handleClose = useCallback(() => {
+    setSelectedCourseCode(null);
+    setSelectedSwapCourseCode(null);
+    setHoveredSection(null);
+    setPinnedSection(null);
+  }, []);
 
   const events = useMemo(
     () => [
       ...buildEnrolledEvents(
         termSections,
         selectedCourseCode,
-        hoveredSection !== null,
+        previewSection !== null,
         (code) =>
           setSelectedCourseCode((prev) => (prev === code ? null : code)),
       ),
-      ...buildPreviewEvents(hoveredSection),
+      ...buildPreviewEvents(previewSection),
     ],
-    [termSections, selectedCourseCode, hoveredSection],
+    [termSections, selectedCourseCode, previewSection],
   );
   const weekDates = useMemo(getWeekDates, []);
-
-  const selectedLabel = selectedCourseCode
-    ? formatCourseCode(selectedCourseCode)
-    : null;
 
   return (
     <FadeInWrapper>
@@ -232,95 +363,6 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
             Click any class to see other sections or swap it for a different
             course.
           </p>
-        </div>
-
-        <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
-          <TermTabGroup>
-            {[thisTermLabel, nextTermLabel].map((term) => (
-              <TermTab
-                key={term}
-                active={term === selectedTerm}
-                onClick={() => {
-                  setSelectedTerm(term);
-                  setSelectedCourseCode(null);
-                  setHoveredSection(null);
-                }}
-              >
-                {term}
-              </TermTab>
-            ))}
-          </TermTabGroup>
-
-          <CourseSelectTrigger hasValue={!!selectedCourseCode} as="div">
-            {selectedCourseCode ? (
-              <>
-                <SwapLabelText>Swap</SwapLabelText>
-                <CourseSelectBadgeWrapper>
-                  <CourseCodeBadge
-                    role="button"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setIsSourceDropdownOpen((o) => !o)}
-                  >
-                    {selectedLabel} ▾
-                  </CourseCodeBadge>
-                  {isSourceDropdownOpen && (
-                    <>
-                      <SwapDropdownOverlay
-                        onClick={() => setIsSourceDropdownOpen(false)}
-                      />
-                      <SwapDropdownWrapper>
-                        <SwapDropdownList>
-                          {enrolledCourses.map((c) => (
-                            <SwapDropdownItem
-                              key={c.code}
-                              isSelected={c.code === selectedCourseCode}
-                              isEnrolled
-                              onClick={() => {
-                                setSelectedCourseCode(c.code);
-                                setIsSourceDropdownOpen(false);
-                              }}
-                            >
-                              <DropdownCourseCode>
-                                {formatCourseCode(c.code)}
-                              </DropdownCourseCode>
-                              <DropdownCourseName>{c.name}</DropdownCourseName>
-                            </SwapDropdownItem>
-                          ))}
-                        </SwapDropdownList>
-                      </SwapDropdownWrapper>
-                    </>
-                  )}
-                </CourseSelectBadgeWrapper>
-                <SwapLabelText>with</SwapLabelText>
-                <CourseSelectBadgeWrapper>
-                  <CourseCodeBadge
-                    role="button"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setIsDropdownOpen((o) => !o)}
-                  >
-                    {selectedSwapCourseCode
-                      ? formatCourseCode(selectedSwapCourseCode)
-                      : selectedLabel}{' '}
-                    ▾
-                  </CourseCodeBadge>
-                  {isDropdownOpen && (
-                    <CourseSearchDropdown
-                      selectedCode={selectedSwapCourseCode}
-                      onSelect={(code) => {
-                        setSelectedSwapCourseCode(code);
-                        setHoveredSection(null);
-                        setIsDropdownOpen(false);
-                      }}
-                      onClose={() => setIsDropdownOpen(false)}
-                      termId={selectedTermCode}
-                    />
-                  )}
-                </CourseSelectBadgeWrapper>
-              </>
-            ) : (
-              'Select course from schedule'
-            )}
-          </CourseSelectTrigger>
         </div>
 
         <div className="flex items-start gap-4">
@@ -344,18 +386,33 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
             </div>
           </div>
 
-          <div className="flex shrink-0 flex-col self-stretch">
-            <SectionFinderPanel
-              selectedCourseCode={selectedCourseCode}
-              swapTargetCourseCode={selectedSwapCourseCode}
-              schedule={termSections}
-              termId={selectedTermCode}
-              onClose={() => {
-                setSelectedCourseCode(null);
-                setHoveredSection(null);
-                setSelectedSwapCourseCode(null);
-              }}
-              onHoverSection={setHoveredSection}
+          <div className="flex w-[360px] shrink-0 flex-col">
+            {updatedAt && (
+              <LastUpdatedSchedule
+                updatedAt={updatedAt}
+                fontSize="80%"
+                margin="0 0 8px"
+              />
+            )}
+            <ScheduleSwapPanel
+              selectedTermId={selectedTermCode}
+              availableTerms={[
+                { id: thisTermCode, label: thisTermLabel },
+                { id: nextTermCode, label: nextTermLabel },
+              ]}
+              selectedCourseId={displayedCourse?.id ?? null}
+              currentScheduleSections={termSections}
+              candidateCourses={candidateCourses}
+              enrolledSectionIds={enrolledSectionIds}
+              conflictSectionIds={conflictSectionIds}
+              onTermChange={handleTermChange}
+              onCourseChange={handleCourseChange}
+              onPreviewChange={handlePreviewChange}
+              onSwitchSection={handleSwitchSection}
+              onClose={handleClose}
+              sourceCourseId={sourceCourseId}
+              professorStatsById={professorStatsById}
+              isLoading={sectionsLoading}
             />
           </div>
         </div>
