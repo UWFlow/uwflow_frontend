@@ -79,10 +79,13 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
   };
 
   const handleGoogleFailure = (res: ErrorResponse) => {
+    // react-google-login can invoke onFailure with a value that has no `error`
+    // string (e.g. when the GSI script fails to load), so guard before using it.
+    const errorCode = res?.error ?? '';
     const errorMessage =
-      res.error === 'popup_closed_by_user' ? '' : AUTH_ERRORS.no_google_email;
+      errorCode === 'popup_closed_by_user' ? '' : AUTH_ERRORS.no_google_email;
 
-    if (!res.error.includes('idpiframe')) {
+    if (!errorCode.includes('idpiframe')) {
       setError(errorMessage);
     }
   };
