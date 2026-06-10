@@ -4,7 +4,6 @@ import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
-import { formatCourseCode } from 'utils/Misc';
 
 import {
   DropdownCourseCode,
@@ -53,7 +52,7 @@ const CourseRow = ({
       isEnrolled={false}
       onClick={() => onSelect(course.code)}
     >
-      <DropdownCourseCode>{formatCourseCode(course.code)}</DropdownCourseCode>
+      <DropdownCourseCode>{course.code.toUpperCase()}</DropdownCourseCode>
       <DropdownCourseName>{course.name}</DropdownCourseName>
     </SwapDropdownItem>
   );
@@ -81,16 +80,38 @@ const CourseSearchDropdown = ({
     (c): c is CourseItem => !!c.code && !!c.name,
   );
 
+  // Course codes in the data are lowercase with no space ("cs135"), so a
+  // query like "CS 135" matches the `code` key poorly. Run two passes —
+  // a normalized query against codes and the raw query against names — and
+  // merge, de-duplicated by code and ordered by best fuzzysort score.
   const trimmed = searchQuery.trim();
-  const filteredCourses: CourseItem[] = trimmed
-    ? fuzzysort
-        .go(trimmed, allCourses, {
-          keys: ['code', 'name'],
-          threshold: -10000,
-          allowTypo: true,
-        })
-        .map((r) => r.obj)
-    : allCourses;
+  let filteredCourses: CourseItem[] = allCourses;
+  if (trimmed) {
+    const searchOptions = { threshold: -10000, allowTypo: true };
+    const codeResults = fuzzysort.go(
+      trimmed.replace(/\s+/g, '').toLowerCase(),
+      allCourses,
+      { ...searchOptions, key: 'code' },
+    );
+    const nameResults = fuzzysort.go(trimmed, allCourses, {
+      ...searchOptions,
+      key: 'name',
+    });
+
+    const bestByCode = new Map<string, { course: CourseItem; score: number }>();
+    for (const result of [...codeResults, ...nameResults]) {
+      const existing = bestByCode.get(result.obj.code);
+      if (!existing || result.score > existing.score) {
+        bestByCode.set(result.obj.code, {
+          course: result.obj,
+          score: result.score,
+        });
+      }
+    }
+    filteredCourses = Array.from(bestByCode.values())
+      .sort((a, b) => b.score - a.score)
+      .map((entry) => entry.course);
+  }
 
   const itemData: RowData = {
     courses: filteredCourses,

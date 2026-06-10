@@ -456,7 +456,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
           </div>
 
           <div className="flex w-[360px] shrink-0 flex-col gap-3">
-            <div className="flex items-stretch gap-2">
+            <div className="flex items-center gap-2">
               <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2.5 shadow-box">
                 {selectedCourseCode ? (
                   <>
@@ -469,16 +469,20 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
                     <span className="text-sm font-semibold text-dark1">
                       with
                     </span>
-                    <div className="relative">
+                    <div className="relative min-w-0">
                       <button
-                        className="flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-lg border-none bg-light2 px-2.5 text-sm font-semibold text-courses outline-none focus:ring-2 focus:ring-primary/20"
+                        className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1.5 rounded-lg border-none bg-light2 px-2.5 text-sm font-semibold text-courses outline-none focus:ring-2 focus:ring-primary/20"
                         onClick={() => setIsSwapDropdownOpen((open) => !open)}
                         type="button"
                       >
-                        {formatCourseCode(swapTargetCode ?? selectedCourseCode)}
+                        <span className="truncate">
+                          {formatCourseCode(
+                            swapTargetCode ?? selectedCourseCode,
+                          )}
+                        </span>
                         <ChevronDown
                           aria-hidden="true"
-                          className="text-dark2"
+                          className="shrink-0 text-dark2"
                           size={14}
                         />
                       </button>
@@ -503,11 +507,11 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
               </div>
               {secretId && (
                 <button
-                  className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border-none bg-primary px-4 text-sm font-semibold text-white transition-colors hover:bg-primaryDark"
+                  className="flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border-none bg-primary px-3 text-sm font-semibold text-white transition-colors hover:bg-primaryDark"
                   onClick={handleExport}
                   type="button"
                 >
-                  <Download aria-hidden="true" size={16} />
+                  <Download aria-hidden="true" size={15} />
                   Export
                 </button>
               )}

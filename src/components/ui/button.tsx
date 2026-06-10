@@ -7,14 +7,19 @@ import { cn } from 'lib/utils';
 // Variants use the GlobalTheme-derived Tailwind tokens (see tailwind.config.js)
 // rather than shadcn's semantic CSS variables, matching this project's palette.
 const buttonVariants = cva(
-  'cursor-pointer whitespace-nowrap rounded text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  // `border-none` resets the browser's default outset <button> border, since
+  // Tailwind preflight is disabled in this project.
+  'cursor-pointer whitespace-nowrap rounded border-none text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         default: 'bg-primary text-white hover:bg-primaryDark',
         destructive: 'bg-red text-white hover:bg-darkRed',
-        // 'border' is the default border-width-1 class in Tailwind.
-        outline: 'border border-light1 bg-white text-dark1 hover:bg-light1',
+        // 'border' is the default border-width-1 class in Tailwind. The
+        // explicit `border-solid` overrides the base `border-none` (same
+        // border-style group in tailwind-merge, variant class wins).
+        outline:
+          'border border-solid border-light1 bg-white text-dark1 hover:bg-light1',
         secondary: 'bg-light2 text-dark1 hover:bg-light3',
         ghost: 'text-dark1 hover:bg-light1',
         link: 'text-primary underline-offset-4 hover:underline',
