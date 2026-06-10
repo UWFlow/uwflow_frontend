@@ -31,26 +31,16 @@ import ScheduleSwapPanel, {
 } from './ScheduleSwapPanel';
 
 const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
+const DAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
 // Visible hour range of the grid: 8am to 10pm.
 const GRID_START_HOUR = 8;
 const GRID_END_HOUR = 22;
 
-const fmtWeekHeader = (d: Date) =>
-  `${d.toLocaleDateString('en', {
-    weekday: 'short',
-  })} ${d.toLocaleDateString('en', { month: 'short' })} ${d.getDate()}`;
-
-const getWeekDates = (): Date[] => {
-  const today = new Date();
-  const day = today.getDay();
-  const monday = new Date(today);
-  monday.setDate(today.getDate() - (day === 0 ? 6 : day - 1));
-  return Array.from({ length: 5 }, (_, i) => {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    return d;
-  });
-};
+// 24-hour "HH:MM" from seconds since midnight (`secsToTime` is 12-hour).
+const secsTo24hTime = (secs: number) =>
+  `${`${Math.floor(secs / 3600)}`.padStart(2, '0')}:${`${Math.floor(
+    (secs % 3600) / 60,
+  )}`.padStart(2, '0')}`;
 
 const getSectionVariant = (sectionName: string): CalendarEventVariant => {
   const type = sectionName.split(' ')[0];
@@ -140,6 +130,9 @@ const buildEnrolledEvents = (
       if (m.start_seconds == null || m.end_seconds == null) return [];
       const startMinutes = m.start_seconds / 60;
       const endMinutes = m.end_seconds / 60;
+      const timeLabel = `${secsTo24hTime(m.start_seconds)}–${secsTo24hTime(
+        m.end_seconds,
+      )}`;
       return toDayIndexes(m.days as string[], m.start_seconds).map(
         (dayIndex) => ({
           id: `${courseCode}-${section.section_name}-${meetingIndex}-${dayIndex}`,
@@ -149,9 +142,9 @@ const buildEnrolledEvents = (
           variant,
           state,
           title: formatCourseCode(courseCode),
-          subtitle: m.location
-            ? `${section.section_name} · ${m.location}`
-            : section.section_name,
+          timeLabel,
+          location: m.location,
+          subtitle: section.section_name,
           onClick: () => onToggleCourse(courseCode),
         }),
       );
@@ -350,7 +343,6 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
     ],
     [termSections, selectedCourseCode, previewSection],
   );
-  const weekDates = useMemo(getWeekDates, []);
 
   return (
     <FadeInWrapper>
@@ -369,21 +361,11 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
           <div className="min-w-0 flex-1 overflow-hidden rounded-lg border border-solid border-light3 bg-white shadow-box">
             <Calendar
               showHeader={false}
-              dayLabels={weekDates.map(fmtWeekHeader)}
+              dayLabels={DAY_LABELS}
               events={events}
               minHour={GRID_START_HOUR}
               maxHour={GRID_END_HOUR - 1}
             />
-            <div className="flex gap-4 border-0 border-t border-solid border-light2 bg-light1 px-3 py-1.5 text-xs text-dark3">
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-sm bg-primary" />
-                Click any class to see sections
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-sm bg-accentDark" />
-                Hover a section for preview
-              </div>
-            </div>
           </div>
 
           <div className="flex w-[360px] shrink-0 flex-col">

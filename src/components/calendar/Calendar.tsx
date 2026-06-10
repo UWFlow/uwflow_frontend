@@ -8,7 +8,7 @@ import { cn } from 'lib/utils';
 // time grid and for translating an event's start/end into a pixel offset.
 export const HOUR_HEIGHT = 64;
 // Height reserved at the top of each day column for its header label.
-const HEADER_HEIGHT = 24;
+const HEADER_HEIGHT = 32;
 // Width of the left gutter that holds the hour labels.
 const TIME_WIDTH = 64;
 
@@ -78,17 +78,17 @@ export type CalendarProps = {
   className?: string;
 };
 
-// Soft grid line, faithful to the legacy calendar. (The dotted half-hour line
-// is written inline below so Tailwind's JIT scanner can see the full class.)
+// Soft grid line. (The fainter half-hour line is written inline below so
+// Tailwind's JIT scanner can see the full class.)
 const GRID_LINE = 'border-light3';
 
-// Per-variant accent classes. Blocks border (incl. the thick left rail) in the
-// accent colour and tint their fill with it at low opacity. Backed entirely by
-// existing Tailwind tokens (see tailwind.config.js) — no arbitrary hex.
+// Per-variant accent classes: saturated colours for the thick left rail (the
+// pastel `lecture`/`lab`/`tutorial` tokens are too washed out for it). The two
+// arbitrary hexes are the legacy lab/tutorial accent colours.
 const VARIANT_BORDER: Record<CalendarEventVariant, string> = {
-  lecture: 'border-lecture',
-  lab: 'border-lab',
-  tutorial: 'border-tutorial',
+  lecture: 'border-primary',
+  lab: 'border-[#2b8fcd]',
+  tutorial: 'border-[#6554c0]',
   other: 'border-dark3',
 };
 
@@ -118,11 +118,8 @@ const STATE_CLASS: Record<CalendarEventState, string> = {
 const NAV_BUTTON_CLASS =
   'ml-1 h-12 rounded-lg border-2 border-solid border-light3 bg-light1 font-anderson text-lg font-semibold transition-all hover:brightness-[0.85]';
 
-const formatHour = (hour: number) => {
-  if (hour === 0) return '12 am';
-  if (hour === 12) return '12 pm';
-  return hour < 12 ? `${hour} am` : `${hour - 12} pm`;
-};
+// 24-hour gutter labels: "09:00", "10:00", ...
+const formatHour = (hour: number) => `${`${hour}`.padStart(2, '0')}:00`;
 
 // Derive left/right placement for overlapping non-preview events within each
 // column. Preview ghosts are skipped so they layer cleanly on top, and any
@@ -211,12 +208,20 @@ const Calendar = ({
         onClick={clickable ? event.onClick : undefined}
         style={{ top, height }}
         className={cn(
-          // Base block: rounded, soft variant tint with a thick accent left rail.
-          'absolute z-10 overflow-hidden rounded border border-l-4 border-solid px-1 py-0.5 text-[11px] leading-tight text-dark1',
-          // Selected blocks swap the variant tint/accent for the gold tokens.
+          // Base block: rounded, soft variant tint with a thick accent left
+          // rail; content is stacked and centered both ways, clipping rather
+          // than wrapping when the block is short or narrow.
+          'absolute z-10 flex flex-col items-center justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid px-1 text-center leading-tight text-dark1',
+          // Selected blocks swap the variant tint/accent for the gold tokens
+          // (gold border on all four sides plus the thick gold rail).
           isSelected
             ? 'border-accentDark bg-accent/20'
             : [VARIANT_FILL[variant], VARIANT_BORDER[variant]],
+          // Outside preview ghosts, only the left rail keeps the saturated
+          // accent; the other sides stay transparent like the mockup.
+          !isSelected &&
+            !isPreview &&
+            'border-y-transparent border-r-transparent',
           STATE_CLASS[state],
           // Width / side when sharing a slot with an overlapping event.
           truncate === 'left' && 'left-0 w-[calc(50%-4px)]',
@@ -230,12 +235,19 @@ const Calendar = ({
             'transition-all hover:z-20 hover:w-[calc(100%-4px)]',
         )}
       >
-        {event.title && <div className="font-semibold">{event.title}</div>}
-        {event.subtitle && (
-          <div className="text-[10px] text-dark2">{event.subtitle}</div>
+        {event.title && (
+          <div className="text-lg font-semibold">{event.title}</div>
         )}
-        {event.timeLabel && <div>{event.timeLabel}</div>}
-        {event.location && <div>{event.location}</div>}
+        {(event.timeLabel || event.location) && (
+          <div className="text-md text-dark2">
+            {event.timeLabel}
+            {event.timeLabel && event.location && ' · '}
+            {event.location}
+          </div>
+        )}
+        {event.subtitle && (
+          <div className="text-sm text-dark3">{event.subtitle}</div>
+        )}
       </div>
     );
   };
@@ -306,13 +318,11 @@ const Calendar = ({
               className={cn(
                 'relative border-0 border-t border-solid px-4',
                 GRID_LINE,
-                // Dotted line halfway down each hour row.
-                "after:absolute after:left-16 after:right-0 after:top-1/2 after:-mt-px after:border-t after:border-dotted after:border-light2 after:content-['']",
+                // Fainter solid line halfway down each hour row.
+                "after:absolute after:left-16 after:right-0 after:top-1/2 after:-mt-px after:border-t after:border-solid after:border-light2 after:content-['']",
               )}
             >
-              <div className="mt-1 text-[11px] text-dark3">
-                {formatHour(hour)}
-              </div>
+              <div className="mt-1 text-xs text-dark3">{formatHour(hour)}</div>
             </div>
           ))}
         </div>
@@ -335,7 +345,7 @@ const Calendar = ({
                 GRID_LINE,
               )}
             >
-              <div className="absolute inset-x-0 top-0 flex h-6 items-center justify-center text-[11px] font-semibold">
+              <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center text-xs uppercase tracking-wide text-dark3">
                 {label}
               </div>
               {events

@@ -299,7 +299,9 @@ const buildWeekView = (
 
   return {
     events,
-    dayLabels: visibleDays.map((day) => day.format('ddd MMM D')),
+    // Short day-of-week + date, e.g. "Mon 9" (the calendar header band
+    // uppercases it to match the swap page's static MON-FRI labels).
+    dayLabels: visibleDays.map((day) => day.format('ddd D')),
     minHour,
     maxHour,
     totalHours: Math.round((2 * totalMinutes) / 60) / 2,
