@@ -1,25 +1,28 @@
 import React, { useEffect } from 'react';
 import { AlertTriangle, CheckCircle, RefreshCw, X } from 'react-feather';
 import { Link as RouterLink } from 'react-router-dom';
+import { SwapCourseSectionFragment } from 'generated/graphql';
 import { getProfPageRoute } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { Button } from 'components/ui/button';
-import { SwapMeeting, SwapSection } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
 import { formatCourseCode, processRating, weekDayLetters } from 'utils/Misc';
+
+// Local shorthand for the deeply nested generated meeting type.
+type SwapMeeting = SwapCourseSectionFragment['meetings'][number];
 
 export type SwapPreview = {
   courseId: number;
   courseCode: string;
-  section: SwapSection;
+  section: SwapCourseSectionFragment;
 };
 
 export type SwapCandidateCourse = {
   id: number;
   code: string;
   name: string;
-  sections: SwapSection[];
+  sections: SwapCourseSectionFragment[];
 };
 
 export type ProfessorSwapStats = {
@@ -47,7 +50,7 @@ export type ScheduleSwapPanelProps = {
 
 const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
 
-const getOpenSeats = (section: SwapSection) =>
+const getOpenSeats = (section: SwapCourseSectionFragment) =>
   Math.max(section.enrollment_capacity - section.enrollment_total, 0);
 
 const DAY_NAMES: Record<string, string> = {
@@ -225,7 +228,7 @@ const ScheduleSectionRow = ({
   onSwitchSection,
 }: {
   course: SwapCandidateCourse;
-  section: SwapSection;
+  section: SwapCourseSectionFragment;
   isEnrolled: boolean;
   hasConflict: boolean;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;

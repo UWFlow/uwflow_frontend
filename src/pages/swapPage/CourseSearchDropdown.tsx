@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
+import {
+  CourseDropdownByTermQuery,
+  CourseDropdownByTermQueryVariables,
+} from 'generated/graphql';
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
@@ -9,11 +13,7 @@ import { cn } from 'lib/utils';
 const dropdownEmptyStateClasses =
   'px-3.5 py-4 text-center text-[13px] text-dark3';
 
-type CourseItem = { code: string; name: string };
-
-type CourseDropdownQuery = {
-  course: Array<{ code: string | null; name: string | null }>;
-};
+type CourseItem = CourseDropdownByTermQuery['course'][number];
 
 type CourseSearchDropdownProps = {
   selectedCode: string | null;
@@ -77,14 +77,12 @@ const CourseSearchDropdown = ({
     inputRef.current?.focus();
   }, []);
 
-  const { data, loading } = useQuery<CourseDropdownQuery>(
-    COURSE_DROPDOWN_TERM_QUERY,
-    { variables: { termId } },
-  );
+  const { data, loading } = useQuery<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  >(COURSE_DROPDOWN_TERM_QUERY, { variables: { termId } });
 
-  const allCourses: CourseItem[] = (data?.course ?? []).filter(
-    (c): c is CourseItem => !!c.code && !!c.name,
-  );
+  const allCourses: CourseItem[] = data?.course ?? [];
 
   // Course codes in the data are lowercase with no space ("cs135"), so a
   // query like "CS 135" matches the `code` key poorly. Run two passes —

@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronDown, RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
-import { UserScheduleFragment } from 'generated/graphql';
+import {
+  GetCourseForSwapQuery,
+  GetCourseForSwapQueryVariables,
+  SwapCourseSectionFragment,
+  UserScheduleFragment,
+} from 'generated/graphql';
 import moment from 'moment/moment';
 
 import {
@@ -11,12 +16,7 @@ import {
   CalendarEventVariant,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
-import {
-  GET_COURSE_FOR_SWAP,
-  GetCourseForSwapQuery,
-  GetCourseForSwapQueryVariables,
-  SwapSection,
-} from 'graphql/queries/course/SwapCourse';
+import { GET_COURSE_FOR_SWAP } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
 import {
   formatCourseCode,
@@ -93,7 +93,7 @@ const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
   s1 < e2 && s2 < e1;
 
 const sectionConflictsWithSchedule = (
-  candidate: SwapSection,
+  candidate: SwapCourseSectionFragment,
   schedule: UserScheduleFragment['schedule'],
   // Only the entry being replaced (selected course + section type) leaves the
   // schedule on swap; the course's other sections (e.g. its TUT while swapping
@@ -177,7 +177,9 @@ const buildEnrolledEvents = (
   });
 
 // Ghost blocks for the candidate section previewed from the side panel.
-const buildPreviewEvents = (section: SwapSection | null): CalendarEvent[] =>
+const buildPreviewEvents = (
+  section: SwapCourseSectionFragment | null,
+): CalendarEvent[] =>
   section
     ? section.meetings.flatMap((m, meetingIndex) => {
         if (m.start_seconds == null || m.end_seconds == null) return [];
@@ -198,12 +200,13 @@ const buildPreviewEvents = (section: SwapSection | null): CalendarEvent[] =>
 
 type ScheduleEntry = UserScheduleFragment['schedule'][number];
 
-// Bridge a fetched SwapSection into the schedule-entry shape. SwapSection
-// carries every field the calendar mapping reads (id, section_name, meetings,
-// course); the cast papers over nullable-vs-required differences in fields the
-// page never touches.
-const toScheduleEntry = (section: SwapSection, userId: number): ScheduleEntry =>
-  ({ user_id: userId, section } as unknown as ScheduleEntry);
+// Bridge a fetched swap section into the schedule-entry shape used for
+// client-side temporary swaps. The fragment is a superset of the schedule
+// entry's section selection, so this is a plain (cast-free) re-wrap.
+const toScheduleEntry = (
+  section: SwapCourseSectionFragment,
+  userId: number,
+): ScheduleEntry => ({ user_id: userId, section });
 
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
@@ -229,9 +232,8 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
   const selectedCourseCode = selection?.courseCode ?? null;
   const selectedSectionType = selection?.sectionType ?? null;
   // Ghost preview while the pointer is over a section row in the panel.
-  const [hoveredSection, setHoveredSection] = useState<SwapSection | null>(
-    null,
-  );
+  const [hoveredSection, setHoveredSection] =
+    useState<SwapCourseSectionFragment | null>(null);
   const [selectedSwapCourseCode, setSelectedSwapCourseCode] = useState<
     string | null
   >(null);
@@ -282,7 +284,7 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
             {
               id: displayedCourse.id,
               code: displayedCourse.code,
-              name: displayedCourse.name ?? '',
+              name: displayedCourse.name,
               sections: swapSections,
             },
           ]

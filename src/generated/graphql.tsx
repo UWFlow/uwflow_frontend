@@ -12100,6 +12100,67 @@ export type CourseReviewProfsQuery = {
   reviewProfs: Array<ReviewProfsFragment>;
 };
 
+export type SwapCourseSectionFragment = {
+  id: number;
+  section_name: string;
+  class_number: number;
+  term_id: number;
+  enrollment_capacity: number;
+  enrollment_total: number;
+  updated_at: any;
+  exams: Array<{
+    date: any;
+    day: string | null;
+    location: string | null;
+    start_seconds: number | null;
+    end_seconds: number | null;
+  }>;
+  meetings: Array<{
+    days: any;
+    end_date: any;
+    end_seconds: number | null;
+    is_cancelled: boolean;
+    is_tba: boolean;
+    location: string | null;
+    section_id: number;
+    start_date: any;
+    start_seconds: number | null;
+    prof: {
+      id: number;
+      code: string;
+      name: string;
+      rating: { clear: any; engaging: any } | null;
+    } | null;
+  }>;
+  course: { id: number; name: string; code: string };
+};
+
+export type GetSectionsByClassNumbersQueryVariables = Exact<{
+  classNumbers: Array<number> | number;
+  termId: number;
+}>;
+
+export type GetSectionsByClassNumbersQuery = {
+  course_section: Array<SwapCourseSectionFragment>;
+};
+
+export type GetCourseForSwapQueryVariables = Exact<{
+  code: string;
+  termId: number;
+}>;
+
+export type GetCourseForSwapQuery = {
+  course_section: Array<SwapCourseSectionFragment>;
+};
+
+export type CourseDropdownByTermQueryVariables = Exact<{
+  termId: number;
+}>;
+
+export type CourseDropdownByTermQuery = {
+  course: Array<{ code: string; name: string }>;
+};
+
 export type ExploreAllQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ExploreAllQuery = {
@@ -12551,6 +12612,49 @@ export const UserCoursesTakenFragmentDoc = gql`
           start_seconds
         }
       }
+    }
+  }
+`;
+export const SwapCourseSectionFragmentDoc = gql`
+  fragment SwapCourseSection on course_section {
+    id
+    section_name
+    class_number
+    term_id
+    enrollment_capacity
+    enrollment_total
+    updated_at
+    exams {
+      date
+      day
+      location
+      start_seconds
+      end_seconds
+    }
+    meetings {
+      days
+      end_date
+      end_seconds
+      is_cancelled
+      is_tba
+      location
+      section_id
+      start_date
+      start_seconds
+      prof {
+        id
+        code
+        name
+        rating {
+          clear
+          engaging
+        }
+      }
+    }
+    course {
+      id
+      name
+      code
     }
   }
 `;
@@ -14345,6 +14449,328 @@ export type CourseReviewProfsSuspenseQueryHookResult = ReturnType<
 export type CourseReviewProfsQueryResult = Apollo.QueryResult<
   CourseReviewProfsQuery,
   CourseReviewProfsQueryVariables
+>;
+export const GetSectionsByClassNumbersDocument = gql`
+  query getSectionsByClassNumbers($classNumbers: [Int!]!, $termId: Int!) {
+    course_section(
+      where: { class_number: { _in: $classNumbers }, term_id: { _eq: $termId } }
+    ) {
+      ...SwapCourseSection
+    }
+  }
+  ${SwapCourseSectionFragmentDoc}
+`;
+
+/**
+ * __useGetSectionsByClassNumbersQuery__
+ *
+ * To run a query within a React component, call `useGetSectionsByClassNumbersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSectionsByClassNumbersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSectionsByClassNumbersQuery({
+ *   variables: {
+ *      classNumbers: // value for 'classNumbers'
+ *      termId: // value for 'termId'
+ *   },
+ * });
+ */
+export function useGetSectionsByClassNumbersQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  > &
+    (
+      | { variables: GetSectionsByClassNumbersQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  >(GetSectionsByClassNumbersDocument, options);
+}
+export function useGetSectionsByClassNumbersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  >(GetSectionsByClassNumbersDocument, options);
+}
+// @ts-ignore
+export function useGetSectionsByClassNumbersSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  GetSectionsByClassNumbersQuery,
+  GetSectionsByClassNumbersQueryVariables
+>;
+export function useGetSectionsByClassNumbersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetSectionsByClassNumbersQuery,
+        GetSectionsByClassNumbersQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  GetSectionsByClassNumbersQuery | undefined,
+  GetSectionsByClassNumbersQueryVariables
+>;
+export function useGetSectionsByClassNumbersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetSectionsByClassNumbersQuery,
+        GetSectionsByClassNumbersQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  >(GetSectionsByClassNumbersDocument, options);
+}
+export type GetSectionsByClassNumbersQueryHookResult = ReturnType<
+  typeof useGetSectionsByClassNumbersQuery
+>;
+export type GetSectionsByClassNumbersLazyQueryHookResult = ReturnType<
+  typeof useGetSectionsByClassNumbersLazyQuery
+>;
+export type GetSectionsByClassNumbersSuspenseQueryHookResult = ReturnType<
+  typeof useGetSectionsByClassNumbersSuspenseQuery
+>;
+export type GetSectionsByClassNumbersQueryResult = Apollo.QueryResult<
+  GetSectionsByClassNumbersQuery,
+  GetSectionsByClassNumbersQueryVariables
+>;
+export const GetCourseForSwapDocument = gql`
+  query getCourseForSwap($code: String!, $termId: Int!) {
+    course_section(
+      where: { course: { code: { _eq: $code } }, term_id: { _eq: $termId } }
+      order_by: { section_name: asc }
+    ) {
+      ...SwapCourseSection
+    }
+  }
+  ${SwapCourseSectionFragmentDoc}
+`;
+
+/**
+ * __useGetCourseForSwapQuery__
+ *
+ * To run a query within a React component, call `useGetCourseForSwapQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCourseForSwapQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCourseForSwapQuery({
+ *   variables: {
+ *      code: // value for 'code'
+ *      termId: // value for 'termId'
+ *   },
+ * });
+ */
+export function useGetCourseForSwapQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCourseForSwapQuery,
+    GetCourseForSwapQueryVariables
+  > &
+    (
+      | { variables: GetCourseForSwapQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetCourseForSwapQuery, GetCourseForSwapQueryVariables>(
+    GetCourseForSwapDocument,
+    options,
+  );
+}
+export function useGetCourseForSwapLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCourseForSwapQuery,
+    GetCourseForSwapQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetCourseForSwapQuery,
+    GetCourseForSwapQueryVariables
+  >(GetCourseForSwapDocument, options);
+}
+// @ts-ignore
+export function useGetCourseForSwapSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetCourseForSwapQuery,
+    GetCourseForSwapQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  GetCourseForSwapQuery,
+  GetCourseForSwapQueryVariables
+>;
+export function useGetCourseForSwapSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetCourseForSwapQuery,
+        GetCourseForSwapQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  GetCourseForSwapQuery | undefined,
+  GetCourseForSwapQueryVariables
+>;
+export function useGetCourseForSwapSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetCourseForSwapQuery,
+        GetCourseForSwapQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetCourseForSwapQuery,
+    GetCourseForSwapQueryVariables
+  >(GetCourseForSwapDocument, options);
+}
+export type GetCourseForSwapQueryHookResult = ReturnType<
+  typeof useGetCourseForSwapQuery
+>;
+export type GetCourseForSwapLazyQueryHookResult = ReturnType<
+  typeof useGetCourseForSwapLazyQuery
+>;
+export type GetCourseForSwapSuspenseQueryHookResult = ReturnType<
+  typeof useGetCourseForSwapSuspenseQuery
+>;
+export type GetCourseForSwapQueryResult = Apollo.QueryResult<
+  GetCourseForSwapQuery,
+  GetCourseForSwapQueryVariables
+>;
+export const CourseDropdownByTermDocument = gql`
+  query courseDropdownByTerm($termId: Int!) {
+    course(
+      where: { sections: { term_id: { _eq: $termId } } }
+      order_by: { code: asc }
+    ) {
+      code
+      name
+    }
+  }
+`;
+
+/**
+ * __useCourseDropdownByTermQuery__
+ *
+ * To run a query within a React component, call `useCourseDropdownByTermQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourseDropdownByTermQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCourseDropdownByTermQuery({
+ *   variables: {
+ *      termId: // value for 'termId'
+ *   },
+ * });
+ */
+export function useCourseDropdownByTermQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  > &
+    (
+      | { variables: CourseDropdownByTermQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  >(CourseDropdownByTermDocument, options);
+}
+export function useCourseDropdownByTermLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  >(CourseDropdownByTermDocument, options);
+}
+// @ts-ignore
+export function useCourseDropdownByTermSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  CourseDropdownByTermQuery,
+  CourseDropdownByTermQueryVariables
+>;
+export function useCourseDropdownByTermSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseDropdownByTermQuery,
+        CourseDropdownByTermQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  CourseDropdownByTermQuery | undefined,
+  CourseDropdownByTermQueryVariables
+>;
+export function useCourseDropdownByTermSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseDropdownByTermQuery,
+        CourseDropdownByTermQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    CourseDropdownByTermQuery,
+    CourseDropdownByTermQueryVariables
+  >(CourseDropdownByTermDocument, options);
+}
+export type CourseDropdownByTermQueryHookResult = ReturnType<
+  typeof useCourseDropdownByTermQuery
+>;
+export type CourseDropdownByTermLazyQueryHookResult = ReturnType<
+  typeof useCourseDropdownByTermLazyQuery
+>;
+export type CourseDropdownByTermSuspenseQueryHookResult = ReturnType<
+  typeof useCourseDropdownByTermSuspenseQuery
+>;
+export type CourseDropdownByTermQueryResult = Apollo.QueryResult<
+  CourseDropdownByTermQuery,
+  CourseDropdownByTermQueryVariables
 >;
 export const ExploreAllDocument = gql`
   query exploreAll {

@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@apollo/client';
 import {
+  GetSectionsByClassNumbersQuery,
+  GetSectionsByClassNumbersQueryVariables,
   GetUserQuery,
   GetUserQueryVariables,
   UserScheduleFragment,
@@ -11,10 +13,7 @@ import {
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
 import { RootState } from 'data/reducers/RootReducer';
-import {
-  GET_SECTIONS_BY_CLASS_NUMBERS,
-  GetSectionsByClassNumbersQuery,
-} from 'graphql/queries/course/SwapCourse';
+import { GET_SECTIONS_BY_CLASS_NUMBERS } from 'graphql/queries/course/SwapCourse';
 import { GET_USER } from 'graphql/queries/user/User';
 import { cn } from 'lib/utils';
 import { ParseOnlyScheduleResponse } from 'types/Api';
@@ -39,14 +38,16 @@ const SwapPage = () => {
     skip: !isLoggedIn,
   });
 
-  const { loading: sectionsLoading, data: sectionsData } =
-    useQuery<GetSectionsByClassNumbersQuery>(GET_SECTIONS_BY_CLASS_NUMBERS, {
-      variables: {
-        classNumbers: ephemeralParseData?.Classes.map((c) => c.Number) ?? [],
-        termId: ephemeralParseData?.TermId ?? 0,
-      },
-      skip: !ephemeralParseData || isLoggedIn,
-    });
+  const { loading: sectionsLoading, data: sectionsData } = useQuery<
+    GetSectionsByClassNumbersQuery,
+    GetSectionsByClassNumbersQueryVariables
+  >(GET_SECTIONS_BY_CLASS_NUMBERS, {
+    variables: {
+      classNumbers: ephemeralParseData?.Classes.map((c) => c.Number) ?? [],
+      termId: ephemeralParseData?.TermId ?? 0,
+    },
+    skip: !ephemeralParseData || isLoggedIn,
+  });
 
   const ephemeralSchedule = useMemo<
     UserScheduleFragment['schedule'] | null
