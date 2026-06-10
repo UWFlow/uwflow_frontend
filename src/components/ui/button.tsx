@@ -7,7 +7,7 @@ import { cn } from 'lib/utils';
 // Variants use the GlobalTheme-derived Tailwind tokens (see tailwind.config.js)
 // rather than shadcn's semantic CSS variables, matching this project's palette.
 const buttonVariants = cva(
-  'whitespace-nowrap rounded text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'cursor-pointer whitespace-nowrap rounded text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
