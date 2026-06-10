@@ -255,9 +255,9 @@ const ScheduleSectionRow = ({
   return (
     <div
       className={cn(
-        'border-0 border-l-4 border-solid border-transparent bg-white px-4 py-3 outline-none transition-colors',
+        'border-0 border-l-4 border-t border-solid border-l-transparent border-t-light3 bg-white px-4 py-3 outline-none transition-colors first:border-t-0',
         'focus-within:bg-light1 hover:bg-light1',
-        isEnrolled && 'border-primary bg-primary/5',
+        isEnrolled && 'border-l-primary bg-primary/5',
         hasConflict && 'bg-light1/60 text-dark3',
       )}
       onBlur={handleBlur}
@@ -414,7 +414,7 @@ const ScheduleSwapPanel = ({
               No sections are listed for this term.
             </div>
           ) : (
-            <div className="divide-y divide-solid divide-light3">
+            <div>
               {sections.map((section) => (
                 <ScheduleSectionRow
                   course={selectedCourse}
