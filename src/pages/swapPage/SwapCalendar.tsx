@@ -196,6 +196,8 @@ type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
   /** Enables the calendar export menu; absent for ephemeral schedules. */
   secretId?: string;
+  /** Renders a non-interactive sample schedule (logged-out lock state). */
+  demoMode?: boolean;
   refetchAll?: (
     variables: GetUserQueryVariables,
   ) => Promise<ApolloQueryResult<GetUserQuery>>;
@@ -204,6 +206,7 @@ type SwapCalendarProps = {
 const SwapCalendar = ({
   schedule,
   secretId,
+  demoMode = false,
   refetchAll,
 }: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
@@ -468,12 +471,15 @@ const SwapCalendar = ({
                             block.courseCode === selectedCourseCode &&
                             hoveredSection !== null
                           }
-                          onClick={() =>
-                            setSelectedCourseCode((prev) =>
-                              prev === block.courseCode
-                                ? null
-                                : block.courseCode,
-                            )
+                          onClick={
+                            demoMode
+                              ? undefined
+                              : () =>
+                                  setSelectedCourseCode((prev) =>
+                                    prev === block.courseCode
+                                      ? null
+                                      : block.courseCode,
+                                  )
                           }
                           title={`${formatCourseCode(block.courseCode)} – ${
                             block.sectionName

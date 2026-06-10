@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-apollo';
+import { Lock } from 'react-feather';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import {
@@ -10,23 +11,32 @@ import {
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
+import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import {
   GET_SECTIONS_BY_CLASS_NUMBERS,
   GetSectionsByClassNumbersQuery,
 } from 'graphql/queries/course/SwapCourse';
 import { GET_USER } from 'graphql/queries/user/User';
+import useModal from 'hooks/useModal';
 import { ParseOnlyScheduleResponse } from 'types/Api';
 
 import {
+  LockBody,
+  LockCard,
+  LockHeading,
+  LockIconCircle,
+  LoginButton,
   ScheduleImportCard,
   ScheduleImportOverlay,
   SwapPageWrapper,
 } from './styles/SwapPage';
+import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar from './SwapCalendar';
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
+  const [openModal] = useModal();
   const [
     ephemeralParseData,
     setEphemeralParseData,
@@ -62,6 +72,9 @@ const SwapPage = () => {
   const user = isLoggedIn ? data?.user[0] : null;
   const schedule = isLoggedIn ? user?.schedule ?? [] : ephemeralSchedule ?? [];
   const hasSchedule = schedule.length > 0;
+  // Logged-out visitors see a non-interactive sample schedule behind the
+  // login lock card instead of an empty grid.
+  const isDemo = !isLoggedIn && !hasSchedule;
 
   useEffect(() => {
     if (!hasSchedule) {
@@ -108,22 +121,36 @@ const SwapPage = () => {
         )}
       </Helmet>
       <SwapCalendar
-        schedule={schedule}
+        schedule={isDemo ? DEMO_SCHEDULE : schedule}
         secretId={user?.secret_id}
+        demoMode={isDemo}
         refetchAll={isLoggedIn ? refetch : undefined}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <ScheduleImportOverlay visible={!hasSchedule}>
           <ScheduleImportCard>
-            <ScheduleUploadModalContent
-              onAfterUploadSuccess={
-                isLoggedIn
-                  ? () =>
-                      refetch({ id: Number(localStorage.getItem('user_id')) })
-                  : (parseData) => parseData && setEphemeralParseData(parseData)
-              }
-              showSkipStepButton={false}
-            />
+            {isLoggedIn ? (
+              <ScheduleUploadModalContent
+                onAfterUploadSuccess={() =>
+                  refetch({ id: Number(localStorage.getItem('user_id')) })
+                }
+                showSkipStepButton={false}
+              />
+            ) : (
+              <LockCard>
+                <LockIconCircle>
+                  <Lock size={24} />
+                </LockIconCircle>
+                <LockHeading>Upload your schedule to swap</LockHeading>
+                <LockBody>
+                  Log in and paste your courses from Quest to start swapping
+                  sections.
+                </LockBody>
+                <LoginButton onClick={() => openModal(AUTH_MODAL)}>
+                  Log in to continue
+                </LoginButton>
+              </LockCard>
+            )}
           </ScheduleImportCard>
         </ScheduleImportOverlay>
       </div>

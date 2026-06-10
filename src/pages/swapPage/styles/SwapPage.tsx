@@ -30,3 +30,58 @@ export const ScheduleImportCard = styled.div`
   justify-content: center;
   margin-top: 150px;
 `;
+
+export const LockCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  background: ${({ theme }) => theme.white};
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(23, 43, 77, 0.16);
+  padding: 40px 48px;
+  max-width: 400px;
+`;
+
+export const LockIconCircle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.light2};
+  color: ${({ theme }) => theme.dark2};
+`;
+
+export const LockHeading = styled.h2`
+  font-size: 20px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.dark1};
+  margin: 4px 0 0;
+`;
+
+export const LockBody = styled.p`
+  font-size: 14px;
+  color: ${({ theme }) => theme.dark2};
+  margin: 0;
+  line-height: 1.5;
+`;
+
+export const LoginButton = styled.button`
+  border: none;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.dark1};
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 28px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: filter 0.1s ease-in;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+`;
