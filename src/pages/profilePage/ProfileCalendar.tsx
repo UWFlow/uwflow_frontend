@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'react-feather';
 import { Link as RouterLink } from 'react-router-dom';
 import { ApolloQueryResult } from '@apollo/client';
 import {
@@ -24,7 +23,6 @@ import {
   GOOGLE_CALENDAR_URL,
 } from 'constants/Api';
 import { LAB, LEC } from 'constants/CourseSection';
-import { AndersonFont } from 'constants/Mixins';
 import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
 import { EventsByDate, ScheduleInterval } from 'types/Common';
@@ -314,8 +312,9 @@ type ProfileWeekCalendarProps = {
   initialMonday: Moment;
 };
 
-// Owns the week-navigation state and renders the generic calendar grid with a
-// week-nav toolbar in its `header` slot.
+// Owns the week-navigation state and feeds the generic calendar's built-in
+// header: the date-range title, the hours-this-week subtitle and the prev /
+// next / current-week callbacks.
 const ProfileWeekCalendar = ({
   eventsByDate,
   initialMonday,
@@ -323,57 +322,14 @@ const ProfileWeekCalendar = ({
   const [weekStart, setWeekStart] = useState(initialMonday);
   const week = buildWeekView(weekStart, eventsByDate);
 
-  const navButtonClass =
-    'flex max-h-12 items-center rounded border-2 border-light3 bg-light1 px-4 py-1 text-base font-semibold text-dark1 transition-all hover:cursor-pointer hover:brightness-[0.85]';
-
-  const header = (
-    <div className="flex items-end justify-between border-b-2 border-light3 px-4 py-4 tablet:px-8">
-      <div className="flex flex-1 flex-col">
-        <div
-          className="text-xl font-semibold text-dark1"
-          style={{ fontFamily: AndersonFont }}
-        >
-          {getDateRangeString(week.rangeStart, week.rangeEnd)}
-        </div>
-        <div className="text-base font-normal text-dark2">
-          ({week.totalHours} hours this week)
-        </div>
-      </div>
-      <div className="flex">
-        <button
-          type="button"
-          // "Current Week" is hidden on very small screens, matching the legacy
-          // hideSmall behaviour (max-width: 480px).
-          className={`ml-1 max-[480px]:hidden ${navButtonClass}`}
-          onClick={() => setWeekStart(initialMonday)}
-          onMouseDown={(e) => e.preventDefault()}
-        >
-          Current Week
-        </button>
-        <button
-          type="button"
-          className={`ml-1 ${navButtonClass}`}
-          onClick={() => setWeekStart(weekStart.clone().subtract(7, 'days'))}
-          onMouseDown={(e) => e.preventDefault()}
-        >
-          <ChevronLeft />
-        </button>
-        <button
-          type="button"
-          className={`ml-1 ${navButtonClass}`}
-          onClick={() => setWeekStart(weekStart.clone().add(7, 'days'))}
-          onMouseDown={(e) => e.preventDefault()}
-        >
-          <ChevronRight />
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <Calendar
       className="border-b-2 border-light3"
-      header={header}
+      headerTitle={getDateRangeString(week.rangeStart, week.rangeEnd)}
+      headerSubtitle={`(${week.totalHours} hours this week)`}
+      onCurrentWeek={() => setWeekStart(initialMonday)}
+      onPrevWeek={() => setWeekStart(weekStart.clone().subtract(7, 'days'))}
+      onNextWeek={() => setWeekStart(weekStart.clone().add(7, 'days'))}
       dayLabels={week.dayLabels}
       events={week.events}
       minHour={week.minHour}

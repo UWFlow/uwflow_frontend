@@ -1,5 +1,8 @@
 import React, { ReactNode } from 'react';
+import { ChevronLeft, ChevronRight } from 'react-feather';
 
+import { Button } from 'components/ui/button';
+import { AndersonFont } from 'constants/Mixins';
 import { cn } from 'lib/utils';
 
 // Vertical pixels per hour of the day; the single source of truth for the
@@ -57,8 +60,22 @@ export type CalendarProps = {
    * pointer cursor and no click handlers fire. Useful for read-only previews.
    */
   interactive?: boolean;
-  /** Optional toolbar rendered above the grid (week nav, term tabs, ...). */
-  header?: ReactNode;
+  /**
+   * Built-in navigation header rendered above the grid. Shown by default; pass
+   * `showHeader={false}` to drop it entirely (read-only previews, or pages that
+   * supply their own chrome).
+   */
+  showHeader?: boolean;
+  /** Primary line at the left of the header, e.g. the visible date range. */
+  headerTitle?: ReactNode;
+  /** Secondary line under the title, e.g. "(12 hours this week)". */
+  headerSubtitle?: ReactNode;
+  /** Jump back to the starting week. Its button renders only when provided. */
+  onCurrentWeek?: () => void;
+  /** Step one week earlier. Its button renders only when provided. */
+  onPrevWeek?: () => void;
+  /** Step one week later. Its button renders only when provided. */
+  onNextWeek?: () => void;
   className?: string;
 };
 
@@ -99,6 +116,12 @@ const STATE_CLASS: Record<CalendarEventState, string> = {
   // Ghost: dashed, blurred and lifted above real events; never clickable.
   preview: 'z-30 border-dashed blur-[1px] pointer-events-none',
 };
+
+// Week-nav buttons, styled to match the app's `input/Button`: a light, bordered
+// face with the Anderson heading font and a brightness(85%) hover. Layered over
+// the shared Button via `cn`, so these win over its variant/size defaults.
+const NAV_BUTTON_CLASS =
+  'ml-1 h-12 rounded-lg border-2 border-light3 bg-light1 font-anderson text-lg font-semibold text-dark1 transition-all hover:bg-light1 hover:brightness-[0.85]';
 
 const formatHour = (hour: number) => {
   if (hour === 0) return '12 am';
@@ -155,7 +178,12 @@ const Calendar = ({
   minHour,
   maxHour,
   interactive = true,
-  header,
+  showHeader = true,
+  headerTitle,
+  headerSubtitle,
+  onCurrentWeek,
+  onPrevWeek,
+  onNextWeek,
   className,
 }: CalendarProps) => {
   const derivedSides = deriveTruncation(events);
@@ -224,7 +252,62 @@ const Calendar = ({
 
   return (
     <div className={cn('relative bg-white', className)}>
-      {header}
+      {showHeader && (
+        <div className="flex items-end justify-between border-b-2 border-light3 px-4 py-4 tablet:px-8">
+          <div className="flex flex-1 flex-col">
+            {headerTitle != null && (
+              <div
+                className="text-xl font-semibold text-dark1"
+                style={{ fontFamily: AndersonFont }}
+              >
+                {headerTitle}
+              </div>
+            )}
+            {headerSubtitle != null && (
+              <div className="text-base font-normal text-dark2">
+                {headerSubtitle}
+              </div>
+            )}
+          </div>
+          <div className="flex">
+            {onCurrentWeek && (
+              <Button
+                type="button"
+                variant="outline"
+                // "Current Week" is hidden on very small screens, matching the
+                // legacy hideSmall behaviour (max-width: 480px).
+                className={cn(NAV_BUTTON_CLASS, 'px-8 max-[480px]:hidden')}
+                onClick={onCurrentWeek}
+                onMouseDown={(e) => e.preventDefault()}
+              >
+                Current Week
+              </Button>
+            )}
+            {onPrevWeek && (
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
+                onClick={onPrevWeek}
+                onMouseDown={(e) => e.preventDefault()}
+              >
+                <ChevronLeft />
+              </Button>
+            )}
+            {onNextWeek && (
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
+                onClick={onNextWeek}
+                onMouseDown={(e) => e.preventDefault()}
+              >
+                <ChevronRight />
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
       <div className="relative">
         {/* Background hour grid; defines the overall height. */}
         <div>
