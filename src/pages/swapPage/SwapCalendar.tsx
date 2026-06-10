@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ChevronDown, Download } from 'react-feather';
+import { ChevronDown, Download, RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
 import { UserScheduleFragment } from 'generated/graphql';
 import moment from 'moment/moment';
@@ -46,12 +46,22 @@ const secsTo24hTime = (secs: number) =>
     (secs % 3600) / 60,
   )}`.padStart(2, '0')}`;
 
+// Section "type" is the section_name prefix: "LEC 001" -> "LEC".
+const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
+
 const getSectionVariant = (sectionName: string): CalendarEventVariant => {
-  const type = sectionName.split(' ')[0];
+  const type = getSectionType(sectionName);
   if (type === 'LEC') return 'lecture';
   if (type === 'LAB') return 'lab';
   if (type === 'TUT') return 'tutorial';
   return 'other';
+};
+
+// The selection a calendar click produces: one course's sections of one type
+// (e.g. CS 240's lectures). Swapping only ever replaces this one entry.
+type SectionSelection = {
+  courseCode: string;
+  sectionType: string;
 };
 
 // Mon-Fri day columns for a meeting, keeping only meetings that start within
@@ -87,10 +97,18 @@ const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
 const sectionConflictsWithSchedule = (
   candidate: SwapSection,
   schedule: UserScheduleFragment['schedule'],
-  excludedCourseCode: string,
+  // Only the entry being replaced (selected course + section type) leaves the
+  // schedule on swap; the course's other sections (e.g. its TUT while swapping
+  // the LEC) stay enrolled and still count for conflicts.
+  excluded: SectionSelection | null,
 ): boolean => {
   const otherSections = schedule.filter(
-    (e) => e.section.course.code !== excludedCourseCode,
+    (e) =>
+      !(
+        excluded &&
+        e.section.course.code === excluded.courseCode &&
+        getSectionType(e.section.section_name) === excluded.sectionType
+      ),
   );
 
   return candidate.meetings.some((cm) => {
@@ -115,20 +133,25 @@ const sectionConflictsWithSchedule = (
 };
 
 // Map the term's enrolled sections onto generic calendar events. The selected
-// course renders gold (`selected`), or fades to `dimmed` while a candidate
-// section is being previewed from the side panel.
+// course+type renders gold (`selected`), or fades to `dimmed` while a
+// candidate section is being previewed from the side panel; other section
+// types of the same course stay `default`.
 const buildEnrolledEvents = (
   termSections: UserScheduleFragment['schedule'],
-  selectedCourseCode: string | null,
+  selection: SectionSelection | null,
   isPreviewing: boolean,
-  onToggleCourse: (code: string) => void,
+  onToggleSection: (code: string, sectionType: string) => void,
 ): CalendarEvent[] =>
   termSections.flatMap(({ section }) => {
     const courseCode = section.course.code;
+    const sectionType = getSectionType(section.section_name);
     const variant = getSectionVariant(section.section_name);
-    const isSelectedCourse = courseCode === selectedCourseCode;
+    const isSelected =
+      selection !== null &&
+      courseCode === selection.courseCode &&
+      sectionType === selection.sectionType;
     let state: CalendarEventState = 'default';
-    if (isSelectedCourse) state = isPreviewing ? 'dimmed' : 'selected';
+    if (isSelected) state = isPreviewing ? 'dimmed' : 'selected';
 
     return section.meetings.flatMap((m, meetingIndex) => {
       if (m.start_seconds == null || m.end_seconds == null) return [];
@@ -149,7 +172,7 @@ const buildEnrolledEvents = (
           timeLabel,
           location: m.location,
           subtitle: section.section_name,
-          onClick: () => onToggleCourse(courseCode),
+          onClick: () => onToggleSection(courseCode, sectionType),
         }),
       );
     });
@@ -204,9 +227,12 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
     const nextHasData = !!termMap[nextTermLabel]?.length;
     return !nextHasData || thisHasData ? thisTermLabel : nextTermLabel;
   });
-  const [selectedCourseCode, setSelectedCourseCode] = useState<string | null>(
-    null,
-  );
+  // The clicked calendar block's course + section type (e.g. CS 240 / LEC).
+  // Selection, the panel's section list, and swapping are all scoped to this
+  // one course+type pair.
+  const [selection, setSelection] = useState<SectionSelection | null>(null);
+  const selectedCourseCode = selection?.courseCode ?? null;
+  const selectedSectionType = selection?.sectionType ?? null;
   // Ghost preview while the pointer is over a section row in the panel.
   const [hoveredSection, setHoveredSection] = useState<SwapSection | null>(
     null,
@@ -226,7 +252,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
     setIsSwapDropdownOpen(false);
-  }, [selectedCourseCode]);
+  }, [selectedCourseCode, selectedSectionType]);
 
   const selectedTermCode =
     selectedTerm === nextTermLabel ? nextTermCode : thisTermCode;
@@ -280,14 +306,10 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
         .filter(
           (section) =>
             !enrolledSectionIds.includes(section.id) &&
-            sectionConflictsWithSchedule(
-              section,
-              termSections,
-              selectedCourseCode || '',
-            ),
+            sectionConflictsWithSchedule(section, termSections, selection),
         )
         .map((section) => section.id),
-    [swapSections, enrolledSectionIds, termSections, selectedCourseCode],
+    [swapSections, enrolledSectionIds, termSections, selection],
   );
 
   const professorStatsById = useMemo(() => {
@@ -324,7 +346,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
   // Term overrides persist while the page lives — only a refresh resets them.
   const handleTermChange = useCallback((termId: number) => {
     setSelectedTerm(termCodeToDate(termId));
-    setSelectedCourseCode(null);
+    setSelection(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
     setIsSwapDropdownOpen(false);
@@ -336,25 +358,19 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
   }, []);
 
   // Temporarily swap a section into the schedule (React state only). The new
-  // section replaces the selected course's entry of the same section type
-  // (LEC↔LEC, TUT↔TUT), falling back to the course's first entry.
+  // section replaces the entry matching the selected course + section type
+  // (LEC↔LEC, TUT↔TUT) — the panel only offers same-type candidates.
   const handleSwitchSection = useCallback(
     (sectionId: number) => {
       const newSection = swapSections.find((s) => s.id === sectionId);
-      if (!newSection || !selectedCourseCode) return;
+      if (!newSection || !selection) return;
 
-      const newType = newSection.section_name.split(' ')[0];
       const base = termSections;
-      let replaceIndex = base.findIndex(
+      const replaceIndex = base.findIndex(
         (e) =>
-          e.section.course.code === selectedCourseCode &&
-          e.section.section_name.split(' ')[0] === newType,
+          e.section.course.code === selection.courseCode &&
+          getSectionType(e.section.section_name) === selection.sectionType,
       );
-      if (replaceIndex === -1) {
-        replaceIndex = base.findIndex(
-          (e) => e.section.course.code === selectedCourseCode,
-        );
-      }
       if (replaceIndex === -1) return;
 
       const next = [...base];
@@ -364,13 +380,17 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
       );
       setOverriddenByTerm((prev) => ({ ...prev, [selectedTerm]: next }));
       setHoveredSection(null);
-      if (newSection.course.code !== selectedCourseCode) {
-        // Follow the swapped-in course; the effect on selectedCourseCode also
-        // clears the swap target so the panel shows the new enrolled section.
-        setSelectedCourseCode(newSection.course.code);
+      if (newSection.course.code !== selection.courseCode) {
+        // Follow the swapped-in course (keeping the selected section type);
+        // the effect on the selection also clears the swap target so the
+        // panel shows the new enrolled section.
+        setSelection({
+          courseCode: newSection.course.code,
+          sectionType: selection.sectionType,
+        });
       }
     },
-    [swapSections, termSections, selectedCourseCode, selectedTerm],
+    [swapSections, termSections, selection, selectedTerm],
   );
 
   // iCalendar export, same flow as ProfileCalendar's handleCalendarExport.
@@ -383,7 +403,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
   }, [secretId]);
 
   const handleClose = useCallback(() => {
-    setSelectedCourseCode(null);
+    setSelection(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
     setIsSwapDropdownOpen(false);
@@ -393,14 +413,20 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
     () => [
       ...buildEnrolledEvents(
         termSections,
-        selectedCourseCode,
+        selection,
         previewSection !== null,
-        (code) =>
-          setSelectedCourseCode((prev) => (prev === code ? null : code)),
+        // Re-clicking the selected course+type deselects; clicking any other
+        // block (even another type of the same course) re-selects.
+        (courseCode, sectionType) =>
+          setSelection((prev) =>
+            prev?.courseCode === courseCode && prev.sectionType === sectionType
+              ? null
+              : { courseCode, sectionType },
+          ),
       ),
       ...buildPreviewEvents(previewSection),
     ],
-    [termSections, selectedCourseCode, previewSection],
+    [termSections, selection, previewSection],
   );
 
   const availableTerms = [
@@ -408,6 +434,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
     { id: nextTermCode, label: nextTermLabel },
   ];
   const swapTargetCode = selectedSwapCourseCode ?? selectedCourseCode;
+  const hasSwaps = Object.keys(overriddenByTerm).length > 0;
 
   return (
     <FadeInWrapper>
@@ -505,16 +532,31 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
                   </span>
                 )}
               </div>
-              {secretId && (
+              {hasSwaps ? (
+                // Swaps live only in React state, so a refresh restores the
+                // real schedule. This takes over the Export slot while any
+                // temporary swap is active.
                 <button
-                  aria-label="Export schedule"
-                  title="Export schedule"
-                  className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-primary text-white transition-colors hover:bg-primaryDark"
-                  onClick={handleExport}
+                  aria-label="Reset swapped sections"
+                  title="Reset swapped sections"
+                  className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-solid border-light3 bg-white text-dark2 transition-colors hover:bg-light1"
+                  onClick={() => window.location.reload()}
                   type="button"
                 >
-                  <Download aria-hidden="true" size={16} />
+                  <RotateCcw aria-hidden="true" size={16} />
                 </button>
+              ) : (
+                secretId && (
+                  <button
+                    aria-label="Export schedule"
+                    title="Export schedule"
+                    className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-primary text-white transition-colors hover:bg-primaryDark"
+                    onClick={handleExport}
+                    type="button"
+                  >
+                    <Download aria-hidden="true" size={16} />
+                  </button>
+                )
               )}
             </div>
             {updatedAt && (
@@ -527,6 +569,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
             <ScheduleSwapPanel
               selectedTermId={selectedTermCode}
               selectedCourseId={displayedCourse?.id ?? null}
+              sectionType={selectedSectionType}
               candidateCourses={candidateCourses}
               enrolledSectionIds={enrolledSectionIds}
               conflictSectionIds={conflictSectionIds}

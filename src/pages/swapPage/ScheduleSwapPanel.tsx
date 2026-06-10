@@ -32,6 +32,9 @@ export type ProfessorSwapStats = {
 export type ScheduleSwapPanelProps = {
   selectedTermId: number;
   selectedCourseId: number | null;
+  // Section type ("LEC", "TUT", ...) the user selected on the calendar; only
+  // sections of this type are listed (null lists every type).
+  sectionType: string | null;
   candidateCourses: SwapCandidateCourse[];
   enrolledSectionIds: number[];
   conflictSectionIds: number[];
@@ -321,6 +324,7 @@ const ScheduleSectionRow = ({
 const ScheduleSwapPanel = ({
   selectedTermId,
   selectedCourseId,
+  sectionType,
   candidateCourses,
   enrolledSectionIds,
   conflictSectionIds,
@@ -334,7 +338,12 @@ const ScheduleSwapPanel = ({
     candidateCourses.find((course) => course.id === selectedCourseId) || null;
   const sections = selectedCourse
     ? selectedCourse.sections
-        .filter((section) => section.term_id === selectedTermId)
+        .filter(
+          (section) =>
+            section.term_id === selectedTermId &&
+            (sectionType === null ||
+              getSectionType(section.section_name) === sectionType),
+        )
         .sort((a, b) => {
           const sectionTypeA = getSectionType(a.section_name);
           const sectionTypeB = getSectionType(b.section_name);
@@ -348,7 +357,7 @@ const ScheduleSwapPanel = ({
   useEffect(() => {
     onPreviewChange(null);
     return () => onPreviewChange(null);
-  }, [onPreviewChange, selectedCourseId, selectedTermId]);
+  }, [onPreviewChange, selectedCourseId, selectedTermId, sectionType]);
 
   const handleClose = () => {
     onPreviewChange(null);
