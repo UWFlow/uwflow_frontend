@@ -121,7 +121,7 @@ const STATE_CLASS: Record<CalendarEventState, string> = {
 // face with the Anderson heading font and a brightness(85%) hover. Layered over
 // the shared Button via `cn`, so these win over its variant/size defaults.
 const NAV_BUTTON_CLASS =
-  'ml-1 h-12 rounded-lg border-2 border-light3 bg-light1 font-anderson text-lg font-semibold text-dark1 transition-all hover:bg-light1 hover:brightness-[0.85]';
+  'ml-1 h-12 rounded-lg border-2 border-solid border-light3 bg-light1 font-anderson text-lg font-semibold text-dark1 transition-all hover:bg-light1 hover:brightness-[0.85]';
 
 const formatHour = (hour: number) => {
   if (hour === 0) return '12 am';
@@ -273,7 +273,7 @@ const Calendar = ({
             {onCurrentWeek && (
               <Button
                 type="button"
-                variant="outline"
+                variant="default"
                 // "Current Week" is hidden on very small screens, matching the
                 // legacy hideSmall behaviour (max-width: 480px).
                 className={cn(NAV_BUTTON_CLASS, 'px-8 max-[480px]:hidden')}
@@ -286,7 +286,7 @@ const Calendar = ({
             {onPrevWeek && (
               <Button
                 type="button"
-                variant="outline"
+                variant="default"
                 className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
                 onClick={onPrevWeek}
                 onMouseDown={(e) => e.preventDefault()}
@@ -297,7 +297,7 @@ const Calendar = ({
             {onNextWeek && (
               <Button
                 type="button"
-                variant="outline"
+                variant="default"
                 className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
                 onClick={onNextWeek}
                 onMouseDown={(e) => e.preventDefault()}
