@@ -457,7 +457,7 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
 
           <div className="flex w-[360px] shrink-0 flex-col gap-3">
             <div className="flex items-center gap-2">
-              <div className="flex min-w-0 flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2.5 shadow-box">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-xl bg-white px-3 py-2.5 shadow-box">
                 {selectedCourseCode ? (
                   <>
                     <span className="text-sm font-semibold text-dark1">
@@ -507,12 +507,13 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
               </div>
               {secretId && (
                 <button
-                  className="flex h-9 shrink-0 cursor-pointer items-center gap-1.5 rounded-lg border-none bg-primary px-3 text-sm font-semibold text-white transition-colors hover:bg-primaryDark"
+                  aria-label="Export schedule"
+                  title="Export schedule"
+                  className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-primary text-white transition-colors hover:bg-primaryDark"
                   onClick={handleExport}
                   type="button"
                 >
-                  <Download aria-hidden="true" size={15} />
-                  Export
+                  <Download aria-hidden="true" size={16} />
                 </button>
               )}
             </div>
