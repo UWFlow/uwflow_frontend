@@ -36,6 +36,6 @@ export const LoadableWelcomePage = loadable(
   () => import(/* webpackPrefetch: true */ './pages/welcomePage/WelcomePage'),
 );
 
-export const LoadableSwapPage = loadable(() =>
-  import(/* webpackPrefetch: true */ './pages/swapPage/SwapPage'),
+export const LoadableSwapPage = loadable(
+  () => import(/* webpackPrefetch: true */ './pages/swapPage/SwapPage'),
 );

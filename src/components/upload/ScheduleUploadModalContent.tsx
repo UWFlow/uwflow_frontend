@@ -104,7 +104,7 @@ const ScheduleUploadModalContent = ({
       setUploadState(UPLOAD_SUCCESSFUL);
       toast(DATA_UPLOAD_SUCCESS);
       if (onAfterUploadSuccess) {
-        const parseOnly = (response as unknown) as ParseOnlyScheduleResponse;
+        const parseOnly = response as unknown as ParseOnlyScheduleResponse;
         onAfterUploadSuccess(
           parseOnly.TermId !== undefined ? parseOnly : undefined,
         );
