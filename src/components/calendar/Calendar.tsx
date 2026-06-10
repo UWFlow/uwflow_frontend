@@ -18,7 +18,7 @@ export type CalendarEventVariant = 'lecture' | 'lab' | 'tutorial' | 'other';
 /**
  * Visual state of an event block:
  * - `default`  — a normal block.
- * - `selected` — emphasised with a ring in the variant colour.
+ * - `selected` — emphasised with a gold fill, border and left rail.
  * - `dimmed`   — faded, e.g. existing events while a preview is shown.
  * - `preview`  — a translucent, dashed, slightly blurred "ghost" laid on top;
  *                non-interactive so it never intercepts clicks.
@@ -82,8 +82,8 @@ export type CalendarProps = {
 // is written inline below so Tailwind's JIT scanner can see the full class.)
 const GRID_LINE = 'border-light3';
 
-// Per-variant accent classes. `default`/`dimmed` blocks border in the accent;
-// `selected` rings in it; `preview` borders + tints in it. Backed entirely by
+// Per-variant accent classes. Blocks border (incl. the thick left rail) in the
+// accent colour and tint their fill with it at low opacity. Backed entirely by
 // existing Tailwind tokens (see tailwind.config.js) — no arbitrary hex.
 const VARIANT_BORDER: Record<CalendarEventVariant, string> = {
   lecture: 'border-lecture',
@@ -92,15 +92,8 @@ const VARIANT_BORDER: Record<CalendarEventVariant, string> = {
   other: 'border-dark3',
 };
 
-const VARIANT_RING: Record<CalendarEventVariant, string> = {
-  lecture: 'ring-lecture',
-  lab: 'ring-lab',
-  tutorial: 'ring-tutorial',
-  other: 'ring-dark3',
-};
-
-// Translucent fill for the preview ghost, in the variant colour.
-const VARIANT_PREVIEW_FILL: Record<CalendarEventVariant, string> = {
+// Soft translucent fill in the variant colour.
+const VARIANT_FILL: Record<CalendarEventVariant, string> = {
   lecture: 'bg-lecture/20',
   lab: 'bg-lab/20',
   tutorial: 'bg-tutorial/20',
@@ -110,7 +103,9 @@ const VARIANT_PREVIEW_FILL: Record<CalendarEventVariant, string> = {
 // State -> extra block classes, layered on top of the base block + variant.
 const STATE_CLASS: Record<CalendarEventState, string> = {
   default: '',
-  selected: 'z-20 ring-2 ring-offset-1',
+  // Gold highlight: the fill/border swap to accent tokens happens in
+  // renderEvent; the ring thickens the gold border on all four sides.
+  selected: 'z-20 ring-1 ring-accentDark',
   dimmed: 'opacity-[0.38]',
   // Ghost: dashed, blurred and lifted above real events; never clickable.
   preview: 'z-30 border-dashed blur-[1px] pointer-events-none',
@@ -165,7 +160,7 @@ const deriveTruncation = (events: CalendarEvent[]) => {
  *
  * The section-swap page reuses this directly:
  * - enrolled classes are `default` events;
- * - the class being swapped is `selected` (variant ring);
+ * - the class being swapped is `selected` (gold fill, border and left rail);
  * - while a candidate section is previewed, the enrolled blocks it would
  *   replace become `dimmed`, and the candidate is a `preview` ghost
  *   (translucent + dashed + `blur-[1px]`, non-interactive);
@@ -195,6 +190,7 @@ const Calendar = ({
     const variant = event.variant ?? 'lecture';
     const state = event.state ?? 'default';
     const isPreview = state === 'preview';
+    const isSelected = state === 'selected';
     // Preview ghosts overlay full-width and ignore overlap truncation.
     const truncate = isPreview
       ? undefined
@@ -215,12 +211,12 @@ const Calendar = ({
         onClick={clickable ? event.onClick : undefined}
         style={{ top, height }}
         className={cn(
-          // Base block: rounded, colour-bordered with a thick left rail.
+          // Base block: rounded, soft variant tint with a thick accent left rail.
           'absolute z-10 overflow-hidden rounded border border-l-4 border-solid px-1 py-0.5 text-[11px] leading-tight text-dark1',
-          // Preview ghosts tint in the variant colour; real blocks sit on light1.
-          isPreview ? VARIANT_PREVIEW_FILL[variant] : 'bg-light1',
-          VARIANT_BORDER[variant],
-          state === 'selected' && VARIANT_RING[variant],
+          // Selected blocks swap the variant tint/accent for the gold tokens.
+          isSelected
+            ? 'border-accentDark bg-accent/20'
+            : [VARIANT_FILL[variant], VARIANT_BORDER[variant]],
           STATE_CLASS[state],
           // Width / side when sharing a slot with an overlapping event.
           truncate === 'left' && 'left-0 w-[calc(50%-4px)]',
@@ -234,14 +230,9 @@ const Calendar = ({
             'transition-all hover:z-20 hover:w-[calc(100%-4px)]',
         )}
       >
-        {(event.title || event.subtitle) && (
-          <div className="font-semibold">
-            {event.title}
-            {event.title && event.subtitle ? (
-              <span className="font-normal"> - </span>
-            ) : null}
-            {event.subtitle}
-          </div>
+        {event.title && <div className="font-semibold">{event.title}</div>}
+        {event.subtitle && (
+          <div className="text-[10px] text-dark2">{event.subtitle}</div>
         )}
         {event.timeLabel && <div>{event.timeLabel}</div>}
         {event.location && <div>{event.location}</div>}

@@ -277,7 +277,8 @@ const buildWeekView = (
         startMinutes: event.start.hour() * 60 + event.start.minutes(),
         endMinutes: event.end.hour() * 60 + event.end.minutes(),
         variant: getEventVariant(event.section),
-        // Exams put the section on its own line; meetings read "CODE - SECTION".
+        // Exams fold the section into the bold title; meetings show the code
+        // as the title with the section as the muted subtitle line.
         title: isExam ? (
           <>
             {courseLink}

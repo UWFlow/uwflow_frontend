@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { UserScheduleFragment } from 'generated/graphql';
 
+import {
+  Calendar,
+  CalendarEvent,
+  CalendarEventState,
+  CalendarEventVariant,
+} from 'components/calendar';
 import { FadeInWrapper } from 'components/navigation/styles/Footer';
 import { SwapSection } from 'graphql/queries/course/SwapCourse';
 import {
@@ -11,72 +17,31 @@ import {
 } from 'utils/Misc';
 
 import {
-  BlockCode,
-  BlockLoc,
-  BlockSection,
-  BlockTime,
-  CalendarLegendBar,
-  CalendarPanel,
-  CalendarPanelContainer,
   CourseCodeBadge,
   CourseSelectBadgeWrapper,
   CourseSelectTrigger,
-  DayCol,
-  DayColumnsArea,
-  DayHeaderCell,
-  DayHeadersRow,
   DropdownCourseCode,
   DropdownCourseName,
-  EventBlock,
-  GhostEventBlock,
-  GridBody,
-  HalfHourLine,
-  HourLineFull,
-  LegendDot,
-  LegendItem,
-  SectionFinderContainer,
-  SWAP_GRID_END_HOUR,
-  SWAP_GRID_START_HOUR,
-  SWAP_HOUR_HEIGHT,
-  SwapBodyWrapper,
-  SwapCalendarOuter,
   SwapDropdownItem,
   SwapDropdownList,
   SwapDropdownOverlay,
   SwapDropdownWrapper,
-  SwapHeaderRow,
   SwapLabelText,
-  SwapPageSubtitle,
-  SwapPageTitle,
-  SwapTitleRow,
   TermTab,
   TermTabGroup,
-  TimeHeaderSpacer,
-  TimeLabel,
-  TimeLabelsCol,
 } from './styles/SwapCalendar';
 import CourseSearchDropdown from './CourseSearchDropdown';
 import SectionFinderPanel from './SectionFinderPanel';
 
 const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
-const TOTAL_HOURS = SWAP_GRID_END_HOUR - SWAP_GRID_START_HOUR;
-const GRID_HEIGHT = TOTAL_HOURS * SWAP_HOUR_HEIGHT;
+// Visible hour range of the grid: 8am to 10pm.
+const GRID_START_HOUR = 8;
+const GRID_END_HOUR = 22;
 
 const fmtWeekHeader = (d: Date) =>
   `${d.toLocaleDateString('en', {
     weekday: 'short',
   })} ${d.toLocaleDateString('en', { month: 'short' })} ${d.getDate()}`;
-
-const fmtHour = (h: number) =>
-  h === 0 ? '12 am' : h === 12 ? '12 pm' : h < 12 ? `${h} am` : `${h - 12} pm`;
-
-const formatTime = (seconds: number): string => {
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  return `${h % 12 || 12}:${m.toString().padStart(2, '0')}${
-    h < 12 ? 'am' : 'pm'
-  }`;
-};
 
 const getWeekDates = (): Date[] => {
   const today = new Date();
@@ -90,41 +55,21 @@ const getWeekDates = (): Date[] => {
   });
 };
 
-type SectionColors = { fill: string; accent: string };
-
-const getSectionColors = (sectionName: string): SectionColors => {
+const getSectionVariant = (sectionName: string): CalendarEventVariant => {
   const type = sectionName.split(' ')[0];
-  if (type === 'LEC') return { fill: '#eef4ff', accent: '#0052cc' };
-  if (type === 'LAB') return { fill: '#e6f2fb', accent: '#2b8fcd' };
-  if (type === 'TUT') return { fill: '#efedf8', accent: '#6554c0' };
-  if (type === 'MTG') return { fill: '#fff7e0', accent: '#e8b300' };
-  return { fill: '#f4f5f7', accent: '#505f79' };
+  if (type === 'LEC') return 'lecture';
+  if (type === 'LAB') return 'lab';
+  if (type === 'TUT') return 'tutorial';
+  return 'other';
 };
 
-type EnrolledBlock = {
-  courseCode: string;
-  sectionName: string;
-  location: string | null;
-  colIndex: number;
-  top: number;
-  height: number;
-  colors: SectionColors;
-  startSeconds: number;
-  endSeconds: number;
+// Mon-Fri day columns for a meeting, keeping only meetings that start within
+// the visible hour range.
+const toDayIndexes = (days: string[], startSeconds: number): number[] => {
+  const startHour = startSeconds / 3600;
+  if (startHour < GRID_START_HOUR || startHour > GRID_END_HOUR) return [];
+  return days.map((d) => DAY_LETTERS.indexOf(d)).filter((col) => col !== -1);
 };
-
-type BlockPos = { colIndex: number; top: number; height: number };
-
-const toPositions = (days: string[], start: number, end: number): BlockPos[] =>
-  days
-    .map((d) => DAY_LETTERS.indexOf(d))
-    .filter((col) => col !== -1)
-    .map((colIndex) => ({
-      colIndex,
-      top: (start / 3600 - SWAP_GRID_START_HOUR) * SWAP_HOUR_HEIGHT,
-      height: ((end - start) / 3600) * SWAP_HOUR_HEIGHT,
-    }))
-    .filter(({ top }) => top >= 0 && top <= GRID_HEIGHT);
 
 const getTermLabel = (dateStr: string): string => {
   const d = new Date(dateStr);
@@ -145,34 +90,61 @@ const groupScheduleByTerm = (schedule: UserScheduleFragment['schedule']) => {
   return map;
 };
 
-const buildEnrolledBlocks = (
+// Map the term's enrolled sections onto generic calendar events. The selected
+// course renders gold (`selected`), or fades to `dimmed` while a candidate
+// section is being previewed from the side panel.
+const buildEnrolledEvents = (
   termSections: UserScheduleFragment['schedule'],
-): EnrolledBlock[] =>
+  selectedCourseCode: string | null,
+  isPreviewing: boolean,
+  onToggleCourse: (code: string) => void,
+): CalendarEvent[] =>
   termSections.flatMap(({ section }) => {
-    const colors = getSectionColors(section.section_name);
-    return section.meetings.flatMap((m) => {
-      const startSeconds = m.start_seconds;
-      const endSeconds = m.end_seconds;
-      if (startSeconds == null || endSeconds == null) return [];
-      return toPositions(m.days as string[], startSeconds, endSeconds).map(
-        (pos) => ({
-          ...pos,
-          courseCode: section.course.code,
-          sectionName: section.section_name,
-          location: m.location ?? null,
-          colors,
-          startSeconds,
-          endSeconds,
+    const courseCode = section.course.code;
+    const variant = getSectionVariant(section.section_name);
+    const isSelectedCourse = courseCode === selectedCourseCode;
+    let state: CalendarEventState = 'default';
+    if (isSelectedCourse) state = isPreviewing ? 'dimmed' : 'selected';
+
+    return section.meetings.flatMap((m, meetingIndex) => {
+      if (m.start_seconds == null || m.end_seconds == null) return [];
+      const startMinutes = m.start_seconds / 60;
+      const endMinutes = m.end_seconds / 60;
+      return toDayIndexes(m.days as string[], m.start_seconds).map(
+        (dayIndex) => ({
+          id: `${courseCode}-${section.section_name}-${meetingIndex}-${dayIndex}`,
+          dayIndex,
+          startMinutes,
+          endMinutes,
+          variant,
+          state,
+          title: formatCourseCode(courseCode),
+          subtitle: m.location
+            ? `${section.section_name} · ${m.location}`
+            : section.section_name,
+          onClick: () => onToggleCourse(courseCode),
         }),
       );
     });
   });
 
-const buildGhostBlocks = (section: SwapSection | null): BlockPos[] =>
+// Ghost blocks for the candidate section hovered in the side panel.
+const buildPreviewEvents = (section: SwapSection | null): CalendarEvent[] =>
   section
-    ? section.meetings.flatMap((m) => {
+    ? section.meetings.flatMap((m, meetingIndex) => {
         if (m.start_seconds == null || m.end_seconds == null) return [];
-        return toPositions(m.days as string[], m.start_seconds, m.end_seconds);
+        const startMinutes = m.start_seconds / 60;
+        const endMinutes = m.end_seconds / 60;
+        return toDayIndexes(m.days as string[], m.start_seconds).map(
+          (dayIndex) => ({
+            id: `preview-${meetingIndex}-${dayIndex}`,
+            dayIndex,
+            startMinutes,
+            endMinutes,
+            variant: getSectionVariant(section.section_name),
+            state: 'preview' as const,
+          }),
+        );
       })
     : [];
 
@@ -230,20 +202,20 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
       });
   }, [termSections]);
 
-  const enrolledBlocks = useMemo(
-    () => buildEnrolledBlocks(termSections),
-    [termSections],
-  );
-  const ghostBlocks = useMemo(
-    () => buildGhostBlocks(hoveredSection),
-    [hoveredSection],
+  const events = useMemo(
+    () => [
+      ...buildEnrolledEvents(
+        termSections,
+        selectedCourseCode,
+        hoveredSection !== null,
+        (code) =>
+          setSelectedCourseCode((prev) => (prev === code ? null : code)),
+      ),
+      ...buildPreviewEvents(hoveredSection),
+    ],
+    [termSections, selectedCourseCode, hoveredSection],
   );
   const weekDates = useMemo(getWeekDates, []);
-
-  const blocksByCol: EnrolledBlock[][] = Array.from({ length: 5 }, () => []);
-  enrolledBlocks.forEach((b) => blocksByCol[b.colIndex]?.push(b));
-  const ghostByCol: BlockPos[][] = Array.from({ length: 5 }, () => []);
-  ghostBlocks.forEach((b) => ghostByCol[b.colIndex]?.push(b));
 
   const selectedLabel = selectedCourseCode
     ? formatCourseCode(selectedCourseCode)
@@ -251,16 +223,18 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
 
   return (
     <FadeInWrapper>
-      <SwapCalendarOuter>
-        <SwapTitleRow>
-          <SwapPageTitle>Your schedule</SwapPageTitle>
-          <SwapPageSubtitle>
+      <div className="mx-auto box-border flex w-full max-w-[1280px] flex-col px-8 pb-8 pt-6">
+        <div className="mb-4 flex items-baseline justify-between gap-4">
+          <h1 className="shrink-0 font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
+            Swap classes
+          </h1>
+          <p className="text-right font-inter text-md font-regular text-dark2">
             Click any class to see other sections or swap it for a different
             course.
-          </SwapPageSubtitle>
-        </SwapTitleRow>
+          </p>
+        </div>
 
-        <SwapHeaderRow>
+        <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
           <TermTabGroup>
             {[thisTermLabel, nextTermLabel].map((term) => (
               <TermTab
@@ -347,103 +321,30 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
               'Select course from schedule'
             )}
           </CourseSelectTrigger>
-        </SwapHeaderRow>
+        </div>
 
-        <SwapBodyWrapper>
-          <CalendarPanelContainer>
-            <CalendarPanel>
-              <DayHeadersRow>
-                <TimeHeaderSpacer />
-                {weekDates.map((date, i) => (
-                  <DayHeaderCell key={i}>{fmtWeekHeader(date)}</DayHeaderCell>
-                ))}
-              </DayHeadersRow>
+        <div className="flex items-start gap-4">
+          <div className="min-w-0 flex-1 overflow-hidden rounded-lg border border-solid border-light3 bg-white shadow-box">
+            <Calendar
+              showHeader={false}
+              dayLabels={weekDates.map(fmtWeekHeader)}
+              events={events}
+              minHour={GRID_START_HOUR}
+              maxHour={GRID_END_HOUR - 1}
+            />
+            <div className="flex gap-4 border-0 border-t border-solid border-light2 bg-light1 px-3 py-1.5 text-xs text-dark3">
+              <div className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-sm bg-primary" />
+                Click any class to see sections
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-sm bg-accentDark" />
+                Hover a section for preview
+              </div>
+            </div>
+          </div>
 
-              <GridBody>
-                <TimeLabelsCol>
-                  {Array.from(
-                    { length: TOTAL_HOURS + 1 },
-                    (_, i) => SWAP_GRID_START_HOUR + i,
-                  ).map((h) => (
-                    <TimeLabel key={h}>{fmtHour(h)}</TimeLabel>
-                  ))}
-                </TimeLabelsCol>
-
-                <DayColumnsArea>
-                  {Array.from({ length: TOTAL_HOURS }, (_, i) => (
-                    <React.Fragment key={i}>
-                      <HourLineFull offset={i * SWAP_HOUR_HEIGHT} />
-                      <HalfHourLine
-                        offset={i * SWAP_HOUR_HEIGHT + SWAP_HOUR_HEIGHT / 2}
-                      />
-                    </React.Fragment>
-                  ))}
-
-                  {DAY_LETTERS.map((_, colIdx) => (
-                    <DayCol key={colIdx} style={{ height: GRID_HEIGHT }}>
-                      {blocksByCol[colIdx].map((block, i) => (
-                        <EventBlock
-                          key={i}
-                          top={block.top}
-                          height={block.height}
-                          fill={block.colors.fill}
-                          accent={block.colors.accent}
-                          selected={block.courseCode === selectedCourseCode}
-                          dimmed={
-                            !!selectedCourseCode &&
-                            block.courseCode === selectedCourseCode &&
-                            hoveredSection !== null
-                          }
-                          onClick={() =>
-                            setSelectedCourseCode((prev) =>
-                              prev === block.courseCode
-                                ? null
-                                : block.courseCode,
-                            )
-                          }
-                          title={`${formatCourseCode(block.courseCode)} – ${
-                            block.sectionName
-                          }`}
-                        >
-                          <BlockCode>
-                            {formatCourseCode(block.courseCode)}
-                          </BlockCode>
-                          <BlockSection>{block.sectionName}</BlockSection>
-                          <BlockTime>
-                            {formatTime(block.startSeconds)} –{' '}
-                            {formatTime(block.endSeconds)}
-                          </BlockTime>
-                          {block.location && (
-                            <BlockLoc>{block.location}</BlockLoc>
-                          )}
-                        </EventBlock>
-                      ))}
-                      {ghostByCol[colIdx].map((ghost, i) => (
-                        <GhostEventBlock
-                          key={`ghost-${i}`}
-                          top={ghost.top}
-                          height={ghost.height}
-                        />
-                      ))}
-                    </DayCol>
-                  ))}
-                </DayColumnsArea>
-              </GridBody>
-
-              <CalendarLegendBar>
-                <LegendItem>
-                  <LegendDot color="#0052cc" />
-                  Click any class to see sections
-                </LegendItem>
-                <LegendItem>
-                  <LegendDot color="#e8b300" />
-                  Hover a section for preview
-                </LegendItem>
-              </CalendarLegendBar>
-            </CalendarPanel>
-          </CalendarPanelContainer>
-
-          <SectionFinderContainer>
+          <div className="flex shrink-0 flex-col self-stretch">
             <SectionFinderPanel
               selectedCourseCode={selectedCourseCode}
               swapTargetCourseCode={selectedSwapCourseCode}
@@ -456,9 +357,9 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
               }}
               onHoverSection={setHoveredSection}
             />
-          </SectionFinderContainer>
-        </SwapBodyWrapper>
-      </SwapCalendarOuter>
+          </div>
+        </div>
+      </div>
     </FadeInWrapper>
   );
 };
