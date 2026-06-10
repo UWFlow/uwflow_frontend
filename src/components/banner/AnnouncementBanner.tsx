@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import FadeIn from 'react-fade-in';
-import { DefaultTheme, useTheme } from 'styled-components';
+import { ArrowRight, Repeat, X } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { SWAP_PAGE_ROUTE } from 'Routes';
+
+// Bump the banner ID when announcing something new so the banner reappears
+// for users who dismissed a previous announcement.
+const BANNER_ID = 'class-swapper';
 
 const AnnouncementBanner = () => {
-  const theme: DefaultTheme = useTheme();
-
-  // Create a localStorage key based on the banner ID
-  const localStorageKey = `banner-dismissed`;
+  const localStorageKey = `banner-dismissed-${BANNER_ID}`;
 
   const [dismissed, setDismissed] = useState<boolean>(
     localStorage.getItem(localStorageKey) != null,
@@ -23,32 +26,26 @@ const AnnouncementBanner = () => {
 
   return (
     <FadeIn>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-evenly',
-          alignItems: 'center',
-          padding: '15px',
-          backgroundColor: theme.accent,
-        }}
-      >
-        <div style={{ textAlign: 'center', width: '90%' }}>
-          <strong> UWFlow is open source! </strong> Check out the{' '}
-          <a href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0">
-            announcement here!
-          </a>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 bg-accent px-6 py-3">
+        <Repeat aria-hidden="true" className="shrink-0 text-dark1" size={20} />
+        <div className="min-w-0 flex-1 text-md text-dark1">
+          <strong>Introducing Class Swapper.</strong> No more Quest confusion
+          figure out the ideal schedule based on available sections.
         </div>
-        <button
-          style={{
-            background: 'none',
-            fontSize: '20px',
-            opacity: '50%',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-          onClick={handleDismiss}
+        <Link
+          className="flex shrink-0 items-center gap-2 rounded-lg bg-dark1 px-5 py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-primaryExtraDark hover:text-white"
+          to={SWAP_PAGE_ROUTE}
         >
-          x
+          Start swapping
+          <ArrowRight aria-hidden="true" size={16} />
+        </Link>
+        <button
+          aria-label="Dismiss announcement"
+          className="flex shrink-0 cursor-pointer items-center border-none bg-transparent p-1 text-dark1 opacity-60 transition-opacity hover:opacity-100"
+          onClick={handleDismiss}
+          type="button"
+        >
+          <X size={18} />
         </button>
       </div>
     </FadeIn>
