@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation } from 'react-apollo';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useMutation } from '@apollo/client';
 import { useTheme } from 'styled-components';
 
 import Tooltip from 'components/display/Tooltip';

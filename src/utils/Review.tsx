@@ -25,7 +25,7 @@ export const sortReviews = (reviews: any[], sortByTime: boolean): any[] => {
 export const sortByReviews = (
   a_reviews: any,
   b_reviews: any,
-  defaultSort = (a: any, b: any) => 0,
+  defaultSort: (a: any, b: any) => number = () => 0,
 ) =>
   a_reviews.reviews.length === b_reviews.reviews.length
     ? defaultSort(a_reviews, b_reviews)

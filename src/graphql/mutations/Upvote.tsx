@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const INSERT_COURSE_REVIEW_VOTE = gql`
   mutation insertCourseReviewVote($user_id: Int, $review_id: Int) {

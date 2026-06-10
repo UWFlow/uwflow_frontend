@@ -1,9 +1,8 @@
 import React from 'react';
-import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult, useQuery } from '@apollo/client';
 import {
   GetUserQuery,
   GetUserQueryVariables,

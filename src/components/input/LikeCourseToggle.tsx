@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useMutation } from 'react-apollo';
 import { ThumbsDown, ThumbsUp } from 'react-feather';
 import { useSelector } from 'react-redux';
+import { useMutation } from '@apollo/client';
 import { useTheme } from 'styled-components';
 
 import { AUTH_MODAL } from 'constants/Modal';

@@ -143,3 +143,20 @@ export const UnderlinedText = styled.span`
 export const BoldText = styled.span`
   font-weight: 500;
 `;
+
+export const ShortcutBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  color: ${({ theme }) => theme.dark3};
+  background: ${({ theme }) => theme.light1};
+  border: 1px solid ${({ theme }) => theme.light3};
+  border-radius: 4px;
+  padding: 2px 6px;
+  user-select: none;
+  white-space: nowrap;
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+`;

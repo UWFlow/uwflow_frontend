@@ -1,0 +1,11 @@
+/*
+ * Tailwind CSS entrypoint.
+ *
+ * Utilities are layered on top of the app's existing reset (public/index.css)
+ * and styled-components styles. Tailwind's preflight is disabled in
+ * tailwind.config.js, so `@tailwind base` is effectively a no-op here but is
+ * kept so future `@layer base { ... }` additions work as expected.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

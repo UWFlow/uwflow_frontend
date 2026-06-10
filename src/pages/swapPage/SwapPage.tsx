@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
+import { useQuery } from '@apollo/client';
 import {
   GetUserQuery,
   GetUserQueryVariables,
@@ -27,10 +27,8 @@ import SwapCalendar from './SwapCalendar';
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const [
-    ephemeralParseData,
-    setEphemeralParseData,
-  ] = useState<ParseOnlyScheduleResponse | null>(null);
+  const [ephemeralParseData, setEphemeralParseData] =
+    useState<ParseOnlyScheduleResponse | null>(null);
 
   const { loading, data, refetch } = useQuery<
     GetUserQuery,
@@ -40,15 +38,14 @@ const SwapPage = () => {
     skip: !isLoggedIn,
   });
 
-  const { loading: sectionsLoading, data: sectionsData } = useQuery<
-    GetSectionsByClassNumbersQuery
-  >(GET_SECTIONS_BY_CLASS_NUMBERS, {
-    variables: {
-      classNumbers: ephemeralParseData?.Classes.map((c) => c.Number) ?? [],
-      termId: ephemeralParseData?.TermId ?? 0,
-    },
-    skip: !ephemeralParseData || isLoggedIn,
-  });
+  const { loading: sectionsLoading, data: sectionsData } =
+    useQuery<GetSectionsByClassNumbersQuery>(GET_SECTIONS_BY_CLASS_NUMBERS, {
+      variables: {
+        classNumbers: ephemeralParseData?.Classes.map((c) => c.Number) ?? [],
+        termId: ephemeralParseData?.TermId ?? 0,
+      },
+      skip: !ephemeralParseData || isLoggedIn,
+    });
 
   const ephemeralSchedule = useMemo<
     UserScheduleFragment['schedule'] | null
@@ -56,7 +53,7 @@ const SwapPage = () => {
     if (!sectionsData?.course_section) return null;
     return sectionsData.course_section.map((section) => ({
       section,
-    })) as UserScheduleFragment['schedule'];
+    })) as unknown as UserScheduleFragment['schedule'];
   }, [sectionsData]);
 
   const user = isLoggedIn ? data?.user[0] : null;

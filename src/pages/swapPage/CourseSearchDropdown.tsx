@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useQuery } from 'react-apollo';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
 
-import {
-  COURSE_DROPDOWN_QUERY,
-  COURSE_DROPDOWN_TERM_QUERY,
-} from 'graphql/queries/course/SwapCourse';
+import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
 import { formatCourseCode } from 'utils/Misc';
 
 import {
@@ -30,7 +27,7 @@ type CourseSearchDropdownProps = {
   selectedCode: string | null;
   onSelect: (code: string) => void;
   onClose: () => void;
-  termId?: number;
+  termId: number;
 };
 
 type RowData = {
@@ -76,8 +73,8 @@ const CourseSearchDropdown = ({
   }, []);
 
   const { data, loading } = useQuery<CourseDropdownQuery>(
-    termId ? COURSE_DROPDOWN_TERM_QUERY : COURSE_DROPDOWN_QUERY,
-    termId ? { variables: { termId } } : undefined,
+    COURSE_DROPDOWN_TERM_QUERY,
+    { variables: { termId } },
   );
 
   const allCourses: CourseItem[] = (data?.course ?? []).filter(

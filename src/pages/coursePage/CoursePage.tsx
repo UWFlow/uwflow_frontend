@@ -1,8 +1,8 @@
 import React from 'react';
-import { useQuery } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import {
   CourseInfoFragment,
   CourseRatingFragment,
@@ -219,14 +219,17 @@ const CoursePage = () => {
           {formatCourseCode(data.course[0].code)} - {data.course[0].name} - UW
           Flow
         </title>
-        <meta name="description" content={data.course[0].description!} />
+        <meta name="description" content={data.course[0].description ?? ''} />
         <meta
           property="og:title"
           content={`${formatCourseCode(data.course[0].code)} - ${
             data.course[0].name
           } - UW Flow`}
         />
-        <meta property="og:description" content={data.course[0].description!} />
+        <meta
+          property="og:description"
+          content={data.course[0].description ?? ''}
+        />
       </Helmet>
       {renderContent(data)}
     </CoursePageWrapper>

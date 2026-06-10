@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-apollo';
 import { ThumbsUp } from 'react-feather';
 import { useSelector } from 'react-redux';
+import { useMutation } from '@apollo/client';
 import moment from 'moment/moment';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';

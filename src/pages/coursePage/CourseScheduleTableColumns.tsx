@@ -19,7 +19,7 @@ import {
 import ScheduleNotificationBell from './ScheduleNotificationBell';
 
 type CellProps = {
-  cell: Cell<{}, any>;
+  cell: Cell<Record<string, unknown>, any>;
 };
 
 const contentSpace = (spaces: number) => {
