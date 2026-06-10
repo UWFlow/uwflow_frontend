@@ -426,3 +426,62 @@ export const DropdownEmptyState = styled.div`
   color: ${({ theme }) => theme.dark3};
   text-align: center;
 `;
+
+export const NewBadge = styled.span`
+  display: inline-block;
+  vertical-align: middle;
+  background: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.dark1};
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-left: 12px;
+`;
+
+export const ExportButton = styled.button`
+  ${Body}
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.primaryDark};
+  }
+`;
+
+export const ExportMenu = styled(SwapDropdownWrapper)`
+  min-width: 220px;
+`;
+
+export const ExportMenuItem = styled.button`
+  ${Body}
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-bottom: 1px solid ${({ theme }) => theme.light2};
+  background: transparent;
+  font-size: 13px;
+  color: ${({ theme }) => theme.dark1};
+  cursor: pointer;
+  text-align: left;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: ${({ theme }) => theme.light1};
+  }
+`;

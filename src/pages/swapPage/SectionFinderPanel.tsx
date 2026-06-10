@@ -121,8 +121,6 @@ const SectionFinderPanel = ({
     skip: !displayCode,
   });
 
-  console.log(data);
-
   if (!displayCode) {
     return (
       <div className={PANEL_WRAPPER_CLASS}>
@@ -225,7 +223,6 @@ const SectionFinderPanel = ({
             );
 
             const prof = primaryMeeting?.prof;
-            console.log(prof);
             const clearPct =
               prof?.rating?.clear != null
                 ? `${Math.round(prof.rating.clear * 100)}%`
@@ -341,8 +338,13 @@ const SectionFinderPanel = ({
                       isFull ? 'font-bold text-red' : 'font-normal text-dark2',
                     )}
                   >
-                    {section.enrollment_total}/{section.enrollment_capacity}{' '}
-                    Enrolled
+                    <strong>
+                      {Math.max(
+                        0,
+                        section.enrollment_capacity - section.enrollment_total,
+                      )}
+                    </strong>{' '}
+                    of {section.enrollment_capacity} open
                   </div>
                 </div>
               </div>
