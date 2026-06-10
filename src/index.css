@@ -9,3 +9,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /*
+   * Stand-in for Tailwind preflight's button reset (preflight is disabled
+   * above; public/index.css does not reset button borders). Removes the
+   * browser's default outset <button> border so Tailwind-styled buttons
+   * don't have to re-declare `border-none` themselves.
+   */
+  button {
+    border: none;
+  }
+}

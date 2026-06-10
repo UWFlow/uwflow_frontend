@@ -11,19 +11,15 @@ import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
+import { cn } from 'lib/utils';
 
-import {
-  LockBody,
-  LockCard,
-  LockHeading,
-  LockIconCircle,
-  LoginButton,
-  ScheduleImportCard,
-  ScheduleImportOverlay,
-  SwapPageWrapper,
-} from './styles/SwapPage';
 import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar from './SwapCalendar';
+
+// PageWrapper mixin (min-height accounts for FOOTER_HEIGHT 70px +
+// FOOTER_MARGIN_TOP 32px) on the app's light1 background, with a fade-in.
+const swapPageWrapperClasses =
+  'relative flex min-h-[calc(100vh-102px)] w-screen animate-[fadeIn_0.3s_ease] flex-col bg-light1 pb-8';
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
@@ -57,17 +53,17 @@ const SwapPage = () => {
 
   if (isLoggedIn && (loading || !data)) {
     return (
-      <SwapPageWrapper>
+      <div className={swapPageWrapperClasses}>
         <Helmet>
           <title>Section Swap - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
-      </SwapPageWrapper>
+      </div>
     );
   }
 
   return (
-    <SwapPageWrapper>
+    <div className={swapPageWrapperClasses}>
       <Helmet>
         <title>Section Swap - UW Flow</title>
         {hasSchedule && (
@@ -79,12 +75,18 @@ const SwapPage = () => {
       </Helmet>
       <SwapCalendar
         schedule={isDemo ? DEMO_SCHEDULE : schedule}
-        secretId={user?.secret_id}
         demoMode={isDemo}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <ScheduleImportOverlay visible={!hasSchedule}>
-          <ScheduleImportCard>
+        <div
+          className={cn(
+            'fixed inset-0 z-10 box-border flex items-start justify-center overflow-y-auto bg-white/55 backdrop-blur [transition:opacity_0.4s_ease]',
+            !hasSchedule
+              ? 'pointer-events-auto opacity-100'
+              : 'pointer-events-none opacity-0',
+          )}
+        >
+          <div className="mt-[150px] flex justify-center">
             {isLoggedIn ? (
               <ScheduleUploadModalContent
                 onAfterUploadSuccess={() =>
@@ -93,24 +95,30 @@ const SwapPage = () => {
                 showSkipStepButton={false}
               />
             ) : (
-              <LockCard>
-                <LockIconCircle>
+              <div className="flex max-w-[400px] flex-col items-center gap-3 rounded-xl bg-white px-12 py-10 text-center shadow-[0_8px_32px_rgba(23,43,77,0.16)]">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-light2 text-dark2">
                   <Lock size={24} />
-                </LockIconCircle>
-                <LockHeading>Upload your schedule to swap</LockHeading>
-                <LockBody>
+                </div>
+                <h2 className="mb-0 mt-1 text-xl font-bold text-dark1">
+                  Upload your schedule to swap
+                </h2>
+                <p className="m-0 text-sm leading-normal text-dark2">
                   Log in and paste your courses from Quest to start swapping
                   sections.
-                </LockBody>
-                <LoginButton onClick={() => openModal(AUTH_MODAL)}>
+                </p>
+                <button
+                  className="mt-2 cursor-pointer rounded-lg border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
+                  onClick={() => openModal(AUTH_MODAL)}
+                  type="button"
+                >
                   Log in to continue
-                </LoginButton>
-              </LockCard>
+                </button>
+              </div>
             )}
-          </ScheduleImportCard>
-        </ScheduleImportOverlay>
+          </div>
+        </div>
       </div>
-    </SwapPageWrapper>
+    </div>
   );
 };
 
