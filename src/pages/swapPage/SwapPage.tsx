@@ -121,7 +121,6 @@ const SwapPage = () => {
         schedule={isDemo ? DEMO_SCHEDULE : schedule}
         secretId={user?.secret_id}
         demoMode={isDemo}
-        refetchAll={isLoggedIn ? refetch : undefined}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <ScheduleImportOverlay visible={!hasSchedule}>
