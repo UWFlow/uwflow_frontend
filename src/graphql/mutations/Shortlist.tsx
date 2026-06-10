@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const INSERT_USER_SHORTLIST = gql`
   mutation insertUserShortlist($user_id: Int, $course_id: Int) {

@@ -38,7 +38,7 @@ const demoSection = (
   },
 });
 
-const DEMO_SCHEDULE = ([
+const DEMO_SCHEDULE = [
   demoSection(
     -1,
     'math239',
@@ -89,6 +89,6 @@ const DEMO_SCHEDULE = ([
     hour(13, 30),
     hour(14, 50),
   ),
-] as unknown) as UserScheduleFragment['schedule'];
+] as unknown as UserScheduleFragment['schedule'];
 
 export default DEMO_SCHEDULE;

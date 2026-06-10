@@ -1,10 +1,10 @@
 import React from 'react';
-import { useQuery } from 'react-apollo';
 import { AlertTriangle, CheckCircle, MousePointer } from 'react-feather';
+import { Link as RouterLink } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import { UserScheduleFragment } from 'generated/graphql';
 import moment from 'moment/moment';
 import { getProfPageRoute } from 'Routes';
-import { useTheme } from 'styled-components';
 
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -15,34 +15,8 @@ import {
   SwapMeeting,
   SwapSection,
 } from 'graphql/queries/course/SwapCourse';
+import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
-
-import {
-  ConflictBadge,
-  EmptyStateSub,
-  EmptyStateText,
-  EmptyStateWrapper,
-  EnrolledBadge,
-  FullBadge,
-  PanelCloseBtn,
-  PanelCourseCode,
-  PanelCourseInfo,
-  PanelCourseName,
-  PanelHeader,
-  PanelSectionCount,
-  PanelWrapper,
-  ProfAnchor,
-  ProfNameText,
-  RatingsText,
-  SeatsLabel,
-  SectionCard,
-  SectionCardBottom,
-  SectionCardTop,
-  SectionListScroll,
-  SectionPill,
-  SectionRoomText,
-  SectionTimesText,
-} from './styles/SectionFinderPanel';
 
 const WEEKDAY_NAMES: { [key: string]: string } = {
   M: 'Mon',
@@ -53,6 +27,11 @@ const WEEKDAY_NAMES: { [key: string]: string } = {
   S: 'Sat',
   Su: 'Sun',
 };
+
+// Styled with Tailwind (see tailwind.config.js for the GlobalTheme-derived
+// tokens) as the starting point of the styled-components migration.
+const PANEL_WRAPPER_CLASS =
+  'flex w-[440px] flex-1 shrink-0 flex-col overflow-y-auto rounded-lg border border-solid border-light3 bg-white';
 
 const formatTime = (secs: number): string => {
   const h = Math.floor(secs / 3600);
@@ -132,8 +111,6 @@ const SectionFinderPanel = ({
   onClose,
   onHoverSection,
 }: SectionFinderPanelProps) => {
-  const theme = useTheme();
-
   const displayCode = swapTargetCourseCode ?? selectedCourseCode;
 
   const { loading, data } = useQuery<
@@ -146,23 +123,29 @@ const SectionFinderPanel = ({
 
   if (!displayCode) {
     return (
-      <PanelWrapper>
-        <EmptyStateWrapper>
-          <MousePointer size={32} color={theme.light4} />
-          <EmptyStateText>Select a course</EmptyStateText>
-          <EmptyStateSub>
+      <div className={PANEL_WRAPPER_CLASS}>
+        <div className="flex min-h-[360px] flex-1 flex-col items-center justify-center gap-3 p-8">
+          <MousePointer
+            size={32}
+            className="text-light4"
+            color="currentColor"
+          />
+          <div className="text-center font-anderson text-xl font-semibold text-dark2">
+            Select a course
+          </div>
+          <div className="max-w-[220px] text-center text-sm leading-normal text-dark3">
             Click any class in your schedule to see sections and swap options.
-          </EmptyStateSub>
-        </EmptyStateWrapper>
-      </PanelWrapper>
+          </div>
+        </div>
+      </div>
     );
   }
 
   if (loading || !data) {
     return (
-      <PanelWrapper>
+      <div className={PANEL_WRAPPER_CLASS}>
         <LoadingSpinner />
-      </PanelWrapper>
+      </div>
     );
   }
 
@@ -171,11 +154,13 @@ const SectionFinderPanel = ({
 
   if (!courseData) {
     return (
-      <PanelWrapper>
-        <EmptyStateWrapper>
-          <EmptyStateText>Course not found</EmptyStateText>
-        </EmptyStateWrapper>
-      </PanelWrapper>
+      <div className={PANEL_WRAPPER_CLASS}>
+        <div className="flex min-h-[360px] flex-1 flex-col items-center justify-center gap-3 p-8">
+          <div className="text-center font-anderson text-xl font-semibold text-dark2">
+            Course not found
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -196,23 +181,30 @@ const SectionFinderPanel = ({
         fontSize="80%"
         margin="0 0 8px"
       />
-      <PanelWrapper>
-        <PanelHeader>
-          <PanelCourseInfo>
-            <PanelCourseCode>
+      <div className={PANEL_WRAPPER_CLASS}>
+        <div className="flex shrink-0 items-start justify-between border-0 border-b border-solid border-light2 px-4 py-3.5">
+          <div className="flex-1">
+            <span className="text-md font-bold text-courses">
               {formatCourseCode(courseData.code)}
-            </PanelCourseCode>
-            <PanelSectionCount>
+            </span>
+            <span className="ml-2 text-[13px] text-dark3">
               {sections.length} section
               {sections.length !== 1 ? 's' : ''}
-            </PanelSectionCount>
-            <PanelCourseName>{courseData.name}</PanelCourseName>
-          </PanelCourseInfo>
-          <PanelCloseBtn onClick={onClose} title="Close">
+            </span>
+            <div className="mt-[3px] text-[13px] text-dark2">
+              {courseData.name}
+            </div>
+          </div>
+          <button
+            type="button"
+            className="ml-2 flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded border border-solid border-light3 bg-light1 text-sm text-dark2 hover:bg-light2"
+            onClick={onClose}
+            title="Close"
+          >
             ✕
-          </PanelCloseBtn>
-        </PanelHeader>
-        <SectionListScroll>
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto">
           {sortedSections.map((section) => {
             const isEnrolled = section.id === enrolledSectionId;
             const isFull =
@@ -241,29 +233,36 @@ const SectionFinderPanel = ({
                 : null;
 
             return (
-              <SectionCard
+              <div
                 key={section.id}
-                enrolled={isEnrolled}
-                disabled={isDisabled}
+                className={cn(
+                  'border-0 border-b border-l-4 border-solid border-b-light2 border-l-transparent px-4 py-3 last:border-b-0',
+                  isEnrolled && 'border-l-primary bg-[#f0f5ff]',
+                  isDisabled && 'opacity-[0.55]',
+                )}
                 onMouseEnter={() => !isEnrolled && onHoverSection(section)}
                 onMouseLeave={() => onHoverSection(null)}
               >
-                <SectionCardTop>
-                  <SectionPill>{section.section_name}</SectionPill>
+                <div className="mb-1.5 flex items-center justify-between">
+                  <span className="rounded bg-light2 px-2 py-0.5 text-xs font-bold text-dark1">
+                    {section.section_name}
+                  </span>
                   {isEnrolled && (
-                    <EnrolledBadge>
+                    <span className="text-xs font-semibold text-primary">
                       <CheckCircle size={13} /> Enrolled
-                    </EnrolledBadge>
+                    </span>
                   )}
                   {!isEnrolled && hasConflict && (
-                    <ConflictBadge>
+                    <span className="text-xs font-semibold text-red">
                       <AlertTriangle size={13} /> Conflicts
-                    </ConflictBadge>
+                    </span>
                   )}
                   {!isEnrolled && !hasConflict && isFull && (
-                    <FullBadge>Full</FullBadge>
+                    <span className="text-xs font-semibold text-dark3">
+                      Full
+                    </span>
                   )}
-                </SectionCardTop>
+                </div>
 
                 {section.meetings.map((meeting, i) => {
                   const meetingDays = (meeting.days as string[]).filter(
@@ -271,16 +270,24 @@ const SectionFinderPanel = ({
                   );
                   const isOnline = meeting.is_tba || meetingDays.length === 0;
                   if (isOnline) {
-                    return <SectionTimesText key={i}>ONLINE</SectionTimesText>;
+                    return (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <div key={i} className="mb-0.5 text-[13px] text-dark1">
+                        ONLINE
+                      </div>
+                    );
                   }
                   const meetingForDisplay = { ...meeting, days: meetingDays };
                   return (
+                    // eslint-disable-next-line react/no-array-index-key
                     <React.Fragment key={i}>
-                      <SectionTimesText>
+                      <div className="mb-0.5 text-[13px] text-dark1">
                         {formatMeetingTime(meetingForDisplay as SwapMeeting)}
-                      </SectionTimesText>
+                      </div>
                       {meeting.location && (
-                        <SectionRoomText>{meeting.location}</SectionRoomText>
+                        <div className="mb-1.5 text-xs text-dark2">
+                          {meeting.location}
+                        </div>
                       )}
                     </React.Fragment>
                   );
@@ -289,32 +296,48 @@ const SectionFinderPanel = ({
                 {prof && (
                   <>
                     {prof.code ? (
-                      <ProfAnchor to={getProfPageRoute(prof.code)}>
+                      <RouterLink
+                        to={getProfPageRoute(prof.code)}
+                        className="mb-0.5 inline-block text-[13px] font-semibold text-professors no-underline hover:underline"
+                      >
                         {prof.name}
-                      </ProfAnchor>
+                      </RouterLink>
                     ) : (
-                      <ProfNameText>{prof.name}</ProfNameText>
+                      <span className="mb-0.5 inline-block text-[13px] font-semibold text-dark2">
+                        {prof.name}
+                      </span>
                     )}
                     {(clearPct || engagingPct) && (
-                      <RatingsText>
+                      <div className="mb-2 text-xs text-dark3">
                         {clearPct && (
                           <>
-                            <strong>{clearPct}</strong> clear
+                            <strong className="font-semibold text-dark2">
+                              {clearPct}
+                            </strong>{' '}
+                            clear
                           </>
                         )}
                         {clearPct && engagingPct && '  '}
                         {engagingPct && (
                           <>
-                            <strong>{engagingPct}</strong> engaging
+                            <strong className="font-semibold text-dark2">
+                              {engagingPct}
+                            </strong>{' '}
+                            engaging
                           </>
                         )}
-                      </RatingsText>
+                      </div>
                     )}
                   </>
                 )}
 
-                <SectionCardBottom>
-                  <SeatsLabel full={isFull}>
+                <div className="flex items-center justify-between">
+                  <div
+                    className={cn(
+                      'text-xs',
+                      isFull ? 'font-bold text-red' : 'font-normal text-dark2',
+                    )}
+                  >
                     <strong>
                       {Math.max(
                         0,
@@ -322,13 +345,13 @@ const SectionFinderPanel = ({
                       )}
                     </strong>{' '}
                     of {section.enrollment_capacity} open
-                  </SeatsLabel>
-                </SectionCardBottom>
-              </SectionCard>
+                  </div>
+                </div>
+              </div>
             );
           })}
-        </SectionListScroll>
-      </PanelWrapper>
+        </div>
+      </div>
     </>
   );
 };

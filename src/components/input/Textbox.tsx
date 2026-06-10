@@ -8,7 +8,12 @@ import React, {
 
 import { TextBoxOptions } from 'types/Common';
 
-import { Icon, SearchInput, SearchInputWrapper } from './styles/Textbox';
+import {
+  Icon,
+  RightIcon,
+  SearchInput,
+  SearchInputWrapper,
+} from './styles/Textbox';
 
 type TextboxProps = {
   placeholder: string;
@@ -21,6 +26,7 @@ type TextboxProps = {
     text: string,
   ) => void;
   icon?: ReactNode;
+  rightElement?: ReactNode;
   maxLength?: number;
   onFocus?: (event: FocusEvent<HTMLInputElement>) => void;
   options?: TextBoxOptions;
@@ -31,6 +37,7 @@ const Textbox = ({
   setText,
   placeholder,
   icon,
+  rightElement,
   error = false,
   handleKeyDown = () => {},
   onFocus = () => {},
@@ -60,8 +67,10 @@ const Textbox = ({
         maxLength={maxLength}
         error={error}
         hasIcon={!!icon}
+        hasRightElement={!!rightElement}
         ref={forwardRef}
       />
+      {rightElement && <RightIcon>{rightElement}</RightIcon>}
     </SearchInputWrapper>
   );
 };

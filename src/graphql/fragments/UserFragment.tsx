@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 const UserFragment = {
   userInfo: gql`
@@ -29,6 +29,7 @@ const UserFragment = {
     fragment UserSchedule on user {
       id
       schedule {
+        user_id
         section {
           id
           exams {

@@ -55,7 +55,7 @@ type TimeRange = {
 type InfoGroup = {
   time: string;
   location?: string | null;
-  prof?: Pick<Prof, 'id' | 'code' | 'name'> | {};
+  prof?: Pick<Prof, 'id' | 'code' | 'name'> | object;
   timeRanges: TimeRange[];
   cancelled: boolean;
   isTba: boolean;
@@ -67,8 +67,8 @@ const getInfoGroupings = (meetings: Meeting[]) => {
       const key = `${curr.start_seconds} ${curr.end_seconds}`;
       if (!groupings[key]) {
         groupings[key] = {
-          time: `${secsToTime(curr.start_seconds!)} - ${secsToTime(
-            curr.end_seconds!,
+          time: `${secsToTime(curr.start_seconds ?? 0)} - ${secsToTime(
+            curr.end_seconds ?? 0,
           )}`,
           location: curr.location,
           prof:

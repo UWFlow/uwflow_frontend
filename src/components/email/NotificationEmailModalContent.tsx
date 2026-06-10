@@ -10,19 +10,20 @@ import { notificationEmailModalClose } from 'data/actions/ModalActions';
 import { FormLink, FormText } from './styles/EmailInputForm';
 import EmailInputForm from './EmailInputForm';
 
-const renderText = (history: History, dispatch: Dispatch) => () => (
-  <FormText>
-    You can change this email anytime in your{' '}
-    <FormLink
-      onClick={() => {
-        dispatch(notificationEmailModalClose());
-        history.push(PROFILE_PAGE_ROUTE);
-      }}
-    >
-      profile page
-    </FormLink>
-  </FormText>
-);
+const renderText = (history: History, dispatch: Dispatch) => () =>
+  (
+    <FormText>
+      You can change this email anytime in your{' '}
+      <FormLink
+        onClick={() => {
+          dispatch(notificationEmailModalClose());
+          history.push(PROFILE_PAGE_ROUTE);
+        }}
+      >
+        profile page
+      </FormLink>
+    </FormText>
+  );
 
 export type NotificationEmailModalContentProps = {
   onRequestClose: () => void;

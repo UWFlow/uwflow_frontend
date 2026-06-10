@@ -17,6 +17,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -45,7 +46,7 @@ module.exports = {
           // Packages, `react` related packages come first.
           ['^react', '^@?\\w'],
           // Internal packages
-          ['^(@|constants|components|data|graphql|hooks|img|pages|search|types|utils)(/.*|$)'],
+          ['^(@|constants|components|data|graphql|hooks|img|lib|pages|search|types|utils)(/.*|$)'],
           // Side effect imports
           ['^\\u0000'],
           // Parent imports, put `..` last
@@ -72,6 +73,7 @@ module.exports = {
   },
   env: {
     browser: true,
+    jest: true,
   },
-  plugins: ['simple-import-sort'],
+  plugins: ['simple-import-sort', 'import'],
 };
