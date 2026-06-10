@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AlertTriangle, CheckCircle, RefreshCw, X } from 'react-feather';
 import { Link as RouterLink } from 'react-router-dom';
 import { SwapCourseSectionFragment } from 'generated/graphql';
-import { getProfPageRoute } from 'Routes';
+import { getCoursePageRoute, getProfPageRoute } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { Button } from 'components/ui/button';
@@ -255,9 +255,9 @@ const ScheduleSectionRow = ({
   return (
     <div
       className={cn(
-        'border-0 border-l-4 border-solid border-transparent bg-white px-4 py-3 outline-none transition-colors',
+        'border-0 border-l-4 border-t border-solid border-l-transparent border-t-light3 bg-white px-4 py-3 outline-none transition-colors first:border-t-0',
         'focus-within:bg-light1 hover:bg-light1',
-        isEnrolled && 'border-primary bg-primary/5',
+        isEnrolled && 'border-l-primary bg-primary/5',
         hasConflict && 'bg-light1/60 text-dark3',
       )}
       onBlur={handleBlur}
@@ -382,8 +382,13 @@ const ScheduleSwapPanel = ({
           <div className="flex items-start justify-between gap-3 border-0 border-b border-solid border-light3 px-4 py-3">
             <div className="min-w-0">
               <div className="flex items-baseline gap-2">
-                <h2 className="m-0 text-md font-semibold text-courses">
-                  {formatCourseCode(selectedCourse.code)}
+                <h2 className="m-0 text-md font-semibold">
+                  <RouterLink
+                    className="text-courses no-underline hover:underline"
+                    to={getCoursePageRoute(selectedCourse.code)}
+                  >
+                    {formatCourseCode(selectedCourse.code)}
+                  </RouterLink>
                 </h2>
                 <span className="text-xs text-dark3">
                   {sections.length} section{sections.length === 1 ? '' : 's'}
@@ -409,7 +414,7 @@ const ScheduleSwapPanel = ({
               No sections are listed for this term.
             </div>
           ) : (
-            <div className="divide-y divide-solid divide-light3">
+            <div>
               {sections.map((section) => (
                 <ScheduleSectionRow
                   course={selectedCourse}

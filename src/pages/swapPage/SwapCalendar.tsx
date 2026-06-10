@@ -138,7 +138,8 @@ const buildEnrolledEvents = (
   termSections: UserScheduleFragment['schedule'],
   selection: SectionSelection | null,
   isPreviewing: boolean,
-  onToggleSection: (code: string, sectionType: string) => void,
+  // null disables clicking (demo mode renders a non-interactive schedule).
+  onToggleSection: ((code: string, sectionType: string) => void) | null,
 ): CalendarEvent[] =>
   termSections.flatMap(({ section }) => {
     const courseCode = section.course.code;
@@ -170,7 +171,9 @@ const buildEnrolledEvents = (
           timeLabel,
           location: m.location,
           subtitle: section.section_name,
-          onClick: () => onToggleSection(courseCode, sectionType),
+          onClick: onToggleSection
+            ? () => onToggleSection(courseCode, sectionType)
+            : undefined,
         }),
       );
     });
@@ -210,9 +213,11 @@ const toScheduleEntry = (
 
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
+  /** Renders a non-interactive sample schedule (logged-out lock state). */
+  demoMode?: boolean;
 };
 
-const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
+const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
 
   const thisTermCode = getCurrentTermCode();
@@ -405,16 +410,19 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
         previewSection !== null,
         // Re-clicking the selected course+type deselects; clicking any other
         // block (even another type of the same course) re-selects.
-        (courseCode, sectionType) =>
-          setSelection((prev) =>
-            prev?.courseCode === courseCode && prev.sectionType === sectionType
-              ? null
-              : { courseCode, sectionType },
-          ),
+        demoMode
+          ? null
+          : (courseCode, sectionType) =>
+              setSelection((prev) =>
+                prev?.courseCode === courseCode &&
+                prev.sectionType === sectionType
+                  ? null
+                  : { courseCode, sectionType },
+              ),
       ),
       ...buildPreviewEvents(previewSection),
     ],
-    [termSections, selection, previewSection],
+    [termSections, selection, previewSection, demoMode],
   );
 
   const availableTerms = [
@@ -526,7 +534,7 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
                 <button
                   aria-label="Reset swapped sections"
                   title="Reset swapped sections"
-                  className="flex w-9 shrink-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-lg border border-solid border-light3 bg-white py-1.5 text-dark2 transition-colors hover:bg-light1"
+                  className="flex w-9 shrink-0 cursor-pointer flex-col items-center justify-center gap-0.5 self-stretch rounded-lg border border-solid border-light3 bg-white text-dark2 transition-colors hover:bg-light1"
                   onClick={() => window.location.reload()}
                   type="button"
                 >
