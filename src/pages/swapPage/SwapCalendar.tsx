@@ -1,11 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Download } from 'react-feather';
-import { ApolloQueryResult } from '@apollo/client';
-import {
-  GetUserQuery,
-  GetUserQueryVariables,
-  UserScheduleFragment,
-} from 'generated/graphql';
+import { UserScheduleFragment } from 'generated/graphql';
 
 import { FadeInWrapper } from 'components/navigation/styles/Footer';
 import {
@@ -167,20 +162,20 @@ const buildEnrolledBlocks = (
   termSections.flatMap(({ section }) => {
     const colors = getSectionColors(section.section_name);
     return section.meetings.flatMap((m) => {
-      if (m.start_seconds == null || m.end_seconds == null) return [];
-      return toPositions(
-        m.days as string[],
-        m.start_seconds,
-        m.end_seconds,
-      ).map((pos) => ({
-        ...pos,
-        courseCode: section.course.code,
-        sectionName: section.section_name,
-        location: m.location ?? null,
-        colors,
-        startSeconds: m.start_seconds!,
-        endSeconds: m.end_seconds!,
-      }));
+      const startSeconds = m.start_seconds;
+      const endSeconds = m.end_seconds;
+      if (startSeconds == null || endSeconds == null) return [];
+      return toPositions(m.days as string[], startSeconds, endSeconds).map(
+        (pos) => ({
+          ...pos,
+          courseCode: section.course.code,
+          sectionName: section.section_name,
+          location: m.location ?? null,
+          colors,
+          startSeconds,
+          endSeconds,
+        }),
+      );
     });
   });
 
@@ -198,16 +193,12 @@ type SwapCalendarProps = {
   secretId?: string;
   /** Renders a non-interactive sample schedule (logged-out lock state). */
   demoMode?: boolean;
-  refetchAll?: (
-    variables: GetUserQueryVariables,
-  ) => Promise<ApolloQueryResult<GetUserQuery>>;
 };
 
 const SwapCalendar = ({
   schedule,
   secretId,
   demoMode = false,
-  refetchAll,
 }: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
 
