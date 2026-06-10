@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ChevronDown, Download, RotateCcw } from 'react-feather';
+import { ChevronDown, RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
 import { UserScheduleFragment } from 'generated/graphql';
 import moment from 'moment/moment';
@@ -11,7 +11,6 @@ import {
   CalendarEventVariant,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
-import { BACKEND_ENDPOINT, CALENDAR_EXPORT_ENDPOINT } from 'constants/Api';
 import {
   GET_COURSE_FOR_SWAP,
   GetCourseForSwapQuery,
@@ -208,12 +207,9 @@ const toScheduleEntry = (section: SwapSection, userId: number): ScheduleEntry =>
 
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
-  // iCalendar export id of the logged-in user; null hides the Export button
-  // (logged-out / ephemeral schedules have nothing to export).
-  secretId?: string | null;
 };
 
-const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
+const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
 
   const thisTermCode = getCurrentTermCode();
@@ -392,15 +388,6 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
     [swapSections, termSections, selection, selectedTerm],
   );
 
-  // iCalendar export, same flow as ProfileCalendar's handleCalendarExport.
-  const handleExport = useCallback(async () => {
-    if (!secretId) return;
-    const response = await fetch(
-      `${BACKEND_ENDPOINT}${CALENDAR_EXPORT_ENDPOINT(secretId)}`,
-    );
-    window.location.assign(response.url);
-  }, [secretId]);
-
   const handleClose = useCallback(() => {
     setSelection(null);
     setSelectedSwapCourseCode(null);
@@ -531,10 +518,9 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
                   </span>
                 )}
               </div>
-              {hasSwaps ? (
+              {hasSwaps && (
                 // Swaps live only in React state, so a refresh restores the
-                // real schedule. This takes over the Export slot while any
-                // temporary swap is active.
+                // real schedule.
                 <button
                   aria-label="Reset swapped sections"
                   title="Reset swapped sections"
@@ -547,18 +533,6 @@ const SwapCalendar = ({ schedule, secretId = null }: SwapCalendarProps) => {
                     Reset
                   </span>
                 </button>
-              ) : (
-                secretId && (
-                  <button
-                    aria-label="Export schedule"
-                    title="Export schedule"
-                    className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-primary text-white transition-colors hover:bg-primaryDark"
-                    onClick={handleExport}
-                    type="button"
-                  >
-                    <Download aria-hidden="true" size={16} />
-                  </button>
-                )
               )}
             </div>
             {updatedAt && (
