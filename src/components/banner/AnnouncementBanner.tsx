@@ -29,8 +29,8 @@ const AnnouncementBanner = () => {
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 bg-accent px-6 py-3">
         <Repeat aria-hidden="true" className="shrink-0 text-dark1" size={20} />
         <div className="min-w-0 flex-1 text-md text-dark1">
-          <strong>Introducing Class Swapper.</strong> No more Quest confusion
-          figure out the ideal schedule based on available sections.
+          <strong>Introducing Class Swapper.</strong> No more Quest tab swapping
+          to figure out your ideal schedule.
         </div>
         <Link
           className="flex shrink-0 items-center gap-2 rounded-lg bg-dark1 px-5 py-2.5 text-sm font-semibold text-white no-underline transition-colors hover:bg-primaryExtraDark hover:text-white"
