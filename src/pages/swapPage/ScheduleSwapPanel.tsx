@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { AlertTriangle, CheckCircle, RefreshCw, X } from 'react-feather';
 import { Link as RouterLink } from 'react-router-dom';
-import { UserScheduleFragment } from 'generated/graphql';
 import { getProfPageRoute } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { Button } from 'components/ui/button';
 import { SwapMeeting, SwapSection } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
-import {
-  formatCourseCode,
-  processRating,
-  secsToTime,
-  termCodeToDate,
-  weekDayLetters,
-} from 'utils/Misc';
-
-import CourseSearchDropdown from './CourseSearchDropdown';
+import { formatCourseCode, processRating, weekDayLetters } from 'utils/Misc';
 
 export type SwapPreview = {
   courseId: number;
   courseCode: string;
-  replaceSectionId: number;
   section: SwapSection;
 };
 
@@ -41,19 +31,13 @@ export type ProfessorSwapStats = {
 
 export type ScheduleSwapPanelProps = {
   selectedTermId: number;
-  availableTerms: Array<{ id: number; label?: string }>;
   selectedCourseId: number | null;
-  currentScheduleSections: UserScheduleFragment['schedule'];
   candidateCourses: SwapCandidateCourse[];
   enrolledSectionIds: number[];
   conflictSectionIds: number[];
-  onTermChange: (termId: number) => void;
-  onCourseChange: (courseCode: string | null) => void;
   onPreviewChange: (preview: SwapPreview | null) => void;
   onSwitchSection: (sectionId: number) => void;
   onClose?: () => void;
-  replaceSectionId?: number | null;
-  sourceCourseId?: number | null;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
   isLoading?: boolean;
 };
@@ -63,13 +47,32 @@ const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
 const getOpenSeats = (section: SwapSection) =>
   Math.max(section.enrollment_capacity - section.enrollment_total, 0);
 
+const DAY_NAMES: Record<string, string> = {
+  M: 'Mon',
+  T: 'Tue',
+  W: 'Wed',
+  Th: 'Thu',
+  F: 'Fri',
+  S: 'Sat',
+  Su: 'Sun',
+};
+
 const formatDays = (days: string[]) =>
-  weekDayLetters.filter((day) => days.includes(day)).join(' ');
+  weekDayLetters
+    .filter((day) => days.includes(day))
+    .map((day) => DAY_NAMES[day] ?? day)
+    .join(' ');
 
 const isTargetWithin = (
   currentTarget: EventTarget & HTMLDivElement,
   relatedTarget: EventTarget | null,
 ) => relatedTarget instanceof Node && currentTarget.contains(relatedTarget);
+
+// 24-hour "HH:MM" from seconds since midnight.
+const secsTo24hTime = (secs: number) =>
+  `${`${Math.floor(secs / 3600)}`.padStart(2, '0')}:${`${Math.floor(
+    (secs % 3600) / 60,
+  )}`.padStart(2, '0')}`;
 
 const getMeetingTime = (meeting: SwapMeeting) => {
   if (meeting.is_cancelled) {
@@ -84,7 +87,7 @@ const getMeetingTime = (meeting: SwapMeeting) => {
   ) {
     return 'TBA';
   }
-  return `${secsToTime(meeting.start_seconds)}-${secsToTime(
+  return `${secsTo24hTime(meeting.start_seconds)}–${secsTo24hTime(
     meeting.end_seconds,
   )}`;
 };
@@ -100,8 +103,8 @@ const SectionBadge = ({
     className={cn(
       'inline-flex h-6 items-center rounded border border-solid px-2 text-xs font-semibold',
       isEnrolled
-        ? 'border-primary bg-primary text-white'
-        : 'border-primary/20 bg-primary/10 text-primary',
+        ? 'border-primary/20 bg-primary/10 text-primary'
+        : 'border-light3 bg-light1 text-dark2',
     )}
   >
     {sectionName}
@@ -182,10 +185,10 @@ const MeetingLine = ({
   <div className="grid gap-1 text-sm text-dark2">
     <div className="text-dark2">
       <span>{formatDays(meeting.days) || 'No days listed'}</span>
-      <span className="mx-1">|</span>
+      <span className="mx-1">·</span>
       <span>{getMeetingTime(meeting)}</span>
     </div>
-    {meeting.location && <div>{meeting.location}</div>}
+    {meeting.location && <div className="text-dark3">{meeting.location}</div>}
     <MeetingInstructor
       meeting={meeting}
       professorStatsById={professorStatsById}
@@ -211,7 +214,6 @@ const ScheduleSectionRow = ({
   section,
   isEnrolled,
   hasConflict,
-  replaceSectionId,
   professorStatsById,
   onPreviewChange,
   onSwitchSection,
@@ -220,7 +222,6 @@ const ScheduleSectionRow = ({
   section: SwapSection;
   isEnrolled: boolean;
   hasConflict: boolean;
-  replaceSectionId: number;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
   onPreviewChange: (preview: SwapPreview | null) => void;
   onSwitchSection: (sectionId: number) => void;
@@ -229,7 +230,6 @@ const ScheduleSectionRow = ({
     onPreviewChange({
       courseId: course.id,
       courseCode: course.code,
-      replaceSectionId,
       section,
     });
 
@@ -310,43 +310,18 @@ const ScheduleSectionRow = ({
 
 const ScheduleSwapPanel = ({
   selectedTermId,
-  availableTerms,
   selectedCourseId,
-  currentScheduleSections,
   candidateCourses,
   enrolledSectionIds,
   conflictSectionIds,
-  onTermChange,
-  onCourseChange,
   onPreviewChange,
   onSwitchSection,
   onClose,
-  replaceSectionId = null,
-  sourceCourseId = null,
   professorStatsById,
   isLoading = false,
 }: ScheduleSwapPanelProps) => {
-  // The native <select> from the original panel cannot express server-backed
-  // course search, so the trigger opens the existing CourseSearchDropdown
-  // (fuzzy search across every course offered in the term) instead.
-  const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false);
-
   const selectedCourse =
     candidateCourses.find((course) => course.id === selectedCourseId) || null;
-  const sourceScheduleSection =
-    currentScheduleSections.find((entry) =>
-      sourceCourseId !== null
-        ? entry.section.course.id === sourceCourseId
-        : selectedCourseId !== null
-        ? entry.section.course.id === selectedCourseId
-        : false,
-    ) || currentScheduleSections[0];
-  const resolvedReplaceSectionId =
-    replaceSectionId ?? sourceScheduleSection?.section.id ?? 0;
-  const sourceCourse = sourceScheduleSection?.section.course;
-  const sourceCourseLabel = sourceCourse
-    ? formatCourseCode(sourceCourse.code)
-    : 'course';
   const sections = selectedCourse
     ? selectedCourse.sections
         .filter((section) => section.term_id === selectedTermId)
@@ -365,76 +340,13 @@ const ScheduleSwapPanel = ({
     return () => onPreviewChange(null);
   }, [onPreviewChange, selectedCourseId, selectedTermId]);
 
-  const handleCourseSelect = (courseCode: string) => {
-    setIsCourseDropdownOpen(false);
-    onPreviewChange(null);
-    onCourseChange(courseCode);
-  };
-
   const handleClose = () => {
     onPreviewChange(null);
     onClose?.();
   };
 
   return (
-    <aside className="w-full rounded border border-solid border-light3 bg-white shadow-sm tablet:max-w-[360px]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-0 border-b border-solid border-light3 px-4 py-3">
-        <div className="inline-flex rounded border border-solid border-light3 bg-light1 p-1">
-          {availableTerms.map((term) => (
-            <button
-              className={cn(
-                'h-8 cursor-pointer rounded border-none bg-transparent px-3 text-sm font-semibold text-dark2 transition-colors',
-                selectedTermId === term.id && 'bg-white text-dark1 shadow-sm',
-              )}
-              key={term.id}
-              onClick={() => {
-                onPreviewChange(null);
-                onTermChange(term.id);
-              }}
-              type="button"
-            >
-              {term.label || termCodeToDate(term.id)}
-            </button>
-          ))}
-        </div>
-        {onClose && (
-          <button
-            aria-label="Close schedule swap panel"
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded border border-solid border-light3 bg-white text-dark2 hover:bg-light1 hover:text-dark1"
-            onClick={handleClose}
-            type="button"
-          >
-            <X aria-hidden="true" size={16} />
-          </button>
-        )}
-      </div>
-      <div className="flex items-center gap-2 border-0 border-b border-solid border-light3 px-4 py-3">
-        <span className="text-sm font-semibold text-dark1">Swap</span>
-        <span className="whitespace-nowrap text-sm font-semibold text-courses">
-          {sourceCourseLabel}
-        </span>
-        <span className="text-sm text-dark2">with</span>
-        <div className="relative flex min-w-0 flex-1">
-          <button
-            className="h-9 min-w-0 flex-1 cursor-pointer rounded border border-solid border-light3 bg-white px-3 text-left text-sm font-semibold text-courses outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-            onClick={() => setIsCourseDropdownOpen((open) => !open)}
-            type="button"
-          >
-            {selectedCourse
-              ? formatCourseCode(selectedCourse.code)
-              : 'Select course'}{' '}
-            ▾
-          </button>
-          {isCourseDropdownOpen && (
-            <CourseSearchDropdown
-              selectedCode={selectedCourse?.code ?? null}
-              onSelect={handleCourseSelect}
-              onClose={() => setIsCourseDropdownOpen(false)}
-              termId={selectedTermId}
-            />
-          )}
-        </div>
-      </div>
+    <aside className="w-full overflow-hidden rounded border border-solid border-light3 bg-white shadow-box tablet:max-w-[360px]">
       {isLoading ? (
         <div className="flex min-h-[178px] items-center justify-center p-4">
           <LoadingSpinner />
@@ -445,18 +357,30 @@ const ScheduleSwapPanel = ({
         </div>
       ) : (
         <div>
-          <div className="border-0 border-b border-solid border-light3 px-4 py-3">
-            <div className="flex items-baseline gap-2">
-              <h2 className="m-0 text-base font-semibold text-courses">
-                {formatCourseCode(selectedCourse.code)}
-              </h2>
-              <span className="text-sm text-dark3">
-                {sections.length} section{sections.length === 1 ? '' : 's'}
-              </span>
+          <div className="flex items-start justify-between gap-3 border-0 border-b border-solid border-light3 px-4 py-3">
+            <div className="min-w-0">
+              <div className="flex items-baseline gap-2">
+                <h2 className="m-0 text-base font-semibold text-primary">
+                  {formatCourseCode(selectedCourse.code)}
+                </h2>
+                <span className="text-sm text-dark3">
+                  {sections.length} section{sections.length === 1 ? '' : 's'}
+                </span>
+              </div>
+              <p className="mb-0 mt-1 text-sm text-dark3">
+                {selectedCourse.name}
+              </p>
             </div>
-            <p className="mb-0 mt-1 text-sm text-dark3">
-              {selectedCourse.name}
-            </p>
+            {onClose && (
+              <button
+                aria-label="Close schedule swap panel"
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded border border-solid border-light3 bg-white text-dark2 hover:bg-light1 hover:text-dark1"
+                onClick={handleClose}
+                type="button"
+              >
+                <X aria-hidden="true" size={16} />
+              </button>
+            )}
           </div>
           {sections.length === 0 ? (
             <div className="px-5 py-8 text-center text-sm text-dark3">
@@ -473,7 +397,6 @@ const ScheduleSwapPanel = ({
                   onPreviewChange={onPreviewChange}
                   onSwitchSection={onSwitchSection}
                   professorStatsById={professorStatsById}
-                  replaceSectionId={resolvedReplaceSectionId}
                   section={section}
                 />
               ))}

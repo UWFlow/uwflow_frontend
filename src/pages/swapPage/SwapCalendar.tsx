@@ -17,6 +17,7 @@ import {
   GetCourseForSwapQueryVariables,
   SwapSection,
 } from 'graphql/queries/course/SwapCourse';
+import { cn } from 'lib/utils';
 import {
   formatCourseCode,
   getCurrentTermCode,
@@ -24,6 +25,7 @@ import {
   termCodeToDate,
 } from 'utils/Misc';
 
+import CourseSearchDropdown from './CourseSearchDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
   SwapCandidateCourse,
@@ -171,6 +173,15 @@ const buildPreviewEvents = (section: SwapSection | null): CalendarEvent[] =>
       })
     : [];
 
+type ScheduleEntry = UserScheduleFragment['schedule'][number];
+
+// Bridge a fetched SwapSection into the schedule-entry shape. SwapSection
+// carries every field the calendar mapping reads (id, section_name, meetings,
+// course); the cast papers over nullable-vs-required differences in fields the
+// page never touches.
+const toScheduleEntry = (section: SwapSection, userId: number): ScheduleEntry =>
+  ({ user_id: userId, section } as unknown as ScheduleEntry);
+
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
 };
@@ -195,22 +206,30 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
   const [hoveredSection, setHoveredSection] = useState<SwapSection | null>(
     null,
   );
-  // Section chosen via "Switch section": kept on the calendar as a persistent
-  // preview (there is no backend mutation for changing enrolled sections).
-  const [pinnedSection, setPinnedSection] = useState<SwapSection | null>(null);
   const [selectedSwapCourseCode, setSelectedSwapCourseCode] = useState<
     string | null
   >(null);
+  const [isSwapDropdownOpen, setIsSwapDropdownOpen] = useState(false);
+  // Temporary client-side section swaps, keyed by term label. A swap replaces
+  // the matching schedule entry in React state only — refreshing the page
+  // restores the original schedule (no persistence, no mutations).
+  const [overriddenByTerm, setOverriddenByTerm] = useState<
+    Record<string, UserScheduleFragment['schedule']>
+  >({});
 
   useEffect(() => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setPinnedSection(null);
+    setIsSwapDropdownOpen(false);
   }, [selectedCourseCode]);
 
   const selectedTermCode =
     selectedTerm === nextTermLabel ? nextTermCode : thisTermCode;
-  const termSections = termMap[selectedTerm] ?? [];
+  // Effective schedule for the term: temporary swaps take precedence.
+  const termSections = useMemo(
+    () => overriddenByTerm[selectedTerm] ?? termMap[selectedTerm] ?? [],
+    [overriddenByTerm, termMap, selectedTerm],
+  );
 
   // Sections of the course shown in the panel: the chosen swap target, or the
   // course selected on the calendar while no target is chosen yet.
@@ -281,10 +300,6 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
     return stats;
   }, [swapSections]);
 
-  const sourceCourseId =
-    termSections.find((e) => e.section.course.code === selectedCourseCode)
-      ?.section.course.id ?? null;
-
   const updatedAt = useMemo(
     () =>
       swapSections.length > 0
@@ -293,7 +308,7 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
     [swapSections],
   );
 
-  const previewSection = hoveredSection ?? pinnedSection;
+  const previewSection = hoveredSection;
 
   const handlePreviewChange = useCallback(
     (preview: SwapPreview | null) =>
@@ -301,33 +316,63 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
     [],
   );
 
+  // Term overrides persist while the page lives — only a refresh resets them.
   const handleTermChange = useCallback((termId: number) => {
     setSelectedTerm(termCodeToDate(termId));
     setSelectedCourseCode(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setPinnedSection(null);
+    setIsSwapDropdownOpen(false);
   }, []);
 
   const handleCourseChange = useCallback((courseCode: string | null) => {
     setSelectedSwapCourseCode(courseCode);
     setHoveredSection(null);
-    setPinnedSection(null);
   }, []);
 
+  // Temporarily swap a section into the schedule (React state only). The new
+  // section replaces the selected course's entry of the same section type
+  // (LEC↔LEC, TUT↔TUT), falling back to the course's first entry.
   const handleSwitchSection = useCallback(
     (sectionId: number) => {
-      const section = swapSections.find((s) => s.id === sectionId) ?? null;
-      setPinnedSection(section);
+      const newSection = swapSections.find((s) => s.id === sectionId);
+      if (!newSection || !selectedCourseCode) return;
+
+      const newType = newSection.section_name.split(' ')[0];
+      const base = termSections;
+      let replaceIndex = base.findIndex(
+        (e) =>
+          e.section.course.code === selectedCourseCode &&
+          e.section.section_name.split(' ')[0] === newType,
+      );
+      if (replaceIndex === -1) {
+        replaceIndex = base.findIndex(
+          (e) => e.section.course.code === selectedCourseCode,
+        );
+      }
+      if (replaceIndex === -1) return;
+
+      const next = [...base];
+      next[replaceIndex] = toScheduleEntry(
+        newSection,
+        base[replaceIndex].user_id,
+      );
+      setOverriddenByTerm((prev) => ({ ...prev, [selectedTerm]: next }));
+      setHoveredSection(null);
+      if (newSection.course.code !== selectedCourseCode) {
+        // Follow the swapped-in course; the effect on selectedCourseCode also
+        // clears the swap target so the panel shows the new enrolled section.
+        setSelectedCourseCode(newSection.course.code);
+      }
     },
-    [swapSections],
+    [swapSections, termSections, selectedCourseCode, selectedTerm],
   );
 
   const handleClose = useCallback(() => {
     setSelectedCourseCode(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setPinnedSection(null);
+    setIsSwapDropdownOpen(false);
   }, []);
 
   const events = useMemo(
@@ -344,17 +389,83 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
     [termSections, selectedCourseCode, previewSection],
   );
 
+  const availableTerms = [
+    { id: thisTermCode, label: thisTermLabel },
+    { id: nextTermCode, label: nextTermLabel },
+  ];
+  const swapTargetCode = selectedSwapCourseCode ?? selectedCourseCode;
+
   return (
     <FadeInWrapper>
       <div className="mx-auto box-border flex w-full max-w-[1280px] flex-col px-8 pb-8 pt-6">
-        <div className="mb-4 flex items-baseline justify-between gap-4">
-          <h1 className="shrink-0 font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
-            Swap classes
-          </h1>
-          <p className="text-right font-inter text-md font-regular text-dark2">
-            Click any class to see other sections or swap it for a different
-            course.
-          </p>
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h1 className="m-0 font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
+                Swap classes
+              </h1>
+              <span className="rounded bg-accent px-1.5 py-0.5 text-xs font-extrabold text-dark1">
+                NEW
+              </span>
+            </div>
+            <p className="mb-0 mt-1 font-inter text-md font-regular text-dark2">
+              Click any class to see other sections or swap it for a different
+              course.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap items-center gap-3">
+            <div className="inline-flex rounded border border-solid border-light3 bg-light1 p-1">
+              {availableTerms.map((term) => (
+                <button
+                  className={cn(
+                    'h-8 cursor-pointer rounded border-none bg-transparent px-3 text-sm font-semibold text-dark2 transition-colors',
+                    selectedTermCode === term.id &&
+                      'bg-white text-dark1 shadow-sm',
+                  )}
+                  key={term.id}
+                  onClick={() => handleTermChange(term.id)}
+                  type="button"
+                >
+                  {term.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex h-10 items-center gap-2 rounded-md border border-solid border-light3 bg-white px-3">
+              {selectedCourseCode ? (
+                <>
+                  <span className="text-sm font-semibold text-dark1">Swap</span>
+                  <span className="whitespace-nowrap text-sm font-semibold text-courses">
+                    {formatCourseCode(selectedCourseCode)}
+                  </span>
+                  <span className="text-sm text-dark2">with</span>
+                  <div className="relative">
+                    <button
+                      className="h-8 cursor-pointer whitespace-nowrap rounded border border-solid border-light3 bg-white px-2 text-sm font-semibold text-courses outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      onClick={() => setIsSwapDropdownOpen((open) => !open)}
+                      type="button"
+                    >
+                      {formatCourseCode(swapTargetCode ?? selectedCourseCode)} ▾
+                    </button>
+                    {isSwapDropdownOpen && (
+                      <CourseSearchDropdown
+                        selectedCode={swapTargetCode}
+                        onSelect={(code) => {
+                          setIsSwapDropdownOpen(false);
+                          handleCourseChange(code);
+                        }}
+                        onClose={() => setIsSwapDropdownOpen(false)}
+                        termId={selectedTermCode}
+                      />
+                    )}
+                  </div>
+                </>
+              ) : (
+                <span className="text-sm text-dark3">
+                  Select a class on your schedule
+                </span>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="flex items-start gap-4">
@@ -378,21 +489,13 @@ const SwapCalendar = ({ schedule }: SwapCalendarProps) => {
             )}
             <ScheduleSwapPanel
               selectedTermId={selectedTermCode}
-              availableTerms={[
-                { id: thisTermCode, label: thisTermLabel },
-                { id: nextTermCode, label: nextTermLabel },
-              ]}
               selectedCourseId={displayedCourse?.id ?? null}
-              currentScheduleSections={termSections}
               candidateCourses={candidateCourses}
               enrolledSectionIds={enrolledSectionIds}
               conflictSectionIds={conflictSectionIds}
-              onTermChange={handleTermChange}
-              onCourseChange={handleCourseChange}
               onPreviewChange={handlePreviewChange}
               onSwitchSection={handleSwitchSection}
               onClose={handleClose}
-              sourceCourseId={sourceCourseId}
               professorStatsById={professorStatsById}
               isLoading={sectionsLoading}
             />
