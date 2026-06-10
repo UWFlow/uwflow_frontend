@@ -236,17 +236,21 @@ const Calendar = ({
         )}
       >
         {event.title && (
-          <div className="text-lg font-semibold">{event.title}</div>
+          <div className="w-full truncate text-sm font-semibold">
+            {event.title}
+          </div>
         )}
         {(event.timeLabel || event.location) && (
-          <div className="text-md text-dark2">
+          <div className="w-full truncate text-xs text-dark2">
             {event.timeLabel}
             {event.timeLabel && event.location && ' · '}
             {event.location}
           </div>
         )}
         {event.subtitle && (
-          <div className="text-sm text-dark3">{event.subtitle}</div>
+          <div className="w-full truncate text-xs text-dark3">
+            {event.subtitle}
+          </div>
         )}
       </div>
     );

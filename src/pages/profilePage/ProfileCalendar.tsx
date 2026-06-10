@@ -265,7 +265,7 @@ const buildWeekView = (
       const courseLink = (
         <RouterLink
           to={getCoursePageRoute(event.courseCode)}
-          className="font-semibold text-courses underline"
+          className="font-semibold text-dark1 no-underline hover:underline"
         >
           {formatCourseCode(event.courseCode)}
         </RouterLink>
@@ -289,8 +289,9 @@ const buildWeekView = (
           courseLink
         ),
         subtitle: isExam ? undefined : event.section,
-        timeLabel: `${event.start.format('h:mma')} - ${event.end.format(
-          'h:mma',
+        // Compact 24-hour range to match the swap page, e.g. "08:30–09:20".
+        timeLabel: `${event.start.format('HH:mm')}–${event.end.format(
+          'HH:mm',
         )}`,
         location: event.location,
       };
