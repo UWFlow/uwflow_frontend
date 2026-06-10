@@ -7,7 +7,7 @@ import { GetUserQuery, GetUserQueryVariables } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
-import { AUTH_MODAL } from 'constants/Modal';
+import { AUTH_MODAL, SWAP_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
@@ -25,9 +25,11 @@ import {
 import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar from './SwapCalendar';
 
+const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';
+
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const [openModal] = useModal();
+  const [openModal, closeModal] = useModal();
 
   const { loading, data, refetch } = useQuery<
     GetUserQuery,
@@ -54,6 +56,19 @@ const SwapPage = () => {
       document.body.style.overflow = '';
     };
   }, [hasSchedule]);
+
+  // First visit with a loaded schedule: walk through the 3-step tour once.
+  // Any dismissal (Skip, X, backdrop, or Done) persists the flag.
+  useEffect(() => {
+    if (hasSchedule && !localStorage.getItem(SWAP_TOUR_DISMISSED_KEY)) {
+      openModal(SWAP_TOUR_MODAL, {
+        onRequestClose: () => {
+          localStorage.setItem(SWAP_TOUR_DISMISSED_KEY, '1');
+          closeModal(SWAP_TOUR_MODAL);
+        },
+      });
+    }
+  }, [hasSchedule, openModal, closeModal]);
 
   if (isLoggedIn && (loading || !data)) {
     return (
