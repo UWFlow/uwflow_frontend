@@ -1,4 +1,3 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { Moment } from 'moment';
 
 /* Table */
@@ -29,6 +28,9 @@ export type SearchFilterState = {
   courseTaught: number;
   hasRoomAvailable: boolean;
   hasOnlineSection: boolean;
+  sortBy: string;
+  // 0 = courses tab, 1 = profs tab
+  exploreTab: number;
 };
 
 export type Nullable<T> = {

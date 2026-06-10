@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import FadeIn from 'react-fade-in';
 import { ChevronDown, Search } from 'react-feather';
-import { FixedSizeList as List } from 'react-window';
+import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
 import fuzzysort from 'fuzzysort';
 import { useTheme } from 'styled-components';
 import useOnClickOutside from 'use-onclickoutside';
@@ -56,7 +56,7 @@ const DropdownList = ({
   >(options.map((opt, idx) => ({ value: opt, index: idx })));
   useOnClickOutside(ref, () => setOpen(false));
 
-  const handleUserKeyPress = useCallback((event) => {
+  const handleUserKeyPress = useCallback((event: KeyboardEvent) => {
     const { keyCode } = event;
     if (keyCode === KeycodeConstants.ESCAPE) {
       setOpen(false);
@@ -102,7 +102,7 @@ const DropdownList = ({
   }, [handleUserKeyPress]);
 
   const Row = useCallback(
-    ({ index, style }) => (
+    ({ index, style }: ListChildComponentProps) => (
       <MenuItem
         key={filteredOptions[index].index}
         selected={filteredOptions[index].index === selectedIndex}

@@ -69,8 +69,8 @@ const RatingBox = ({
   const scrollToReviews = () => {
     if (numComments) {
       document
-        .getElementById(REVIEWS_DIV_ID)!
-        .scrollIntoView({ behavior: 'smooth' });
+        .getElementById(REVIEWS_DIV_ID)
+        ?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

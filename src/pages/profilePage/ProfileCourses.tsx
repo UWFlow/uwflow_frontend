@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Edit, PlusSquare } from 'react-feather';
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult } from '@apollo/client';
 import {
   GetUserQuery,
   GetUserQueryVariables,
@@ -89,12 +89,13 @@ const ProfileCourses = ({
     });
 
   const sortedCourseList = reviewModalCourseList.sort((a, b) =>
-    a.course!.code.localeCompare(b.course!.code),
+    (a.course?.code ?? '').localeCompare(b.course?.code ?? ''),
   );
 
   const tabContent = (termName: string): ReactNode =>
     courseGroups[termName].map((courseTaken) => {
-      const course = courseTaken.course!;
+      const course = courseTaken.course;
+      if (!course) return null;
       const review = reviews.find((r) => r.course_id === courseTaken.course_id);
       const selectedIndex = sortedCourseList.findIndex(
         (courseObj) => courseObj.course?.id === courseTaken.course?.id,
@@ -110,7 +111,7 @@ const ProfileCourses = ({
           </ProfileCourseText>
           <LikedCourseWrapper>
             <ProfileCourseLiked>
-              {processRating(course.rating!.liked)}
+              {processRating(course.rating?.liked ?? 0)}
             </ProfileCourseLiked>
             <LikedThisCourseText>
               liked this

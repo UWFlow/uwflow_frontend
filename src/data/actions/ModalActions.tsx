@@ -19,10 +19,12 @@ export type NotificationEmailModalAction =
   | NotificationEmailModalCloseAction;
 
 /* Action definitions */
-export const notificationEmailModalOpen = (): NotificationEmailModalOpenAction => ({
-  type: NOTIFICATION_EMAIL_MODAL_OPEN,
-});
+export const notificationEmailModalOpen =
+  (): NotificationEmailModalOpenAction => ({
+    type: NOTIFICATION_EMAIL_MODAL_OPEN,
+  });
 
-export const notificationEmailModalClose = (): NotificationEmailModalCloseAction => ({
-  type: NOTIFICATION_EMAIL_MODAL_CLOSE,
-});
+export const notificationEmailModalClose =
+  (): NotificationEmailModalCloseAction => ({
+    type: NOTIFICATION_EMAIL_MODAL_CLOSE,
+  });

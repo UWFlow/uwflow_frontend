@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApolloQueryResult } from 'apollo-client';
+import { ApolloQueryResult } from '@apollo/client';
 import {
   GetUserQuery,
   GetUserQueryVariables,
