@@ -92,8 +92,19 @@ const VARIANT_BORDER: Record<CalendarEventVariant, string> = {
   other: 'border-dark3',
 };
 
-// Soft translucent fill in the variant colour.
+// Opaque solid fill in the variant colour: each hex is the old translucent
+// tint (variant colour @20%) composited on white, so gridlines no longer show
+// through the blocks while the look stays the same.
 const VARIANT_FILL: Record<CalendarEventVariant, string> = {
+  lecture: 'bg-[#f0f6ff]',
+  lab: 'bg-[#f0fdff]',
+  tutorial: 'bg-[#f2f0fc]',
+  other: 'bg-[#eaecef]',
+};
+
+// Preview ghosts stay translucent on purpose — they're a see-through overlay
+// laid on top of the real (now opaque) blocks.
+const PREVIEW_FILL: Record<CalendarEventVariant, string> = {
   lecture: 'bg-lecture/20',
   lab: 'bg-lab/20',
   tutorial: 'bg-tutorial/20',
@@ -208,15 +219,20 @@ const Calendar = ({
         onClick={clickable ? event.onClick : undefined}
         style={{ top, height }}
         className={cn(
-          // Base block: rounded, soft variant tint with a thick accent left
-          // rail; content is stacked and centered both ways, clipping rather
-          // than wrapping when the block is short or narrow.
-          'absolute z-10 flex flex-col items-center justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid px-1 text-center leading-tight text-dark1',
-          // Selected blocks swap the variant tint/accent for the gold tokens
-          // (gold border on all four sides plus the thick gold rail).
+          // Base block: rounded, solid variant fill with a thick accent left
+          // rail; the text stack is vertically centered but left-aligned, with
+          // a little left padding to clear the rail, clipping rather than
+          // wrapping when the block is short or narrow.
+          'absolute z-10 flex flex-col justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid pl-1.5 pr-1 leading-tight text-dark1',
+          // Selected blocks swap the variant fill/accent for the gold tokens
+          // (gold border on all four sides plus the thick gold rail). The fill
+          // is accent @20% composited on white, opaque like the variant fills.
           isSelected
-            ? 'border-accentDark bg-accent/20'
-            : [VARIANT_FILL[variant], VARIANT_BORDER[variant]],
+            ? 'border-accentDark bg-[#fff3cc]'
+            : [
+                isPreview ? PREVIEW_FILL[variant] : VARIANT_FILL[variant],
+                VARIANT_BORDER[variant],
+              ],
           // Outside preview ghosts, only the left rail keeps the saturated
           // accent; the other sides stay transparent like the mockup.
           !isSelected &&
@@ -236,19 +252,19 @@ const Calendar = ({
         )}
       >
         {event.title && (
-          <div className="w-full truncate text-sm font-semibold">
+          <div className="w-full truncate text-xs font-semibold">
             {event.title}
           </div>
         )}
         {(event.timeLabel || event.location) && (
-          <div className="w-full truncate text-xs text-dark2">
+          <div className="w-full truncate text-[11px] text-dark2">
             {event.timeLabel}
             {event.timeLabel && event.location && ' · '}
             {event.location}
           </div>
         )}
         {event.subtitle && (
-          <div className="w-full truncate text-xs text-dark3">
+          <div className="w-full truncate text-[10px] text-dark3">
             {event.subtitle}
           </div>
         )}
