@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 
 import { Button } from 'components/ui/button';
-import { AndersonFont } from 'constants/Mixins';
 import { cn } from 'lib/utils';
 
 // Vertical pixels per hour of the day; the single source of truth for the
@@ -119,9 +118,10 @@ const STATE_CLASS: Record<CalendarEventState, string> = {
 
 // Week-nav buttons, styled to match the app's `input/Button`: a light, bordered
 // face with the Anderson heading font and a brightness(85%) hover. Layered over
-// the shared Button via `cn`, so these win over its variant/size defaults.
+// the shared Button's ghost variant (which already supplies the dark text and
+// light hover background) via `cn`, so these win over its size defaults.
 const NAV_BUTTON_CLASS =
-  'ml-1 h-12 rounded-lg border-2 border-solid border-light3 bg-light1 font-anderson text-lg font-semibold text-dark1 transition-all hover:bg-light1 hover:brightness-[0.85]';
+  'ml-1 h-12 rounded-lg border-2 border-solid border-light3 bg-light1 font-anderson text-lg font-semibold transition-all hover:brightness-[0.85]';
 
 const formatHour = (hour: number) => {
   if (hour === 0) return '12 am';
@@ -216,7 +216,7 @@ const Calendar = ({
         style={{ top, height }}
         className={cn(
           // Base block: rounded, colour-bordered with a thick left rail.
-          'absolute z-10 box-border overflow-hidden rounded border border-l-4 border-solid px-1 py-0.5 text-[11px] leading-tight text-dark1',
+          'absolute z-10 overflow-hidden rounded border border-l-4 border-solid px-1 py-0.5 text-[11px] leading-tight text-dark1',
           // Preview ghosts tint in the variant colour; real blocks sit on light1.
           isPreview ? VARIANT_PREVIEW_FILL[variant] : 'bg-light1',
           VARIANT_BORDER[variant],
@@ -226,13 +226,12 @@ const Calendar = ({
           truncate === 'left' && 'left-0 w-[calc(50%-4px)]',
           truncate === 'right' && 'right-1 w-[calc(50%-4px)]',
           !truncate && 'w-[calc(100%-4px)]',
-          interactive && !isPreview && 'transition-all',
           clickable && 'cursor-pointer',
           // Lift a stacked event clear of its neighbour on hover.
           interactive &&
             !isPreview &&
             truncate &&
-            'hover:z-20 hover:w-[calc(100%-4px)]',
+            'transition-all hover:z-20 hover:w-[calc(100%-4px)]',
         )}
       >
         {(event.title || event.subtitle) && (
@@ -253,13 +252,10 @@ const Calendar = ({
   return (
     <div className={cn('relative bg-white', className)}>
       {showHeader && (
-        <div className="flex items-end justify-between border-b-2 border-light3 px-4 py-4 tablet:px-8">
-          <div className="flex flex-1 flex-col">
+        <div className="flex items-end justify-between border-b-2 border-light3 p-4 tablet:px-8">
+          <div>
             {headerTitle != null && (
-              <div
-                className="text-xl font-semibold text-dark1"
-                style={{ fontFamily: AndersonFont }}
-              >
+              <div className="font-anderson text-xl font-semibold text-dark1">
                 {headerTitle}
               </div>
             )}
@@ -273,7 +269,7 @@ const Calendar = ({
             {onCurrentWeek && (
               <Button
                 type="button"
-                variant="default"
+                variant="ghost"
                 // "Current Week" is hidden on very small screens, matching the
                 // legacy hideSmall behaviour (max-width: 480px).
                 className={cn(NAV_BUTTON_CLASS, 'px-8 max-[480px]:hidden')}
@@ -286,7 +282,7 @@ const Calendar = ({
             {onPrevWeek && (
               <Button
                 type="button"
-                variant="default"
+                variant="ghost"
                 className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
                 onClick={onPrevWeek}
                 onMouseDown={(e) => e.preventDefault()}
@@ -297,7 +293,7 @@ const Calendar = ({
             {onNextWeek && (
               <Button
                 type="button"
-                variant="default"
+                variant="ghost"
                 className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
                 onClick={onNextWeek}
                 onMouseDown={(e) => e.preventDefault()}
@@ -335,7 +331,7 @@ const Calendar = ({
           className={cn(
             // overflow-auto lets the columns scroll horizontally on narrow
             // viewports rather than being clipped.
-            'absolute bottom-0 right-0 top-0 flex overflow-auto border-0 border-l border-solid',
+            'absolute inset-y-0 right-0 flex overflow-auto border-0 border-l border-solid',
             GRID_LINE,
           )}
         >
@@ -344,7 +340,7 @@ const Calendar = ({
               // eslint-disable-next-line react/no-array-index-key
               key={column}
               className={cn(
-                'relative h-full min-w-[136px] flex-1 border-0 border-r border-solid last:border-r-0',
+                'relative min-w-[136px] flex-1 border-0 border-r border-solid last:border-r-0',
                 GRID_LINE,
               )}
             >
