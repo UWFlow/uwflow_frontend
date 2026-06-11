@@ -95,7 +95,7 @@ const SwapPage = () => {
                 showSkipStepButton={false}
               />
             ) : (
-              <div className="flex max-w-[400px] flex-col items-center gap-3 rounded-xl bg-white px-12 py-10 text-center shadow-[0_8px_32px_rgba(23,43,77,0.16)]">
+              <div className="flex max-w-[400px] flex-col items-center gap-3 rounded bg-white px-12 py-10 text-center shadow-[0_8px_32px_rgba(23,43,77,0.16)]">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-light2 text-dark2">
                   <Lock size={24} />
                 </div>
@@ -107,7 +107,7 @@ const SwapPage = () => {
                   sections.
                 </p>
                 <button
-                  className="mt-2 cursor-pointer rounded-lg border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
+                  className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
                   onClick={() => openModal(AUTH_MODAL)}
                   type="button"
                 >

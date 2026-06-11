@@ -154,7 +154,7 @@ const CourseSearchDropdown = ({
   return (
     <>
       <div className="fixed inset-0 z-[199]" onClick={onClose} />
-      <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded-md border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+      <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
         <input
           ref={inputRef}
           className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"

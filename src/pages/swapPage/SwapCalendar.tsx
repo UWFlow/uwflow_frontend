@@ -395,13 +395,6 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     [swapSections, termSections, selection, selectedTerm],
   );
 
-  const handleClose = useCallback(() => {
-    setSelection(null);
-    setSelectedSwapCourseCode(null);
-    setHoveredSection(null);
-    setIsSwapDropdownOpen(false);
-  }, []);
-
   const events = useMemo(
     () => [
       ...buildEnrolledEvents(
@@ -450,11 +443,11 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
               course.
             </p>
           </div>
-          <div className="inline-flex shrink-0 rounded-lg border border-solid border-light3 bg-white p-1">
+          <div className="inline-flex shrink-0 rounded border border-solid border-light3 bg-white p-1">
             {availableTerms.map((term) => (
               <button
                 className={cn(
-                  'h-8 cursor-pointer rounded-md border-none bg-transparent px-4 text-sm font-semibold text-dark3 transition-colors',
+                  'h-8 cursor-pointer rounded border-none bg-transparent px-4 text-sm font-semibold text-dark3 transition-colors',
                   selectedTermCode === term.id && 'bg-light2 text-dark1',
                 )}
                 key={term.id}
@@ -468,7 +461,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
         </div>
 
         <div className="flex items-start gap-4">
-          <div className="min-w-0 flex-1 overflow-hidden rounded-lg border border-solid border-light3 bg-white shadow-box">
+          <div className="min-w-0 flex-1 overflow-hidden rounded border border-solid border-light3 bg-white shadow-box">
             <Calendar
               showHeader={false}
               dayLabels={DAY_LABELS}
@@ -479,69 +472,59 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
           </div>
 
           <div className="flex w-[360px] shrink-0 flex-col gap-3">
-            <div className="flex items-center gap-2">
-              <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-xl bg-white px-3 py-2.5 shadow-box">
-                {selectedCourseCode ? (
-                  <>
-                    <span className="text-sm font-semibold text-dark1">
-                      Swap
-                    </span>
-                    <span className="whitespace-nowrap text-sm font-semibold text-courses">
-                      {formatCourseCode(selectedCourseCode)}
-                    </span>
-                    <span className="text-sm font-semibold text-dark1">
-                      with
-                    </span>
-                    <div className="relative min-w-0">
-                      <button
-                        className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1.5 rounded-lg border-none bg-light2 px-2.5 text-sm font-semibold text-courses outline-none focus:ring-2 focus:ring-primary/20"
-                        onClick={() => setIsSwapDropdownOpen((open) => !open)}
-                        type="button"
-                      >
-                        <span className="truncate">
-                          {formatCourseCode(
-                            swapTargetCode ?? selectedCourseCode,
-                          )}
-                        </span>
-                        <ChevronDown
-                          aria-hidden="true"
-                          className="shrink-0 text-dark2"
-                          size={14}
-                        />
-                      </button>
-                      {isSwapDropdownOpen && (
-                        <CourseSearchDropdown
-                          selectedCode={swapTargetCode}
-                          onSelect={(code) => {
-                            setIsSwapDropdownOpen(false);
-                            handleCourseChange(code);
-                          }}
-                          onClose={() => setIsSwapDropdownOpen(false)}
-                          termId={selectedTermCode}
-                        />
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <span className="text-sm text-dark3">
-                    Select a class on your schedule
+            <div className="flex min-w-0 items-center gap-1.5 rounded bg-white px-3 py-2.5 shadow-box">
+              {selectedCourseCode ? (
+                <>
+                  <span className="text-sm font-semibold text-dark1">Swap</span>
+                  <span className="whitespace-nowrap text-sm font-semibold text-courses">
+                    {formatCourseCode(selectedCourseCode)}
                   </span>
-                )}
-              </div>
+                  <span className="text-sm font-semibold text-dark1">with</span>
+                  <div className="relative min-w-0">
+                    <button
+                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-sm font-semibold text-courses outline-none hover:underline"
+                      onClick={() => setIsSwapDropdownOpen((open) => !open)}
+                      type="button"
+                    >
+                      <span className="truncate">
+                        {formatCourseCode(swapTargetCode ?? selectedCourseCode)}
+                      </span>
+                      <ChevronDown
+                        aria-hidden="true"
+                        className="shrink-0 text-courses"
+                        size={14}
+                      />
+                    </button>
+                    {isSwapDropdownOpen && (
+                      <CourseSearchDropdown
+                        selectedCode={swapTargetCode}
+                        onSelect={(code) => {
+                          setIsSwapDropdownOpen(false);
+                          handleCourseChange(code);
+                        }}
+                        onClose={() => setIsSwapDropdownOpen(false)}
+                        termId={selectedTermCode}
+                      />
+                    )}
+                  </div>
+                </>
+              ) : (
+                <span className="text-sm text-dark3">
+                  Select a class on your schedule
+                </span>
+              )}
               {hasSwaps && (
                 // Swaps live only in React state, so a refresh restores the
                 // real schedule.
                 <button
                   aria-label="Reset swapped sections"
                   title="Reset swapped sections"
-                  className="flex w-9 shrink-0 cursor-pointer flex-col items-center justify-center gap-0.5 self-stretch rounded-lg border border-solid border-light3 bg-white text-dark2 transition-colors hover:bg-light1"
+                  className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1"
                   onClick={() => window.location.reload()}
                   type="button"
                 >
                   <RotateCcw aria-hidden="true" size={14} />
-                  <span className="text-[9px] font-semibold leading-none">
-                    Reset
-                  </span>
+                  Reset
                 </button>
               )}
             </div>
@@ -561,7 +544,6 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
               conflictSectionIds={conflictSectionIds}
               onPreviewChange={handlePreviewChange}
               onSwitchSection={handleSwitchSection}
-              onClose={handleClose}
               professorStatsById={professorStatsById}
               isLoading={sectionsLoading}
             />

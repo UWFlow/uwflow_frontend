@@ -14,6 +14,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-primary text-white hover:bg-primaryDark',
+        // Gold CTA matching the app's styled-components Button (theme.accent).
+        accent: 'bg-accent text-dark1 hover:bg-accentDark',
         destructive: 'bg-red text-white hover:bg-darkRed',
         // 'border' is the default border-width-1 class in Tailwind. The
         // explicit `border-solid` overrides the base-layer `border: none`

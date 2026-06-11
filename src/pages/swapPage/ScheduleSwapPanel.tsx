@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AlertTriangle, CheckCircle, RefreshCw, X } from 'react-feather';
+import { AlertTriangle, CheckCircle, RefreshCw } from 'react-feather';
 import { Link as RouterLink } from 'react-router-dom';
 import { SwapCourseSectionFragment } from 'generated/graphql';
 import { getCoursePageRoute, getProfPageRoute } from 'Routes';
@@ -43,7 +43,6 @@ export type ScheduleSwapPanelProps = {
   conflictSectionIds: number[];
   onPreviewChange: (preview: SwapPreview | null) => void;
   onSwitchSection: (sectionId: number) => void;
-  onClose?: () => void;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
   isLoading?: boolean;
 };
@@ -98,8 +97,9 @@ const getMeetingTime = (meeting: SwapMeeting) => {
   )}`;
 };
 
-// Light blue for enrolled and available sections alike; gray for conflicts.
-const SectionBadge = ({
+// Section names render as plain title text (no tag/badge); conflicting
+// sections dim with the rest of their row.
+const SectionName = ({
   sectionName,
   hasConflict,
 }: {
@@ -108,10 +108,8 @@ const SectionBadge = ({
 }) => (
   <span
     className={cn(
-      'inline-flex h-6 items-center rounded-md border border-solid px-2 text-xs font-semibold',
-      hasConflict
-        ? 'border-light3 bg-light1 text-dark3'
-        : 'border-primary/20 bg-primary/5 text-primary',
+      'text-sm font-semibold',
+      hasConflict ? 'text-dark3' : 'text-dark1',
     )}
   >
     {sectionName}
@@ -126,8 +124,9 @@ const MeetingInstructor = ({
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
 }) => {
   const professor = meeting.prof;
+  // No instructor data — show nothing rather than "Instructor TBA".
   if (!professor || !professor.name) {
-    return <span className="text-dark3">Instructor TBA</span>;
+    return null;
   }
 
   const stats = professorStatsById?.[professor.id];
@@ -267,7 +266,7 @@ const ScheduleSectionRow = ({
       tabIndex={0}
     >
       <div className="mb-2 flex items-start justify-between gap-2">
-        <SectionBadge
+        <SectionName
           sectionName={section.section_name}
           hasConflict={hasConflict}
         />
@@ -278,7 +277,7 @@ const ScheduleSectionRow = ({
           </span>
         )}
         {!isEnrolled && hasConflict && (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-red">
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-darkRed">
             <AlertTriangle aria-hidden="true" size={14} />
             Conflicts
           </span>
@@ -302,7 +301,7 @@ const ScheduleSectionRow = ({
           <strong
             className={cn(
               'font-semibold',
-              openSeats === 0 ? 'text-red' : 'text-dark1',
+              openSeats === 0 ? 'text-darkRed' : 'text-dark1',
             )}
           >
             {openSeats}
@@ -311,12 +310,13 @@ const ScheduleSectionRow = ({
         </div>
         {!isEnrolled && !hasConflict && (
           <Button
-            className="h-8 rounded-lg px-3"
+            className="h-8"
             onClick={() => onSwitchSection(section.id)}
             size="sm"
             type="button"
+            variant="accent"
           >
-            Switch section
+            Choose section
           </Button>
         )}
       </div>
@@ -333,7 +333,6 @@ const ScheduleSwapPanel = ({
   conflictSectionIds,
   onPreviewChange,
   onSwitchSection,
-  onClose,
   professorStatsById,
   isLoading = false,
 }: ScheduleSwapPanelProps) => {
@@ -362,13 +361,8 @@ const ScheduleSwapPanel = ({
     return () => onPreviewChange(null);
   }, [onPreviewChange, selectedCourseId, selectedTermId, sectionType]);
 
-  const handleClose = () => {
-    onPreviewChange(null);
-    onClose?.();
-  };
-
   return (
-    <aside className="w-full overflow-hidden rounded-xl border border-solid border-light3 bg-white shadow-box tablet:max-w-[360px]">
+    <aside className="w-full overflow-hidden rounded border border-solid border-light3 bg-white shadow-box tablet:max-w-[360px]">
       {isLoading ? (
         <div className="flex min-h-[178px] items-center justify-center p-4">
           <LoadingSpinner />
@@ -398,16 +392,6 @@ const ScheduleSwapPanel = ({
                 {selectedCourse.name}
               </p>
             </div>
-            {onClose && (
-              <button
-                aria-label="Close schedule swap panel"
-                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded border border-solid border-light3 bg-white text-dark2 hover:bg-light1 hover:text-dark1"
-                onClick={handleClose}
-                type="button"
-              >
-                <X aria-hidden="true" size={16} />
-              </button>
-            )}
           </div>
           {sections.length === 0 ? (
             <div className="px-5 py-8 text-center text-sm text-dark3">
