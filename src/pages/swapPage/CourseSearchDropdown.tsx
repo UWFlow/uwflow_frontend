@@ -9,6 +9,7 @@ import {
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
+import { formatCourseCode } from 'utils/Misc';
 
 const dropdownEmptyStateClasses =
   'px-3.5 py-4 text-center text-[13px] text-dark3';
@@ -55,7 +56,7 @@ const CourseRow = ({
       onClick={() => onSelect(course.code)}
     >
       <span className="shrink-0 text-[13px] font-bold text-courses">
-        {course.code.toUpperCase()}
+        {formatCourseCode(course.code)}
       </span>
       <span className="ml-2 min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-dark3">
         {course.name}

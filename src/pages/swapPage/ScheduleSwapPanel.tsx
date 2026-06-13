@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AlertTriangle, CheckCircle, RefreshCw } from 'react-feather';
+import { AlertTriangle, CheckCircle, MousePointer } from 'react-feather';
 import { Link as RouterLink } from 'react-router-dom';
 import { SwapCourseSectionFragment } from 'generated/graphql';
 import { getCoursePageRoute, getProfPageRoute } from 'Routes';
@@ -207,7 +207,7 @@ const MeetingLine = ({
 const EmptyState = () => (
   <div className="flex min-h-[178px] flex-col items-center justify-center rounded border border-solid border-light3 bg-white px-6 py-8 text-center">
     <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-light2 text-dark3">
-      <RefreshCw aria-hidden="true" size={18} />
+      <MousePointer aria-hidden="true" size={18} />
     </div>
     <div className="text-sm font-semibold text-dark1">Select a course</div>
     <div className="mt-2 max-w-[260px] text-sm leading-5 text-dark3">

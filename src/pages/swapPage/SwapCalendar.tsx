@@ -482,7 +482,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
                   <span className="text-sm font-semibold text-dark1">with</span>
                   <div className="relative min-w-0">
                     <button
-                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-sm font-semibold text-courses outline-none hover:underline"
+                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
                       onClick={() => setIsSwapDropdownOpen((open) => !open)}
                       type="button"
                     >
@@ -519,7 +519,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
                 <button
                   aria-label="Reset swapped sections"
                   title="Reset swapped sections"
-                  className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1"
+                  className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1"
                   onClick={() => window.location.reload()}
                   type="button"
                 >

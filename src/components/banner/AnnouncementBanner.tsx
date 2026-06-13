@@ -26,9 +26,9 @@ const AnnouncementBanner = () => {
 
   return (
     <FadeIn>
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 bg-accent px-6 py-3">
+      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 bg-accent px-6 py-3">
         <Repeat aria-hidden="true" className="shrink-0 text-dark1" size={20} />
-        <div className="min-w-0 flex-1 text-md text-dark1">
+        <div className="min-w-0 text-md text-dark1">
           <strong>Introducing Class Swapper.</strong> No more Quest tab swapping
           to figure out your ideal schedule.
         </div>
