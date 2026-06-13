@@ -310,7 +310,7 @@ const ScheduleSectionRow = ({
         </div>
         {!isEnrolled && !hasConflict && (
           <Button
-            className="h-8"
+            className="h-8 font-bold"
             onClick={() => onSwitchSection(section.id)}
             size="sm"
             type="button"
