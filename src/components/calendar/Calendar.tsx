@@ -8,7 +8,7 @@ import { cn } from 'lib/utils';
 // time grid and for translating an event's start/end into a pixel offset.
 export const HOUR_HEIGHT = 64;
 // Height reserved at the top of each day column for its header label.
-const HEADER_HEIGHT = 24;
+const HEADER_HEIGHT = 32;
 // Width of the left gutter that holds the hour labels.
 const TIME_WIDTH = 64;
 
@@ -18,7 +18,7 @@ export type CalendarEventVariant = 'lecture' | 'lab' | 'tutorial' | 'other';
 /**
  * Visual state of an event block:
  * - `default`  — a normal block.
- * - `selected` — emphasised with a ring in the variant colour.
+ * - `selected` — emphasised with a gold fill, border and left rail.
  * - `dimmed`   — faded, e.g. existing events while a preview is shown.
  * - `preview`  — a translucent, dashed, slightly blurred "ghost" laid on top;
  *                non-interactive so it never intercepts clicks.
@@ -78,29 +78,33 @@ export type CalendarProps = {
   className?: string;
 };
 
-// Soft grid line, faithful to the legacy calendar. (The dotted half-hour line
-// is written inline below so Tailwind's JIT scanner can see the full class.)
+// Soft grid line. (The fainter half-hour line is written inline below so
+// Tailwind's JIT scanner can see the full class.)
 const GRID_LINE = 'border-light3';
 
-// Per-variant accent classes. `default`/`dimmed` blocks border in the accent;
-// `selected` rings in it; `preview` borders + tints in it. Backed entirely by
-// existing Tailwind tokens (see tailwind.config.js) — no arbitrary hex.
+// Per-variant accent classes: saturated colours for the thick left rail (the
+// pastel `lecture`/`lab`/`tutorial` tokens are too washed out for it). The two
+// arbitrary hexes are the legacy lab/tutorial accent colours.
 const VARIANT_BORDER: Record<CalendarEventVariant, string> = {
-  lecture: 'border-lecture',
-  lab: 'border-lab',
-  tutorial: 'border-tutorial',
+  lecture: 'border-primary',
+  lab: 'border-[#2b8fcd]',
+  tutorial: 'border-[#6554c0]',
   other: 'border-dark3',
 };
 
-const VARIANT_RING: Record<CalendarEventVariant, string> = {
-  lecture: 'ring-lecture',
-  lab: 'ring-lab',
-  tutorial: 'ring-tutorial',
-  other: 'ring-dark3',
+// Opaque solid fill in the variant colour: each hex is the old translucent
+// tint (variant colour @20%) composited on white, so gridlines no longer show
+// through the blocks while the look stays the same.
+const VARIANT_FILL: Record<CalendarEventVariant, string> = {
+  lecture: 'bg-[#f0f6ff]',
+  lab: 'bg-[#f0fdff]',
+  tutorial: 'bg-[#f2f0fc]',
+  other: 'bg-[#eaecef]',
 };
 
-// Translucent fill for the preview ghost, in the variant colour.
-const VARIANT_PREVIEW_FILL: Record<CalendarEventVariant, string> = {
+// Preview ghosts stay translucent on purpose — they're a see-through overlay
+// laid on top of the real (now opaque) blocks.
+const PREVIEW_FILL: Record<CalendarEventVariant, string> = {
   lecture: 'bg-lecture/20',
   lab: 'bg-lab/20',
   tutorial: 'bg-tutorial/20',
@@ -110,7 +114,9 @@ const VARIANT_PREVIEW_FILL: Record<CalendarEventVariant, string> = {
 // State -> extra block classes, layered on top of the base block + variant.
 const STATE_CLASS: Record<CalendarEventState, string> = {
   default: '',
-  selected: 'z-20 ring-2 ring-offset-1',
+  // Gold highlight: the fill/border swap to accent tokens happens in
+  // renderEvent; the ring thickens the gold border on all four sides.
+  selected: 'z-20 ring-1 ring-accentDark',
   dimmed: 'opacity-[0.38]',
   // Ghost: dashed, blurred and lifted above real events; never clickable.
   preview: 'z-30 border-dashed blur-[1px] pointer-events-none',
@@ -123,11 +129,8 @@ const STATE_CLASS: Record<CalendarEventState, string> = {
 const NAV_BUTTON_CLASS =
   'ml-1 h-12 rounded-lg border-2 border-solid border-light3 bg-light1 font-anderson text-lg font-semibold transition-all hover:brightness-[0.85]';
 
-const formatHour = (hour: number) => {
-  if (hour === 0) return '12 am';
-  if (hour === 12) return '12 pm';
-  return hour < 12 ? `${hour} am` : `${hour - 12} pm`;
-};
+// 24-hour gutter labels: "09:00", "10:00", ...
+const formatHour = (hour: number) => `${`${hour}`.padStart(2, '0')}:00`;
 
 // Derive left/right placement for overlapping non-preview events within each
 // column. Preview ghosts are skipped so they layer cleanly on top, and any
@@ -165,7 +168,7 @@ const deriveTruncation = (events: CalendarEvent[]) => {
  *
  * The section-swap page reuses this directly:
  * - enrolled classes are `default` events;
- * - the class being swapped is `selected` (variant ring);
+ * - the class being swapped is `selected` (gold fill, border and left rail);
  * - while a candidate section is previewed, the enrolled blocks it would
  *   replace become `dimmed`, and the candidate is a `preview` ghost
  *   (translucent + dashed + `blur-[1px]`, non-interactive);
@@ -195,6 +198,7 @@ const Calendar = ({
     const variant = event.variant ?? 'lecture';
     const state = event.state ?? 'default';
     const isPreview = state === 'preview';
+    const isSelected = state === 'selected';
     // Preview ghosts overlay full-width and ignore overlap truncation.
     const truncate = isPreview
       ? undefined
@@ -215,12 +219,25 @@ const Calendar = ({
         onClick={clickable ? event.onClick : undefined}
         style={{ top, height }}
         className={cn(
-          // Base block: rounded, colour-bordered with a thick left rail.
-          'absolute z-10 overflow-hidden rounded border border-l-4 border-solid px-1 py-0.5 text-[11px] leading-tight text-dark1',
-          // Preview ghosts tint in the variant colour; real blocks sit on light1.
-          isPreview ? VARIANT_PREVIEW_FILL[variant] : 'bg-light1',
-          VARIANT_BORDER[variant],
-          state === 'selected' && VARIANT_RING[variant],
+          // Base block: rounded, solid variant fill with a thick accent left
+          // rail; the text stack is vertically centered but left-aligned, with
+          // a little left padding to clear the rail, clipping rather than
+          // wrapping when the block is short or narrow.
+          'absolute z-10 flex flex-col justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid pl-1.5 pr-1 leading-tight text-dark1',
+          // Selected blocks swap the variant fill/accent for the gold tokens
+          // (gold border on all four sides plus the thick gold rail). The fill
+          // is accent @20% composited on white, opaque like the variant fills.
+          isSelected
+            ? 'border-accentDark bg-[#fff3cc]'
+            : [
+                isPreview ? PREVIEW_FILL[variant] : VARIANT_FILL[variant],
+                VARIANT_BORDER[variant],
+              ],
+          // Outside preview ghosts, only the left rail keeps the saturated
+          // accent; the other sides stay transparent like the mockup.
+          !isSelected &&
+            !isPreview &&
+            'border-y-transparent border-r-transparent',
           STATE_CLASS[state],
           // Width / side when sharing a slot with an overlapping event.
           truncate === 'left' && 'left-0 w-[calc(50%-4px)]',
@@ -234,17 +251,23 @@ const Calendar = ({
             'transition-all hover:z-20 hover:w-[calc(100%-4px)]',
         )}
       >
-        {(event.title || event.subtitle) && (
-          <div className="font-semibold">
+        {event.title && (
+          <div className="w-full truncate text-xs font-semibold">
             {event.title}
-            {event.title && event.subtitle ? (
-              <span className="font-normal"> - </span>
-            ) : null}
+          </div>
+        )}
+        {(event.timeLabel || event.location) && (
+          <div className="w-full truncate text-[11px] text-dark2">
+            {event.timeLabel}
+            {event.timeLabel && event.location && ' · '}
+            {event.location}
+          </div>
+        )}
+        {event.subtitle && (
+          <div className="w-full truncate text-[10px] text-dark3">
             {event.subtitle}
           </div>
         )}
-        {event.timeLabel && <div>{event.timeLabel}</div>}
-        {event.location && <div>{event.location}</div>}
       </div>
     );
   };
@@ -315,13 +338,11 @@ const Calendar = ({
               className={cn(
                 'relative border-0 border-t border-solid px-4',
                 GRID_LINE,
-                // Dotted line halfway down each hour row.
-                "after:absolute after:left-16 after:right-0 after:top-1/2 after:-mt-px after:border-t after:border-dotted after:border-light2 after:content-['']",
+                // Fainter solid line halfway down each hour row.
+                "after:absolute after:left-16 after:right-0 after:top-1/2 after:-mt-px after:border-t after:border-solid after:border-light2 after:content-['']",
               )}
             >
-              <div className="mt-1 text-[11px] text-dark3">
-                {formatHour(hour)}
-              </div>
+              <div className="mt-1 text-xs text-dark3">{formatHour(hour)}</div>
             </div>
           ))}
         </div>
@@ -344,7 +365,7 @@ const Calendar = ({
                 GRID_LINE,
               )}
             >
-              <div className="absolute inset-x-0 top-0 flex h-6 items-center justify-center text-[11px] font-semibold">
+              <div className="absolute inset-x-0 top-0 flex h-8 items-center justify-center text-xs uppercase tracking-wide text-dark3">
                 {label}
               </div>
               {events

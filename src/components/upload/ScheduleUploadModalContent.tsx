@@ -1,6 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { ArrowRight, Clipboard } from 'react-feather';
 import { toast } from 'react-toastify';
+import * as Sentry from '@sentry/react';
 import { PRIVACY_PAGE_ROUTE } from 'Routes';
 import { useTheme } from 'styled-components';
 
@@ -18,6 +19,7 @@ import Step1Image from 'img/upload/calendar-step-1.png';
 import Step2Image from 'img/upload/calendar-step-2.png';
 import {
   ErrorResponse,
+  ParseOnlyScheduleResponse,
   ScheduleParseBody,
   ScheduleParseResponse,
 } from 'types/Api';
@@ -59,7 +61,7 @@ const clipboardKeys = {
 };
 
 export type ScheduleUploadModalContentProps = {
-  onAfterUploadSuccess?: () => void;
+  onAfterUploadSuccess?: (data?: ParseOnlyScheduleResponse) => void;
   onSkip?: () => void;
   showSkipStepButton?: boolean;
 };
@@ -79,9 +81,10 @@ const ScheduleUploadModalContent = ({
   const handleSchedulePaste = async (
     event: ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setScheduleText(event.currentTarget.value);
+    const pastedSchedule = event.currentTarget.value;
+    setScheduleText(pastedSchedule);
 
-    if (event.currentTarget.value === '') {
+    if (pastedSchedule === '') {
       return;
     }
 
@@ -94,7 +97,7 @@ const ScheduleUploadModalContent = ({
         'user_id',
       )}`,
       {
-        text: event.currentTarget.value,
+        text: pastedSchedule,
       },
     );
 
@@ -103,11 +106,38 @@ const ScheduleUploadModalContent = ({
       setUploadState(UPLOAD_SUCCESSFUL);
       toast(DATA_UPLOAD_SUCCESS);
       if (onAfterUploadSuccess) {
-        onAfterUploadSuccess();
+        const parseOnly = response as unknown as ParseOnlyScheduleResponse;
+        onAfterUploadSuccess(
+          parseOnly.TermId !== undefined ? parseOnly : undefined,
+        );
       }
       onSkip();
     } else {
       setUploadState(UPLOAD_FAILED);
+
+      // Forward term-schedule upload failures (this is the Quest schedule paste
+      // flow, not the transcript parser) to Sentry so we can diagnose why a
+      // user's schedule could not be imported. Covers backend error enums
+      // (empty/old/default schedule), non-200 responses, and class numbers that
+      // failed to match a section.
+      Sentry.captureException(
+        new Error(
+          `Schedule upload failed: ${
+            (response as ErrorResponse).error ?? 'classes_failed'
+          }`,
+        ),
+        {
+          tags: { feature: 'schedule_upload' },
+          extra: {
+            status,
+            error: (response as ErrorResponse).error,
+            failedClasses: (response as ScheduleParseResponse).failed_classes,
+            // The exact text the user pasted, so we can reproduce parse failures.
+            schedule: pastedSchedule,
+          },
+        },
+      );
+
       if ((response as ErrorResponse).error) {
         const errorRes = response as ErrorResponse;
         setUploadError(

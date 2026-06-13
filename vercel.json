@@ -4,6 +4,7 @@
   "outputDirectory": "build",
   "rewrites": [
     { "source": "/graphql", "destination": "https://uwflow.com/graphql" },
-    { "source": "/api/:path*", "destination": "https://uwflow.com/api/:path*" }
+    { "source": "/api/:path*", "destination": "https://uwflow.com/api/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

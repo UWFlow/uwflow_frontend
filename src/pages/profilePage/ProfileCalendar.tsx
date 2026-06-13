@@ -265,7 +265,7 @@ const buildWeekView = (
       const courseLink = (
         <RouterLink
           to={getCoursePageRoute(event.courseCode)}
-          className="font-semibold text-courses underline"
+          className="font-semibold text-dark1 no-underline hover:underline"
         >
           {formatCourseCode(event.courseCode)}
         </RouterLink>
@@ -277,7 +277,8 @@ const buildWeekView = (
         startMinutes: event.start.hour() * 60 + event.start.minutes(),
         endMinutes: event.end.hour() * 60 + event.end.minutes(),
         variant: getEventVariant(event.section),
-        // Exams put the section on its own line; meetings read "CODE - SECTION".
+        // Exams fold the section into the bold title; meetings show the code
+        // as the title with the section as the muted subtitle line.
         title: isExam ? (
           <>
             {courseLink}
@@ -288,8 +289,9 @@ const buildWeekView = (
           courseLink
         ),
         subtitle: isExam ? undefined : event.section,
-        timeLabel: `${event.start.format('h:mma')} - ${event.end.format(
-          'h:mma',
+        // Compact 24-hour range to match the swap page, e.g. "08:30–09:20".
+        timeLabel: `${event.start.format('HH:mm')}–${event.end.format(
+          'HH:mm',
         )}`,
         location: event.location,
       };
@@ -298,7 +300,9 @@ const buildWeekView = (
 
   return {
     events,
-    dayLabels: visibleDays.map((day) => day.format('ddd MMM D')),
+    // Short day-of-week + date, e.g. "Mon 9" (the calendar header band
+    // uppercases it to match the swap page's static MON-FRI labels).
+    dayLabels: visibleDays.map((day) => day.format('ddd D')),
     minHour,
     maxHour,
     totalHours: Math.round((2 * totalMinutes) / 60) / 2,
