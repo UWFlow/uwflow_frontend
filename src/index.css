@@ -12,12 +12,16 @@
 
 @layer base {
   /*
-   * Stand-in for Tailwind preflight's button reset (preflight is disabled
-   * above; public/index.css does not reset button borders). Removes the
-   * browser's default outset <button> border so Tailwind-styled buttons
-   * don't have to re-declare `border-none` themselves.
+   * Tailwind Preflight's border reset, scoped to <button>. Full Preflight is
+   * disabled in tailwind.config.js to coexist with the app's own reset in
+   * public/index.css, so we re-introduce just the slice Tailwind-styled buttons
+   * depend on. Following Preflight, we set `border-style: solid; border-width: 0`
+   * (not `border: none`): the browser's default outset border disappears, and a
+   * `border` utility on its own then yields a visible 1px solid border with no
+   * `border-solid` workaround.
    */
   button {
-    border: none;
+    border-width: 0;
+    border-style: solid;
   }
 }
