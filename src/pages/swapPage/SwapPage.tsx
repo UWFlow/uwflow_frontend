@@ -17,9 +17,12 @@ import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar from './SwapCalendar';
 
 // PageWrapper mixin (min-height accounts for FOOTER_HEIGHT 70px +
-// FOOTER_MARGIN_TOP 32px) on the app's light1 background, with a fade-in.
+// FOOTER_MARGIN_TOP 32px) on the app's light1 background. The fade-in lives on
+// the SwapCalendar content (like the app's other pages wrap content in
+// <FadeIn>), not here: a transform on this wrapper would re-anchor the always-
+// mounted fixed login/upload overlay below.
 const swapPageWrapperClasses =
-  'relative flex min-h-[calc(100vh-102px)] w-screen animate-[fadeIn_0.3s_ease] flex-col bg-light1 pb-8';
+  'relative flex min-h-[calc(100vh-102px)] w-screen flex-col bg-light1 pb-8';
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
