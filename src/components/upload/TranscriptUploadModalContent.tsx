@@ -33,6 +33,7 @@ import {
   ErrorMessage,
   GreyText,
   Header,
+  HeaderRow,
   InstructionText,
   Link,
   LongInstructionWrapper,
@@ -43,6 +44,7 @@ import {
   ScheduleStep3Wrapper,
   SkipStepWrapper,
   StepWrapper,
+  TopSkipButton,
   TranscriptPrivacyPolicyWrapper,
   TranscriptStep1Video,
   TranscriptUploadBox,
@@ -165,7 +167,12 @@ const TranscriptUploadModalContent = ({
 
   return (
     <ContentWrapper>
-      <Header>Upload your transcript</Header>
+      <HeaderRow>
+        <Header>Upload your transcript</Header>
+        {showSkipStepButton && (
+          <TopSkipButton onClick={onSkip}>skip &gt;</TopSkipButton>
+        )}
+      </HeaderRow>
       <ContentSteps>
         <StepWrapper>
           <LongInstructionWrapper>

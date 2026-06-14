@@ -33,6 +33,7 @@ import {
   ErrorMessage,
   GreyText,
   Header,
+  HeaderRow,
   InstructionText,
   InstructionWrapper,
   Link,
@@ -46,6 +47,7 @@ import {
   ScheduleStepPicture,
   SkipStepWrapper,
   StepWrapper,
+  TopSkipButton,
 } from './styles/DataUploadModals';
 
 // keys for only allowing copy paste / deletion
@@ -197,7 +199,12 @@ const ScheduleUploadModalContent = ({
 
   return (
     <ContentWrapper>
-      <Header>Import your schedule from Quest</Header>
+      <HeaderRow>
+        <Header>Import your schedule from Quest</Header>
+        {showSkipStepButton && (
+          <TopSkipButton onClick={onSkip}>skip &gt;</TopSkipButton>
+        )}
+      </HeaderRow>
       <ContentSteps>
         <StepWrapper>
           <InstructionWrapper>
