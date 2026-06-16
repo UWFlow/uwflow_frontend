@@ -23,6 +23,7 @@ Clone the [backend repository](https://github.com/UWFlow/uwflow) and follow its 
 - [Using and creating modals](docs/modals.md)
 - [Creating new pages](docs/pages.md)
 - [Explanation of client-side search](docs/search.md)
+- [Events analytics pipeline](docs/analytics.md)
 
 #### Important External Docs
 

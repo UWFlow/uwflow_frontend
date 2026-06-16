@@ -40,6 +40,7 @@ import {
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { RootState } from 'data/reducers/RootReducer';
 import LandingPageBg from 'img/landing.svg';
+import { initAnalytics, usePageTracking } from 'lib/analytics';
 import { AuthRefreshResponse } from 'types/Api';
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { getUserId } from 'utils/Auth';
@@ -50,10 +51,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+initAnalytics();
 
 const App = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const location = useLocation();
+
+  // Route-level analytics: session_start, page_view, and page_dwell. Mounted
+  // here, inside <Router>, so useLocation fires on every navigation.
+  usePageTracking();
 
   // Refresh auth token if logged in
   useEffect(() => {

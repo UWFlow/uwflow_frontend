@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useRouteMatch } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -14,6 +14,7 @@ import {
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
 import { GET_PROF } from 'graphql/queries/prof/Prof';
+import { track } from 'lib/analytics';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import ProfInfoHeader from 'pages/profPage/ProfInfoHeader';
 import ProfReviews from 'pages/profPage/ProfReviews';
@@ -77,6 +78,12 @@ export const ProfPage = () => {
   const match = useRouteMatch<{ profCode: string }>();
 
   const profCode = match.params.profCode.toLowerCase();
+
+  // Emit profile_view once per viewed professor profile.
+  useEffect(() => {
+    track('profile_view', { prof_code: profCode });
+  }, [profCode]);
+
   const { loading, error, data } = useQuery<
     GetProfQuery,
     GetProfQueryVariables
