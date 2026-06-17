@@ -17,6 +17,7 @@ import {
   PROF_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/prof/ProfReview';
 import useProfReviews, { UPDATE_REVIEW_DATA } from 'hooks/useProfReviews';
+import { track } from 'lib/analytics';
 import { formatCourseCode, processRating } from 'utils/Misc';
 import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
 
@@ -124,7 +125,13 @@ const ProfReviews = ({ profId }: ProfReviewsProps) => {
             color={theme.primary}
             selectedIndex={courseSort}
             options={['most reviews', 'most liked']}
-            onChange={(value) => setCourseSort(value)}
+            onChange={(value) => {
+              setCourseSort(value);
+              track('review_sort_change', {
+                entity: 'prof',
+                sort: value === 0 ? 'most_reviews' : 'most_liked',
+              });
+            }}
             zIndex={6}
           />
         </SortFilterDropdownWrapper>
@@ -169,6 +176,10 @@ const ProfReviews = ({ profId }: ProfReviewsProps) => {
                   onChange={(value) => {
                     curSelectedSort[idx] = value;
                     setSelectedSort(curSelectedSort);
+                    track('review_sort_change', {
+                      entity: 'prof',
+                      sort: value === 0 ? 'most_recent' : 'most_helpful',
+                    });
                   }}
                 />
               </DropdownPanelWrapper>

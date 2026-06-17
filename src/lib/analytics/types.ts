@@ -32,4 +32,10 @@ export type EventName =
   | 'auth_failed'
   | 'password_reset_requested'
   | 'password_reset_completed'
-  | 'account_deleted';
+  | 'account_deleted'
+  | 'review_create'
+  | 'review_edit'
+  | 'review_delete'
+  | 'review_upvote'
+  | 'course_liked_toggle'
+  | 'review_sort_change';

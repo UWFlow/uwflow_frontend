@@ -14,6 +14,7 @@ import {
 import { COURSE_REVIEWS_WITH_USER_DATA } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
+import { track } from 'lib/analytics';
 import { getUserId } from 'utils/Auth';
 
 import {
@@ -100,6 +101,17 @@ const LikeCourseToggle = ({
           },
         },
       },
+    }).then(() => {
+      track('course_liked_toggle', {
+        course_id: courseId,
+        liked: likedValue === 1,
+        state:
+          likedValue === 1
+            ? 'liked'
+            : likedValue === 0
+            ? 'disliked'
+            : 'cleared',
+      });
     });
   };
 
