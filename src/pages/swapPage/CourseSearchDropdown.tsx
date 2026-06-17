@@ -78,6 +78,16 @@ const CourseSearchDropdown = ({
     inputRef.current?.focus();
   }, []);
 
+  // Let keyboard users dismiss the dropdown with Escape, matching the
+  // pointer-only backdrop click.
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const { data, loading } = useQuery<
     CourseDropdownByTermQuery,
     CourseDropdownByTermQueryVariables

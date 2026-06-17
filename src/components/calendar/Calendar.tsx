@@ -217,6 +217,18 @@ const Calendar = ({
         role={clickable ? 'button' : undefined}
         tabIndex={clickable ? 0 : undefined}
         onClick={clickable ? event.onClick : undefined}
+        onKeyDown={
+          clickable
+            ? (e) => {
+                // Activate with Enter/Space like a native button so the
+                // calendar is usable without a mouse.
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  event.onClick?.();
+                }
+              }
+            : undefined
+        }
         style={{ top, height }}
         className={cn(
           // Base block: rounded, solid variant fill with a thick accent left

@@ -1,6 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { ChevronDown, RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
+import * as Sentry from '@sentry/react';
 import {
   GetCourseForSwapQuery,
   GetCourseForSwapQueryVariables,
@@ -26,6 +33,7 @@ import {
 } from 'utils/Misc';
 
 import CourseSearchDropdown from './CourseSearchDropdown';
+import EnrolledCourseDropdown from './EnrolledCourseDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
   SwapCandidateCourse,
@@ -46,6 +54,20 @@ const secsTo24hTime = (secs: number) =>
 
 // Section "type" is the section_name prefix: "LEC 001" -> "LEC".
 const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
+
+// Compact view of the user's schedule, forwarded to Sentry when a rendered
+// section has no alternative to swap into (e.g. a lone TST section).
+const serializeSchedule = (entries: UserScheduleFragment['schedule']) =>
+  entries.map(({ section }) => ({
+    course: section.course.code,
+    section: section.section_name,
+    meetings: section.meetings.map((m) => ({
+      days: m.days,
+      start: m.start_seconds,
+      end: m.end_seconds,
+      location: m.location,
+    })),
+  }));
 
 const getSectionVariant = (sectionName: string): CalendarEventVariant => {
   const type = getSectionType(sectionName);
@@ -243,6 +265,8 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     string | null
   >(null);
   const [isSwapDropdownOpen, setIsSwapDropdownOpen] = useState(false);
+  // The left selector lists courses the user is already enrolled in.
+  const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false);
   // Temporary client-side section swaps, keyed by term label. A swap replaces
   // the matching schedule entry in React state only — refreshing the page
   // restores the original schedule (no persistence, no mutations).
@@ -254,6 +278,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
     setIsSwapDropdownOpen(false);
+    setIsCourseDropdownOpen(false);
   }, [selectedCourseCode, selectedSectionType]);
 
   const selectedTermCode =
@@ -263,6 +288,23 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     () => overriddenByTerm[selectedTerm] ?? termMap[selectedTerm] ?? [],
     [overriddenByTerm, termMap, selectedTerm],
   );
+
+  // Distinct courses in the user's schedule for this term, for the left
+  // selector. Derived from the loaded schedule — no extra query needed.
+  const enrolledCourses = useMemo(() => {
+    const byCode = new Map<string, { code: string; name: string }>();
+    for (const { section } of termSections) {
+      if (!byCode.has(section.course.code)) {
+        byCode.set(section.course.code, {
+          code: section.course.code,
+          name: section.course.name,
+        });
+      }
+    }
+    return Array.from(byCode.values()).sort((a, b) =>
+      a.code.localeCompare(b.code),
+    );
+  }, [termSections]);
 
   // Sections of the course shown in the panel: the chosen swap target, or the
   // course selected on the calendar while no target is chosen yet.
@@ -314,6 +356,73 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     [swapSections, enrolledSectionIds, termSections, selection],
   );
 
+  // Sections of the selected type shown in the panel (mirrors the panel's term
+  // + type filter). Used to detect a section code that has nothing to swap into.
+  const selectedTypeSections = useMemo(
+    () =>
+      selectedSectionType === null
+        ? []
+        : swapSections.filter(
+            (section) =>
+              section.term_id === selectedTermCode &&
+              getSectionType(section.section_name) === selectedSectionType,
+          ),
+    [swapSections, selectedSectionType, selectedTermCode],
+  );
+
+  // "No alternative to swap into": every section of this code is one the user is
+  // already enrolled in, so there is literally nothing else to choose. This
+  // ignores conflicts on purpose — a conflicting section still counts as an
+  // alternative; we only flag codes (e.g. TST) that have no other section at all.
+  const hasNoSwapAlternative =
+    selectedTypeSections.length > 0 &&
+    selectedTypeSections.every((section) =>
+      enrolledSectionIds.includes(section.id),
+    );
+
+  // Report each (course, code, term) at most once per page session.
+  const reportedNoAlternativeRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (
+      demoMode ||
+      sectionsLoading ||
+      !hasNoSwapAlternative ||
+      !selectedCourseCode ||
+      !selectedSectionType
+    ) {
+      return;
+    }
+
+    const key = `${selectedCourseCode}|${selectedSectionType}|${selectedTermCode}`;
+    if (reportedNoAlternativeRef.current.has(key)) {
+      return;
+    }
+    reportedNoAlternativeRef.current.add(key);
+
+    Sentry.captureMessage(
+      `Swap section has no alternative to swap into: ${selectedSectionType} for ${selectedCourseCode}`,
+      {
+        level: 'warning',
+        tags: { feature: 'section_swap', sectionCode: selectedSectionType },
+        extra: {
+          courseCode: selectedCourseCode,
+          sectionCode: selectedSectionType,
+          termCode: selectedTermCode,
+          // The user's schedule for the viewed term, so the case can be reproduced.
+          schedule: serializeSchedule(termSections),
+        },
+      },
+    );
+  }, [
+    demoMode,
+    sectionsLoading,
+    hasNoSwapAlternative,
+    selectedCourseCode,
+    selectedSectionType,
+    selectedTermCode,
+    termSections,
+  ]);
+
   const professorStatsById = useMemo(() => {
     const stats: Record<number, ProfessorSwapStats | undefined> = {};
     for (const section of swapSections) {
@@ -352,12 +461,27 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
     setIsSwapDropdownOpen(false);
+    setIsCourseDropdownOpen(false);
   }, []);
 
   const handleCourseChange = useCallback((courseCode: string | null) => {
     setSelectedSwapCourseCode(courseCode);
     setHoveredSection(null);
   }, []);
+
+  // Picking an enrolled course from the left selector retargets the swap to
+  // that course, defaulting to its LEC (or first section type in the schedule).
+  const handleSelectEnrolledCourse = useCallback(
+    (courseCode: string) => {
+      const types = termSections
+        .filter((e) => e.section.course.code === courseCode)
+        .map((e) => getSectionType(e.section.section_name));
+      const sectionType = types.includes('LEC') ? 'LEC' : types[0];
+      if (sectionType) setSelection({ courseCode, sectionType });
+      setIsCourseDropdownOpen(false);
+    },
+    [termSections],
+  );
 
   // Temporarily swap a section into the schedule (React state only). The new
   // section replaces the entry matching the selected course + section type
@@ -476,9 +600,30 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
               {selectedCourseCode ? (
                 <>
                   <span className="text-sm font-semibold text-dark1">Swap</span>
-                  <span className="whitespace-nowrap text-sm font-semibold text-courses">
-                    {formatCourseCode(selectedCourseCode)}
-                  </span>
+                  <div className="relative min-w-0">
+                    <button
+                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
+                      onClick={() => setIsCourseDropdownOpen((open) => !open)}
+                      type="button"
+                    >
+                      <span className="truncate">
+                        {formatCourseCode(selectedCourseCode)}
+                      </span>
+                      <ChevronDown
+                        aria-hidden="true"
+                        className="shrink-0 text-courses"
+                        size={14}
+                      />
+                    </button>
+                    {isCourseDropdownOpen && (
+                      <EnrolledCourseDropdown
+                        courses={enrolledCourses}
+                        selectedCode={selectedCourseCode}
+                        onSelect={handleSelectEnrolledCourse}
+                        onClose={() => setIsCourseDropdownOpen(false)}
+                      />
+                    )}
+                  </div>
                   <span className="text-sm font-semibold text-dark1">with</span>
                   <div className="relative min-w-0">
                     <button
