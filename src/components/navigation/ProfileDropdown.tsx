@@ -12,6 +12,7 @@ import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
+import { track } from 'lib/analytics';
 import { logOut } from 'utils/Auth';
 import { getKittenFromID } from 'utils/Kitten';
 
@@ -87,6 +88,7 @@ const ProfileDropdown = () => {
               if (idx === 0) {
                 handleProfileButtonClick();
               } else {
+                track('logout');
                 logOut(dispatch, true);
               }
             }}

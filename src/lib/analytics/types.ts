@@ -25,4 +25,11 @@ export type EventName =
   | 'course_view'
   | 'course_search'
   | 'review_view'
-  | 'profile_view';
+  | 'profile_view'
+  | 'login'
+  | 'signup'
+  | 'logout'
+  | 'auth_failed'
+  | 'password_reset_requested'
+  | 'password_reset_completed'
+  | 'account_deleted';

@@ -12,6 +12,7 @@ import { AUTH_ERRORS, AUTH_SUCCESS, DEFAULT_ERROR } from 'constants/Messages';
 import { RESET_PASSWORD_MODAL } from 'constants/Modal';
 import { LOGGED_IN } from 'data/actions/AuthActions';
 import useModal from 'hooks/useModal';
+import { track } from 'lib/analytics';
 import { AuthResponse, ErrorResponse } from 'types/Api';
 import { makePOSTRequest } from 'utils/Api';
 
@@ -58,13 +59,18 @@ const AuthForm = ({
     localStorage.setItem('user_id', response.user_id);
   };
 
-  const onAuthSuccess = (response: AuthResponse) => {
+  const onAuthSuccess = (
+    response: AuthResponse,
+    method: 'email' | 'google' | 'facebook' = 'email',
+  ) => {
     setJWT(response);
     dispatch({ type: LOGGED_IN });
     if (response.is_new) {
+      track('signup', { method });
       toast(AUTH_SUCCESS.signup);
       onSignupComplete();
     } else {
+      track('login', { method });
       toast(AUTH_SUCCESS.login);
       onLoginComplete();
     }
@@ -90,9 +96,14 @@ const AuthForm = ({
 
     if (status >= 400) {
       const errorRes = response as ErrorResponse;
+      track('auth_failed', {
+        method: 'email',
+        mode: endpoint.includes('register') ? 'signup' : 'login',
+        reason: errorRes.error || 'unknown',
+      });
       setErrorMessage(AUTH_ERRORS[errorRes.error] || DEFAULT_ERROR);
     } else {
-      onAuthSuccess(response as AuthResponse);
+      onAuthSuccess(response as AuthResponse, 'email');
     }
   };
 

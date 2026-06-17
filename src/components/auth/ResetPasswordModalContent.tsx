@@ -20,6 +20,7 @@ import {
   PASSWORD_RESET_SUCCESS,
   RESET_PASSWORD_ERRORS,
 } from 'constants/Messages';
+import { track } from 'lib/analytics';
 import {
   ErrorResponse,
   ResetPasswordCodeBody,
@@ -265,6 +266,7 @@ const ResetPasswordModalContent = ({
       const errorRes = response as ErrorResponse;
       setErrorMessage(RESET_PASSWORD_ERRORS[errorRes.error] || DEFAULT_ERROR);
     } else {
+      track('password_reset_requested');
       toast(PASSWORD_RESET_SUCCESS.emailSent);
       if (showingForm !== ENTER_RESET_CODE_FORM) {
         setSuccessMessage('');
@@ -339,6 +341,7 @@ const ResetPasswordModalContent = ({
       const errorRes = response as ErrorResponse;
       setErrorMessage(RESET_PASSWORD_ERRORS[errorRes.error] || DEFAULT_ERROR);
     } else {
+      track('password_reset_completed');
       setSuccessMessage('');
       toast(PASSWORD_RESET_SUCCESS.reset);
       handleClose();
