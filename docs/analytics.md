@@ -73,6 +73,12 @@ ids, codes, and booleans.
 | `password_reset_requested` | Reset-code email is successfully sent | —                            | `components/auth/ResetPasswordModalContent.tsx` |
 | `password_reset_completed` | Password is successfully reset      | —                              | `components/auth/ResetPasswordModalContent.tsx` |
 | `account_deleted` | Account is successfully deleted      | —                                        | `components/delete/DeleteAccountModalContent.tsx` |
+| `review_create` | A new review is successfully posted    | `entity` (`course`), `course_id`, `prof_id` (when rated) | `components/common/CourseReviewBox.tsx` |
+| `review_edit`   | An existing review is successfully updated | `entity` (`course`), `course_id`, `prof_id` (when rated) | `components/common/CourseReviewBox.tsx` |
+| `review_delete` | A review is successfully deleted       | `entity` (`course`), `course_id`, `prof_id` (when rated) | `components/common/CourseReviewBox.tsx` |
+| `review_upvote` | A review's upvote is toggled (mutation success) | `review_id`, `upvoted` (boolean — `true` adding, `false` removing) | `components/display/Review.tsx` |
+| `course_liked_toggle` | A course like/dislike toggle is saved | `course_id`, `liked` (boolean — `true` when set to liked), `state` (`liked`/`disliked`/`cleared`) | `components/input/LikeCourseToggle.tsx` |
+| `review_sort_change` | A review-list sort dropdown changes  | `entity` (`course`/`prof`), `sort` (`most_recent`/`most_helpful`/`most_reviews`/`most_liked`) | `pages/coursePage/CourseReviews.tsx`, `pages/profPage/ProfReviews.tsx` |
 
 ## Environment variables
 

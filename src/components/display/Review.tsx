@@ -17,6 +17,7 @@ import {
 import { REFETCH_COURSE_REVIEW_UPVOTE } from 'graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from 'graphql/queries/prof/ProfReview';
 import useModal from 'hooks/useModal';
+import { track } from 'lib/analytics';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
@@ -129,10 +130,14 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
     if (userUpvoted) {
       deleteReviewVote({
         variables: { review_id: review.id, user_id: userId },
+      }).then(() => {
+        track('review_upvote', { review_id: review.id, upvoted: false });
       });
     } else {
       insertReviewVote({
         variables: { review_id: review.id, user_id: userId },
+      }).then(() => {
+        track('review_upvote', { review_id: review.id, upvoted: true });
       });
     }
     setUserUpvoted(!userUpvoted);

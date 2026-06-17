@@ -43,6 +43,7 @@ import {
   COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import { track } from 'lib/analytics';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
 
@@ -315,9 +316,20 @@ const CourseReviewBoxContent = ({
         },
       } as UpsertReviewMutation,
     }).then(() => {
+      const profId = profOptions[selectedProf]?.id ?? undefined;
       if (review) {
+        track('review_edit', {
+          entity: 'course',
+          course_id: course.id,
+          ...(profId != null ? { prof_id: profId } : {}),
+        });
         notifyUpdate();
       } else {
+        track('review_create', {
+          entity: 'course',
+          course_id: course.id,
+          ...(profId != null ? { prof_id: profId } : {}),
+        });
         notifyInsert();
       }
       onCancel();
@@ -331,6 +343,11 @@ const CourseReviewBoxContent = ({
       deleteReview({
         variables: { review_id: review ? review.id : null },
       }).then(() => {
+        track('review_delete', {
+          entity: 'course',
+          course_id: course.id,
+          ...(review.prof_id != null ? { prof_id: review.prof_id } : {}),
+        });
         notifyDelete();
         setDeleteReviewModalOpen(false);
         onCancel();

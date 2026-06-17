@@ -93,7 +93,13 @@ const CourseCourseReviews = ({
               color={theme.primary}
               selectedIndex={courseSort}
               options={['most recent', 'most helpful']}
-              onChange={(value) => setCourseSort(value)}
+              onChange={(value) => {
+                setCourseSort(value);
+                track('review_sort_change', {
+                  entity: 'course',
+                  sort: value === 0 ? 'most_recent' : 'most_helpful',
+                });
+              }}
               zIndex={6}
             />
           </DropdownPanelWrapper>
@@ -190,6 +196,10 @@ const CourseProfReviews = ({
                       onChange={(value) => {
                         curSelectedSort[idx] = value;
                         setSelectedSort(curSelectedSort);
+                        track('review_sort_change', {
+                          entity: 'prof',
+                          sort: value === 0 ? 'most_recent' : 'most_helpful',
+                        });
                       }}
                       zIndex={4}
                     />
@@ -359,7 +369,13 @@ const CourseReviews = ({ courseId, profsTeaching }: CourseReviewsProps) => {
           color={theme.primary}
           selectedIndex={profSort}
           options={['most reviews', 'most liked']}
-          onChange={(value) => setProfSort(value)}
+          onChange={(value) => {
+            setProfSort(value);
+            track('review_sort_change', {
+              entity: 'prof',
+              sort: value === 0 ? 'most_reviews' : 'most_liked',
+            });
+          }}
           zIndex={6}
         />
       </ProfDropdownPanelWrapper>
