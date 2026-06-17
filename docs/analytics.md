@@ -66,6 +66,13 @@ ids, codes, and booleans.
 | `course_search` | Debounced explore search settles       | `query`, `results_count`, `code_search`  | `pages/explorePage/ExplorePage.tsx` |
 | `review_view`   | Course reviews load                    | `course_id`, `review_count`              | `pages/coursePage/CourseReviews.tsx` |
 | `profile_view`  | Professor profile page mounts          | `prof_code`                              | `pages/profPage/ProfPage.tsx` |
+| `login`         | Existing user authenticates            | `method` (`email`/`google`/`facebook`)   | `components/auth/AuthForm.tsx` |
+| `signup`        | New user account is created            | `method` (`email`/`google`/`facebook`)   | `components/auth/AuthForm.tsx` |
+| `auth_failed`   | Login/signup request fails (non-2xx)   | `method`, `mode` (`login`/`signup`), `reason` (error code) | `components/auth/AuthForm.tsx`, `components/auth/SocialLoginContent.tsx` |
+| `logout`        | User clicks "Log out" in the profile dropdown | —                                 | `components/navigation/ProfileDropdown.tsx` |
+| `password_reset_requested` | Reset-code email is successfully sent | —                            | `components/auth/ResetPasswordModalContent.tsx` |
+| `password_reset_completed` | Password is successfully reset      | —                              | `components/auth/ResetPasswordModalContent.tsx` |
+| `account_deleted` | Account is successfully deleted      | —                                        | `components/delete/DeleteAccountModalContent.tsx` |
 
 ## Environment variables
 

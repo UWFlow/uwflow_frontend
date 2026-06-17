@@ -8,6 +8,7 @@ import { useTheme } from 'styled-components';
 import Button from 'components/input/Button';
 import { BACKEND_ENDPOINT, USER_ACCOUNT_ENDPOINT } from 'constants/Api';
 import { DEFAULT_ERROR, DELETE_ACCOUNT_SUCCESS } from 'constants/Messages';
+import { track } from 'lib/analytics';
 import { makeAuthenticatedDELETERequest } from 'utils/Api';
 import { logOut } from 'utils/Auth';
 
@@ -38,6 +39,7 @@ const DeleteAccountModalContent = ({
         {},
       );
       if (status < 400) {
+        track('account_deleted');
         toast(DELETE_ACCOUNT_SUCCESS);
         logOut(dispatch);
         history.push(LANDING_PAGE_ROUTE);

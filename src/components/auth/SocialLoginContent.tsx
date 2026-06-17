@@ -15,6 +15,7 @@ import {
   GOOGLE_AUTH_ENDPOINT,
 } from 'constants/Api';
 import { AUTH_ERRORS } from 'constants/Messages';
+import { track } from 'lib/analytics';
 import { AuthResponse, ErrorResponse, FbAuthResponse } from 'types/Api';
 import { makePOSTRequest } from 'utils/Api';
 
@@ -28,7 +29,10 @@ import {
 } from './styles/AuthForm';
 
 type SocialLoginContentProps = {
-  onAuthSuccess: (res: AuthResponse) => void;
+  onAuthSuccess: (
+    res: AuthResponse,
+    method?: 'email' | 'google' | 'facebook',
+  ) => void;
 };
 
 const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
@@ -51,9 +55,14 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
 
     if (status >= 400) {
       const errorRes = response as ErrorResponse;
+      track('auth_failed', {
+        method: 'facebook',
+        mode: 'login',
+        reason: errorRes.error || 'unknown',
+      });
       setError(AUTH_ERRORS[errorRes.error] || AUTH_ERRORS.no_facebook_email);
     } else {
-      onAuthSuccess(response as AuthResponse);
+      onAuthSuccess(response as AuthResponse, 'facebook');
     }
   };
 
@@ -72,9 +81,14 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
     setGoogleLoading(false);
     if (status >= 400) {
       const errorRes = response as ErrorResponse;
+      track('auth_failed', {
+        method: 'google',
+        mode: 'login',
+        reason: errorRes.error || 'unknown',
+      });
       setError(AUTH_ERRORS[errorRes.error] || AUTH_ERRORS.no_google_email);
     } else {
-      onAuthSuccess(response as AuthResponse);
+      onAuthSuccess(response as AuthResponse, 'google');
     }
   };
 
