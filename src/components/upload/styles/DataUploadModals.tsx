@@ -17,6 +17,11 @@ import {
   Heading4,
   Hover,
 } from 'constants/Mixins';
+import { BREAKPOINT_WIDTH } from 'constants/PageConstants';
+
+// Stack the side-by-side step layout vertically and shrink media so the upload
+// flows stay fully viewable in a small, portrait phone viewport.
+const mobile = `@media only screen and (max-width: ${BREAKPOINT_WIDTH}px)`;
 
 export const ContentWrapper = styled(FadeIn)`
   display: flex;
@@ -27,25 +32,68 @@ export const ContentWrapper = styled(FadeIn)`
   margin: 0 auto;
   border-radius: 4px;
   width: max-content;
+
+  ${mobile} {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
 `;
 
 export const ContentSteps = styled.div`
   display: flex;
   height: 100%;
+
+  ${mobile} {
+    flex-direction: column;
+  }
 `;
 
 export const StepWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  ${mobile} {
+    margin-bottom: 24px;
+  }
 `;
 
 export const ArrowWrapper = styled.div`
   margin: auto;
+
+  ${mobile} {
+    display: none;
+  }
+`;
+
+export const HeaderRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 64px;
+
+  ${mobile} {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
 `;
 
 export const Header = styled.div`
   ${Heading2}
-  margin-bottom: 64px;
+`;
+
+export const TopSkipButton = styled.div`
+  ${Heading4}
+  display: none;
+  color: ${({ theme }) => theme.primary};
+  cursor: pointer;
+  white-space: nowrap;
+  ${Hover(true)}
+
+  ${mobile} {
+    display: block;
+  }
 `;
 
 export const InstructionWrapper = styled.div`
@@ -54,6 +102,11 @@ export const InstructionWrapper = styled.div`
   max-width: 300px;
   margin-bottom: 16px;
   min-height: 80px;
+
+  ${mobile} {
+    max-width: 100%;
+    min-height: 0;
+  }
 `;
 
 export const InstructionText = styled.div`
@@ -81,6 +134,13 @@ export const NumberCircle = styled.div`
   border-radius: 32px;
   background: ${({ theme }) => theme.accent};
   padding: 3px 1px 0 0;
+
+  ${mobile} {
+    height: 48px;
+    width: 48px;
+    min-width: 48px;
+    border-radius: 24px;
+  }
 `;
 
 export const ScheduleStepPicture = styled.img`
@@ -88,6 +148,12 @@ export const ScheduleStepPicture = styled.img`
   width: 300px;
   background: ${({ theme }) => theme.light4};
   border-radius: 4px;
+
+  ${mobile} {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
 `;
 
 export const ScheduleStep3Wrapper = styled.div`
@@ -103,6 +169,11 @@ export const SchedulePasteBoxWrapper = styled.div<{
   width: 300px;
   background: ${({ theme }) => theme.light2};
   display: flex;
+
+  ${mobile} {
+    width: 100%;
+  }
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -171,6 +242,11 @@ export const SkipStepWrapper = styled.div`
   margin-top: 48px;
   cursor: pointer;
   ${Hover(true)}
+
+  /* On mobile the skip control is surfaced at the top via TopSkipButton. */
+  ${mobile} {
+    display: none;
+  }
 `;
 
 export const LongInstructionWrapper = styled.div`
@@ -179,6 +255,11 @@ export const LongInstructionWrapper = styled.div`
   max-width: 500px;
   margin-bottom: 16px;
   min-height: 64px;
+
+  ${mobile} {
+    max-width: 100%;
+    min-height: 0;
+  }
 `;
 
 export const TranscriptStep1Video = styled.video`
@@ -186,6 +267,12 @@ export const TranscriptStep1Video = styled.video`
   width: 500px;
   background: ${({ theme }) => theme.light4};
   border-radius: 4px;
+
+  ${mobile} {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+  }
 `;
 
 export const TranscriptUploadBox = styled.div<{ uploadState: DataUploadState }>`
@@ -194,6 +281,12 @@ export const TranscriptUploadBox = styled.div<{ uploadState: DataUploadState }>`
   cursor: pointer;
   background: ${({ theme }) => theme.light2};
   display: flex;
+
+  ${mobile} {
+    width: 100%;
+    height: 220px;
+  }
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -215,6 +308,10 @@ export const TranscriptPrivacyPolicyWrapper = styled.div`
   flex-direction: column;
   margin-top: 16px;
   max-width: 500px;
+
+  ${mobile} {
+    max-width: 100%;
+  }
 `;
 
 export const ErrorMessage = styled.div`
