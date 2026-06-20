@@ -1,17 +1,12 @@
 /**
  * PostHog analytics — the single entry point the rest of the app uses.
  *
- *   import { initAnalytics, track } from 'lib/analytics';
- *   initAnalytics();                        // once, near the app root
- *   track('course_search', { query });     // anywhere
+ *   import { initAnalytics } from 'lib/analytics';
+ *   initAnalytics();  // once, near the app root
  *
- * Events go ONLY to PostHog Cloud. PostHog handles identity, sessions, event
- * batching, delivery on tab-hide/unload, Do-Not-Track, and SPA pageviews for
- * us, so there is no custom transport here — `track()` is a thin wrapper over
- * `posthog.capture` that can never throw into the React tree.
- *
- * Pageviews/pageleaves are captured automatically by PostHog (see `init`); only
- * semantic product events are sent explicitly through `track()`.
+ * We don't emit any custom events: PostHog captures pageviews/pageleaves and
+ * sessions automatically, and that's the whole of our analytics. PostHog also
+ * handles identity, batching, delivery on tab-hide/unload, and Do-Not-Track.
  *
  * Configuration (build-time, inlined by CRA's DefinePlugin):
  *   REACT_APP_POSTHOG_KEY  — public PostHog project API key (safe in client JS).
@@ -20,8 +15,6 @@
  */
 
 import posthog from 'posthog-js';
-
-import type { EventName, EventProps } from './types';
 
 const POSTHOG_KEY = process.env.REACT_APP_POSTHOG_KEY;
 const POSTHOG_HOST =
@@ -46,7 +39,7 @@ export const initAnalytics = (): void => {
       // pageleaves itself, so we don't hand-roll route tracking.
       capture_pageview: 'history_change',
       capture_pageleave: true,
-      // We send deliberate, semantic events via track(); no DOM autocapture.
+      // No DOM autocapture — pageviews/sessions are the only analytics we want.
       autocapture: false,
       // Honour the browser Do-Not-Track signal.
       respect_dnt: true,
@@ -56,21 +49,3 @@ export const initAnalytics = (): void => {
     // Analytics must never break the app.
   }
 };
-
-/**
- * Track a semantic product event. No-ops until `initAnalytics()` has run with a
- * configured key. Never throws.
- */
-export const track = (name: EventName, props?: EventProps): void => {
-  if (!enabled) {
-    return;
-  }
-
-  try {
-    posthog.capture(name, props);
-  } catch {
-    // Swallow — analytics must never break the app.
-  }
-};
-
-export type { EventName, EventProps, PropValue } from './types';
