@@ -4,7 +4,11 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GetUserQuery } from 'generated/graphql';
 import { Dispatch } from 'redux';
-import { isOnLandingPageRoute, PROFILE_PAGE_ROUTE } from 'Routes';
+import {
+  isOnLandingPageRoute,
+  PROFILE_PAGE_ROUTE,
+  SWAP_PAGE_ROUTE,
+} from 'Routes';
 import { useTheme } from 'styled-components';
 
 import DropdownList from 'components/input/DropdownList';
@@ -79,13 +83,15 @@ const ProfileDropdown = () => {
           </ProfileText>
           <DropdownList
             selectedIndex={-1}
-            width={130}
+            width={150}
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
-            options={['View profile', 'Log out']}
+            options={['View profile', 'Section swap', 'Log out']}
             onChange={(idx) => {
               if (idx === 0) {
                 handleProfileButtonClick();
+              } else if (idx === 1) {
+                history.push(SWAP_PAGE_ROUTE);
               } else {
                 logOut(dispatch, true);
               }
