@@ -38,7 +38,7 @@ than raw DOM clicks, so the event stream stays intentional.
 import { initAnalytics, track } from 'lib/analytics';
 
 initAnalytics();                          // once, near the app root (App.tsx)
-track('course_view', { course_code });    // anywhere
+track('course_search', { query });        // anywhere
 ```
 
 - `track()` is fire-and-forget and never throws; safe to call in handlers/effects.
@@ -58,14 +58,12 @@ ids, codes, and booleans.
 
 ## Event taxonomy
 
-(Plus PostHog's automatic `$pageview` / `$pageleave`.)
+Page views (course pages, professor profiles, etc.) are captured automatically
+by PostHog as `$pageview` / `$pageleave` — we don't emit our own `*_view` events.
 
 | Event           | When                                   | Key props                                | Instrumented in |
 |-----------------|----------------------------------------|------------------------------------------|-----------------|
-| `course_view`   | Course page mounts                     | `course_code`                            | `pages/coursePage/CoursePage.tsx` |
 | `course_search` | Debounced explore search settles       | `query`, `results_count`, `code_search`  | `pages/explorePage/ExplorePage.tsx` |
-| `review_view`   | Course reviews load                    | `course_id`, `review_count`              | `pages/coursePage/CourseReviews.tsx` |
-| `profile_view`  | Professor profile page mounts          | `prof_code`                              | `pages/profPage/ProfPage.tsx` |
 
 ## Environment variables
 

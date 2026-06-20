@@ -21,8 +21,4 @@ export type EventProps = Record<string, PropValue>;
  * (`$pageview` / `$pageleave`); this union is only the deliberate product
  * events the app emits via `track()`.
  */
-export type EventName =
-  | 'course_view'
-  | 'course_search'
-  | 'review_view'
-  | 'profile_view';
+export type EventName = 'course_search';

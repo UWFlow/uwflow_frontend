@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
@@ -26,7 +26,6 @@ import {
   GET_COURSE_WITH_USER_DATA,
 } from 'graphql/queries/course/Course';
 import useModal from 'hooks/useModal';
-import { track } from 'lib/analytics';
 import NotFoundPage from 'pages/notFoundPage/NotFoundPage';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
@@ -175,11 +174,6 @@ const CoursePage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
 
   const courseCode = match.params.courseCode.toLowerCase();
-
-  // Emit course_view once per viewed course code.
-  useEffect(() => {
-    track('course_view', { course_code: courseCode });
-  }, [courseCode]);
 
   const query = isLoggedIn ? GET_COURSE_WITH_USER_DATA : GET_COURSE;
   const variables = {

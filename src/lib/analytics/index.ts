@@ -27,16 +27,7 @@ const POSTHOG_KEY = process.env.REACT_APP_POSTHOG_KEY;
 const POSTHOG_HOST =
   process.env.REACT_APP_POSTHOG_HOST || 'https://us.i.posthog.com';
 
-// Heartbeat keeps a reader who sits on a single page counted as a live /
-// "currently online" user. PostHog only sees a user while events keep arriving,
-// so without this a long single-page read drops off the online metric after a
-// few minutes. Fires only while the tab is visible.
-// ponytail: 60s is billable (up to 60 events/hr per active tab) and must stay
-// well under PostHog's ~5-min online window — raise it to cut event volume.
-const HEARTBEAT_MS = 60_000;
-
 let enabled = false;
-let heartbeat: ReturnType<typeof setInterval> | undefined;
 
 /**
  * Initialize PostHog once, near the app root. No-ops when no project key is
@@ -61,18 +52,6 @@ export const initAnalytics = (): void => {
       respect_dnt: true,
     });
     enabled = true;
-
-    if (!heartbeat) {
-      heartbeat = setInterval(() => {
-        if (document.visibilityState === 'visible') {
-          try {
-            posthog.capture('app_heartbeat');
-          } catch {
-            // Analytics must never break the app.
-          }
-        }
-      }, HEARTBEAT_MS);
-    }
   } catch {
     // Analytics must never break the app.
   }
