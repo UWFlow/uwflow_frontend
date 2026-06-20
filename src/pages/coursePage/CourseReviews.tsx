@@ -25,6 +25,7 @@ import {
   COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
 import useCourseReviews, { UPDATE_REVIEW_DATA } from 'hooks/useCourseReviews';
+import { track } from 'lib/analytics';
 import { processRating } from 'utils/Misc';
 import { sortByLiked, sortByReviews, sortReviews } from 'utils/Review';
 
@@ -278,6 +279,17 @@ const CourseReviews = ({ courseId, profsTeaching }: CourseReviewsProps) => {
     }
     // eslint-disable-next-line
   }, [data]);
+
+  // Emit review_view once the reviews for a course have loaded.
+  useEffect(() => {
+    if (!loading) {
+      track('review_view', {
+        course_id: courseId,
+        review_count: reviewDataState.courseReviews.length,
+      });
+    }
+    // eslint-disable-next-line
+  }, [courseId, loading]);
 
   if (loading) {
     return (

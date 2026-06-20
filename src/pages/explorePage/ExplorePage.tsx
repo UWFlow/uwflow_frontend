@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -17,6 +17,7 @@ import {
   EXPLORE_ALL_QUERY,
   EXPLORE_QUERY,
 } from 'graphql/queries/explore/Explore';
+import { track } from 'lib/analytics';
 import { SearchFilterState } from 'types/Common';
 
 import { EXPLORE_PAGE_ROUTE } from '../../Routes';
@@ -266,6 +267,42 @@ const ExplorePage = () => {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: !query || query === '' ? 'no-cache' : 'cache-and-network',
   });
+
+  // Debounced course_search analytics. A user typing in the SearchBar pushes a
+  // fresh /explore?q=... on each keystroke; debouncing collapses that burst into
+  // a single tracked search once the query settles. Only fires for non-empty
+  // queries (the empty "explore all" view is a page_view, not a search).
+  const trackSearch = useMemo(
+    () =>
+      debounce((searchQuery: string, count: number, isCodeSearch: boolean) => {
+        track('course_search', {
+          query: searchQuery,
+          results_count: count,
+          code_search: isCodeSearch,
+        });
+      }, 500),
+    [],
+  );
+  useEffect(() => () => trackSearch.cancel(), [trackSearch]);
+
+  // Avoid re-emitting for the same query+result-count while Apollo flips
+  // through cache-and-network states.
+  const lastSearchKey = useRef<string>('');
+  useEffect(() => {
+    if (query === '' || loading || !data) {
+      return;
+    }
+    const exploreData = data as ExploreQuery;
+    const resultsCount =
+      (exploreData.search_courses?.length ?? 0) +
+      (exploreData.search_profs?.length ?? 0);
+    const key = `${query}|${codeSearch}|${resultsCount}`;
+    if (key === lastSearchKey.current) {
+      return;
+    }
+    lastSearchKey.current = key;
+    trackSearch(query, resultsCount, codeSearch);
+  }, [query, codeSearch, data, loading, trackSearch]);
 
   return (
     <ExplorePageWrapper>
