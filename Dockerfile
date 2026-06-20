@@ -6,6 +6,12 @@ RUN bun install --frozen-lockfile
 COPY . .
 RUN bun run lint-nofix
 
+# PostHog project key is a publishable client key (inlined into the bundle by
+# DefinePlugin), not a secret — pass it as a plain build-arg. Discarded with
+# this stage; never reaches the final nginx image.
+ARG REACT_APP_POSTHOG_KEY
+ENV REACT_APP_POSTHOG_KEY=$REACT_APP_POSTHOG_KEY
+
 # Sentry auth token is optional: when provided (as a build secret), build and
 # upload sourcemaps; otherwise just build the app and skip the Sentry upload.
 RUN --mount=type=secret,id=sentry_auth_token,required=false \
