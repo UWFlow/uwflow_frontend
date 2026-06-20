@@ -88,7 +88,7 @@ type SectionSelection = {
 // the visible hour range.
 const toDayIndexes = (days: string[], startSeconds: number): number[] => {
   const startHour = startSeconds / 3600;
-  if (startHour < GRID_START_HOUR || startHour > GRID_END_HOUR) return [];
+  if (startHour < GRID_START_HOUR || startHour >= GRID_END_HOUR) return [];
   return days.map((d) => DAY_LETTERS.indexOf(d)).filter((col) => col !== -1);
 };
 
