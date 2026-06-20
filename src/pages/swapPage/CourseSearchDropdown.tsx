@@ -40,18 +40,13 @@ const CourseRow = ({
   const { courses, selectedCode, onSelect } = data;
   const course = courses[index];
   const isSelected = course.code === selectedCode;
-  const isEnrolled = false;
   return (
     <button
       type="button"
       style={style}
       className={cn(
         'flex w-full cursor-pointer items-center border-0 border-b border-solid border-light2 px-3.5 py-2.5 text-left text-[13px] text-dark1 last:border-b-0 hover:bg-light1',
-        isSelected
-          ? 'bg-[#eef4ff]'
-          : isEnrolled
-          ? 'bg-[#f5f8ff]'
-          : 'bg-transparent',
+        isSelected ? 'bg-[#eef4ff]' : 'bg-transparent',
       )}
       onClick={() => onSelect(course.code)}
     >
@@ -76,7 +71,14 @@ const CourseSearchDropdown = ({
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   // Let keyboard users dismiss the dropdown with Escape, matching the
   // pointer-only backdrop click.
