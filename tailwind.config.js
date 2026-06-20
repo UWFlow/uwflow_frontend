@@ -132,13 +132,17 @@ module.exports = {
         hover: 'ease-in',
       },
       keyframes: {
+        // Matches the legacy react-fade-in <FadeIn> component used across the
+        // app: an opacity fade combined with a 20px upward rise, so Tailwind
+        // pages animate identically to the styled-components ones.
         fadeIn: {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
+          from: { opacity: '0', transform: 'translateY(20px)' },
+          to: { opacity: '1', transform: 'none' },
         },
       },
       animation: {
-        'fade-in': 'fadeIn 0.2s',
+        // react-fade-in's default transitionDuration is 400ms (ease easing).
+        'fade-in': 'fadeIn 0.4s ease',
       },
     },
   },

@@ -3,7 +3,7 @@
  *
  *   import { initAnalytics, track } from 'lib/analytics';
  *   initAnalytics();                        // once, near the app root
- *   track('course_view', { course_code }); // anywhere
+ *   track('course_search', { query });     // anywhere
  *
  * Events go ONLY to PostHog Cloud. PostHog handles identity, sessions, event
  * batching, delivery on tab-hide/unload, Do-Not-Track, and SPA pageviews for

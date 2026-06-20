@@ -4,6 +4,7 @@ import { compile, pathToRegexp } from 'path-to-regexp';
 /* Page Routes */
 export const LANDING_PAGE_ROUTE = '/';
 export const PROFILE_PAGE_ROUTE = '/profile';
+export const SWAP_PAGE_ROUTE = '/swap';
 export const COURSE_PAGE_ROUTE = '/course/:courseCode';
 export const SHORT_PROF_PAGE_ROUTE = '/prof/:profCode';
 export const PROF_PAGE_ROUTE = '/professor/:profCode';

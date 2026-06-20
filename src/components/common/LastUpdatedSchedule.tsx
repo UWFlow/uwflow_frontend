@@ -9,6 +9,7 @@ const classesLink = 'http://classes.uwaterloo.ca/infocour/CIR/SA/index.html';
 
 type LastUpdatedScheduleProps = {
   margin?: string;
+  fontSize?: string;
   courseCode?: string;
   term?: number;
   updatedAt?: Moment;
@@ -19,6 +20,7 @@ const LastUpdatedSchedule = ({
   term,
   updatedAt,
   margin = '8px 0 0 0',
+  fontSize,
 }: LastUpdatedScheduleProps) => {
   const buildLink = (): string => {
     if (courseCode && term) {
@@ -35,7 +37,7 @@ const LastUpdatedSchedule = ({
   };
 
   return (
-    <LastUpdatedText margin={margin}>
+    <LastUpdatedText margin={margin} fontSize={fontSize}>
       Last updated {updatedAt?.fromNow()} from{' '}
       <LastUpdatedLink href={buildLink()} target="_blank">
         classes.uwaterloo.ca
