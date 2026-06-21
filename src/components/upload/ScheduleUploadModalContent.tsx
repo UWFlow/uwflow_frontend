@@ -64,12 +64,16 @@ export type ScheduleUploadModalContentProps = {
   onAfterUploadSuccess?: (data?: ParseOnlyScheduleResponse) => void;
   onSkip?: () => void;
   showSkipStepButton?: boolean;
+  // Fired when the user submits a non-empty schedule (an upload attempt), before
+  // the result is known. Used by callers that want to track the action.
+  onUploadAttempt?: () => void;
 };
 
 const ScheduleUploadModalContent = ({
   showSkipStepButton = false,
   onAfterUploadSuccess = () => {},
   onSkip = () => {},
+  onUploadAttempt = () => {},
 }: ScheduleUploadModalContentProps) => {
   const theme = useTheme();
 
@@ -88,6 +92,7 @@ const ScheduleUploadModalContent = ({
       return;
     }
 
+    onUploadAttempt();
     setUploadState(UPLOAD_PENDING);
     const [response, status] = await makeAuthenticatedPOSTRequest<
       ScheduleParseBody,
