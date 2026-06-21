@@ -46,7 +46,7 @@ const MiniBlock = ({
 }: MiniBlockProps) => (
   <div
     className={cn(
-      'rounded-[3px] border-l-[3px] px-[5px] py-1 text-[9px] font-semibold text-dark1',
+      'rounded-card border-l-[3px] px-xs py-xs text-xs font-semibold text-dark1',
       highlighted && 'shadow-[0_0_0_2px_#0052cc]',
     )}
     style={{
@@ -72,16 +72,17 @@ const SwapTourModalContent = ({
 
   return (
     <div className="flex w-[400px] max-w-[90vw] flex-col overflow-hidden rounded-xl bg-white">
-      {/* Decorative mini-calendar band */}
+      {/* Decorative mini-calendar band. Column/dot dimensions are one-off
+          layout sizes, kept as fixed values rather than spacing tokens. */}
       <div
-        className="flex justify-center gap-3 border-b border-light2 bg-[#fafbfc] px-6 py-7"
+        className="flex justify-center gap-md border-b border-light2 bg-[#fafbfc] px-lg py-lg"
         aria-hidden
       >
-        <div className="flex w-[76px] flex-col gap-2">
-          <div className="text-center text-[10px] font-semibold tracking-[0.06em] text-dark3">
+        <div className="flex w-[76px] flex-col gap-sm">
+          <div className="text-center text-xs font-semibold tracking-[0.06em] text-dark3">
             MON
           </div>
-          <div className="relative flex h-24 flex-col gap-1.5 rounded-md border border-light2 bg-white px-1.5 py-2">
+          <div className="relative flex h-24 flex-col gap-sm rounded-md border border-light2 bg-white px-sm py-sm">
             <MiniBlock fill="#eef4ff" accent="#0052cc">
               CS 241
             </MiniBlock>
@@ -90,28 +91,28 @@ const SwapTourModalContent = ({
             </MiniBlock>
           </div>
         </div>
-        <div className="flex w-[76px] flex-col gap-2">
-          <div className="text-center text-[10px] font-semibold tracking-[0.06em] text-dark3">
+        <div className="flex w-[76px] flex-col gap-sm">
+          <div className="text-center text-xs font-semibold tracking-[0.06em] text-dark3">
             TUE
           </div>
-          <div className="relative flex h-24 flex-col gap-1.5 rounded-md border border-light2 bg-white px-1.5 py-2">
+          <div className="relative flex h-24 flex-col gap-sm rounded-md border border-light2 bg-white px-sm py-sm">
             <MiniBlock fill="#fff7e0" accent="#e8b300" offsetTop={14}>
               STAT
             </MiniBlock>
           </div>
         </div>
-        <div className="flex w-[76px] flex-col gap-2">
-          <div className="text-center text-[10px] font-semibold tracking-[0.06em] text-dark3">
+        <div className="flex w-[76px] flex-col gap-sm">
+          <div className="text-center text-xs font-semibold tracking-[0.06em] text-dark3">
             WED
           </div>
-          <div className="relative flex h-24 flex-col gap-1.5 rounded-md border border-light2 bg-white px-1.5 py-2">
+          <div className="relative flex h-24 flex-col gap-sm rounded-md border border-light2 bg-white px-sm py-sm">
             <MiniBlock fill="#eef4ff" accent="#0052cc" highlighted>
               CS 241
             </MiniBlock>
             <MiniBlock fill="#e6f2fb" accent="#2b8fcd" offsetTop={18}>
               ENGL
             </MiniBlock>
-            <div className="absolute right-1 top-[26px] text-dark1">
+            <div className="absolute right-xs top-[26px] text-dark1">
               <MousePointer size={14} />
             </div>
           </div>
@@ -119,30 +120,30 @@ const SwapTourModalContent = ({
       </div>
 
       {/* Copy + controls */}
-      <div className="flex flex-col px-7 pb-7 pt-6">
-        <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-accentDark">
-          <Repeat size={13} /> Swap Class Sandbox
+      <div className="flex flex-col px-lg pb-lg pt-lg">
+        <div className="mb-sm flex items-center gap-sm text-xs font-bold uppercase tracking-[0.08em] text-accentDark">
+          <Repeat size={13} /> Swap Class
         </div>
-        <h2 className="mb-2 text-[24px] font-bold text-dark1">
+        <h2 className="mb-sm text-2xl font-bold text-dark1">
           {STEPS[step].heading}
         </h2>
-        <p className="mb-6 text-sm leading-normal text-dark2">
+        <p className="mb-lg text-sm leading-normal text-dark2">
           {STEPS[step].body}
         </p>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-sm">
             {STEPS.map((_, i) => (
               <div
                 // eslint-disable-next-line react/no-array-index-key
                 key={i}
                 className={cn(
-                  'h-[7px] rounded-[4px] transition-[width] duration-150 ease-in-out',
+                  'h-[7px] rounded-card transition-[width] duration-150 ease-in-out',
                   i === step ? 'w-5 bg-primary' : 'w-[7px] bg-light3',
                 )}
               />
             ))}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-md">
             {!isLastStep && (
               <button
                 type="button"
@@ -154,7 +155,7 @@ const SwapTourModalContent = ({
             )}
             <button
               type="button"
-              className="cursor-pointer rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:bg-primaryDark"
+              className="cursor-pointer rounded-lg bg-primary px-lg py-sm text-sm font-semibold text-white hover:bg-primaryDark"
               onClick={() =>
                 isLastStep ? onRequestClose() : setStep(step + 1)
               }

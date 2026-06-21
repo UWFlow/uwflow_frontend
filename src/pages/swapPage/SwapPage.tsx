@@ -80,7 +80,7 @@ const SwapPage = () => {
     return (
       <div className={swapPageWrapperClasses}>
         <Helmet>
-          <title>Swap Class Sandbox - UW Flow</title>
+          <title>Swap Class - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
       </div>
@@ -90,7 +90,7 @@ const SwapPage = () => {
   return (
     <div className={swapPageWrapperClasses}>
       <Helmet>
-        <title>Swap Class Sandbox - UW Flow</title>
+        <title>Swap Class - UW Flow</title>
         {hasDisplayedTermClasses && (
           <meta
             name="description"
