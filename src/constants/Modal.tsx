@@ -7,6 +7,7 @@ export const NOTIFICATION_EMAIL_MODAL = 'NOTIFICATION_EMAIL_MODAL';
 export const EDIT_EMAIL_MODAL = 'EDIT_EMAIL_MODAL';
 export const DELETE_ACCOUNT_MODAL = 'DELETE_ACCOUNT_MODAL';
 export const RESET_PASSWORD_MODAL = 'RESET_PASSWORD_MODAL';
+export const SWAP_TOUR_MODAL = 'SWAP_TOUR_MODAL';
 
 export type ModalName =
   | typeof AUTH_MODAL
@@ -16,4 +17,5 @@ export type ModalName =
   | typeof NOTIFICATION_EMAIL_MODAL
   | typeof EDIT_EMAIL_MODAL
   | typeof DELETE_ACCOUNT_MODAL
-  | typeof RESET_PASSWORD_MODAL;
+  | typeof RESET_PASSWORD_MODAL
+  | typeof SWAP_TOUR_MODAL;

@@ -19,6 +19,29 @@ The following packages are intentionally pinned to their current major version a
 
 Before every commit, run `bun run lint-nofix` and confirm it exits clean. This is required by CI/CD — commits that fail it will not pass the pipeline.
 
+## Design tokens (Tailwind)
+
+When writing Tailwind classes, use the named design tokens from
+`tailwind.config.js` instead of arbitrary `[Npx]` values. If a value you need
+isn't in the scale, snap to the nearest token, or add a new named token to the
+config (and document it here) — don't reach for arbitrary values. One-off
+structural dimensions (a fixed illustration width, a 7px progress dot) may stay
+as `[Npx]`.
+
+- **Spacing** (padding / margin / gap): semantic t-shirt scale —
+  `xs` 4px, `sm` 8px, `md` 16px, `lg` 24px, `xl` 32px (plus `page` 32px).
+  e.g. `p-md`, `gap-sm`, `mb-lg`.
+- **Font size**: `xs` 12, `sm` 14, `md` 16, `lg` 18, `xl` 20, `2xl` 28,
+  `3xl` 32, `4xl` 40 (px). e.g. `text-sm`, `text-2xl`.
+- **Border radius**: `rounded-card` (4px) for app cards/chips; the standard
+  Tailwind `rounded-md` / `lg` / `xl` (6 / 8 / 12px) for larger surfaces.
+- **Colors**: mirror `src/constants/GlobalTheme.tsx` (`primary`, `dark1`,
+  `light2`, `accent`, …). Keep the two files in sync.
+
+Note: spacing and font-size both expose `sm`/`md`/`lg` keys with different
+pixel values (Tailwind keeps them in separate namespaces). `text-sm` is 14px;
+`p-sm` is 8px.
+
 ## Skills
 
 This project keeps reusable skills under `.AGENTS/skills/`. Each subdirectory contains a `SKILL.md` describing when and how to use it.

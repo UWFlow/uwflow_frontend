@@ -91,8 +91,15 @@ module.exports = {
         semibold: '600',
         extrabold: '800',
       },
+      // Semantic t-shirt spacing scale for padding/margin/gap. Prefer these
+      // (p-md, gap-sm, mb-lg, …) over arbitrary `[Npx]` values. See AGENTS.md.
       spacing: {
         page: '32px',
+        xs: '4px',
+        sm: '8px',
+        md: '16px',
+        lg: '24px',
+        xl: '32px',
       },
       width: {
         'wide-column': '70%',

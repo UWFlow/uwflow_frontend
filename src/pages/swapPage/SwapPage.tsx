@@ -7,7 +7,7 @@ import { GetUserQuery, GetUserQueryVariables } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
-import { AUTH_MODAL } from 'constants/Modal';
+import { AUTH_MODAL, SWAP_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
@@ -15,6 +15,8 @@ import { cn } from 'lib/utils';
 
 import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar, { getDisplayedTermPresence } from './SwapCalendar';
+
+const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';
 
 // PageWrapper mixin (min-height accounts for FOOTER_HEIGHT 70px +
 // FOOTER_MARGIN_TOP 32px) on the app's light1 background. The fade-in lives on
@@ -26,7 +28,7 @@ const swapPageWrapperClasses =
 
 const SwapPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const [openModal] = useModal();
+  const [openModal, closeModal] = useModal();
 
   const { loading, data, refetch } = useQuery<
     GetUserQuery,
@@ -58,11 +60,27 @@ const SwapPage = () => {
     };
   }, [hasDisplayedTermClasses]);
 
+  // First visit with a loaded schedule: walk through the 3-step tour once.
+  // Any dismissal (Skip, X, backdrop, or Done) persists the flag.
+  useEffect(() => {
+    if (
+      hasDisplayedTermClasses &&
+      !localStorage.getItem(SWAP_TOUR_DISMISSED_KEY)
+    ) {
+      openModal(SWAP_TOUR_MODAL, {
+        onRequestClose: () => {
+          localStorage.setItem(SWAP_TOUR_DISMISSED_KEY, '1');
+          closeModal(SWAP_TOUR_MODAL);
+        },
+      });
+    }
+  }, [hasDisplayedTermClasses, openModal, closeModal]);
+
   if (isLoggedIn && (loading || !data)) {
     return (
       <div className={swapPageWrapperClasses}>
         <Helmet>
-          <title>Section Swap - UW Flow</title>
+          <title>Swap Class - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
       </div>
@@ -72,11 +90,11 @@ const SwapPage = () => {
   return (
     <div className={swapPageWrapperClasses}>
       <Helmet>
-        <title>Section Swap - UW Flow</title>
+        <title>Swap Class - UW Flow</title>
         {hasDisplayedTermClasses && (
           <meta
             name="description"
-            content="View your UW schedule and swap course sections."
+            content="Simulate UW course section swaps to check they're possible before making the change in Quest."
           />
         )}
       </Helmet>
@@ -107,11 +125,12 @@ const SwapPage = () => {
                   <Lock size={24} />
                 </div>
                 <h2 className="mb-0 mt-1 text-xl font-bold text-dark1">
-                  Upload your schedule to swap
+                  Upload your schedule to plan swaps
                 </h2>
                 <p className="m-0 text-sm leading-normal text-dark2">
-                  Log in and paste your courses from Quest to start swapping
-                  sections.
+                  Log in and paste your courses from Quest to simulate section
+                  swaps and see which ones are possible. You make the actual
+                  swap in Quest.
                 </p>
                 <button
                   className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"

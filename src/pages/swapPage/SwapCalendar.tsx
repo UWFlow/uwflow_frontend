@@ -568,15 +568,15 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <h1 className="m-0 font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
-                Swap classes
+                Swap Class
               </h1>
               <span className="rounded bg-accent px-1.5 py-0.5 text-xs font-extrabold text-dark1">
                 NEW
               </span>
             </div>
             <p className="mb-0 mt-1 font-inter text-md font-regular text-dark2">
-              Click any class to see other sections or swap it for a different
-              course.
+              Click any class to compare sections and check if a swap is
+              possible — you make the actual change in Quest.
             </p>
           </div>
           <div className="inline-flex shrink-0 rounded border border-solid border-light3 bg-white p-1">

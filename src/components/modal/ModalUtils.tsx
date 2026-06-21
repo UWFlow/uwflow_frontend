@@ -18,6 +18,9 @@ import EditEmailModalContent, {
 import NotificationEmailModalContent, {
   NotificationEmailModalContentProps,
 } from 'components/email/NotificationEmailModalContent';
+import SwapTourModalContent, {
+  SwapTourModalContentProps,
+} from 'components/tour/SwapTourModalContent';
 import ScheduleUploadModalContent, {
   ScheduleUploadModalContentProps,
 } from 'components/upload/ScheduleUploadModalContent';
@@ -33,6 +36,7 @@ import {
   NOTIFICATION_EMAIL_MODAL,
   RESET_PASSWORD_MODAL,
   SCHEDULE_UPLOAD_MODAL,
+  SWAP_TOUR_MODAL,
   TRANSCRIPT_UPLOAD_MODAL,
 } from 'constants/Modal';
 
@@ -69,6 +73,10 @@ const DeleteAccountModal = (props: DeleteAccountModalContentProps) => (
   <DeleteAccountModalContent {...props} />
 );
 
+const SwapTourModal = (props: SwapTourModalContentProps) => (
+  <SwapTourModalContent {...props} />
+);
+
 type NameModalMap = {
   [key in ModalName]: (props: any) => ReactNode;
 };
@@ -82,4 +90,5 @@ export const modalNameToModal: NameModalMap = {
   [EDIT_EMAIL_MODAL]: EditEmailModal,
   [RESET_PASSWORD_MODAL]: ResetPasswordModal,
   [DELETE_ACCOUNT_MODAL]: DeleteAccountModal,
+  [SWAP_TOUR_MODAL]: SwapTourModal,
 };
