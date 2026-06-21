@@ -111,6 +111,19 @@ const groupScheduleByTerm = (schedule: UserScheduleFragment['schedule']) => {
   return map;
 };
 
+// Whether the schedule has classes in each of the two terms the swap calendar
+// shows (current + next). Drives the default term here and the "Import your
+// schedule from Quest" empty-state prompt in SwapPage.
+export const getDisplayedTermPresence = (
+  schedule: UserScheduleFragment['schedule'],
+) => {
+  const termMap = groupScheduleByTerm(schedule);
+  return {
+    thisHasData: !!termMap[termCodeToDate(getCurrentTermCode())]?.length,
+    nextHasData: !!termMap[termCodeToDate(getNextTermCode())]?.length,
+  };
+};
+
 const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
   s1 < e2 && s2 < e1;
 
@@ -248,8 +261,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
   const nextTermLabel = termCodeToDate(nextTermCode);
 
   const [selectedTerm, setSelectedTerm] = useState<string>(() => {
-    const thisHasData = !!termMap[thisTermLabel]?.length;
-    const nextHasData = !!termMap[nextTermLabel]?.length;
+    const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
     return !nextHasData || thisHasData ? thisTermLabel : nextTermLabel;
   });
   // The clicked calendar block's course + section type (e.g. CS 240 / LEC).
