@@ -14,7 +14,7 @@ import useModal from 'hooks/useModal';
 import { cn } from 'lib/utils';
 
 import DEMO_SCHEDULE from './demoSchedule';
-import SwapCalendar from './SwapCalendar';
+import SwapCalendar, { getDisplayedTermPresence } from './SwapCalendar';
 
 // PageWrapper mixin (min-height accounts for FOOTER_HEIGHT 70px +
 // FOOTER_MARGIN_TOP 32px) on the app's light1 background. The fade-in lives on
@@ -38,13 +38,17 @@ const SwapPage = () => {
 
   const user = isLoggedIn ? data?.user[0] : null;
   const schedule = isLoggedIn ? user?.schedule ?? [] : [];
-  const hasSchedule = schedule.length > 0;
+  // The calendar only shows the current + next term, so prompt for a Quest
+  // import whenever neither of those terms has classes — not merely when the
+  // schedule is empty (e.g. a returning user whose schedule is all past terms).
+  const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
+  const hasDisplayedTermClasses = thisHasData || nextHasData;
   // Logged-out visitors see a non-interactive sample schedule behind the
   // login lock card instead of an empty grid.
-  const isDemo = !isLoggedIn && !hasSchedule;
+  const isDemo = !isLoggedIn && !hasDisplayedTermClasses;
 
   useEffect(() => {
-    if (!hasSchedule) {
+    if (!hasDisplayedTermClasses) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -52,7 +56,7 @@ const SwapPage = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [hasSchedule]);
+  }, [hasDisplayedTermClasses]);
 
   if (isLoggedIn && (loading || !data)) {
     return (
@@ -69,7 +73,7 @@ const SwapPage = () => {
     <div className={swapPageWrapperClasses}>
       <Helmet>
         <title>Section Swap - UW Flow</title>
-        {hasSchedule && (
+        {hasDisplayedTermClasses && (
           <meta
             name="description"
             content="View your UW schedule and swap course sections."
@@ -84,7 +88,7 @@ const SwapPage = () => {
         <div
           className={cn(
             'fixed inset-0 z-10 box-border flex items-start justify-center overflow-y-auto bg-white/55 backdrop-blur [transition:opacity_0.4s_ease]',
-            !hasSchedule
+            !hasDisplayedTermClasses
               ? 'pointer-events-auto opacity-100'
               : 'pointer-events-none opacity-0',
           )}
