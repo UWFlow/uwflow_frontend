@@ -568,7 +568,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <h1 className="m-0 font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
-                Swap Class
+                Swap Class Sandbox
               </h1>
               <span className="rounded bg-accent px-1.5 py-0.5 text-xs font-extrabold text-dark1">
                 NEW
