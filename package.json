@@ -107,6 +107,7 @@
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix -c .eslintrc.js --quiet",
     "lint-nofix": "eslint src/ --ext .ts,.tsx,.js,.jsx -c .eslintrc.js --quiet",
     "generate": "graphql-codegen --config codegen.js",
+    "generate:sitemap": "bun scripts/generate-sitemap.js",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org flow-fa --project uwflow-frontend ./build && sentry-cli sourcemaps upload --org flow-fa --project uwflow-frontend ./build"
   },
   "eslintConfig": {
