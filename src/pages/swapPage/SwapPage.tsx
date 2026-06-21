@@ -11,6 +11,7 @@ import { AUTH_MODAL, SWAP_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
+import { track } from 'lib/analytics';
 import { cn } from 'lib/utils';
 
 import DEMO_SCHEDULE from './demoSchedule';
@@ -117,6 +118,7 @@ const SwapPage = () => {
                 onAfterUploadSuccess={() =>
                   refetch({ id: Number(localStorage.getItem('user_id')) })
                 }
+                onUploadAttempt={() => track('swap_schedule_upload_attempt')}
                 showSkipStepButton={false}
               />
             ) : (

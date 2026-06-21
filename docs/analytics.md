@@ -4,9 +4,10 @@ UW Flow sends product analytics to **PostHog Cloud** and nothing else. PostHog
 is the single destination: it stores the events and powers dashboards, funnels,
 and retention.
 
-We don't emit any custom events. PostHog's automatic pageview/session capture is
-the whole of our analytics — there is no custom ingestion endpoint and no second
-store.
+PostHog's automatic pageview/session capture is the backbone of our analytics —
+there is no custom ingestion endpoint and no second store. On top of that we emit
+a handful of explicit `track()` events for key product actions (e.g.
+`swap_schedule_upload_attempt` when a user submits a schedule on the Swap page).
 
 ## Client architecture
 
@@ -14,9 +15,9 @@ Everything lives under [`src/lib/analytics/`](../src/lib/analytics):
 
 | File         | Responsibility                                               |
 |--------------|--------------------------------------------------------------|
-| `index.ts`   | `initAnalytics()` — initialize PostHog once, near the app root. Never throws. |
+| `index.ts`   | `initAnalytics()` — initialize PostHog once, near the app root. `track(event, props?)` — emit a custom event (no-ops until init'd). Never throws. |
 
-That's the whole library. PostHog itself handles everything we used to hand-roll:
+PostHog itself handles everything we used to hand-roll:
 
 - **Pageviews & sessions** — captured automatically on SPA navigation via
   `capture_pageview: 'history_change'`, plus `$pageleave` on exit. We do **not**

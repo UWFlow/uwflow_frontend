@@ -4,8 +4,8 @@
  *   import { initAnalytics } from 'lib/analytics';
  *   initAnalytics();  // once, near the app root
  *
- * We don't emit any custom events: PostHog captures pageviews/pageleaves and
- * sessions automatically, and that's the whole of our analytics. PostHog also
+ * PostHog captures pageviews/pageleaves and sessions automatically; beyond that
+ * we emit a few explicit `track()` events for key product actions. PostHog also
  * handles identity, batching, delivery on tab-hide/unload, and Do-Not-Track.
  *
  * Configuration (build-time, inlined by CRA's DefinePlugin):
@@ -45,6 +45,25 @@ export const initAnalytics = (): void => {
       respect_dnt: true,
     });
     enabled = true;
+  } catch {
+    // Analytics must never break the app.
+  }
+};
+
+/**
+ * Send a custom PostHog event. No-ops until `initAnalytics()` has run with a
+ * key configured (e.g. local dev), so callers never need to guard.
+ */
+export const track = (
+  event: string,
+  properties?: Record<string, unknown>,
+): void => {
+  if (!enabled) {
+    return;
+  }
+
+  try {
+    posthog.capture(event, properties);
   } catch {
     // Analytics must never break the app.
   }
