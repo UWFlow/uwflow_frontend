@@ -77,6 +77,7 @@ export const ProfPage = () => {
   const match = useRouteMatch<{ profCode: string }>();
 
   const profCode = match.params.profCode.toLowerCase();
+
   const { loading, error, data } = useQuery<
     GetProfQuery,
     GetProfQueryVariables

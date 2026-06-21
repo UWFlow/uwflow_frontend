@@ -14,6 +14,7 @@ jobs:
           command: |
             docker build \
             --secret id=sentry_auth_token,env=SENTRY_AUTH_TOKEN \
+            --build-arg REACT_APP_POSTHOG_KEY="$REACT_APP_POSTHOG_KEY" \
             -t $IMAGE_NAME:latest .
       - run:
           name: Archive Docker image

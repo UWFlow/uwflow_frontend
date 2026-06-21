@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { ApolloQueryResult } from '@apollo/client';
 import {
   GetUserQuery,
@@ -6,8 +7,14 @@ import {
   UserScheduleFragment,
 } from 'generated/graphql';
 import moment, { Moment } from 'moment/moment';
+import { getCoursePageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
+import {
+  Calendar,
+  CalendarEvent,
+  CalendarEventVariant,
+} from 'components/calendar';
 import Button from 'components/input/Button';
 import DropdownList from 'components/input/DropdownList';
 import {
@@ -15,10 +22,12 @@ import {
   CALENDAR_EXPORT_ENDPOINT,
   GOOGLE_CALENDAR_URL,
 } from 'constants/Api';
+import { LAB, LEC } from 'constants/CourseSection';
 import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
 import { EventsByDate, ScheduleInterval } from 'types/Common';
 import {
+  formatCourseCode,
   getDateWithSeconds,
   millisecondsPerDay,
   weekDayLetters,
@@ -36,7 +45,25 @@ import {
   RecentCalendarText,
   RecentCalendarWrapper,
 } from './styles/ProfileCalendar';
-import Calendar from './Calendar';
+
+const getDateRangeString = (start: Moment, end: Moment) => {
+  if (start.year() !== end.year()) {
+    return `${start.format('MMM Do, YYYY')} - ${end.format('MMM Do, YYYY')}`;
+  }
+  if (start.month() !== end.month()) {
+    return `${start.format('MMM Do')} - ${end.format('MMM Do, YYYY')}`;
+  }
+  return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
+};
+
+// Match the legacy colour rule: an exam keeps its underlying section's colour
+// because its name still contains LEC/LAB; everything else falls back to the
+// tutorial colour.
+const getEventVariant = (section: string): CalendarEventVariant => {
+  if (section.includes(LEC)) return 'lecture';
+  if (section.includes(LAB)) return 'lab';
+  return 'tutorial';
+};
 
 const getScheduleRange = (
   schedule: UserScheduleFragment['schedule'],
@@ -173,6 +200,148 @@ const getInitialMonday = (eventsByDate: EventsByDate) => {
   return currentWeekMonday;
 };
 
+type WeekView = {
+  /** Events for the visible week, mapped onto the generic calendar. */
+  events: CalendarEvent[];
+  /** Header label for each displayed column. */
+  dayLabels: string[];
+  minHour: number;
+  maxHour: number;
+  /** Hours of class this week, rounded to the nearest half hour. */
+  totalHours: number;
+  /** Inclusive date range covered by the displayed columns. */
+  rangeStart: Moment;
+  rangeEnd: Moment;
+};
+
+// All of the per-week math the calendar grid used to own: the dynamic hour
+// range, the Saturday-only-if-needed column rule, total class hours, and the
+// translation of each ScheduleInterval into a presentational CalendarEvent.
+const buildWeekView = (
+  weekStart: Moment,
+  eventsByDate: EventsByDate,
+): WeekView => {
+  const dayDates: Moment[] = [];
+  for (let i = 0; i < 6; i += 1) {
+    dayDates.push(weekStart.clone().add(i, 'days'));
+  }
+
+  // Only show Saturday when it actually has events.
+  const hasSaturdayEvents =
+    eventsByDate[dayDates[5].format('YYYY-MM-DD')] !== undefined;
+  const visibleDays = hasSaturdayEvents ? dayDates : dayDates.slice(0, 5);
+
+  // Dynamic time range, widened from the default 9am-5pm by the day's events.
+  let minHour = 9;
+  let maxHour = 17;
+  let totalMinutes = 0;
+
+  visibleDays.forEach((day) => {
+    const dayEvents = eventsByDate[day.format('YYYY-MM-DD')] ?? [];
+    dayEvents.forEach((event) => {
+      if (event.start.hour() <= minHour) {
+        minHour = event.start.hour();
+        if (event.start.minutes() === 0) {
+          minHour -= 1;
+        }
+      }
+      if (event.end.hour() >= maxHour) {
+        maxHour = event.end.hour();
+        // minutes might be in the middle of the hour
+        if (event.end.minutes() > 0) {
+          maxHour += 1;
+        }
+      }
+      totalMinutes += Math.abs(
+        moment.duration(event.start.diff(event.end)).asMinutes(),
+      );
+    });
+  });
+
+  const events: CalendarEvent[] = visibleDays.flatMap((day, dayIndex) => {
+    const dayEvents = eventsByDate[day.format('YYYY-MM-DD')] ?? [];
+    return dayEvents.map((event, i) => {
+      const isExam = event.section.includes('Exam');
+      const courseLink = (
+        <RouterLink
+          to={getCoursePageRoute(event.courseCode)}
+          className="font-semibold text-dark1 no-underline hover:underline"
+        >
+          {formatCourseCode(event.courseCode)}
+        </RouterLink>
+      );
+
+      return {
+        id: `${day.format('YYYY-MM-DD')}-${i}`,
+        dayIndex,
+        startMinutes: event.start.hour() * 60 + event.start.minutes(),
+        endMinutes: event.end.hour() * 60 + event.end.minutes(),
+        variant: getEventVariant(event.section),
+        // Exams fold the section into the bold title; meetings show the code
+        // as the title with the section as the muted subtitle line.
+        title: isExam ? (
+          <>
+            {courseLink}
+            <br />
+            {event.section}
+          </>
+        ) : (
+          courseLink
+        ),
+        subtitle: isExam ? undefined : event.section,
+        // Compact 24-hour range to match the swap page, e.g. "08:30–09:20".
+        timeLabel: `${event.start.format('HH:mm')}–${event.end.format(
+          'HH:mm',
+        )}`,
+        location: event.location,
+      };
+    });
+  });
+
+  return {
+    events,
+    // Short day-of-week + date, e.g. "Mon 9" (the calendar header band
+    // uppercases it to match the swap page's static MON-FRI labels).
+    dayLabels: visibleDays.map((day) => day.format('ddd D')),
+    minHour,
+    maxHour,
+    totalHours: Math.round((2 * totalMinutes) / 60) / 2,
+    rangeStart: visibleDays[0],
+    rangeEnd: visibleDays[visibleDays.length - 1],
+  };
+};
+
+type ProfileWeekCalendarProps = {
+  eventsByDate: EventsByDate;
+  initialMonday: Moment;
+};
+
+// Owns the week-navigation state and feeds the generic calendar's built-in
+// header: the date-range title, the hours-this-week subtitle and the prev /
+// next / current-week callbacks.
+const ProfileWeekCalendar = ({
+  eventsByDate,
+  initialMonday,
+}: ProfileWeekCalendarProps) => {
+  const [weekStart, setWeekStart] = useState(initialMonday);
+  const week = buildWeekView(weekStart, eventsByDate);
+
+  return (
+    <Calendar
+      className="border-b-2 border-light3"
+      headerTitle={getDateRangeString(week.rangeStart, week.rangeEnd)}
+      headerSubtitle={`(${week.totalHours} hours this week)`}
+      onCurrentWeek={() => setWeekStart(initialMonday)}
+      onPrevWeek={() => setWeekStart(weekStart.clone().subtract(7, 'days'))}
+      onNextWeek={() => setWeekStart(weekStart.clone().add(7, 'days'))}
+      dayLabels={week.dayLabels}
+      events={week.events}
+      minHour={week.minHour}
+      maxHour={week.maxHour}
+    />
+  );
+};
+
 type ProfileCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
   secretId: string;
@@ -239,7 +408,7 @@ const ProfileCalendar = ({
   const [minDate, dayRange] = getScheduleRange(schedule);
   const events = getEventIntervals(moment(minDate), dayRange, schedule);
   const eventsByDate = getEventsByDate(events);
-  const initialStartDate = getInitialMonday(eventsByDate);
+  const initialMonday = getInitialMonday(eventsByDate);
 
   return (
     <CalendarWithButtonsWrapper>
@@ -260,9 +429,9 @@ const ProfileCalendar = ({
           placeholder="Export as"
         />
       </ExportCalendarWrapper>
-      <Calendar
+      <ProfileWeekCalendar
         eventsByDate={eventsByDate}
-        initialStartDate={initialStartDate}
+        initialMonday={initialMonday}
       />
       <RecentCalendarWrapper>
         <RecentCalendarText>Have a more recent schedule?</RecentCalendarText>
