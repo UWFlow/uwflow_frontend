@@ -86,7 +86,7 @@ const ProfileDropdown = () => {
             width={150}
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
-            options={['View profile', 'Section swap', 'Log out']}
+            options={['View profile', 'Swap Class Sandbox', 'Log out']}
             onChange={(idx) => {
               if (idx === 0) {
                 handleProfileButtonClick();

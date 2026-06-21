@@ -80,7 +80,7 @@ const SwapPage = () => {
     return (
       <div className={swapPageWrapperClasses}>
         <Helmet>
-          <title>Section Swap - UW Flow</title>
+          <title>Swap Class Sandbox - UW Flow</title>
         </Helmet>
         <LoadingSpinner />
       </div>
@@ -90,11 +90,11 @@ const SwapPage = () => {
   return (
     <div className={swapPageWrapperClasses}>
       <Helmet>
-        <title>Section Swap - UW Flow</title>
+        <title>Swap Class Sandbox - UW Flow</title>
         {hasDisplayedTermClasses && (
           <meta
             name="description"
-            content="View your UW schedule and swap course sections."
+            content="Simulate UW course section swaps to check they're possible before making the change in Quest."
           />
         )}
       </Helmet>
@@ -125,11 +125,12 @@ const SwapPage = () => {
                   <Lock size={24} />
                 </div>
                 <h2 className="mb-0 mt-1 text-xl font-bold text-dark1">
-                  Upload your schedule to swap
+                  Upload your schedule to plan swaps
                 </h2>
                 <p className="m-0 text-sm leading-normal text-dark2">
-                  Log in and paste your courses from Quest to start swapping
-                  sections.
+                  Log in and paste your courses from Quest to simulate section
+                  swaps and see which ones are possible. You make the actual
+                  swap in Quest.
                 </p>
                 <button
                   className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"

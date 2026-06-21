@@ -9,22 +9,23 @@ export type SwapTourModalContentProps = {
 
 const STEPS = [
   {
-    heading: 'Click a class to start',
+    heading: 'Plan swaps in a sandbox',
     body:
-      'Tap any block in your schedule to pull up every other section — ' +
-      'with prof ratings, rooms, and open seats.',
+      'This tool simulates section swaps so you can check whether one is ' +
+      'possible before touching Quest — it never changes your enrollment.',
   },
   {
     heading: 'Compare sections',
     body:
-      'See meeting times, rooms, professor ratings, and how many seats ' +
-      'are open — conflicts and full sections are flagged automatically.',
+      'Click any class to see every other section — meeting times, rooms, ' +
+      'professor ratings, and open seats. Conflicts and full sections are ' +
+      'flagged so you know what would actually work.',
   },
   {
-    heading: 'Preview before you switch',
+    heading: 'Then make the swap in Quest',
     body:
-      'Hover any open section to preview it on your calendar before you ' +
-      'make the change in Quest.',
+      "Found a section that fits? UW Flow can't swap it for you — go to " +
+      'Quest and make the real change there yourself.',
   },
 ];
 
@@ -120,7 +121,7 @@ const SwapTourModalContent = ({
       {/* Copy + controls */}
       <div className="flex flex-col px-7 pb-7 pt-6">
         <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-accentDark">
-          <Repeat size={13} /> Class swapper
+          <Repeat size={13} /> Swap Class Sandbox
         </div>
         <h2 className="mb-2 text-[24px] font-bold text-dark1">
           {STEPS[step].heading}
