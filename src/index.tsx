@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import App from 'App';
 import { history } from 'browserhistory';
 import { configureStore } from 'Store';
@@ -11,6 +12,7 @@ import { ThemeProvider } from 'styled-components';
 import SearchWorker from 'worker-loader!search/search.worker';
 
 import ModalProvider from 'components/modal/ModalProvider';
+import { GOOGLE_APP_ID } from 'constants/Api';
 import Theme from 'constants/GlobalTheme';
 import client from 'graphql/apollo.js';
 import SearchProvider from 'search/SearchProvider';
@@ -28,19 +30,23 @@ const StartApp = () => {
   }
 
   createRoot(container).render(
-    <ApolloProvider client={client}>
-      <ModalProvider>
-        <SearchProvider searchWorker={new SearchWorker()}>
-          <Provider store={store}>
-            <Router history={history}>
-              <ThemeProvider theme={Theme}>
-                <App />
-              </ThemeProvider>
-            </Router>
-          </Provider>
-        </SearchProvider>
-      </ModalProvider>
-    </ApolloProvider>,
+    <GoogleOAuthProvider
+      clientId={`${GOOGLE_APP_ID}.apps.googleusercontent.com`}
+    >
+      <ApolloProvider client={client}>
+        <ModalProvider>
+          <SearchProvider searchWorker={new SearchWorker()}>
+            <Provider store={store}>
+              <Router history={history}>
+                <ThemeProvider theme={Theme}>
+                  <App />
+                </ThemeProvider>
+              </Router>
+            </Provider>
+          </SearchProvider>
+        </ModalProvider>
+      </ApolloProvider>
+    </GoogleOAuthProvider>,
   );
 };
 
