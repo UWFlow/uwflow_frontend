@@ -8,7 +8,7 @@ const GRAPHQL_ENDPOINT = `${SITE_ORIGIN}/graphql`;
 const REQUEST_TIMEOUT_MS = 30_000;
 const OUTPUT_PATH = path.resolve(
   __dirname,
-  '../public/static/sitemap.txt'
+  '../public/sitemap.txt'
 );
 
 const STATIC_ROUTES = ['/', '/explore', '/about', '/privacy'];
