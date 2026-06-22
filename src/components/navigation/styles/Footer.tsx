@@ -76,3 +76,9 @@ export const FooterNormalLink = styled.a`
     margin: 16px 16px 0 0;
   }
 `;
+
+export const FooterOpenSourceLink = styled(FooterNormalLink)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+`;

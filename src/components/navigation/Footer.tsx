@@ -1,4 +1,5 @@
 import React from 'react';
+import { GitHub } from 'react-feather';
 import { useLocation } from 'react-router-dom';
 import {
   ABOUT_PAGE_ROUTE,
@@ -12,6 +13,7 @@ import {
   FooterContent,
   FooterLeft,
   FooterNormalLink,
+  FooterOpenSourceLink,
   FooterPageLink,
   FooterRight,
   FooterWrapper,
@@ -32,6 +34,14 @@ const Footer = () => {
             </FooterPageLink>
           </FooterLeft>
           <FooterRight>
+            <FooterOpenSourceLink
+              href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GitHub size={16} />
+              We&apos;re open source
+            </FooterOpenSourceLink>
             <FooterNormalLink
               href="https://www.fb.com/planyourflow"
               target="_blank"
