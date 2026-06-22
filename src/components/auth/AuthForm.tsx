@@ -12,6 +12,7 @@ import { AUTH_ERRORS, AUTH_SUCCESS, DEFAULT_ERROR } from 'constants/Messages';
 import { RESET_PASSWORD_MODAL } from 'constants/Modal';
 import { LOGGED_IN } from 'data/actions/AuthActions';
 import useModal from 'hooks/useModal';
+import { capture, identify } from 'lib/analytics';
 import { AuthResponse, ErrorResponse } from 'types/Api';
 import { makePOSTRequest } from 'utils/Api';
 
@@ -29,6 +30,8 @@ import { AuthFormState, HandleAuthFunction } from './AuthTypes';
 import LoginContent from './LoginContent';
 import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
+
+export type AuthMethod = 'email' | 'google' | 'facebook';
 
 type AuthFormProps = {
   onLoginComplete: () => void;
@@ -58,7 +61,7 @@ const AuthForm = ({
     localStorage.setItem('user_id', response.user_id);
   };
 
-  const onAuthSuccess = (response: AuthResponse) => {
+  const onAuthSuccess = (response: AuthResponse, method: AuthMethod) => {
     setJWT(response);
     dispatch({ type: LOGGED_IN });
     if (response.is_new) {
@@ -67,6 +70,12 @@ const AuthForm = ({
     } else {
       toast(AUTH_SUCCESS.login);
       onLoginComplete();
+    }
+    // Analytics on the side — identify/capture defer themselves, so the login
+    // toast and redirect above run first and are never blocked.
+    identify(response.user_id);
+    if (response.is_new) {
+      capture('account_created', { method });
     }
   };
 
@@ -92,7 +101,7 @@ const AuthForm = ({
       const errorRes = response as ErrorResponse;
       setErrorMessage(AUTH_ERRORS[errorRes.error] || DEFAULT_ERROR);
     } else {
-      onAuthSuccess(response as AuthResponse);
+      onAuthSuccess(response as AuthResponse, 'email');
     }
   };
 
