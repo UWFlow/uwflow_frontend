@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import GoogleLogin, {
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-} from 'react-google-login';
 import { faFacebookSquare, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useGoogleLogin } from '@react-oauth/google';
 
 import {
   BACKEND_ENDPOINT,
   FACEBOOK_APP_ID,
   FACEBOOK_AUTH_ENDPOINT,
-  GOOGLE_APP_ID,
   GOOGLE_AUTH_ENDPOINT,
 } from 'constants/Api';
 import { AUTH_ERRORS } from 'constants/Messages';
@@ -57,38 +53,30 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
     }
   };
 
-  const handleGoogleSuccess = async (
-    res: GoogleLoginResponse | GoogleLoginResponseOffline,
-  ) => {
-    setGoogleLoading(true);
-    const { accessToken } = res as GoogleLoginResponse;
-    const [response, status] = await makePOSTRequest<
-      object,
-      AuthResponse | ErrorResponse
-    >(`${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`, {
-      access_token: accessToken,
-    });
+  const handleGoogleLogin = useGoogleLogin({
+    // Backend reads the user's email from this access token, so request those scopes.
+    scope: 'email profile',
+    onSuccess: async ({ access_token }) => {
+      setGoogleLoading(true);
+      const [response, status] = await makePOSTRequest<
+        object,
+        AuthResponse | ErrorResponse
+      >(`${BACKEND_ENDPOINT}${GOOGLE_AUTH_ENDPOINT}`, {
+        access_token,
+      });
 
-    setGoogleLoading(false);
-    if (status >= 400) {
-      const errorRes = response as ErrorResponse;
-      setError(AUTH_ERRORS[errorRes.error] || AUTH_ERRORS.no_google_email);
-    } else {
-      onAuthSuccess(response as AuthResponse);
-    }
-  };
-
-  const handleGoogleFailure = (res: ErrorResponse) => {
-    // react-google-login can invoke onFailure with a value that has no `error`
-    // string (e.g. when the GSI script fails to load), so guard before using it.
-    const errorCode = res?.error ?? '';
-    const errorMessage =
-      errorCode === 'popup_closed_by_user' ? '' : AUTH_ERRORS.no_google_email;
-
-    if (!errorCode.includes('idpiframe')) {
-      setError(errorMessage);
-    }
-  };
+      setGoogleLoading(false);
+      if (status >= 400) {
+        const errorRes = response as ErrorResponse;
+        setError(AUTH_ERRORS[errorRes.error] || AUTH_ERRORS.no_google_email);
+      } else {
+        onAuthSuccess(response as AuthResponse);
+      }
+    },
+    onError: () => setError(AUTH_ERRORS.no_google_email),
+    // Fires when the user closes/blocks the popup — not a real failure, so stay quiet.
+    onNonOAuthError: () => {},
+  });
 
   return (
     <>
@@ -111,23 +99,16 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
           </FacebookButton>
         )}
       />
-      <GoogleLogin
-        clientId={`${GOOGLE_APP_ID}.apps.googleusercontent.com`}
-        onSuccess={handleGoogleSuccess}
-        onFailure={handleGoogleFailure}
-        render={(renderProps) => (
-          <GoogleButton
-            onClick={renderProps.onClick}
-            onMouseDown={(e) => e.preventDefault()}
-            isLoading={googleLoading}
-          >
-            <GoogleIcon>
-              <FontAwesomeIcon icon={faGoogle} />
-            </GoogleIcon>
-            <ButtonText>Continue with Google</ButtonText>
-          </GoogleButton>
-        )}
-      />
+      <GoogleButton
+        onClick={() => handleGoogleLogin()}
+        onMouseDown={(e) => e.preventDefault()}
+        isLoading={googleLoading}
+      >
+        <GoogleIcon>
+          <FontAwesomeIcon icon={faGoogle} />
+        </GoogleIcon>
+        <ButtonText>Continue with Google</ButtonText>
+      </GoogleButton>
     </>
   );
 };
