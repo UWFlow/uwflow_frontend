@@ -43,6 +43,7 @@ import {
   COURSE_REVIEWS_WITH_USER_DATA,
 } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
+import { capture } from 'lib/analytics';
 import { getUserId } from 'utils/Auth';
 import { formatCourseCode } from 'utils/Misc';
 
@@ -322,6 +323,25 @@ const CourseReviewBoxContent = ({
       }
       onCancel();
       setReviewUpdating(false);
+      // Fire on the side after the UI has settled — capture() defers itself, so
+      // this never blocks the toast/close above.
+      const aboutProf = reviewData.prof_id != null;
+      capture('review_posted', {
+        review_type: 'full',
+        is_update: Boolean(review),
+        about_prof: aboutProf,
+        course_id: course.id,
+        course_code: course.code,
+        prof_id: reviewData.prof_id ?? null,
+        liked: reviewData.liked,
+        course_useful: reviewData.course_useful,
+        course_easy: reviewData.course_easy,
+        prof_clear: reviewData.prof_clear ?? null,
+        prof_engaging: reviewData.prof_engaging ?? null,
+        has_course_comment: Boolean(reviewData.course_comment),
+        has_prof_comment: aboutProf && Boolean(reviewData.prof_comment),
+        is_anonymous: !reviewData.public,
+      });
     });
   };
 

@@ -14,6 +14,7 @@ import {
 import { COURSE_REVIEWS_WITH_USER_DATA } from 'graphql/queries/course/CourseReview';
 import { REFETCH_USER_REVIEW } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
+import { capture } from 'lib/analytics';
 import { getUserId } from 'utils/Auth';
 
 import {
@@ -86,6 +87,17 @@ const LikeCourseToggle = ({
 
     const likedValue = liked === targetState ? null : targetState;
     setLiked(likedValue);
+
+    // Toggling off clears the like — that's a removal, not a posted review.
+    if (likedValue !== null) {
+      capture('review_posted', {
+        review_type: 'like',
+        about_prof: false,
+        course_id: courseId,
+        course_code: courseCode,
+        liked: likedValue,
+      });
+    }
 
     upsertLiked({
       variables: { user_id: userId, course_id: courseId, liked: likedValue },

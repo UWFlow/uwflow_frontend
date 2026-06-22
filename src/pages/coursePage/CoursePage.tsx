@@ -174,6 +174,7 @@ const CoursePage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
 
   const courseCode = match.params.courseCode.toLowerCase();
+
   const query = isLoggedIn ? GET_COURSE_WITH_USER_DATA : GET_COURSE;
   const variables = {
     code: courseCode,

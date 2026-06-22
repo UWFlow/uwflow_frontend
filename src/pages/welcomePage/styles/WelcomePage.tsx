@@ -8,4 +8,9 @@ export const WelcomePageWrapper = styled.div`
   display: flex;
   overflow: auto;
   margin: auto;
+
+  @media only screen and (max-width: 800px) {
+    padding: 16px;
+    box-sizing: border-box;
+  }
 `;

@@ -14,6 +14,7 @@ import {
   LoadablePrivacyPage,
   LoadableProfilePage,
   LoadableProfPage,
+  LoadableSwapPage,
   LoadableWelcomePage,
 } from 'LoadableComponents';
 import {
@@ -25,6 +26,7 @@ import {
   PROF_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
   SHORT_PROF_PAGE_ROUTE,
+  SWAP_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
 } from 'Routes';
 
@@ -40,6 +42,7 @@ import {
 import { SEO_DESCRIPTIONS } from 'constants/Messages';
 import { RootState } from 'data/reducers/RootReducer';
 import LandingPageBg from 'img/landing.svg';
+import { initAnalytics } from 'lib/analytics';
 import { AuthRefreshResponse } from 'types/Api';
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { getUserId } from 'utils/Auth';
@@ -50,6 +53,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+initAnalytics();
 
 const App = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
@@ -162,6 +166,11 @@ const App = () => {
           exact
           path={WELCOME_PAGE_ROUTE}
           component={() => <LoadableWelcomePage />}
+        />
+        <SentryRoute
+          exact
+          path={SWAP_PAGE_ROUTE}
+          component={() => <LoadableSwapPage />}
         />
         <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>

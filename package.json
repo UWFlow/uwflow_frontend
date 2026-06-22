@@ -54,6 +54,7 @@
     "postcss-normalize": "10.0.1",
     "postcss-preset-env": "^7.8.3",
     "postcss-safe-parser": "4.0.1",
+    "posthog-js": "^1.387.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.10.1",
     "react": "^18.3.1",
@@ -106,6 +107,7 @@
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx --fix -c .eslintrc.js --quiet",
     "lint-nofix": "eslint src/ --ext .ts,.tsx,.js,.jsx -c .eslintrc.js --quiet",
     "generate": "graphql-codegen --config codegen.js",
+    "generate:sitemap": "bun scripts/generate-sitemap.js",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org flow-fa --project uwflow-frontend ./build && sentry-cli sourcemaps upload --org flow-fa --project uwflow-frontend ./build"
   },
   "eslintConfig": {
