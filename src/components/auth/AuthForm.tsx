@@ -64,15 +64,18 @@ const AuthForm = ({
   const onAuthSuccess = (response: AuthResponse, method: AuthMethod) => {
     setJWT(response);
     dispatch({ type: LOGGED_IN });
-    // Tie this session (and future events) to the user's PostHog person.
-    identify(response.user_id);
     if (response.is_new) {
-      capture('account_created', { method });
       toast(AUTH_SUCCESS.signup);
       onSignupComplete();
     } else {
       toast(AUTH_SUCCESS.login);
       onLoginComplete();
+    }
+    // Analytics on the side — identify/capture defer themselves, so the login
+    // toast and redirect above run first and are never blocked.
+    identify(response.user_id);
+    if (response.is_new) {
+      capture('account_created', { method });
     }
   };
 

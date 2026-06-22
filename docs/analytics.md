@@ -14,7 +14,7 @@ Everything lives under [`src/lib/analytics/`](../src/lib/analytics):
 
 | File         | Responsibility                                               |
 |--------------|--------------------------------------------------------------|
-| `index.ts`   | `initAnalytics()` (init once near the app root), `capture(event, props)` (emit a custom event), `identify(userId)` (tie events to a user). All never throw and no-op when no key is configured. |
+| `index.ts`   | `initAnalytics()` (init once near the app root), `capture(event, props)` (emit a custom event), `identify(userId)` (tie events to a user). All never throw, no-op when no key is configured, and `capture`/`identify` fire on the side (deferred a macrotask) so they never block UI. |
 
 PostHog itself handles everything we used to hand-roll:
 

@@ -51,9 +51,23 @@ export const initAnalytics = (): void => {
   }
 };
 
+// Run analytics work "on the side": defer to a macrotask so the current
+// user-facing flow (toast, navigation, re-render) commits first and analytics
+// never blocks it. PostHog's own send is already async/batched; this just
+// guarantees even the synchronous enqueue happens after the UI has settled.
+const onSide = (fn: () => void): void => {
+  setTimeout(() => {
+    try {
+      fn();
+    } catch {
+      // Analytics must never break the app.
+    }
+  }, 0);
+};
+
 /**
- * Emit a custom product event. No-ops (and never throws) when analytics is
- * disabled, so call sites don't have to guard.
+ * Emit a custom product event. No-ops when analytics is disabled, never throws,
+ * and fires on the side (deferred) so call sites don't block or have to guard.
  */
 export const capture = (
   event: string,
@@ -62,24 +76,17 @@ export const capture = (
   if (!enabled) {
     return;
   }
-  try {
-    posthog.capture(event, properties);
-  } catch {
-    // Analytics must never break the app.
-  }
+  onSide(() => posthog.capture(event, properties));
 };
 
 /**
  * Tie subsequent events to a logged-in user. Call after login/signup so events
  * (and the session that led to them) attach to the user's PostHog person.
+ * Fires on the side, preserving call order (identify before any later capture).
  */
 export const identify = (userId: string | number): void => {
   if (!enabled || userId === null || userId === undefined) {
     return;
   }
-  try {
-    posthog.identify(String(userId));
-  } catch {
-    // Analytics must never break the app.
-  }
+  onSide(() => posthog.identify(String(userId)));
 };

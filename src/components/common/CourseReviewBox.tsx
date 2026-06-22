@@ -316,6 +316,15 @@ const CourseReviewBoxContent = ({
         },
       } as UpsertReviewMutation,
     }).then(() => {
+      if (review) {
+        notifyUpdate();
+      } else {
+        notifyInsert();
+      }
+      onCancel();
+      setReviewUpdating(false);
+      // Fire on the side after the UI has settled — capture() defers itself, so
+      // this never blocks the toast/close above.
       const aboutProf = reviewData.prof_id != null;
       capture('review_posted', {
         review_type: 'full',
@@ -333,13 +342,6 @@ const CourseReviewBoxContent = ({
         has_prof_comment: aboutProf && Boolean(reviewData.prof_comment),
         is_anonymous: !reviewData.public,
       });
-      if (review) {
-        notifyUpdate();
-      } else {
-        notifyInsert();
-      }
-      onCancel();
-      setReviewUpdating(false);
     });
   };
 
