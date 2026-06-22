@@ -33,6 +33,15 @@ export type AuthRefreshResponse = {
   token: string;
 };
 
+/* Email verification */
+export type EmailVerifySendBody = {
+  email: string;
+};
+
+export type EmailVerifyBody = {
+  key: string;
+};
+
 /* Reset password */
 export type ResetPasswordEmailBody = {
   email: string;
