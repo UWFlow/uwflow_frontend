@@ -26,9 +26,10 @@ import {
   GoogleButton,
   GoogleIcon,
 } from './styles/AuthForm';
+import { AuthMethod } from './AuthForm';
 
 type SocialLoginContentProps = {
-  onAuthSuccess: (res: AuthResponse) => void;
+  onAuthSuccess: (res: AuthResponse, method: AuthMethod) => void;
 };
 
 const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
@@ -53,7 +54,7 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
       const errorRes = response as ErrorResponse;
       setError(AUTH_ERRORS[errorRes.error] || AUTH_ERRORS.no_facebook_email);
     } else {
-      onAuthSuccess(response as AuthResponse);
+      onAuthSuccess(response as AuthResponse, 'facebook');
     }
   };
 
@@ -74,7 +75,7 @@ const SocialLoginContent = ({ onAuthSuccess }: SocialLoginContentProps) => {
       const errorRes = response as ErrorResponse;
       setError(AUTH_ERRORS[errorRes.error] || AUTH_ERRORS.no_google_email);
     } else {
-      onAuthSuccess(response as AuthResponse);
+      onAuthSuccess(response as AuthResponse, 'google');
     }
   };
 
