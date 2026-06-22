@@ -81,4 +81,6 @@ export const FooterOpenSourceLink = styled(FooterNormalLink)`
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  margin-left: 0;
+  margin-right: 32px;
 `;

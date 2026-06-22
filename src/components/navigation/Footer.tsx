@@ -27,6 +27,14 @@ const Footer = () => {
       <FooterWrapper noMargin={isOnLandingPageRoute(location)}>
         <FooterContent>
           <FooterLeft>
+            <FooterOpenSourceLink
+              href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GitHub size={16} />
+              We&apos;re open source!
+            </FooterOpenSourceLink>
             <FooterPageLink to={LANDING_PAGE_ROUTE}>Home</FooterPageLink>
             <FooterPageLink to={ABOUT_PAGE_ROUTE}>About</FooterPageLink>
             <FooterPageLink to={PRIVACY_PAGE_ROUTE}>
@@ -34,14 +42,6 @@ const Footer = () => {
             </FooterPageLink>
           </FooterLeft>
           <FooterRight>
-            <FooterOpenSourceLink
-              href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <GitHub size={16} />
-              We&apos;re open source
-            </FooterOpenSourceLink>
             <FooterNormalLink
               href="https://www.fb.com/planyourflow"
               target="_blank"
