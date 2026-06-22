@@ -51,6 +51,7 @@ module.exports = {
         mobileLarge: '600px',
         tablet: '800px',
         tabletDown: { max: '800px' },
+        mobileDown: { max: '500px' },
         desktop: '1200px',
       },
       fontFamily: {
@@ -93,6 +94,12 @@ module.exports = {
       },
       spacing: {
         page: '32px',
+        // T-shirt spacing scale (padding / margin / gap).
+        xs: '4px',
+        sm: '8px',
+        md: '16px',
+        lg: '24px',
+        xl: '32px',
       },
       width: {
         'wide-column': '70%',
@@ -148,6 +155,12 @@ module.exports = {
       addUtilities({
         '.text-shadow': {
           textShadow: theme('textShadow.DEFAULT'),
+        },
+        // Body typography (Inter / 16px / 400) bundled into one class.
+        '.text-body': {
+          fontFamily: theme('fontFamily.inter'),
+          fontSize: theme('fontSize.md'),
+          fontWeight: theme('fontWeight.regular'),
         },
       });
     }),
