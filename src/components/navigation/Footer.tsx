@@ -31,15 +31,6 @@ const Footer = () => {
       >
         <div className="flex w-full justify-between mx-auto px-xl tabletDown:p-md mobileDown:flex-col">
           <div className="flex items-center">
-            <a
-              href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${linkClasses} inline-flex items-center gap-sm mr-xl`}
-            >
-              <GitHub size={16} />
-              We&apos;re open source!
-            </a>
             <Link to={LANDING_PAGE_ROUTE} className={`${linkClasses} mr-xl`}>
               Home
             </Link>
@@ -51,6 +42,15 @@ const Footer = () => {
             </Link>
           </div>
           <div className="flex items-center">
+            <a
+              href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${rightLinkClasses} inline-flex items-center gap-sm`}
+            >
+              <GitHub size={16} />
+              We&apos;re open source!
+            </a>
             <a
               href="https://www.fb.com/planyourflow"
               target="_blank"
