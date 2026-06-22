@@ -9,6 +9,8 @@ export const AUTH_ERRORS: MessageObject = {
   email_not_registered: 'We don’t recognize that email.',
   email_wrong_password: 'Invalid password.',
   email_taken: 'That email has already been registered.',
+  email_not_verified: 'Please verify your email to continue.',
+  invalid_verify_key: 'That verification code is invalid or has expired.',
   no_facebook_email: 'We were unable able to log you in through Facebook.',
   no_google_email: 'We were unable able to log you in through Google.',
 };
@@ -85,6 +87,7 @@ export const AUTH_SUCCESS: MessageObject = {
   login: 'Logged in!',
   logout: 'Logged out!',
   signup: 'Signed up!',
+  verificationSent: 'Verification code sent!',
 };
 
 export const SUBSCRIPTION_SUCCESS: MessageObject = {

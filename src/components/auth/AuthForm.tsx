@@ -29,6 +29,7 @@ import { AuthFormState, HandleAuthFunction } from './AuthTypes';
 import LoginContent from './LoginContent';
 import SignupContent from './SignupContent';
 import SocialLoginContent from './SocialLoginContent';
+import VerifyEmailContent from './VerifyEmailContent';
 
 type AuthFormProps = {
   onLoginComplete: () => void;
@@ -52,6 +53,9 @@ const AuthForm = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  // Non-empty email puts the form into the "enter verification code" step.
+  const [verifyEmail, setVerifyEmail] = useState('');
+  const [verifySendOnMount, setVerifySendOnMount] = useState(false);
 
   const setJWT = (response: AuthResponse) => {
     localStorage.setItem('token', response.token);
@@ -59,6 +63,14 @@ const AuthForm = ({
   };
 
   const onAuthSuccess = (response: AuthResponse) => {
+    // Email signups return no token: the account exists but isn't verified.
+    // Switch to the verification step instead of logging the user in.
+    if (response.is_new && !response.token) {
+      setVerifySendOnMount(false);
+      setVerifyEmail(email);
+      return;
+    }
+
     setJWT(response);
     dispatch({ type: LOGGED_IN });
     if (response.is_new) {
@@ -68,6 +80,14 @@ const AuthForm = ({
       toast(AUTH_SUCCESS.login);
       onLoginComplete();
     }
+  };
+
+  const onVerified = (response: AuthResponse) => {
+    setVerifyEmail('');
+    setJWT(response);
+    dispatch({ type: LOGGED_IN });
+    toast(AUTH_SUCCESS.signup);
+    onSignupComplete();
   };
 
   const handleAuth: HandleAuthFunction = async <T extends object>(
@@ -90,6 +110,13 @@ const AuthForm = ({
 
     if (status >= 400) {
       const errorRes = response as ErrorResponse;
+      // Logging into an unverified account: jump to the code step and email a
+      // fresh code, rather than showing a dead-end error.
+      if (errorRes.error === 'email_not_verified') {
+        setVerifySendOnMount(true);
+        setVerifyEmail(email);
+        return;
+      }
       setErrorMessage(AUTH_ERRORS[errorRes.error] || DEFAULT_ERROR);
     } else {
       onAuthSuccess(response as AuthResponse);
@@ -108,47 +135,62 @@ const AuthForm = ({
     <>
       <Wrapper margin={margin}>
         <ContentWrapper>
-          {showLoginForm ? (
-            <LoginContent
-              handleAuth={handleAuth}
-              formState={formState}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              onShowResetPassword={() =>
-                openModal(RESET_PASSWORD_MODAL, {
-                  handleClose: () => closeModal(RESET_PASSWORD_MODAL),
-                })
-              }
+          {verifyEmail !== '' ? (
+            <VerifyEmailContent
+              email={verifyEmail}
+              sendOnMount={verifySendOnMount}
+              onVerified={onVerified}
             />
           ) : (
-            <SignupContent
-              handleAuth={handleAuth}
-              formState={formState}
-              setFirstName={setFirstName}
-              setLastName={setLastName}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              setConfirmPassword={setConfirmPassword}
-            />
+            <>
+              {showLoginForm ? (
+                <LoginContent
+                  handleAuth={handleAuth}
+                  formState={formState}
+                  setEmail={setEmail}
+                  setPassword={setPassword}
+                  onShowResetPassword={() =>
+                    openModal(RESET_PASSWORD_MODAL, {
+                      handleClose: () => closeModal(RESET_PASSWORD_MODAL),
+                    })
+                  }
+                />
+              ) : (
+                <SignupContent
+                  handleAuth={handleAuth}
+                  formState={formState}
+                  setFirstName={setFirstName}
+                  setLastName={setLastName}
+                  setEmail={setEmail}
+                  setPassword={setPassword}
+                  setConfirmPassword={setConfirmPassword}
+                />
+              )}
+              <OrWrapper>OR</OrWrapper>
+              <SocialLoginContent onAuthSuccess={onAuthSuccess} />
+              <PrivacyWrapper>
+                <GreyText>Read our </GreyText>
+                <PrivacyPolicyText
+                  to={PRIVACY_PAGE_ROUTE}
+                  onClick={closeAuthModal}
+                >
+                  Privacy Policy
+                </PrivacyPolicyText>
+              </PrivacyWrapper>
+            </>
           )}
-          <OrWrapper>OR</OrWrapper>
-          <SocialLoginContent onAuthSuccess={onAuthSuccess} />
-          <PrivacyWrapper>
-            <GreyText>Read our </GreyText>
-            <PrivacyPolicyText to={PRIVACY_PAGE_ROUTE} onClick={closeAuthModal}>
-              Privacy Policy
-            </PrivacyPolicyText>
-          </PrivacyWrapper>
         </ContentWrapper>
-        <SwapModalWrapper>
-          New to UW Flow?
-          <SwapModalLink
-            onClick={() => setShowLoginForm(!showLoginForm)}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            {showLoginForm ? 'Sign up' : 'Log in'}
-          </SwapModalLink>
-        </SwapModalWrapper>
+        {verifyEmail === '' && (
+          <SwapModalWrapper>
+            New to UW Flow?
+            <SwapModalLink
+              onClick={() => setShowLoginForm(!showLoginForm)}
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              {showLoginForm ? 'Sign up' : 'Log in'}
+            </SwapModalLink>
+          </SwapModalWrapper>
+        )}
       </Wrapper>
     </>
   );

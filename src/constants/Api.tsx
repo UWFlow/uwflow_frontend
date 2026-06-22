@@ -29,6 +29,10 @@ export const GOOGLE_AUTH_ENDPOINT = '/auth/google/login';
 export const FACEBOOK_AUTH_ENDPOINT = '/auth/facebook/login';
 export const AUTH_REFRESH_ENDPOINT = '/auth/refresh';
 
+/* Email verification */
+export const EMAIL_VERIFY_SEND_ENDPOINT = '/auth/email/verify/send';
+export const EMAIL_VERIFY_ENDPOINT = '/auth/email/verify';
+
 /* Reset password */
 export const RESET_PASSWORD_KEY_EMAIL_ENDPOINT =
   '/auth/forgot-password/send-email';
