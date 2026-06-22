@@ -45,21 +45,33 @@ arbitrary `[Npx]` values:
 | Font size | `text-xs` 12 / `text-sm` 14 / `text-md` 16 / `text-lg` 18 / `text-xl` 20 / `text-2xl` 28 / `text-3xl` 32 / `text-4xl` 40 (px) |
 | Font family | `font-inter`, `font-anderson` |
 | Font weight | `font-light` 300 / `font-regular` 400 / `font-semibold` 600 / `font-extrabold` 800 |
+| Typography | `text-body` (Inter / 16px / 400) — a config `addUtilities` class; prefer it over repeating `font-inter text-md font-regular` |
 | Radius | `rounded-card` (4px) for cards/chips |
-| Spacing | `p-page` (32px) plus the standard Tailwind scale (`p-4` = 16px, `gap-2` = 8px, …) |
-| Breakpoints | `mobileLarge` 600, `tablet` 800, `tabletDown` (max 800), `desktop` 1200 |
+| Spacing | t-shirt scale: `xs` 4 / `sm` 8 / `md` 16 / `lg` 24 / `xl` 32 (px), plus `page` 32 — e.g. `p-md`, `gap-sm`, `mr-xl` (not `p-4`, `gap-2`, `mr-8`) |
+| Hover | `brightness-hover` (0.85), `duration-hover` (100ms), `ease-hover` (ease-in) — e.g. `transition-all duration-hover ease-hover hover:brightness-hover` |
+| Breakpoints (min) | `mobileLarge` 600, `tablet` 800, `desktop` 1200 |
+| Breakpoints (max) | `tabletDown` (max 800), `mobileDown` (max 500) |
+
+Bundle repeated typography into one config-defined utility instead of repeating
+the same `font-family` / `text-size` / `font-weight` trio across elements: use
+`text-body`, and when you need another recurring text style add a similar named
+utility to the config's `addUtilities` plugin.
 
 If a value you need isn't in the scale, snap to the nearest token or add a new
 named token to `tailwind.config.js` (and document it) — don't reach for
-arbitrary values. One-off structural dimensions (a fixed illustration width, a
-7px progress dot) may stay as `[Npx]`.
+arbitrary values. Before writing an arbitrary `[value]` (a brightness, a
+duration, an easing, a size), grep `tailwind.config.js` for an existing
+semantic token first. One-off structural dimensions (a fixed illustration
+width, a 7px progress dot) may stay as `[Npx]`.
 
 Notes:
 
 - Tailwind's preflight is disabled (the app ships its own reset in
   `public/index.css`), so set any resets you rely on explicitly.
-- For a one-off responsive rule with no named breakpoint, an arbitrary variant
-  such as `max-[500px]:flex-col` is acceptable.
+- Arbitrary max-width responsive variants like `max-[500px]:flex-col` do NOT
+  compile in this project — they silently emit no CSS. Use a named max-width
+  screen instead (`mobileDown:flex-col`, `tabletDown:...`). If you need another
+  max-width breakpoint, add a named screen to `tailwind.config.js` and use it.
 
 ## 3. Before committing
 
