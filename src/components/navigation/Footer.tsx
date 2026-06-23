@@ -1,5 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import FadeIn from 'react-fade-in';
+import { GitHub } from 'react-feather';
+import { Link, useLocation } from 'react-router-dom';
 import {
   ABOUT_PAGE_ROUTE,
   isOnLandingPageRoute,
@@ -7,49 +9,68 @@ import {
   PRIVACY_PAGE_ROUTE,
 } from 'Routes';
 
-import {
-  FadeInWrapper,
-  FooterContent,
-  FooterLeft,
-  FooterNormalLink,
-  FooterPageLink,
-  FooterRight,
-  FooterWrapper,
-} from './styles/Footer';
+// Shared footer link styling (replaces the old Body + Hover styled mixins).
+const linkClasses =
+  'text-body text-light2 no-underline whitespace-nowrap ' +
+  'cursor-pointer transition-all duration-hover ease-hover ' +
+  'hover:brightness-hover focus:brightness-hover';
+
+// margin: 16px 16px 0 0 on the smallest screens, matching the old layout.
+const rightLinkClasses = `${linkClasses} ml-xl mobileDown:mt-md mobileDown:mr-md mobileDown:ml-0`;
 
 const Footer = () => {
   const location = useLocation();
+  const onLanding = isOnLandingPageRoute(location);
 
   return (
-    <FadeInWrapper delay={1000}>
-      <FooterWrapper noMargin={isOnLandingPageRoute(location)}>
-        <FooterContent>
-          <FooterLeft>
-            <FooterPageLink to={LANDING_PAGE_ROUTE}>Home</FooterPageLink>
-            <FooterPageLink to={ABOUT_PAGE_ROUTE}>About</FooterPageLink>
-            <FooterPageLink to={PRIVACY_PAGE_ROUTE}>
+    <FadeIn delay={1000} className="relative z-0 w-screen [&>div]:flex">
+      <div
+        className={`flex w-full items-center bg-primaryExtraDark h-fit min-h-[70px] ${
+          onLanding ? 'mt-0' : 'mt-xl'
+        }`}
+      >
+        <div className="flex w-full justify-between mx-auto px-xl tabletDown:p-md mobileDown:flex-col">
+          <div className="flex items-center">
+            <Link to={LANDING_PAGE_ROUTE} className={`${linkClasses} mr-xl`}>
+              Home
+            </Link>
+            <Link to={ABOUT_PAGE_ROUTE} className={`${linkClasses} mr-xl`}>
+              About
+            </Link>
+            <Link to={PRIVACY_PAGE_ROUTE} className={`${linkClasses} mr-xl`}>
               Privacy Policy
-            </FooterPageLink>
-          </FooterLeft>
-          <FooterRight>
-            <FooterNormalLink
+            </Link>
+          </div>
+          <div className="flex items-center">
+            <a
+              href="https://github.com/UWFlow/uwflow/releases/tag/v1.0.0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${rightLinkClasses} inline-flex items-center gap-sm`}
+            >
+              <GitHub size={16} />
+              We&apos;re open source!
+            </a>
+            <a
               href="https://www.fb.com/planyourflow"
               target="_blank"
               rel="noopener noreferrer"
+              className={rightLinkClasses}
             >
               Facebook
-            </FooterNormalLink>
-            <FooterNormalLink
+            </a>
+            <a
               href="mailto:info@uwflow.com"
               target="_blank"
               rel="noopener noreferrer"
+              className={rightLinkClasses}
             >
               Email
-            </FooterNormalLink>
-          </FooterRight>
-        </FooterContent>
-      </FooterWrapper>
-    </FadeInWrapper>
+            </a>
+          </div>
+        </div>
+      </div>
+    </FadeIn>
   );
 };
 
