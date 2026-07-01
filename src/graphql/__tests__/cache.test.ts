@@ -1,4 +1,5 @@
 import { cache } from '../apollo';
+import { GET_PLANNER_DATA } from '../queries/planner/Planner';
 
 /**
  * Exercises the real `InMemoryCache` `typePolicies` from `apollo.js` (rather
@@ -63,5 +64,63 @@ describe('Apollo InMemoryCache normalization (typePolicies keyFields)', () => {
     expect(cache.identify({ __typename: 'course', id: 123 })).toBe(
       'course:123',
     );
+  });
+
+  it('keys user_course_plan by user_id + term_id + course_id', () => {
+    expect(
+      cache.identify({
+        __typename: 'user_course_plan',
+        user_id: 5,
+        term_id: 1259,
+        course_id: 11,
+      }),
+    ).toBe('user_course_plan:{"user_id":5,"term_id":1259,"course_id":11}');
+  });
+
+  // Regression: the planner query once omitted user_id from user_course_plan,
+  // so writing its result threw ("Missing field 'user_id'") and /plan hung on
+  // the loading spinner. Writing a real result must select every keyField.
+  it('can write a getPlannerData result (selection covers all keyFields)', () => {
+    expect(() =>
+      cache.writeQuery({
+        query: GET_PLANNER_DATA,
+        variables: { id: 5 },
+        data: {
+          user: [{ __typename: 'user', id: 5, program: 'CS' }],
+          user_course_taken: [
+            {
+              __typename: 'user_course_taken',
+              term_id: 1239,
+              level: '1A',
+              course_id: 1,
+              course: { __typename: 'course', id: 1, code: 'cs135', name: 'x' },
+            },
+          ],
+          user_course_plan: [
+            {
+              __typename: 'user_course_plan',
+              user_id: 5,
+              term_id: 1259,
+              course_id: 2,
+              course: {
+                __typename: 'course',
+                id: 2,
+                code: 'cs136',
+                name: 'y',
+                prerequisites: [],
+              },
+            },
+          ],
+          checklist: [
+            {
+              __typename: 'checklist',
+              id: 1,
+              name: 'Honours CS',
+              requirements: [],
+            },
+          ],
+        },
+      }),
+    ).not.toThrow();
   });
 });

@@ -25,6 +25,7 @@ export const GET_PLANNER_DATA = gql`
       where: { user_id: { _eq: $id } }
       order_by: { course_id: asc }
     ) {
+      user_id
       term_id
       course_id
       course {
@@ -76,6 +77,7 @@ export type PlannerDataQuery = {
     course: { id: number; code: string; name: string } | null;
   }[];
   user_course_plan: {
+    user_id: number;
     term_id: number;
     course_id: number;
     course: {

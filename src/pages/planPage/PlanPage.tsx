@@ -44,7 +44,7 @@ const PlanPage = () => {
   const [openModal] = useModal();
   const userId = getUserId();
 
-  const { loading, data, refetch } = useQuery<
+  const { loading, error, data, refetch } = useQuery<
     PlannerDataQuery,
     PlannerDataQueryVariables
   >(GET_PLANNER_DATA, { variables: { id: userId }, skip: !isLoggedIn });
@@ -212,6 +212,26 @@ const PlanPage = () => {
               Log in to continue
             </button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={planPageWrapperClasses}>
+        {helmet}
+        <div className="flex flex-col items-center gap-sm pt-[150px] text-center">
+          <p className="m-0 text-md text-dark2">
+            Couldn&apos;t load your plan — please try again.
+          </p>
+          <button
+            type="button"
+            className="cursor-pointer rounded border-none bg-accent px-md py-sm text-sm font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
+            onClick={() => refetch()}
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
