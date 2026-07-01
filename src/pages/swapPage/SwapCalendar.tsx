@@ -23,6 +23,7 @@ import {
   CalendarEventVariant,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
+import CourseSearchDropdown from 'components/input/CourseSearchDropdown';
 import { GET_COURSE_FOR_SWAP } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
 import {
@@ -32,7 +33,6 @@ import {
   termCodeToDate,
 } from 'utils/Misc';
 
-import CourseSearchDropdown from './CourseSearchDropdown';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,

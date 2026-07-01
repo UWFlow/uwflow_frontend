@@ -73,6 +73,9 @@ export const cache = new InMemoryCache({
     user_course_taken: {
       keyFields: ['term_id', 'course_id'],
     },
+    user_course_plan: {
+      keyFields: ['user_id', 'term_id', 'course_id'],
+    },
     user_schedule: {
       // `user_id` plus the nested `section.id`. The trailing `['id']` declares
       // the subfields of the preceding `section` object field — this is not the
