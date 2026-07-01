@@ -8,19 +8,27 @@ import {
 } from 'generated/graphql';
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
+import {
+  COURSE_DROPDOWN_ALL_QUERY,
+  CourseDropdownAllQuery,
+} from 'graphql/queries/planner/Planner';
 import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
 
 const dropdownEmptyStateClasses =
   'px-3.5 py-4 text-center text-[13px] text-dark3';
 
-type CourseItem = CourseDropdownByTermQuery['course'][number];
+type CourseItem = { code: string; name: string };
 
 type CourseSearchDropdownProps = {
   selectedCode: string | null;
   onSelect: (code: string) => void;
   onClose: () => void;
-  termId: number;
+  // When set, only courses with sections in this term are searchable;
+  // when omitted, every course is.
+  termId?: number;
+  // Tailwind classes positioning the dropdown relative to its parent.
+  positionClasses?: string;
 };
 
 type RowData = {
@@ -65,20 +73,14 @@ const CourseSearchDropdown = ({
   onSelect,
   onClose,
   termId,
+  positionClasses = 'right-0 top-[calc(100%+8px)]',
 }: CourseSearchDropdownProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, []);
 
   // Let keyboard users dismiss the dropdown with Escape, matching the
   // pointer-only backdrop click.
@@ -90,12 +92,20 @@ const CourseSearchDropdown = ({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  const { data, loading } = useQuery<
+  const byTerm = useQuery<
     CourseDropdownByTermQuery,
     CourseDropdownByTermQueryVariables
-  >(COURSE_DROPDOWN_TERM_QUERY, { variables: { termId } });
+  >(COURSE_DROPDOWN_TERM_QUERY, {
+    variables: { termId: termId ?? 0 },
+    skip: termId === undefined,
+  });
+  const all = useQuery<CourseDropdownAllQuery>(COURSE_DROPDOWN_ALL_QUERY, {
+    skip: termId !== undefined,
+  });
 
-  const allCourses: CourseItem[] = data?.course ?? [];
+  const loading = termId === undefined ? all.loading : byTerm.loading;
+  const allCourses: CourseItem[] =
+    (termId === undefined ? all.data?.course : byTerm.data?.course) ?? [];
 
   // Course codes in the data are lowercase with no space ("cs135"), so a
   // query like "CS 135" matches the `code` key poorly. Run two passes —
@@ -167,7 +177,12 @@ const CourseSearchDropdown = ({
   return (
     <>
       <div className="fixed inset-0 z-[199]" onClick={onClose} />
-      <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+      <div
+        className={cn(
+          'absolute z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]',
+          positionClasses,
+        )}
+      >
         <input
           ref={inputRef}
           className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
