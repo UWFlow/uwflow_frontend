@@ -42,21 +42,29 @@ export type PlanRow = {
 export const toPlanRows = (
   planData: PlannerDataQuery['user_course_plan'],
 ): PlanRow[] =>
-  planData
-    .filter((row) => row.course !== null)
-    .map((row) => ({
-      termId: row.term_id,
-      courseId: row.course_id,
-      code: row.course!.code,
-      name: row.course!.name,
-      prereqs: row
-        .course!.prerequisites.filter((p) => p.prerequisite !== null)
-        .map((p) => ({
-          courseId: p.prerequisite!.id,
-          code: p.prerequisite!.code,
-          isCoreq: p.is_corequisite === true,
-        })),
-    }));
+  planData.flatMap((row) => {
+    const { course } = row;
+    if (!course) return [];
+    return [
+      {
+        termId: row.term_id,
+        courseId: row.course_id,
+        code: course.code,
+        name: course.name,
+        prereqs: course.prerequisites.flatMap((p) =>
+          p.prerequisite
+            ? [
+                {
+                  courseId: p.prerequisite.id,
+                  code: p.prerequisite.code,
+                  isCoreq: p.is_corequisite === true,
+                },
+              ]
+            : [],
+        ),
+      },
+    ];
+  });
 
 /*
  * Terms shown on the planner: every transcript term (in order), then future
@@ -124,7 +132,9 @@ export const buildTerms = (
   // Slot planned courses into their terms.
   const byTermId = new Map(terms.map((term) => [term.termId, term]));
   planRows.forEach((row) => {
-    byTermId.get(row.termId)!.courses.push({
+    const term = byTermId.get(row.termId);
+    if (!term) return;
+    term.courses.push({
       courseId: row.courseId,
       code: row.code,
       name: row.name,
