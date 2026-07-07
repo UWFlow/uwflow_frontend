@@ -34,6 +34,8 @@ export const TRANSCRIPT_ERRORS: MessageObject = {
 };
 
 export const SCHEDULE_ERRORS: MessageObject = {
+  course_selection_schedule:
+    'That looks like your Course Selection page – in Quest, go to Enroll → My Class Schedule and paste that instead.',
   empty_schedule:
     'Looks like that schedule is empty. Check for copy/paste errors, and try again.',
   old_schedule:

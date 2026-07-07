@@ -140,8 +140,17 @@ const ScheduleUploadModalContent = ({
 
       if ((response as ErrorResponse).error) {
         const errorRes = response as ErrorResponse;
+        // The Course Selection cart page contains a term header but no class
+        // numbers, so the backend reports it as an empty schedule. Detect it
+        // here (we have the pasted text) and give a more useful hint.
+        const isCourseSelection =
+          errorRes.error === 'empty_schedule' &&
+          /course selection/i.test(pastedSchedule);
         setUploadError(
-          SCHEDULE_ERRORS[errorRes.error] || SCHEDULE_ERRORS.default_schedule,
+          isCourseSelection
+            ? SCHEDULE_ERRORS.course_selection_schedule
+            : SCHEDULE_ERRORS[errorRes.error] ||
+                SCHEDULE_ERRORS.default_schedule,
         );
       } else {
         const scheduleRes = response as ScheduleParseResponse;
