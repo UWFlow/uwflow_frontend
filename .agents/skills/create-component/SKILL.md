@@ -47,6 +47,7 @@ arbitrary `[Npx]` values:
 | Font weight | `font-light` 300 / `font-regular` 400 / `font-semibold` 600 / `font-extrabold` 800 |
 | Typography | `text-body` (Inter / 16px / 400) — a config `addUtilities` class; prefer it over repeating `font-inter text-md font-regular` |
 | Radius | `rounded-card` (4px) for cards/chips |
+| Shadows | `shadow-box` for in-page cards, `shadow-modal` for floating prompt cards |
 | Spacing | t-shirt scale: `xs` 4 / `sm` 8 / `md` 16 / `lg` 24 / `xl` 32 (px), plus `page` 32 — e.g. `p-md`, `gap-sm`, `mr-xl` (not `p-4`, `gap-2`, `mr-8`) |
 | Hover | `brightness-hover` (0.85), `duration-hover` (100ms), `ease-hover` (ease-in) — e.g. `transition-all duration-hover ease-hover hover:brightness-hover` |
 | Breakpoints (min) | `mobileLarge` 600, `tablet` 800, `desktop` 1200 |

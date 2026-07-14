@@ -1,13 +1,15 @@
 import React from 'react';
-import { CheckCircle, CheckSquare, Circle, X } from 'react-feather';
+import { CheckCircle, CheckSquare, Circle } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { getCoursePageRoute } from 'Routes';
 
+import { Card, CardHeader } from 'components/ui/card';
 import { PlannerDataQuery } from 'graphql/queries/planner/Planner';
 import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
 
 import { evaluateChecklist } from './planner';
+import RemoveButton from './RemoveButton';
 
 type Checklist = PlannerDataQuery['checklist'][number];
 
@@ -27,21 +29,17 @@ const ChecklistCard = ({
   const met = categories.reduce((sum, c) => sum + c.metCount, 0);
 
   return (
-    <div className="rounded-lg bg-white p-md shadow-box">
-      <div className="mb-sm flex items-center gap-xs text-sm text-dark2">
+    <Card>
+      <CardHeader>
         <CheckSquare size={16} />
         <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
           {checklist.name}
         </span>
-        <button
-          type="button"
-          aria-label={`Remove ${checklist.name}`}
-          className="shrink-0 cursor-pointer border-0 bg-transparent p-0 text-dark3 hover:text-red"
+        <RemoveButton
+          label={`Remove ${checklist.name}`}
           onClick={() => onRemove(checklist.id)}
-        >
-          <X size={14} />
-        </button>
-      </div>
+        />
+      </CardHeader>
 
       <div className="text-2xl font-semibold text-dark1">
         {met} / {total} <span className="text-sm font-regular">met</span>
@@ -101,7 +99,7 @@ const ChecklistCard = ({
           </div>
         </div>
       ))}
-    </div>
+    </Card>
   );
 };
 

@@ -124,6 +124,8 @@ module.exports = {
         'dark-box': '0px 0px 10px #042049',
         'bottom-box':
           '0px 1px 3px rgba(236, 237, 237, 0.4), 0px 1px 3px rgba(142, 147, 148, 0.2)',
+        // Floating prompt cards (LoginPromptCard, upload modal content).
+        modal: '0 8px 32px rgba(23, 43, 77, 0.16)',
       },
       textShadow: {
         DEFAULT:

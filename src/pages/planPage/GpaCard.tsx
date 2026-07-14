@@ -1,6 +1,8 @@
 import React from 'react';
 import { Award } from 'react-feather';
 
+import { Button } from 'components/ui/button';
+import { Card, CardHeader } from 'components/ui/card';
 import { TRANSCRIPT_UPLOAD_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
 import { computeGpa, computeTermGpas, TranscriptGradeStore } from 'utils/Gpa';
@@ -20,20 +22,19 @@ const GpaCard = ({ gradeStore, onAfterUploadSuccess }: GpaCardProps) => {
   const termGpas = gradeStore ? computeTermGpas(gradeStore) : [];
 
   return (
-    <div className="rounded-lg bg-white p-md shadow-box">
-      <div className="mb-sm flex items-center gap-xs text-sm text-dark2">
+    <Card>
+      <CardHeader>
         <Award size={16} />
         GPA · OMSAS 4.0 scale
-      </div>
+      </CardHeader>
       {cumulativeGpa === null ? (
         <>
           <p className="m-0 mb-sm text-xs leading-normal text-dark2">
             Upload your transcript to calculate your GPA. Your grades never
             leave this browser — we don&apos;t store them.
           </p>
-          <button
-            type="button"
-            className="cursor-pointer rounded border-none bg-accent px-md py-sm text-sm font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
+          <Button
+            variant="accent"
             onClick={() =>
               openModal(TRANSCRIPT_UPLOAD_MODAL, {
                 onAfterUploadSuccess,
@@ -42,7 +43,7 @@ const GpaCard = ({ gradeStore, onAfterUploadSuccess }: GpaCardProps) => {
             }
           >
             Upload transcript
-          </button>
+          </Button>
         </>
       ) : (
         <>
@@ -67,7 +68,7 @@ const GpaCard = ({ gradeStore, onAfterUploadSuccess }: GpaCardProps) => {
           </div>
         </>
       )}
-    </div>
+    </Card>
   );
 };
 

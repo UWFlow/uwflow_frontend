@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { BookOpen, Lock } from 'react-feather';
+import { BookOpen } from 'react-feather';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@apollo/client';
 
+import LoginPromptCard from 'components/auth/LoginPromptCard';
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import PageOverlay from 'components/modal/PageOverlay';
+import { Button } from 'components/ui/button';
 import TranscriptUploadModalContent from 'components/upload/TranscriptUploadModalContent';
-import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import {
   DELETE_USER_COURSE_PLAN,
@@ -21,8 +23,6 @@ import {
   PlannerDataQuery,
   PlannerDataQueryVariables,
 } from 'graphql/queries/planner/Planner';
-import useModal from 'hooks/useModal';
-import { cn } from 'lib/utils';
 import { getUserId } from 'utils/Auth';
 import { loadTranscriptGrades } from 'utils/Gpa';
 import { formatCourseCode, getCurrentTermCode } from 'utils/Misc';
@@ -41,7 +41,6 @@ const planPageWrapperClasses = 'min-h-page w-full bg-light1 pb-xl';
 
 const PlanPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const [openModal] = useModal();
   const userId = getUserId();
 
   const { loading, error, data, refetch } = useQuery<
@@ -193,25 +192,10 @@ const PlanPage = () => {
       <div className={planPageWrapperClasses}>
         {helmet}
         <div className="flex justify-center pt-[150px]">
-          <div className="flex max-w-[400px] flex-col items-center gap-3 rounded bg-white px-12 py-10 text-center shadow-[0_8px_32px_rgba(23,43,77,0.16)]">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-light2 text-dark2">
-              <Lock size={24} />
-            </div>
-            <h2 className="mb-0 mt-1 text-xl font-bold text-dark1">
-              Log in to plan your degree
-            </h2>
-            <p className="m-0 text-sm leading-normal text-dark2">
-              Import your transcript to see the courses you&apos;ve taken, plan
-              future terms, track degree requirements, and calculate your GPA.
-            </p>
-            <button
-              type="button"
-              className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
-              onClick={() => openModal(AUTH_MODAL)}
-            >
-              Log in to continue
-            </button>
-          </div>
+          <LoginPromptCard
+            title="Log in to plan your degree"
+            description="Import your transcript to see the courses you've taken, plan future terms, track degree requirements, and calculate your GPA."
+          />
         </div>
       </div>
     );
@@ -221,17 +205,16 @@ const PlanPage = () => {
     return (
       <div className={planPageWrapperClasses}>
         {helmet}
-        <div className="flex flex-col items-center gap-sm pt-[150px] text-center">
-          <p className="m-0 text-md text-dark2">
+        {/* Same banner treatment as the 404 page's PageHeader. */}
+        <div className="flex h-[150px] w-full items-end bg-primaryExtraDark pb-xl text-center tabletDown:h-auto tabletDown:px-md tabletDown:py-xl">
+          <p className="mx-auto my-0 w-full max-w-[1200px] px-xl font-anderson text-2xl font-extrabold text-white tablet:text-3xl tabletDown:px-0">
             Couldn&apos;t load your plan — please try again.
           </p>
-          <button
-            type="button"
-            className="cursor-pointer rounded border-none bg-accent px-md py-sm text-sm font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
-            onClick={() => refetch()}
-          >
+        </div>
+        <div className="flex justify-center pt-lg">
+          <Button variant="accent" onClick={() => refetch()}>
             Retry
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -311,25 +294,16 @@ const PlanPage = () => {
       </div>
 
       {/* First visit: prompt for a transcript import, like the swap page. */}
-      <div
-        className={cn(
-          'fixed inset-0 z-10 box-border flex items-start justify-center overflow-y-auto bg-white/55 backdrop-blur [transition:opacity_0.4s_ease]',
-          !hasTranscript
-            ? 'pointer-events-auto opacity-100'
-            : 'pointer-events-none opacity-0',
-        )}
-      >
+      <PageOverlay visible={!hasTranscript}>
         {!hasTranscript && (
-          <div className="mt-[150px] flex justify-center">
-            <TranscriptUploadModalContent
-              onAfterUploadSuccess={() => {
-                setGradeVersion((version) => version + 1);
-                refetch();
-              }}
-            />
-          </div>
+          <TranscriptUploadModalContent
+            onAfterUploadSuccess={() => {
+              setGradeVersion((version) => version + 1);
+              refetch();
+            }}
+          />
         )}
-      </div>
+      </PageOverlay>
     </div>
   );
 };

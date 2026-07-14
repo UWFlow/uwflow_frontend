@@ -1,13 +1,15 @@
 import React, { DragEvent, useRef, useState } from 'react';
-import { AlertTriangle, Check, Menu, Plus, X } from 'react-feather';
+import { AlertTriangle, Check, Menu, Plus } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { getCoursePageRoute } from 'Routes';
 
 import CourseSearchDropdown from 'components/input/CourseSearchDropdown';
+import { Card } from 'components/ui/card';
 import { cn } from 'lib/utils';
 import { formatCourseCode, termCodeToDate } from 'utils/Misc';
 
 import { PlannerTerm } from './planner';
+import RemoveButton from './RemoveButton';
 
 const DRAG_MIME = 'application/x-uwflow-plan-course';
 
@@ -55,9 +57,9 @@ const TermCard = ({
   };
 
   return (
-    <div
+    <Card
       className={cn(
-        'flex min-h-[220px] flex-col rounded-lg bg-white p-md shadow-box',
+        'flex min-h-[220px] flex-col',
         !term.taken && dragOver && 'ring-2 ring-primary',
       )}
       onDragOver={(e) => {
@@ -148,14 +150,10 @@ const TermCard = ({
                 </div>
               </div>
               {!term.taken && (
-                <button
-                  type="button"
-                  aria-label={`Remove ${formatCourseCode(course.code)}`}
-                  className="shrink-0 cursor-pointer border-0 bg-transparent p-0 text-dark3 hover:text-red"
+                <RemoveButton
+                  label={`Remove ${formatCourseCode(course.code)}`}
                   onClick={() => onRemoveCourse(term.termId, course.courseId)}
-                >
-                  <X size={14} />
-                </button>
+                />
               )}
             </div>
           );
@@ -185,7 +183,7 @@ const TermCard = ({
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 };
 

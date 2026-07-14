@@ -37,6 +37,9 @@ as `[Npx]`.
   Tailwind `rounded-md` / `lg` / `xl` (6 / 8 / 12px) for larger surfaces.
 - **Colors**: mirror `src/constants/GlobalTheme.tsx` (`primary`, `dark1`,
   `light2`, `accent`, …). Keep the two files in sync.
+- **Shadows**: `shadow-box` for in-page cards, `shadow-modal` for floating
+  prompt cards/modal content, `shadow-dark-box` / `shadow-bottom-box` for
+  legacy surfaces.
 
 Note: spacing and font-size both expose `sm`/`md`/`lg` keys with different
 pixel values (Tailwind keeps them in separate namespaces). `text-sm` is 14px;
