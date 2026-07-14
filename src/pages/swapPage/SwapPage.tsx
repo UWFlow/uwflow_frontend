@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { Lock } from 'react-feather';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@apollo/client';
 import { GetUserQuery, GetUserQueryVariables } from 'generated/graphql';
 
+import LoginPromptCard from 'components/auth/LoginPromptCard';
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import PageOverlay from 'components/modal/PageOverlay';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
-import { AUTH_MODAL, SWAP_TOUR_MODAL } from 'constants/Modal';
+import { SWAP_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
 import useModal from 'hooks/useModal';
-import { cn } from 'lib/utils';
 
 import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar, { getDisplayedTermPresence } from './SwapCalendar';
@@ -102,48 +102,21 @@ const SwapPage = () => {
         schedule={isDemo ? DEMO_SCHEDULE : schedule}
         demoMode={isDemo}
       />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div
-          className={cn(
-            'fixed inset-0 z-10 box-border flex items-start justify-center overflow-y-auto bg-white/55 backdrop-blur [transition:opacity_0.4s_ease]',
-            !hasDisplayedTermClasses
-              ? 'pointer-events-auto opacity-100'
-              : 'pointer-events-none opacity-0',
-          )}
-        >
-          <div className="mt-[150px] flex justify-center">
-            {isLoggedIn ? (
-              <ScheduleUploadModalContent
-                onAfterUploadSuccess={() =>
-                  refetch({ id: Number(localStorage.getItem('user_id')) })
-                }
-                showSkipStepButton={false}
-              />
-            ) : (
-              <div className="flex max-w-[400px] flex-col items-center gap-3 rounded bg-white px-12 py-10 text-center shadow-[0_8px_32px_rgba(23,43,77,0.16)]">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-light2 text-dark2">
-                  <Lock size={24} />
-                </div>
-                <h2 className="mb-0 mt-1 text-xl font-bold text-dark1">
-                  Upload your schedule to plan swaps
-                </h2>
-                <p className="m-0 text-sm leading-normal text-dark2">
-                  Log in and paste your courses from Quest to simulate section
-                  swaps and see which ones are possible. You make the actual
-                  swap in Quest.
-                </p>
-                <button
-                  className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
-                  onClick={() => openModal(AUTH_MODAL)}
-                  type="button"
-                >
-                  Log in to continue
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <PageOverlay visible={!hasDisplayedTermClasses}>
+        {isLoggedIn ? (
+          <ScheduleUploadModalContent
+            onAfterUploadSuccess={() =>
+              refetch({ id: Number(localStorage.getItem('user_id')) })
+            }
+            showSkipStepButton={false}
+          />
+        ) : (
+          <LoginPromptCard
+            title="Upload your schedule to plan swaps"
+            description="Log in and paste your courses from Quest to simulate section swaps and see which ones are possible. You make the actual swap in Quest."
+          />
+        )}
+      </PageOverlay>
     </div>
   );
 };

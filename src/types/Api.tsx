@@ -89,6 +89,19 @@ export type ParseOnlyScheduleResponse = {
   Classes: ParseOnlyScheduleClass[];
 };
 
+export type TranscriptParsedCourse = {
+  code: string;
+  units: number;
+  grade: number | null;
+};
+
+export type TranscriptParsedTerm = {
+  term_id: number;
+  level: string;
+  courses: TranscriptParsedCourse[];
+};
+
 export type TranscriptParseResponse = {
   courses_imported: number;
+  terms: TranscriptParsedTerm[];
 };

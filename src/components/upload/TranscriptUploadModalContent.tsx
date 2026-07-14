@@ -24,6 +24,8 @@ import TranscriptUploadVideoMP4 from 'img/upload/transcript-import-chrome.mp4';
 import TranscriptUploadVideoWebm from 'img/upload/transcript-import-chrome.webm';
 import { ErrorResponse, TranscriptParseResponse } from 'types/Api';
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
+import { getUserId } from 'utils/Auth';
+import { saveTranscriptGrades } from 'utils/Gpa';
 import { sleep } from 'utils/Misc';
 
 import {
@@ -93,12 +95,15 @@ const TranscriptUploadModalContent = ({
     const formData = new FormData();
     formData.append('file', file);
     setUploadState(UPLOAD_PENDING);
-    const [, status] = await makeAuthenticatedPOSTRequest<
+    const [response, status] = await makeAuthenticatedPOSTRequest<
       FormData,
       TranscriptParseResponse | ErrorResponse
     >(`${BACKEND_ENDPOINT}${TRANSCRIPT_PARSE_ENDPOINT}`, formData, {});
 
     if (status === 200) {
+      // Keep parsed grades/units client-side only (for the planner's GPA
+      // calculator); they are never persisted server-side.
+      saveTranscriptGrades(getUserId(), response as TranscriptParseResponse);
       await sleep(500);
       setUploadState(UPLOAD_SUCCESSFUL);
       toast(DATA_UPLOAD_SUCCESS);

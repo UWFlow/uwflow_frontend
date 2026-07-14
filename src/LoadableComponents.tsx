@@ -39,3 +39,7 @@ export const LoadableWelcomePage = loadable(
 export const LoadableSwapPage = loadable(
   () => import(/* webpackPrefetch: true */ './pages/swapPage/SwapPage'),
 );
+
+export const LoadablePlanPage = loadable(
+  () => import(/* webpackPrefetch: true */ './pages/planPage/PlanPage'),
+);
