@@ -23,6 +23,7 @@ export type Scalars = {
   bigint: { input: any; output: any };
   date: { input: any; output: any };
   join_source: { input: any; output: any };
+  jsonb: { input: any; output: any };
   numeric: { input: any; output: any };
   smallint: { input: any; output: any };
   timestamptz: { input: any; output: any };
@@ -1945,6 +1946,254 @@ export type Bigint_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['bigint']['input']>;
   _neq?: InputMaybe<Scalars['bigint']['input']>;
   _nin?: InputMaybe<Array<Scalars['bigint']['input']>>;
+};
+
+/** columns and relationships of "checklist" */
+export type Checklist = {
+  __typename?: 'checklist';
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  requirements: Scalars['jsonb']['output'];
+};
+
+/** columns and relationships of "checklist" */
+export type ChecklistRequirementsArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregated selection of "checklist" */
+export type Checklist_Aggregate = {
+  __typename?: 'checklist_aggregate';
+  aggregate?: Maybe<Checklist_Aggregate_Fields>;
+  nodes: Array<Checklist>;
+};
+
+/** aggregate fields of "checklist" */
+export type Checklist_Aggregate_Fields = {
+  __typename?: 'checklist_aggregate_fields';
+  avg?: Maybe<Checklist_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Checklist_Max_Fields>;
+  min?: Maybe<Checklist_Min_Fields>;
+  stddev?: Maybe<Checklist_Stddev_Fields>;
+  stddev_pop?: Maybe<Checklist_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Checklist_Stddev_Samp_Fields>;
+  sum?: Maybe<Checklist_Sum_Fields>;
+  var_pop?: Maybe<Checklist_Var_Pop_Fields>;
+  var_samp?: Maybe<Checklist_Var_Samp_Fields>;
+  variance?: Maybe<Checklist_Variance_Fields>;
+};
+
+/** aggregate fields of "checklist" */
+export type Checklist_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Checklist_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Checklist_Append_Input = {
+  requirements?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Checklist_Avg_Fields = {
+  __typename?: 'checklist_avg_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "checklist". All fields are combined with a logical 'AND'. */
+export type Checklist_Bool_Exp = {
+  _and?: InputMaybe<Array<Checklist_Bool_Exp>>;
+  _not?: InputMaybe<Checklist_Bool_Exp>;
+  _or?: InputMaybe<Array<Checklist_Bool_Exp>>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  requirements?: InputMaybe<Jsonb_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "checklist" */
+export enum Checklist_Constraint {
+  /** unique or primary key constraint on columns "name" */
+  ChecklistNameKey = 'checklist_name_key',
+  /** unique or primary key constraint on columns "id" */
+  ChecklistPkey = 'checklist_pkey',
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Checklist_Delete_At_Path_Input = {
+  requirements?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Checklist_Delete_Elem_Input = {
+  requirements?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Checklist_Delete_Key_Input = {
+  requirements?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** input type for incrementing numeric columns in table "checklist" */
+export type Checklist_Inc_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "checklist" */
+export type Checklist_Insert_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  requirements?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** aggregate max on columns */
+export type Checklist_Max_Fields = {
+  __typename?: 'checklist_max_fields';
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type Checklist_Min_Fields = {
+  __typename?: 'checklist_min_fields';
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "checklist" */
+export type Checklist_Mutation_Response = {
+  __typename?: 'checklist_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Checklist>;
+};
+
+/** on_conflict condition type for table "checklist" */
+export type Checklist_On_Conflict = {
+  constraint: Checklist_Constraint;
+  update_columns?: Array<Checklist_Update_Column>;
+  where?: InputMaybe<Checklist_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "checklist". */
+export type Checklist_Order_By = {
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  requirements?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: checklist */
+export type Checklist_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Checklist_Prepend_Input = {
+  requirements?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** select columns of table "checklist" */
+export enum Checklist_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Requirements = 'requirements',
+}
+
+/** input type for updating data in table "checklist" */
+export type Checklist_Set_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  requirements?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Checklist_Stddev_Fields = {
+  __typename?: 'checklist_stddev_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Checklist_Stddev_Pop_Fields = {
+  __typename?: 'checklist_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Checklist_Stddev_Samp_Fields = {
+  __typename?: 'checklist_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "checklist" */
+export type Checklist_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Checklist_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Checklist_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  requirements?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Checklist_Sum_Fields = {
+  __typename?: 'checklist_sum_fields';
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** update columns of table "checklist" */
+export enum Checklist_Update_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Requirements = 'requirements',
+}
+
+export type Checklist_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Checklist_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Checklist_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Checklist_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Checklist_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Checklist_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Checklist_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Checklist_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Checklist_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Checklist_Var_Pop_Fields = {
+  __typename?: 'checklist_var_pop_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Checklist_Var_Samp_Fields = {
+  __typename?: 'checklist_var_samp_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Checklist_Variance_Fields = {
+  __typename?: 'checklist_variance_fields';
+  id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** columns and relationships of "course" */
@@ -4531,9 +4780,41 @@ export type Join_Source_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['join_source']['input']>>;
 };
 
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
+  /** is the column contained in the given json value */
+  _contained_in?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']['input']>;
+  _eq?: InputMaybe<Scalars['jsonb']['input']>;
+  _gt?: InputMaybe<Scalars['jsonb']['input']>;
+  _gte?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the string exist as a top-level key in the column */
+  _has_key?: InputMaybe<Scalars['String']['input']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['jsonb']['input']>;
+  _lte?: InputMaybe<Scalars['jsonb']['input']>;
+  _neq?: InputMaybe<Scalars['jsonb']['input']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  /** delete data from the table: "checklist" */
+  delete_checklist?: Maybe<Checklist_Mutation_Response>;
+  /** delete single row from the table: "checklist" */
+  delete_checklist_by_pk?: Maybe<Checklist>;
   /** delete data from the table: "course" */
   delete_course?: Maybe<Course_Mutation_Response>;
   /** delete data from the table: "course_antirequisite" */
@@ -4574,12 +4855,20 @@ export type Mutation_Root = {
   delete_user?: Maybe<User_Mutation_Response>;
   /** delete single row from the table: "user" */
   delete_user_by_pk?: Maybe<User>;
+  /** delete data from the table: "user_course_plan" */
+  delete_user_course_plan?: Maybe<User_Course_Plan_Mutation_Response>;
+  /** delete single row from the table: "user_course_plan" */
+  delete_user_course_plan_by_pk?: Maybe<User_Course_Plan>;
   /** delete data from the table: "user_course_taken" */
   delete_user_course_taken?: Maybe<User_Course_Taken_Mutation_Response>;
   /** delete data from the table: "user_schedule" */
   delete_user_schedule?: Maybe<User_Schedule_Mutation_Response>;
   /** delete data from the table: "user_shortlist" */
   delete_user_shortlist?: Maybe<User_Shortlist_Mutation_Response>;
+  /** insert data into the table: "checklist" */
+  insert_checklist?: Maybe<Checklist_Mutation_Response>;
+  /** insert a single row into the table: "checklist" */
+  insert_checklist_one?: Maybe<Checklist>;
   /** insert data into the table: "course" */
   insert_course?: Maybe<Course_Mutation_Response>;
   /** insert data into the table: "course_antirequisite" */
@@ -4634,6 +4923,10 @@ export type Mutation_Root = {
   insert_section_meeting_one?: Maybe<Section_Meeting>;
   /** insert data into the table: "user" */
   insert_user?: Maybe<User_Mutation_Response>;
+  /** insert data into the table: "user_course_plan" */
+  insert_user_course_plan?: Maybe<User_Course_Plan_Mutation_Response>;
+  /** insert a single row into the table: "user_course_plan" */
+  insert_user_course_plan_one?: Maybe<User_Course_Plan>;
   /** insert data into the table: "user_course_taken" */
   insert_user_course_taken?: Maybe<User_Course_Taken_Mutation_Response>;
   /** insert a single row into the table: "user_course_taken" */
@@ -4648,6 +4941,12 @@ export type Mutation_Root = {
   insert_user_shortlist?: Maybe<User_Shortlist_Mutation_Response>;
   /** insert a single row into the table: "user_shortlist" */
   insert_user_shortlist_one?: Maybe<User_Shortlist>;
+  /** update data of the table: "checklist" */
+  update_checklist?: Maybe<Checklist_Mutation_Response>;
+  /** update single row of the table: "checklist" */
+  update_checklist_by_pk?: Maybe<Checklist>;
+  /** update multiples rows of table: "checklist" */
+  update_checklist_many?: Maybe<Array<Maybe<Checklist_Mutation_Response>>>;
   /** update data of the table: "course" */
   update_course?: Maybe<Course_Mutation_Response>;
   /** update data of the table: "course_antirequisite" */
@@ -4734,6 +5033,14 @@ export type Mutation_Root = {
   update_user?: Maybe<User_Mutation_Response>;
   /** update single row of the table: "user" */
   update_user_by_pk?: Maybe<User>;
+  /** update data of the table: "user_course_plan" */
+  update_user_course_plan?: Maybe<User_Course_Plan_Mutation_Response>;
+  /** update single row of the table: "user_course_plan" */
+  update_user_course_plan_by_pk?: Maybe<User_Course_Plan>;
+  /** update multiples rows of table: "user_course_plan" */
+  update_user_course_plan_many?: Maybe<
+    Array<Maybe<User_Course_Plan_Mutation_Response>>
+  >;
   /** update data of the table: "user_course_taken" */
   update_user_course_taken?: Maybe<User_Course_Taken_Mutation_Response>;
   /** update multiples rows of table: "user_course_taken" */
@@ -4754,6 +5061,16 @@ export type Mutation_Root = {
   update_user_shortlist_many?: Maybe<
     Array<Maybe<User_Shortlist_Mutation_Response>>
   >;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_ChecklistArgs = {
+  where: Checklist_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Checklist_By_PkArgs = {
+  id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -4857,6 +5174,18 @@ export type Mutation_RootDelete_User_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootDelete_User_Course_PlanArgs = {
+  where: User_Course_Plan_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_User_Course_Plan_By_PkArgs = {
+  course_id: Scalars['Int']['input'];
+  term_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+/** mutation root */
 export type Mutation_RootDelete_User_Course_TakenArgs = {
   where: User_Course_Taken_Bool_Exp;
 };
@@ -4869,6 +5198,18 @@ export type Mutation_RootDelete_User_ScheduleArgs = {
 /** mutation root */
 export type Mutation_RootDelete_User_ShortlistArgs = {
   where: User_Shortlist_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_ChecklistArgs = {
+  objects: Array<Checklist_Insert_Input>;
+  on_conflict?: InputMaybe<Checklist_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Checklist_OneArgs = {
+  object: Checklist_Insert_Input;
+  on_conflict?: InputMaybe<Checklist_On_Conflict>;
 };
 
 /** mutation root */
@@ -5028,6 +5369,18 @@ export type Mutation_RootInsert_UserArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootInsert_User_Course_PlanArgs = {
+  objects: Array<User_Course_Plan_Insert_Input>;
+  on_conflict?: InputMaybe<User_Course_Plan_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_User_Course_Plan_OneArgs = {
+  object: User_Course_Plan_Insert_Input;
+  on_conflict?: InputMaybe<User_Course_Plan_On_Conflict>;
+};
+
+/** mutation root */
 export type Mutation_RootInsert_User_Course_TakenArgs = {
   objects: Array<User_Course_Taken_Insert_Input>;
   on_conflict?: InputMaybe<User_Course_Taken_On_Conflict>;
@@ -5067,6 +5420,35 @@ export type Mutation_RootInsert_User_ShortlistArgs = {
 export type Mutation_RootInsert_User_Shortlist_OneArgs = {
   object: User_Shortlist_Insert_Input;
   on_conflict?: InputMaybe<User_Shortlist_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_ChecklistArgs = {
+  _append?: InputMaybe<Checklist_Append_Input>;
+  _delete_at_path?: InputMaybe<Checklist_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Checklist_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Checklist_Delete_Key_Input>;
+  _inc?: InputMaybe<Checklist_Inc_Input>;
+  _prepend?: InputMaybe<Checklist_Prepend_Input>;
+  _set?: InputMaybe<Checklist_Set_Input>;
+  where: Checklist_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Checklist_By_PkArgs = {
+  _append?: InputMaybe<Checklist_Append_Input>;
+  _delete_at_path?: InputMaybe<Checklist_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Checklist_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Checklist_Delete_Key_Input>;
+  _inc?: InputMaybe<Checklist_Inc_Input>;
+  _prepend?: InputMaybe<Checklist_Prepend_Input>;
+  _set?: InputMaybe<Checklist_Set_Input>;
+  pk_columns: Checklist_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Checklist_ManyArgs = {
+  updates: Array<Checklist_Updates>;
 };
 
 /** mutation root */
@@ -5272,6 +5654,25 @@ export type Mutation_RootUpdate_User_By_PkArgs = {
   _inc?: InputMaybe<User_Inc_Input>;
   _set?: InputMaybe<User_Set_Input>;
   pk_columns: User_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Course_PlanArgs = {
+  _inc?: InputMaybe<User_Course_Plan_Inc_Input>;
+  _set?: InputMaybe<User_Course_Plan_Set_Input>;
+  where: User_Course_Plan_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Course_Plan_By_PkArgs = {
+  _inc?: InputMaybe<User_Course_Plan_Inc_Input>;
+  _set?: InputMaybe<User_Course_Plan_Set_Input>;
+  pk_columns: User_Course_Plan_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Course_Plan_ManyArgs = {
+  updates: Array<User_Course_Plan_Updates>;
 };
 
 /** mutation root */
@@ -6488,6 +6889,12 @@ export type Query_Root = {
   aggregate_prof_review_rating: Array<Aggregate_Prof_Review_Rating>;
   /** fetch aggregated fields from the table: "aggregate.prof_review_rating" */
   aggregate_prof_review_rating_aggregate: Aggregate_Prof_Review_Rating_Aggregate;
+  /** fetch data from the table: "checklist" */
+  checklist: Array<Checklist>;
+  /** fetch aggregated fields from the table: "checklist" */
+  checklist_aggregate: Checklist_Aggregate;
+  /** fetch data from the table: "checklist" using primary key columns */
+  checklist_by_pk?: Maybe<Checklist>;
   /** fetch data from the table: "course" */
   course: Array<Course>;
   /** fetch aggregated fields from the table: "course" */
@@ -6580,6 +6987,12 @@ export type Query_Root = {
   user_aggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   user_by_pk?: Maybe<User>;
+  /** fetch data from the table: "user_course_plan" */
+  user_course_plan: Array<User_Course_Plan>;
+  /** fetch aggregated fields from the table: "user_course_plan" */
+  user_course_plan_aggregate: User_Course_Plan_Aggregate;
+  /** fetch data from the table: "user_course_plan" using primary key columns */
+  user_course_plan_by_pk?: Maybe<User_Course_Plan>;
   /** fetch data from the table: "user_course_taken" */
   user_course_taken: Array<User_Course_Taken>;
   /** fetch aggregated fields from the table: "user_course_taken" */
@@ -6728,6 +7141,26 @@ export type Query_RootAggregate_Prof_Review_Rating_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Aggregate_Prof_Review_Rating_Order_By>>;
   where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+};
+
+export type Query_RootChecklistArgs = {
+  distinct_on?: InputMaybe<Array<Checklist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Checklist_Order_By>>;
+  where?: InputMaybe<Checklist_Bool_Exp>;
+};
+
+export type Query_RootChecklist_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Checklist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Checklist_Order_By>>;
+  where?: InputMaybe<Checklist_Bool_Exp>;
+};
+
+export type Query_RootChecklist_By_PkArgs = {
+  id: Scalars['Int']['input'];
 };
 
 export type Query_RootCourseArgs = {
@@ -7076,6 +7509,28 @@ export type Query_RootUser_AggregateArgs = {
 
 export type Query_RootUser_By_PkArgs = {
   id: Scalars['Int']['input'];
+};
+
+export type Query_RootUser_Course_PlanArgs = {
+  distinct_on?: InputMaybe<Array<User_Course_Plan_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Plan_Order_By>>;
+  where?: InputMaybe<User_Course_Plan_Bool_Exp>;
+};
+
+export type Query_RootUser_Course_Plan_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Course_Plan_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Plan_Order_By>>;
+  where?: InputMaybe<User_Course_Plan_Bool_Exp>;
+};
+
+export type Query_RootUser_Course_Plan_By_PkArgs = {
+  course_id: Scalars['Int']['input'];
+  term_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
 };
 
 export type Query_RootUser_Course_TakenArgs = {
@@ -9357,6 +9812,14 @@ export type Subscription_Root = {
   aggregate_prof_review_rating_aggregate: Aggregate_Prof_Review_Rating_Aggregate;
   /** fetch data from the table in a streaming manner: "aggregate.prof_review_rating" */
   aggregate_prof_review_rating_stream: Array<Aggregate_Prof_Review_Rating>;
+  /** fetch data from the table: "checklist" */
+  checklist: Array<Checklist>;
+  /** fetch aggregated fields from the table: "checklist" */
+  checklist_aggregate: Checklist_Aggregate;
+  /** fetch data from the table: "checklist" using primary key columns */
+  checklist_by_pk?: Maybe<Checklist>;
+  /** fetch data from the table in a streaming manner: "checklist" */
+  checklist_stream: Array<Checklist>;
   /** fetch data from the table: "course" */
   course: Array<Course>;
   /** fetch aggregated fields from the table: "course" */
@@ -9483,6 +9946,14 @@ export type Subscription_Root = {
   user_aggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   user_by_pk?: Maybe<User>;
+  /** fetch data from the table: "user_course_plan" */
+  user_course_plan: Array<User_Course_Plan>;
+  /** fetch aggregated fields from the table: "user_course_plan" */
+  user_course_plan_aggregate: User_Course_Plan_Aggregate;
+  /** fetch data from the table: "user_course_plan" using primary key columns */
+  user_course_plan_by_pk?: Maybe<User_Course_Plan>;
+  /** fetch data from the table in a streaming manner: "user_course_plan" */
+  user_course_plan_stream: Array<User_Course_Plan>;
   /** fetch data from the table: "user_course_taken" */
   user_course_taken: Array<User_Course_Taken>;
   /** fetch aggregated fields from the table: "user_course_taken" */
@@ -9691,6 +10162,32 @@ export type Subscription_RootAggregate_Prof_Review_Rating_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Aggregate_Prof_Review_Rating_Stream_Cursor_Input>>;
   where?: InputMaybe<Aggregate_Prof_Review_Rating_Bool_Exp>;
+};
+
+export type Subscription_RootChecklistArgs = {
+  distinct_on?: InputMaybe<Array<Checklist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Checklist_Order_By>>;
+  where?: InputMaybe<Checklist_Bool_Exp>;
+};
+
+export type Subscription_RootChecklist_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Checklist_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Checklist_Order_By>>;
+  where?: InputMaybe<Checklist_Bool_Exp>;
+};
+
+export type Subscription_RootChecklist_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+export type Subscription_RootChecklist_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Checklist_Stream_Cursor_Input>>;
+  where?: InputMaybe<Checklist_Bool_Exp>;
 };
 
 export type Subscription_RootCourseArgs = {
@@ -10143,6 +10640,34 @@ export type Subscription_RootUser_By_PkArgs = {
   id: Scalars['Int']['input'];
 };
 
+export type Subscription_RootUser_Course_PlanArgs = {
+  distinct_on?: InputMaybe<Array<User_Course_Plan_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Plan_Order_By>>;
+  where?: InputMaybe<User_Course_Plan_Bool_Exp>;
+};
+
+export type Subscription_RootUser_Course_Plan_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Course_Plan_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Course_Plan_Order_By>>;
+  where?: InputMaybe<User_Course_Plan_Bool_Exp>;
+};
+
+export type Subscription_RootUser_Course_Plan_By_PkArgs = {
+  course_id: Scalars['Int']['input'];
+  term_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+export type Subscription_RootUser_Course_Plan_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<User_Course_Plan_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Course_Plan_Bool_Exp>;
+};
+
 export type Subscription_RootUser_Course_TakenArgs = {
   distinct_on?: InputMaybe<Array<User_Course_Taken_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -10411,6 +10936,239 @@ export enum User_Constraint {
   /** unique or primary key constraint on columns "secret_id" */
   UserSecretIdKey = 'user_secret_id_key',
 }
+
+/** columns and relationships of "user_course_plan" */
+export type User_Course_Plan = {
+  __typename?: 'user_course_plan';
+  /** An object relationship */
+  course: Course;
+  course_id: Scalars['Int']['output'];
+  term_id: Scalars['Int']['output'];
+  user_id: Scalars['Int']['output'];
+};
+
+/** aggregated selection of "user_course_plan" */
+export type User_Course_Plan_Aggregate = {
+  __typename?: 'user_course_plan_aggregate';
+  aggregate?: Maybe<User_Course_Plan_Aggregate_Fields>;
+  nodes: Array<User_Course_Plan>;
+};
+
+/** aggregate fields of "user_course_plan" */
+export type User_Course_Plan_Aggregate_Fields = {
+  __typename?: 'user_course_plan_aggregate_fields';
+  avg?: Maybe<User_Course_Plan_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<User_Course_Plan_Max_Fields>;
+  min?: Maybe<User_Course_Plan_Min_Fields>;
+  stddev?: Maybe<User_Course_Plan_Stddev_Fields>;
+  stddev_pop?: Maybe<User_Course_Plan_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<User_Course_Plan_Stddev_Samp_Fields>;
+  sum?: Maybe<User_Course_Plan_Sum_Fields>;
+  var_pop?: Maybe<User_Course_Plan_Var_Pop_Fields>;
+  var_samp?: Maybe<User_Course_Plan_Var_Samp_Fields>;
+  variance?: Maybe<User_Course_Plan_Variance_Fields>;
+};
+
+/** aggregate fields of "user_course_plan" */
+export type User_Course_Plan_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<User_Course_Plan_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type User_Course_Plan_Avg_Fields = {
+  __typename?: 'user_course_plan_avg_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "user_course_plan". All fields are combined with a logical 'AND'. */
+export type User_Course_Plan_Bool_Exp = {
+  _and?: InputMaybe<Array<User_Course_Plan_Bool_Exp>>;
+  _not?: InputMaybe<User_Course_Plan_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Course_Plan_Bool_Exp>>;
+  course?: InputMaybe<Course_Bool_Exp>;
+  course_id?: InputMaybe<Int_Comparison_Exp>;
+  term_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "user_course_plan" */
+export enum User_Course_Plan_Constraint {
+  /** unique or primary key constraint on columns "user_id", "term_id", "course_id" */
+  UserCoursePlanPkey = 'user_course_plan_pkey',
+}
+
+/** input type for incrementing numeric columns in table "user_course_plan" */
+export type User_Course_Plan_Inc_Input = {
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "user_course_plan" */
+export type User_Course_Plan_Insert_Input = {
+  course?: InputMaybe<Course_Obj_Rel_Insert_Input>;
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate max on columns */
+export type User_Course_Plan_Max_Fields = {
+  __typename?: 'user_course_plan_max_fields';
+  course_id?: Maybe<Scalars['Int']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** aggregate min on columns */
+export type User_Course_Plan_Min_Fields = {
+  __typename?: 'user_course_plan_min_fields';
+  course_id?: Maybe<Scalars['Int']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** response of any mutation on the table "user_course_plan" */
+export type User_Course_Plan_Mutation_Response = {
+  __typename?: 'user_course_plan_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<User_Course_Plan>;
+};
+
+/** on_conflict condition type for table "user_course_plan" */
+export type User_Course_Plan_On_Conflict = {
+  constraint: User_Course_Plan_Constraint;
+  update_columns?: Array<User_Course_Plan_Update_Column>;
+  where?: InputMaybe<User_Course_Plan_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "user_course_plan". */
+export type User_Course_Plan_Order_By = {
+  course?: InputMaybe<Course_Order_By>;
+  course_id?: InputMaybe<Order_By>;
+  term_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: user_course_plan */
+export type User_Course_Plan_Pk_Columns_Input = {
+  course_id: Scalars['Int']['input'];
+  term_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+/** select columns of table "user_course_plan" */
+export enum User_Course_Plan_Select_Column {
+  /** column name */
+  CourseId = 'course_id',
+  /** column name */
+  TermId = 'term_id',
+  /** column name */
+  UserId = 'user_id',
+}
+
+/** input type for updating data in table "user_course_plan" */
+export type User_Course_Plan_Set_Input = {
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type User_Course_Plan_Stddev_Fields = {
+  __typename?: 'user_course_plan_stddev_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type User_Course_Plan_Stddev_Pop_Fields = {
+  __typename?: 'user_course_plan_stddev_pop_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type User_Course_Plan_Stddev_Samp_Fields = {
+  __typename?: 'user_course_plan_stddev_samp_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "user_course_plan" */
+export type User_Course_Plan_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: User_Course_Plan_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type User_Course_Plan_Stream_Cursor_Value_Input = {
+  course_id?: InputMaybe<Scalars['Int']['input']>;
+  term_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate sum on columns */
+export type User_Course_Plan_Sum_Fields = {
+  __typename?: 'user_course_plan_sum_fields';
+  course_id?: Maybe<Scalars['Int']['output']>;
+  term_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** update columns of table "user_course_plan" */
+export enum User_Course_Plan_Update_Column {
+  /** column name */
+  CourseId = 'course_id',
+  /** column name */
+  TermId = 'term_id',
+  /** column name */
+  UserId = 'user_id',
+}
+
+export type User_Course_Plan_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<User_Course_Plan_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<User_Course_Plan_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: User_Course_Plan_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type User_Course_Plan_Var_Pop_Fields = {
+  __typename?: 'user_course_plan_var_pop_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type User_Course_Plan_Var_Samp_Fields = {
+  __typename?: 'user_course_plan_var_samp_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type User_Course_Plan_Variance_Fields = {
+  __typename?: 'user_course_plan_variance_fields';
+  course_id?: Maybe<Scalars['Float']['output']>;
+  term_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
 
 /** columns and relationships of "user_course_taken" */
 export type User_Course_Taken = {
@@ -11878,6 +12636,37 @@ export type UserCoursesTakenFragment = {
   } | null;
 };
 
+export type InsertUserCoursePlanMutationVariables = Exact<{
+  user_id: number;
+  course_id: number;
+  term_id: number;
+}>;
+
+export type InsertUserCoursePlanMutation = {
+  insert_user_course_plan: { affected_rows: number } | null;
+};
+
+export type DeleteUserCoursePlanMutationVariables = Exact<{
+  course_id: number;
+  term_id: number;
+}>;
+
+export type DeleteUserCoursePlanMutation = {
+  delete_user_course_plan: { affected_rows: number } | null;
+};
+
+export type MoveUserCoursePlanMutationVariables = Exact<{
+  user_id: number;
+  course_id: number;
+  from_term_id: number;
+  to_term_id: number;
+}>;
+
+export type MoveUserCoursePlanMutation = {
+  delete_user_course_plan: { affected_rows: number } | null;
+  insert_user_course_plan: { affected_rows: number } | null;
+};
+
 export type UpdateUserEmailMutationVariables = Exact<{
   user_id?: number | null | undefined;
   email?: string | null | undefined;
@@ -12176,6 +12965,40 @@ export type ExploreQueryVariables = Exact<{
 export type ExploreQuery = {
   search_courses: Array<CourseSearchFragment>;
   search_profs: Array<ProfSearchFragment>;
+};
+
+export type GetPlannerDataQueryVariables = Exact<{
+  id?: number | null | undefined;
+}>;
+
+export type GetPlannerDataQuery = {
+  user: Array<{ id: number; program: string | null }>;
+  user_course_taken: Array<{
+    term_id: number;
+    level: string | null;
+    course_id: number | null;
+    course: { id: number; code: string; name: string } | null;
+  }>;
+  user_course_plan: Array<{
+    term_id: number;
+    course_id: number;
+    course: {
+      id: number;
+      code: string;
+      name: string;
+      prerequisites: Array<{
+        is_corequisite: boolean;
+        prerequisite: { id: number; code: string } | null;
+      }>;
+    };
+  }>;
+  checklist: Array<{ id: number; name: string; requirements: any }>;
+};
+
+export type CourseDropdownAllQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CourseDropdownAllQuery = {
+  course: Array<{ id: number; code: string; name: string }>;
 };
 
 export type GetProfQueryVariables = Exact<{
@@ -12658,6 +13481,186 @@ export const SwapCourseSectionFragmentDoc = gql`
     }
   }
 `;
+export const InsertUserCoursePlanDocument = gql`
+  mutation insertUserCoursePlan(
+    $user_id: Int!
+    $course_id: Int!
+    $term_id: Int!
+  ) {
+    insert_user_course_plan(
+      objects: { user_id: $user_id, course_id: $course_id, term_id: $term_id }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export type InsertUserCoursePlanMutationFn = Apollo.MutationFunction<
+  InsertUserCoursePlanMutation,
+  InsertUserCoursePlanMutationVariables
+>;
+
+/**
+ * __useInsertUserCoursePlanMutation__
+ *
+ * To run a mutation, you first call `useInsertUserCoursePlanMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertUserCoursePlanMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertUserCoursePlanMutation, { data, loading, error }] = useInsertUserCoursePlanMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      course_id: // value for 'course_id'
+ *      term_id: // value for 'term_id'
+ *   },
+ * });
+ */
+export function useInsertUserCoursePlanMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    InsertUserCoursePlanMutation,
+    InsertUserCoursePlanMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    InsertUserCoursePlanMutation,
+    InsertUserCoursePlanMutationVariables
+  >(InsertUserCoursePlanDocument, options);
+}
+export type InsertUserCoursePlanMutationHookResult = ReturnType<
+  typeof useInsertUserCoursePlanMutation
+>;
+export type InsertUserCoursePlanMutationResult =
+  Apollo.MutationResult<InsertUserCoursePlanMutation>;
+export type InsertUserCoursePlanMutationOptions = Apollo.BaseMutationOptions<
+  InsertUserCoursePlanMutation,
+  InsertUserCoursePlanMutationVariables
+>;
+export const DeleteUserCoursePlanDocument = gql`
+  mutation deleteUserCoursePlan($course_id: Int!, $term_id: Int!) {
+    delete_user_course_plan(
+      where: { course_id: { _eq: $course_id }, term_id: { _eq: $term_id } }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export type DeleteUserCoursePlanMutationFn = Apollo.MutationFunction<
+  DeleteUserCoursePlanMutation,
+  DeleteUserCoursePlanMutationVariables
+>;
+
+/**
+ * __useDeleteUserCoursePlanMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserCoursePlanMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserCoursePlanMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserCoursePlanMutation, { data, loading, error }] = useDeleteUserCoursePlanMutation({
+ *   variables: {
+ *      course_id: // value for 'course_id'
+ *      term_id: // value for 'term_id'
+ *   },
+ * });
+ */
+export function useDeleteUserCoursePlanMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteUserCoursePlanMutation,
+    DeleteUserCoursePlanMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteUserCoursePlanMutation,
+    DeleteUserCoursePlanMutationVariables
+  >(DeleteUserCoursePlanDocument, options);
+}
+export type DeleteUserCoursePlanMutationHookResult = ReturnType<
+  typeof useDeleteUserCoursePlanMutation
+>;
+export type DeleteUserCoursePlanMutationResult =
+  Apollo.MutationResult<DeleteUserCoursePlanMutation>;
+export type DeleteUserCoursePlanMutationOptions = Apollo.BaseMutationOptions<
+  DeleteUserCoursePlanMutation,
+  DeleteUserCoursePlanMutationVariables
+>;
+export const MoveUserCoursePlanDocument = gql`
+  mutation moveUserCoursePlan(
+    $user_id: Int!
+    $course_id: Int!
+    $from_term_id: Int!
+    $to_term_id: Int!
+  ) {
+    delete_user_course_plan(
+      where: { course_id: { _eq: $course_id }, term_id: { _eq: $from_term_id } }
+    ) {
+      affected_rows
+    }
+    insert_user_course_plan(
+      objects: {
+        user_id: $user_id
+        course_id: $course_id
+        term_id: $to_term_id
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export type MoveUserCoursePlanMutationFn = Apollo.MutationFunction<
+  MoveUserCoursePlanMutation,
+  MoveUserCoursePlanMutationVariables
+>;
+
+/**
+ * __useMoveUserCoursePlanMutation__
+ *
+ * To run a mutation, you first call `useMoveUserCoursePlanMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveUserCoursePlanMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveUserCoursePlanMutation, { data, loading, error }] = useMoveUserCoursePlanMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      course_id: // value for 'course_id'
+ *      from_term_id: // value for 'from_term_id'
+ *      to_term_id: // value for 'to_term_id'
+ *   },
+ * });
+ */
+export function useMoveUserCoursePlanMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    MoveUserCoursePlanMutation,
+    MoveUserCoursePlanMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    MoveUserCoursePlanMutation,
+    MoveUserCoursePlanMutationVariables
+  >(MoveUserCoursePlanDocument, options);
+}
+export type MoveUserCoursePlanMutationHookResult = ReturnType<
+  typeof useMoveUserCoursePlanMutation
+>;
+export type MoveUserCoursePlanMutationResult =
+  Apollo.MutationResult<MoveUserCoursePlanMutation>;
+export type MoveUserCoursePlanMutationOptions = Apollo.BaseMutationOptions<
+  MoveUserCoursePlanMutation,
+  MoveUserCoursePlanMutationVariables
+>;
 export const UpdateUserEmailDocument = gql`
   mutation updateUserEmail($user_id: Int, $email: String) {
     update_user(where: { id: { _eq: $user_id } }, _set: { email: $email }) {
@@ -14958,6 +15961,240 @@ export type ExploreSuspenseQueryHookResult = ReturnType<
 export type ExploreQueryResult = Apollo.QueryResult<
   ExploreQuery,
   ExploreQueryVariables
+>;
+export const GetPlannerDataDocument = gql`
+  query getPlannerData($id: Int) {
+    user(where: { id: { _eq: $id } }) {
+      id
+      program
+    }
+    user_course_taken(where: { user_id: { _eq: $id } }) {
+      term_id
+      level
+      course_id
+      course {
+        id
+        code
+        name
+      }
+    }
+    user_course_plan(
+      where: { user_id: { _eq: $id } }
+      order_by: { course_id: asc }
+    ) {
+      term_id
+      course_id
+      course {
+        id
+        code
+        name
+        prerequisites {
+          is_corequisite
+          prerequisite {
+            id
+            code
+          }
+        }
+      }
+    }
+    checklist(order_by: { name: asc }) {
+      id
+      name
+      requirements
+    }
+  }
+`;
+
+/**
+ * __useGetPlannerDataQuery__
+ *
+ * To run a query within a React component, call `useGetPlannerDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlannerDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlannerDataQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPlannerDataQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetPlannerDataQuery,
+    GetPlannerDataQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPlannerDataQuery, GetPlannerDataQueryVariables>(
+    GetPlannerDataDocument,
+    options,
+  );
+}
+export function useGetPlannerDataLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPlannerDataQuery,
+    GetPlannerDataQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPlannerDataQuery, GetPlannerDataQueryVariables>(
+    GetPlannerDataDocument,
+    options,
+  );
+}
+// @ts-ignore
+export function useGetPlannerDataSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetPlannerDataQuery,
+    GetPlannerDataQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  GetPlannerDataQuery,
+  GetPlannerDataQueryVariables
+>;
+export function useGetPlannerDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetPlannerDataQuery,
+        GetPlannerDataQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  GetPlannerDataQuery | undefined,
+  GetPlannerDataQueryVariables
+>;
+export function useGetPlannerDataSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetPlannerDataQuery,
+        GetPlannerDataQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetPlannerDataQuery,
+    GetPlannerDataQueryVariables
+  >(GetPlannerDataDocument, options);
+}
+export type GetPlannerDataQueryHookResult = ReturnType<
+  typeof useGetPlannerDataQuery
+>;
+export type GetPlannerDataLazyQueryHookResult = ReturnType<
+  typeof useGetPlannerDataLazyQuery
+>;
+export type GetPlannerDataSuspenseQueryHookResult = ReturnType<
+  typeof useGetPlannerDataSuspenseQuery
+>;
+export type GetPlannerDataQueryResult = Apollo.QueryResult<
+  GetPlannerDataQuery,
+  GetPlannerDataQueryVariables
+>;
+export const CourseDropdownAllDocument = gql`
+  query courseDropdownAll {
+    course(order_by: { code: asc }) {
+      id
+      code
+      name
+    }
+  }
+`;
+
+/**
+ * __useCourseDropdownAllQuery__
+ *
+ * To run a query within a React component, call `useCourseDropdownAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCourseDropdownAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCourseDropdownAllQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCourseDropdownAllQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CourseDropdownAllQuery,
+    CourseDropdownAllQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    CourseDropdownAllQuery,
+    CourseDropdownAllQueryVariables
+  >(CourseDropdownAllDocument, options);
+}
+export function useCourseDropdownAllLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CourseDropdownAllQuery,
+    CourseDropdownAllQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    CourseDropdownAllQuery,
+    CourseDropdownAllQueryVariables
+  >(CourseDropdownAllDocument, options);
+}
+// @ts-ignore
+export function useCourseDropdownAllSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    CourseDropdownAllQuery,
+    CourseDropdownAllQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  CourseDropdownAllQuery,
+  CourseDropdownAllQueryVariables
+>;
+export function useCourseDropdownAllSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseDropdownAllQuery,
+        CourseDropdownAllQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  CourseDropdownAllQuery | undefined,
+  CourseDropdownAllQueryVariables
+>;
+export function useCourseDropdownAllSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CourseDropdownAllQuery,
+        CourseDropdownAllQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    CourseDropdownAllQuery,
+    CourseDropdownAllQueryVariables
+  >(CourseDropdownAllDocument, options);
+}
+export type CourseDropdownAllQueryHookResult = ReturnType<
+  typeof useCourseDropdownAllQuery
+>;
+export type CourseDropdownAllLazyQueryHookResult = ReturnType<
+  typeof useCourseDropdownAllLazyQuery
+>;
+export type CourseDropdownAllSuspenseQueryHookResult = ReturnType<
+  typeof useCourseDropdownAllSuspenseQuery
+>;
+export type CourseDropdownAllQueryResult = Apollo.QueryResult<
+  CourseDropdownAllQuery,
+  CourseDropdownAllQueryVariables
 >;
 export const GetProfDocument = gql`
   query getProf($code: String) {
