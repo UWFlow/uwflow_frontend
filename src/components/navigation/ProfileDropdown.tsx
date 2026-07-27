@@ -12,6 +12,7 @@ import {
 import { useTheme } from 'styled-components';
 
 import DropdownList from 'components/input/DropdownList';
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
@@ -72,7 +73,9 @@ const ProfileDropdown = () => {
   });
 
   const handleProfileButtonClick = () =>
-    isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : openModal(AUTH_MODAL);
+    isLoggedIn
+      ? history.push(PROFILE_PAGE_ROUTE)
+      : openModal(AUTH_MODAL, { source: AUTH_SOURCES.NAV_PROFILE });
 
   return (
     <ProfileDropdownWrapper>

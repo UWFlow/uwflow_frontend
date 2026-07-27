@@ -6,6 +6,7 @@ import { PROFILE_PAGE_ROUTE, WELCOME_PAGE_ROUTE } from 'Routes';
 import AuthForm from 'components/auth/AuthForm';
 import ProfileDropdown from 'components/navigation/ProfileDropdown';
 import SearchBar from 'components/navigation/SearchBar';
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 
 import {
@@ -49,6 +50,7 @@ const LandingPage = () => {
           {isDesktop && !isLoggedIn && (
             <AuthContent>
               <AuthForm
+                source={AUTH_SOURCES.LANDING_FORM}
                 margin="auto 0"
                 onLoginComplete={() => history.push(PROFILE_PAGE_ROUTE)}
                 onSignupComplete={() =>

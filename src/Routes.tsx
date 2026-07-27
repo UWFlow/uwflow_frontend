@@ -19,9 +19,11 @@ export const PROFILE_PAGE_TESTER = pathToRegexp(PROFILE_PAGE_ROUTE);
 export const COURSE_PAGE_TESTER = pathToRegexp(COURSE_PAGE_ROUTE);
 export const EXPLORE_PAGE_TESTER = pathToRegexp(EXPLORE_PAGE_ROUTE);
 export const PROF_PAGE_TESTER = pathToRegexp(PROF_PAGE_ROUTE);
+export const SHORT_PROF_PAGE_TESTER = pathToRegexp(SHORT_PROF_PAGE_ROUTE);
 export const ABOUT_PAGE_TESTER = pathToRegexp(ABOUT_PAGE_ROUTE);
 export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const WELCOME_PAGE_TESTER = pathToRegexp(WELCOME_PAGE_ROUTE);
+export const SWAP_PAGE_TESTER = pathToRegexp(SWAP_PAGE_ROUTE);
 
 /* Page Testers */
 export const isOnLandingPageRoute = (location: Location) =>
@@ -47,6 +49,32 @@ export const isOnPrivacyPageRoute = (location: Location) =>
 
 export const isOnWelcomePageRoute = (location: Location) => {
   WELCOME_PAGE_TESTER.test(location.pathname);
+};
+
+/* Route Patterns */
+
+// Ordered most-specific first; `/` would otherwise never be reached.
+const ROUTE_PATTERNS: [RegExp, string][] = [
+  [COURSE_PAGE_TESTER, COURSE_PAGE_ROUTE],
+  [PROF_PAGE_TESTER, PROF_PAGE_ROUTE],
+  [SHORT_PROF_PAGE_TESTER, SHORT_PROF_PAGE_ROUTE],
+  [PROFILE_PAGE_TESTER, PROFILE_PAGE_ROUTE],
+  [EXPLORE_PAGE_TESTER, EXPLORE_PAGE_ROUTE],
+  [SWAP_PAGE_TESTER, SWAP_PAGE_ROUTE],
+  [ABOUT_PAGE_TESTER, ABOUT_PAGE_ROUTE],
+  [PRIVACY_PAGE_TESTER, PRIVACY_PAGE_ROUTE],
+  [WELCOME_PAGE_TESTER, WELCOME_PAGE_ROUTE],
+  [LANDING_PAGE_TESTER, LANDING_PAGE_ROUTE],
+];
+
+/**
+ * Collapse a concrete pathname to its route pattern — `/course/cs135` becomes
+ * `/course/:courseCode`. Analytics breaks down by this instead of the raw path
+ * so a handful of routes don't turn into thousands of distinct values.
+ */
+export const getRoutePattern = (pathname: string): string => {
+  const match = ROUTE_PATTERNS.find(([tester]) => tester.test(pathname));
+  return match ? match[1] : 'unknown';
 };
 
 /* Route Generators */

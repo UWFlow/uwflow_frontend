@@ -7,6 +7,7 @@ import { GetUserQuery, GetUserQueryVariables } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import ScheduleUploadModalContent from 'components/upload/ScheduleUploadModalContent';
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { AUTH_MODAL, SWAP_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
@@ -134,7 +135,11 @@ const SwapPage = () => {
                 </p>
                 <button
                   className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"
-                  onClick={() => openModal(AUTH_MODAL)}
+                  onClick={() =>
+                    openModal(AUTH_MODAL, {
+                      source: AUTH_SOURCES.SWAP_PAGE_PROMPT,
+                    })
+                  }
                   type="button"
                 >
                   Log in to continue

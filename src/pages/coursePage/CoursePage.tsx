@@ -18,6 +18,7 @@ import {
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Button from 'components/input/Button';
 import LikeCourseToggle from 'components/input/LikeCourseToggle';
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { DEFAULT_ERROR, NOT_FOUND } from 'constants/Messages';
 import { AUTH_MODAL, COURSE_REVIEW_COURSE_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
@@ -99,7 +100,7 @@ const CoursePageContent = ({
           courseReviews: [{ course, review: userReview }],
           onCancel: () => closeModal(COURSE_REVIEW_COURSE_MODAL),
         })
-      : openModal(AUTH_MODAL);
+      : openModal(AUTH_MODAL, { source: AUTH_SOURCES.WRITE_REVIEW });
 
   const Schedule = (
     <CourseSchedule

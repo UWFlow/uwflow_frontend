@@ -6,6 +6,7 @@ import moment from 'moment/moment';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { AUTH_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 import {
@@ -122,7 +123,7 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
 
   const onClickUpvote = () => {
     if (!isLoggedIn) {
-      openModal(AUTH_MODAL);
+      openModal(AUTH_MODAL, { source: AUTH_SOURCES.REVIEW_UPVOTE });
       return;
     }
 

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
 import { useTheme } from 'styled-components';
 
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { UPSERT_LIKED_REVIEW } from 'graphql/mutations/Review';
@@ -77,7 +78,7 @@ const LikeCourseToggle = ({
 
   const toggleOnClick = (targetState: number) => {
     if (!isLoggedIn) {
-      openModal(AUTH_MODAL);
+      openModal(AUTH_MODAL, { source: AUTH_SOURCES.LIKE_COURSE });
       return;
     }
 

@@ -83,10 +83,19 @@ export const capture = (
  * Tie subsequent events to a logged-in user. Call after login/signup so events
  * (and the session that led to them) attach to the user's PostHog person.
  * Fires on the side, preserving call order (identify before any later capture).
+ *
+ * `properties` overwrite on every call; `setOnceProperties` are written only the
+ * first time they're seen for a person, which is what first-touch signup
+ * attribution wants — a later login must not overwrite how they originally
+ * arrived.
  */
-export const identify = (userId: string | number): void => {
+export const identify = (
+  userId: string | number,
+  properties?: Record<string, unknown>,
+  setOnceProperties?: Record<string, unknown>,
+): void => {
   if (!enabled || userId === null || userId === undefined) {
     return;
   }
-  onSide(() => posthog.identify(String(userId)));
+  onSide(() => posthog.identify(String(userId), properties, setOnceProperties));
 };
