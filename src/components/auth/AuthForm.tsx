@@ -2,12 +2,15 @@ import React, {
   Dispatch,
   SetStateAction,
   SyntheticEvent,
+  useEffect,
+  useRef,
   useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { PRIVACY_PAGE_ROUTE } from 'Routes';
+import { getRoutePattern, PRIVACY_PAGE_ROUTE } from 'Routes';
 
+import { AuthSource } from 'constants/Analytics';
 import { AUTH_ERRORS, AUTH_SUCCESS, DEFAULT_ERROR } from 'constants/Messages';
 import { RESET_PASSWORD_MODAL } from 'constants/Modal';
 import { LOGGED_IN } from 'data/actions/AuthActions';
@@ -36,6 +39,8 @@ export type AuthMethod = 'email' | 'google' | 'facebook';
 type AuthFormProps = {
   onLoginComplete: () => void;
   onSignupComplete: () => void;
+  /** Which piece of UI opened this form — becomes the analytics attribution. */
+  source: AuthSource;
   margin?: string;
   closeAuthModal?: () => void;
 };
@@ -43,6 +48,7 @@ type AuthFormProps = {
 const AuthForm = ({
   onLoginComplete,
   onSignupComplete,
+  source,
   margin = '32px 0',
   closeAuthModal,
 }: AuthFormProps) => {
@@ -55,6 +61,23 @@ const AuthForm = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  // Snapshot where the user was when the form appeared. This must be read at
+  // mount, not at capture time: a successful signup redirects to /welcome
+  // before the deferred analytics call runs, so reading location later would
+  // report /welcome as the origin of every single signup.
+  const entry = useRef({
+    source,
+    signup_page: getRoutePattern(window.location.pathname),
+    signup_path: window.location.pathname,
+    signup_referrer: document.referrer || null,
+  });
+
+  // Denominator for the funnel: without it we'd know where signups come from
+  // but not which prompts actually convert.
+  useEffect(() => {
+    capture('auth_prompt_shown', entry.current);
+  }, []);
 
   const setJWT = (response: AuthResponse) => {
     localStorage.setItem('token', response.token);
@@ -73,9 +96,19 @@ const AuthForm = ({
     }
     // Analytics on the side — identify/capture defer themselves, so the login
     // toast and redirect above run first and are never blocked.
-    identify(response.user_id);
+    identify(
+      response.user_id,
+      undefined,
+      response.is_new
+        ? {
+            initial_signup_method: method,
+            initial_signup_source: entry.current.source,
+            initial_signup_page: entry.current.signup_page,
+          }
+        : undefined,
+    );
     if (response.is_new) {
-      capture('account_created', { method });
+      capture('account_created', { method, ...entry.current });
     }
   };
 
@@ -152,7 +185,14 @@ const AuthForm = ({
         <SwapModalWrapper>
           New to UW Flow?
           <SwapModalLink
-            onClick={() => setShowLoginForm(!showLoginForm)}
+            onClick={() => {
+              // The form opens on login, so switching to signup is the clearest
+              // signal of signup intent we get before the account exists.
+              if (showLoginForm) {
+                capture('signup_form_opened', entry.current);
+              }
+              setShowLoginForm(!showLoginForm);
+            }}
             onMouseDown={(e) => e.preventDefault()}
           >
             {showLoginForm ? 'Sign up' : 'Log in'}

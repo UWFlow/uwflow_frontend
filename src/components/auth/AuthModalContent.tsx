@@ -2,18 +2,23 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { WELCOME_PAGE_ROUTE } from 'Routes';
 
+import { AuthSource } from 'constants/Analytics';
+
 import AuthForm from './AuthForm';
 
 export type AuthModalContentProps = {
   onAfterLogin: () => void;
   onAfterSignup: () => void;
   onRequestClose: () => void;
+  /** Which piece of UI opened the modal — see `AUTH_SOURCES`. */
+  source: AuthSource;
 };
 
 const AuthModalContent = ({
   onAfterLogin,
   onAfterSignup,
   onRequestClose,
+  source,
 }: AuthModalContentProps) => {
   const history = useHistory();
 
@@ -25,6 +30,7 @@ const AuthModalContent = ({
   }
   return (
     <AuthForm
+      source={source}
       onLoginComplete={() => {
         onRequestClose();
         if (onAfterLogin) {

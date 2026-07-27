@@ -14,7 +14,7 @@ Everything lives under [`src/lib/analytics/`](../src/lib/analytics):
 
 | File         | Responsibility                                               |
 |--------------|--------------------------------------------------------------|
-| `index.ts`   | `initAnalytics()` (init once near the app root), `capture(event, props)` (emit a custom event), `identify(userId)` (tie events to a user). All never throw, no-op when no key is configured, and `capture`/`identify` fire on the side (deferred a macrotask) so they never block UI. |
+| `index.ts`   | `initAnalytics()` (init once near the app root), `capture(event, props)` (emit a custom event), `identify(userId, props?, setOnceProps?)` (tie events to a user, optionally writing person properties). All never throw, no-op when no key is configured, and `capture`/`identify` fire on the side (deferred a macrotask) so they never block UI. |
 
 PostHog itself handles everything we used to hand-roll:
 
@@ -34,16 +34,52 @@ PostHog's pageview/session signals.
 
 ## Custom events
 
-We deliberately keep custom events few. Today there are two:
+We deliberately keep custom events few. Today there are four: three that make up
+the signup funnel, and one for reviews.
 
-### `account_created`
+### Signup attribution
 
-Fired once when a brand-new account is created (`is_new` from the auth
-response), from `AuthForm`'s `onAuthSuccess`.
+Three events share the same attribution properties, so a funnel can be broken
+down by any of them at every step:
 
 | Property | Type | Notes |
 |----------|------|-------|
-| `method` | `'email' \| 'google' \| 'facebook'` | Which signup path was used. |
+| `source` | `AuthSource` | Which piece of UI opened the auth form — see `AUTH_SOURCES` in [`src/constants/Analytics.tsx`](../src/constants/Analytics.tsx). Keep it a closed union; free text fragments the breakdown. |
+| `signup_page` | `string` | Route *pattern* the user was on, e.g. `/course/:courseCode`. Low cardinality — use this for breakdowns. |
+| `signup_path` | `string` | Concrete pathname, e.g. `/course/cs135`. Use for drill-down. |
+| `signup_referrer` | `string \| null` | `document.referrer` at the time the form appeared. |
+
+These are snapshotted in a ref when `AuthForm` **mounts**, not when the event
+fires. That matters: a successful signup redirects to `/welcome` before the
+deferred `capture` runs, so reading `location` at capture time would report
+`/welcome` as the origin of every signup.
+
+For **external** attribution (which site or campaign sent the user) you don't
+need any of this — PostHog already records `$referrer`, `$referring_domain`, and
+`$initial_utm_*` person properties. `signup_referrer` only covers a user landing
+directly on a page with the auth form.
+
+#### `auth_prompt_shown`
+
+Fired when `AuthForm` mounts. The funnel denominator — tells you which prompts
+convert, not just which ones produce signups.
+
+#### `signup_form_opened`
+
+Fired when the user switches the form from login to signup. The modal opens on
+login, so this is the clearest signup-intent signal available before the account
+exists.
+
+#### `account_created`
+
+Fired once when a brand-new account is created (`is_new` from the auth
+response), from `AuthForm`'s `onAuthSuccess`. Carries `method` (`'email' |
+'google' | 'facebook'`) on top of the attribution properties above.
+
+On signup we also write `initial_signup_method`, `initial_signup_source`, and
+`initial_signup_page` as `$set_once` person properties, so first-touch
+attribution survives later logins and can be used to segment cohorts long after
+the event.
 
 ### `review_posted`
 
@@ -71,6 +107,8 @@ import { initAnalytics, capture, identify } from 'lib/analytics';
 
 initAnalytics(); // once, near the app root (App.tsx)
 identify(userId); // after login/signup
+// $set_once person props — first touch wins, later logins don't overwrite
+identify(userId, undefined, { initial_signup_source: 'nav_profile' });
 capture('review_posted', { review_type: 'like', liked: 1 /* … */ });
 ```
 

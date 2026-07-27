@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
 
 import Tooltip from 'components/display/Tooltip';
+import { AUTH_SOURCES } from 'constants/Analytics';
 import {
   SUBSCRIPTION_ERROR,
   SUBSCRIPTION_SUCCESS,
@@ -72,7 +73,7 @@ const ScheduleNotificationBell = ({
 
   const toggleOnClick = () => {
     if (!isLoggedIn) {
-      openModal(AUTH_MODAL);
+      openModal(AUTH_MODAL, { source: AUTH_SOURCES.SCHEDULE_NOTIFICATION });
       return;
     }
 

@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { useTheme } from 'styled-components';
 
 import Tooltip from 'components/display/Tooltip';
+import { AUTH_SOURCES } from 'constants/Analytics';
 import { SHORTLIST_ERROR } from 'constants/Messages';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
@@ -65,7 +66,7 @@ const ShortlistStar = ({
 
   const onStarClicked = () => {
     if (!isLoggedIn) {
-      openModal(AUTH_MODAL);
+      openModal(AUTH_MODAL, { source: AUTH_SOURCES.SHORTLIST_STAR });
       return;
     }
 
