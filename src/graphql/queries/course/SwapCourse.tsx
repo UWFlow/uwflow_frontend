@@ -55,6 +55,15 @@ export const GET_SECTIONS_BY_CLASS_NUMBERS = gql`
   ${SwapCourseSectionFragment}
 `;
 
+export const GET_SECTIONS_FOR_SAVED_SWAPS = gql`
+  query getSectionsForSavedSwaps($ids: [Int!]!) {
+    course_section(where: { id: { _in: $ids } }) {
+      ...SwapCourseSection
+    }
+  }
+  ${SwapCourseSectionFragment}
+`;
+
 export const GET_COURSE_FOR_SWAP = gql`
   query getCourseForSwap($code: String!, $termId: Int!) {
     course_section(

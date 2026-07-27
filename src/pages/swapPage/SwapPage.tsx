@@ -15,6 +15,7 @@ import { cn } from 'lib/utils';
 
 import DEMO_SCHEDULE from './demoSchedule';
 import SwapCalendar, { getDisplayedTermPresence } from './SwapCalendar';
+import { getScheduleFingerprint } from './SwapCalendarStorage';
 
 const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';
 
@@ -48,6 +49,10 @@ const SwapPage = () => {
   // Logged-out visitors see a non-interactive sample schedule behind the
   // login lock card instead of an empty grid.
   const isDemo = !isLoggedIn && !hasDisplayedTermClasses;
+  const displayedSchedule = isDemo ? DEMO_SCHEDULE : schedule;
+  const swapCalendarKey = `${
+    isDemo ? 'demo' : user?.id ?? 'anonymous'
+  }:${getScheduleFingerprint(displayedSchedule)}`;
 
   useEffect(() => {
     if (!hasDisplayedTermClasses) {
@@ -99,8 +104,10 @@ const SwapPage = () => {
         )}
       </Helmet>
       <SwapCalendar
-        schedule={isDemo ? DEMO_SCHEDULE : schedule}
+        key={swapCalendarKey}
+        schedule={displayedSchedule}
         demoMode={isDemo}
+        userId={user?.id ?? null}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div
