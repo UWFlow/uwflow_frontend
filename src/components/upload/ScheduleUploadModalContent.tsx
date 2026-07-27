@@ -60,6 +60,20 @@ const clipboardKeys = {
   undo: 122,
 };
 
+// TODO: the regexes below are brittle and should be expected to need changes.
+// They pattern-match Quest's rendered page copy — UI text and layout UW can
+// reword at any time, with no versioning and no notice, and which differs
+// between the undergrad and grad views. They were tuned against 883 captured
+// pastes on 2026-07-27 (see PR #287); that sample is a snapshot of one term's
+// Quest, not a contract.
+//
+// What keeps this acceptable is the blast radius: this function only picks an
+// error *string*. Nothing here affects what gets parsed or saved, so a pattern
+// that goes stale degrades to a vaguer message, never to a bad import. When one
+// does start misfiring, prefer deleting the specific case over hand-tuning the
+// pattern — a generic message beats a confidently wrong one. See the TODO on
+// getScheduleError below for the fix that removes the guesswork entirely.
+
 // Quest prints this on My Class Schedule when the term has no enrolments. The
 // paste is well-formed, so it is not a copy/paste error — the term is empty.
 const notRegisteredRegex = /you are not registered for classes in this term/i;
