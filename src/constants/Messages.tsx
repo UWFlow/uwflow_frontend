@@ -36,6 +36,10 @@ export const TRANSCRIPT_ERRORS: MessageObject = {
 export const SCHEDULE_ERRORS: MessageObject = {
   course_selection_schedule:
     'That looks like your Course Selection page – in Quest, go to Enroll → My Class Schedule and paste that instead.',
+  not_registered_schedule:
+    'That schedule is empty – Quest says you’re not registered for classes in that term. Try a term you’re enrolled in.',
+  no_term_schedule:
+    'We couldn’t find a term on that page – in Quest, go to Enroll → My Class Schedule, switch to List View, then select all (Ctrl+A) so the term header (e.g. “Fall 2026 | Undergraduate”) is included.',
   empty_schedule:
     'Looks like that schedule is empty. Check for copy/paste errors, and try again.',
   old_schedule:
