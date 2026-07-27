@@ -37,12 +37,41 @@ You are not registered for classes in this term.`;
 
     it('hints at My Class Schedule when the Course Selection cart was pasted', () => {
       const paste = `${questNav}
-View My Course Selection
+ \tCourse Selection\t \t \t|\t \t \tView My Course Selection\t
 Fall 2026 | Undergraduate | University of Waterloo
 ECE 105 - Classical Mechanics`;
 
       expect(getScheduleError('empty_schedule', paste)).toBe(
         SCHEDULE_ERRORS.course_selection_schedule,
+      );
+    });
+
+    it('matches the Course Selection page by its own heading', () => {
+      // Some pastes carry only the heading, without the tab bar.
+      const paste = `My Course Selection
+Groupbox
+Fall 2026
+Undergraduate
+Subject	Catalog	Description	Component	Priority	Campus`;
+
+      expect(getScheduleError('empty_schedule', paste)).toBe(
+        SCHEDULE_ERRORS.course_selection_schedule,
+      );
+    });
+
+    it('does not mistake the Enrollment Dates page for Course Selection', () => {
+      // "Course Selection Session" is a row label on Enrollment Dates.
+      const paste = `Enrollment Dates
+Fall 2026 | Undergraduate | University of Waterloo
+Open Enrollment Dates by Session
+Session	Begins On	Last Date to Enroll
+Regular Academic Session
+2026 July 29
+Course Selection Session
+2026 July 29`;
+
+      expect(getScheduleError('empty_schedule', paste)).toBe(
+        SCHEDULE_ERRORS.empty_schedule,
       );
     });
 

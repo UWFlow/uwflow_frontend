@@ -64,11 +64,11 @@ const clipboardKeys = {
 // paste is well-formed, so it is not a copy/paste error — the term is empty.
 const notRegisteredRegex = /you are not registered for classes in this term/i;
 
-// Quest's "Go To" nav lists "Course Selection (Undergrad only)" on *every*
-// page, so only treat the paste as the Course Selection cart page when
-// "Course Selection" appears outside that nav entry (e.g. the page's own
-// "View My Course Selection" heading).
-const courseSelectionRegex = /course selection(?!\s*\(undergrad only\))/i;
+// Match the Course Selection page by its own name ("View My Course Selection"
+// tab, "My Course Selection" heading) rather than by "Course Selection", which
+// also appears in the "Go To" nav on *every* page ("Course Selection (Undergrad
+// only)") and on the Enrollment Dates page ("Course Selection Session").
+const courseSelectionRegex = /my course selection/i;
 
 // Mirrors the backend's term regex (api/parse/schedule/schedule.go). A paste
 // that starts below Quest's term header has nothing for it to match, which is
