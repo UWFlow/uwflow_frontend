@@ -97,23 +97,31 @@ const getMeetingTime = (meeting: SwapMeeting) => {
   )}`;
 };
 
-// Section names render as plain title text (no tag/badge); conflicting
-// sections dim with the rest of their row.
+// Show both UW's section label (e.g. "TUT 101") and the numeric class number
+// students need to enter in Quest. Conflicting sections dim with their row.
 const SectionName = ({
   sectionName,
+  classNumber,
   hasConflict,
 }: {
   sectionName: string;
+  classNumber: number;
   hasConflict: boolean;
 }) => (
-  <span
-    className={cn(
-      'text-sm font-semibold',
-      hasConflict ? 'text-dark3' : 'text-dark1',
-    )}
-  >
-    {sectionName}
-  </span>
+  <div className="flex flex-col gap-xs">
+    <span
+      className={cn(
+        'text-sm font-semibold',
+        hasConflict ? 'text-dark3' : 'text-dark1',
+      )}
+    >
+      {sectionName}
+    </span>
+    <span className={cn('text-xs', hasConflict ? 'text-dark3' : 'text-dark2')}>
+      Quest class number:{' '}
+      <strong className="font-semibold">{classNumber}</strong>
+    </span>
+  </div>
 );
 
 const MeetingInstructor = ({
@@ -267,8 +275,9 @@ const ScheduleSectionRow = ({
     >
       <div className="mb-2 flex items-start justify-between gap-2">
         <SectionName
-          sectionName={section.section_name}
+          classNumber={section.class_number}
           hasConflict={hasConflict}
+          sectionName={section.section_name}
         />
         {isEnrolled && (
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
