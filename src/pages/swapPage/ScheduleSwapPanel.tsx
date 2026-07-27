@@ -212,7 +212,7 @@ const EmptyState = () => (
     <div className="text-sm font-semibold text-dark1">Select a course</div>
     <div className="mt-2 max-w-[260px] text-sm leading-5 text-dark3">
       Click a class in your schedule to see other sections, prof ratings, and
-      swap options.
+      swap options to try in your sandbox.
     </div>
   </div>
 );
@@ -316,7 +316,7 @@ const ScheduleSectionRow = ({
             type="button"
             variant="accent"
           >
-            Choose section
+            Try in sandbox
           </Button>
         )}
       </div>

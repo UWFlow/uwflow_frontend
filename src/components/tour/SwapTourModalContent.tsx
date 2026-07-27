@@ -11,7 +11,7 @@ const STEPS = [
   {
     heading: 'Plan swaps in a sandbox',
     body:
-      'This tool simulates section swaps so you can check whether one is ' +
+      'This sandbox simulates section swaps so you can check whether one is ' +
       'possible before touching Quest — it never changes your enrollment.',
   },
   {
@@ -19,7 +19,8 @@ const STEPS = [
     body:
       'Click any class to see every other section — meeting times, rooms, ' +
       'professor ratings, and open seats. Conflicts and full sections are ' +
-      'flagged so you know what would actually work.',
+      'flagged so you know what would actually work. Your sandbox is saved ' +
+      'in this browser, so it survives a refresh until you reset it.',
   },
   {
     heading: 'Then make the swap in Quest',
@@ -60,7 +61,7 @@ const MiniBlock = ({
 );
 
 /**
- * First-visit tour for the section-swap page. The host page persists
+ * First-visit tour for the section-swap sandbox. The host page persists
  * dismissal (Skip, X, or finishing the last step) via its onRequestClose
  * override, so the tour only ever shows once.
  */
@@ -122,7 +123,7 @@ const SwapTourModalContent = ({
       {/* Copy + controls */}
       <div className="flex flex-col px-lg pb-lg pt-lg">
         <div className="mb-sm flex items-center gap-sm text-xs font-bold uppercase tracking-[0.08em] text-accentDark">
-          <Repeat size={13} /> Swap Class
+          <Repeat size={13} /> Swap Class Sandbox
         </div>
         <h2 className="mb-sm text-2xl font-bold text-dark1">
           {STEPS[step].heading}

@@ -34,6 +34,13 @@ import {
 
 import CourseSearchDropdown from './CourseSearchDropdown';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
+import {
+  clearSwapSandbox,
+  isSandboxModified,
+  loadSwapSandbox,
+  SandboxByTerm,
+  saveSwapSandbox,
+} from './sandboxStorage';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
   SwapCandidateCourse,
@@ -250,10 +257,18 @@ type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
   /** Renders a non-interactive sample schedule (logged-out lock state). */
   demoMode?: boolean;
+  /** Owner of the sandbox in localStorage; null disables persistence. */
+  userId?: number | null;
 };
 
-const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
+const SwapCalendar = ({
+  schedule,
+  demoMode = false,
+  userId = null,
+}: SwapCalendarProps) => {
   const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
+  // Demo schedules are a marketing prop, not the visitor's own — never stored.
+  const persistUserId = demoMode ? null : userId;
 
   const thisTermCode = getCurrentTermCode();
   const nextTermCode = getNextTermCode();
@@ -279,12 +294,20 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
   const [isSwapDropdownOpen, setIsSwapDropdownOpen] = useState(false);
   // The left selector lists courses the user is already enrolled in.
   const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false);
-  // Temporary client-side section swaps, keyed by term label. A swap replaces
-  // the matching schedule entry in React state only — refreshing the page
-  // restores the original schedule (no persistence, no mutations).
-  const [overriddenByTerm, setOverriddenByTerm] = useState<
-    Record<string, UserScheduleFragment['schedule']>
-  >({});
+  // The sandbox: client-side section swaps keyed by term label. A swap replaces
+  // the matching schedule entry here only — it never mutates the user's real
+  // enrollment. The sandbox is mirrored into localStorage so a refresh keeps it;
+  // "Reset sandbox" is the only way back to the real schedule.
+  const [sandboxByTerm, setSandboxByTerm] = useState<SandboxByTerm>(() =>
+    persistUserId === null ? {} : loadSwapSandbox(persistUserId, termMap),
+  );
+
+  // Mirror every sandbox change back to storage (and clear it once the sandbox
+  // matches the real schedule again).
+  useEffect(() => {
+    if (persistUserId === null) return;
+    saveSwapSandbox(persistUserId, sandboxByTerm, termMap);
+  }, [persistUserId, sandboxByTerm, termMap]);
 
   useEffect(() => {
     setSelectedSwapCourseCode(null);
@@ -295,10 +318,10 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
 
   const selectedTermCode =
     selectedTerm === nextTermLabel ? nextTermCode : thisTermCode;
-  // Effective schedule for the term: temporary swaps take precedence.
+  // Effective schedule for the term: sandboxed swaps take precedence.
   const termSections = useMemo(
-    () => overriddenByTerm[selectedTerm] ?? termMap[selectedTerm] ?? [],
-    [overriddenByTerm, termMap, selectedTerm],
+    () => sandboxByTerm[selectedTerm] ?? termMap[selectedTerm] ?? [],
+    [sandboxByTerm, termMap, selectedTerm],
   );
 
   // Distinct courses in the user's schedule for this term, for the left
@@ -466,7 +489,8 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     [],
   );
 
-  // Term overrides persist while the page lives — only a refresh resets them.
+  // The sandbox spans both terms and outlives a refresh — switching terms only
+  // clears the current selection.
   const handleTermChange = useCallback((termId: number) => {
     setSelectedTerm(termCodeToDate(termId));
     setSelection(null);
@@ -495,9 +519,9 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     [termSections],
   );
 
-  // Temporarily swap a section into the schedule (React state only). The new
-  // section replaces the entry matching the selected course + section type
-  // (LEC↔LEC, TUT↔TUT) — the panel only offers same-type candidates.
+  // Swap a section into the sandbox schedule. The new section replaces the
+  // entry matching the selected course + section type (LEC↔LEC, TUT↔TUT) — the
+  // panel only offers same-type candidates.
   const handleSwitchSection = useCallback(
     (sectionId: number) => {
       const newSection = swapSections.find((s) => s.id === sectionId);
@@ -516,7 +540,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
         newSection,
         base[replaceIndex].user_id,
       );
-      setOverriddenByTerm((prev) => ({ ...prev, [selectedTerm]: next }));
+      setSandboxByTerm((prev) => ({ ...prev, [selectedTerm]: next }));
       setHoveredSection(null);
       if (newSection.course.code !== selection.courseCode) {
         // Follow the swapped-in course (keeping the selected section type);
@@ -559,7 +583,20 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     { id: nextTermCode, label: nextTermLabel },
   ];
   const swapTargetCode = selectedSwapCourseCode ?? selectedCourseCode;
-  const hasSwaps = Object.keys(overriddenByTerm).length > 0;
+  // Only a sandbox that actually differs from the real schedule offers a reset:
+  // swapping a section and swapping it back leaves nothing to undo.
+  const isModified = isSandboxModified(sandboxByTerm, termMap);
+
+  // Discard the sandbox — in memory and in storage — and go back to the user's
+  // real schedule.
+  const handleResetSandbox = useCallback(() => {
+    setSandboxByTerm({});
+    // A cross-course swap can leave the selection pointing at a course the real
+    // schedule doesn't have, so drop it along with the sandbox.
+    setSelection(null);
+    setHoveredSection(null);
+    if (persistUserId !== null) clearSwapSandbox(persistUserId);
+  }, [persistUserId]);
 
   return (
     <div className="relative z-0 w-screen animate-fade-in">
@@ -568,7 +605,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <h1 className="m-0 font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
-                Swap Class
+                Swap Class Sandbox
               </h1>
               <span className="rounded bg-accent px-1.5 py-0.5 text-xs font-extrabold text-dark1">
                 NEW
@@ -576,7 +613,8 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
             </div>
             <p className="mb-0 mt-1 font-inter text-md font-regular text-dark2">
               Click any class to compare sections and check if a swap is
-              possible — you make the actual change in Quest.
+              possible. Your sandbox is saved in this browser — you make the
+              actual change in Quest.
             </p>
           </div>
           <div className="inline-flex shrink-0 rounded border border-solid border-light3 bg-white p-1">
@@ -670,18 +708,18 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
                   Select a class on your schedule
                 </span>
               )}
-              {hasSwaps && (
-                // Swaps live only in React state, so a refresh restores the
-                // real schedule.
+              {isModified && (
+                // The sandbox survives refreshes, so this is the only way back
+                // to the real schedule.
                 <button
-                  aria-label="Reset swapped sections"
-                  title="Reset swapped sections"
+                  aria-label="Reset sandbox to your real schedule"
+                  title="Reset sandbox to your real schedule"
                   className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1"
-                  onClick={() => window.location.reload()}
+                  onClick={handleResetSandbox}
                   type="button"
                 >
                   <RotateCcw aria-hidden="true" size={14} />
-                  Reset
+                  Reset sandbox
                 </button>
               )}
             </div>
