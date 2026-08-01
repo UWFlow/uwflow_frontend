@@ -14,7 +14,8 @@ import useModal from 'hooks/useModal';
 import { cn } from 'lib/utils';
 
 import DEMO_SCHEDULE from './demoSchedule';
-import SwapCalendar, { getDisplayedTermPresence } from './SwapCalendar';
+import { getDisplayedTermPresence } from './displayedTerms';
+import SwapCalendar from './SwapCalendar';
 import { getScheduleFingerprint } from './SwapCalendarStorage';
 
 const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';

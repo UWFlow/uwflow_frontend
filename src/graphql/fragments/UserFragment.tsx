@@ -32,6 +32,7 @@ const UserFragment = {
         user_id
         section {
           id
+          term_id
           exams {
             date
             day

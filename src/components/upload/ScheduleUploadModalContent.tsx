@@ -60,6 +60,65 @@ const clipboardKeys = {
   undo: 122,
 };
 
+// TODO: the regexes below are brittle and should be expected to need changes.
+// They pattern-match Quest's rendered page copy — UI text and layout UW can
+// reword at any time, with no versioning and no notice, and which differs
+// between the undergrad and grad views. They were tuned against 883 captured
+// pastes on 2026-07-27 (see PR #287); that sample is a snapshot of one term's
+// Quest, not a contract.
+//
+// What keeps this acceptable is the blast radius: this function only picks an
+// error *string*. Nothing here affects what gets parsed or saved, so a pattern
+// that goes stale degrades to a vaguer message, never to a bad import. When one
+// does start misfiring, prefer deleting the specific case over hand-tuning the
+// pattern — a generic message beats a confidently wrong one. See the TODO on
+// getScheduleError below for the fix that removes the guesswork entirely.
+
+// Quest prints this on My Class Schedule when the term has no enrolments. The
+// paste is well-formed, so it is not a copy/paste error — the term is empty.
+const notRegisteredRegex = /you are not registered for classes in this term/i;
+
+// Match the Course Selection page by its own name ("View My Course Selection"
+// tab, "My Course Selection" heading) rather than by "Course Selection", which
+// also appears in the "Go To" nav on *every* page ("Course Selection (Undergrad
+// only)") and on the Enrollment Dates page ("Course Selection Session").
+const courseSelectionRegex = /my course selection/i;
+
+// Mirrors the backend's term regex (api/parse/schedule/schedule.go). A paste
+// that starts below Quest's term header has nothing for it to match, which is
+// the only way /parse/schedule can answer `bad_request` for a real paste.
+const termHeaderRegex = /(Spring|Fall|Winter)\s+\d{4}/;
+
+/**
+ * Picks the error message for a failed `/parse/schedule` response. The backend
+ * reports only a coarse enum; we still have the pasted text, so we disambiguate
+ * here and tell the user which kind of bad paste they sent.
+ *
+ * TODO: this belongs in the backend. `schedule.Parse` knows exactly why it
+ * failed, and re-deriving that from the paste means the two regexes have to
+ * stay in sync by hand. Give the missing-term-header and Course Selection cases
+ * their own `serde` enums (like `empty_schedule` / `old_schedule`) and have the
+ * frontend key off `error` alone. Frontend-only for now so the message ships
+ * without a backend deploy.
+ */
+export const getScheduleError = (error: string, pastedSchedule: string) => {
+  if (error === 'empty_schedule') {
+    if (notRegisteredRegex.test(pastedSchedule)) {
+      return SCHEDULE_ERRORS.not_registered_schedule;
+    }
+    if (courseSelectionRegex.test(pastedSchedule)) {
+      return SCHEDULE_ERRORS.course_selection_schedule;
+    }
+    return SCHEDULE_ERRORS.empty_schedule;
+  }
+
+  if (error === 'bad_request' && !termHeaderRegex.test(pastedSchedule)) {
+    return SCHEDULE_ERRORS.no_term_schedule;
+  }
+
+  return SCHEDULE_ERRORS[error] || SCHEDULE_ERRORS.default_schedule;
+};
+
 export type ScheduleUploadModalContentProps = {
   onAfterUploadSuccess?: (data?: ParseOnlyScheduleResponse) => void;
   onSkip?: () => void;
@@ -140,18 +199,7 @@ const ScheduleUploadModalContent = ({
 
       if ((response as ErrorResponse).error) {
         const errorRes = response as ErrorResponse;
-        // The Course Selection cart page contains a term header but no class
-        // numbers, so the backend reports it as an empty schedule. Detect it
-        // here (we have the pasted text) and give a more useful hint.
-        const isCourseSelection =
-          errorRes.error === 'empty_schedule' &&
-          /course selection/i.test(pastedSchedule);
-        setUploadError(
-          isCourseSelection
-            ? SCHEDULE_ERRORS.course_selection_schedule
-            : SCHEDULE_ERRORS[errorRes.error] ||
-                SCHEDULE_ERRORS.default_schedule,
-        );
+        setUploadError(getScheduleError(errorRes.error, pastedSchedule));
       } else {
         const scheduleRes = response as ScheduleParseResponse;
         setUploadError(

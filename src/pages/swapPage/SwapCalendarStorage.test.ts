@@ -17,6 +17,7 @@ const createSchedule = (
     user_id: userId,
     section: {
       id: sectionId,
+      term_id: 1269,
       section_name: 'LEC 001',
       exams: [],
       meetings: [
