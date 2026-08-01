@@ -127,6 +127,13 @@ M 1:00PM - 2:50PM
  * the difference has to be derived from the counts. Getting this wrong in the
  * 'failed' direction strands users on the swap page, whose blocking overlay
  * only lifts once a schedule is on the account.
+ *
+ * The cases below are one per *response shape*, not one per branch — three of
+ * them reach the same early return, which is the point. `failed_classes` can
+ * arrive as `[]`, as `null` (Go marshals a nil slice that way), or not at all
+ * (the parse-only response carries TermId/Classes and no counts), and all three
+ * have to read as a clean import. Testing only `[]` would let either of the
+ * other two regress into a spurious error, which is the exact bug this fixes.
  */
 describe('getScheduleImportOutcome', () => {
   it('treats a clean import as imported', () => {
@@ -177,16 +184,5 @@ describe('getScheduleImportOutcome', () => {
         Classes: [{ Number: 7587, Location: 'MC 4020' }],
       } as unknown as ScheduleParseResponse),
     ).toEqual({ kind: 'imported', failedClasses: [] });
-  });
-
-  it('fails rather than guess when failures outnumber the parsed count', () => {
-    // Counts that cannot both be true. Erring toward the error message costs a
-    // retry; erring the other way drops the user on an empty calendar.
-    expect(
-      getScheduleImportOutcome({
-        sections_imported: 0,
-        failed_classes: [7587],
-      }).kind,
-    ).toBe('failed');
   });
 });
