@@ -33,6 +33,10 @@ export const TRANSCRIPT_ERRORS: MessageObject = {
     'We were unable to process your transcript. Get in touch at info@uwflow.com if this persists.',
 };
 
+// "7587", "7587 and 7588", "7587, 7588 and 7589"
+const joinClassNumbers = (classes: number[]) =>
+  classes.join(', ').replace(/, ((?:.(?!, ))+)$/, ' and $1');
+
 export const SCHEDULE_ERRORS: MessageObject = {
   course_selection_schedule:
     'That looks like your Course Selection page – in Quest, go to Enroll → My Class Schedule and paste that instead.',
@@ -49,11 +53,20 @@ export const SCHEDULE_ERRORS: MessageObject = {
   classes_failed: (classes: number[]) =>
     `We were unable to add ${
       classes.length === 1 ? 'class number' : 'class numbers'
-    } ${classes
-      .join(', ')
-      .replace(/, ((?:.(?!, ))+)$/, ' and $1')} to your schedule.
+    } ${joinClassNumbers(classes)} to your schedule.
     Get in touch at info@uwflow.com if this persists.`,
 };
+
+// A partial import is a success, not a failure: the sections we could match are
+// saved, so this is a notice about what is missing rather than something the
+// user can fix by re-pasting. Keep it out of SCHEDULE_ERRORS so it can never be
+// rendered in the modal's error slot.
+export const SCHEDULE_CLASSES_SKIPPED = (classes: number[]) =>
+  `Imported your schedule, but we couldn’t find ${
+    classes.length === 1 ? 'class number' : 'class numbers'
+  } ${joinClassNumbers(classes)}. ${
+    classes.length === 1 ? 'That section is' : 'Those sections are'
+  } missing from our course data – everything else was added.`;
 
 export const SUBSCRIPTION_ERROR =
   'Sorry, we couldn’t sign you up for notifications – try again in a few minutes.';

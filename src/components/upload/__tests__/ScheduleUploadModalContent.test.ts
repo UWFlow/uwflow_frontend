@@ -1,6 +1,10 @@
 import { SCHEDULE_ERRORS } from 'constants/Messages';
+import { ScheduleParseResponse } from 'types/Api';
 
-import { getScheduleError } from '../ScheduleUploadModalContent';
+import {
+  getScheduleError,
+  getScheduleImportOutcome,
+} from '../ScheduleUploadModalContent';
 
 /**
  * The backend reports only a coarse enum for a failed schedule paste:
@@ -115,5 +119,74 @@ M 1:00PM - 2:50PM
     expect(getScheduleError('internal_error', emptyTermPaste)).toBe(
       SCHEDULE_ERRORS.default_schedule,
     );
+  });
+});
+
+/**
+ * `/parse/schedule` answers 200 for a partial import and a total one alike, so
+ * the difference has to be derived from the counts. Getting this wrong in the
+ * 'failed' direction strands users on the swap page, whose blocking overlay
+ * only lifts once a schedule is on the account.
+ */
+describe('getScheduleImportOutcome', () => {
+  it('treats a clean import as imported', () => {
+    expect(
+      getScheduleImportOutcome({
+        sections_imported: 8,
+        failed_classes: [],
+      }),
+    ).toEqual({ kind: 'imported', failedClasses: [] });
+  });
+
+  it('lets a partial import through with the classes that failed', () => {
+    // Seven of eight matched a section: the schedule is on the account.
+    expect(
+      getScheduleImportOutcome({
+        sections_imported: 8,
+        failed_classes: [7587],
+      }),
+    ).toEqual({ kind: 'imported', failedClasses: [7587] });
+  });
+
+  it('fails when every parsed class missed', () => {
+    // The whole-term miss, e.g. the paste's term header disagreeing with its
+    // class numbers. Nothing was written, so there is nothing to show.
+    expect(
+      getScheduleImportOutcome({
+        sections_imported: 3,
+        failed_classes: [7587, 7588, 7589],
+      }),
+    ).toEqual({ kind: 'failed', failedClasses: [7587, 7588, 7589] });
+  });
+
+  it('treats a null failed_classes as a clean import', () => {
+    // Go marshals an empty slice as null rather than [].
+    expect(
+      getScheduleImportOutcome({
+        sections_imported: 4,
+        failed_classes: null,
+      } as unknown as ScheduleParseResponse),
+    ).toEqual({ kind: 'imported', failedClasses: [] });
+  });
+
+  it('treats the parse-only response as a clean import', () => {
+    // The parse-only endpoint answers with TermId/Classes and no counts.
+    expect(
+      getScheduleImportOutcome({
+        TermId: 1269,
+        Classes: [{ Number: 7587, Location: 'MC 4020' }],
+      } as unknown as ScheduleParseResponse),
+    ).toEqual({ kind: 'imported', failedClasses: [] });
+  });
+
+  it('fails rather than guess when failures outnumber the parsed count', () => {
+    // Counts that cannot both be true. Erring toward the error message costs a
+    // retry; erring the other way drops the user on an empty calendar.
+    expect(
+      getScheduleImportOutcome({
+        sections_imported: 0,
+        failed_classes: [7587],
+      }).kind,
+    ).toBe('failed');
   });
 });
