@@ -19,10 +19,14 @@ POSTGRES_PORT=5432
 POSTGRES_USER=postgres
 ```
 
-Connect locally (backend must be running via `docker-compose`):
+Connect locally (backend must be running via `docker-compose`). Read the
+database name from `uwflow/.env` rather than assuming it — it is `flow_new`,
+not `flow`:
 
 ```bash
-psql -h localhost -p 5432 -U postgres -d flow
+psql -h localhost -p 5432 -U postgres -d flow_new
+# or, without a local psql client:
+docker exec -i postgres psql -U postgres -d flow_new
 ```
 
 Useful psql commands:
@@ -94,9 +98,48 @@ const MyComponent = ({ id }: { id: number }) => {
 };
 ```
 
-### Step 3 — Regenerate TypeScript types (if needed)
+### Step 3 — Regenerate TypeScript types
 
-Generated types live in `src/generated/graphql.tsx`. If the schema or queries changed, regenerate them per the project's codegen setup.
+`src/generated/graphql.tsx` is a **generated artifact. Never hand-edit it.**
+Adding a field to a fragment or writing a new query means regenerating:
+
+```bash
+bun run generate    # graphql-codegen --config codegen.js
+```
+
+Codegen introspects the **live local Hasura** (`codegen.js` points at
+`http://localhost:8080/v1/graphql` with `x-hasura-admin-secret: secretinprod`),
+so the backend must be running first. Postgres and Hasura are enough — the Go
+services are not needed:
+
+```bash
+cd uwflow && docker compose up -d postgres hasura
+```
+
+Codegen emits typed operations for every document under `src/**`. Use them
+instead of hand-writing operation types:
+
+```tsx
+import { GetMyDataQuery, GetMyDataQueryVariables } from 'generated/graphql';
+
+const { data } = useQuery<GetMyDataQuery, GetMyDataQueryVariables>(GET_MY_DATA);
+```
+
+A locally declared `type MyDataQuery = { ... }` sitting next to a `gql`
+document is a smell: it means codegen was never run for that query, and the
+hand-written type will silently drift from the schema.
+
+#### Check the diff before committing
+
+Codegen reads whatever schema your local Hasura currently has, so **any
+unmerged backend migration applied to your local database leaks into the
+output**. Regenerating while the backend repo sits on a feature branch adds
+types for tables that do not exist on `main`, inflating an unrelated frontend
+PR by hundreds of lines.
+
+Always `git diff src/generated/graphql.tsx` and confirm every hunk traces back
+to a change you actually made. If it does not, point codegen at a schema that
+matches what the PR targets before regenerating.
 
 ## 4. Authentication Context
 
@@ -114,4 +157,5 @@ Unauthenticated queries work as the `anonymous` role — only publicly visible d
 | GQL queries     | `uwflow_frontend/src/graphql/queries/`                |
 | Fragments       | `uwflow_frontend/src/graphql/fragments/`              |
 | Apollo init     | `uwflow_frontend/src/graphql/apollo.js`               |
-| Generated types | `uwflow_frontend/src/generated/graphql.tsx`           |
+| Generated types | `uwflow_frontend/src/generated/graphql.tsx` (never hand-edit) |
+| Codegen config  | `uwflow_frontend/codegen.js` (`bun run generate`)     |
