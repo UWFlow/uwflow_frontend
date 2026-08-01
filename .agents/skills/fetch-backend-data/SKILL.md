@@ -12,7 +12,7 @@ This skill guides you through the full data-fetching stack: Postgres → Hasura 
 Credentials live in `uwflow/.env` (copy of `.env.sample`):
 
 ```
-POSTGRES_DB=flow_new
+POSTGRES_DB=flow
 POSTGRES_HOST=postgres   # or localhost if connecting outside Docker
 POSTGRES_PASSWORD=secretinprod
 POSTGRES_PORT=5432
