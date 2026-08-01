@@ -62,11 +62,9 @@ export const SCHEDULE_ERRORS: MessageObject = {
 // user can fix by re-pasting. Keep it out of SCHEDULE_ERRORS so it can never be
 // rendered in the modal's error slot.
 export const SCHEDULE_CLASSES_SKIPPED = (classes: number[]) =>
-  `Imported your schedule, but we couldn’t find ${
+  `Schedule imported except for ${
     classes.length === 1 ? 'class number' : 'class numbers'
-  } ${joinClassNumbers(classes)}. ${
-    classes.length === 1 ? 'That section is' : 'Those sections are'
-  } missing from our course data – everything else was added.`;
+  } ${joinClassNumbers(classes)}, which we couldn’t find.`;
 
 export const SUBSCRIPTION_ERROR =
   'Sorry, we couldn’t sign you up for notifications – try again in a few minutes.';

@@ -232,6 +232,7 @@ const ScheduleUploadModalContent = ({
         isPartial
           ? SCHEDULE_CLASSES_SKIPPED(outcome.failedClasses)
           : DATA_UPLOAD_SUCCESS,
+        isPartial ? { bodyClassName: 'text-center' } : undefined,
       );
       if (onAfterUploadSuccess) {
         const parseOnly = response as unknown as ParseOnlyScheduleResponse;
