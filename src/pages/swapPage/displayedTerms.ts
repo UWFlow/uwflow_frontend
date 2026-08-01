@@ -1,33 +1,17 @@
 import { UserScheduleFragment } from 'generated/graphql';
 
-import {
-  getCurrentTermCode,
-  getNextTermCode,
-  termCodeToDate,
-} from 'utils/Misc';
+import { getCurrentTermCode, getNextTermCode } from 'utils/Misc';
 
-// The swap calendar only ever shows two terms: the current one and the next.
-// The calendar's term tabs and SwapPage's "import from Quest" empty state both
-// key off this pair, so it lives in one place rather than being re-derived.
-export const getDisplayedTerms = () => {
-  const thisTermCode = getCurrentTermCode();
-  const nextTermCode = getNextTermCode();
-  return {
-    thisTermCode,
-    nextTermCode,
-    thisTermLabel: termCodeToDate(thisTermCode),
-    nextTermLabel: termCodeToDate(nextTermCode),
-  };
-};
-
-// Whether the schedule has classes in each of the two displayed terms. Drives
-// the calendar's default term and the "Import your schedule from Quest" prompt
-// in SwapPage. Sections carry their own term_id, so this never has to infer a
-// term from meeting dates.
+// Whether the schedule has classes in each of the two terms the swap calendar
+// shows (current + next). Drives the default term in SwapCalendar and the
+// "Import your schedule from Quest" empty-state prompt in SwapPage, so it sits
+// outside the component that both of them can reach. Sections carry their own
+// term_id, so this never has to infer a term from meeting dates.
 export const getDisplayedTermPresence = (
   schedule: UserScheduleFragment['schedule'],
 ) => {
-  const { thisTermCode, nextTermCode } = getDisplayedTerms();
+  const thisTermCode = getCurrentTermCode();
+  const nextTermCode = getNextTermCode();
   return {
     thisHasData: schedule.some(
       (entry) => entry.section.term_id === thisTermCode,

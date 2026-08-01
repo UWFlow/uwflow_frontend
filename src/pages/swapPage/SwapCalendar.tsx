@@ -25,10 +25,15 @@ import {
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import { GET_COURSE_FOR_SWAP } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
-import { formatCourseCode, termCodeToDate } from 'utils/Misc';
+import {
+  formatCourseCode,
+  getCurrentTermCode,
+  getNextTermCode,
+  termCodeToDate,
+} from 'utils/Misc';
 
 import CourseSearchDropdown from './CourseSearchDropdown';
-import { getDisplayedTermPresence, getDisplayedTerms } from './displayedTerms';
+import { getDisplayedTermPresence } from './displayedTerms';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
@@ -217,8 +222,10 @@ type SwapCalendarProps = {
 };
 
 const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
-  const { thisTermCode, nextTermCode, thisTermLabel, nextTermLabel } =
-    getDisplayedTerms();
+  const thisTermCode = getCurrentTermCode();
+  const nextTermCode = getNextTermCode();
+  const thisTermLabel = termCodeToDate(thisTermCode);
+  const nextTermLabel = termCodeToDate(nextTermCode);
 
   const [selectedTerm, setSelectedTerm] = useState<string>(() => {
     const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);

@@ -1,6 +1,8 @@
 import { UserScheduleFragment } from 'generated/graphql';
 
-import { getDisplayedTermPresence, getDisplayedTerms } from './displayedTerms';
+import { getCurrentTermCode, getNextTermCode } from 'utils/Misc';
+
+import { getDisplayedTermPresence } from './displayedTerms';
 
 // Only term_id matters here, but the helper takes real schedule entries, so
 // build one with a meeting that has no Mon-Fri day: an online/async section
@@ -34,14 +36,9 @@ const entryInTerm = (
     },
   } as unknown as UserScheduleFragment['schedule'][number]);
 
-describe('displayedTerms', () => {
-  const { thisTermCode, nextTermCode, thisTermLabel, nextTermLabel } =
-    getDisplayedTerms();
-
-  it('exposes two distinct consecutive terms', () => {
-    expect(nextTermCode).toBeGreaterThan(thisTermCode);
-    expect(thisTermLabel).not.toEqual(nextTermLabel);
-  });
+describe('getDisplayedTermPresence', () => {
+  const thisTermCode = getCurrentTermCode();
+  const nextTermCode = getNextTermCode();
 
   it('detects classes in each displayed term independently', () => {
     expect(getDisplayedTermPresence([entryInTerm(thisTermCode)])).toEqual({
