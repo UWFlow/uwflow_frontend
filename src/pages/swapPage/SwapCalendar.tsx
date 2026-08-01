@@ -33,6 +33,7 @@ import {
 } from 'utils/Misc';
 
 import CourseSearchDropdown from './CourseSearchDropdown';
+import { getDisplayedTermPresence } from './displayedTerms';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
@@ -90,38 +91,6 @@ const toDayIndexes = (days: string[], startSeconds: number): number[] => {
   const startHour = startSeconds / 3600;
   if (startHour < GRID_START_HOUR || startHour >= GRID_END_HOUR) return [];
   return days.map((d) => DAY_LETTERS.indexOf(d)).filter((col) => col !== -1);
-};
-
-const getTermLabel = (dateStr: string): string => {
-  const d = new Date(dateStr);
-  const m = d.getMonth() + 1;
-  return `${m >= 9 ? 'Fall' : m >= 5 ? 'Spring' : 'Winter'} ${d.getFullYear()}`;
-};
-
-const groupScheduleByTerm = (schedule: UserScheduleFragment['schedule']) => {
-  const map: { [term: string]: UserScheduleFragment['schedule'] } = {};
-  for (const entry of schedule) {
-    const meeting = entry.section.meetings.find((m) =>
-      (m.days as string[]).some((d) => DAY_LETTERS.includes(d)),
-    );
-    const term = meeting ? getTermLabel(meeting.start_date) : 'Other';
-    if (!map[term]) map[term] = [];
-    map[term].push(entry);
-  }
-  return map;
-};
-
-// Whether the schedule has classes in each of the two terms the swap calendar
-// shows (current + next). Drives the default term here and the "Import your
-// schedule from Quest" empty-state prompt in SwapPage.
-export const getDisplayedTermPresence = (
-  schedule: UserScheduleFragment['schedule'],
-) => {
-  const termMap = groupScheduleByTerm(schedule);
-  return {
-    thisHasData: !!termMap[termCodeToDate(getCurrentTermCode())]?.length,
-    nextHasData: !!termMap[termCodeToDate(getNextTermCode())]?.length,
-  };
 };
 
 const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
@@ -253,8 +222,6 @@ type SwapCalendarProps = {
 };
 
 const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
-  const termMap = useMemo(() => groupScheduleByTerm(schedule), [schedule]);
-
   const thisTermCode = getCurrentTermCode();
   const nextTermCode = getNextTermCode();
   const thisTermLabel = termCodeToDate(thisTermCode);
@@ -297,8 +264,10 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     selectedTerm === nextTermLabel ? nextTermCode : thisTermCode;
   // Effective schedule for the term: temporary swaps take precedence.
   const termSections = useMemo(
-    () => overriddenByTerm[selectedTerm] ?? termMap[selectedTerm] ?? [],
-    [overriddenByTerm, termMap, selectedTerm],
+    () =>
+      overriddenByTerm[selectedTerm] ??
+      schedule.filter((entry) => entry.section.term_id === selectedTermCode),
+    [overriddenByTerm, schedule, selectedTerm, selectedTermCode],
   );
 
   // Distinct courses in the user's schedule for this term, for the left
