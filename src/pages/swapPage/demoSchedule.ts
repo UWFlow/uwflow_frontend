@@ -1,9 +1,13 @@
 import { UserScheduleFragment } from 'generated/graphql';
 
+import { getCurrentTermCode } from 'utils/Misc';
+
 // Sample schedule rendered behind the logged-out lock overlay so the page
-// doesn't look empty. Dated "today" so it always lands in the current term
-// tab, and given negative ids so it can never collide with real sections.
+// doesn't look empty. Tagged with the current term_id so it always lands in
+// the current term tab, and given negative ids so it can never collide with
+// real sections.
 const today = new Date().toISOString().slice(0, 10);
+const currentTermId = getCurrentTermCode();
 
 const hour = (h: number, m = 0) => h * 3600 + m * 60;
 
@@ -19,6 +23,7 @@ const demoSection = (
 ) => ({
   section: {
     id,
+    term_id: currentTermId,
     exams: [],
     meetings: [
       {

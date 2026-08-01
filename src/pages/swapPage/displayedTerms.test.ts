@@ -1,0 +1,78 @@
+import { UserScheduleFragment } from 'generated/graphql';
+
+import { getDisplayedTermPresence, getDisplayedTerms } from './displayedTerms';
+
+// Only term_id matters here, but the helper takes real schedule entries, so
+// build one with a meeting that has no Mon-Fri day: an online/async section
+// still counts as "this term has classes" even though it draws no calendar
+// blocks.
+const entryInTerm = (
+  termId: number,
+  days: string[] = ['M', 'W'],
+): UserScheduleFragment['schedule'][number] =>
+  ({
+    user_id: 1,
+    section: {
+      id: termId * 100,
+      term_id: termId,
+      section_name: 'LEC 001',
+      exams: [],
+      meetings: [
+        {
+          days,
+          end_date: '2026-12-03',
+          end_seconds: 35400,
+          is_cancelled: false,
+          location: 'MC 2034',
+          prof: null,
+          section_id: termId * 100,
+          start_date: '2026-09-08',
+          start_seconds: 32400,
+        },
+      ],
+      course: { id: 1, code: 'CS135', name: 'Designing Functional Programs' },
+    },
+  } as unknown as UserScheduleFragment['schedule'][number]);
+
+describe('displayedTerms', () => {
+  const { thisTermCode, nextTermCode, thisTermLabel, nextTermLabel } =
+    getDisplayedTerms();
+
+  it('exposes two distinct consecutive terms', () => {
+    expect(nextTermCode).toBeGreaterThan(thisTermCode);
+    expect(thisTermLabel).not.toEqual(nextTermLabel);
+  });
+
+  it('detects classes in each displayed term independently', () => {
+    expect(getDisplayedTermPresence([entryInTerm(thisTermCode)])).toEqual({
+      thisHasData: true,
+      nextHasData: false,
+    });
+    expect(getDisplayedTermPresence([entryInTerm(nextTermCode)])).toEqual({
+      thisHasData: false,
+      nextHasData: true,
+    });
+  });
+
+  it('ignores terms the calendar does not display', () => {
+    // A returning user whose schedule is entirely past terms.
+    expect(getDisplayedTermPresence([entryInTerm(thisTermCode - 10)])).toEqual({
+      thisHasData: false,
+      nextHasData: false,
+    });
+  });
+
+  it('counts sections with no Mon-Fri meetings', () => {
+    expect(getDisplayedTermPresence([entryInTerm(thisTermCode, [])])).toEqual({
+      thisHasData: true,
+      nextHasData: false,
+    });
+  });
+
+  it('reports no data for an empty schedule', () => {
+    expect(getDisplayedTermPresence([])).toEqual({
+      thisHasData: false,
+      nextHasData: false,
+    });
+  });
+});
