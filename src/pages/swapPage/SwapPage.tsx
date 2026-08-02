@@ -16,6 +16,7 @@ import { cn } from 'lib/utils';
 import DEMO_SCHEDULE from './demoSchedule';
 import { getDisplayedTermPresence } from './displayedTerms';
 import SwapCalendar from './SwapCalendar';
+import { getScheduleFingerprint } from './useLocalStorageSwaps';
 
 const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';
 
@@ -49,6 +50,10 @@ const SwapPage = () => {
   // Logged-out visitors see a non-interactive sample schedule behind the
   // login lock card instead of an empty grid.
   const isDemo = !isLoggedIn && !hasDisplayedTermClasses;
+  const displayedSchedule = isDemo ? DEMO_SCHEDULE : schedule;
+  const swapCalendarKey = `${
+    isDemo ? 'demo' : user?.id ?? 'anonymous'
+  }:${getScheduleFingerprint(displayedSchedule)}`;
 
   useEffect(() => {
     if (!hasDisplayedTermClasses) {
@@ -100,8 +105,14 @@ const SwapPage = () => {
         )}
       </Helmet>
       <SwapCalendar
-        schedule={isDemo ? DEMO_SCHEDULE : schedule}
+        // Drops ephemeral UI state (selection, open dropdowns, hover preview)
+        // when the signed-in user or their base schedule changes, so nothing
+        // stays selected that is no longer on the calendar. Saved swap plans
+        // are keyed and invalidated independently, inside the calendar.
+        key={swapCalendarKey}
+        schedule={displayedSchedule}
         demoMode={isDemo}
+        userId={user?.id ?? null}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div
