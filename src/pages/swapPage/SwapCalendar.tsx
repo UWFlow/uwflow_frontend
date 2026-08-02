@@ -793,8 +793,13 @@ const SwapCalendar = ({
               )}
             </div>
             {updatedAt && (
+              // `updatedAt` comes from the sections of `displayCode` in
+              // `selectedTermCode`, so the link points at that exact course
+              // and term rather than the whole schedule-of-classes index.
               <LastUpdatedSchedule
                 updatedAt={updatedAt}
+                courseCode={displayCode ?? undefined}
+                term={selectedTermCode}
                 fontSize="80%"
                 margin="0"
               />
