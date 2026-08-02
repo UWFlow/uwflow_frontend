@@ -315,13 +315,18 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
 
   const enrolledSectionIds = termSections.map((e) => e.section.id);
 
-  const conflictSectionIds = swapSections
-    .filter(
-      (section) =>
-        !enrolledSectionIds.includes(section.id) &&
-        sectionConflictsWithSchedule(section, termSections, selection),
-    )
-    .map((section) => section.id);
+  // Nested meeting-overlap checks across every candidate × enrolled section.
+  const conflictSectionIds = useMemo(
+    () =>
+      swapSections
+        .filter(
+          (section) =>
+            !enrolledSectionIds.includes(section.id) &&
+            sectionConflictsWithSchedule(section, termSections, selection),
+        )
+        .map((section) => section.id),
+    [swapSections, enrolledSectionIds, termSections, selection],
+  );
 
   // Sections of the selected type shown in the panel (mirrors the panel's term
   // + type filter). Used to detect a section code that has nothing to swap into.
