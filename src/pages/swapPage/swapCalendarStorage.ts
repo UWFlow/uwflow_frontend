@@ -1,51 +1,52 @@
 import { UserScheduleFragment } from 'generated/graphql';
 
-export type SectionSelection = {
-  courseCode: string;
-  sectionType: string;
-};
+/** The two term tabs the swap calendar shows. */
+export enum DisplayedTerm {
+  Current = 'current',
+  Next = 'next',
+}
 
+/** One planned swap: the enrolled section, and what it is being replaced with. */
 export type SavedSwap = {
   sourceSectionId: number;
   replacementSectionId: number;
 };
 
 export type SwapCalendarState = {
-  selectedTerm: string;
-  selection: SectionSelection | null;
-  selectedSwapCourseCode: string | null;
-  swapsByTerm: Record<string, SavedSwap[]>;
+  selectedTerm: DisplayedTerm;
+  swapsByTerm: Partial<Record<DisplayedTerm, SavedSwap[]>>;
 };
 
-type StoredSwapCalendarState = SwapCalendarState & {
-  scheduleFingerprint: string;
-  version: 1;
-};
-
+// Injectable so the validation below is testable without a DOM.
 type ReadableStorage = Pick<Storage, 'getItem'>;
 type WritableStorage = Pick<Storage, 'setItem'>;
 
 const STORAGE_KEY_PREFIX = 'swap_calendar_state';
-const STORAGE_VERSION = 1;
+// v1 keyed swaps by term *label* ("Fall 2026"), which went stale at term
+// rollover. Bumping orphans those payloads rather than migrating them.
+const STORAGE_VERSION = 2;
+const DISPLAYED_TERMS = Object.values(DisplayedTerm);
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
-const isSectionSelection = (value: unknown): value is SectionSelection =>
-  isRecord(value) &&
-  typeof value.courseCode === 'string' &&
-  value.courseCode.length > 0 &&
-  typeof value.sectionType === 'string' &&
-  value.sectionType.length > 0;
+const isDisplayedTerm = (value: unknown): value is DisplayedTerm =>
+  value === DisplayedTerm.Current || value === DisplayedTerm.Next;
 
 const isSavedSwap = (value: unknown): value is SavedSwap =>
   isRecord(value) &&
   Number.isInteger(value.sourceSectionId) &&
   Number.isInteger(value.replacementSectionId);
 
+/** Saved plans are per-user: two accounts sharing a browser stay isolated. */
 export const getSwapCalendarStorageKey = (userId: number) =>
   `${STORAGE_KEY_PREFIX}:${userId}`;
 
+/**
+ * Stable hash of enrolled section IDs. A saved plan describes swaps *away
+ * from* a specific set of sections, so it is meaningless once the imported
+ * schedule changes — comparing fingerprints invalidates it.
+ */
 export const getScheduleFingerprint = (
   schedule: UserScheduleFragment['schedule'],
 ) =>
@@ -54,37 +55,33 @@ export const getScheduleFingerprint = (
     .sort((a, b) => a - b)
     .join(',');
 
+/**
+ * Reads a saved plan, or null if there is none, it is from an older version,
+ * or it belongs to a different base schedule. Anything structurally invalid is
+ * dropped rather than trusted — the payload is user-writable.
+ */
 export const loadSwapCalendarState = (
-  userId: number,
-  schedule: UserScheduleFragment['schedule'],
-  availableTerms: string[],
-  defaultSelectedTerm: string,
+  storageKey: string,
+  scheduleFingerprint: string,
+  defaultSelectedTerm: DisplayedTerm,
   storage: ReadableStorage = localStorage,
 ): SwapCalendarState | null => {
   try {
-    const storedValue = storage.getItem(getSwapCalendarStorageKey(userId));
+    const storedValue = storage.getItem(storageKey);
     if (!storedValue) return null;
 
     const parsed: unknown = JSON.parse(storedValue);
     if (
       !isRecord(parsed) ||
       parsed.version !== STORAGE_VERSION ||
-      parsed.scheduleFingerprint !== getScheduleFingerprint(schedule)
+      parsed.scheduleFingerprint !== scheduleFingerprint
     ) {
       return null;
     }
 
-    const availableTermSet = new Set(availableTerms);
-    const hasStoredSelectedTerm =
-      typeof parsed.selectedTerm === 'string' &&
-      availableTermSet.has(parsed.selectedTerm);
-    const selectedTerm = hasStoredSelectedTerm
-      ? (parsed.selectedTerm as string)
-      : defaultSelectedTerm;
-
-    const swapsByTerm: Record<string, SavedSwap[]> = {};
+    const swapsByTerm: Partial<Record<DisplayedTerm, SavedSwap[]>> = {};
     if (isRecord(parsed.swapsByTerm)) {
-      for (const term of availableTerms) {
+      for (const term of DISPLAYED_TERMS) {
         const termSwaps = parsed.swapsByTerm[term];
         if (Array.isArray(termSwaps)) {
           const validSwaps = termSwaps.filter(isSavedSwap);
@@ -96,17 +93,9 @@ export const loadSwapCalendarState = (
     }
 
     return {
-      selectedTerm,
-      selection:
-        hasStoredSelectedTerm && isSectionSelection(parsed.selection)
-          ? parsed.selection
-          : null,
-      selectedSwapCourseCode:
-        hasStoredSelectedTerm &&
-        typeof parsed.selectedSwapCourseCode === 'string' &&
-        parsed.selectedSwapCourseCode.length > 0
-          ? parsed.selectedSwapCourseCode
-          : null,
+      selectedTerm: isDisplayedTerm(parsed.selectedTerm)
+        ? parsed.selectedTerm
+        : defaultSelectedTerm,
       swapsByTerm,
     };
   } catch {
@@ -115,21 +104,19 @@ export const loadSwapCalendarState = (
 };
 
 export const saveSwapCalendarState = (
-  userId: number,
-  schedule: UserScheduleFragment['schedule'],
+  storageKey: string,
+  scheduleFingerprint: string,
   state: SwapCalendarState,
   storage: WritableStorage = localStorage,
 ) => {
-  const storedState: StoredSwapCalendarState = {
-    ...state,
-    scheduleFingerprint: getScheduleFingerprint(schedule),
-    version: STORAGE_VERSION,
-  };
-
   try {
     storage.setItem(
-      getSwapCalendarStorageKey(userId),
-      JSON.stringify(storedState),
+      storageKey,
+      JSON.stringify({
+        ...state,
+        scheduleFingerprint,
+        version: STORAGE_VERSION,
+      }),
     );
   } catch {
     // Persistence is a convenience. Browsers that disable or fill localStorage

@@ -16,7 +16,7 @@ import { cn } from 'lib/utils';
 import DEMO_SCHEDULE from './demoSchedule';
 import { getDisplayedTermPresence } from './displayedTerms';
 import SwapCalendar from './SwapCalendar';
-import { getScheduleFingerprint } from './SwapCalendarStorage';
+import { getScheduleFingerprint } from './swapCalendarStorage';
 
 const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';
 
@@ -105,6 +105,10 @@ const SwapPage = () => {
         )}
       </Helmet>
       <SwapCalendar
+        // Drops ephemeral UI state (selection, open dropdowns, hover preview)
+        // when the signed-in user or their base schedule changes, so nothing
+        // stays selected that is no longer on the calendar. Saved swap plans
+        // are keyed and invalidated independently, inside the calendar.
         key={swapCalendarKey}
         schedule={displayedSchedule}
         demoMode={isDemo}

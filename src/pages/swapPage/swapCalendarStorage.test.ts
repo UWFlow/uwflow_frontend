@@ -1,12 +1,13 @@
 import { UserScheduleFragment } from 'generated/graphql';
 
 import {
+  DisplayedTerm,
   getScheduleFingerprint,
   getSwapCalendarStorageKey,
   loadSwapCalendarState,
   saveSwapCalendarState,
   SwapCalendarState,
-} from './SwapCalendarStorage';
+} from './swapCalendarStorage';
 
 const createSchedule = (
   userId: number,
@@ -52,135 +53,209 @@ const createStorage = () => {
   };
 };
 
-describe('SwapCalendarStorage', () => {
+describe('swapCalendarStorage', () => {
   const userId = 42;
+  const storageKey = getSwapCalendarStorageKey(userId);
   const baseSchedule = createSchedule(userId, 1001);
-  const availableTerms = ['Fall 2026', 'Winter 2027'];
+  const fingerprint = getScheduleFingerprint(baseSchedule);
 
   it('restores a saved swap plan for the same user and base schedule', () => {
     const storage = createStorage();
     const state: SwapCalendarState = {
-      selectedTerm: 'Fall 2026',
-      selection: { courseCode: 'CS136', sectionType: 'LEC' },
-      selectedSwapCourseCode: 'CS246',
+      selectedTerm: DisplayedTerm.Next,
       swapsByTerm: {
-        'Fall 2026': [{ sourceSectionId: 1001, replacementSectionId: 2002 }],
+        [DisplayedTerm.Next]: [
+          { sourceSectionId: 1001, replacementSectionId: 2002 },
+        ],
       },
     };
 
-    saveSwapCalendarState(userId, baseSchedule, state, storage);
+    saveSwapCalendarState(storageKey, fingerprint, state, storage);
 
     expect(
       loadSwapCalendarState(
-        userId,
-        baseSchedule,
-        availableTerms,
-        'Fall 2026',
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Current,
         storage,
       ),
     ).toEqual(state);
   });
 
+  it('returns null when nothing has been saved', () => {
+    expect(
+      loadSwapCalendarState(
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Current,
+        createStorage(),
+      ),
+    ).toBeNull();
+  });
+
+  it('keeps saved plans separate per user', () => {
+    const storage = createStorage();
+    saveSwapCalendarState(
+      storageKey,
+      fingerprint,
+      {
+        selectedTerm: DisplayedTerm.Current,
+        swapsByTerm: {
+          [DisplayedTerm.Current]: [
+            { sourceSectionId: 1001, replacementSectionId: 2002 },
+          ],
+        },
+      },
+      storage,
+    );
+
+    expect(
+      loadSwapCalendarState(
+        getSwapCalendarStorageKey(99),
+        fingerprint,
+        DisplayedTerm.Current,
+        storage,
+      ),
+    ).toBeNull();
+  });
+
   it('rejects a saved plan after the imported schedule changes', () => {
     const storage = createStorage();
-    const state: SwapCalendarState = {
-      selectedTerm: 'Fall 2026',
-      selection: { courseCode: 'CS135', sectionType: 'LEC' },
-      selectedSwapCourseCode: null,
-      swapsByTerm: {},
-    };
-    saveSwapCalendarState(userId, baseSchedule, state, storage);
+    saveSwapCalendarState(
+      storageKey,
+      fingerprint,
+      { selectedTerm: DisplayedTerm.Current, swapsByTerm: {} },
+      storage,
+    );
 
     expect(
       loadSwapCalendarState(
-        userId,
-        createSchedule(userId, 3003),
-        availableTerms,
-        'Fall 2026',
+        storageKey,
+        getScheduleFingerprint(createSchedule(userId, 3003)),
+        DisplayedTerm.Current,
         storage,
       ),
     ).toBeNull();
   });
 
-  it('falls back safely when the saved term is no longer displayed', () => {
-    const storage = createStorage();
-    const state: SwapCalendarState = {
-      selectedTerm: 'Fall 2026',
-      selection: { courseCode: 'CS135', sectionType: 'LEC' },
-      selectedSwapCourseCode: 'CS136',
-      swapsByTerm: {
-        'Fall 2026': [{ sourceSectionId: 1001, replacementSectionId: 2002 }],
-      },
-    };
-    saveSwapCalendarState(userId, baseSchedule, state, storage);
-
-    expect(
-      loadSwapCalendarState(
-        userId,
-        baseSchedule,
-        ['Spring 2027', 'Fall 2027'],
-        'Spring 2027',
-        storage,
-      ),
-    ).toEqual({
-      selectedTerm: 'Spring 2027',
-      selection: null,
-      selectedSwapCourseCode: null,
-      swapsByTerm: {},
-    });
-  });
-
-  it('ignores malformed storage values', () => {
-    const storage = createStorage();
-    storage.setItem(getSwapCalendarStorageKey(userId), '{not json');
-
-    expect(
-      loadSwapCalendarState(
-        userId,
-        baseSchedule,
-        availableTerms,
-        'Fall 2026',
-        storage,
-      ),
-    ).toBeNull();
-  });
-
-  it('drops structurally invalid saved swaps without parsing nested data', () => {
+  it('rejects a plan written by an older storage version', () => {
     const storage = createStorage();
     storage.setItem(
-      getSwapCalendarStorageKey(userId),
+      storageKey,
       JSON.stringify({
         version: 1,
-        scheduleFingerprint: getScheduleFingerprint(baseSchedule),
+        scheduleFingerprint: fingerprint,
+        // v1 keyed swaps by term label rather than by DisplayedTerm.
         selectedTerm: 'Fall 2026',
-        selection: { courseCode: 'CS135', sectionType: 'LEC' },
-        selectedSwapCourseCode: null,
         swapsByTerm: {
-          'Fall 2026': [
-            { sourceSectionId: 1001, replacementSectionId: 2002 },
-            { sourceSectionId: 1001, replacementSectionId: null },
-            { meetings: [null] },
-          ],
+          'Fall 2026': [{ sourceSectionId: 1001, replacementSectionId: 2002 }],
         },
       }),
     );
 
     expect(
       loadSwapCalendarState(
-        userId,
-        baseSchedule,
-        availableTerms,
-        'Fall 2026',
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Current,
+        storage,
+      ),
+    ).toBeNull();
+  });
+
+  it('ignores malformed storage values', () => {
+    const storage = createStorage();
+    storage.setItem(storageKey, '{not json');
+
+    expect(
+      loadSwapCalendarState(
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Current,
+        storage,
+      ),
+    ).toBeNull();
+  });
+
+  it('falls back to the default term when the saved term is unrecognized', () => {
+    const storage = createStorage();
+    storage.setItem(
+      storageKey,
+      JSON.stringify({
+        version: 2,
+        scheduleFingerprint: fingerprint,
+        selectedTerm: 'spring',
+        swapsByTerm: {},
+      }),
+    );
+
+    expect(
+      loadSwapCalendarState(
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Next,
+        storage,
+      ),
+    ).toEqual({ selectedTerm: DisplayedTerm.Next, swapsByTerm: {} });
+  });
+
+  it('drops structurally invalid saved swaps without parsing nested data', () => {
+    const storage = createStorage();
+    storage.setItem(
+      storageKey,
+      JSON.stringify({
+        version: 2,
+        scheduleFingerprint: fingerprint,
+        selectedTerm: DisplayedTerm.Current,
+        swapsByTerm: {
+          [DisplayedTerm.Current]: [
+            { sourceSectionId: 1001, replacementSectionId: 2002 },
+            { sourceSectionId: 1001, replacementSectionId: null },
+            { meetings: [null] },
+          ],
+          // Not a DisplayedTerm — never read back.
+          'Fall 2026': [{ sourceSectionId: 5005, replacementSectionId: 6006 }],
+        },
+      }),
+    );
+
+    expect(
+      loadSwapCalendarState(
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Current,
         storage,
       ),
     ).toEqual({
-      selectedTerm: 'Fall 2026',
-      selection: { courseCode: 'CS135', sectionType: 'LEC' },
-      selectedSwapCourseCode: null,
+      selectedTerm: DisplayedTerm.Current,
       swapsByTerm: {
-        'Fall 2026': [{ sourceSectionId: 1001, replacementSectionId: 2002 }],
+        [DisplayedTerm.Current]: [
+          { sourceSectionId: 1001, replacementSectionId: 2002 },
+        ],
       },
     });
+  });
+
+  it('omits terms whose saved swaps are all invalid', () => {
+    const storage = createStorage();
+    storage.setItem(
+      storageKey,
+      JSON.stringify({
+        version: 2,
+        scheduleFingerprint: fingerprint,
+        selectedTerm: DisplayedTerm.Current,
+        swapsByTerm: { [DisplayedTerm.Current]: [{ nonsense: true }] },
+      }),
+    );
+
+    expect(
+      loadSwapCalendarState(
+        storageKey,
+        fingerprint,
+        DisplayedTerm.Current,
+        storage,
+      ),
+    ).toEqual({ selectedTerm: DisplayedTerm.Current, swapsByTerm: {} });
   });
 
   it('uses a stable fingerprint regardless of schedule order', () => {
@@ -191,6 +266,12 @@ describe('SwapCalendarStorage', () => {
 
     expect(getScheduleFingerprint(schedule)).toBe(
       getScheduleFingerprint([...schedule].reverse()),
+    );
+  });
+
+  it('distinguishes schedules that differ only by one section', () => {
+    expect(getScheduleFingerprint(createSchedule(userId, 1001))).not.toBe(
+      getScheduleFingerprint(createSchedule(userId, 1002)),
     );
   });
 });
