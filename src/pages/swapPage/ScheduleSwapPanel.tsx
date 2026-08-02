@@ -6,7 +6,6 @@ import { getCoursePageRoute, getProfPageRoute } from 'Routes';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { Button } from 'components/ui/button';
-import { getSectionType, SectionType } from 'constants/CourseSection';
 import { cn } from 'lib/utils';
 import { formatCourseCode, processRating, weekDayLetters } from 'utils/Misc';
 
@@ -36,9 +35,9 @@ export type ProfessorSwapStats = {
 export type ScheduleSwapPanelProps = {
   selectedTermId: number;
   selectedCourseId: number | null;
-  // Section type the user selected on the calendar; only sections of this
-  // type are listed (null lists every type).
-  sectionType: SectionType | null;
+  // Section type ("LEC", "TUT", ...) the user selected on the calendar; only
+  // sections of this type are listed (null lists every type).
+  sectionType: string | null;
   candidateCourses: SwapCandidateCourse[];
   enrolledSectionIds: number[];
   conflictSectionIds: number[];
@@ -47,6 +46,8 @@ export type ScheduleSwapPanelProps = {
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
   isLoading?: boolean;
 };
+
+const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
 
 const getOpenSeats = (section: SwapCourseSectionFragment) =>
   Math.max(section.enrollment_capacity - section.enrollment_total, 0);
