@@ -19,6 +19,23 @@ The following packages are intentionally pinned to their current major version a
 
 Before every commit, run `bun run lint-nofix` and confirm it exits clean. This is required by CI/CD — commits that fail it will not pass the pipeline.
 
+## React memoization
+
+Do **not** wrap cheap derived values in `useMemo` / `useCallback` by default.
+Plain assignments are preferred for small maps, filters, one-element arrays,
+and property reads.
+
+Only memoize when there is a concrete reason, for example:
+
+- the computation is measurably expensive, or
+- a stable identity is required to avoid a real over-render / effect loop
+  (document why in a short comment).
+
+A new `[]` / `{}` each render is fine unless a dependency array or
+`React.memo` child is clearly churning because of it — in that case prefer a
+module-level constant empty value over wrapping the whole derivation in
+`useMemo`.
+
 ## Design tokens (Tailwind)
 
 When writing Tailwind classes, use the named design tokens from
