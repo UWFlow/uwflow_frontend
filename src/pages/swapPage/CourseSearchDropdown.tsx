@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'react-feather';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
@@ -7,11 +6,12 @@ import {
   CourseDropdownByTermQuery,
   CourseDropdownByTermQueryVariables,
 } from 'generated/graphql';
-import useOnClickOutside from 'use-onclickoutside';
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
+
+import CourseDropdownTrigger from './CourseDropdownTrigger';
 
 const dropdownEmptyStateClasses =
   'px-3.5 py-4 text-center text-[13px] text-dark3';
@@ -19,17 +19,18 @@ const dropdownEmptyStateClasses =
 type CourseItem = CourseDropdownByTermQuery['course'][number];
 
 type CourseSearchDropdownProps = {
-  /** Code shown on the trigger (swap target, or enrolled course as fallback). */
-  displayCode: string;
-  /** Highlighted row in the list; null when still targeting the enrolled course. */
-  selectedCode: string | null;
+  /**
+   * Current swap target — shown on the trigger and highlighted in the list.
+   * Falls back to the enrolled course while no other target has been picked.
+   */
+  selectedCode: string;
   onSelect: (code: string) => void;
   termId: number;
 };
 
 type RowData = {
   courses: CourseItem[];
-  selectedCode: string | null;
+  selectedCode: string;
   onSelect: (code: string) => void;
 };
 
@@ -66,29 +67,22 @@ const CourseRow = ({
 
 // Owns its own open state — same pattern as SearchBar / DropdownList.
 const CourseSearchDropdown = ({
-  displayCode,
   selectedCode,
   onSelect,
   termId,
 }: CourseSearchDropdownProps) => {
-  const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  useOnClickOutside(ref, () => setOpen(false));
+
+  // Reopening should start from a blank search rather than the last one.
+  const close = () => {
+    setOpen(false);
+    setSearchQuery('');
+  };
 
   useEffect(() => {
-    if (!open) {
-      setSearchQuery('');
-      return;
-    }
-    inputRef.current?.focus();
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    if (open) inputRef.current?.focus();
   }, [open]);
 
   const { data, loading } = useQuery<
@@ -136,7 +130,7 @@ const CourseSearchDropdown = ({
 
   const handleSelect = (code: string) => {
     onSelect(code);
-    setOpen(false);
+    close();
   };
 
   const itemData: RowData = {
@@ -174,31 +168,30 @@ const CourseSearchDropdown = ({
   };
 
   return (
-    <div className="relative min-w-0" ref={ref}>
-      <button
-        aria-expanded={open}
-        className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
-        onClick={() => setOpen((prev) => !prev)}
-        type="button"
-      >
-        <span className="truncate">{formatCourseCode(displayCode)}</span>
-        <ChevronDown
-          aria-hidden="true"
-          className="shrink-0 text-courses"
-          size={14}
-        />
-      </button>
+    <div className="relative min-w-0">
+      <CourseDropdownTrigger
+        code={selectedCode}
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={close}
+      />
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
-          <input
-            ref={inputRef}
-            className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
-            placeholder="Search courses…"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div className="flex-1 overflow-y-auto">{renderBody()}</div>
-        </div>
+        <>
+          {/* Swallows the dismissing click so it can't also hit the swap panel
+              underneath and switch a section by accident. */}
+          <div className="fixed inset-0 z-[199]" onClick={close} />
+          <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+            <input
+              ref={inputRef}
+              aria-label="Search courses"
+              className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
+              placeholder="Search courses…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="flex-1 overflow-y-auto">{renderBody()}</div>
+          </div>
+        </>
       )}
     </div>
   );
