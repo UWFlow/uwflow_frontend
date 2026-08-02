@@ -1,7 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { ChevronDown } from 'react-feather';
-import useOnClickOutside from 'use-onclickoutside';
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from 'components/ui/dropdown-menu';
 import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
 
@@ -19,23 +24,19 @@ type EnrolledCourseDropdownProps = {
 // Lightweight dropdown over the courses already in the user's schedule. Unlike
 // CourseSearchDropdown (which searches every course in the term via GraphQL),
 // this list is small and comes straight from the loaded schedule, so there's
-// no search box, query, or virtualization. Owns its own open state — same
-// pattern as SearchBar / DropdownList.
+// no search box, query, or virtualization. Open state, outside-click/Escape
+// dismissal and menu a11y all come from the shared DropdownMenu primitive.
 const EnrolledCourseDropdown = ({
   courses,
   selectedCode,
   onSelect,
-}: EnrolledCourseDropdownProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  useOnClickOutside(ref, () => setOpen(false));
-
-  return (
-    <div className="relative min-w-0" ref={ref}>
+}: EnrolledCourseDropdownProps) => (
+  // Non-modal: Radix's modal mode scroll-locks the body, which would shift the
+  // page the moment the menu opens. The toolbar dropdown never warranted that.
+  <DropdownMenu modal={false}>
+    <DropdownMenuTrigger asChild>
       <button
-        aria-expanded={open}
         className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
-        onClick={() => setOpen((prev) => !prev)}
         type="button"
       >
         <span className="truncate">{formatCourseCode(selectedCode)}</span>
@@ -45,37 +46,31 @@ const EnrolledCourseDropdown = ({
           size={14}
         />
       </button>
-      {open && (
-        <div className="absolute left-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[240px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
-          <div className="overflow-y-auto">
-            {courses.map((course) => (
-              <button
-                key={course.code}
-                type="button"
-                className={cn(
-                  'flex w-full cursor-pointer items-center border-0 border-b border-solid border-light2 px-3.5 py-2.5 text-left font-inter last:border-b-0 hover:bg-light1',
-                  course.code === selectedCode
-                    ? 'bg-[#eef4ff]'
-                    : 'bg-transparent',
-                )}
-                onClick={() => {
-                  onSelect(course.code);
-                  setOpen(false);
-                }}
-              >
-                <span className="shrink-0 text-[13px] font-bold text-courses">
-                  {formatCourseCode(course.code)}
-                </span>
-                <span className="ml-2 min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-dark3">
-                  {course.name}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+    </DropdownMenuTrigger>
+    <DropdownMenuContent
+      align="start"
+      className="max-h-[360px] min-w-[240px] p-0"
+      sideOffset={8}
+    >
+      {courses.map((course) => (
+        <DropdownMenuItem
+          key={course.code}
+          className={cn(
+            'rounded-none border-0 border-b border-solid border-light2 px-3.5 py-2.5 last:border-b-0',
+            course.code === selectedCode && 'bg-[#eef4ff]',
+          )}
+          onSelect={() => onSelect(course.code)}
+        >
+          <span className="shrink-0 text-[13px] font-bold text-courses">
+            {formatCourseCode(course.code)}
+          </span>
+          <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs text-dark3">
+            {course.name}
+          </span>
+        </DropdownMenuItem>
+      ))}
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
 
 export default EnrolledCourseDropdown;
