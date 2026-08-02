@@ -16,8 +16,6 @@ import {
   saveSwapCalendarState,
 } from './swapCalendarStorage';
 
-type ScheduleEntry = UserScheduleFragment['schedule'][number];
-
 type SavedSwapSectionsQuery = {
   course_section: SwapCourseSectionFragment[];
 };
@@ -25,35 +23,20 @@ type SavedSwapSectionsQueryVariables = {
   ids: number[];
 };
 
-// Bridge a fetched swap section into the schedule-entry shape used for
-// client-side temporary swaps. The fragment is a superset of the schedule
-// entry's section selection, so this is a plain (cast-free) re-wrap.
-const toScheduleEntry = (
-  section: SwapCourseSectionFragment,
-  userId: number,
-): ScheduleEntry => ({ user_id: userId, section });
-
 type UseSwapCalendarPlanArgs = {
   schedule: UserScheduleFragment['schedule'];
   userId: number | null;
   demoMode: boolean;
-  defaultSelectedTerm: DisplayedTerm;
-  thisTermCode: number;
-  nextTermCode: number;
 };
 
 /**
- * Owns the saved swap plan: selected term and planned swaps (persisted to
- * localStorage as section IDs only), the section details those IDs hydrate
- * into, and the effective schedule the calendar renders for the selected term.
+ * Owns the saved swap plan: planned swaps (persisted to localStorage as
+ * section IDs only) and the section details those IDs hydrate into.
  */
 const useSwapCalendarPlan = ({
   schedule,
   userId,
   demoMode,
-  defaultSelectedTerm,
-  thisTermCode,
-  nextTermCode,
 }: UseSwapCalendarPlanArgs) => {
   const scheduleFingerprint = useMemo(
     () => getScheduleFingerprint(schedule),
@@ -74,9 +57,6 @@ const useSwapCalendarPlan = ({
     Partial<Record<DisplayedTerm, SavedSwap[]>>
   >({});
 
-  const [selectedTerm, setSelectedTerm] =
-    useState<DisplayedTerm>(defaultSelectedTerm);
-
   // The plan the state above was last restored from. Held in state rather than
   // a ref so it is batched with the restored values — the save effect can then
   // never observe "already hydrated" while the state is still pre-hydration.
@@ -89,39 +69,18 @@ const useSwapCalendarPlan = ({
   useEffect(() => {
     if (storageKey === null || planToken === hydratedToken) return;
 
-    const restored = loadSwapCalendarState(
-      storageKey,
-      scheduleFingerprint,
-      defaultSelectedTerm,
-    );
-    setSelectedTerm(restored?.selectedTerm ?? defaultSelectedTerm);
+    const restored = loadSwapCalendarState(storageKey, scheduleFingerprint);
     setSwapsByTerm(restored?.swapsByTerm ?? {});
     setHydratedToken(planToken);
-  }, [
-    defaultSelectedTerm,
-    hydratedToken,
-    planToken,
-    scheduleFingerprint,
-    storageKey,
-  ]);
+  }, [hydratedToken, planToken, scheduleFingerprint, storageKey]);
 
   // Never write before the restore above has run for this plan: the initial
   // empty state would otherwise overwrite the plan we are about to read.
   useEffect(() => {
     if (storageKey === null || planToken !== hydratedToken) return;
 
-    saveSwapCalendarState(storageKey, scheduleFingerprint, {
-      selectedTerm,
-      swapsByTerm,
-    });
-  }, [
-    hydratedToken,
-    planToken,
-    scheduleFingerprint,
-    selectedTerm,
-    storageKey,
-    swapsByTerm,
-  ]);
+    saveSwapCalendarState(storageKey, scheduleFingerprint, { swapsByTerm });
+  }, [hydratedToken, planToken, scheduleFingerprint, storageKey, swapsByTerm]);
 
   // Section details for planned swaps, accumulated into one map rather than
   // derived from the query result. `ids` changes on every swap, and Apollo
@@ -208,48 +167,15 @@ const useSwapCalendarPlan = ({
     [swapSectionsById, swapsByTerm],
   );
 
-  // Whether the plan the user is looking at is the plan that is stored: either
-  // it is fully applied, or its sections failed to load and never will be. A
-  // failed fetch still counts, so a broken plan can always be reset.
+  // Whether the plan is fully applied, or its sections failed to load and
+  // never will be. A failed fetch still counts, so a broken plan can always
+  // be reset.
   const isPlanSettled = !hasPendingSections || Boolean(savedSwapSectionsError);
 
-  const selectedTermCode =
-    selectedTerm === DisplayedTerm.Next ? nextTermCode : thisTermCode;
-
-  // Effective schedule for the term: planned swaps take precedence, falling
-  // back to the enrolled section while its replacement is still hydrating — so
-  // a restored plan appears exactly when its sections arrive, and the user
-  // sees what they are actually enrolled in until then.
-  const termSections = useMemo(() => {
-    const base = schedule.filter(
-      (entry) => entry.section.term_id === selectedTermCode,
-    );
-    const replacementBySourceId = new Map(
-      (swapsByTerm[selectedTerm] ?? []).map(
-        ({ sourceSectionId, replacementSectionId }) => [
-          sourceSectionId,
-          replacementSectionId,
-        ],
-      ),
-    );
-
-    return base.map((entry) => {
-      const replacementId = replacementBySourceId.get(entry.section.id);
-      const replacement =
-        replacementId === undefined
-          ? undefined
-          : swapSectionsById.get(replacementId);
-      return replacement ? toScheduleEntry(replacement, entry.user_id) : entry;
-    });
-  }, [schedule, selectedTerm, selectedTermCode, swapSectionsById, swapsByTerm]);
-
   return {
-    selectedTerm,
-    setSelectedTerm,
-    selectedTermCode,
     swapsByTerm,
     setSwapsByTerm,
-    termSections,
+    swapSectionsById,
     isPlanSettled,
     cacheLocalSwapSection,
     clearSwaps,

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { ChevronDown } from 'react-feather';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
@@ -6,6 +7,7 @@ import {
   CourseDropdownByTermQuery,
   CourseDropdownByTermQueryVariables,
 } from 'generated/graphql';
+import useOnClickOutside from 'use-onclickoutside';
 
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
@@ -17,9 +19,11 @@ const dropdownEmptyStateClasses =
 type CourseItem = CourseDropdownByTermQuery['course'][number];
 
 type CourseSearchDropdownProps = {
+  /** Code shown on the trigger (swap target, or enrolled course as fallback). */
+  displayCode: string;
+  /** Highlighted row in the list; null when still targeting the enrolled course. */
   selectedCode: string | null;
   onSelect: (code: string) => void;
-  onClose: () => void;
   termId: number;
 };
 
@@ -60,40 +64,40 @@ const CourseRow = ({
   );
 };
 
+// Owns its own open state — same pattern as SearchBar / DropdownList.
 const CourseSearchDropdown = ({
+  displayCode,
   selectedCode,
   onSelect,
-  onClose,
   termId,
 }: CourseSearchDropdownProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  useOnClickOutside(ref, () => setOpen(false));
 
   useEffect(() => {
+    if (!open) {
+      setSearchQuery('');
+      return;
+    }
     inputRef.current?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') setOpen(false);
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
-  // Let keyboard users dismiss the dropdown with Escape, matching the
-  // pointer-only backdrop click.
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [open]);
 
   const { data, loading } = useQuery<
     CourseDropdownByTermQuery,
     CourseDropdownByTermQueryVariables
-  >(COURSE_DROPDOWN_TERM_QUERY, { variables: { termId } });
+  >(COURSE_DROPDOWN_TERM_QUERY, {
+    variables: { termId },
+    skip: !open,
+  });
 
   const allCourses: CourseItem[] = data?.course ?? [];
 
@@ -130,10 +134,15 @@ const CourseSearchDropdown = ({
       .map((entry) => entry.course);
   }
 
+  const handleSelect = (code: string) => {
+    onSelect(code);
+    setOpen(false);
+  };
+
   const itemData: RowData = {
     courses: filteredCourses,
     selectedCode,
-    onSelect,
+    onSelect: handleSelect,
   };
   const listHeight = Math.min(
     filteredCourses.length * ITEM_HEIGHT,
@@ -165,19 +174,33 @@ const CourseSearchDropdown = ({
   };
 
   return (
-    <>
-      <div className="fixed inset-0 z-[199]" onClick={onClose} />
-      <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
-        <input
-          ref={inputRef}
-          className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
-          placeholder="Search courses…"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+    <div className="relative min-w-0" ref={ref}>
+      <button
+        aria-expanded={open}
+        className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
+        onClick={() => setOpen((prev) => !prev)}
+        type="button"
+      >
+        <span className="truncate">{formatCourseCode(displayCode)}</span>
+        <ChevronDown
+          aria-hidden="true"
+          className="shrink-0 text-courses"
+          size={14}
         />
-        <div className="flex-1 overflow-y-auto">{renderBody()}</div>
-      </div>
-    </>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+          <input
+            ref={inputRef}
+            className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
+            placeholder="Search courses…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className="flex-1 overflow-y-auto">{renderBody()}</div>
+        </div>
+      )}
+    </div>
   );
 };
 

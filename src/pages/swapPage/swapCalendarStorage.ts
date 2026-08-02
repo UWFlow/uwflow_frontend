@@ -12,8 +12,8 @@ export type SavedSwap = {
   replacementSectionId: number;
 };
 
+/** Persisted swap plan — tab selection is UI state, not part of the plan. */
 export type SwapCalendarState = {
-  selectedTerm: DisplayedTerm;
   swapsByTerm: Partial<Record<DisplayedTerm, SavedSwap[]>>;
 };
 
@@ -24,14 +24,12 @@ type WritableStorage = Pick<Storage, 'setItem'>;
 const STORAGE_KEY_PREFIX = 'swap_calendar_state';
 // v1 keyed swaps by term *label* ("Fall 2026"), which went stale at term
 // rollover. Bumping orphans those payloads rather than migrating them.
+// v2 also wrote selectedTerm; that field is ignored on read and omitted on write.
 const STORAGE_VERSION = 2;
 const DISPLAYED_TERMS = Object.values(DisplayedTerm);
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
-
-const isDisplayedTerm = (value: unknown): value is DisplayedTerm =>
-  value === DisplayedTerm.Current || value === DisplayedTerm.Next;
 
 const isSavedSwap = (value: unknown): value is SavedSwap =>
   isRecord(value) &&
@@ -63,7 +61,6 @@ export const getScheduleFingerprint = (
 export const loadSwapCalendarState = (
   storageKey: string,
   scheduleFingerprint: string,
-  defaultSelectedTerm: DisplayedTerm,
   storage: ReadableStorage = localStorage,
 ): SwapCalendarState | null => {
   try {
@@ -92,12 +89,7 @@ export const loadSwapCalendarState = (
       }
     }
 
-    return {
-      selectedTerm: isDisplayedTerm(parsed.selectedTerm)
-        ? parsed.selectedTerm
-        : defaultSelectedTerm,
-      swapsByTerm,
-    };
+    return { swapsByTerm };
   } catch {
     return null;
   }

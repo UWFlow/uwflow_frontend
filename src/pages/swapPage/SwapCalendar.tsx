@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ChevronDown, RotateCcw } from 'react-feather';
+import { RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
 import * as Sentry from '@sentry/react';
 import {
@@ -40,8 +40,46 @@ import ScheduleSwapPanel, {
   SwapCandidateCourse,
   SwapPreview,
 } from './ScheduleSwapPanel';
-import { DisplayedTerm } from './swapCalendarStorage';
+import { DisplayedTerm, SavedSwap } from './swapCalendarStorage';
 import useSwapCalendarPlan from './useSwapCalendarPlan';
+
+type ScheduleEntry = UserScheduleFragment['schedule'][number];
+
+// Bridge a fetched swap section into the schedule-entry shape used for
+// client-side temporary swaps. The fragment is a superset of the schedule
+// entry's section selection, so this is a plain (cast-free) re-wrap.
+const toScheduleEntry = (
+  section: SwapCourseSectionFragment,
+  userId: number,
+): ScheduleEntry => ({ user_id: userId, section });
+
+/**
+ * Enrolled sections for one term, with planned swaps overlaid. Falls back to
+ * the enrolled section while its replacement is still hydrating.
+ */
+const applyPlannedSwaps = (
+  schedule: UserScheduleFragment['schedule'],
+  termCode: number,
+  plannedSwaps: SavedSwap[],
+  swapSectionsById: Map<number, SwapCourseSectionFragment>,
+): UserScheduleFragment['schedule'] => {
+  const base = schedule.filter((entry) => entry.section.term_id === termCode);
+  const replacementBySourceId = new Map(
+    plannedSwaps.map(({ sourceSectionId, replacementSectionId }) => [
+      sourceSectionId,
+      replacementSectionId,
+    ]),
+  );
+
+  return base.map((entry) => {
+    const replacementId = replacementBySourceId.get(entry.section.id);
+    const replacement =
+      replacementId === undefined
+        ? undefined
+        : swapSectionsById.get(replacementId);
+    return replacement ? toScheduleEntry(replacement, entry.user_id) : entry;
+  });
+};
 
 const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
 const DAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
@@ -228,22 +266,20 @@ const SwapCalendar = ({
   const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
   const defaultSelectedTerm =
     !nextHasData || thisHasData ? DisplayedTerm.Current : DisplayedTerm.Next;
+  // Term tab is calendar UI state — not part of the persisted swap plan.
+  const [selectedTerm, setSelectedTerm] =
+    useState<DisplayedTerm>(defaultSelectedTerm);
+  const selectedTermCode =
+    selectedTerm === DisplayedTerm.Next ? nextTermCode : thisTermCode;
+
   // Ghost preview while the pointer is over a section row in the panel.
   const [hoveredSection, setHoveredSection] =
     useState<SwapCourseSectionFragment | null>(null);
 
-  const [isSwapDropdownOpen, setIsSwapDropdownOpen] = useState(false);
-
-  // The left selector lists courses the user is already enrolled in.
-  const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false);
-
   const {
-    selectedTerm,
-    setSelectedTerm,
-    selectedTermCode,
     swapsByTerm,
     setSwapsByTerm,
-    termSections,
+    swapSectionsById,
     isPlanSettled,
     cacheLocalSwapSection,
     clearSwaps,
@@ -251,10 +287,19 @@ const SwapCalendar = ({
     schedule,
     userId,
     demoMode,
-    defaultSelectedTerm,
-    thisTermCode,
-    nextTermCode,
   });
+
+  // Effective schedule for the active term tab.
+  const termSections = useMemo(
+    () =>
+      applyPlannedSwaps(
+        schedule,
+        selectedTermCode,
+        swapsByTerm[selectedTerm] ?? [],
+        swapSectionsById,
+      ),
+    [schedule, selectedTerm, selectedTermCode, swapSectionsById, swapsByTerm],
+  );
 
   // The clicked calendar block's course + section type (e.g. CS 240 / LEC).
   // Selection, the panel's section list, and swapping are all scoped to this
@@ -269,8 +314,6 @@ const SwapCalendar = ({
   useEffect(() => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setIsSwapDropdownOpen(false);
-    setIsCourseDropdownOpen(false);
   }, [selectedCourseCode, selectedSectionType]);
 
   // Distinct courses in the user's schedule for this term, for the left
@@ -446,8 +489,6 @@ const SwapCalendar = ({
       setSelection(null);
       setSelectedSwapCourseCode(null);
       setHoveredSection(null);
-      setIsSwapDropdownOpen(false);
-      setIsCourseDropdownOpen(false);
     },
     [nextTermCode],
   );
@@ -466,7 +507,6 @@ const SwapCalendar = ({
         .map((e) => getSectionType(e.section.section_name));
       const sectionType = types.includes('LEC') ? 'LEC' : types[0];
       if (sectionType) setSelection({ courseCode, sectionType });
-      setIsCourseDropdownOpen(false);
     },
     [termSections],
   );
@@ -476,8 +516,6 @@ const SwapCalendar = ({
     setSelection(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setIsSwapDropdownOpen(false);
-    setIsCourseDropdownOpen(false);
   }, [clearSwaps]);
 
   // Temporarily swap a section into the saved local plan. The new section
@@ -624,58 +662,20 @@ const SwapCalendar = ({
               {selectedCourseCode ? (
                 <>
                   <span className="text-sm font-semibold text-dark1">Swap</span>
-                  <div className="relative min-w-0">
-                    <button
-                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
-                      onClick={() => setIsCourseDropdownOpen((open) => !open)}
-                      type="button"
-                    >
-                      <span className="truncate">
-                        {formatCourseCode(selectedCourseCode)}
-                      </span>
-                      <ChevronDown
-                        aria-hidden="true"
-                        className="shrink-0 text-courses"
-                        size={14}
-                      />
-                    </button>
-                    {isCourseDropdownOpen && (
-                      <EnrolledCourseDropdown
-                        courses={enrolledCourses}
-                        selectedCode={selectedCourseCode}
-                        onSelect={handleSelectEnrolledCourse}
-                        onClose={() => setIsCourseDropdownOpen(false)}
-                      />
-                    )}
-                  </div>
+                  <EnrolledCourseDropdown
+                    key={`${selectedCourseCode}|${selectedSectionType}`}
+                    courses={enrolledCourses}
+                    selectedCode={selectedCourseCode}
+                    onSelect={handleSelectEnrolledCourse}
+                  />
                   <span className="text-sm font-semibold text-dark1">with</span>
-                  <div className="relative min-w-0">
-                    <button
-                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
-                      onClick={() => setIsSwapDropdownOpen((open) => !open)}
-                      type="button"
-                    >
-                      <span className="truncate">
-                        {formatCourseCode(swapTargetCode ?? selectedCourseCode)}
-                      </span>
-                      <ChevronDown
-                        aria-hidden="true"
-                        className="shrink-0 text-courses"
-                        size={14}
-                      />
-                    </button>
-                    {isSwapDropdownOpen && (
-                      <CourseSearchDropdown
-                        selectedCode={swapTargetCode}
-                        onSelect={(code) => {
-                          setIsSwapDropdownOpen(false);
-                          handleCourseChange(code);
-                        }}
-                        onClose={() => setIsSwapDropdownOpen(false)}
-                        termId={selectedTermCode}
-                      />
-                    )}
-                  </div>
+                  <CourseSearchDropdown
+                    key={`${selectedCourseCode}|${selectedSectionType}|${selectedTermCode}`}
+                    displayCode={swapTargetCode ?? selectedCourseCode}
+                    selectedCode={swapTargetCode}
+                    onSelect={handleCourseChange}
+                    termId={selectedTermCode}
+                  />
                 </>
               ) : (
                 <span className="text-sm text-dark3">
