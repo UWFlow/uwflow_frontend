@@ -298,44 +298,30 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     skip: !displayCode,
   });
 
-  const swapSections = useMemo(
-    () => (displayCode ? sectionsData?.course_section ?? [] : []),
-    [displayCode, sectionsData],
-  );
+  const swapSections = displayCode ? sectionsData?.course_section ?? [] : [];
   const displayedCourse = swapSections[0]?.course;
 
   // Bridge the panel's id-based API with this page's course-code state.
-  const candidateCourses = useMemo<SwapCandidateCourse[]>(
-    () =>
-      displayedCourse
-        ? [
-            {
-              id: displayedCourse.id,
-              code: displayedCourse.code,
-              name: displayedCourse.name,
-              sections: swapSections,
-            },
-          ]
-        : [],
-    [displayedCourse, swapSections],
-  );
+  const candidateCourses: SwapCandidateCourse[] = displayedCourse
+    ? [
+        {
+          id: displayedCourse.id,
+          code: displayedCourse.code,
+          name: displayedCourse.name,
+          sections: swapSections,
+        },
+      ]
+    : [];
 
-  const enrolledSectionIds = useMemo(
-    () => termSections.map((e) => e.section.id),
-    [termSections],
-  );
+  const enrolledSectionIds = termSections.map((e) => e.section.id);
 
-  const conflictSectionIds = useMemo(
-    () =>
-      swapSections
-        .filter(
-          (section) =>
-            !enrolledSectionIds.includes(section.id) &&
-            sectionConflictsWithSchedule(section, termSections, selection),
-        )
-        .map((section) => section.id),
-    [swapSections, enrolledSectionIds, termSections, selection],
-  );
+  const conflictSectionIds = swapSections
+    .filter(
+      (section) =>
+        !enrolledSectionIds.includes(section.id) &&
+        sectionConflictsWithSchedule(section, termSections, selection),
+    )
+    .map((section) => section.id);
 
   // Sections of the selected type shown in the panel (mirrors the panel's term
   // + type filter). Used to detect a section code that has nothing to swap into.
