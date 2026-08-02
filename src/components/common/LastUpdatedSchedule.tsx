@@ -5,7 +5,7 @@ import { splitCourseCode } from 'utils/Misc';
 
 import { LastUpdatedLink, LastUpdatedText } from './styles/LastUpdatedSchedule';
 
-const classesLink = 'http://classes.uwaterloo.ca/infocour/CIR/SA/index.html';
+const classesLink = 'https://classes.uwaterloo.ca/infocour/CIR/SA/index.html';
 
 type LastUpdatedScheduleProps = {
   margin?: string;
@@ -31,7 +31,7 @@ const LastUpdatedSchedule = ({
           courseNum.length < 3)
           ? 'under'
           : 'grad';
-      return `http://classes.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=${courseLevel}&sess=${term}&subject=${courseLetters}&cournum=${courseNum.toUpperCase()}`;
+      return `https://classes.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl?level=${courseLevel}&sess=${term}&subject=${courseLetters}&cournum=${courseNum.toUpperCase()}`;
     }
     return classesLink;
   };
