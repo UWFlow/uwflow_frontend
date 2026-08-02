@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ChevronDown, RotateCcw } from 'react-feather';
+import { RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
 import * as Sentry from '@sentry/react';
 import {
@@ -243,9 +243,6 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
   const [selectedSwapCourseCode, setSelectedSwapCourseCode] = useState<
     string | null
   >(null);
-  const [isSwapDropdownOpen, setIsSwapDropdownOpen] = useState(false);
-  // The left selector lists courses the user is already enrolled in.
-  const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false);
   // Temporary client-side section swaps, keyed by term label. A swap replaces
   // the matching schedule entry in React state only — refreshing the page
   // restores the original schedule (no persistence, no mutations).
@@ -256,8 +253,6 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
   useEffect(() => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setIsSwapDropdownOpen(false);
-    setIsCourseDropdownOpen(false);
   }, [selectedCourseCode, selectedSectionType]);
 
   const selectedTermCode =
@@ -432,8 +427,6 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     setSelection(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-    setIsSwapDropdownOpen(false);
-    setIsCourseDropdownOpen(false);
   }, []);
 
   const handleCourseChange = useCallback((courseCode: string | null) => {
@@ -450,7 +443,6 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
         .map((e) => getSectionType(e.section.section_name));
       const sectionType = types.includes('LEC') ? 'LEC' : types[0];
       if (sectionType) setSelection({ courseCode, sectionType });
-      setIsCourseDropdownOpen(false);
     },
     [termSections],
   );
@@ -572,58 +564,20 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
               {selectedCourseCode ? (
                 <>
                   <span className="text-sm font-semibold text-dark1">Swap</span>
-                  <div className="relative min-w-0">
-                    <button
-                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
-                      onClick={() => setIsCourseDropdownOpen((open) => !open)}
-                      type="button"
-                    >
-                      <span className="truncate">
-                        {formatCourseCode(selectedCourseCode)}
-                      </span>
-                      <ChevronDown
-                        aria-hidden="true"
-                        className="shrink-0 text-courses"
-                        size={14}
-                      />
-                    </button>
-                    {isCourseDropdownOpen && (
-                      <EnrolledCourseDropdown
-                        courses={enrolledCourses}
-                        selectedCode={selectedCourseCode}
-                        onSelect={handleSelectEnrolledCourse}
-                        onClose={() => setIsCourseDropdownOpen(false)}
-                      />
-                    )}
-                  </div>
+                  <EnrolledCourseDropdown
+                    key={`${selectedCourseCode}|${selectedSectionType}`}
+                    courses={enrolledCourses}
+                    selectedCode={selectedCourseCode}
+                    onSelect={handleSelectEnrolledCourse}
+                  />
                   <span className="text-sm font-semibold text-dark1">with</span>
-                  <div className="relative min-w-0">
-                    <button
-                      className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
-                      onClick={() => setIsSwapDropdownOpen((open) => !open)}
-                      type="button"
-                    >
-                      <span className="truncate">
-                        {formatCourseCode(swapTargetCode ?? selectedCourseCode)}
-                      </span>
-                      <ChevronDown
-                        aria-hidden="true"
-                        className="shrink-0 text-courses"
-                        size={14}
-                      />
-                    </button>
-                    {isSwapDropdownOpen && (
-                      <CourseSearchDropdown
-                        selectedCode={swapTargetCode}
-                        onSelect={(code) => {
-                          setIsSwapDropdownOpen(false);
-                          handleCourseChange(code);
-                        }}
-                        onClose={() => setIsSwapDropdownOpen(false)}
-                        termId={selectedTermCode}
-                      />
-                    )}
-                  </div>
+                  <CourseSearchDropdown
+                    key={`${selectedCourseCode}|${selectedSectionType}|${selectedTermCode}`}
+                    displayCode={swapTargetCode ?? selectedCourseCode}
+                    selectedCode={swapTargetCode}
+                    onSelect={handleCourseChange}
+                    termId={selectedTermCode}
+                  />
                 </>
               ) : (
                 <span className="text-sm text-dark3">
