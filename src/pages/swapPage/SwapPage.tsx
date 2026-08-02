@@ -16,7 +16,7 @@ import { cn } from 'lib/utils';
 import DEMO_SCHEDULE from './demoSchedule';
 import { getDisplayedTermPresence } from './displayedTerms';
 import SwapCalendar from './SwapCalendar';
-import { getScheduleFingerprint } from './swapCalendarStorage';
+import { getScheduleFingerprint } from './useLocalStorageSwaps';
 
 const SWAP_TOUR_DISMISSED_KEY = 'swap_tour_dismissed';
 

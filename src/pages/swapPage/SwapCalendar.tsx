@@ -23,6 +23,7 @@ import {
   CalendarEventVariant,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
+import { getSectionType, SectionType } from 'constants/CourseSection';
 import { GET_COURSE_FOR_SWAP } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
 import {
@@ -40,8 +41,10 @@ import ScheduleSwapPanel, {
   SwapCandidateCourse,
   SwapPreview,
 } from './ScheduleSwapPanel';
-import { DisplayedTerm, SavedSwap } from './swapCalendarStorage';
-import useSwapCalendarPlan from './useSwapCalendarPlan';
+import useLocalStorageSwaps, {
+  DisplayedTerm,
+  SavedSwap,
+} from './useLocalStorageSwaps';
 
 type ScheduleEntry = UserScheduleFragment['schedule'][number];
 
@@ -89,7 +92,7 @@ const DAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
 // Ephemeral — unlike the swap plan itself, this is never persisted.
 type SectionSelection = {
   courseCode: string;
-  sectionType: string;
+  sectionType: SectionType;
 };
 // Visible hour range of the grid: 8am to 10pm.
 const GRID_START_HOUR = 8;
@@ -100,9 +103,6 @@ const secsTo24hTime = (secs: number) =>
   `${`${Math.floor(secs / 3600)}`.padStart(2, '0')}:${`${Math.floor(
     (secs % 3600) / 60,
   )}`.padStart(2, '0')}`;
-
-// Section "type" is the section_name prefix: "LEC 001" -> "LEC".
-const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
 
 // Compact view of the user's schedule, forwarded to Sentry when a rendered
 // section has no alternative to swap into (e.g. a lone TST section).
@@ -120,9 +120,9 @@ const serializeSchedule = (entries: UserScheduleFragment['schedule']) =>
 
 const getSectionVariant = (sectionName: string): CalendarEventVariant => {
   const type = getSectionType(sectionName);
-  if (type === 'LEC') return 'lecture';
-  if (type === 'LAB') return 'lab';
-  if (type === 'TUT') return 'tutorial';
+  if (type === SectionType.LEC) return 'lecture';
+  if (type === SectionType.LAB) return 'lab';
+  if (type === SectionType.TUT) return 'tutorial';
   return 'other';
 };
 
@@ -184,7 +184,7 @@ const buildEnrolledEvents = (
   selection: SectionSelection | null,
   isPreviewing: boolean,
   // null disables clicking (demo mode renders a non-interactive schedule).
-  onToggleSection: ((code: string, sectionType: string) => void) | null,
+  onToggleSection: ((code: string, sectionType: SectionType) => void) | null,
 ): CalendarEvent[] =>
   termSections.flatMap(({ section }) => {
     const courseCode = section.course.code;
@@ -283,7 +283,7 @@ const SwapCalendar = ({
     isPlanSettled,
     cacheLocalSwapSection,
     clearSwaps,
-  } = useSwapCalendarPlan({
+  } = useLocalStorageSwaps({
     schedule,
     userId,
     demoMode,
@@ -496,7 +496,9 @@ const SwapCalendar = ({
       const types = termSections
         .filter((e) => e.section.course.code === courseCode)
         .map((e) => getSectionType(e.section.section_name));
-      const sectionType = types.includes('LEC') ? 'LEC' : types[0];
+      const sectionType = types.includes(SectionType.LEC)
+        ? SectionType.LEC
+        : types[0];
       if (sectionType) setSelection({ courseCode, sectionType });
     },
     [termSections],
