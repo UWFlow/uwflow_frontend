@@ -565,16 +565,13 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
                 <>
                   <span className="text-sm font-semibold text-dark1">Swap</span>
                   <EnrolledCourseDropdown
-                    key={`${selectedCourseCode}|${selectedSectionType}`}
                     courses={enrolledCourses}
                     selectedCode={selectedCourseCode}
                     onSelect={handleSelectEnrolledCourse}
                   />
                   <span className="text-sm font-semibold text-dark1">with</span>
                   <CourseSearchDropdown
-                    key={`${selectedCourseCode}|${selectedSectionType}|${selectedTermCode}`}
-                    displayCode={swapTargetCode ?? selectedCourseCode}
-                    selectedCode={swapTargetCode}
+                    selectedCode={swapTargetCode ?? selectedCourseCode}
                     onSelect={handleCourseChange}
                     termId={selectedTermCode}
                   />
