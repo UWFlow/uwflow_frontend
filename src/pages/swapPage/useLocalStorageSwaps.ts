@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import {
   SwapCourseSectionFragment,
@@ -13,20 +13,21 @@ export enum DisplayedTerm {
   Next = 'next',
 }
 
-/** One planned swap: the enrolled section, and what it is being replaced with. */
-export type SavedSwap = {
+/** Persisted ID pair — never stores section fragments (they go stale). */
+type SavedSwap = {
   sourceSectionId: number;
   replacementSectionId: number;
 };
 
-/** Persisted swap plan — tab selection is UI state, not part of the plan. */
-export type SwapCalendarState = {
-  swapsByTerm: Partial<Record<DisplayedTerm, SavedSwap[]>>;
+/** One planned swap with its hydrated replacement, when available. */
+export type PlannedSwap = {
+  sourceSectionId: number;
+  replacementSectionId: number;
+  replacementSection: SwapCourseSectionFragment | undefined;
 };
 
-// Injectable so the validation below is testable without a DOM.
-type ReadableStorage = Pick<Storage, 'getItem'>;
-type WritableStorage = Pick<Storage, 'setItem'>;
+/** The persisted plan — tab selection is UI state, not part of it. */
+type SwapsByTerm = Partial<Record<DisplayedTerm, SavedSwap[]>>;
 
 const STORAGE_KEY_PREFIX = 'swap_calendar_state';
 // v1 keyed swaps by term *label* ("Fall 2026"), which went stale at term
@@ -44,7 +45,7 @@ const isSavedSwap = (value: unknown): value is SavedSwap =>
   Number.isInteger(value.replacementSectionId);
 
 /** Saved plans are per-user: two accounts sharing a browser stay isolated. */
-export const getSwapCalendarStorageKey = (userId: number) =>
+const getSwapCalendarStorageKey = (userId: number) =>
   `${STORAGE_KEY_PREFIX}:${userId}`;
 
 /**
@@ -65,54 +66,49 @@ export const getScheduleFingerprint = (
  * or it belongs to a different base schedule. Anything structurally invalid is
  * dropped rather than trusted — the payload is user-writable.
  */
-export const loadSwapCalendarState = (
+const loadSwapCalendarState = (
   storageKey: string,
   scheduleFingerprint: string,
-  storage: ReadableStorage = localStorage,
-): SwapCalendarState | null => {
+): SwapsByTerm | null => {
   try {
-    const storedValue = storage.getItem(storageKey);
+    const storedValue = localStorage.getItem(storageKey);
     if (!storedValue) return null;
 
     const parsed: unknown = JSON.parse(storedValue);
     if (
       !isRecord(parsed) ||
       parsed.version !== STORAGE_VERSION ||
-      parsed.scheduleFingerprint !== scheduleFingerprint
+      parsed.scheduleFingerprint !== scheduleFingerprint ||
+      !isRecord(parsed.swapsByTerm)
     ) {
       return null;
     }
 
-    const swapsByTerm: Partial<Record<DisplayedTerm, SavedSwap[]>> = {};
-    if (isRecord(parsed.swapsByTerm)) {
-      for (const term of DISPLAYED_TERMS) {
-        const termSwaps = parsed.swapsByTerm[term];
-        if (Array.isArray(termSwaps)) {
-          const validSwaps = termSwaps.filter(isSavedSwap);
-          if (validSwaps.length > 0) {
-            swapsByTerm[term] = validSwaps;
-          }
-        }
-      }
+    const swapsByTerm: SwapsByTerm = {};
+    for (const term of DISPLAYED_TERMS) {
+      const termSwaps = parsed.swapsByTerm[term];
+      if (!Array.isArray(termSwaps)) continue;
+
+      const validSwaps = termSwaps.filter(isSavedSwap);
+      if (validSwaps.length > 0) swapsByTerm[term] = validSwaps;
     }
 
-    return { swapsByTerm };
+    return swapsByTerm;
   } catch {
     return null;
   }
 };
 
-export const saveSwapCalendarState = (
+const saveSwapCalendarState = (
   storageKey: string,
   scheduleFingerprint: string,
-  state: SwapCalendarState,
-  storage: WritableStorage = localStorage,
+  swapsByTerm: SwapsByTerm,
 ) => {
   try {
-    storage.setItem(
+    localStorage.setItem(
       storageKey,
       JSON.stringify({
-        ...state,
+        swapsByTerm,
         scheduleFingerprint,
         version: STORAGE_VERSION,
       }),
@@ -123,11 +119,20 @@ export const saveSwapCalendarState = (
   }
 };
 
-type SavedSwapSectionsQuery = {
-  course_section: SwapCourseSectionFragment[];
-};
-type SavedSwapSectionsQueryVariables = {
-  ids: number[];
+/**
+ * Adds sections to the cache, returning the previous map untouched when every
+ * section is already cached under the same identity.
+ */
+const withSections = (
+  cache: Map<number, SwapCourseSectionFragment>,
+  sections: SwapCourseSectionFragment[],
+) => {
+  const added = sections.filter((section) => cache.get(section.id) !== section);
+  if (added.length === 0) return cache;
+
+  const next = new Map(cache);
+  for (const section of added) next.set(section.id, section);
+  return next;
 };
 
 type UseLocalStorageSwapsArgs = {
@@ -137,18 +142,16 @@ type UseLocalStorageSwapsArgs = {
 };
 
 /**
- * Owns the saved swap plan: planned swaps (persisted to localStorage as
- * section IDs only) and the section details those IDs hydrate into.
+ * Owns the saved swap plan as section ID pairs persisted to localStorage, and
+ * hydrates those replacement IDs into section fragments for the calendar.
+ * Clearing the plan also drops the section cache when no IDs remain.
  */
 const useLocalStorageSwaps = ({
   schedule,
   userId,
   demoMode,
 }: UseLocalStorageSwapsArgs) => {
-  const scheduleFingerprint = useMemo(
-    () => getScheduleFingerprint(schedule),
-    [schedule],
-  );
+  const scheduleFingerprint = getScheduleFingerprint(schedule);
   // Nothing is persisted for the logged-out demo, so there is no key to write.
   const storageKey =
     demoMode || userId === null ? null : getSwapCalendarStorageKey(userId);
@@ -157,12 +160,7 @@ const useLocalStorageSwaps = ({
   const planToken =
     storageKey === null ? null : `${storageKey}:${scheduleFingerprint}`;
 
-  // Persist only the original/replacement section IDs. Fresh section details
-  // are queried after restore so timetable changes cannot leave a stale local
-  // snapshot on the calendar.
-  const [swapsByTerm, setSwapsByTerm] = useState<
-    Partial<Record<DisplayedTerm, SavedSwap[]>>
-  >({});
+  const [swapsByTerm, setSwapsByTerm] = useState<SwapsByTerm>({});
 
   // The plan the state above was last restored from. Held in state rather than
   // a ref so it is batched with the restored values — the save effect can then
@@ -176,8 +174,9 @@ const useLocalStorageSwaps = ({
   useEffect(() => {
     if (storageKey === null || planToken === hydratedToken) return;
 
-    const restored = loadSwapCalendarState(storageKey, scheduleFingerprint);
-    setSwapsByTerm(restored?.swapsByTerm ?? {});
+    setSwapsByTerm(
+      loadSwapCalendarState(storageKey, scheduleFingerprint) ?? {},
+    );
     setHydratedToken(planToken);
   }, [hydratedToken, planToken, scheduleFingerprint, storageKey]);
 
@@ -186,44 +185,46 @@ const useLocalStorageSwaps = ({
   useEffect(() => {
     if (storageKey === null || planToken !== hydratedToken) return;
 
-    saveSwapCalendarState(storageKey, scheduleFingerprint, { swapsByTerm });
+    saveSwapCalendarState(storageKey, scheduleFingerprint, swapsByTerm);
   }, [hydratedToken, planToken, scheduleFingerprint, storageKey, swapsByTerm]);
 
-  // Section details for planned swaps, accumulated into one map rather than
-  // derived from the query result. `ids` changes on every swap, and Apollo
-  // cannot answer a filtered root field (`course_section(where: ...)`) out of
-  // the cache, so a changed id set always goes to the network and leaves
-  // `data` undefined for the whole request. Deriving the map from `data` would
-  // drop every already-hydrated section mid-request, flashing the original
-  // sections back onto the calendar until the response landed.
+  // Accumulates into a map rather than deriving from the query: `ids` changes
+  // on every swap, and Apollo cannot answer a filtered root field out of
+  // cache, so a changed id set always goes to the network and leaves `data`
+  // undefined for the request. Deriving from `data` would drop already-
+  // hydrated sections mid-request.
   const [swapSectionsById, setSwapSectionsById] = useState<
     Map<number, SwapCourseSectionFragment>
   >(() => new Map());
 
-  const savedSwapSectionIds = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          Object.values(swapsByTerm)
-            .flat()
-            .map(({ replacementSectionId }) => replacementSectionId),
-        ),
-      ),
-    [swapsByTerm],
+  const savedSwapSectionIds = Array.from(
+    new Set(
+      Object.values(swapsByTerm)
+        .flat()
+        .map(({ replacementSectionId }) => replacementSectionId),
+    ),
   );
+  const hasSavedSwapSections = savedSwapSectionIds.length > 0;
 
   const { data: savedSwapSectionsData, error: savedSwapSectionsError } =
-    useQuery<SavedSwapSectionsQuery, SavedSwapSectionsQueryVariables>(
-      GET_SECTIONS_FOR_SAVED_SWAPS,
-      {
-        variables: { ids: savedSwapSectionIds },
-        skip: savedSwapSectionIds.length === 0,
-        // Restored plans hold only IDs, so the timetable is re-read every
-        // session: a section that moved room or changed times cannot render
-        // from a stale snapshot.
-        fetchPolicy: 'network-only',
-      },
-    );
+    useQuery<
+      { course_section: SwapCourseSectionFragment[] },
+      { ids: number[] }
+    >(GET_SECTIONS_FOR_SAVED_SWAPS, {
+      variables: { ids: savedSwapSectionIds },
+      skip: !hasSavedSwapSections,
+      // Restored plans hold only IDs, so the timetable is re-read every
+      // session: a section that moved room or changed times cannot render
+      // from a stale snapshot.
+      fetchPolicy: 'network-only',
+    });
+
+  // Drop the section cache when the plan is empty so `clearSwaps()` alone
+  // resets both persistence and hydration — no separate clear API needed.
+  useEffect(() => {
+    if (hasSavedSwapSections) return;
+    setSwapSectionsById((prev) => (prev.size === 0 ? prev : new Map()));
+  }, [hasSavedSwapSections]);
 
   // A section picked in the panel is cached on click so the calendar updates
   // immediately; the fetched copy overwrites it here once the query returns,
@@ -232,60 +233,67 @@ const useLocalStorageSwaps = ({
   useEffect(() => {
     if (!fetchedSections?.length) return;
 
-    setSwapSectionsById((prev) => {
-      let changed = false;
-      const next = new Map(prev);
-      for (const section of fetchedSections) {
-        if (next.get(section.id) !== section) {
-          next.set(section.id, section);
-          changed = true;
-        }
-      }
-      return changed ? next : prev;
-    });
+    setSwapSectionsById((prev) => withSections(prev, fetchedSections));
   }, [fetchedSections]);
 
-  const cacheLocalSwapSection = useCallback(
-    (section: SwapCourseSectionFragment) => {
-      setSwapSectionsById((prev) => {
-        if (prev.get(section.id) === section) return prev;
-        const next = new Map(prev);
-        next.set(section.id, section);
-        return next;
-      });
-    },
-    [],
-  );
-
-  const clearSwaps = useCallback(() => {
-    setSwapsByTerm({});
-    setSwapSectionsById(new Map());
-  }, []);
+  const plannedSwapsByTerm: Partial<Record<DisplayedTerm, PlannedSwap[]>> = {};
+  for (const term of DISPLAYED_TERMS) {
+    const termSwaps = swapsByTerm[term];
+    if (!termSwaps?.length) continue;
+    plannedSwapsByTerm[term] = termSwaps.map((swap) => ({
+      sourceSectionId: swap.sourceSectionId,
+      replacementSectionId: swap.replacementSectionId,
+      replacementSection: swapSectionsById.get(swap.replacementSectionId),
+    }));
+  }
 
   // True while any planned replacement is still missing its section details.
-  const hasPendingSections = useMemo(
-    () =>
-      Object.values(swapsByTerm).some((termSwaps) =>
-        (termSwaps ?? []).some(
-          ({ replacementSectionId }) =>
-            !swapSectionsById.has(replacementSectionId),
-        ),
-      ),
-    [swapSectionsById, swapsByTerm],
+  // A failed fetch still counts as settled so a broken plan can always reset.
+  const hasPendingSections = Object.values(swapsByTerm).some((termSwaps) =>
+    (termSwaps ?? []).some(
+      ({ replacementSectionId }) => !swapSectionsById.has(replacementSectionId),
+    ),
   );
-
-  // Whether the plan is fully applied, or its sections failed to load and
-  // never will be. A failed fetch still counts, so a broken plan can always
-  // be reset.
   const isPlanSettled = !hasPendingSections || Boolean(savedSwapSectionsError);
 
+  /**
+   * Cache the replacement fragment and update the ID plan in one step.
+   * Passing the enrolled section back (same id as source) clears that swap.
+   */
+  const planSwap = (
+    term: DisplayedTerm,
+    sourceSectionId: number,
+    replacementSection: SwapCourseSectionFragment,
+  ) => {
+    setSwapSectionsById((prev) => withSections(prev, [replacementSection]));
+    setSwapsByTerm((prev) => {
+      const nextTermSwaps = (prev[term] ?? []).filter(
+        (savedSwap) => savedSwap.sourceSectionId !== sourceSectionId,
+      );
+      if (replacementSection.id !== sourceSectionId) {
+        nextTermSwaps.push({
+          sourceSectionId,
+          replacementSectionId: replacementSection.id,
+        });
+      }
+
+      const next = { ...prev };
+      if (nextTermSwaps.length > 0) {
+        next[term] = nextTermSwaps;
+      } else {
+        delete next[term];
+      }
+      return next;
+    });
+  };
+
+  const clearSwaps = () => setSwapsByTerm({});
+
   return {
-    swapsByTerm,
-    setSwapsByTerm,
-    swapSectionsById,
-    isPlanSettled,
-    cacheLocalSwapSection,
+    plannedSwapsByTerm,
+    planSwap,
     clearSwaps,
+    isPlanSettled,
   };
 };
 

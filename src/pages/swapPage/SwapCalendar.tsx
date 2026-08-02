@@ -43,7 +43,7 @@ import ScheduleSwapPanel, {
 } from './ScheduleSwapPanel';
 import useLocalStorageSwaps, {
   DisplayedTerm,
-  SavedSwap,
+  PlannedSwap,
 } from './useLocalStorageSwaps';
 
 type ScheduleEntry = UserScheduleFragment['schedule'][number];
@@ -63,23 +63,18 @@ const toScheduleEntry = (
 const applyPlannedSwaps = (
   schedule: UserScheduleFragment['schedule'],
   termCode: number,
-  plannedSwaps: SavedSwap[],
-  swapSectionsById: Map<number, SwapCourseSectionFragment>,
+  plannedSwaps: PlannedSwap[],
 ): UserScheduleFragment['schedule'] => {
   const base = schedule.filter((entry) => entry.section.term_id === termCode);
   const replacementBySourceId = new Map(
-    plannedSwaps.map(({ sourceSectionId, replacementSectionId }) => [
+    plannedSwaps.map(({ sourceSectionId, replacementSection }) => [
       sourceSectionId,
-      replacementSectionId,
+      replacementSection,
     ]),
   );
 
   return base.map((entry) => {
-    const replacementId = replacementBySourceId.get(entry.section.id);
-    const replacement =
-      replacementId === undefined
-        ? undefined
-        : swapSectionsById.get(replacementId);
+    const replacement = replacementBySourceId.get(entry.section.id);
     return replacement ? toScheduleEntry(replacement, entry.user_id) : entry;
   });
 };
@@ -276,18 +271,12 @@ const SwapCalendar = ({
   const [hoveredSection, setHoveredSection] =
     useState<SwapCourseSectionFragment | null>(null);
 
-  const {
-    swapsByTerm,
-    setSwapsByTerm,
-    swapSectionsById,
-    isPlanSettled,
-    cacheLocalSwapSection,
-    clearSwaps,
-  } = useLocalStorageSwaps({
-    schedule,
-    userId,
-    demoMode,
-  });
+  const { plannedSwapsByTerm, planSwap, clearSwaps, isPlanSettled } =
+    useLocalStorageSwaps({
+      schedule,
+      userId,
+      demoMode,
+    });
 
   // Effective schedule for the active term tab.
   const termSections = useMemo(
@@ -295,10 +284,9 @@ const SwapCalendar = ({
       applyPlannedSwaps(
         schedule,
         selectedTermCode,
-        swapsByTerm[selectedTerm] ?? [],
-        swapSectionsById,
+        plannedSwapsByTerm[selectedTerm] ?? [],
       ),
-    [schedule, selectedTerm, selectedTermCode, swapSectionsById, swapsByTerm],
+    [schedule, selectedTerm, selectedTermCode, plannedSwapsByTerm],
   );
 
   // The clicked calendar block's course + section type (e.g. CS 240 / LEC).
@@ -504,12 +492,12 @@ const SwapCalendar = ({
     [termSections],
   );
 
-  const handleResetSwaps = useCallback(() => {
+  const handleResetSwaps = () => {
     clearSwaps();
     setSelection(null);
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
-  }, [clearSwaps]);
+  };
 
   // Temporarily swap a section into the saved local plan. The new section
   // replaces the entry matching the selected course + section type (LEC↔LEC,
@@ -528,31 +516,12 @@ const SwapCalendar = ({
       if (replaceIndex === -1) return;
 
       const currentSectionId = base[replaceIndex].section.id;
-      const existingSwap = (swapsByTerm[selectedTerm] ?? []).find(
+      const existingSwap = (plannedSwapsByTerm[selectedTerm] ?? []).find(
         ({ replacementSectionId }) => replacementSectionId === currentSectionId,
       );
       const sourceSectionId = existingSwap?.sourceSectionId ?? currentSectionId;
 
-      cacheLocalSwapSection(newSection);
-      setSwapsByTerm((prev) => {
-        const nextTermSwaps = (prev[selectedTerm] ?? []).filter(
-          (savedSwap) => savedSwap.sourceSectionId !== sourceSectionId,
-        );
-        if (newSection.id !== sourceSectionId) {
-          nextTermSwaps.push({
-            sourceSectionId,
-            replacementSectionId: newSection.id,
-          });
-        }
-
-        const next = { ...prev };
-        if (nextTermSwaps.length > 0) {
-          next[selectedTerm] = nextTermSwaps;
-        } else {
-          delete next[selectedTerm];
-        }
-        return next;
-      });
+      planSwap(selectedTerm, sourceSectionId, newSection);
       setHoveredSection(null);
       if (newSection.course.code !== selection.courseCode) {
         // Follow the swapped-in course (keeping the selected section type);
@@ -565,11 +534,11 @@ const SwapCalendar = ({
       }
     },
     [
-      cacheLocalSwapSection,
+      planSwap,
+      plannedSwapsByTerm,
       selectedTerm,
       selection,
       swapSections,
-      swapsByTerm,
       termSections,
     ],
   );
@@ -602,7 +571,7 @@ const SwapCalendar = ({
     { id: nextTermCode, label: nextTermLabel },
   ];
   const swapTargetCode = selectedSwapCourseCode ?? selectedCourseCode;
-  const hasSwaps = Object.keys(swapsByTerm).length > 0;
+  const hasSwaps = Object.keys(plannedSwapsByTerm).length > 0;
 
   return (
     <div className="relative z-0 w-screen animate-fade-in">

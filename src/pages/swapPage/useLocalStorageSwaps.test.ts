@@ -1,16 +1,16 @@
 import React, { act } from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { UserScheduleFragment } from 'generated/graphql';
+import {
+  SwapCourseSectionFragment,
+  UserScheduleFragment,
+} from 'generated/graphql';
 
 import useLocalStorageSwaps, { DisplayedTerm } from './useLocalStorageSwaps';
 
-jest.mock('@apollo/client', () => {
-  const actual = jest.requireActual('@apollo/client');
-  return {
-    ...actual,
-    useQuery: jest.fn(() => ({ data: undefined, error: undefined })),
-  };
-});
+jest.mock('@apollo/client', () => ({
+  gql: () => ({}),
+  useQuery: () => ({ data: undefined, error: undefined }),
+}));
 
 type HookArgs = {
   schedule: UserScheduleFragment['schedule'];
@@ -53,6 +53,18 @@ const createSchedule = (
     },
   },
 ];
+
+/** Minimal fragment for planSwap — only `id` is read by the hook. */
+const fakeSection = (id: number): SwapCourseSectionFragment =>
+  ({ id } as SwapCourseSectionFragment);
+
+const withPendingFragment = (
+  swaps: { sourceSectionId: number; replacementSectionId: number }[],
+) =>
+  swaps.map((swap) => ({
+    ...swap,
+    replacementSection: undefined,
+  }));
 
 const storageKeyFor = (userId: number) => `swap_calendar_state:${userId}`;
 
@@ -140,8 +152,8 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({
-      [DisplayedTerm.Next]: swaps,
+    expect(result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Next]: withPendingFragment(swaps),
     });
     unmount();
   });
@@ -153,7 +165,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -164,12 +176,9 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
+    const replacement = fakeSection(2002);
     act(() => {
-      first.result.current.setSwapsByTerm({
-        [DisplayedTerm.Current]: [
-          { sourceSectionId: 1001, replacementSectionId: 2002 },
-        ],
-      });
+      first.result.current.planSwap(DisplayedTerm.Current, 1001, replacement);
     });
     first.unmount();
 
@@ -179,14 +188,19 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(second.result.current.swapsByTerm).toEqual({
-      [DisplayedTerm.Current]: [
+    expect(second.result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Current]: withPendingFragment([
         { sourceSectionId: 1001, replacementSectionId: 2002 },
-      ],
+      ]),
     });
     const stored = localStorage.getItem(storageKeyFor(userId));
     expect(stored).not.toBeNull();
     expect(JSON.parse(stored as string)).not.toHaveProperty('selectedTerm');
+    expect(JSON.parse(stored as string).swapsByTerm).toEqual({
+      [DisplayedTerm.Current]: [
+        { sourceSectionId: 1001, replacementSectionId: 2002 },
+      ],
+    });
     second.unmount();
   });
 
@@ -203,7 +217,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -220,7 +234,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -238,8 +252,8 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({
-      [DisplayedTerm.Current]: swaps,
+    expect(result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Current]: withPendingFragment(swaps),
     });
     unmount();
   });
@@ -264,7 +278,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -277,7 +291,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -296,8 +310,8 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({
-      [DisplayedTerm.Next]: swaps,
+    expect(result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Next]: withPendingFragment(swaps),
     });
     unmount();
   });
@@ -326,10 +340,10 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({
-      [DisplayedTerm.Current]: [
+    expect(result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Current]: withPendingFragment([
         { sourceSectionId: 1001, replacementSectionId: 2002 },
-      ],
+      ]),
     });
     unmount();
   });
@@ -350,7 +364,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -362,11 +376,7 @@ describe('useLocalStorageSwaps', () => {
     });
 
     act(() => {
-      result.current.setSwapsByTerm({
-        [DisplayedTerm.Current]: [
-          { sourceSectionId: 1001, replacementSectionId: 2002 },
-        ],
-      });
+      result.current.planSwap(DisplayedTerm.Current, 1001, fakeSection(2002));
     });
 
     expect(localStorage.getItem(storageKeyFor(userId))).toBeNull();
@@ -386,10 +396,10 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({
-      [DisplayedTerm.Next]: [
+    expect(result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Next]: withPendingFragment([
         { sourceSectionId: 1001, replacementSectionId: 2002 },
-      ],
+      ]),
     });
 
     rerender({
@@ -398,7 +408,7 @@ describe('useLocalStorageSwaps', () => {
       demoMode: false,
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 
@@ -410,21 +420,60 @@ describe('useLocalStorageSwaps', () => {
     });
 
     act(() => {
-      result.current.setSwapsByTerm({
-        [DisplayedTerm.Current]: [
-          { sourceSectionId: 1001, replacementSectionId: 2002 },
-        ],
-      });
+      result.current.planSwap(DisplayedTerm.Current, 1001, fakeSection(2002));
     });
 
     act(() => {
       result.current.clearSwaps();
     });
 
-    expect(result.current.swapsByTerm).toEqual({});
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     const stored = localStorage.getItem(storageKeyFor(userId));
     expect(stored).not.toBeNull();
     expect(JSON.parse(stored as string).swapsByTerm).toEqual({});
+    unmount();
+  });
+
+  it('planSwap caches the replacement fragment immediately', () => {
+    const { result, unmount } = renderHook({
+      schedule: baseSchedule,
+      userId,
+      demoMode: false,
+    });
+
+    const replacement = fakeSection(2002);
+    act(() => {
+      result.current.planSwap(DisplayedTerm.Current, 1001, replacement);
+    });
+
+    expect(result.current.plannedSwapsByTerm).toEqual({
+      [DisplayedTerm.Current]: [
+        {
+          sourceSectionId: 1001,
+          replacementSectionId: 2002,
+          replacementSection: replacement,
+        },
+      ],
+    });
+    unmount();
+  });
+
+  it('planSwap with the enrolled section clears that source swap', () => {
+    const { result, unmount } = renderHook({
+      schedule: baseSchedule,
+      userId,
+      demoMode: false,
+    });
+
+    act(() => {
+      result.current.planSwap(DisplayedTerm.Current, 1001, fakeSection(2002));
+    });
+
+    act(() => {
+      result.current.planSwap(DisplayedTerm.Current, 1001, fakeSection(1001));
+    });
+
+    expect(result.current.plannedSwapsByTerm).toEqual({});
     unmount();
   });
 });
