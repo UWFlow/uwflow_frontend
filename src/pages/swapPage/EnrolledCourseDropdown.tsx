@@ -4,7 +4,6 @@ import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
 
 import CourseDropdownTrigger from './CourseDropdownTrigger';
-import useEscapeToClose from './useEscapeToClose';
 
 export type EnrolledCourse = {
   code: string;
@@ -28,14 +27,14 @@ const EnrolledCourseDropdown = ({
   onSelect,
 }: EnrolledCourseDropdownProps) => {
   const [open, setOpen] = useState(false);
-  useEscapeToClose(open, () => setOpen(false));
 
   return (
     <div className="relative min-w-0">
       <CourseDropdownTrigger
         code={selectedCode}
         open={open}
-        onClick={() => setOpen((prev) => !prev)}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
       />
       {open && (
         <>

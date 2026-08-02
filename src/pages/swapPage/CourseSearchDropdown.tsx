@@ -12,7 +12,6 @@ import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
 
 import CourseDropdownTrigger from './CourseDropdownTrigger';
-import useEscapeToClose from './useEscapeToClose';
 
 const dropdownEmptyStateClasses =
   'px-3.5 py-4 text-center text-[13px] text-dark3';
@@ -81,7 +80,6 @@ const CourseSearchDropdown = ({
     setOpen(false);
     setSearchQuery('');
   };
-  useEscapeToClose(open, close);
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
@@ -174,7 +172,8 @@ const CourseSearchDropdown = ({
       <CourseDropdownTrigger
         code={selectedCode}
         open={open}
-        onClick={() => (open ? close() : setOpen(true))}
+        onOpen={() => setOpen(true)}
+        onClose={close}
       />
       {open && (
         <>
