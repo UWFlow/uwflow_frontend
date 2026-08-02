@@ -4578,6 +4578,10 @@ export type Mutation_Root = {
   delete_user_course_taken?: Maybe<User_Course_Taken_Mutation_Response>;
   /** delete data from the table: "user_schedule" */
   delete_user_schedule?: Maybe<User_Schedule_Mutation_Response>;
+  /** delete data from the table: "user_schedule_swap" */
+  delete_user_schedule_swap?: Maybe<User_Schedule_Swap_Mutation_Response>;
+  /** delete single row from the table: "user_schedule_swap" */
+  delete_user_schedule_swap_by_pk?: Maybe<User_Schedule_Swap>;
   /** delete data from the table: "user_shortlist" */
   delete_user_shortlist?: Maybe<User_Shortlist_Mutation_Response>;
   /** insert data into the table: "course" */
@@ -4644,6 +4648,10 @@ export type Mutation_Root = {
   insert_user_schedule?: Maybe<User_Schedule_Mutation_Response>;
   /** insert a single row into the table: "user_schedule" */
   insert_user_schedule_one?: Maybe<User_Schedule>;
+  /** insert data into the table: "user_schedule_swap" */
+  insert_user_schedule_swap?: Maybe<User_Schedule_Swap_Mutation_Response>;
+  /** insert a single row into the table: "user_schedule_swap" */
+  insert_user_schedule_swap_one?: Maybe<User_Schedule_Swap>;
   /** insert data into the table: "user_shortlist" */
   insert_user_shortlist?: Maybe<User_Shortlist_Mutation_Response>;
   /** insert a single row into the table: "user_shortlist" */
@@ -4747,6 +4755,14 @@ export type Mutation_Root = {
   /** update multiples rows of table: "user_schedule" */
   update_user_schedule_many?: Maybe<
     Array<Maybe<User_Schedule_Mutation_Response>>
+  >;
+  /** update data of the table: "user_schedule_swap" */
+  update_user_schedule_swap?: Maybe<User_Schedule_Swap_Mutation_Response>;
+  /** update single row of the table: "user_schedule_swap" */
+  update_user_schedule_swap_by_pk?: Maybe<User_Schedule_Swap>;
+  /** update multiples rows of table: "user_schedule_swap" */
+  update_user_schedule_swap_many?: Maybe<
+    Array<Maybe<User_Schedule_Swap_Mutation_Response>>
   >;
   /** update data of the table: "user_shortlist" */
   update_user_shortlist?: Maybe<User_Shortlist_Mutation_Response>;
@@ -4864,6 +4880,17 @@ export type Mutation_RootDelete_User_Course_TakenArgs = {
 /** mutation root */
 export type Mutation_RootDelete_User_ScheduleArgs = {
   where: User_Schedule_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_User_Schedule_SwapArgs = {
+  where: User_Schedule_Swap_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_User_Schedule_Swap_By_PkArgs = {
+  source_section_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -5055,6 +5082,18 @@ export type Mutation_RootInsert_User_ScheduleArgs = {
 export type Mutation_RootInsert_User_Schedule_OneArgs = {
   object: User_Schedule_Insert_Input;
   on_conflict?: InputMaybe<User_Schedule_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_User_Schedule_SwapArgs = {
+  objects: Array<User_Schedule_Swap_Insert_Input>;
+  on_conflict?: InputMaybe<User_Schedule_Swap_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_User_Schedule_Swap_OneArgs = {
+  object: User_Schedule_Swap_Insert_Input;
+  on_conflict?: InputMaybe<User_Schedule_Swap_On_Conflict>;
 };
 
 /** mutation root */
@@ -5301,6 +5340,25 @@ export type Mutation_RootUpdate_User_ScheduleArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_User_Schedule_ManyArgs = {
   updates: Array<User_Schedule_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Schedule_SwapArgs = {
+  _inc?: InputMaybe<User_Schedule_Swap_Inc_Input>;
+  _set?: InputMaybe<User_Schedule_Swap_Set_Input>;
+  where: User_Schedule_Swap_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Schedule_Swap_By_PkArgs = {
+  _inc?: InputMaybe<User_Schedule_Swap_Inc_Input>;
+  _set?: InputMaybe<User_Schedule_Swap_Set_Input>;
+  pk_columns: User_Schedule_Swap_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_User_Schedule_Swap_ManyArgs = {
+  updates: Array<User_Schedule_Swap_Updates>;
 };
 
 /** mutation root */
@@ -6588,6 +6646,12 @@ export type Query_Root = {
   user_schedule: Array<User_Schedule>;
   /** fetch aggregated fields from the table: "user_schedule" */
   user_schedule_aggregate: User_Schedule_Aggregate;
+  /** fetch data from the table: "user_schedule_swap" */
+  user_schedule_swap: Array<User_Schedule_Swap>;
+  /** fetch aggregated fields from the table: "user_schedule_swap" */
+  user_schedule_swap_aggregate: User_Schedule_Swap_Aggregate;
+  /** fetch data from the table: "user_schedule_swap" using primary key columns */
+  user_schedule_swap_by_pk?: Maybe<User_Schedule_Swap>;
   /** fetch data from the table: "user_shortlist" */
   user_shortlist: Array<User_Shortlist>;
   /** fetch aggregated fields from the table: "user_shortlist" */
@@ -7108,6 +7172,27 @@ export type Query_RootUser_Schedule_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<User_Schedule_Order_By>>;
   where?: InputMaybe<User_Schedule_Bool_Exp>;
+};
+
+export type Query_RootUser_Schedule_SwapArgs = {
+  distinct_on?: InputMaybe<Array<User_Schedule_Swap_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Swap_Order_By>>;
+  where?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
+};
+
+export type Query_RootUser_Schedule_Swap_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Schedule_Swap_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Swap_Order_By>>;
+  where?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
+};
+
+export type Query_RootUser_Schedule_Swap_By_PkArgs = {
+  source_section_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
 };
 
 export type Query_RootUser_ShortlistArgs = {
@@ -9495,6 +9580,14 @@ export type Subscription_Root = {
   user_schedule_aggregate: User_Schedule_Aggregate;
   /** fetch data from the table in a streaming manner: "user_schedule" */
   user_schedule_stream: Array<User_Schedule>;
+  /** fetch data from the table: "user_schedule_swap" */
+  user_schedule_swap: Array<User_Schedule_Swap>;
+  /** fetch aggregated fields from the table: "user_schedule_swap" */
+  user_schedule_swap_aggregate: User_Schedule_Swap_Aggregate;
+  /** fetch data from the table: "user_schedule_swap" using primary key columns */
+  user_schedule_swap_by_pk?: Maybe<User_Schedule_Swap>;
+  /** fetch data from the table in a streaming manner: "user_schedule_swap" */
+  user_schedule_swap_stream: Array<User_Schedule_Swap>;
   /** fetch data from the table: "user_shortlist" */
   user_shortlist: Array<User_Shortlist>;
   /** fetch aggregated fields from the table: "user_shortlist" */
@@ -10185,6 +10278,33 @@ export type Subscription_RootUser_Schedule_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<User_Schedule_Stream_Cursor_Input>>;
   where?: InputMaybe<User_Schedule_Bool_Exp>;
+};
+
+export type Subscription_RootUser_Schedule_SwapArgs = {
+  distinct_on?: InputMaybe<Array<User_Schedule_Swap_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Swap_Order_By>>;
+  where?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
+};
+
+export type Subscription_RootUser_Schedule_Swap_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Schedule_Swap_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<User_Schedule_Swap_Order_By>>;
+  where?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
+};
+
+export type Subscription_RootUser_Schedule_Swap_By_PkArgs = {
+  source_section_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+export type Subscription_RootUser_Schedule_Swap_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<User_Schedule_Swap_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
 };
 
 export type Subscription_RootUser_ShortlistArgs = {
@@ -11012,6 +11132,13 @@ export type User_Schedule_Mutation_Response = {
   returning: Array<User_Schedule>;
 };
 
+/** input type for inserting object relation for remote table "user_schedule" */
+export type User_Schedule_Obj_Rel_Insert_Input = {
+  data: User_Schedule_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<User_Schedule_On_Conflict>;
+};
+
 /** on_conflict condition type for table "user_schedule" */
 export type User_Schedule_On_Conflict = {
   constraint: User_Schedule_Constraint;
@@ -11110,6 +11237,243 @@ export type User_Schedule_Sum_Fields = {
 export type User_Schedule_Sum_Order_By = {
   section_id?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "user_schedule_swap" */
+export type User_Schedule_Swap = {
+  __typename?: 'user_schedule_swap';
+  /** An object relationship */
+  replacement_section: Course_Section;
+  replacement_section_id: Scalars['Int']['output'];
+  /** An object relationship */
+  source_schedule: User_Schedule;
+  source_section_id: Scalars['Int']['output'];
+  user_id: Scalars['Int']['output'];
+};
+
+/** aggregated selection of "user_schedule_swap" */
+export type User_Schedule_Swap_Aggregate = {
+  __typename?: 'user_schedule_swap_aggregate';
+  aggregate?: Maybe<User_Schedule_Swap_Aggregate_Fields>;
+  nodes: Array<User_Schedule_Swap>;
+};
+
+/** aggregate fields of "user_schedule_swap" */
+export type User_Schedule_Swap_Aggregate_Fields = {
+  __typename?: 'user_schedule_swap_aggregate_fields';
+  avg?: Maybe<User_Schedule_Swap_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<User_Schedule_Swap_Max_Fields>;
+  min?: Maybe<User_Schedule_Swap_Min_Fields>;
+  stddev?: Maybe<User_Schedule_Swap_Stddev_Fields>;
+  stddev_pop?: Maybe<User_Schedule_Swap_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<User_Schedule_Swap_Stddev_Samp_Fields>;
+  sum?: Maybe<User_Schedule_Swap_Sum_Fields>;
+  var_pop?: Maybe<User_Schedule_Swap_Var_Pop_Fields>;
+  var_samp?: Maybe<User_Schedule_Swap_Var_Samp_Fields>;
+  variance?: Maybe<User_Schedule_Swap_Variance_Fields>;
+};
+
+/** aggregate fields of "user_schedule_swap" */
+export type User_Schedule_Swap_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<User_Schedule_Swap_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type User_Schedule_Swap_Avg_Fields = {
+  __typename?: 'user_schedule_swap_avg_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "user_schedule_swap". All fields are combined with a logical 'AND'. */
+export type User_Schedule_Swap_Bool_Exp = {
+  _and?: InputMaybe<Array<User_Schedule_Swap_Bool_Exp>>;
+  _not?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Schedule_Swap_Bool_Exp>>;
+  replacement_section?: InputMaybe<Course_Section_Bool_Exp>;
+  replacement_section_id?: InputMaybe<Int_Comparison_Exp>;
+  source_schedule?: InputMaybe<User_Schedule_Bool_Exp>;
+  source_section_id?: InputMaybe<Int_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "user_schedule_swap" */
+export enum User_Schedule_Swap_Constraint {
+  /** unique or primary key constraint on columns "user_id", "source_section_id" */
+  UserScheduleSwapPkey = 'user_schedule_swap_pkey',
+}
+
+/** input type for incrementing numeric columns in table "user_schedule_swap" */
+export type User_Schedule_Swap_Inc_Input = {
+  replacement_section_id?: InputMaybe<Scalars['Int']['input']>;
+  source_section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "user_schedule_swap" */
+export type User_Schedule_Swap_Insert_Input = {
+  replacement_section?: InputMaybe<Course_Section_Obj_Rel_Insert_Input>;
+  replacement_section_id?: InputMaybe<Scalars['Int']['input']>;
+  source_schedule?: InputMaybe<User_Schedule_Obj_Rel_Insert_Input>;
+  source_section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate max on columns */
+export type User_Schedule_Swap_Max_Fields = {
+  __typename?: 'user_schedule_swap_max_fields';
+  replacement_section_id?: Maybe<Scalars['Int']['output']>;
+  source_section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** aggregate min on columns */
+export type User_Schedule_Swap_Min_Fields = {
+  __typename?: 'user_schedule_swap_min_fields';
+  replacement_section_id?: Maybe<Scalars['Int']['output']>;
+  source_section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** response of any mutation on the table "user_schedule_swap" */
+export type User_Schedule_Swap_Mutation_Response = {
+  __typename?: 'user_schedule_swap_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<User_Schedule_Swap>;
+};
+
+/** on_conflict condition type for table "user_schedule_swap" */
+export type User_Schedule_Swap_On_Conflict = {
+  constraint: User_Schedule_Swap_Constraint;
+  update_columns?: Array<User_Schedule_Swap_Update_Column>;
+  where?: InputMaybe<User_Schedule_Swap_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "user_schedule_swap". */
+export type User_Schedule_Swap_Order_By = {
+  replacement_section?: InputMaybe<Course_Section_Order_By>;
+  replacement_section_id?: InputMaybe<Order_By>;
+  source_schedule?: InputMaybe<User_Schedule_Order_By>;
+  source_section_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: user_schedule_swap */
+export type User_Schedule_Swap_Pk_Columns_Input = {
+  source_section_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+/** select columns of table "user_schedule_swap" */
+export enum User_Schedule_Swap_Select_Column {
+  /** column name */
+  ReplacementSectionId = 'replacement_section_id',
+  /** column name */
+  SourceSectionId = 'source_section_id',
+  /** column name */
+  UserId = 'user_id',
+}
+
+/** input type for updating data in table "user_schedule_swap" */
+export type User_Schedule_Swap_Set_Input = {
+  replacement_section_id?: InputMaybe<Scalars['Int']['input']>;
+  source_section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type User_Schedule_Swap_Stddev_Fields = {
+  __typename?: 'user_schedule_swap_stddev_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type User_Schedule_Swap_Stddev_Pop_Fields = {
+  __typename?: 'user_schedule_swap_stddev_pop_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type User_Schedule_Swap_Stddev_Samp_Fields = {
+  __typename?: 'user_schedule_swap_stddev_samp_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "user_schedule_swap" */
+export type User_Schedule_Swap_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: User_Schedule_Swap_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type User_Schedule_Swap_Stream_Cursor_Value_Input = {
+  replacement_section_id?: InputMaybe<Scalars['Int']['input']>;
+  source_section_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate sum on columns */
+export type User_Schedule_Swap_Sum_Fields = {
+  __typename?: 'user_schedule_swap_sum_fields';
+  replacement_section_id?: Maybe<Scalars['Int']['output']>;
+  source_section_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** update columns of table "user_schedule_swap" */
+export enum User_Schedule_Swap_Update_Column {
+  /** column name */
+  ReplacementSectionId = 'replacement_section_id',
+  /** column name */
+  SourceSectionId = 'source_section_id',
+  /** column name */
+  UserId = 'user_id',
+}
+
+export type User_Schedule_Swap_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<User_Schedule_Swap_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<User_Schedule_Swap_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: User_Schedule_Swap_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type User_Schedule_Swap_Var_Pop_Fields = {
+  __typename?: 'user_schedule_swap_var_pop_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type User_Schedule_Swap_Var_Samp_Fields = {
+  __typename?: 'user_schedule_swap_var_samp_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type User_Schedule_Swap_Variance_Fields = {
+  __typename?: 'user_schedule_swap_variance_fields';
+  replacement_section_id?: Maybe<Scalars['Float']['output']>;
+  source_section_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** update columns of table "user_schedule" */
@@ -11927,6 +12291,39 @@ export type UpsertLikedReviewMutation = {
   insert_review: { returning: Array<{ id: number; liked: any }> } | null;
 };
 
+export type UpsertScheduleSwapMutationVariables = Exact<{
+  userId: number;
+  sourceSectionId: number;
+  replacementSectionId: number;
+}>;
+
+export type UpsertScheduleSwapMutation = {
+  insert_user_schedule_swap_one: {
+    user_id: number;
+    source_section_id: number;
+  } | null;
+};
+
+export type DeleteScheduleSwapMutationVariables = Exact<{
+  userId: number;
+  sourceSectionId: number;
+}>;
+
+export type DeleteScheduleSwapMutation = {
+  delete_user_schedule_swap_by_pk: {
+    user_id: number;
+    source_section_id: number;
+  } | null;
+};
+
+export type ClearScheduleSwapsMutationVariables = Exact<{
+  userId: number;
+}>;
+
+export type ClearScheduleSwapsMutation = {
+  delete_user_schedule_swap: { affected_rows: number } | null;
+};
+
 export type InsertSectionSubscriptionMutationVariables = Exact<{
   section_id?: number | null | undefined;
   user_id?: number | null | undefined;
@@ -12216,6 +12613,24 @@ export type Refetch_Prof_Review_UpvoteQueryVariables = Exact<{
 
 export type Refetch_Prof_Review_UpvoteQuery = {
   review: Array<ReviewVoteCountsFragment>;
+};
+
+export type GetScheduleSwapsQueryVariables = Exact<{
+  userId: number;
+  termIds: Array<number> | number;
+}>;
+
+export type GetScheduleSwapsQuery = {
+  user_schedule_swap: Array<{
+    user_id: number;
+    source_section_id: number;
+    replacement_section_id: number;
+    source_schedule: {
+      user_id: number;
+      section: { id: number; term_id: number };
+    };
+    replacement_section: SwapCourseSectionFragment;
+  }>;
 };
 
 export type GetUserQueryVariables = Exact<{
@@ -12936,6 +13351,178 @@ export type UpsertLikedReviewMutationResult =
 export type UpsertLikedReviewMutationOptions = Apollo.BaseMutationOptions<
   UpsertLikedReviewMutation,
   UpsertLikedReviewMutationVariables
+>;
+export const UpsertScheduleSwapDocument = gql`
+  mutation upsertScheduleSwap(
+    $userId: Int!
+    $sourceSectionId: Int!
+    $replacementSectionId: Int!
+  ) {
+    insert_user_schedule_swap_one(
+      object: {
+        user_id: $userId
+        source_section_id: $sourceSectionId
+        replacement_section_id: $replacementSectionId
+      }
+      on_conflict: {
+        constraint: user_schedule_swap_pkey
+        update_columns: [replacement_section_id]
+      }
+    ) {
+      user_id
+      source_section_id
+    }
+  }
+`;
+export type UpsertScheduleSwapMutationFn = Apollo.MutationFunction<
+  UpsertScheduleSwapMutation,
+  UpsertScheduleSwapMutationVariables
+>;
+
+/**
+ * __useUpsertScheduleSwapMutation__
+ *
+ * To run a mutation, you first call `useUpsertScheduleSwapMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertScheduleSwapMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertScheduleSwapMutation, { data, loading, error }] = useUpsertScheduleSwapMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      sourceSectionId: // value for 'sourceSectionId'
+ *      replacementSectionId: // value for 'replacementSectionId'
+ *   },
+ * });
+ */
+export function useUpsertScheduleSwapMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpsertScheduleSwapMutation,
+    UpsertScheduleSwapMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpsertScheduleSwapMutation,
+    UpsertScheduleSwapMutationVariables
+  >(UpsertScheduleSwapDocument, options);
+}
+export type UpsertScheduleSwapMutationHookResult = ReturnType<
+  typeof useUpsertScheduleSwapMutation
+>;
+export type UpsertScheduleSwapMutationResult =
+  Apollo.MutationResult<UpsertScheduleSwapMutation>;
+export type UpsertScheduleSwapMutationOptions = Apollo.BaseMutationOptions<
+  UpsertScheduleSwapMutation,
+  UpsertScheduleSwapMutationVariables
+>;
+export const DeleteScheduleSwapDocument = gql`
+  mutation deleteScheduleSwap($userId: Int!, $sourceSectionId: Int!) {
+    delete_user_schedule_swap_by_pk(
+      user_id: $userId
+      source_section_id: $sourceSectionId
+    ) {
+      user_id
+      source_section_id
+    }
+  }
+`;
+export type DeleteScheduleSwapMutationFn = Apollo.MutationFunction<
+  DeleteScheduleSwapMutation,
+  DeleteScheduleSwapMutationVariables
+>;
+
+/**
+ * __useDeleteScheduleSwapMutation__
+ *
+ * To run a mutation, you first call `useDeleteScheduleSwapMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteScheduleSwapMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteScheduleSwapMutation, { data, loading, error }] = useDeleteScheduleSwapMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      sourceSectionId: // value for 'sourceSectionId'
+ *   },
+ * });
+ */
+export function useDeleteScheduleSwapMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteScheduleSwapMutation,
+    DeleteScheduleSwapMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteScheduleSwapMutation,
+    DeleteScheduleSwapMutationVariables
+  >(DeleteScheduleSwapDocument, options);
+}
+export type DeleteScheduleSwapMutationHookResult = ReturnType<
+  typeof useDeleteScheduleSwapMutation
+>;
+export type DeleteScheduleSwapMutationResult =
+  Apollo.MutationResult<DeleteScheduleSwapMutation>;
+export type DeleteScheduleSwapMutationOptions = Apollo.BaseMutationOptions<
+  DeleteScheduleSwapMutation,
+  DeleteScheduleSwapMutationVariables
+>;
+export const ClearScheduleSwapsDocument = gql`
+  mutation clearScheduleSwaps($userId: Int!) {
+    delete_user_schedule_swap(where: { user_id: { _eq: $userId } }) {
+      affected_rows
+    }
+  }
+`;
+export type ClearScheduleSwapsMutationFn = Apollo.MutationFunction<
+  ClearScheduleSwapsMutation,
+  ClearScheduleSwapsMutationVariables
+>;
+
+/**
+ * __useClearScheduleSwapsMutation__
+ *
+ * To run a mutation, you first call `useClearScheduleSwapsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClearScheduleSwapsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [clearScheduleSwapsMutation, { data, loading, error }] = useClearScheduleSwapsMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useClearScheduleSwapsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ClearScheduleSwapsMutation,
+    ClearScheduleSwapsMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ClearScheduleSwapsMutation,
+    ClearScheduleSwapsMutationVariables
+  >(ClearScheduleSwapsDocument, options);
+}
+export type ClearScheduleSwapsMutationHookResult = ReturnType<
+  typeof useClearScheduleSwapsMutation
+>;
+export type ClearScheduleSwapsMutationResult =
+  Apollo.MutationResult<ClearScheduleSwapsMutation>;
+export type ClearScheduleSwapsMutationOptions = Apollo.BaseMutationOptions<
+  ClearScheduleSwapsMutation,
+  ClearScheduleSwapsMutationVariables
 >;
 export const InsertSectionSubscriptionDocument = gql`
   mutation insertSectionSubscription($section_id: Int, $user_id: Int) {
@@ -15355,6 +15942,128 @@ export type Refetch_Prof_Review_UpvoteSuspenseQueryHookResult = ReturnType<
 export type Refetch_Prof_Review_UpvoteQueryResult = Apollo.QueryResult<
   Refetch_Prof_Review_UpvoteQuery,
   Refetch_Prof_Review_UpvoteQueryVariables
+>;
+export const GetScheduleSwapsDocument = gql`
+  query getScheduleSwaps($userId: Int!, $termIds: [Int!]!) {
+    user_schedule_swap(
+      where: {
+        user_id: { _eq: $userId }
+        source_schedule: { section: { term_id: { _in: $termIds } } }
+      }
+    ) {
+      user_id
+      source_section_id
+      replacement_section_id
+      source_schedule {
+        user_id
+        section {
+          id
+          term_id
+        }
+      }
+      replacement_section {
+        ...SwapCourseSection
+      }
+    }
+  }
+  ${SwapCourseSectionFragmentDoc}
+`;
+
+/**
+ * __useGetScheduleSwapsQuery__
+ *
+ * To run a query within a React component, call `useGetScheduleSwapsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetScheduleSwapsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetScheduleSwapsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      termIds: // value for 'termIds'
+ *   },
+ * });
+ */
+export function useGetScheduleSwapsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetScheduleSwapsQuery,
+    GetScheduleSwapsQueryVariables
+  > &
+    (
+      | { variables: GetScheduleSwapsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetScheduleSwapsQuery, GetScheduleSwapsQueryVariables>(
+    GetScheduleSwapsDocument,
+    options,
+  );
+}
+export function useGetScheduleSwapsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetScheduleSwapsQuery,
+    GetScheduleSwapsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetScheduleSwapsQuery,
+    GetScheduleSwapsQueryVariables
+  >(GetScheduleSwapsDocument, options);
+}
+// @ts-ignore
+export function useGetScheduleSwapsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetScheduleSwapsQuery,
+    GetScheduleSwapsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  GetScheduleSwapsQuery,
+  GetScheduleSwapsQueryVariables
+>;
+export function useGetScheduleSwapsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetScheduleSwapsQuery,
+        GetScheduleSwapsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  GetScheduleSwapsQuery | undefined,
+  GetScheduleSwapsQueryVariables
+>;
+export function useGetScheduleSwapsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetScheduleSwapsQuery,
+        GetScheduleSwapsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetScheduleSwapsQuery,
+    GetScheduleSwapsQueryVariables
+  >(GetScheduleSwapsDocument, options);
+}
+export type GetScheduleSwapsQueryHookResult = ReturnType<
+  typeof useGetScheduleSwapsQuery
+>;
+export type GetScheduleSwapsLazyQueryHookResult = ReturnType<
+  typeof useGetScheduleSwapsLazyQuery
+>;
+export type GetScheduleSwapsSuspenseQueryHookResult = ReturnType<
+  typeof useGetScheduleSwapsSuspenseQuery
+>;
+export type GetScheduleSwapsQueryResult = Apollo.QueryResult<
+  GetScheduleSwapsQuery,
+  GetScheduleSwapsQueryVariables
 >;
 export const GetUserDocument = gql`
   query getUser($id: Int) {
