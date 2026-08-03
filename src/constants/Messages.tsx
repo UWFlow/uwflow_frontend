@@ -38,12 +38,14 @@ const joinClassNumbers = (classes: number[]) =>
   classes.join(', ').replace(/, ((?:.(?!, ))+)$/, ' and $1');
 
 export const SCHEDULE_ERRORS: MessageObject = {
+  class_table_schedule:
+    'It looks like only your classes were copied. In Quest List View, press Ctrl + A (Windows) or CMD + A (Mac) to select the whole page, then copy and paste again.',
   course_selection_schedule:
     'That looks like your Course Selection page – in Quest, go to Enroll → My Class Schedule and paste that instead.',
   not_registered_schedule:
     'That schedule is empty – Quest says you’re not registered for classes in that term. Try a term you’re enrolled in.',
   no_term_schedule:
-    'We couldn’t find a term on that page – in Quest, go to Enroll → My Class Schedule, switch to List View, then select all (Ctrl+A) so the term header (e.g. “Fall 2026 | Undergraduate”) is included.',
+    'We couldn’t find a term on that page. In Quest, switch to List View, then press Ctrl + A (Windows) or CMD + A (Mac) before copying so the term header (e.g. “Fall 2026 | Undergraduate”) is included.',
   empty_schedule:
     'Looks like that schedule is empty. Check for copy/paste errors, and try again.',
   old_schedule:

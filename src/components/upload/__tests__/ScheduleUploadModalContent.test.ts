@@ -4,7 +4,18 @@ import { ScheduleParseResponse } from 'types/Api';
 import {
   getScheduleError,
   getScheduleImportOutcome,
+  getSchedulePasteError,
 } from '../ScheduleUploadModalContent';
+
+const desktopClassTablePaste = `BIOL 110 - Biodiversity, Biomes & Evol
+Class Nbr	Section	Component	Days & Times	Room	Instructor	Start/End Date
+7046
+001
+LEC
+MW 1:30PM - 2:20PM
+STC 1012
+Marcel Pinheiro
+09/09/2026 - 12/08/2026`;
 
 /**
  * The backend reports only a coarse enum for a failed schedule paste:
@@ -87,8 +98,7 @@ Course Selection Session
   });
 
   describe('bad_request', () => {
-    it('explains the missing term header when the paste has no term', () => {
-      // Selection started below Quest's term header: the class table alone.
+    it('explains the missing term header for an unrecognized paste', () => {
       const paste = `AFM 462 - Topics: Taxation
 Class Nbr	Section	Component	Days & Times
 3422
@@ -99,6 +109,12 @@ M 1:00PM - 2:50PM
 
       expect(getScheduleError('bad_request', paste)).toBe(
         SCHEDULE_ERRORS.no_term_schedule,
+      );
+    });
+
+    it('recognizes the desktop Quest class table copied without its term', () => {
+      expect(getScheduleError('bad_request', desktopClassTablePaste)).toBe(
+        SCHEDULE_ERRORS.class_table_schedule,
       );
     });
 
@@ -119,6 +135,36 @@ M 1:00PM - 2:50PM
     expect(getScheduleError('internal_error', emptyTermPaste)).toBe(
       SCHEDULE_ERRORS.default_schedule,
     );
+  });
+});
+
+describe('getSchedulePasteError', () => {
+  it('detects the table-only desktop paste before it reaches the backend', () => {
+    expect(getSchedulePasteError(desktopClassTablePaste)).toBe(
+      SCHEDULE_ERRORS.class_table_schedule,
+    );
+  });
+
+  it('allows the same desktop table when its term header is included', () => {
+    expect(
+      getSchedulePasteError(
+        `Fall 2026 | Undergraduate\n${desktopClassTablePaste}`,
+      ),
+    ).toBeNull();
+  });
+
+  it('does not give a desktop shortcut hint for responsive table labels', () => {
+    const responsivePaste = `BIOL 110 - Biodiversity, Biomes & Evol
+Class Nbr
+Section
+Component
+Days & Times
+Room
+Instructor
+Start/End Date
+7046`;
+
+    expect(getSchedulePasteError(responsivePaste)).toBeNull();
   });
 });
 

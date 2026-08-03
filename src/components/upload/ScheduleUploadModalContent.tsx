@@ -71,12 +71,13 @@ const clipboardKeys = {
 // pastes on 2026-07-27 (see PR #287); that sample is a snapshot of one term's
 // Quest, not a contract.
 //
-// What keeps this acceptable is the blast radius: this function only picks an
-// error *string*. Nothing here affects what gets parsed or saved, so a pattern
-// that goes stale degrades to a vaguer message, never to a bad import. When one
-// does start misfiring, prefer deleting the specific case over hand-tuning the
-// pattern — a generic message beats a confidently wrong one. See the TODO on
-// getScheduleError below for the fix that removes the guesswork entirely.
+// These patterns only reject a paste when it is missing the term the backend
+// requires. Otherwise, they pick an error *string*. A pattern that goes stale
+// therefore degrades to the backend's existing response, never to a bad import.
+// When one does start misfiring, prefer deleting the specific case over
+// hand-tuning the pattern — a generic message beats a confidently wrong one.
+// See the TODO on getScheduleError below for the fix that removes the guesswork
+// entirely.
 
 // Quest prints this on My Class Schedule when the term has no enrolments. The
 // paste is well-formed, so it is not a copy/paste error — the term is empty.
@@ -92,6 +93,25 @@ const courseSelectionRegex = /my course selection/i;
 // that starts below Quest's term header has nothing for it to match, which is
 // the only way /parse/schedule can answer `bad_request` for a real paste.
 const termHeaderRegex = /(Spring|Fall|Winter)\s+\d{4}/;
+
+// Sentry failures show a common partial selection that starts at Quest's
+// desktop class table. Keep this horizontal so responsive/mobile layouts,
+// where each label is on its own line, are not given a desktop shortcut hint.
+const desktopClassTableHeaderRegex =
+  /^Class Nbr[ \t]+Section[ \t]+Component[ \t]+Days & Times[ \t]+Room[ \t]+Instructor[ \t]+Start\/End Date[ \t]*$/im;
+
+export const getSchedulePasteError = (
+  pastedSchedule: string,
+): string | null => {
+  if (
+    !termHeaderRegex.test(pastedSchedule) &&
+    desktopClassTableHeaderRegex.test(pastedSchedule)
+  ) {
+    return SCHEDULE_ERRORS.class_table_schedule;
+  }
+
+  return null;
+};
 
 /**
  * Picks the error message for a failed `/parse/schedule` response. The backend
@@ -116,8 +136,14 @@ export const getScheduleError = (error: string, pastedSchedule: string) => {
     return SCHEDULE_ERRORS.empty_schedule;
   }
 
-  if (error === 'bad_request' && !termHeaderRegex.test(pastedSchedule)) {
-    return SCHEDULE_ERRORS.no_term_schedule;
+  if (error === 'bad_request') {
+    const pasteError = getSchedulePasteError(pastedSchedule);
+    if (pasteError) {
+      return pasteError;
+    }
+    if (!termHeaderRegex.test(pastedSchedule)) {
+      return SCHEDULE_ERRORS.no_term_schedule;
+    }
   }
 
   return SCHEDULE_ERRORS[error] || SCHEDULE_ERRORS.default_schedule;
@@ -186,6 +212,13 @@ const ScheduleUploadModalContent = ({
     setScheduleText(pastedSchedule);
 
     if (pastedSchedule === '') {
+      return;
+    }
+
+    const pasteError = getSchedulePasteError(pastedSchedule);
+    if (pasteError) {
+      setUploadState(UPLOAD_FAILED);
+      setUploadError(pasteError);
       return;
     }
 
@@ -353,7 +386,8 @@ const ScheduleUploadModalContent = ({
           <InstructionWrapper>
             <NumberCircle>2</NumberCircle>
             <InstructionText>
-              Pick your term then select all (Ctrl+A) and copy (Ctrl+C)
+              Pick your term and switch to List View, then press Ctrl + A
+              (Windows) or CMD + A (Mac) and copy
             </InstructionText>
           </InstructionWrapper>
           <ScheduleStepPicture
