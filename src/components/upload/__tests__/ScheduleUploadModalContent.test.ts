@@ -100,7 +100,6 @@ Course Selection Session
   describe('bad_request', () => {
     it('explains the missing term header for an unrecognized paste', () => {
       const paste = `AFM 462 - Topics: Taxation
-Class Nbr	Section	Component	Days & Times
 3422
 001
 LEC
@@ -112,7 +111,7 @@ M 1:00PM - 2:50PM
       );
     });
 
-    it('recognizes the desktop Quest class table copied without its term', () => {
+    it('recognizes a Quest class table copied without its term', () => {
       expect(getScheduleError('bad_request', desktopClassTablePaste)).toBe(
         SCHEDULE_ERRORS.class_table_schedule,
       );
@@ -139,7 +138,7 @@ M 1:00PM - 2:50PM
 });
 
 describe('getSchedulePasteError', () => {
-  it('detects the table-only desktop paste before it reaches the backend', () => {
+  it('detects the table-only paste before it reaches the backend', () => {
     expect(getSchedulePasteError(desktopClassTablePaste)).toBe(
       SCHEDULE_ERRORS.class_table_schedule,
     );
@@ -153,18 +152,24 @@ describe('getSchedulePasteError', () => {
     ).toBeNull();
   });
 
-  it('does not give a desktop shortcut hint for responsive table labels', () => {
-    const responsivePaste = `BIOL 110 - Biodiversity, Biomes & Evol
-Class Nbr
-Section
-Component
-Days & Times
-Room
-Instructor
-Start/End Date
-7046`;
+  it('detects any schedule table marker when the term header is absent', () => {
+    const markers = [
+      'Class Nbr',
+      'Section',
+      'Component',
+      'Days & Times',
+      'Room',
+      'Instructor',
+      'Start/End Date',
+    ];
 
-    expect(getSchedulePasteError(responsivePaste)).toBeNull();
+    markers.forEach((marker) => {
+      expect(
+        getSchedulePasteError(
+          `BIOL 110 - Biodiversity, Biomes & Evol\n${marker}`,
+        ),
+      ).toBe(SCHEDULE_ERRORS.class_table_schedule);
+    });
   });
 });
 

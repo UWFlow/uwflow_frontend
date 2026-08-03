@@ -94,18 +94,18 @@ const courseSelectionRegex = /my course selection/i;
 // the only way /parse/schedule can answer `bad_request` for a real paste.
 const termHeaderRegex = /(Spring|Fall|Winter)\s+\d{4}/;
 
-// Sentry failures show a common partial selection that starts at Quest's
-// desktop class table. Keep this horizontal so responsive/mobile layouts,
-// where each label is on its own line, are not given a desktop shortcut hint.
-const desktopClassTableHeaderRegex =
-  /^Class Nbr[ \t]+Section[ \t]+Component[ \t]+Days & Times[ \t]+Room[ \t]+Instructor[ \t]+Start\/End Date[ \t]*$/im;
+// Sentry failures show partial selections across multiple Quest layouts. Any
+// one of these schedule-table labels identifies the source; the missing term
+// that the backend requires is what makes it safe to stop before the request.
+const scheduleTableMarkerRegex =
+  /\b(?:Class Nbr|Section|Component|Days & Times|Room|Instructor|Start\/End Date)\b/i;
 
 export const getSchedulePasteError = (
   pastedSchedule: string,
 ): string | null => {
   if (
     !termHeaderRegex.test(pastedSchedule) &&
-    desktopClassTableHeaderRegex.test(pastedSchedule)
+    scheduleTableMarkerRegex.test(pastedSchedule)
   ) {
     return SCHEDULE_ERRORS.class_table_schedule;
   }
