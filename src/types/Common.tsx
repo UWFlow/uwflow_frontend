@@ -72,6 +72,9 @@ export type ScheduleInterval = {
   end: Moment;
   courseCode: string;
   section: string;
+  // Quest class number, for meeting intervals only (exams have no enrolment
+  // number to copy into Quest).
+  classNumber?: number;
   location?: string | null;
   truncate?: 'left' | 'right';
 };

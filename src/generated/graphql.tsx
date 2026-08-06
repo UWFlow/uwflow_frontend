@@ -12190,6 +12190,7 @@ export type UserScheduleFragment = {
     user_id: number;
     section: {
       id: number;
+      class_number: number;
       term_id: number;
       section_name: string;
       exams: Array<{
@@ -12965,6 +12966,7 @@ export const UserScheduleFragmentDoc = gql`
       user_id
       section {
         id
+        class_number
         term_id
         exams {
           date

@@ -178,7 +178,7 @@ const buildEnrolledEvents = (
           title: formatCourseCode(courseCode),
           timeLabel,
           location: m.location,
-          subtitle: section.section_name,
+          subtitle: `${section.section_name} · Class #${section.class_number}`,
           onClick: onToggleSection
             ? () => onToggleSection(courseCode, sectionType)
             : undefined,

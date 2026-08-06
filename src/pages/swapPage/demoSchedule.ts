@@ -23,6 +23,7 @@ const demoSection = (
 ) => ({
   section: {
     id,
+    class_number: 10000 + Math.abs(id),
     term_id: currentTermId,
     exams: [],
     meetings: [
