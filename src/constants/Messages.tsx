@@ -33,13 +33,19 @@ export const TRANSCRIPT_ERRORS: MessageObject = {
     'We were unable to process your transcript. Get in touch at info@uwflow.com if this persists.',
 };
 
+// "7587", "7587 and 7588", "7587, 7588 and 7589"
+const joinClassNumbers = (classes: number[]) =>
+  classes.join(', ').replace(/, ((?:.(?!, ))+)$/, ' and $1');
+
 export const SCHEDULE_ERRORS: MessageObject = {
+  class_table_schedule:
+    'It looks like only your classes were copied. In Quest List View, press Ctrl + A (Windows) or CMD + A (Mac) to select the whole page, then copy and paste again.',
   course_selection_schedule:
     'That looks like your Course Selection page – in Quest, go to Enroll → My Class Schedule and paste that instead.',
   not_registered_schedule:
     'That schedule is empty – Quest says you’re not registered for classes in that term. Try a term you’re enrolled in.',
   no_term_schedule:
-    'We couldn’t find a term on that page – in Quest, go to Enroll → My Class Schedule, switch to List View, then select all (Ctrl+A) so the term header (e.g. “Fall 2026 | Undergraduate”) is included.',
+    'We couldn’t find a term on that page. In Quest, switch to List View, then press Ctrl + A (Windows) or CMD + A (Mac) before copying so the term header (e.g. “Fall 2026 | Undergraduate”) is included.',
   empty_schedule:
     'Looks like that schedule is empty. Check for copy/paste errors, and try again.',
   old_schedule:
@@ -49,11 +55,21 @@ export const SCHEDULE_ERRORS: MessageObject = {
   classes_failed: (classes: number[]) =>
     `We were unable to add ${
       classes.length === 1 ? 'class number' : 'class numbers'
-    } ${classes
-      .join(', ')
-      .replace(/, ((?:.(?!, ))+)$/, ' and $1')} to your schedule.
+    } ${joinClassNumbers(classes)} to your schedule.
     Get in touch at info@uwflow.com if this persists.`,
 };
+
+// A partial import is a success, not a failure: the sections we could match are
+// saved, so this is a notice about what is missing rather than something the
+// user can fix by re-pasting. Keep it out of SCHEDULE_ERRORS so it can never be
+// rendered in the modal's error slot.
+export const SCHEDULE_CLASSES_SKIPPED = (classes: number[]) =>
+  `Schedule imported except for ${
+    classes.length === 1 ? 'class number' : 'class numbers'
+  } ${joinClassNumbers(classes)}, which we couldn’t find.`;
+
+export const SCHEDULE_SWAP_ERROR =
+  'Sorry, we couldn’t save your swapped sections – try again in a few minutes.';
 
 export const SUBSCRIPTION_ERROR =
   'Sorry, we couldn’t sign you up for notifications – try again in a few minutes.';

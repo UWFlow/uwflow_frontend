@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { ChevronDown } from 'react-feather';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useQuery } from '@apollo/client';
 import fuzzysort from 'fuzzysort';
@@ -7,6 +8,7 @@ import {
   CourseDropdownByTermQueryVariables,
 } from 'generated/graphql';
 
+import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
 import { COURSE_DROPDOWN_TERM_QUERY } from 'graphql/queries/course/SwapCourse';
 import { cn } from 'lib/utils';
 import { formatCourseCode } from 'utils/Misc';
@@ -17,9 +19,11 @@ const dropdownEmptyStateClasses =
 type CourseItem = CourseDropdownByTermQuery['course'][number];
 
 type CourseSearchDropdownProps = {
+  /** Code shown on the trigger (swap target, or enrolled course as fallback). */
+  displayCode: string;
+  /** Highlighted row in the list; null when still targeting the enrolled course. */
   selectedCode: string | null;
   onSelect: (code: string) => void;
-  onClose: () => void;
   termId: number;
 };
 
@@ -60,40 +64,26 @@ const CourseRow = ({
   );
 };
 
+// Open state, outside-click/Escape dismissal and focus handling come from the
+// shared Popover primitive. Popover rather than DropdownMenu because the panel
+// holds a search input — a menu's typeahead would swallow the typing.
 const CourseSearchDropdown = ({
+  displayCode,
   selectedCode,
   onSelect,
-  onClose,
   termId,
 }: CourseSearchDropdownProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
-
-  // Let keyboard users dismiss the dropdown with Escape, matching the
-  // pointer-only backdrop click.
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { data, loading } = useQuery<
     CourseDropdownByTermQuery,
     CourseDropdownByTermQueryVariables
-  >(COURSE_DROPDOWN_TERM_QUERY, { variables: { termId } });
+  >(COURSE_DROPDOWN_TERM_QUERY, {
+    variables: { termId },
+    skip: !open,
+  });
 
   const allCourses: CourseItem[] = data?.course ?? [];
 
@@ -130,10 +120,20 @@ const CourseSearchDropdown = ({
       .map((entry) => entry.course);
   }
 
+  const handleSelect = (code: string) => {
+    onSelect(code);
+    setOpen(false);
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (!nextOpen) setSearchQuery('');
+  };
+
   const itemData: RowData = {
     courses: filteredCourses,
     selectedCode,
-    onSelect,
+    onSelect: handleSelect,
   };
   const listHeight = Math.min(
     filteredCourses.length * ITEM_HEIGHT,
@@ -165,9 +165,31 @@ const CourseSearchDropdown = ({
   };
 
   return (
-    <>
-      <div className="fixed inset-0 z-[199]" onClick={onClose} />
-      <div className="absolute right-0 top-[calc(100%+8px)] z-[200] flex max-h-[360px] min-w-[300px] flex-col overflow-hidden rounded border border-solid border-light3 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)]">
+    <Popover open={open} onOpenChange={handleOpenChange}>
+      <PopoverTrigger asChild>
+        <button
+          className="flex h-8 min-w-0 max-w-full cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-sm font-semibold text-courses outline-none hover:underline"
+          type="button"
+        >
+          <span className="truncate">{formatCourseCode(displayCode)}</span>
+          <ChevronDown
+            aria-hidden="true"
+            className="shrink-0 text-courses"
+            size={14}
+          />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        className="flex max-h-[360px] w-auto min-w-[300px] flex-col overflow-hidden p-0"
+        // Radix parks focus on the content wrapper by default; send it to the
+        // search box so the panel is type-to-search the moment it opens.
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          inputRef.current?.focus();
+        }}
+        sideOffset={8}
+      >
         <input
           ref={inputRef}
           className="box-border w-full shrink-0 border-0 border-b border-solid border-light2 bg-transparent px-3.5 py-2.5 font-inter text-sm font-normal outline-none placeholder:text-dark3"
@@ -176,8 +198,8 @@ const CourseSearchDropdown = ({
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <div className="flex-1 overflow-y-auto">{renderBody()}</div>
-      </div>
-    </>
+      </PopoverContent>
+    </Popover>
   );
 };
 

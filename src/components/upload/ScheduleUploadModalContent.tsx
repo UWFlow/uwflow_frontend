@@ -14,7 +14,11 @@ import {
   UPLOAD_PENDING,
   UPLOAD_SUCCESSFUL,
 } from 'constants/DataUploadStates';
-import { DATA_UPLOAD_SUCCESS, SCHEDULE_ERRORS } from 'constants/Messages';
+import {
+  DATA_UPLOAD_SUCCESS,
+  SCHEDULE_CLASSES_SKIPPED,
+  SCHEDULE_ERRORS,
+} from 'constants/Messages';
 import Step1Image from 'img/upload/calendar-step-1.png';
 import Step2Image from 'img/upload/calendar-step-2.png';
 import {
@@ -67,12 +71,13 @@ const clipboardKeys = {
 // pastes on 2026-07-27 (see PR #287); that sample is a snapshot of one term's
 // Quest, not a contract.
 //
-// What keeps this acceptable is the blast radius: this function only picks an
-// error *string*. Nothing here affects what gets parsed or saved, so a pattern
-// that goes stale degrades to a vaguer message, never to a bad import. When one
-// does start misfiring, prefer deleting the specific case over hand-tuning the
-// pattern — a generic message beats a confidently wrong one. See the TODO on
-// getScheduleError below for the fix that removes the guesswork entirely.
+// These patterns only reject a paste when it is missing the term the backend
+// requires. Otherwise, they pick an error *string*. A pattern that goes stale
+// therefore degrades to the backend's existing response, never to a bad import.
+// When one does start misfiring, prefer deleting the specific case over
+// hand-tuning the pattern — a generic message beats a confidently wrong one.
+// See the TODO on getScheduleError below for the fix that removes the guesswork
+// entirely.
 
 // Quest prints this on My Class Schedule when the term has no enrolments. The
 // paste is well-formed, so it is not a copy/paste error — the term is empty.
@@ -88,6 +93,25 @@ const courseSelectionRegex = /my course selection/i;
 // that starts below Quest's term header has nothing for it to match, which is
 // the only way /parse/schedule can answer `bad_request` for a real paste.
 const termHeaderRegex = /(Spring|Fall|Winter)\s+\d{4}/;
+
+// Sentry failures show partial selections across multiple Quest layouts. Any
+// one of these schedule-table labels identifies the source; the missing term
+// that the backend requires is what makes it safe to stop before the request.
+const scheduleTableMarkerRegex =
+  /\b(?:Class Nbr|Section|Component|Days & Times|Room|Instructor|Start\/End Date)\b/i;
+
+export const getSchedulePasteError = (
+  pastedSchedule: string,
+): string | null => {
+  if (
+    !termHeaderRegex.test(pastedSchedule) &&
+    scheduleTableMarkerRegex.test(pastedSchedule)
+  ) {
+    return SCHEDULE_ERRORS.class_table_schedule;
+  }
+
+  return null;
+};
 
 /**
  * Picks the error message for a failed `/parse/schedule` response. The backend
@@ -112,11 +136,55 @@ export const getScheduleError = (error: string, pastedSchedule: string) => {
     return SCHEDULE_ERRORS.empty_schedule;
   }
 
-  if (error === 'bad_request' && !termHeaderRegex.test(pastedSchedule)) {
-    return SCHEDULE_ERRORS.no_term_schedule;
+  if (error === 'bad_request') {
+    const pasteError = getSchedulePasteError(pastedSchedule);
+    if (pasteError) {
+      return pasteError;
+    }
+    if (!termHeaderRegex.test(pastedSchedule)) {
+      return SCHEDULE_ERRORS.no_term_schedule;
+    }
   }
 
   return SCHEDULE_ERRORS[error] || SCHEDULE_ERRORS.default_schedule;
+};
+
+export type ScheduleImportOutcome = {
+  // 'imported' covers a clean import and a partial one alike: in both cases the
+  // sections we matched are already saved, so the caller must refetch and let
+  // the user through. Only 'failed' means nothing landed.
+  kind: 'imported' | 'failed';
+  // Class numbers the backend could not match to a section. Non-empty with
+  // kind 'imported' is a partial import.
+  failedClasses: number[];
+};
+
+/**
+ * Classifies a 200 response from `/parse/schedule`.
+ *
+ * The endpoint reports a partial import the same way it reports a total one —
+ * 200 with a non-empty `failed_classes` — so a single unmatched class number
+ * used to fail the whole upload, stranding users on the swap page behind its
+ * blocking overlay even though the rest of their schedule had imported fine.
+ *
+ * `sections_imported` is the number of classes *parsed* out of the paste, not
+ * the number written, so what actually landed is the difference. When some
+ * classes failed but that difference is not positive, nothing was written and
+ * this is a real failure: showing the error is safe, wrongly waving the user
+ * through to an empty calendar is not.
+ */
+export const getScheduleImportOutcome = (
+  response: ScheduleParseResponse,
+): ScheduleImportOutcome => {
+  const failedClasses = response.failed_classes ?? [];
+  if (failedClasses.length === 0) {
+    // No `failed_classes` at all is also how the parse-only response (TermId /
+    // Classes, no counts) arrives here, and it is likewise a clean import.
+    return { kind: 'imported', failedClasses: [] };
+  }
+
+  const imported = (response.sections_imported ?? 0) - failedClasses.length;
+  return { kind: imported > 0 ? 'imported' : 'failed', failedClasses };
 };
 
 export type ScheduleUploadModalContentProps = {
@@ -147,6 +215,13 @@ const ScheduleUploadModalContent = ({
       return;
     }
 
+    const pasteError = getSchedulePasteError(pastedSchedule);
+    if (pasteError) {
+      setUploadState(UPLOAD_FAILED);
+      setUploadError(pasteError);
+      return;
+    }
+
     setUploadState(UPLOAD_PENDING);
     const [response, status] = await makeAuthenticatedPOSTRequest<
       ScheduleParseBody,
@@ -160,10 +235,38 @@ const ScheduleUploadModalContent = ({
       },
     );
 
-    if (status === 200 && !(response as ScheduleParseResponse).failed_classes) {
+    const outcome =
+      status === 200
+        ? getScheduleImportOutcome(response as ScheduleParseResponse)
+        : { kind: 'failed' as const, failedClasses: [] };
+
+    if (outcome.kind === 'imported') {
+      const isPartial = outcome.failedClasses.length > 0;
+
+      if (isPartial) {
+        // Not an exception: the import succeeded. Still worth recording, since
+        // a class number with no matching section usually means our course data
+        // is missing or stale rather than that the user did anything wrong.
+        Sentry.captureMessage('Schedule upload partially imported', {
+          level: 'warning',
+          tags: { feature: 'schedule_upload' },
+          extra: {
+            failedClasses: outcome.failedClasses,
+            sectionsParsed: (response as ScheduleParseResponse)
+              .sections_imported,
+            schedule: pastedSchedule,
+          },
+        });
+      }
+
       await sleep(500);
       setUploadState(UPLOAD_SUCCESSFUL);
-      toast(DATA_UPLOAD_SUCCESS);
+      toast(
+        isPartial
+          ? SCHEDULE_CLASSES_SKIPPED(outcome.failedClasses)
+          : DATA_UPLOAD_SUCCESS,
+        isPartial ? { bodyClassName: 'text-center' } : undefined,
+      );
       if (onAfterUploadSuccess) {
         const parseOnly = response as unknown as ParseOnlyScheduleResponse;
         onAfterUploadSuccess(
@@ -201,11 +304,10 @@ const ScheduleUploadModalContent = ({
         const errorRes = response as ErrorResponse;
         setUploadError(getScheduleError(errorRes.error, pastedSchedule));
       } else {
-        const scheduleRes = response as ScheduleParseResponse;
-        setUploadError(
-          SCHEDULE_ERRORS.classes_failed(scheduleRes.failed_classes),
-        );
-        onAfterUploadSuccess();
+        // Every parsed class missed. The backend still cleared the term before
+        // trying to write, so there is nothing to refetch — leave the user on
+        // the paste box with the class numbers that failed.
+        setUploadError(SCHEDULE_ERRORS.classes_failed(outcome.failedClasses));
       }
     }
   };
@@ -284,7 +386,8 @@ const ScheduleUploadModalContent = ({
           <InstructionWrapper>
             <NumberCircle>2</NumberCircle>
             <InstructionText>
-              Pick your term then select all (Ctrl+A) and copy (Ctrl+C)
+              Pick your term and switch to List View, then press Ctrl + A
+              (Windows) or CMD + A (Mac) and copy
             </InstructionText>
           </InstructionWrapper>
           <ScheduleStepPicture

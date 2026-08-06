@@ -80,6 +80,9 @@ export const cache = new InMemoryCache({
       // `section`/`id` as subfields of the scalar `user_id`.
       keyFields: ['user_id', 'section', ['id']],
     },
+    user_schedule_swap: {
+      keyFields: ['user_id', 'source_section_id'],
+    },
   },
 });
 

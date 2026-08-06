@@ -15,9 +15,35 @@ The following packages are intentionally pinned to their current major version a
 | `react-google-login` | 5.x | — | Package abandoned; needs replacement |
 | FontAwesome (`@fortawesome/*`) | 5.x | 6/7 | Icon naming and tree-shaking changes |
 
+Two Radix transitive packages are pinned in `resolutions` for the same reason — their newer releases assume a bundler Webpack 4 is not:
+
+| Package | Pin | Why |
+|---|---|---|
+| `@radix-ui/react-use-controllable-state` | `1.2.3` | 1.2.4+ imports `@radix-ui/primitive/is-development`; Webpack 4 can't resolve subpath `exports` |
+| `@radix-ui/react-collection` | `1.1.12` | 1.1.13+ ships class `static {}` blocks and `#private` fields the ejected Babel config can't parse |
+
+Both pins are API-identical to the current release; drop them with the Webpack 5 migration. After adding any new shadcn/Radix component, run `bun run build` — neither failure mode shows up in lint or `tsc`.
+
 ## Pre-commit requirement
 
 Before every commit, run `bun run lint-nofix` and confirm it exits clean. This is required by CI/CD — commits that fail it will not pass the pipeline.
+
+## React memoization
+
+Do **not** wrap cheap derived values in `useMemo` / `useCallback` by default.
+Plain assignments are preferred for small maps, filters, one-element arrays,
+and property reads.
+
+Only memoize when there is a concrete reason, for example:
+
+- the computation is measurably expensive, or
+- a stable identity is required to avoid a real over-render / effect loop
+  (document why in a short comment).
+
+A new `[]` / `{}` each render is fine unless a dependency array or
+`React.memo` child is clearly churning because of it — in that case prefer a
+module-level constant empty value over wrapping the whole derivation in
+`useMemo`.
 
 ## Design tokens (Tailwind)
 
@@ -37,10 +63,18 @@ as `[Npx]`.
   Tailwind `rounded-md` / `lg` / `xl` (6 / 8 / 12px) for larger surfaces.
 - **Colors**: mirror `src/constants/GlobalTheme.tsx` (`primary`, `dark1`,
   `light2`, `accent`, …). Keep the two files in sync.
+- **Box shadow**: `shadow-box` / `shadow-bottom-box` / `shadow-dark-box` for
+  inline surfaces; `shadow-dropdown` for floating overlay panels (dropdown
+  menus, popovers).
 
 Note: spacing and font-size both expose `sm`/`md`/`lg` keys with different
 pixel values (Tailwind keeps them in separate namespaces). `text-sm` is 14px;
 `p-sm` is 8px.
+
+`cn()` (`src/lib/utils.ts`) extends tailwind-merge with the named `spacing` and
+`borderRadius` scales, so a call-site `px-3.5` correctly overrides a shared
+component's `px-md`. Add any new named scale there too, or overrides against it
+will silently keep both classes.
 
 ## Skills
 

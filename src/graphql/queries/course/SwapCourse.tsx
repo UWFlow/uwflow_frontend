@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const SwapCourseSectionFragment = gql`
+export const SwapCourseSectionFragment = gql`
   fragment SwapCourseSection on course_section {
     id
     section_name
