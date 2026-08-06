@@ -17,6 +17,7 @@ import {
 import { REFETCH_COURSE_REVIEW_UPVOTE } from 'graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from 'graphql/queries/prof/ProfReview';
 import useModal from 'hooks/useModal';
+import { cn } from 'lib/utils';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
@@ -27,8 +28,6 @@ import {
   ReviewPicture,
   ReviewPictureAndMetricsRow,
   ReviewPictureAndUpvotesWrapper,
-  ReviewText,
-  ReviewTextToggle,
   ReviewTextWrapper,
   ReviewUpvotes,
   ReviewWrapper,
@@ -180,16 +179,29 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
 
   const reviewContent = (
     <ReviewTextWrapper>
-      <ReviewText ref={reviewTextRef} collapsed={!expanded}>
+      <div
+        ref={reviewTextRef}
+        className={cn(
+          // `pre-line` keeps the line breaks authors typed without preserving
+          // their indentation.
+          // Spelled out rather than `text-body`, and `font-normal` rather than
+          // `font-regular`: tailwind-merge only knows its own scales, so both
+          // of those get grouped with a neighbouring class and silently
+          // dropped by cn(). Same 400 weight either way.
+          'whitespace-pre-line break-words font-inter text-md font-normal text-dark1',
+          !expanded && 'line-clamp-6',
+        )}
+      >
         {reviewText}
-      </ReviewText>
+      </div>
       {isTruncated && (
-        <ReviewTextToggle
+        <button
           aria-expanded={expanded}
+          className="mt-sm w-fit cursor-pointer self-start border-none bg-transparent p-0 font-inter text-md font-semibold text-primary underline transition-all duration-hover ease-hover hover:brightness-hover-dark focus:brightness-hover-dark"
           onClick={() => setExpanded((wasExpanded) => !wasExpanded)}
         >
           {expanded ? 'Show less' : 'Show more'}
-        </ReviewTextToggle>
+        </button>
       )}
       <ReviewAuthor>
         {`— ${authorTitle}${timeAgo}`}
