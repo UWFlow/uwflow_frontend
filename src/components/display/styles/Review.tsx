@@ -89,6 +89,8 @@ export const ReviewTextWrapper = styled.div`
 export const ReviewText = styled.div`
   ${Body}
   word-break: break-word;
+  /* Preserve the line breaks authors typed, without preserving indentation. */
+  white-space: pre-line;
   color: ${({ theme }) => theme.dark1};
 `;
 
