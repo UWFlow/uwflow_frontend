@@ -49,6 +49,14 @@ const SwapPage = () => {
   // Logged-out visitors see a non-interactive sample schedule behind the
   // login lock card instead of an empty grid.
   const isDemo = !isLoggedIn && !hasDisplayedTermClasses;
+  const displayedSchedule = isDemo ? DEMO_SCHEDULE : schedule;
+  const scheduleSectionKey = displayedSchedule
+    .map(({ section }) => section.id)
+    .sort((a, b) => a - b)
+    .join(',');
+  const swapCalendarKey = `${
+    isDemo ? 'demo' : user?.id ?? 'anonymous'
+  }:${scheduleSectionKey}`;
 
   useEffect(() => {
     if (!hasDisplayedTermClasses) {
@@ -100,8 +108,13 @@ const SwapPage = () => {
         )}
       </Helmet>
       <SwapCalendar
-        schedule={isDemo ? DEMO_SCHEDULE : schedule}
+        // Drop ephemeral selection/hover state when the user or their imported
+        // base schedule changes. The backend foreign key removes any saved
+        // swap whose source schedule row no longer exists.
+        key={swapCalendarKey}
+        schedule={displayedSchedule}
         demoMode={isDemo}
+        userId={user?.id ?? null}
       />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div

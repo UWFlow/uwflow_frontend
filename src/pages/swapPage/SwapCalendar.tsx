@@ -40,6 +40,10 @@ import ScheduleSwapPanel, {
   SwapCandidateCourse,
   SwapPreview,
 } from './ScheduleSwapPanel';
+import useScheduleSwaps, {
+  DisplayedTerm,
+  PlannedSwap,
+} from './useScheduleSwaps';
 
 const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
 const DAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
@@ -207,30 +211,62 @@ const buildPreviewEvents = (
 
 type ScheduleEntry = UserScheduleFragment['schedule'][number];
 
-// Bridge a fetched swap section into the schedule-entry shape used for
-// client-side temporary swaps. The fragment is a superset of the schedule
-// entry's section selection, so this is a plain (cast-free) re-wrap.
+// Bridge a fetched replacement into the schedule-entry shape used by the
+// calendar overlay. The fragment is a superset of the schedule entry's section
+// selection, so this is a plain (cast-free) re-wrap.
 const toScheduleEntry = (
   section: SwapCourseSectionFragment,
   userId: number,
 ): ScheduleEntry => ({ user_id: userId, section });
 
+/**
+ * Enrolled sections for one term, with the user's saved swap plan overlaid.
+ * The imported schedule remains the base and is never mutated.
+ */
+const applyPlannedSwaps = (
+  schedule: UserScheduleFragment['schedule'],
+  termCode: number,
+  plannedSwaps: PlannedSwap[],
+): UserScheduleFragment['schedule'] => {
+  const base = schedule.filter((entry) => entry.section.term_id === termCode);
+  const replacementBySourceId = new Map(
+    plannedSwaps.map(({ sourceSectionId, replacementSection }) => [
+      sourceSectionId,
+      replacementSection,
+    ]),
+  );
+
+  return base.map((entry) => {
+    const replacement = replacementBySourceId.get(entry.section.id);
+    return replacement ? toScheduleEntry(replacement, entry.user_id) : entry;
+  });
+};
+
 type SwapCalendarProps = {
   schedule: UserScheduleFragment['schedule'];
   /** Renders a non-interactive sample schedule (logged-out lock state). */
   demoMode?: boolean;
+  /** Keeps saved swap plans isolated to the signed-in user. */
+  userId?: number | null;
 };
 
-const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
+const SwapCalendar = ({
+  schedule,
+  demoMode = false,
+  userId = null,
+}: SwapCalendarProps) => {
   const thisTermCode = getCurrentTermCode();
   const nextTermCode = getNextTermCode();
   const thisTermLabel = termCodeToDate(thisTermCode);
   const nextTermLabel = termCodeToDate(nextTermCode);
 
-  const [selectedTerm, setSelectedTerm] = useState<string>(() => {
-    const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
-    return !nextHasData || thisHasData ? thisTermLabel : nextTermLabel;
-  });
+  const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
+  const defaultSelectedTerm =
+    !nextHasData || thisHasData ? DisplayedTerm.Current : DisplayedTerm.Next;
+  const [selectedTerm, setSelectedTerm] =
+    useState<DisplayedTerm>(defaultSelectedTerm);
+  const selectedTermCode =
+    selectedTerm === DisplayedTerm.Next ? nextTermCode : thisTermCode;
   // The clicked calendar block's course + section type (e.g. CS 240 / LEC).
   // Selection, the panel's section list, and swapping are all scoped to this
   // one course+type pair.
@@ -243,26 +279,30 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
   const [selectedSwapCourseCode, setSelectedSwapCourseCode] = useState<
     string | null
   >(null);
-  // Temporary client-side section swaps, keyed by term label. A swap replaces
-  // the matching schedule entry in React state only — refreshing the page
-  // restores the original schedule (no persistence, no mutations).
-  const [overriddenByTerm, setOverriddenByTerm] = useState<
-    Record<string, UserScheduleFragment['schedule']>
-  >({});
+
+  const { plannedSwapsByTerm, planSwap, clearSwaps, isPlanSettled } =
+    useScheduleSwaps({
+      userId,
+      demoMode,
+      currentTermCode: thisTermCode,
+      nextTermCode,
+    });
 
   useEffect(() => {
     setSelectedSwapCourseCode(null);
     setHoveredSection(null);
   }, [selectedCourseCode, selectedSectionType]);
 
-  const selectedTermCode =
-    selectedTerm === nextTermLabel ? nextTermCode : thisTermCode;
-  // Effective schedule for the term: temporary swaps take precedence.
+  // Effective schedule for the term: persisted swaps overlay the original
+  // imported schedule without modifying it.
   const termSections = useMemo(
     () =>
-      overriddenByTerm[selectedTerm] ??
-      schedule.filter((entry) => entry.section.term_id === selectedTermCode),
-    [overriddenByTerm, schedule, selectedTerm, selectedTermCode],
+      applyPlannedSwaps(
+        schedule,
+        selectedTermCode,
+        plannedSwapsByTerm[selectedTerm] ?? [],
+      ),
+    [schedule, selectedTerm, selectedTermCode, plannedSwapsByTerm],
   );
 
   // Distinct courses in the user's schedule for this term, for the left
@@ -421,13 +461,17 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     [],
   );
 
-  // Term overrides persist while the page lives — only a refresh resets them.
-  const handleTermChange = useCallback((termId: number) => {
-    setSelectedTerm(termCodeToDate(termId));
-    setSelection(null);
-    setSelectedSwapCourseCode(null);
-    setHoveredSection(null);
-  }, []);
+  const handleTermChange = useCallback(
+    (termId: number) => {
+      setSelectedTerm(
+        termId === nextTermCode ? DisplayedTerm.Next : DisplayedTerm.Current,
+      );
+      setSelection(null);
+      setSelectedSwapCourseCode(null);
+      setHoveredSection(null);
+    },
+    [nextTermCode],
+  );
 
   const handleCourseChange = useCallback((courseCode: string | null) => {
     setSelectedSwapCourseCode(courseCode);
@@ -447,8 +491,15 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     [termSections],
   );
 
-  // Temporarily swap a section into the schedule (React state only). The new
-  // section replaces the entry matching the selected course + section type
+  const handleResetSwaps = () => {
+    clearSwaps();
+    setSelection(null);
+    setSelectedSwapCourseCode(null);
+    setHoveredSection(null);
+  };
+
+  // Save a section in the user's swap plan. The new section replaces the
+  // entry matching the selected course + section type
   // (LEC↔LEC, TUT↔TUT) — the panel only offers same-type candidates.
   const handleSwitchSection = useCallback(
     (sectionId: number) => {
@@ -463,12 +514,13 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
       );
       if (replaceIndex === -1) return;
 
-      const next = [...base];
-      next[replaceIndex] = toScheduleEntry(
-        newSection,
-        base[replaceIndex].user_id,
+      const currentSectionId = base[replaceIndex].section.id;
+      const existingSwap = (plannedSwapsByTerm[selectedTerm] ?? []).find(
+        ({ replacementSectionId }) => replacementSectionId === currentSectionId,
       );
-      setOverriddenByTerm((prev) => ({ ...prev, [selectedTerm]: next }));
+      const sourceSectionId = existingSwap?.sourceSectionId ?? currentSectionId;
+
+      planSwap(selectedTerm, sourceSectionId, newSection);
       setHoveredSection(null);
       if (newSection.course.code !== selection.courseCode) {
         // Follow the swapped-in course (keeping the selected section type);
@@ -480,7 +532,14 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
         });
       }
     },
-    [swapSections, termSections, selection, selectedTerm],
+    [
+      planSwap,
+      plannedSwapsByTerm,
+      selectedTerm,
+      selection,
+      swapSections,
+      termSections,
+    ],
   );
 
   const events = useMemo(
@@ -511,7 +570,7 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
     { id: nextTermCode, label: nextTermLabel },
   ];
   const swapTargetCode = selectedSwapCourseCode ?? selectedCourseCode;
-  const hasSwaps = Object.keys(overriddenByTerm).length > 0;
+  const hasSwaps = Object.keys(plannedSwapsByTerm).length > 0;
 
   return (
     <div className="relative z-0 w-screen animate-fade-in">
@@ -585,13 +644,16 @@ const SwapCalendar = ({ schedule, demoMode = false }: SwapCalendarProps) => {
                 </span>
               )}
               {hasSwaps && (
-                // Swaps live only in React state, so a refresh restores the
-                // real schedule.
                 <button
                   aria-label="Reset swapped sections"
-                  title="Reset swapped sections"
-                  className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1"
-                  onClick={() => window.location.reload()}
+                  className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1 disabled:cursor-default disabled:text-dark3 disabled:hover:text-dark3"
+                  disabled={!isPlanSettled}
+                  onClick={handleResetSwaps}
+                  title={
+                    isPlanSettled
+                      ? 'Reset swapped sections'
+                      : 'Applying your saved swaps…'
+                  }
                   type="button"
                 >
                   <RotateCcw aria-hidden="true" size={14} />

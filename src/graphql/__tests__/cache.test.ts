@@ -59,6 +59,16 @@ describe('Apollo InMemoryCache normalization (typePolicies keyFields)', () => {
     ).toBe('user_schedule:{"user_id":5,"section":{"id":99}}');
   });
 
+  it('keys user_schedule_swap by user_id + source_section_id', () => {
+    expect(
+      cache.identify({
+        __typename: 'user_schedule_swap',
+        user_id: 5,
+        source_section_id: 99,
+      }),
+    ).toBe('user_schedule_swap:{"user_id":5,"source_section_id":99}');
+  });
+
   it('falls back to the default id heuristic for ordinary typenames', () => {
     expect(cache.identify({ __typename: 'course', id: 123 })).toBe(
       'course:123',

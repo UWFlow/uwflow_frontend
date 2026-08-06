@@ -68,6 +68,9 @@ export const SCHEDULE_CLASSES_SKIPPED = (classes: number[]) =>
     classes.length === 1 ? 'class number' : 'class numbers'
   } ${joinClassNumbers(classes)}, which we couldn’t find.`;
 
+export const SCHEDULE_SWAP_ERROR =
+  'Sorry, we couldn’t save your swapped sections – try again in a few minutes.';
+
 export const SUBSCRIPTION_ERROR =
   'Sorry, we couldn’t sign you up for notifications – try again in a few minutes.';
 
