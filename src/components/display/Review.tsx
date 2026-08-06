@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ThumbsUp } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -28,6 +28,7 @@ import {
   ReviewPictureAndMetricsRow,
   ReviewPictureAndUpvotesWrapper,
   ReviewText,
+  ReviewTextToggle,
   ReviewTextWrapper,
   ReviewUpvotes,
   ReviewWrapper,
@@ -99,6 +100,20 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
   } = review;
   const userId = localStorage.getItem('user_id');
 
+  const [expanded, setExpanded] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const reviewTextRef = useRef<HTMLDivElement>(null);
+
+  // Only the collapsed box can overflow, so measure there and leave the flag
+  // alone once expanded — that keeps "Show less" on screen.
+  useEffect(() => {
+    const textElement = reviewTextRef.current;
+    if (!textElement || expanded) {
+      return;
+    }
+    setIsTruncated(textElement.scrollHeight > textElement.clientHeight);
+  }, [reviewText, expanded, isBrowserDesktop]);
+
   const refetchQueries = [
     {
       query: isCourseReview
@@ -165,7 +180,17 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
 
   const reviewContent = (
     <ReviewTextWrapper>
-      <ReviewText>{reviewText}</ReviewText>
+      <ReviewText ref={reviewTextRef} collapsed={!expanded}>
+        {reviewText}
+      </ReviewText>
+      {isTruncated && (
+        <ReviewTextToggle
+          aria-expanded={expanded}
+          onClick={() => setExpanded((wasExpanded) => !wasExpanded)}
+        >
+          {expanded ? 'Show less' : 'Show more'}
+        </ReviewTextToggle>
+      )}
       <ReviewAuthor>
         {`— ${authorTitle}${timeAgo}`}
         {profText}

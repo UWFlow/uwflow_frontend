@@ -86,12 +86,33 @@ export const ReviewTextWrapper = styled.div`
   word-wrap: break-word;
 `;
 
-export const ReviewText = styled.div`
+// Collapsed reviews show this many lines before the "Show more" toggle.
+const COLLAPSED_LINES = 6;
+const LINE_HEIGHT = 1.5;
+
+export const ReviewText = styled.div<{ collapsed: boolean }>`
   ${Body}
   word-break: break-word;
   /* Preserve the line breaks authors typed, without preserving indentation. */
   white-space: pre-line;
+  line-height: ${LINE_HEIGHT};
   color: ${({ theme }) => theme.dark1};
+  ${({ collapsed }) =>
+    collapsed &&
+    `
+    max-height: ${COLLAPSED_LINES * LINE_HEIGHT}em;
+    overflow: hidden;
+  `}
+`;
+
+export const ReviewTextToggle = styled.button`
+  ${Link}
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: ${({ theme }) => theme.primary};
 `;
 
 export const ReviewAuthor = styled.div`
