@@ -188,8 +188,12 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
           // `font-regular`: tailwind-merge only knows its own scales, so both
           // of those get grouped with a neighbouring class and silently
           // dropped by cn(). Same 400 weight either way.
-          'whitespace-pre-line break-words font-inter text-md font-normal text-dark1',
-          !expanded && 'line-clamp-6',
+          'whitespace-pre-line break-words font-inter text-md font-normal leading-normal text-dark1',
+          // 6 lines at leading-normal (1.5). Deliberately max-height and not
+          // `line-clamp-6`: this div is a flex item, so the `display:
+          // -webkit-box` that line-clamp relies on gets blockified away. Chrome
+          // clamps anyway, other engines are not guaranteed to.
+          !expanded && 'max-h-[9em] overflow-hidden',
         )}
       >
         {reviewText}
