@@ -17,7 +17,6 @@ import {
 import { REFETCH_COURSE_REVIEW_UPVOTE } from 'graphql/queries/course/CourseReview';
 import { REFETCH_PROF_REVIEW_UPVOTE } from 'graphql/queries/prof/ProfReview';
 import useModal from 'hooks/useModal';
-import { cn } from 'lib/utils';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
@@ -103,8 +102,7 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
   const [isTruncated, setIsTruncated] = useState(false);
   const reviewTextRef = useRef<HTMLDivElement>(null);
 
-  // Only the collapsed box can overflow, so measure there and leave the flag
-  // alone once expanded — that keeps "Show less" on screen.
+  // Skip while expanded: nothing overflows then, and the flag must stay set.
   useEffect(() => {
     const textElement = reviewTextRef.current;
     if (!textElement || expanded) {
@@ -181,27 +179,17 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
     <ReviewTextWrapper>
       <div
         ref={reviewTextRef}
-        className={cn(
-          // `pre-line` keeps the line breaks authors typed without preserving
-          // their indentation.
-          // Spelled out rather than `text-body`, and `font-normal` rather than
-          // `font-regular`: tailwind-merge only knows its own scales, so both
-          // of those get grouped with a neighbouring class and silently
-          // dropped by cn(). Same 400 weight either way.
-          'whitespace-pre-line break-words font-inter text-md font-normal leading-normal text-dark1',
-          // 6 lines at leading-normal (1.5). Deliberately max-height and not
-          // `line-clamp-6`: this div is a flex item, so the `display:
-          // -webkit-box` that line-clamp relies on gets blockified away. Chrome
-          // clamps anyway, other engines are not guaranteed to.
-          !expanded && 'max-h-[9em] overflow-hidden',
-        )}
+        className={
+          'whitespace-pre-line break-words text-body text-dark1 ' +
+          (expanded ? '' : 'max-h-[120px] overflow-hidden')
+        }
       >
         {reviewText}
       </div>
       {isTruncated && (
         <button
           aria-expanded={expanded}
-          className="mt-sm w-fit cursor-pointer self-start border-none bg-transparent p-0 font-inter text-md font-semibold text-primary underline transition-all duration-hover ease-hover hover:brightness-hover-dark focus:brightness-hover-dark"
+          className="mt-sm cursor-pointer self-start border-none bg-transparent p-0 font-inter text-md font-semibold text-primary underline transition-all duration-hover ease-hover hover:brightness-hover-dark"
           onClick={() => setExpanded((wasExpanded) => !wasExpanded)}
         >
           {expanded ? 'Show less' : 'Show more'}
