@@ -6,6 +6,7 @@ import moment from 'moment/moment';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
+import { Button } from 'components/ui/button';
 import { AUTH_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 import {
@@ -187,13 +188,15 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
         {reviewText}
       </div>
       {isTruncated && (
-        <button
+        <Button
           aria-expanded={expanded}
-          className="mt-sm cursor-pointer self-start border-none bg-transparent p-0 font-inter text-md font-semibold text-primary underline transition-all duration-hover ease-hover hover:brightness-hover-dark"
+          className="mt-sm self-start"
           onClick={() => setExpanded((wasExpanded) => !wasExpanded)}
+          size="inline"
+          variant="link"
         >
           {expanded ? 'Show less' : 'Show more'}
-        </button>
+        </Button>
       )}
       <ReviewAuthor>
         {`— ${authorTitle}${timeAgo}`}

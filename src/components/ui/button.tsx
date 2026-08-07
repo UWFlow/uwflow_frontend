@@ -23,13 +23,18 @@ const buttonVariants = cva(
         outline: 'border border-light1 bg-white text-dark1 hover:bg-light1',
         secondary: 'bg-light2 text-dark1 hover:bg-light3',
         ghost: 'text-dark1 hover:bg-light1',
-        link: 'text-primary underline-offset-4 hover:underline',
+        // Mirrors the `Link` mixin in constants/Mixins.tsx rather than
+        // shadcn's hover-only underline, so Tailwind and styled-components
+        // links look the same. Pair with size="inline" for links in prose.
+        link: 'bg-transparent font-inter text-md font-semibold text-primary underline transition-all duration-hover ease-hover hover:brightness-hover-dark',
       },
       size: {
         default: 'h-10 px-4 py-2',
         sm: 'h-9 rounded px-3',
         lg: 'h-11 rounded px-8',
         icon: 'h-10 w-10',
+        // Sits inline with surrounding text: no button box of its own.
+        inline: 'h-auto p-0',
       },
     },
     defaultVariants: {
