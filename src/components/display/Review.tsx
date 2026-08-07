@@ -182,7 +182,7 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
         ref={reviewTextRef}
         className={
           'whitespace-pre-line break-words text-body text-dark1 ' +
-          (expanded ? '' : 'max-h-[120px] overflow-hidden')
+          (expanded ? '' : 'max-h-[116px] overflow-hidden')
         }
       >
         {reviewText}
