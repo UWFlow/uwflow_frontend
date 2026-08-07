@@ -86,11 +86,7 @@ export const ReviewTextWrapper = styled.div`
   word-wrap: break-word;
 `;
 
-export const ReviewText = styled.div`
-  ${Body}
-  word-break: break-word;
-  color: ${({ theme }) => theme.dark1};
-`;
+// ReviewText and its "Show more" toggle are styled with Tailwind in Review.tsx.
 
 export const ReviewAuthor = styled.div`
   font-style: italic;

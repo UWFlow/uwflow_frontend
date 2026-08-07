@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ThumbsUp } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@apollo/client';
@@ -6,6 +6,7 @@ import moment from 'moment/moment';
 import { getProfPageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
+import { Button } from 'components/ui/button';
 import { AUTH_MODAL } from 'constants/Modal';
 import { getIsBrowserDesktop, RootState } from 'data/reducers/RootReducer';
 import {
@@ -27,7 +28,6 @@ import {
   ReviewPicture,
   ReviewPictureAndMetricsRow,
   ReviewPictureAndUpvotesWrapper,
-  ReviewText,
   ReviewTextWrapper,
   ReviewUpvotes,
   ReviewWrapper,
@@ -99,6 +99,19 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
   } = review;
   const userId = localStorage.getItem('user_id');
 
+  const [expanded, setExpanded] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const reviewTextRef = useRef<HTMLDivElement>(null);
+
+  // Skip while expanded: nothing overflows then, and the flag must stay set.
+  useEffect(() => {
+    const textElement = reviewTextRef.current;
+    if (!textElement || expanded) {
+      return;
+    }
+    setIsTruncated(textElement.scrollHeight > textElement.clientHeight);
+  }, [reviewText, expanded, isBrowserDesktop]);
+
   const refetchQueries = [
     {
       query: isCourseReview
@@ -165,7 +178,26 @@ const Review = ({ review, isCourseReview }: ReviewProps) => {
 
   const reviewContent = (
     <ReviewTextWrapper>
-      <ReviewText>{reviewText}</ReviewText>
+      <div
+        ref={reviewTextRef}
+        className={
+          'whitespace-pre-line break-words text-body text-dark1 ' +
+          (expanded ? '' : 'max-h-[117px] overflow-hidden')
+        }
+      >
+        {reviewText}
+      </div>
+      {isTruncated && (
+        <Button
+          aria-expanded={expanded}
+          className="mt-sm self-start"
+          onClick={() => setExpanded((wasExpanded) => !wasExpanded)}
+          size="inline"
+          variant="link"
+        >
+          {expanded ? 'Show less' : 'Show more'}
+        </Button>
+      )}
       <ReviewAuthor>
         {`— ${authorTitle}${timeAgo}`}
         {profText}
