@@ -260,9 +260,10 @@ const SwapCalendar = ({
   const thisTermLabel = termCodeToDate(thisTermCode);
   const nextTermLabel = termCodeToDate(nextTermCode);
 
-  const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
-  const defaultSelectedTerm =
-    !nextHasData || thisHasData ? DisplayedTerm.Current : DisplayedTerm.Next;
+  const { nextHasData } = getDisplayedTermPresence(schedule);
+  const defaultSelectedTerm = nextHasData
+    ? DisplayedTerm.Next
+    : DisplayedTerm.Current;
   const [selectedTerm, setSelectedTerm] =
     useState<DisplayedTerm>(defaultSelectedTerm);
   const selectedTermCode =
