@@ -33,7 +33,12 @@ import {
 } from 'utils/Misc';
 
 import CourseSearchDropdown from './CourseSearchDropdown';
-import { getDisplayedTermPresence } from './displayedTerms';
+import {
+  getDisplayedTermPresence,
+  GRID_END_HOUR,
+  GRID_START_HOUR,
+  toDayIndexes,
+} from './displayedTerms';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
@@ -45,11 +50,7 @@ import useScheduleSwaps, {
   PlannedSwap,
 } from './useScheduleSwaps';
 
-const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
 const DAY_LABELS = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-// Visible hour range of the grid: 8am to 10pm.
-const GRID_START_HOUR = 8;
-const GRID_END_HOUR = 22;
 
 // 24-hour "HH:MM" from seconds since midnight (`secsToTime` is 12-hour).
 const secsTo24hTime = (secs: number) =>
@@ -87,14 +88,6 @@ const getSectionVariant = (sectionName: string): CalendarEventVariant => {
 type SectionSelection = {
   courseCode: string;
   sectionType: string;
-};
-
-// Mon-Fri day columns for a meeting, keeping only meetings that start within
-// the visible hour range.
-const toDayIndexes = (days: string[], startSeconds: number): number[] => {
-  const startHour = startSeconds / 3600;
-  if (startHour < GRID_START_HOUR || startHour >= GRID_END_HOUR) return [];
-  return days.map((d) => DAY_LETTERS.indexOf(d)).filter((col) => col !== -1);
 };
 
 const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
@@ -260,8 +253,11 @@ const SwapCalendar = ({
   const thisTermLabel = termCodeToDate(thisTermCode);
   const nextTermLabel = termCodeToDate(nextTermCode);
 
-  const { nextHasData } = getDisplayedTermPresence(schedule);
-  const defaultSelectedTerm = nextHasData
+  // Swapping starts from a click on the grid, so only default to next term when
+  // it actually draws blocks — a term of purely online/async sections would
+  // open on an empty calendar.
+  const { nextHasVisibleBlocks } = getDisplayedTermPresence(schedule);
+  const defaultSelectedTerm = nextHasVisibleBlocks
     ? DisplayedTerm.Next
     : DisplayedTerm.Current;
   const [selectedTerm, setSelectedTerm] =
