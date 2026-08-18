@@ -12,9 +12,6 @@ const HEADER_HEIGHT = 32;
 // Width of the left gutter that holds the hour labels.
 const TIME_WIDTH = 64;
 
-/** Section-type colour of an event block. */
-export type CalendarEventVariant = 'lecture' | 'lab' | 'tutorial' | 'other';
-
 /**
  * Visual state of an event block:
  * - `default`  — a normal block.
@@ -33,7 +30,11 @@ export type CalendarEvent = {
   /** Minutes since midnight. */
   startMinutes: number;
   endMinutes: number;
-  variant?: CalendarEventVariant;
+  /**
+   * What the block's colour is keyed on — the course code. Every event sharing
+   * a key gets the same hue; the section type is left to the text label.
+   */
+  colorKey?: string;
   state?: CalendarEventState;
   /**
    * Side to occupy when sharing a slot with another event. Left unset, the
@@ -82,36 +83,29 @@ export type CalendarProps = {
 // Tailwind's JIT scanner can see the full class.)
 const GRID_LINE = 'border-light3';
 
-// Per-variant accent classes: saturated colours for the thick left rail (the
-// pastel `lecture`/`lab`/`tutorial` tokens are too washed out for it). The two
-// arbitrary hexes are the legacy lab/tutorial accent colours.
-const VARIANT_BORDER: Record<CalendarEventVariant, string> = {
-  lecture: 'border-primary',
-  lab: 'border-[#2b8fcd]',
-  tutorial: 'border-[#6554c0]',
-  other: 'border-dark3',
+// One hue per course, keyed on `colorKey`: the section type is already spelled
+// out in each block's label ("LEC 001"), while the course had no visual
+// identifier at all. Full class strings so Tailwind's JIT scanner sees them.
+// Gold is left out on purpose (it marks the selected block on the swap page),
+// and so is grey — a grey block reads as disabled next to the coloured ones.
+const COURSE_COLORS = [
+  { rail: 'border-primary', fill: 'bg-[#f0f6ff]', ghost: 'bg-[#f0f6ff]/60' },
+  { rail: 'border-[#36b37e]', fill: 'bg-[#ebf9f3]', ghost: 'bg-[#ebf9f3]/60' },
+  { rail: 'border-[#6554c0]', fill: 'bg-[#f2f0fc]', ghost: 'bg-[#f2f0fc]/60' },
+  { rail: 'border-[#ff8b00]', fill: 'bg-[#fff4e6]', ghost: 'bg-[#fff4e6]/60' },
+  { rail: 'border-[#2b8fcd]', fill: 'bg-[#f0fdff]', ghost: 'bg-[#f0fdff]/60' },
+  { rail: 'border-[#d83ba0]', fill: 'bg-[#fdeff8]', ghost: 'bg-[#fdeff8]/60' },
+  { rail: 'border-[#de350b]', fill: 'bg-[#fdefeb]', ghost: 'bg-[#fdefeb]/60' },
+];
+
+// Blocks with no course key (rare — every caller passes a course code).
+const DEFAULT_COURSE_COLOR = {
+  rail: 'border-dark3',
+  fill: 'bg-[#eaecef]',
+  ghost: 'bg-[#eaecef]/60',
 };
 
-// Opaque solid fill in the variant colour: each hex is the old translucent
-// tint (variant colour @20%) composited on white, so gridlines no longer show
-// through the blocks while the look stays the same.
-const VARIANT_FILL: Record<CalendarEventVariant, string> = {
-  lecture: 'bg-[#f0f6ff]',
-  lab: 'bg-[#f0fdff]',
-  tutorial: 'bg-[#f2f0fc]',
-  other: 'bg-[#eaecef]',
-};
-
-// Preview ghosts stay translucent on purpose — they're a see-through overlay
-// laid on top of the real (now opaque) blocks.
-const PREVIEW_FILL: Record<CalendarEventVariant, string> = {
-  lecture: 'bg-lecture/20',
-  lab: 'bg-lab/20',
-  tutorial: 'bg-tutorial/20',
-  other: 'bg-dark3/20',
-};
-
-// State -> extra block classes, layered on top of the base block + variant.
+// State -> extra block classes, layered on top of the base block + colour.
 const STATE_CLASS: Record<CalendarEventState, string> = {
   default: '',
   // Gold highlight: the fill/border swap to accent tokens happens in
@@ -190,12 +184,23 @@ const Calendar = ({
   className,
 }: CalendarProps) => {
   const derivedSides = deriveTruncation(events);
+  // Palette slot per course, by alphabetical order of the codes on screen, so
+  // every course visible at once gets a different hue.
+  const courseKeys = Array.from(
+    new Set(
+      events.flatMap((event) => (event.colorKey ? [event.colorKey] : [])),
+    ),
+  ).sort();
 
   const hours: number[] = [];
   for (let hour = minHour; hour <= maxHour; hour += 1) hours.push(hour);
 
   const renderEvent = (event: CalendarEvent) => {
-    const variant = event.variant ?? 'lecture';
+    const slot = event.colorKey ? courseKeys.indexOf(event.colorKey) : -1;
+    const color =
+      slot === -1
+        ? DEFAULT_COURSE_COLOR
+        : COURSE_COLORS[slot % COURSE_COLORS.length];
     const state = event.state ?? 'default';
     const isPreview = state === 'preview';
     const isSelected = state === 'selected';
@@ -231,20 +236,17 @@ const Calendar = ({
         }
         style={{ top, height }}
         className={cn(
-          // Base block: rounded, solid variant fill with a thick accent left
+          // Base block: rounded, solid course fill with a thick accent left
           // rail; the text stack is vertically centered but left-aligned, with
           // a little left padding to clear the rail, clipping rather than
           // wrapping when the block is short or narrow.
           'absolute z-10 flex flex-col justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid pl-1.5 pr-1 leading-tight text-dark1',
-          // Selected blocks swap the variant fill/accent for the gold tokens
+          // Selected blocks swap the course fill/accent for the gold tokens
           // (gold border on all four sides plus the thick gold rail). The fill
-          // is accent @20% composited on white, opaque like the variant fills.
+          // is accent @20% composited on white, opaque like the course fills.
           isSelected
             ? 'border-accentDark bg-[#fff3cc]'
-            : [
-                isPreview ? PREVIEW_FILL[variant] : VARIANT_FILL[variant],
-                VARIANT_BORDER[variant],
-              ],
+            : [isPreview ? color.ghost : color.fill, color.rail],
           // Outside preview ghosts, only the left rail keeps the saturated
           // accent; the other sides stay transparent like the mockup.
           !isSelected &&

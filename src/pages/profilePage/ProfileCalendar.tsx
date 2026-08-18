@@ -10,11 +10,7 @@ import moment, { Moment } from 'moment/moment';
 import { getCoursePageRoute } from 'Routes';
 import { useTheme } from 'styled-components';
 
-import {
-  Calendar,
-  CalendarEvent,
-  CalendarEventVariant,
-} from 'components/calendar';
+import { Calendar, CalendarEvent } from 'components/calendar';
 import Button from 'components/input/Button';
 import DropdownList from 'components/input/DropdownList';
 import {
@@ -22,7 +18,6 @@ import {
   CALENDAR_EXPORT_ENDPOINT,
   GOOGLE_CALENDAR_URL,
 } from 'constants/Api';
-import { LAB, LEC } from 'constants/CourseSection';
 import { SCHEDULE_UPLOAD_MODAL } from 'constants/Modal';
 import useModal from 'hooks/useModal';
 import { EventsByDate, ScheduleInterval } from 'types/Common';
@@ -54,15 +49,6 @@ const getDateRangeString = (start: Moment, end: Moment) => {
     return `${start.format('MMM Do')} - ${end.format('MMM Do, YYYY')}`;
   }
   return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
-};
-
-// Match the legacy colour rule: an exam keeps its underlying section's colour
-// because its name still contains LEC/LAB; everything else falls back to the
-// tutorial colour.
-const getEventVariant = (section: string): CalendarEventVariant => {
-  if (section.includes(LEC)) return 'lecture';
-  if (section.includes(LAB)) return 'lab';
-  return 'tutorial';
 };
 
 const getScheduleRange = (
@@ -282,7 +268,8 @@ const buildWeekView = (
         dayIndex,
         startMinutes: event.start.hour() * 60 + event.start.minutes(),
         endMinutes: event.end.hour() * 60 + event.end.minutes(),
-        variant: getEventVariant(event.section),
+        // Blocks are coloured per course, so an exam shares its course's hue.
+        colorKey: event.courseCode,
         // Exams fold the section into the bold title; meetings show the code
         // as the title with the section and its Quest class number as the
         // muted subtitle line, matching the swap page.
