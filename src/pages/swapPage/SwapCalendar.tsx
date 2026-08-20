@@ -30,6 +30,7 @@ import {
   getNextTermCode,
   termCodeToDate,
 } from 'utils/Misc';
+import { mergeMeetingDateRanges } from 'utils/Schedule';
 
 import CourseSearchDropdown from './CourseSearchDropdown';
 import {
@@ -143,7 +144,8 @@ const buildEnrolledEvents = (
     let state: CalendarEventState = 'default';
     if (isSelected) state = isPreviewing ? 'dimmed' : 'selected';
 
-    return section.meetings.flatMap((m, meetingIndex) => {
+    const meetings = mergeMeetingDateRanges(section.meetings);
+    return meetings.flatMap((m, meetingIndex) => {
       if (m.start_seconds == null || m.end_seconds == null) return [];
       const startMinutes = m.start_seconds / 60;
       const endMinutes = m.end_seconds / 60;
@@ -175,7 +177,7 @@ const buildPreviewEvents = (
   section: SwapCourseSectionFragment | null,
 ): CalendarEvent[] =>
   section
-    ? section.meetings.flatMap((m, meetingIndex) => {
+    ? mergeMeetingDateRanges(section.meetings).flatMap((m, meetingIndex) => {
         if (m.start_seconds == null || m.end_seconds == null) return [];
         const startMinutes = m.start_seconds / 60;
         const endMinutes = m.end_seconds / 60;
