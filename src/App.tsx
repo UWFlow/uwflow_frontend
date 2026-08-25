@@ -14,6 +14,7 @@ import {
   LoadablePrivacyPage,
   LoadableProfilePage,
   LoadableProfPage,
+  LoadableSharedClassesPage,
   LoadableSwapPage,
   LoadableWelcomePage,
 } from 'LoadableComponents';
@@ -25,6 +26,7 @@ import {
   PRIVACY_PAGE_ROUTE,
   PROF_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE,
+  SHARED_CLASSES_PAGE_ROUTE,
   SHORT_PROF_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
   WELCOME_PAGE_ROUTE,
@@ -171,6 +173,11 @@ const App = () => {
           exact
           path={SWAP_PAGE_ROUTE}
           component={() => <LoadableSwapPage />}
+        />
+        <SentryRoute
+          exact
+          path={SHARED_CLASSES_PAGE_ROUTE}
+          component={() => <LoadableSharedClassesPage />}
         />
         <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>

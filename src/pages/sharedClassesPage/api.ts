@@ -1,0 +1,132 @@
+import {
+  BACKEND_ENDPOINT,
+  GROUP_BY_ID_ENDPOINT,
+  GROUP_ENDPOINT,
+  GROUP_INVITE_ENDPOINT,
+  GROUP_LEAVE_ENDPOINT,
+  GROUP_RESPOND_ENDPOINT,
+} from 'constants/Api';
+import {
+  makeAuthenticatedGETRequest,
+  makeAuthenticatedPOSTRequest,
+} from 'utils/Api';
+
+export interface GroupSummary {
+  id: number;
+  name: string;
+  status: 'member' | 'pending';
+  member_count: number;
+}
+
+export interface GroupMember {
+  user_id: number;
+  name: string;
+  status: 'member' | 'pending';
+}
+
+export interface Meeting {
+  days: string[];
+  start_seconds: number | null;
+  end_seconds: number | null;
+  location: string | null;
+}
+
+export interface SharedClass {
+  section_id: number;
+  course_code: string;
+  course_name: string;
+  section_name: string;
+  term_id: number;
+  members: GroupMember[];
+  meetings: Meeting[];
+}
+
+export interface GroupDetail {
+  id: number;
+  name: string;
+  is_creator: boolean;
+  members: GroupMember[];
+  invited_emails: string[];
+  shared_classes: SharedClass[];
+}
+
+const url = (path: string) => `${BACKEND_ENDPOINT}${path}`;
+
+export const fetchGroups = async (): Promise<GroupSummary[]> => {
+  const [body] = await makeAuthenticatedGETRequest<{ groups: GroupSummary[] }>(
+    url(GROUP_ENDPOINT),
+  );
+  return body.groups ?? [];
+};
+
+export const fetchGroup = async (id: number): Promise<GroupDetail> => {
+  const [body] = await makeAuthenticatedGETRequest<GroupDetail>(
+    url(GROUP_BY_ID_ENDPOINT(id)),
+  );
+  return body;
+};
+
+export const createGroup = async (
+  name: string,
+): Promise<{ id: number; name: string }> => {
+  const [body] = await makeAuthenticatedPOSTRequest<
+    { name: string },
+    { id: number; name: string }
+  >(url(GROUP_ENDPOINT), { name });
+  return body;
+};
+
+// The server always answers "sent", by design, so callers never learn whether
+// the email had an account.
+export const inviteToGroup = async (
+  id: number,
+  email: string,
+): Promise<number> => {
+  const [, status] = await makeAuthenticatedPOSTRequest<
+    { email: string },
+    { status: string }
+  >(url(GROUP_INVITE_ENDPOINT(id)), { email });
+  return status;
+};
+
+export const respondToInvite = async (
+  id: number,
+  accept: boolean,
+  block = false,
+): Promise<number> => {
+  const [, status] = await makeAuthenticatedPOSTRequest<
+    { accept: boolean; block: boolean },
+    { status: string }
+  >(url(GROUP_RESPOND_ENDPOINT(id)), { accept, block });
+  return status;
+};
+
+export const leaveGroup = async (id: number): Promise<number> => {
+  const [, status] = await makeAuthenticatedPOSTRequest<
+    Record<string, never>,
+    { status: string }
+  >(url(GROUP_LEAVE_ENDPOINT(id)), {});
+  return status;
+};
+
+// section_meeting stores times as seconds past midnight. Format as h:mm am/pm.
+export const formatTime = (seconds: number | null): string => {
+  if (seconds === null) return '';
+  const totalMinutes = Math.floor(seconds / 60);
+  const hour24 = Math.floor(totalMinutes / 60);
+  const minute = totalMinutes % 60;
+  const period = hour24 >= 12 ? 'pm' : 'am';
+  const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+  return `${hour12}:${String(minute).padStart(2, '0')}${period}`;
+};
+
+export const formatMeeting = (meeting: Meeting): string => {
+  const days = meeting.days.join('');
+  const time =
+    meeting.start_seconds !== null
+      ? `${formatTime(meeting.start_seconds)} - ${formatTime(
+          meeting.end_seconds,
+        )}`
+      : '';
+  return [days, time, meeting.location ?? ''].filter(Boolean).join('  ');
+};
