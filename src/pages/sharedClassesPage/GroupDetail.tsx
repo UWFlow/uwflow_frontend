@@ -14,6 +14,7 @@ import {
   CalendarEventVariant,
 } from 'components/calendar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import Tooltip from 'components/display/Tooltip';
 import { Button } from 'components/ui/button';
 import { weekDayLetters } from 'utils/Misc';
 
@@ -52,14 +53,15 @@ const tintFor = (name: string) => {
 };
 
 const Avatar = ({ name, faded }: { name: string; faded?: boolean }) => (
-  <span
-    title={name}
-    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-dark1 ${tintFor(
-      name,
-    )} ${faded ? 'opacity-50' : ''}`}
-  >
-    {initials(name)}
-  </span>
+  <Tooltip content={name}>
+    <span
+      className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-dark1 ${tintFor(
+        name,
+      )} ${faded ? 'opacity-50' : ''}`}
+    >
+      {initials(name)}
+    </span>
+  </Tooltip>
 );
 
 const MemberChip = ({ member }: { member: GroupMember }) => {
