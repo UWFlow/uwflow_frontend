@@ -63,8 +63,8 @@ const SharedClassesTourModalContent = ({
           </div>
           <div className="flex h-24 flex-col gap-xs rounded-md border border-light2 bg-white px-sm py-sm">
             <div
-              className="rounded-card border-l-[3px] px-xs py-xs text-xs font-semibold text-dark1 shadow-[0_0_0_2px_#0052cc]"
-              style={{ background: '#eef4ff', borderLeftColor: '#0052cc' }}
+              className="rounded-card border-l-[3px] border-l-primary px-xs py-xs text-xs font-semibold text-dark1 shadow-[0_0_0_2px_theme(colors.primary)]"
+              style={{ background: '#eef4ff' }}
             >
               CS 241
             </div>
