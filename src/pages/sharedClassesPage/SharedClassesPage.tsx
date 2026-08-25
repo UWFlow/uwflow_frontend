@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ChevronRight, Users } from 'react-feather';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -122,21 +123,21 @@ const SharedClassesPage = () => {
 
         <form
           onSubmit={handleCreate}
-          className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box tablet:flex-row tablet:items-end"
+          className="flex flex-col gap-md rounded-card border border-light3 bg-white p-lg shadow-box"
         >
-          <label className="flex flex-1 flex-col gap-xs text-sm text-dark2">
-            New group name
+          <h2 className="text-xl font-bold text-dark1">Create a group</h2>
+          <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
             <input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder="e.g. Study crew"
+              placeholder="Group name, e.g. Study crew"
               maxLength={80}
-              className="rounded-card border border-light3 px-sm py-xs font-inter text-md text-dark1 outline-none focus:border-primary"
+              className="h-11 flex-1 rounded-card border border-light3 px-md font-inter text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
             />
-          </label>
-          <Button type="submit" disabled={creating}>
-            {creating ? 'Creating...' : 'Create group'}
-          </Button>
+            <Button type="submit" size="lg" disabled={creating}>
+              {creating ? 'Creating...' : 'Create group'}
+            </Button>
+          </div>
         </form>
 
         {invites.length > 0 && (
@@ -147,7 +148,9 @@ const SharedClassesPage = () => {
                 key={g.id}
                 className="flex items-center justify-between rounded-card border border-light3 bg-white p-md shadow-box"
               >
-                <span className="text-md text-dark1">{g.name}</span>
+                <span className="text-md font-semibold text-dark1">
+                  {g.name}
+                </span>
                 <div className="flex gap-sm">
                   <Button size="sm" onClick={() => handleRespond(g.id, true)}>
                     Accept
@@ -178,13 +181,24 @@ const SharedClassesPage = () => {
                   <button
                     type="button"
                     onClick={() => setSelected(g.id)}
-                    className="flex w-full items-center justify-between rounded-card border border-light3 bg-white p-md text-left font-inter shadow-box transition-all duration-hover ease-hover hover:border-primary"
+                    className="group flex w-full items-center gap-md rounded-card border border-light3 bg-white p-md text-left font-inter shadow-box transition-all duration-hover ease-hover hover:border-primary"
                   >
-                    <span className="text-md text-dark1">{g.name}</span>
-                    <span className="text-sm text-dark3">
-                      {g.member_count}{' '}
-                      {g.member_count === 1 ? 'member' : 'members'}
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-light2 text-primary">
+                      <Users size={18} />
                     </span>
+                    <span className="flex min-w-0 flex-1 flex-col">
+                      <span className="truncate text-md font-semibold text-dark1">
+                        {g.name}
+                      </span>
+                      <span className="text-xs text-dark3">
+                        {g.member_count}{' '}
+                        {g.member_count === 1 ? 'member' : 'members'}
+                      </span>
+                    </span>
+                    <ChevronRight
+                      size={18}
+                      className="shrink-0 text-dark3 transition-transform duration-hover ease-hover group-hover:translate-x-1 group-hover:text-primary"
+                    />
                   </button>
                 </li>
               ))}
