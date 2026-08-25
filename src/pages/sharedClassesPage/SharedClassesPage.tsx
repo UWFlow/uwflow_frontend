@@ -105,7 +105,7 @@ const SharedClassesPage = () => {
 
         <form
           onSubmit={handleCreate}
-          className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md tablet:flex-row tablet:items-end"
+          className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box tablet:flex-row tablet:items-end"
         >
           <label className="flex flex-1 flex-col gap-xs text-sm text-dark2">
             New group name
@@ -128,7 +128,7 @@ const SharedClassesPage = () => {
             {invites.map((g) => (
               <div
                 key={g.id}
-                className="flex items-center justify-between rounded-card border border-light3 bg-white p-md"
+                className="flex items-center justify-between rounded-card border border-light3 bg-white p-md shadow-box"
               >
                 <span className="text-md text-dark1">{g.name}</span>
                 <div className="flex gap-sm">
@@ -161,7 +161,7 @@ const SharedClassesPage = () => {
                   <button
                     type="button"
                     onClick={() => setSelected(g.id)}
-                    className="flex w-full items-center justify-between rounded-card border border-light3 bg-white p-md text-left hover:border-primary"
+                    className="flex w-full items-center justify-between rounded-card border border-light3 bg-white p-md text-left shadow-box transition-all duration-hover ease-hover hover:border-primary"
                   >
                     <span className="text-md text-dark1">{g.name}</span>
                     <span className="text-sm text-dark3">

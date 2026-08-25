@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Users } from 'react-feather';
+import {
+  AlertCircle,
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  MapPin,
+} from 'react-feather';
 import { toast } from 'react-toastify';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -9,8 +15,10 @@ import {
   fetchGroup,
   formatMeeting,
   GroupDetail as GroupDetailData,
+  GroupMember,
   inviteToGroup,
   leaveGroup,
+  SharedClass,
 } from './api';
 
 interface Props {
@@ -19,11 +27,112 @@ interface Props {
   onChanged: () => void;
 }
 
+// A light tint per person so members are easy to tell apart at a glance. All
+// backgrounds are light so dark1 text stays readable.
+const AVATAR_TINTS = ['bg-lecture', 'bg-tutorial', 'bg-lab', 'bg-accent'];
+
+const initials = (name: string) => {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  const first = parts[0][0];
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+  return (first + last).toUpperCase();
+};
+
+const tintFor = (name: string) => {
+  let sum = 0;
+  for (let i = 0; i < name.length; i += 1) sum += name.charCodeAt(i);
+  return AVATAR_TINTS[sum % AVATAR_TINTS.length];
+};
+
+const Avatar = ({ name, faded }: { name: string; faded?: boolean }) => (
+  <span
+    title={name}
+    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-dark1 ${tintFor(
+      name,
+    )} ${faded ? 'opacity-50' : ''}`}
+  >
+    {initials(name)}
+  </span>
+);
+
+const MemberChip = ({ member }: { member: GroupMember }) => {
+  const pending = member.status === 'pending';
+  return (
+    <span className="flex items-center gap-xs rounded-full border border-light3 bg-white py-xs pl-xs pr-sm">
+      <Avatar name={member.name} faded={pending} />
+      <span className="text-sm text-dark1">{member.name}</span>
+      {pending && <span className="text-xs text-dark3">pending</span>}
+    </span>
+  );
+};
+
+// LEC / LAB / TUT drives a colored pill using the same section colors the
+// schedule calendar uses. Anything else falls back to a neutral chip.
+const componentTint = (sectionName: string) => {
+  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
+  if (kind.startsWith('LEC')) return 'bg-lecture text-dark1';
+  if (kind.startsWith('LAB')) return 'bg-lab text-dark1';
+  if (kind.startsWith('TUT')) return 'bg-tutorial text-dark1';
+  return 'bg-light2 text-dark2';
+};
+
+const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
+  <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
+    <div className="flex flex-wrap items-center gap-sm">
+      <span
+        className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
+          shared.section_name,
+        )}`}
+      >
+        {shared.section_name}
+      </span>
+      <span className="text-md font-semibold text-primary">
+        {shared.course_code.toUpperCase()}
+      </span>
+      <span className="text-md text-dark1">{shared.course_name}</span>
+    </div>
+
+    {shared.meetings.length > 0 && (
+      <div className="flex flex-col gap-xs">
+        {shared.meetings.map((m, i) => (
+          <div
+            key={i}
+            className="flex flex-wrap items-center gap-sm text-sm text-dark2"
+          >
+            <span className="flex items-center gap-xs">
+              <Clock size={14} /> {formatMeeting(m)}
+            </span>
+            {m.location && (
+              <span className="flex items-center gap-xs">
+                <MapPin size={14} /> {m.location}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+    <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
+      {shared.members.map((m) => (
+        <Avatar key={m.user_id} name={m.name} />
+      ))}
+      <span className="ml-xs text-sm text-dark2">
+        {shared.members.map((m) => m.name).join(', ')}
+      </span>
+    </div>
+  </li>
+);
+
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [inviting, setInviting] = useState(false);
+  const [notice, setNotice] = useState<{
+    kind: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const load = async () => {
     try {
@@ -38,21 +147,28 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   useEffect(() => {
     load();
     // load closes over groupId only; refetch when the selected group changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
     setInviting(true);
+    setNotice(null);
     try {
-      await inviteToGroup(groupId, email.trim());
-      // Always the same message: the server never reveals whether the email
-      // has an account.
-      toast('Invite sent.');
-      setEmail('');
-      await load();
+      const result = await inviteToGroup(groupId, email.trim());
+      if (result === 'not_found') {
+        setNotice({
+          kind: 'error',
+          text: 'No UW Flow account uses that email.',
+        });
+      } else {
+        setNotice({ kind: 'success', text: `Invite sent to ${email.trim()}.` });
+        setEmail('');
+        await load();
+      }
     } catch {
-      toast('Could not send the invite.');
+      setNotice({ kind: 'error', text: 'Could not send the invite.' });
     } finally {
       setInviting(false);
     }
@@ -71,7 +187,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   if (loading) return <LoadingSpinner />;
   if (!group) return null;
 
-  const memberNames = group.members.filter((m) => m.status === 'member');
+  const members = group.members.filter((m) => m.status === 'member');
   const pending = group.members.filter((m) => m.status === 'pending');
 
   return (
@@ -79,7 +195,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       <button
         type="button"
         onClick={onBack}
-        className="flex w-fit items-center gap-xs text-sm text-dark2 hover:text-dark1"
+        className="flex w-fit items-center gap-xs text-sm text-dark2 transition-all duration-hover ease-hover hover:text-dark1"
       >
         <ArrowLeft size={16} /> All groups
       </button>
@@ -91,69 +207,82 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-xs text-sm text-dark2">
-        <Users size={16} />
-        {memberNames.map((m) => m.name).join(', ')}
-        {pending.length > 0 && (
-          <span className="text-dark3"> + {pending.length} pending</span>
-        )}
+      <div className="flex flex-col gap-sm">
+        <span className="text-xs font-semibold uppercase tracking-wide text-dark3">
+          Members
+        </span>
+        <div className="flex flex-wrap gap-sm">
+          {members.map((m) => (
+            <MemberChip key={m.user_id} member={m} />
+          ))}
+          {pending.map((m) => (
+            <MemberChip key={m.user_id} member={m} />
+          ))}
+        </div>
       </div>
 
       <form
         onSubmit={handleInvite}
-        className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md tablet:flex-row tablet:items-end"
+        className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box"
       >
-        <label className="flex flex-1 flex-col gap-xs text-sm text-dark2">
-          Invite a friend by email
+        <span className="text-sm font-semibold text-dark1">
+          Invite a friend
+        </span>
+        <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="friend@example.com"
-            className="rounded-card border border-light3 px-sm py-xs text-md text-dark1 outline-none focus:border-primary"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (notice) setNotice(null);
+            }}
+            placeholder="Their UW Flow email"
+            className="flex-1 rounded-card border border-light3 px-sm py-xs text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
           />
-        </label>
-        <Button type="submit" disabled={inviting}>
-          {inviting ? 'Sending...' : 'Send invite'}
-        </Button>
+          <Button type="submit" disabled={inviting}>
+            {inviting ? 'Sending...' : 'Send invite'}
+          </Button>
+        </div>
+        {notice && (
+          <span
+            className={`flex items-center gap-xs text-sm ${
+              notice.kind === 'success' ? 'text-primary' : 'text-red'
+            }`}
+          >
+            {notice.kind === 'success' ? (
+              <CheckCircle size={14} />
+            ) : (
+              <AlertCircle size={14} />
+            )}
+            {notice.text}
+          </span>
+        )}
+        {group.invited_emails.length > 0 && (
+          <div className="flex flex-wrap items-center gap-xs pt-xs">
+            <span className="text-xs text-dark3">Waiting to join:</span>
+            {group.invited_emails.map((e) => (
+              <span
+                key={e}
+                className="rounded-full bg-light2 px-sm py-xs text-xs text-dark2"
+              >
+                {e}
+              </span>
+            ))}
+          </div>
+        )}
       </form>
-
-      {group.invited_emails.length > 0 && (
-        <p className="text-sm text-dark3">
-          Invited, not yet joined: {group.invited_emails.join(', ')}
-        </p>
-      )}
 
       <div className="flex flex-col gap-sm">
         <h2 className="text-lg font-semibold text-dark1">Classes you share</h2>
         {group.shared_classes.length === 0 ? (
-          <p className="text-sm text-dark2">
+          <div className="rounded-card border border-dashed border-light3 bg-white p-lg text-center text-sm text-dark2">
             No shared classes yet. Once two or more members are in the same
             section, it shows up here.
-          </p>
+          </div>
         ) : (
           <ul className="flex flex-col gap-sm">
             {group.shared_classes.map((c) => (
-              <li
-                key={c.section_id}
-                className="rounded-card border border-light3 bg-white p-md"
-              >
-                <div className="flex flex-wrap items-baseline gap-xs">
-                  <span className="text-md font-semibold text-primary">
-                    {c.course_code.toUpperCase()}
-                  </span>
-                  <span className="text-md text-dark1">{c.course_name}</span>
-                  <span className="text-sm text-dark3">{c.section_name}</span>
-                </div>
-                {c.meetings.map((m, i) => (
-                  <div key={i} className="mt-xs text-sm text-dark2">
-                    {formatMeeting(m)}
-                  </div>
-                ))}
-                <div className="mt-sm text-sm text-dark2">
-                  Together: {c.members.map((m) => m.name).join(', ')}
-                </div>
-              </li>
+              <SharedClassCard key={c.section_id} shared={c} />
             ))}
           </ul>
         )}

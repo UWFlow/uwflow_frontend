@@ -88,18 +88,19 @@ export const createGroup = async (
   return body;
 };
 
-// The server always answers "sent", by design, so callers never learn whether
-// the email had an account. Only real failures (unauthorized, bad group id,
-// malformed email) should throw.
+// Returns the server's outcome: "sent" when the email matched a Flow account
+// and the invite went out, or "not_found" when no account uses that email.
+// Only real failures (unauthorized, bad group id, malformed email) throw.
 export const inviteToGroup = async (
   id: number,
   email: string,
-): Promise<void> => {
-  const [, status] = await makeAuthenticatedPOSTRequest<
+): Promise<'sent' | 'not_found'> => {
+  const [body, status] = await makeAuthenticatedPOSTRequest<
     { email: string },
-    { status: string }
+    { status: 'sent' | 'not_found' }
   >(url(GROUP_INVITE_ENDPOINT(id)), { email });
   checkStatus(status);
+  return body.status;
 };
 
 export const respondToInvite = async (
