@@ -38,7 +38,6 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   useEffect(() => {
     load();
     // load closes over groupId only; refetch when the selected group changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
 
   const handleInvite = async (e: React.FormEvent) => {

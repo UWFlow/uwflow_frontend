@@ -39,7 +39,6 @@ const SharedClassesPage = () => {
     if (isLoggedIn) load();
     else setLoading(false);
     // load reads no props/state beyond the auth flag; refetch on login change.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   const handleCreate = async (e: React.FormEvent) => {
