@@ -65,7 +65,7 @@ const Avatar = ({ name, faded }: { name: string; faded?: boolean }) => (
 const MemberChip = ({ member }: { member: GroupMember }) => {
   const pending = member.status === 'pending';
   return (
-    <span className="flex items-center gap-xs rounded-full border border-light3 bg-white py-xs pl-xs pr-sm">
+    <span className="flex items-center gap-xs rounded-card border border-light3 bg-white py-xs pl-xs pr-sm">
       <Avatar name={member.name} faded={pending} />
       <span className="text-sm text-dark1">{member.name}</span>
       {pending && <span className="text-xs text-dark3">pending</span>}
@@ -323,7 +323,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             {group.invited_emails.map((e) => (
               <span
                 key={e}
-                className="rounded-full bg-light2 px-sm py-xs text-xs text-dark2"
+                className="rounded-card bg-light2 px-sm py-xs text-xs text-dark2"
               >
                 {e}
               </span>
