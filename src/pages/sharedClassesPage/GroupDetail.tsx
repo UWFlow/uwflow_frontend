@@ -248,7 +248,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       <button
         type="button"
         onClick={onBack}
-        className="flex w-fit items-center gap-xs text-sm text-dark2 transition-all duration-hover ease-hover hover:text-dark1"
+        className="flex w-fit items-center gap-xs font-inter text-sm text-dark2 transition-all duration-hover ease-hover hover:text-dark1"
       >
         <ArrowLeft size={16} /> All groups
       </button>
@@ -292,7 +292,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
               if (notice) setNotice(null);
             }}
             placeholder="Their UW Flow email"
-            className="flex-1 rounded-card border border-light3 px-sm py-xs text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
+            className="flex-1 rounded-card border border-light3 px-sm py-xs font-inter text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
           />
           <Button type="submit" disabled={inviting}>
             {inviting ? 'Sending...' : 'Send invite'}

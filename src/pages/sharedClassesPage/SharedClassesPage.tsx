@@ -131,7 +131,7 @@ const SharedClassesPage = () => {
               onChange={(e) => setNewName(e.target.value)}
               placeholder="e.g. Study crew"
               maxLength={80}
-              className="rounded-card border border-light3 px-sm py-xs text-md text-dark1 outline-none focus:border-primary"
+              className="rounded-card border border-light3 px-sm py-xs font-inter text-md text-dark1 outline-none focus:border-primary"
             />
           </label>
           <Button type="submit" disabled={creating}>
@@ -178,7 +178,7 @@ const SharedClassesPage = () => {
                   <button
                     type="button"
                     onClick={() => setSelected(g.id)}
-                    className="flex w-full items-center justify-between rounded-card border border-light3 bg-white p-md text-left shadow-box transition-all duration-hover ease-hover hover:border-primary"
+                    className="flex w-full items-center justify-between rounded-card border border-light3 bg-white p-md text-left font-inter shadow-box transition-all duration-hover ease-hover hover:border-primary"
                   >
                     <span className="text-md text-dark1">{g.name}</span>
                     <span className="text-sm text-dark3">
