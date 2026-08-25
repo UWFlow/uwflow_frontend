@@ -52,61 +52,74 @@ export interface GroupDetail {
 
 const url = (path: string) => `${BACKEND_ENDPOINT}${path}`;
 
+// The GET/POST helpers never throw on their own (see utils/Api.tsx); every
+// caller in this codebase checks the status itself, so we do the same here
+// rather than letting a failed request masquerade as a successful body.
+const checkStatus = (status: number) => {
+  if (status >= 400) {
+    throw new Error(`shared classes request failed with status ${status}`);
+  }
+};
+
 export const fetchGroups = async (): Promise<GroupSummary[]> => {
-  const [body] = await makeAuthenticatedGETRequest<{ groups: GroupSummary[] }>(
-    url(GROUP_ENDPOINT),
-  );
+  const [body, status] = await makeAuthenticatedGETRequest<{
+    groups: GroupSummary[];
+  }>(url(GROUP_ENDPOINT));
+  checkStatus(status);
   return body.groups ?? [];
 };
 
 export const fetchGroup = async (id: number): Promise<GroupDetail> => {
-  const [body] = await makeAuthenticatedGETRequest<GroupDetail>(
+  const [body, status] = await makeAuthenticatedGETRequest<GroupDetail>(
     url(GROUP_BY_ID_ENDPOINT(id)),
   );
+  checkStatus(status);
   return body;
 };
 
 export const createGroup = async (
   name: string,
 ): Promise<{ id: number; name: string }> => {
-  const [body] = await makeAuthenticatedPOSTRequest<
+  const [body, status] = await makeAuthenticatedPOSTRequest<
     { name: string },
     { id: number; name: string }
   >(url(GROUP_ENDPOINT), { name });
+  checkStatus(status);
   return body;
 };
 
 // The server always answers "sent", by design, so callers never learn whether
-// the email had an account.
+// the email had an account. Only real failures (unauthorized, bad group id,
+// malformed email) should throw.
 export const inviteToGroup = async (
   id: number,
   email: string,
-): Promise<number> => {
+): Promise<void> => {
   const [, status] = await makeAuthenticatedPOSTRequest<
     { email: string },
     { status: string }
   >(url(GROUP_INVITE_ENDPOINT(id)), { email });
-  return status;
+  checkStatus(status);
 };
 
 export const respondToInvite = async (
   id: number,
   accept: boolean,
   block = false,
-): Promise<number> => {
+): Promise<void> => {
   const [, status] = await makeAuthenticatedPOSTRequest<
     { accept: boolean; block: boolean },
     { status: string }
   >(url(GROUP_RESPOND_ENDPOINT(id)), { accept, block });
-  return status;
+  checkStatus(status);
 };
 
-export const leaveGroup = async (id: number): Promise<number> => {
+export const leaveGroup = async (id: number): Promise<void> => {
   const [, status] = await makeAuthenticatedPOSTRequest<
     Record<string, never>,
     { status: string }
   >(url(GROUP_LEAVE_ENDPOINT(id)), {});
-  return status;
+  checkStatus(status);
 };
 
 // section_meeting stores times as seconds past midnight. Format as h:mm am/pm.
