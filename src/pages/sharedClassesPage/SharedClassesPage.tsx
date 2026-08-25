@@ -89,7 +89,12 @@ const SharedClassesPage = () => {
           <p className="text-md text-dark2">
             Log in to make a group and see which classes you share with friends.
           </p>
-          <Button onClick={() => openModal(AUTH_MODAL)}>Log in</Button>
+          <Button
+            className="font-semibold"
+            onClick={() => openModal(AUTH_MODAL)}
+          >
+            Log in
+          </Button>
         </div>
       );
     }
@@ -111,8 +116,8 @@ const SharedClassesPage = () => {
 
     return (
       <>
-        <div className="flex flex-col gap-xs">
-          <h1 className="font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
+        <div className="flex flex-col">
+          <h1 className="font-anderson text-4xl font-extrabold leading-tight text-dark1 tabletDown:text-3xl">
             Shared Classes
           </h1>
           <p className="text-sm text-dark2">
@@ -123,7 +128,7 @@ const SharedClassesPage = () => {
 
         <form
           onSubmit={handleCreate}
-          className="flex flex-col gap-md rounded-card border border-light3 bg-white p-lg shadow-box"
+          className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box"
         >
           <h2 className="text-xl font-bold text-dark1">Create a group</h2>
           <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
@@ -134,7 +139,12 @@ const SharedClassesPage = () => {
               maxLength={80}
               className="h-11 flex-1 rounded-card border border-light3 px-md font-inter text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
             />
-            <Button type="submit" size="lg" disabled={creating}>
+            <Button
+              type="submit"
+              size="lg"
+              disabled={creating}
+              className="font-semibold"
+            >
               {creating ? 'Creating...' : 'Create group'}
             </Button>
           </div>
@@ -152,12 +162,17 @@ const SharedClassesPage = () => {
                   {g.name}
                 </span>
                 <div className="flex gap-sm">
-                  <Button size="sm" onClick={() => handleRespond(g.id, true)}>
+                  <Button
+                    size="sm"
+                    className="font-semibold"
+                    onClick={() => handleRespond(g.id, true)}
+                  >
                     Accept
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
+                    className="font-semibold"
                     onClick={() => handleRespond(g.id, false)}
                   >
                     Decline
@@ -175,7 +190,7 @@ const SharedClassesPage = () => {
               No groups yet. Create one above to get started.
             </p>
           ) : (
-            <ul className="flex flex-col gap-sm">
+            <ul className="flex list-none flex-col gap-sm p-0">
               {mine.map((g) => (
                 <li key={g.id}>
                   <button

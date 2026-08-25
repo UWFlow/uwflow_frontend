@@ -257,7 +257,12 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         <h1 className="font-anderson text-3xl font-extrabold text-dark1">
           {group.name}
         </h1>
-        <Button variant="outline" size="sm" onClick={handleLeave}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="font-semibold"
+          onClick={handleLeave}
+        >
           Leave group
         </Button>
       </div>
@@ -294,7 +299,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             placeholder="Their UW Flow email"
             className="flex-1 rounded-card border border-light3 px-sm py-xs font-inter text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
           />
-          <Button type="submit" disabled={inviting}>
+          <Button type="submit" disabled={inviting} className="font-semibold">
             {inviting ? 'Sending...' : 'Send invite'}
           </Button>
         </div>
