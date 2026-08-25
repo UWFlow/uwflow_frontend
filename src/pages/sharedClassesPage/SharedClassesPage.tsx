@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import { Button } from 'components/ui/button';
-import { AUTH_MODAL } from 'constants/Modal';
+import { AUTH_MODAL, SHARED_CLASSES_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import useModal from 'hooks/useModal';
 
@@ -15,9 +15,11 @@ import GroupDetail from './GroupDetail';
 const wrapperClasses =
   'mx-auto flex min-h-[calc(100vh-102px)] w-full max-w-[720px] flex-col gap-lg bg-light1 px-md py-xl';
 
+const TOUR_DISMISSED_KEY = 'shared_classes_tour_dismissed';
+
 const SharedClassesPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
-  const [openModal] = useModal();
+  const [openModal, closeModal] = useModal();
 
   const [groups, setGroups] = useState<GroupSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,6 +42,19 @@ const SharedClassesPage = () => {
     else setLoading(false);
     // load reads no props/state beyond the auth flag; refetch on login change.
   }, [isLoggedIn]);
+
+  // First logged-in visit: walk through the short tour once. Any dismissal
+  // (Skip, X, backdrop, or Done) persists the flag so it never shows again.
+  useEffect(() => {
+    if (isLoggedIn && !localStorage.getItem(TOUR_DISMISSED_KEY)) {
+      openModal(SHARED_CLASSES_TOUR_MODAL, {
+        onRequestClose: () => {
+          localStorage.setItem(TOUR_DISMISSED_KEY, '1');
+          closeModal(SHARED_CLASSES_TOUR_MODAL);
+        },
+      });
+    }
+  }, [isLoggedIn, openModal, closeModal]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +111,9 @@ const SharedClassesPage = () => {
     return (
       <>
         <div className="flex flex-col gap-xs">
-          <h1 className="text-2xl font-semibold text-dark1">Shared Classes</h1>
+          <h1 className="font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
+            Shared Classes
+          </h1>
           <p className="text-sm text-dark2">
             Make a group, invite friends by email, and see the classes you have
             together.
@@ -124,7 +141,7 @@ const SharedClassesPage = () => {
 
         {invites.length > 0 && (
           <div className="flex flex-col gap-sm">
-            <h2 className="text-lg font-semibold text-dark1">Invites</h2>
+            <h2 className="text-xl font-bold text-dark1">Invites</h2>
             {invites.map((g) => (
               <div
                 key={g.id}
@@ -149,7 +166,7 @@ const SharedClassesPage = () => {
         )}
 
         <div className="flex flex-col gap-sm">
-          <h2 className="text-lg font-semibold text-dark1">Your groups</h2>
+          <h2 className="text-xl font-bold text-dark1">Your groups</h2>
           {mine.length === 0 ? (
             <p className="text-sm text-dark2">
               No groups yet. Create one above to get started.
