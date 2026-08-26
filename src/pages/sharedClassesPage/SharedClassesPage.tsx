@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
 import { AUTH_MODAL, SHARED_CLASSES_TOUR_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
@@ -132,13 +133,15 @@ const SharedClassesPage = () => {
         >
           <h2 className="text-xl font-bold text-dark1">Create a group</h2>
           <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
-            <input
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              placeholder="Group name, e.g. Study crew"
-              maxLength={80}
-              className="h-11 flex-1 rounded-card border border-light3 px-md font-inter text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
-            />
+            <div className="flex-1">
+              <Textbox
+                text={newName}
+                setText={setNewName}
+                placeholder="Group name, e.g. Study crew"
+                maxLength={80}
+                options={{ width: '100%' }}
+              />
+            </div>
             <Button
               type="submit"
               size="lg"
