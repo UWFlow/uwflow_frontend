@@ -16,6 +16,7 @@ import {
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
 import { Button } from 'components/ui/button';
+import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
 
 import {
@@ -34,33 +35,27 @@ interface Props {
   onChanged: () => void;
 }
 
-// A light tint per person so members are easy to tell apart at a glance. All
-// backgrounds are light so dark1 text stays readable.
-const AVATAR_TINTS = ['bg-lecture', 'bg-tutorial', 'bg-lab', 'bg-accent'];
-
-const initials = (name: string) => {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return '?';
-  const first = parts[0][0];
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
-  return (first + last).toUpperCase();
-};
-
-const tintFor = (name: string) => {
-  let sum = 0;
-  for (let i = 0; i < name.length; i += 1) sum += name.charCodeAt(i);
-  return AVATAR_TINTS[sum % AVATAR_TINTS.length];
-};
-
-const Avatar = ({ name, faded }: { name: string; faded?: boolean }) => (
+// Matches the avatar shown elsewhere in the app (navbar, reviews, profile
+// header): a kitten placeholder keyed off the user's id. Group members only
+// carry an id and name here, not a picture_url, so unlike those call sites
+// this always renders the kitten rather than a real photo.
+const Avatar = ({
+  userId,
+  name,
+  faded,
+}: {
+  userId: number;
+  name: string;
+  faded?: boolean;
+}) => (
   <Tooltip content={name}>
-    <span
-      className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-dark1 ${tintFor(
-        name,
-      )} ${faded ? 'opacity-50' : ''}`}
-    >
-      {initials(name)}
-    </span>
+    <img
+      src={getKittenFromID(userId)}
+      alt={name}
+      className={`h-7 w-7 shrink-0 rounded-full object-cover ${
+        faded ? 'opacity-50' : ''
+      }`}
+    />
   </Tooltip>
 );
 
@@ -68,7 +63,7 @@ const MemberChip = ({ member }: { member: GroupMember }) => {
   const pending = member.status === 'pending';
   return (
     <span className="flex items-center gap-xs rounded-card border border-light3 bg-white py-xs pl-xs pr-sm">
-      <Avatar name={member.name} faded={pending} />
+      <Avatar userId={member.user_id} name={member.name} faded={pending} />
       <span className="text-sm text-dark1">{member.name}</span>
       {pending && <span className="text-xs text-dark3">pending</span>}
     </span>
@@ -163,7 +158,7 @@ const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
 
     <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
       {shared.members.map((m) => (
-        <Avatar key={m.user_id} name={m.name} />
+        <Avatar key={m.user_id} userId={m.user_id} name={m.name} />
       ))}
       <span className="ml-xs text-sm text-dark2">
         {shared.members.map((m) => m.name).join(', ')}
