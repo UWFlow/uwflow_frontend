@@ -15,6 +15,7 @@ import {
 } from 'components/calendar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
+import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
 import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
@@ -286,16 +287,19 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
           Invite a friend
         </span>
         <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (notice) setNotice(null);
-            }}
-            placeholder="Their UW Flow email"
-            className="flex-1 rounded-card border border-light3 px-sm py-xs font-inter text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
-          />
+          <div className="flex-1">
+            <Textbox
+              text={email}
+              setText={(value) => {
+                setEmail(value);
+                if (notice) setNotice(null);
+              }}
+              placeholder="Their UW Flow email"
+              maxLength={100}
+              error={notice?.kind === 'error'}
+              options={{ width: '100%', type: 'email' }}
+            />
+          </div>
           <Button type="submit" disabled={inviting} className="font-semibold">
             {inviting ? 'Sending...' : 'Send invite'}
           </Button>
