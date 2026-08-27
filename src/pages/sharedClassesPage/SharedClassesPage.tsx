@@ -105,7 +105,7 @@ const SharedClassesPage = () => {
           <h1 className="font-anderson text-4xl font-extrabold leading-tight text-dark1 tabletDown:text-3xl">
             Shared Classes
           </h1>
-          <p className="text-sm text-dark2">
+          <p className="text-body text-dark2">
             Make a group, invite friends by email, and see the classes you have
             together.
           </p>
