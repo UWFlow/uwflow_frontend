@@ -200,7 +200,9 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       </button>
 
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-dark1">{group.name}</h1>
+        <h1 className="font-anderson text-3xl font-extrabold text-dark1">
+          {group.name}
+        </h1>
         <Button variant="outline" size="sm" onClick={handleLeave}>
           Leave group
         </Button>
@@ -272,7 +274,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       </form>
 
       <div className="flex flex-col gap-sm">
-        <h2 className="text-lg font-semibold text-dark1">Classes you share</h2>
+        <h2 className="text-xl font-bold text-dark1">Classes you share</h2>
         {group.shared_classes.length === 0 ? (
           <div className="rounded-card border border-dashed border-light3 bg-white p-lg text-center text-sm text-dark2">
             No shared classes yet. Once two or more members are in the same

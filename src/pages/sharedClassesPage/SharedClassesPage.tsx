@@ -96,7 +96,9 @@ const SharedClassesPage = () => {
     return (
       <>
         <div className="flex flex-col gap-xs">
-          <h1 className="text-2xl font-semibold text-dark1">Shared Classes</h1>
+          <h1 className="font-anderson text-4xl font-extrabold text-dark1 tabletDown:text-3xl">
+            Shared Classes
+          </h1>
           <p className="text-sm text-dark2">
             Make a group, invite friends by email, and see the classes you have
             together.
@@ -124,7 +126,7 @@ const SharedClassesPage = () => {
 
         {invites.length > 0 && (
           <div className="flex flex-col gap-sm">
-            <h2 className="text-lg font-semibold text-dark1">Invites</h2>
+            <h2 className="text-xl font-bold text-dark1">Invites</h2>
             {invites.map((g) => (
               <div
                 key={g.id}
@@ -149,7 +151,7 @@ const SharedClassesPage = () => {
         )}
 
         <div className="flex flex-col gap-sm">
-          <h2 className="text-lg font-semibold text-dark1">Your groups</h2>
+          <h2 className="text-xl font-bold text-dark1">Your groups</h2>
           {mine.length === 0 ? (
             <p className="text-sm text-dark2">
               No groups yet. Create one above to get started.
