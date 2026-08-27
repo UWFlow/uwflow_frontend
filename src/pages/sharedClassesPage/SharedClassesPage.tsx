@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
 import { AUTH_MODAL, SHARED_CLASSES_TOUR_MODAL } from 'constants/Modal';
@@ -142,14 +143,9 @@ const SharedClassesPage = () => {
                 options={{ width: '100%' }}
               />
             </div>
-            <Button
-              type="submit"
-              size="lg"
-              disabled={creating}
-              className="font-semibold"
-            >
+            <AccentButton type="submit" disabled={creating}>
               {creating ? 'Creating...' : 'Create group'}
-            </Button>
+            </AccentButton>
           </div>
         </form>
 

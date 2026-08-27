@@ -15,6 +15,7 @@ import {
 } from 'components/calendar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
+import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
 import { getKittenFromID } from 'utils/Kitten';
@@ -294,15 +295,15 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
                 setEmail(value);
                 if (notice) setNotice(null);
               }}
-              placeholder="Their UW Flow email"
+              placeholder="Email"
               maxLength={100}
               error={notice?.kind === 'error'}
               options={{ width: '100%', type: 'email' }}
             />
           </div>
-          <Button type="submit" disabled={inviting} className="font-semibold">
+          <AccentButton type="submit" disabled={inviting}>
             {inviting ? 'Sending...' : 'Send invite'}
-          </Button>
+          </AccentButton>
         </div>
         {notice && (
           <span
