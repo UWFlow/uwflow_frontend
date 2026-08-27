@@ -102,15 +102,16 @@ const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
   classes.forEach((c) => {
     const variant = sectionVariant(c.section_name);
     c.meetings.forEach((m, mi) => {
-      if (m.start_seconds === null || m.end_seconds === null) return;
+      const { start_seconds: startSeconds, end_seconds: endSeconds } = m;
+      if (startSeconds === null || endSeconds === null) return;
       m.days.forEach((day) => {
         const dayIndex = weekDayLetters.indexOf(day);
         if (dayIndex < 0 || dayIndex > 4) return;
         events.push({
           id: `${c.section_id}-${mi}-${day}`,
           dayIndex,
-          startMinutes: Math.round(m.start_seconds! / 60),
-          endMinutes: Math.round(m.end_seconds! / 60),
+          startMinutes: Math.round(startSeconds / 60),
+          endMinutes: Math.round(endSeconds / 60),
           variant,
           title: c.course_code.toUpperCase(),
           subtitle: c.section_name,
