@@ -46,7 +46,6 @@ export interface GroupDetail {
   name: string;
   is_creator: boolean;
   members: GroupMember[];
-  invited_emails: string[];
   shared_classes: SharedClass[];
 }
 
@@ -106,12 +105,11 @@ export const inviteToGroup = async (
 export const respondToInvite = async (
   id: number,
   accept: boolean,
-  block = false,
 ): Promise<void> => {
   const [, status] = await makeAuthenticatedPOSTRequest<
-    { accept: boolean; block: boolean },
+    { accept: boolean },
     { status: string }
-  >(url(GROUP_RESPOND_ENDPOINT(id)), { accept, block });
+  >(url(GROUP_RESPOND_ENDPOINT(id)), { accept });
   checkStatus(status);
 };
 

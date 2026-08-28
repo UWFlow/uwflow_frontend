@@ -265,19 +265,6 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             {notice.text}
           </span>
         )}
-        {group.invited_emails.length > 0 && (
-          <div className="flex flex-wrap items-center gap-xs pt-xs">
-            <span className="text-xs text-dark3">Waiting to join:</span>
-            {group.invited_emails.map((e) => (
-              <span
-                key={e}
-                className="rounded-card bg-light2 px-sm py-xs text-xs text-dark2"
-              >
-                {e}
-              </span>
-            ))}
-          </div>
-        )}
       </form>
 
       <div className="flex flex-col gap-sm">
