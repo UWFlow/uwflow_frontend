@@ -51,3 +51,10 @@ export const GOOGLE_CALENDAR_URL = `https://calendar.google.com/calendar/r?cid=`
 
 /* User */
 export const USER_ACCOUNT_ENDPOINT = '/user';
+
+/* Admin console */
+export const ADMIN_ME_ENDPOINT = '/admin/me';
+export const ADMIN_USERS_ENDPOINT = '/admin/users';
+export const ADMIN_IMPERSONATE_ENDPOINT = '/admin/impersonate';
+export const ADMIN_IMPERSONATE_STOP_ENDPOINT = '/admin/impersonate/stop';
+export const ADMIN_IMPERSONATION_LOG_ENDPOINT = '/admin/impersonation-log';

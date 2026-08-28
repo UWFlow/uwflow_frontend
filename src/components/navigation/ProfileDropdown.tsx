@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 import { GetUserQuery } from 'generated/graphql';
 import { Dispatch } from 'redux';
 import {
+  ADMIN_PAGE_ROUTE,
   isOnLandingPageRoute,
   PROFILE_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
@@ -15,6 +16,7 @@ import DropdownList from 'components/input/DropdownList';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
+import useIsAdmin from 'hooks/useIsAdmin';
 import useModal from 'hooks/useModal';
 import { logOut } from 'utils/Auth';
 import { getKittenFromID } from 'utils/Kitten';
@@ -65,6 +67,7 @@ const ProfileDropdown = () => {
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const isLanding = isOnLandingPageRoute(location);
+  const isAdmin = useIsAdmin();
 
   const { data, loading } = useQuery<GetUserQuery>(GET_USER, {
     variables: { id: Number(localStorage.getItem('user_id')) },
@@ -73,6 +76,22 @@ const ProfileDropdown = () => {
 
   const handleProfileButtonClick = () =>
     isLoggedIn ? history.push(PROFILE_PAGE_ROUTE) : openModal(AUTH_MODAL);
+
+  // Paired labels and handlers, so the admin-only entry can be added without
+  // the index arithmetic below drifting out of step with the list.
+  const menuItems: { label: string; onSelect: () => void }[] = [
+    { label: 'View profile', onSelect: handleProfileButtonClick },
+    { label: 'Swap Class', onSelect: () => history.push(SWAP_PAGE_ROUTE) },
+    ...(isAdmin
+      ? [
+          {
+            label: 'Admin console',
+            onSelect: () => history.push(ADMIN_PAGE_ROUTE),
+          },
+        ]
+      : []),
+    { label: 'Log out', onSelect: () => logOut(dispatch, true) },
+  ];
 
   return (
     <ProfileDropdownWrapper>
@@ -86,16 +105,8 @@ const ProfileDropdown = () => {
             width={150}
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
-            options={['View profile', 'Swap Class', 'Log out']}
-            onChange={(idx) => {
-              if (idx === 0) {
-                handleProfileButtonClick();
-              } else if (idx === 1) {
-                history.push(SWAP_PAGE_ROUTE);
-              } else {
-                logOut(dispatch, true);
-              }
-            }}
+            options={menuItems.map((item) => item.label)}
+            onChange={(idx) => menuItems[idx]?.onSelect()}
             placeholder=""
             zIndex={10}
             menuOffset={24}

@@ -39,3 +39,9 @@ export const LoadableWelcomePage = loadable(
 export const LoadableSwapPage = loadable(
   () => import(/* webpackPrefetch: true */ './pages/swapPage/SwapPage'),
 );
+
+// Deliberately not prefetched: only a handful of accounts can open it, so
+// there is no reason to pull it into every visitor's bundle.
+export const LoadableAdminPage = loadable(
+  () => import('./pages/adminPage/AdminPage'),
+);

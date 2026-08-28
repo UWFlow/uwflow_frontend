@@ -92,3 +92,62 @@ export type ParseOnlyScheduleResponse = {
 export type TranscriptParseResponse = {
   courses_imported: number;
 };
+
+/* Admin console */
+export type AdminMeResponse = {
+  user_id: number;
+  is_admin: boolean;
+};
+
+export type AdminUser = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string | null;
+  program: string | null;
+  picture_url: string | null;
+  join_source: string;
+  join_date: string;
+  is_admin: boolean;
+  review_count: number;
+  schedule_size: number;
+};
+
+export type AdminUsersResponse = {
+  users: AdminUser[];
+};
+
+export type AdminImpersonateBody = {
+  user_id: number;
+  reason: string;
+};
+
+export type AdminImpersonateResponse = {
+  token: string;
+  user_id: number;
+  full_name: string;
+  email: string | null;
+  session_id: number;
+  /* Lifetime of the impersonation token, in seconds. */
+  expires_in: number;
+};
+
+export type AdminStopImpersonatingResponse = {
+  token: string;
+  user_id: number;
+};
+
+export type AdminImpersonationLogEntry = {
+  id: number;
+  admin_id: number;
+  admin_name: string;
+  target_user_id: number;
+  target_user_name: string;
+  reason: string | null;
+  started_at: string;
+  ended_at: string | null;
+};
+
+export type AdminImpersonationLogResponse = {
+  entries: AdminImpersonationLogEntry[];
+};

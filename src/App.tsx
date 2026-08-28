@@ -7,6 +7,7 @@ import { Redirect, Switch, useLocation } from 'react-router-dom';
 import { Bounce, ToastContainer } from 'react-toastify';
 import {
   LoadableAboutPage,
+  LoadableAdminPage,
   LoadableCoursePage,
   LoadableExplorePage,
   LoadableLandingPage,
@@ -19,6 +20,7 @@ import {
 } from 'LoadableComponents';
 import {
   ABOUT_PAGE_ROUTE,
+  ADMIN_PAGE_ROUTE,
   COURSE_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
   LANDING_PAGE_ROUTE,
@@ -30,6 +32,7 @@ import {
   WELCOME_PAGE_ROUTE,
 } from 'Routes';
 
+import ImpersonationBanner from 'components/admin/ImpersonationBanner';
 import AnnouncementBanner from 'components/banner/AnnouncementBanner';
 import ModalMount from 'components/modal/ModalMount';
 import Footer from 'components/navigation/Footer';
@@ -46,6 +49,7 @@ import { initAnalytics } from 'lib/analytics';
 import { AuthRefreshResponse } from 'types/Api';
 import { makeAuthenticatedPOSTRequest } from 'utils/Api';
 import { getUserId } from 'utils/Auth';
+import { isImpersonating } from 'utils/Impersonation';
 
 import { SentryRoute } from './sentry';
 
@@ -62,6 +66,13 @@ const App = () => {
   // Refresh auth token if logged in
   useEffect(() => {
     if (!isLoggedIn) {
+      return;
+    }
+
+    // Impersonation tokens are deliberately capped at an hour and the backend
+    // refuses to refresh them; renewing on a timer would defeat that cap, and
+    // the 403 would be noise.
+    if (isImpersonating()) {
       return;
     }
 
@@ -86,6 +97,11 @@ const App = () => {
   }, [location]);
 
   useEffect(() => {
+    // Don't attribute an admin's browsing to the account they are inspecting —
+    // it would put staff activity in that person's analytics history.
+    if (isImpersonating()) {
+      return;
+    }
     ReactGA.set({ userId: getUserId() });
   }, [isLoggedIn]);
 
@@ -125,6 +141,7 @@ const App = () => {
           content={`${window.location.origin}${LandingPageBg}`}
         />
       </Helmet>
+      <ImpersonationBanner />
       <AnnouncementBanner />
       <Switch>
         <SentryRoute
@@ -171,6 +188,11 @@ const App = () => {
           exact
           path={SWAP_PAGE_ROUTE}
           component={() => <LoadableSwapPage />}
+        />
+        <SentryRoute
+          exact
+          path={ADMIN_PAGE_ROUTE}
+          component={() => <LoadableAdminPage />}
         />
         <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
