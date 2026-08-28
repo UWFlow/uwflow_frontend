@@ -7,6 +7,7 @@ import {
   GROUP_RESPOND_ENDPOINT,
 } from 'constants/Api';
 import {
+  makeAuthenticatedDELETERequest,
   makeAuthenticatedGETRequest,
   makeAuthenticatedPOSTRequest,
 } from 'utils/Api';
@@ -118,6 +119,14 @@ export const leaveGroup = async (id: number): Promise<void> => {
     Record<string, never>,
     { status: string }
   >(url(GROUP_LEAVE_ENDPOINT(id)), {});
+  checkStatus(status);
+};
+
+// Only the creator can do this; the backend enforces it too.
+export const deleteGroup = async (id: number): Promise<void> => {
+  const [, status] = await makeAuthenticatedDELETERequest<{ status: string }>(
+    url(GROUP_BY_ID_ENDPOINT(id)),
+  );
   checkStatus(status);
 };
 
