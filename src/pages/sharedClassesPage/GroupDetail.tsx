@@ -16,6 +16,7 @@ import { Button } from 'components/ui/button';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
+  deleteGroup,
   fetchGroup,
   formatMeeting,
   GroupDetail as GroupDetailData,
@@ -182,6 +183,19 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete "${group?.name}"? This cannot be undone.`)) {
+      return;
+    }
+    try {
+      await deleteGroup(groupId);
+      onChanged();
+      onBack();
+    } catch {
+      toast('Could not delete the group.');
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
   if (!group) return null;
 
@@ -202,14 +216,26 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         <h1 className="font-anderson text-3xl font-extrabold text-dark1">
           {group.name}
         </h1>
-        <Button
-          variant="outline"
-          size="sm"
-          className="font-semibold"
-          onClick={handleLeave}
-        >
-          Leave group
-        </Button>
+        <div className="flex gap-sm">
+          {group.is_creator && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-semibold text-red"
+              onClick={handleDelete}
+            >
+              Delete group
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            className="font-semibold"
+            onClick={handleLeave}
+          >
+            Leave group
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-sm">
