@@ -51,3 +51,11 @@ export const LEAVE_GROUP = gql`
     }
   }
 `;
+
+export const DELETE_GROUP = gql`
+  mutation deleteGroup($groupId: Int!) {
+    delete_shared_group(where: { id: { _eq: $groupId } }) {
+      affected_rows
+    }
+  }
+`;

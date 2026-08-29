@@ -9,9 +9,12 @@ import {
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
 import {
+  DeleteGroupMutation,
+  DeleteGroupMutationVariables,
   LeaveGroupMutation,
   LeaveGroupMutationVariables,
 } from 'generated/graphql';
+import { useTheme } from 'styled-components';
 
 import {
   Calendar,
@@ -23,7 +26,7 @@ import Tooltip from 'components/display/Tooltip';
 import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
-import { LEAVE_GROUP } from 'graphql/mutations/SharedGroup';
+import { DELETE_GROUP, LEAVE_GROUP } from 'graphql/mutations/SharedGroup';
 import { getUserId } from 'utils/Auth';
 import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
@@ -176,11 +179,13 @@ const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
 );
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
+  const theme = useTheme();
   const userId = getUserId();
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [inviting, setInviting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [notice, setNotice] = useState<{
     kind: 'success' | 'error';
     text: string;
@@ -190,6 +195,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     LeaveGroupMutation,
     LeaveGroupMutationVariables
   >(LEAVE_GROUP);
+  const [deleteGroup] = useMutation<
+    DeleteGroupMutation,
+    DeleteGroupMutationVariables
+  >(DELETE_GROUP);
 
   const load = async () => {
     try {
@@ -240,6 +249,21 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete "${group?.name}"? This cannot be undone.`)) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      await deleteGroup({ variables: { groupId } });
+      onChanged();
+      onBack();
+    } catch {
+      toast('Could not delete the group.');
+      setDeleting(false);
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
   if (!group) return null;
 
@@ -268,14 +292,25 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         <h1 className="font-anderson text-3xl font-extrabold text-dark1">
           {group.name}
         </h1>
-        <Button
-          variant="outline"
-          size="sm"
-          className="font-semibold"
-          onClick={handleLeave}
-        >
-          Leave group
-        </Button>
+        <div className="flex gap-sm">
+          {group.is_creator && (
+            <AccentButton
+              color={theme.red}
+              disabled={deleting}
+              handleClick={handleDelete}
+            >
+              {deleting ? 'Deleting...' : 'Delete group'}
+            </AccentButton>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            className="font-semibold"
+            onClick={handleLeave}
+          >
+            Leave group
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-sm">
