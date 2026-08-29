@@ -2,7 +2,6 @@ import {
   BACKEND_ENDPOINT,
   GROUP_BY_ID_ENDPOINT,
   GROUP_INVITE_ENDPOINT,
-  GROUP_LEAVE_ENDPOINT,
 } from 'constants/Api';
 import {
   makeAuthenticatedGETRequest,
@@ -73,14 +72,6 @@ export const inviteToGroup = async (
   >(url(GROUP_INVITE_ENDPOINT(id)), { email });
   checkStatus(status);
   return body.status;
-};
-
-export const leaveGroup = async (id: number): Promise<void> => {
-  const [, status] = await makeAuthenticatedPOSTRequest<
-    Record<string, never>,
-    { status: string }
-  >(url(GROUP_LEAVE_ENDPOINT(id)), {});
-  checkStatus(status);
 };
 
 // section_meeting stores times as seconds past midnight. Format as h:mm am/pm.

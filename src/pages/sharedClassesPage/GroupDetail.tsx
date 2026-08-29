@@ -7,6 +7,11 @@ import {
   MapPin,
 } from 'react-feather';
 import { toast } from 'react-toastify';
+import { useMutation } from '@apollo/client';
+import {
+  LeaveGroupMutation,
+  LeaveGroupMutationVariables,
+} from 'generated/graphql';
 
 import {
   Calendar,
@@ -18,6 +23,8 @@ import Tooltip from 'components/display/Tooltip';
 import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
+import { LEAVE_GROUP } from 'graphql/mutations/SharedGroup';
+import { getUserId } from 'utils/Auth';
 import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
 
@@ -27,7 +34,6 @@ import {
   GroupDetail as GroupDetailData,
   GroupMember,
   inviteToGroup,
-  leaveGroup,
   SharedClass,
 } from './api';
 
@@ -170,6 +176,7 @@ const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
 );
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
+  const userId = getUserId();
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
@@ -178,6 +185,11 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     kind: 'success' | 'error';
     text: string;
   } | null>(null);
+
+  const [leaveGroup] = useMutation<
+    LeaveGroupMutation,
+    LeaveGroupMutationVariables
+  >(LEAVE_GROUP);
 
   const load = async () => {
     try {
@@ -220,7 +232,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   const handleLeave = async () => {
     try {
-      await leaveGroup(groupId);
+      await leaveGroup({ variables: { groupId, userId } });
       onChanged();
       onBack();
     } catch {
