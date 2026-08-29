@@ -3,6 +3,17 @@ import { ChevronRight, Users } from 'react-feather';
 import { Helmet } from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useMutation, useQuery } from '@apollo/client';
+import {
+  AcceptInviteMutation,
+  AcceptInviteMutationVariables,
+  CreateGroupMutation,
+  CreateGroupMutationVariables,
+  DeclineInviteMutation,
+  DeclineInviteMutationVariables,
+  ListGroupsQuery,
+  ListGroupsQueryVariables,
+} from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import AccentButton from 'components/input/Button';
@@ -10,9 +21,15 @@ import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
+import {
+  ACCEPT_INVITE,
+  CREATE_GROUP,
+  DECLINE_INVITE,
+} from 'graphql/mutations/SharedGroup';
+import { LIST_GROUPS } from 'graphql/queries/sharedClasses/SharedGroup';
 import useModal from 'hooks/useModal';
+import { getUserId } from 'utils/Auth';
 
-import { createGroup, fetchGroups, GroupSummary, respondToInvite } from './api';
 import GroupDetail from './GroupDetail';
 
 const wrapperClasses =
@@ -21,49 +38,54 @@ const wrapperClasses =
 const SharedClassesPage = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const [openModal] = useModal();
+  const userId = getUserId();
 
-  const [groups, setGroups] = useState<GroupSummary[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<number | null>(null);
   const [newName, setNewName] = useState('');
-  const [creating, setCreating] = useState(false);
 
-  const load = async () => {
-    try {
-      setGroups(await fetchGroups());
-    } catch {
-      toast('Could not load your groups.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, loading, refetch } = useQuery<
+    ListGroupsQuery,
+    ListGroupsQueryVariables
+  >(LIST_GROUPS, {
+    variables: { userId },
+    skip: !isLoggedIn,
+    onError: () => toast('Could not load your groups.'),
+  });
+  const groups = data?.shared_group ?? [];
 
-  useEffect(() => {
-    if (isLoggedIn) load();
-    else setLoading(false);
-    // load reads no props/state beyond the auth flag; refetch on login change.
-  }, [isLoggedIn]);
+  const [createGroup, { loading: creating }] = useMutation<
+    CreateGroupMutation,
+    CreateGroupMutationVariables
+  >(CREATE_GROUP);
+  const [acceptInvite] = useMutation<
+    AcceptInviteMutation,
+    AcceptInviteMutationVariables
+  >(ACCEPT_INVITE);
+  const [declineInvite] = useMutation<
+    DeclineInviteMutation,
+    DeclineInviteMutationVariables
+  >(DECLINE_INVITE);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newName.trim()) return;
-    setCreating(true);
+    const name = newName.trim();
+    if (!name) return;
     try {
-      const group = await createGroup(newName.trim());
+      const result = await createGroup({ variables: { name } });
+      const group = result.data?.insert_shared_group?.returning[0];
       setNewName('');
-      await load();
-      setSelected(group.id);
+      await refetch();
+      if (group) setSelected(group.id);
     } catch {
       toast('Could not create the group.');
-    } finally {
-      setCreating(false);
     }
   };
 
-  const handleRespond = async (id: number, accept: boolean) => {
+  const handleRespond = async (groupId: number, accept: boolean) => {
     try {
-      await respondToInvite(id, accept);
-      await load();
+      if (accept) await acceptInvite({ variables: { groupId, userId } });
+      else await declineInvite({ variables: { groupId, userId } });
+      await refetch();
     } catch {
       toast('Could not update the invite.');
     }
@@ -93,13 +115,13 @@ const SharedClassesPage = () => {
         <GroupDetail
           groupId={selected}
           onBack={() => setSelected(null)}
-          onChanged={load}
+          onChanged={refetch}
         />
       );
     }
 
-    const invites = groups.filter((g) => g.status === 'pending');
-    const mine = groups.filter((g) => g.status === 'member');
+    const invites = groups.filter((g) => g.members[0]?.status === 'pending');
+    const mine = groups.filter((g) => g.members[0]?.status === 'member');
 
     return (
       <>
@@ -175,32 +197,35 @@ const SharedClassesPage = () => {
             </p>
           ) : (
             <ul className="flex list-none flex-col gap-sm p-0">
-              {mine.map((g) => (
-                <li key={g.id}>
-                  <button
-                    type="button"
-                    onClick={() => setSelected(g.id)}
-                    className="group flex w-full items-center gap-md rounded-card border border-light3 bg-white p-md text-left font-inter shadow-box transition-all duration-hover ease-hover hover:border-primary"
-                  >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-light2 text-primary">
-                      <Users size={18} />
-                    </span>
-                    <span className="flex min-w-0 flex-1 flex-col">
-                      <span className="truncate text-md font-semibold text-dark1">
-                        {g.name}
+              {mine.map((g) => {
+                const memberCount = g.members_aggregate.aggregate?.count ?? 0;
+                return (
+                  <li key={g.id}>
+                    <button
+                      type="button"
+                      onClick={() => setSelected(g.id)}
+                      className="group flex w-full items-center gap-md rounded-card border border-light3 bg-white p-md text-left font-inter shadow-box transition-all duration-hover ease-hover hover:border-primary"
+                    >
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-light2 text-primary">
+                        <Users size={18} />
                       </span>
-                      <span className="text-xs text-dark3">
-                        {g.member_count}{' '}
-                        {g.member_count === 1 ? 'member' : 'members'}
+                      <span className="flex min-w-0 flex-1 flex-col">
+                        <span className="truncate text-md font-semibold text-dark1">
+                          {g.name}
+                        </span>
+                        <span className="text-xs text-dark3">
+                          {memberCount}{' '}
+                          {memberCount === 1 ? 'member' : 'members'}
+                        </span>
                       </span>
-                    </span>
-                    <ChevronRight
-                      size={18}
-                      className="shrink-0 text-dark3 transition-transform duration-hover ease-hover group-hover:translate-x-1 group-hover:text-primary"
-                    />
-                  </button>
-                </li>
-              ))}
+                      <ChevronRight
+                        size={18}
+                        className="shrink-0 text-dark3 transition-transform duration-hover ease-hover group-hover:translate-x-1 group-hover:text-primary"
+                      />
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
