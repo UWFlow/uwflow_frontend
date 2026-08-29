@@ -1,22 +1,13 @@
 import {
   BACKEND_ENDPOINT,
   GROUP_BY_ID_ENDPOINT,
-  GROUP_ENDPOINT,
   GROUP_INVITE_ENDPOINT,
   GROUP_LEAVE_ENDPOINT,
-  GROUP_RESPOND_ENDPOINT,
 } from 'constants/Api';
 import {
   makeAuthenticatedGETRequest,
   makeAuthenticatedPOSTRequest,
 } from 'utils/Api';
-
-export interface GroupSummary {
-  id: number;
-  name: string;
-  status: 'member' | 'pending';
-  member_count: number;
-}
 
 export interface GroupMember {
   user_id: number;
@@ -61,29 +52,10 @@ const checkStatus = (status: number) => {
   }
 };
 
-export const fetchGroups = async (): Promise<GroupSummary[]> => {
-  const [body, status] = await makeAuthenticatedGETRequest<{
-    groups: GroupSummary[];
-  }>(url(GROUP_ENDPOINT));
-  checkStatus(status);
-  return body.groups ?? [];
-};
-
 export const fetchGroup = async (id: number): Promise<GroupDetail> => {
   const [body, status] = await makeAuthenticatedGETRequest<GroupDetail>(
     url(GROUP_BY_ID_ENDPOINT(id)),
   );
-  checkStatus(status);
-  return body;
-};
-
-export const createGroup = async (
-  name: string,
-): Promise<{ id: number; name: string }> => {
-  const [body, status] = await makeAuthenticatedPOSTRequest<
-    { name: string },
-    { id: number; name: string }
-  >(url(GROUP_ENDPOINT), { name });
   checkStatus(status);
   return body;
 };
@@ -101,18 +73,6 @@ export const inviteToGroup = async (
   >(url(GROUP_INVITE_ENDPOINT(id)), { email });
   checkStatus(status);
   return body.status;
-};
-
-export const respondToInvite = async (
-  id: number,
-  accept: boolean,
-  block = false,
-): Promise<void> => {
-  const [, status] = await makeAuthenticatedPOSTRequest<
-    { accept: boolean; block: boolean },
-    { status: string }
-  >(url(GROUP_RESPOND_ENDPOINT(id)), { accept, block });
-  checkStatus(status);
 };
 
 export const leaveGroup = async (id: number): Promise<void> => {
