@@ -12,6 +12,9 @@ import CourseReviewBox, {
 import DeleteAccountModalContent, {
   DeleteAccountModalContentProps,
 } from 'components/delete/DeleteAccountModalContent';
+import DeleteGroupModalContent, {
+  DeleteGroupModalContentProps,
+} from 'components/delete/DeleteGroupModalContent';
 import EditEmailModalContent, {
   EditEmailModalContentProps,
 } from 'components/email/EditEmailModalContent';
@@ -34,6 +37,7 @@ import {
   AUTH_MODAL,
   COURSE_REVIEW_COURSE_MODAL,
   DELETE_ACCOUNT_MODAL,
+  DELETE_GROUP_MODAL,
   EDIT_EMAIL_MODAL,
   ModalName,
   NOTIFICATION_EMAIL_MODAL,
@@ -77,6 +81,10 @@ const DeleteAccountModal = (props: DeleteAccountModalContentProps) => (
   <DeleteAccountModalContent {...props} />
 );
 
+const DeleteGroupModal = (props: DeleteGroupModalContentProps) => (
+  <DeleteGroupModalContent {...props} />
+);
+
 const SwapTourModal = (props: SwapTourModalContentProps) => (
   <SwapTourModalContent {...props} />
 );
@@ -98,6 +106,7 @@ export const modalNameToModal: NameModalMap = {
   [EDIT_EMAIL_MODAL]: EditEmailModal,
   [RESET_PASSWORD_MODAL]: ResetPasswordModal,
   [DELETE_ACCOUNT_MODAL]: DeleteAccountModal,
+  [DELETE_GROUP_MODAL]: DeleteGroupModal,
   [SWAP_TOUR_MODAL]: SwapTourModal,
   [SHARED_CLASSES_TOUR_MODAL]: SharedClassesTourModal,
 };

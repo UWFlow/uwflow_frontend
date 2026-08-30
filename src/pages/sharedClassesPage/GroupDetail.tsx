@@ -9,8 +9,6 @@ import {
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
 import {
-  DeleteGroupMutation,
-  DeleteGroupMutationVariables,
   LeaveGroupMutation,
   LeaveGroupMutationVariables,
 } from 'generated/graphql';
@@ -25,7 +23,9 @@ import Tooltip from 'components/display/Tooltip';
 import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
-import { DELETE_GROUP, LEAVE_GROUP } from 'graphql/mutations/SharedGroup';
+import { DELETE_GROUP_MODAL } from 'constants/Modal';
+import { LEAVE_GROUP } from 'graphql/mutations/SharedGroup';
+import useModal from 'hooks/useModal';
 import { getUserId } from 'utils/Auth';
 import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
@@ -191,11 +191,11 @@ const SharedClassCard = ({
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const userId = getUserId();
+  const [openModal] = useModal();
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [inviting, setInviting] = useState(false);
-  const [deleting, setDeleting] = useState(false);
   const [notice, setNotice] = useState<{
     kind: 'success' | 'error';
     text: string;
@@ -205,10 +205,6 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     LeaveGroupMutation,
     LeaveGroupMutationVariables
   >(LEAVE_GROUP);
-  const [deleteGroup] = useMutation<
-    DeleteGroupMutation,
-    DeleteGroupMutationVariables
-  >(DELETE_GROUP);
 
   const load = async () => {
     try {
@@ -259,19 +255,15 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm(`Delete "${group?.name}"? This cannot be undone.`)) {
-      return;
-    }
-    setDeleting(true);
-    try {
-      await deleteGroup({ variables: { groupId } });
-      await onChanged();
-      onBack();
-    } catch {
-      toast('Could not delete the group.');
-      setDeleting(false);
-    }
+  const handleDelete = () => {
+    openModal(DELETE_GROUP_MODAL, {
+      groupId,
+      groupName: group?.name ?? '',
+      onDeleted: async () => {
+        await onChanged();
+        onBack();
+      },
+    });
   };
 
   if (loading) return <LoadingSpinner />;
@@ -309,10 +301,9 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
               variant="outline"
               size="sm"
               className="font-semibold text-red"
-              disabled={deleting}
               onClick={handleDelete}
             >
-              {deleting ? 'Deleting...' : 'Delete group'}
+              Delete group
             </Button>
           )}
           <Button
