@@ -27,7 +27,7 @@ export interface SharedClass {
   course_name: string;
   section_name: string;
   term_id: number;
-  members: GroupMember[];
+  member_ids: number[];
   meetings: Meeting[];
 }
 
