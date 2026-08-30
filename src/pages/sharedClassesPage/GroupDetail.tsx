@@ -128,52 +128,64 @@ const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
   return events;
 };
 
-const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
-  <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
-    <div className="flex flex-wrap items-center gap-sm">
-      <span
-        className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
-          shared.section_name,
-        )}`}
-      >
-        {shared.section_name}
-      </span>
-      <span className="text-md font-semibold text-primary">
-        {shared.course_code.toUpperCase()}
-      </span>
-      <span className="text-md text-dark1">{shared.course_name}</span>
-    </div>
+const SharedClassCard = ({
+  shared,
+  membersById,
+}: {
+  shared: SharedClass;
+  membersById: Map<number, GroupMember>;
+}) => {
+  const members = shared.member_ids
+    .map((id) => membersById.get(id))
+    .filter((m): m is GroupMember => m !== undefined);
 
-    {shared.meetings.length > 0 && (
-      <div className="flex flex-col gap-xs">
-        {shared.meetings.map((m, i) => (
-          <div
-            key={i}
-            className="flex flex-wrap items-center gap-sm text-sm text-dark2"
-          >
-            <span className="flex items-center gap-xs">
-              <Clock size={14} /> {formatMeeting(m)}
-            </span>
-            {m.location && (
-              <span className="flex items-center gap-xs">
-                <MapPin size={14} /> {m.location}
-              </span>
-            )}
-          </div>
-        ))}
+  return (
+    <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
+      <div className="flex flex-wrap items-center gap-sm">
+        <span
+          className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
+            shared.section_name,
+          )}`}
+        >
+          {shared.section_name}
+        </span>
+        <span className="text-md font-semibold text-primary">
+          {shared.course_code.toUpperCase()}
+        </span>
+        <span className="text-md text-dark1">{shared.course_name}</span>
       </div>
-    )}
 
-    <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
-      {shared.members.map((m) => (
-        <Avatar key={m.user_id} userId={m.user_id} name={m.name} />
-      ))}
-      <span className="ml-xs text-sm text-dark2">
-        {shared.members.map((m) => m.name).join(', ')}
-      </span>
-    </div>
-  </li>
-);
+      {shared.meetings.length > 0 && (
+        <div className="flex flex-col gap-xs">
+          {shared.meetings.map((m, i) => (
+            <div
+              key={i}
+              className="flex flex-wrap items-center gap-sm text-sm text-dark2"
+            >
+              <span className="flex items-center gap-xs">
+                <Clock size={14} /> {formatMeeting(m)}
+              </span>
+              {m.location && (
+                <span className="flex items-center gap-xs">
+                  <MapPin size={14} /> {m.location}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
+        {members.map((m) => (
+          <Avatar key={m.user_id} userId={m.user_id} name={m.name} />
+        ))}
+        <span className="ml-xs text-sm text-dark2">
+          {members.map((m) => m.name).join(', ')}
+        </span>
+      </div>
+    </li>
+  );
+};
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const userId = getUserId();
@@ -245,6 +257,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   const members = group.members.filter((m) => m.status === 'member');
   const pending = group.members.filter((m) => m.status === 'pending');
+  const membersById = new Map(group.members.map((m) => [m.user_id, m]));
 
   const events = toCalendarEvents(group.shared_classes);
   const eventHours = events.flatMap((e) => [
@@ -369,7 +382,11 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             )}
             <ul className="flex flex-col gap-sm">
               {group.shared_classes.map((c) => (
-                <SharedClassCard key={c.section_id} shared={c} />
+                <SharedClassCard
+                  key={c.section_id}
+                  shared={c}
+                  membersById={membersById}
+                />
               ))}
             </ul>
           </>
