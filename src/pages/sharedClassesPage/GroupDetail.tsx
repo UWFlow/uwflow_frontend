@@ -42,7 +42,7 @@ import {
 interface Props {
   groupId: number;
   onBack: () => void;
-  onChanged: () => void;
+  onChanged: () => Promise<unknown>;
 }
 
 // Matches the avatar shown elsewhere in the app (navbar, reviews, profile
@@ -252,7 +252,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const handleLeave = async () => {
     try {
       await leaveGroup({ variables: { groupId, userId } });
-      onChanged();
+      await onChanged();
       onBack();
     } catch {
       toast('Could not leave the group.');
@@ -266,7 +266,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     setDeleting(true);
     try {
       await deleteGroup({ variables: { groupId } });
-      onChanged();
+      await onChanged();
       onBack();
     } catch {
       toast('Could not delete the group.');
