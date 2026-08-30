@@ -14,7 +14,6 @@ import {
   LeaveGroupMutation,
   LeaveGroupMutationVariables,
 } from 'generated/graphql';
-import { useTheme } from 'styled-components';
 
 import {
   Calendar,
@@ -191,7 +190,6 @@ const SharedClassCard = ({
 };
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
-  const theme = useTheme();
   const userId = getUserId();
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -307,13 +305,15 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         </h1>
         <div className="flex gap-sm">
           {group.is_creator && (
-            <AccentButton
-              color={theme.red}
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-semibold text-red"
               disabled={deleting}
-              handleClick={handleDelete}
+              onClick={handleDelete}
             >
               {deleting ? 'Deleting...' : 'Delete group'}
-            </AccentButton>
+            </Button>
           )}
           <Button
             variant="outline"
