@@ -55,3 +55,5 @@ export const USER_ACCOUNT_ENDPOINT = '/user';
 /* Shared Classes */
 export const GROUP_BY_ID_ENDPOINT = (id: number) => `/group/${id}`;
 export const GROUP_INVITE_ENDPOINT = (id: number) => `/group/${id}/invite`;
+export const GROUP_EMAIL_INVITE_ACCEPT_ENDPOINT = (secret: string) =>
+  `/group/invite/${encodeURIComponent(secret)}/accept`;

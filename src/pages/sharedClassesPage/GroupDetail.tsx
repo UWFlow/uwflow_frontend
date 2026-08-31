@@ -9,8 +9,10 @@ import {
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
 import {
-  LeaveGroupMutation,
-  LeaveGroupMutationVariables,
+  DeleteSharedGroupMutation,
+  DeleteSharedGroupMutationVariables,
+  RemoveSharedGroupMembershipMutation,
+  RemoveSharedGroupMembershipMutationVariables,
 } from 'generated/graphql';
 
 import LoadingSpinner from 'components/display/LoadingSpinner';
@@ -18,12 +20,13 @@ import Tooltip from 'components/display/Tooltip';
 import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
-import { LEAVE_GROUP } from 'graphql/mutations/SharedGroup';
-import { getUserId } from 'utils/Auth';
+import {
+  DELETE_SHARED_GROUP,
+  REMOVE_SHARED_GROUP_MEMBERSHIP,
+} from 'graphql/mutations/SharedClasses';
 import { getKittenFromID } from 'utils/Kitten';
 
 import {
-  deleteGroup,
   fetchGroup,
   formatMeeting,
   GroupDetail as GroupDetailData,
@@ -35,7 +38,7 @@ import {
 interface Props {
   groupId: number;
   onBack: () => void;
-  onChanged: () => Promise<unknown>;
+  onChanged: () => void;
 }
 
 // Matches the avatar shown elsewhere in the app (navbar, reviews, profile
@@ -85,65 +88,58 @@ const componentTint = (sectionName: string) => {
 
 const SharedClassCard = ({
   shared,
-  membersById,
+  members,
 }: {
   shared: SharedClass;
-  membersById: Map<number, GroupMember>;
-}) => {
-  const members = shared.member_ids
-    .map((id) => membersById.get(id))
-    .filter((m): m is GroupMember => m !== undefined);
+  members: GroupMember[];
+}) => (
+  <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
+    <div className="flex flex-wrap items-center gap-sm">
+      <span
+        className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
+          shared.section_name,
+        )}`}
+      >
+        {shared.section_name}
+      </span>
+      <span className="text-md font-semibold text-primary">
+        {shared.course_code.toUpperCase()}
+      </span>
+      <span className="text-md text-dark1">{shared.course_name}</span>
+    </div>
 
-  return (
-    <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
-      <div className="flex flex-wrap items-center gap-sm">
-        <span
-          className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
-            shared.section_name,
-          )}`}
-        >
-          {shared.section_name}
-        </span>
-        <span className="text-md font-semibold text-primary">
-          {shared.course_code.toUpperCase()}
-        </span>
-        <span className="text-md text-dark1">{shared.course_name}</span>
-      </div>
-
-      {shared.meetings.length > 0 && (
-        <div className="flex flex-col gap-xs">
-          {shared.meetings.map((m, i) => (
-            <div
-              key={i}
-              className="flex flex-wrap items-center gap-sm text-sm text-dark2"
-            >
+    {shared.meetings.length > 0 && (
+      <div className="flex flex-col gap-xs">
+        {shared.meetings.map((m, i) => (
+          <div
+            key={i}
+            className="flex flex-wrap items-center gap-sm text-sm text-dark2"
+          >
+            <span className="flex items-center gap-xs">
+              <Clock size={14} /> {formatMeeting(m)}
+            </span>
+            {m.location && (
               <span className="flex items-center gap-xs">
-                <Clock size={14} /> {formatMeeting(m)}
+                <MapPin size={14} /> {m.location}
               </span>
-              {m.location && (
-                <span className="flex items-center gap-xs">
-                  <MapPin size={14} /> {m.location}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
-        {members.map((m) => (
-          <Avatar key={m.user_id} userId={m.user_id} name={m.name} />
+            )}
+          </div>
         ))}
-        <span className="ml-xs text-sm text-dark2">
-          {members.map((m) => m.name).join(', ')}
-        </span>
       </div>
-    </li>
-  );
-};
+    )}
+
+    <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
+      {members.map((m) => (
+        <Avatar key={m.user_id} userId={m.user_id} name={m.name} />
+      ))}
+      <span className="ml-xs text-sm text-dark2">
+        {members.map((m) => m.name).join(', ')}
+      </span>
+    </div>
+  </li>
+);
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
-  const userId = getUserId();
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
@@ -152,11 +148,14 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     kind: 'success' | 'error';
     text: string;
   } | null>(null);
-
-  const [leaveGroup] = useMutation<
-    LeaveGroupMutation,
-    LeaveGroupMutationVariables
-  >(LEAVE_GROUP);
+  const [removeGroupMembership] = useMutation<
+    RemoveSharedGroupMembershipMutation,
+    RemoveSharedGroupMembershipMutationVariables
+  >(REMOVE_SHARED_GROUP_MEMBERSHIP);
+  const [deleteGroup] = useMutation<
+    DeleteSharedGroupMutation,
+    DeleteSharedGroupMutationVariables
+  >(DELETE_SHARED_GROUP);
 
   const load = async () => {
     try {
@@ -179,17 +178,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     setInviting(true);
     setNotice(null);
     try {
-      const result = await inviteToGroup(groupId, email.trim());
-      if (result === 'not_found') {
-        setNotice({
-          kind: 'error',
-          text: 'No UW Flow account uses that email.',
-        });
-      } else {
-        setNotice({ kind: 'success', text: `Invite sent to ${email.trim()}.` });
-        setEmail('');
-        await load();
-      }
+      await inviteToGroup(groupId, email.trim());
+      setNotice({ kind: 'success', text: `Invite sent to ${email.trim()}.` });
+      setEmail('');
+      await load();
     } catch {
       setNotice({ kind: 'error', text: 'Could not send the invite.' });
     } finally {
@@ -199,8 +191,13 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   const handleLeave = async () => {
     try {
-      await leaveGroup({ variables: { groupId, userId } });
-      await onChanged();
+      const result = await removeGroupMembership({
+        variables: { groupId },
+      });
+      if (result.data?.delete_shared_group_member?.affected_rows !== 1) {
+        throw new Error('membership was not removed');
+      }
+      onChanged();
       onBack();
     } catch {
       toast('Could not leave the group.');
@@ -212,7 +209,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       return;
     }
     try {
-      await deleteGroup(groupId);
+      const result = await deleteGroup({ variables: { groupId } });
+      if (result.data?.delete_shared_group?.affected_rows !== 1) {
+        throw new Error('group was not deleted');
+      }
       onChanged();
       onBack();
     } catch {
@@ -293,7 +293,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
                 if (notice) setNotice(null);
               }}
               placeholder="Email"
-              maxLength={100}
+              maxLength={256}
               error={notice?.kind === 'error'}
               options={{ width: '100%', type: 'email' }}
             />
@@ -316,6 +316,19 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             {notice.text}
           </span>
         )}
+        {group.invited_emails.length > 0 && (
+          <div className="flex flex-wrap items-center gap-xs pt-xs">
+            <span className="text-xs text-dark3">Waiting to join:</span>
+            {group.invited_emails.map((invitedEmail) => (
+              <span
+                key={invitedEmail}
+                className="rounded-card bg-light2 px-sm py-xs text-xs text-dark2"
+              >
+                {invitedEmail}
+              </span>
+            ))}
+          </div>
+        )}
       </form>
 
       <div className="flex flex-col gap-sm">
@@ -327,13 +340,19 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
           </div>
         ) : (
           <ul className="flex flex-col gap-sm">
-            {group.shared_classes.map((c) => (
-              <SharedClassCard
-                key={c.section_id}
-                shared={c}
-                membersById={membersById}
-              />
-            ))}
+            {group.shared_classes.map((shared) => {
+              const sharedMembers = shared.member_ids.flatMap((memberId) => {
+                const member = membersById.get(memberId);
+                return member ? [member] : [];
+              });
+              return (
+                <SharedClassCard
+                  key={shared.section_id}
+                  shared={shared}
+                  members={sharedMembers}
+                />
+              );
+            })}
           </ul>
         )}
       </div>

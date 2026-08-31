@@ -9660,10 +9660,10 @@ export type Shared_Group_Max_Fields = {
 /** columns and relationships of "shared_group_member" */
 export type Shared_Group_Member = {
   __typename?: 'shared_group_member';
+  created_at: Scalars['timestamptz']['output'];
   /** An object relationship */
   group: Shared_Group;
   group_id: Scalars['Int']['output'];
-  joined_at: Scalars['timestamptz']['output'];
   status: Scalars['String']['output'];
   user_id: Scalars['Int']['output'];
 };
@@ -9748,9 +9748,9 @@ export type Shared_Group_Member_Bool_Exp = {
   _and?: InputMaybe<Array<Shared_Group_Member_Bool_Exp>>;
   _not?: InputMaybe<Shared_Group_Member_Bool_Exp>;
   _or?: InputMaybe<Array<Shared_Group_Member_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   group?: InputMaybe<Shared_Group_Bool_Exp>;
   group_id?: InputMaybe<Int_Comparison_Exp>;
-  joined_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   status?: InputMaybe<String_Comparison_Exp>;
   user_id?: InputMaybe<Int_Comparison_Exp>;
 };
@@ -9769,9 +9769,9 @@ export type Shared_Group_Member_Inc_Input = {
 
 /** input type for inserting data into table "shared_group_member" */
 export type Shared_Group_Member_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   group?: InputMaybe<Shared_Group_Obj_Rel_Insert_Input>;
   group_id?: InputMaybe<Scalars['Int']['input']>;
-  joined_at?: InputMaybe<Scalars['timestamptz']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -9779,16 +9779,16 @@ export type Shared_Group_Member_Insert_Input = {
 /** aggregate max on columns */
 export type Shared_Group_Member_Max_Fields = {
   __typename?: 'shared_group_member_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   group_id?: Maybe<Scalars['Int']['output']>;
-  joined_at?: Maybe<Scalars['timestamptz']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "shared_group_member" */
 export type Shared_Group_Member_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   group_id?: InputMaybe<Order_By>;
-  joined_at?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -9796,16 +9796,16 @@ export type Shared_Group_Member_Max_Order_By = {
 /** aggregate min on columns */
 export type Shared_Group_Member_Min_Fields = {
   __typename?: 'shared_group_member_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   group_id?: Maybe<Scalars['Int']['output']>;
-  joined_at?: Maybe<Scalars['timestamptz']['output']>;
   status?: Maybe<Scalars['String']['output']>;
   user_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "shared_group_member" */
 export type Shared_Group_Member_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   group_id?: InputMaybe<Order_By>;
-  joined_at?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -9828,9 +9828,9 @@ export type Shared_Group_Member_On_Conflict = {
 
 /** Ordering options when selecting data from "shared_group_member". */
 export type Shared_Group_Member_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   group?: InputMaybe<Shared_Group_Order_By>;
   group_id?: InputMaybe<Order_By>;
-  joined_at?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -9844,9 +9844,9 @@ export type Shared_Group_Member_Pk_Columns_Input = {
 /** select columns of table "shared_group_member" */
 export enum Shared_Group_Member_Select_Column {
   /** column name */
-  GroupId = 'group_id',
+  CreatedAt = 'created_at',
   /** column name */
-  JoinedAt = 'joined_at',
+  GroupId = 'group_id',
   /** column name */
   Status = 'status',
   /** column name */
@@ -9855,8 +9855,8 @@ export enum Shared_Group_Member_Select_Column {
 
 /** input type for updating data in table "shared_group_member" */
 export type Shared_Group_Member_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   group_id?: InputMaybe<Scalars['Int']['input']>;
-  joined_at?: InputMaybe<Scalars['timestamptz']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -9910,8 +9910,8 @@ export type Shared_Group_Member_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Shared_Group_Member_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   group_id?: InputMaybe<Scalars['Int']['input']>;
-  joined_at?: InputMaybe<Scalars['timestamptz']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   user_id?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -9932,9 +9932,9 @@ export type Shared_Group_Member_Sum_Order_By = {
 /** update columns of table "shared_group_member" */
 export enum Shared_Group_Member_Update_Column {
   /** column name */
-  GroupId = 'group_id',
+  CreatedAt = 'created_at',
   /** column name */
-  JoinedAt = 'joined_at',
+  GroupId = 'group_id',
   /** column name */
   Status = 'status',
   /** column name */
@@ -12997,13 +12997,6 @@ export type ProfSearchFragment = {
   ratings: any;
 };
 
-export type GroupSummaryFragment = {
-  id: number;
-  name: string;
-  members: Array<{ status: string }>;
-  members_aggregate: { aggregate: { count: number } | null };
-};
-
 export type UserInfoFragment = {
   id: number;
   full_name: string;
@@ -13180,41 +13173,36 @@ export type DeleteSectionSubscriptionMutation = {
   delete_queue_section_subscribed: { affected_rows: number } | null;
 };
 
-export type CreateGroupMutationVariables = Exact<{
+export type CreateSharedGroupMutationVariables = Exact<{
   name: string;
 }>;
 
-export type CreateGroupMutation = {
-  insert_shared_group: {
-    returning: Array<{ id: number; name: string }>;
-  } | null;
+export type CreateSharedGroupMutation = {
+  insert_shared_group_one: { id: number; name: string } | null;
 };
 
-export type AcceptInviteMutationVariables = Exact<{
+export type AcceptSharedGroupInviteMutationVariables = Exact<{
   groupId: number;
-  userId: number;
 }>;
 
-export type AcceptInviteMutation = {
+export type AcceptSharedGroupInviteMutation = {
   update_shared_group_member: { affected_rows: number } | null;
 };
 
-export type DeclineInviteMutationVariables = Exact<{
+export type RemoveSharedGroupMembershipMutationVariables = Exact<{
   groupId: number;
-  userId: number;
 }>;
 
-export type DeclineInviteMutation = {
+export type RemoveSharedGroupMembershipMutation = {
   delete_shared_group_member: { affected_rows: number } | null;
 };
 
-export type LeaveGroupMutationVariables = Exact<{
+export type DeleteSharedGroupMutationVariables = Exact<{
   groupId: number;
-  userId: number;
 }>;
 
-export type LeaveGroupMutation = {
-  delete_shared_group_member: { affected_rows: number } | null;
+export type DeleteSharedGroupMutation = {
+  delete_shared_group: { affected_rows: number } | null;
 };
 
 export type InsertUserShortlistMutationVariables = Exact<{
@@ -13491,12 +13479,6 @@ export type Refetch_Prof_Review_UpvoteQuery = {
   review: Array<ReviewVoteCountsFragment>;
 };
 
-export type ListGroupsQueryVariables = Exact<{
-  userId: number;
-}>;
-
-export type ListGroupsQuery = { shared_group: Array<GroupSummaryFragment> };
-
 export type GetScheduleSwapsQueryVariables = Exact<{
   userId: number;
   termIds: Array<number> | number;
@@ -13512,6 +13494,19 @@ export type GetScheduleSwapsQuery = {
       section: { id: number; term_id: number };
     };
     replacement_section: SwapCourseSectionFragment;
+  }>;
+};
+
+export type GetSharedGroupsQueryVariables = Exact<{
+  userId: number;
+}>;
+
+export type GetSharedGroupsQuery = {
+  shared_group: Array<{
+    id: number;
+    name: string;
+    membership: Array<{ status: string }>;
+    members_aggregate: { aggregate: { count: number } | null };
   }>;
 };
 
@@ -13814,20 +13809,6 @@ export const ProfSearchFragmentDoc = gql`
     engaging
     liked
     ratings
-  }
-`;
-export const GroupSummaryFragmentDoc = gql`
-  fragment GroupSummary on shared_group {
-    id
-    name
-    members(where: { user_id: { _eq: $userId } }) {
-      status
-    }
-    members_aggregate(where: { status: { _eq: "member" } }) {
-      aggregate {
-        count
-      }
-    }
   }
 `;
 export const UserInfoFragmentDoc = gql`
@@ -14528,228 +14509,212 @@ export type DeleteSectionSubscriptionMutationOptions =
     DeleteSectionSubscriptionMutation,
     DeleteSectionSubscriptionMutationVariables
   >;
-export const CreateGroupDocument = gql`
-  mutation createGroup($name: String!) {
-    insert_shared_group(
-      objects: { name: $name, members: { data: [{ status: "member" }] } }
+export const CreateSharedGroupDocument = gql`
+  mutation createSharedGroup($name: String!) {
+    insert_shared_group_one(
+      object: { name: $name, members: { data: [{ status: "member" }] } }
     ) {
-      returning {
-        id
-        name
-      }
+      id
+      name
     }
   }
 `;
-export type CreateGroupMutationFn = Apollo.MutationFunction<
-  CreateGroupMutation,
-  CreateGroupMutationVariables
+export type CreateSharedGroupMutationFn = Apollo.MutationFunction<
+  CreateSharedGroupMutation,
+  CreateSharedGroupMutationVariables
 >;
 
 /**
- * __useCreateGroupMutation__
+ * __useCreateSharedGroupMutation__
  *
- * To run a mutation, you first call `useCreateGroupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateGroupMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateSharedGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSharedGroupMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createGroupMutation, { data, loading, error }] = useCreateGroupMutation({
+ * const [createSharedGroupMutation, { data, loading, error }] = useCreateSharedGroupMutation({
  *   variables: {
  *      name: // value for 'name'
  *   },
  * });
  */
-export function useCreateGroupMutation(
+export function useCreateSharedGroupMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    CreateGroupMutation,
-    CreateGroupMutationVariables
+    CreateSharedGroupMutation,
+    CreateSharedGroupMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(
-    CreateGroupDocument,
-    options,
-  );
+  return Apollo.useMutation<
+    CreateSharedGroupMutation,
+    CreateSharedGroupMutationVariables
+  >(CreateSharedGroupDocument, options);
 }
-export type CreateGroupMutationHookResult = ReturnType<
-  typeof useCreateGroupMutation
+export type CreateSharedGroupMutationHookResult = ReturnType<
+  typeof useCreateSharedGroupMutation
 >;
-export type CreateGroupMutationResult =
-  Apollo.MutationResult<CreateGroupMutation>;
-export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<
-  CreateGroupMutation,
-  CreateGroupMutationVariables
+export type CreateSharedGroupMutationResult =
+  Apollo.MutationResult<CreateSharedGroupMutation>;
+export type CreateSharedGroupMutationOptions = Apollo.BaseMutationOptions<
+  CreateSharedGroupMutation,
+  CreateSharedGroupMutationVariables
 >;
-export const AcceptInviteDocument = gql`
-  mutation acceptInvite($groupId: Int!, $userId: Int!) {
+export const AcceptSharedGroupInviteDocument = gql`
+  mutation acceptSharedGroupInvite($groupId: Int!) {
     update_shared_group_member(
-      where: {
-        group_id: { _eq: $groupId }
-        user_id: { _eq: $userId }
-        status: { _eq: "pending" }
-      }
+      where: { group_id: { _eq: $groupId } }
       _set: { status: "member" }
     ) {
       affected_rows
     }
   }
 `;
-export type AcceptInviteMutationFn = Apollo.MutationFunction<
-  AcceptInviteMutation,
-  AcceptInviteMutationVariables
+export type AcceptSharedGroupInviteMutationFn = Apollo.MutationFunction<
+  AcceptSharedGroupInviteMutation,
+  AcceptSharedGroupInviteMutationVariables
 >;
 
 /**
- * __useAcceptInviteMutation__
+ * __useAcceptSharedGroupInviteMutation__
  *
- * To run a mutation, you first call `useAcceptInviteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAcceptInviteMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAcceptSharedGroupInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptSharedGroupInviteMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [acceptInviteMutation, { data, loading, error }] = useAcceptInviteMutation({
+ * const [acceptSharedGroupInviteMutation, { data, loading, error }] = useAcceptSharedGroupInviteMutation({
  *   variables: {
  *      groupId: // value for 'groupId'
- *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useAcceptInviteMutation(
+export function useAcceptSharedGroupInviteMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    AcceptInviteMutation,
-    AcceptInviteMutationVariables
+    AcceptSharedGroupInviteMutation,
+    AcceptSharedGroupInviteMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
-    AcceptInviteMutation,
-    AcceptInviteMutationVariables
-  >(AcceptInviteDocument, options);
+    AcceptSharedGroupInviteMutation,
+    AcceptSharedGroupInviteMutationVariables
+  >(AcceptSharedGroupInviteDocument, options);
 }
-export type AcceptInviteMutationHookResult = ReturnType<
-  typeof useAcceptInviteMutation
+export type AcceptSharedGroupInviteMutationHookResult = ReturnType<
+  typeof useAcceptSharedGroupInviteMutation
 >;
-export type AcceptInviteMutationResult =
-  Apollo.MutationResult<AcceptInviteMutation>;
-export type AcceptInviteMutationOptions = Apollo.BaseMutationOptions<
-  AcceptInviteMutation,
-  AcceptInviteMutationVariables
+export type AcceptSharedGroupInviteMutationResult =
+  Apollo.MutationResult<AcceptSharedGroupInviteMutation>;
+export type AcceptSharedGroupInviteMutationOptions = Apollo.BaseMutationOptions<
+  AcceptSharedGroupInviteMutation,
+  AcceptSharedGroupInviteMutationVariables
 >;
-export const DeclineInviteDocument = gql`
-  mutation declineInvite($groupId: Int!, $userId: Int!) {
-    delete_shared_group_member(
-      where: {
-        group_id: { _eq: $groupId }
-        user_id: { _eq: $userId }
-        status: { _eq: "pending" }
-      }
-    ) {
+export const RemoveSharedGroupMembershipDocument = gql`
+  mutation removeSharedGroupMembership($groupId: Int!) {
+    delete_shared_group_member(where: { group_id: { _eq: $groupId } }) {
       affected_rows
     }
   }
 `;
-export type DeclineInviteMutationFn = Apollo.MutationFunction<
-  DeclineInviteMutation,
-  DeclineInviteMutationVariables
+export type RemoveSharedGroupMembershipMutationFn = Apollo.MutationFunction<
+  RemoveSharedGroupMembershipMutation,
+  RemoveSharedGroupMembershipMutationVariables
 >;
 
 /**
- * __useDeclineInviteMutation__
+ * __useRemoveSharedGroupMembershipMutation__
  *
- * To run a mutation, you first call `useDeclineInviteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeclineInviteMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useRemoveSharedGroupMembershipMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveSharedGroupMembershipMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [declineInviteMutation, { data, loading, error }] = useDeclineInviteMutation({
+ * const [removeSharedGroupMembershipMutation, { data, loading, error }] = useRemoveSharedGroupMembershipMutation({
  *   variables: {
  *      groupId: // value for 'groupId'
- *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useDeclineInviteMutation(
+export function useRemoveSharedGroupMembershipMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    DeclineInviteMutation,
-    DeclineInviteMutationVariables
+    RemoveSharedGroupMembershipMutation,
+    RemoveSharedGroupMembershipMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
-    DeclineInviteMutation,
-    DeclineInviteMutationVariables
-  >(DeclineInviteDocument, options);
+    RemoveSharedGroupMembershipMutation,
+    RemoveSharedGroupMembershipMutationVariables
+  >(RemoveSharedGroupMembershipDocument, options);
 }
-export type DeclineInviteMutationHookResult = ReturnType<
-  typeof useDeclineInviteMutation
+export type RemoveSharedGroupMembershipMutationHookResult = ReturnType<
+  typeof useRemoveSharedGroupMembershipMutation
 >;
-export type DeclineInviteMutationResult =
-  Apollo.MutationResult<DeclineInviteMutation>;
-export type DeclineInviteMutationOptions = Apollo.BaseMutationOptions<
-  DeclineInviteMutation,
-  DeclineInviteMutationVariables
->;
-export const LeaveGroupDocument = gql`
-  mutation leaveGroup($groupId: Int!, $userId: Int!) {
-    delete_shared_group_member(
-      where: { group_id: { _eq: $groupId }, user_id: { _eq: $userId } }
-    ) {
+export type RemoveSharedGroupMembershipMutationResult =
+  Apollo.MutationResult<RemoveSharedGroupMembershipMutation>;
+export type RemoveSharedGroupMembershipMutationOptions =
+  Apollo.BaseMutationOptions<
+    RemoveSharedGroupMembershipMutation,
+    RemoveSharedGroupMembershipMutationVariables
+  >;
+export const DeleteSharedGroupDocument = gql`
+  mutation deleteSharedGroup($groupId: Int!) {
+    delete_shared_group(where: { id: { _eq: $groupId } }) {
       affected_rows
     }
   }
 `;
-export type LeaveGroupMutationFn = Apollo.MutationFunction<
-  LeaveGroupMutation,
-  LeaveGroupMutationVariables
+export type DeleteSharedGroupMutationFn = Apollo.MutationFunction<
+  DeleteSharedGroupMutation,
+  DeleteSharedGroupMutationVariables
 >;
 
 /**
- * __useLeaveGroupMutation__
+ * __useDeleteSharedGroupMutation__
  *
- * To run a mutation, you first call `useLeaveGroupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLeaveGroupMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteSharedGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSharedGroupMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [leaveGroupMutation, { data, loading, error }] = useLeaveGroupMutation({
+ * const [deleteSharedGroupMutation, { data, loading, error }] = useDeleteSharedGroupMutation({
  *   variables: {
  *      groupId: // value for 'groupId'
- *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useLeaveGroupMutation(
+export function useDeleteSharedGroupMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    LeaveGroupMutation,
-    LeaveGroupMutationVariables
+    DeleteSharedGroupMutation,
+    DeleteSharedGroupMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LeaveGroupMutation, LeaveGroupMutationVariables>(
-    LeaveGroupDocument,
-    options,
-  );
+  return Apollo.useMutation<
+    DeleteSharedGroupMutation,
+    DeleteSharedGroupMutationVariables
+  >(DeleteSharedGroupDocument, options);
 }
-export type LeaveGroupMutationHookResult = ReturnType<
-  typeof useLeaveGroupMutation
+export type DeleteSharedGroupMutationHookResult = ReturnType<
+  typeof useDeleteSharedGroupMutation
 >;
-export type LeaveGroupMutationResult =
-  Apollo.MutationResult<LeaveGroupMutation>;
-export type LeaveGroupMutationOptions = Apollo.BaseMutationOptions<
-  LeaveGroupMutation,
-  LeaveGroupMutationVariables
+export type DeleteSharedGroupMutationResult =
+  Apollo.MutationResult<DeleteSharedGroupMutation>;
+export type DeleteSharedGroupMutationOptions = Apollo.BaseMutationOptions<
+  DeleteSharedGroupMutation,
+  DeleteSharedGroupMutationVariables
 >;
 export const InsertUserShortlistDocument = gql`
   mutation insertUserShortlist($user_id: Int, $course_id: Int) {
@@ -17063,105 +17028,6 @@ export type Refetch_Prof_Review_UpvoteQueryResult = Apollo.QueryResult<
   Refetch_Prof_Review_UpvoteQuery,
   Refetch_Prof_Review_UpvoteQueryVariables
 >;
-export const ListGroupsDocument = gql`
-  query listGroups($userId: Int!) {
-    shared_group(order_by: { created_at: desc }) {
-      ...GroupSummary
-    }
-  }
-  ${GroupSummaryFragmentDoc}
-`;
-
-/**
- * __useListGroupsQuery__
- *
- * To run a query within a React component, call `useListGroupsQuery` and pass it any options that fit your needs.
- * When your component renders, `useListGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListGroupsQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useListGroupsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    ListGroupsQuery,
-    ListGroupsQueryVariables
-  > &
-    (
-      | { variables: ListGroupsQueryVariables; skip?: boolean }
-      | { skip: boolean }
-    ),
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<ListGroupsQuery, ListGroupsQueryVariables>(
-    ListGroupsDocument,
-    options,
-  );
-}
-export function useListGroupsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    ListGroupsQuery,
-    ListGroupsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<ListGroupsQuery, ListGroupsQueryVariables>(
-    ListGroupsDocument,
-    options,
-  );
-}
-// @ts-ignore
-export function useListGroupsSuspenseQuery(
-  baseOptions?: Apollo.SuspenseQueryHookOptions<
-    ListGroupsQuery,
-    ListGroupsQueryVariables
-  >,
-): Apollo.UseSuspenseQueryResult<ListGroupsQuery, ListGroupsQueryVariables>;
-export function useListGroupsSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        ListGroupsQuery,
-        ListGroupsQueryVariables
-      >,
-): Apollo.UseSuspenseQueryResult<
-  ListGroupsQuery | undefined,
-  ListGroupsQueryVariables
->;
-export function useListGroupsSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        ListGroupsQuery,
-        ListGroupsQueryVariables
-      >,
-) {
-  const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<ListGroupsQuery, ListGroupsQueryVariables>(
-    ListGroupsDocument,
-    options,
-  );
-}
-export type ListGroupsQueryHookResult = ReturnType<typeof useListGroupsQuery>;
-export type ListGroupsLazyQueryHookResult = ReturnType<
-  typeof useListGroupsLazyQuery
->;
-export type ListGroupsSuspenseQueryHookResult = ReturnType<
-  typeof useListGroupsSuspenseQuery
->;
-export type ListGroupsQueryResult = Apollo.QueryResult<
-  ListGroupsQuery,
-  ListGroupsQueryVariables
->;
 export const GetScheduleSwapsDocument = gql`
   query getScheduleSwaps($userId: Int!, $termIds: [Int!]!) {
     user_schedule_swap(
@@ -17283,6 +17149,118 @@ export type GetScheduleSwapsSuspenseQueryHookResult = ReturnType<
 export type GetScheduleSwapsQueryResult = Apollo.QueryResult<
   GetScheduleSwapsQuery,
   GetScheduleSwapsQueryVariables
+>;
+export const GetSharedGroupsDocument = gql`
+  query getSharedGroups($userId: Int!) {
+    shared_group(order_by: { created_at: desc }) {
+      id
+      name
+      membership: members(where: { user_id: { _eq: $userId } }, limit: 1) {
+        status
+      }
+      members_aggregate(where: { status: { _eq: "member" } }) {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetSharedGroupsQuery__
+ *
+ * To run a query within a React component, call `useGetSharedGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSharedGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSharedGroupsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetSharedGroupsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetSharedGroupsQuery,
+    GetSharedGroupsQueryVariables
+  > &
+    (
+      | { variables: GetSharedGroupsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetSharedGroupsQuery, GetSharedGroupsQueryVariables>(
+    GetSharedGroupsDocument,
+    options,
+  );
+}
+export function useGetSharedGroupsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSharedGroupsQuery,
+    GetSharedGroupsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetSharedGroupsQuery,
+    GetSharedGroupsQueryVariables
+  >(GetSharedGroupsDocument, options);
+}
+// @ts-ignore
+export function useGetSharedGroupsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GetSharedGroupsQuery,
+    GetSharedGroupsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  GetSharedGroupsQuery,
+  GetSharedGroupsQueryVariables
+>;
+export function useGetSharedGroupsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetSharedGroupsQuery,
+        GetSharedGroupsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  GetSharedGroupsQuery | undefined,
+  GetSharedGroupsQueryVariables
+>;
+export function useGetSharedGroupsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetSharedGroupsQuery,
+        GetSharedGroupsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetSharedGroupsQuery,
+    GetSharedGroupsQueryVariables
+  >(GetSharedGroupsDocument, options);
+}
+export type GetSharedGroupsQueryHookResult = ReturnType<
+  typeof useGetSharedGroupsQuery
+>;
+export type GetSharedGroupsLazyQueryHookResult = ReturnType<
+  typeof useGetSharedGroupsLazyQuery
+>;
+export type GetSharedGroupsSuspenseQueryHookResult = ReturnType<
+  typeof useGetSharedGroupsSuspenseQuery
+>;
+export type GetSharedGroupsQueryResult = Apollo.QueryResult<
+  GetSharedGroupsQuery,
+  GetSharedGroupsQueryVariables
 >;
 export const GetUserDocument = gql`
   query getUser($id: Int) {

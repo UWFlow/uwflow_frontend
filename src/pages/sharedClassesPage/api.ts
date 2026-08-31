@@ -1,10 +1,10 @@
 import {
   BACKEND_ENDPOINT,
   GROUP_BY_ID_ENDPOINT,
+  GROUP_EMAIL_INVITE_ACCEPT_ENDPOINT,
   GROUP_INVITE_ENDPOINT,
 } from 'constants/Api';
 import {
-  makeAuthenticatedDELETERequest,
   makeAuthenticatedGETRequest,
   makeAuthenticatedPOSTRequest,
 } from 'utils/Api';
@@ -37,6 +37,7 @@ export interface GroupDetail {
   name: string;
   is_creator: boolean;
   members: GroupMember[];
+  invited_emails: string[];
   shared_classes: SharedClass[];
 }
 
@@ -59,27 +60,28 @@ export const fetchGroup = async (id: number): Promise<GroupDetail> => {
   return body;
 };
 
-// Returns the server's outcome: "sent" when the email matched a Flow account
-// and the invite went out, or "not_found" when no account uses that email.
-// Only real failures (unauthorized, bad group id, malformed email) throw.
+// The server always returns "sent", whether this address belongs to an
+// existing account or needs an emailed sign-up invitation. That keeps this
+// endpoint from being used to discover which addresses have Flow accounts.
 export const inviteToGroup = async (
   id: number,
   email: string,
-): Promise<'sent' | 'not_found'> => {
+): Promise<'sent'> => {
   const [body, status] = await makeAuthenticatedPOSTRequest<
     { email: string },
-    { status: 'sent' | 'not_found' }
+    { status: 'sent' }
   >(url(GROUP_INVITE_ENDPOINT(id)), { email });
   checkStatus(status);
   return body.status;
 };
 
-// Only the creator can do this; the backend enforces it too.
-export const deleteGroup = async (id: number): Promise<void> => {
-  const [, status] = await makeAuthenticatedDELETERequest<{ status: string }>(
-    url(GROUP_BY_ID_ENDPOINT(id)),
-  );
+export const acceptEmailedInvite = async (secret: string): Promise<number> => {
+  const [body, status] = await makeAuthenticatedPOSTRequest<
+    Record<string, never>,
+    { status: 'member'; group_id: number }
+  >(url(GROUP_EMAIL_INVITE_ACCEPT_ENDPOINT(secret)), {});
   checkStatus(status);
+  return body.group_id;
 };
 
 // section_meeting stores times as seconds past midnight. Format as h:mm am/pm.
