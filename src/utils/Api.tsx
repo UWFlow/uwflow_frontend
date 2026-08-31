@@ -57,6 +57,23 @@ export const makeGETRequest = async <T extends object>(
 };
 
 /*
+ * Make authenticated GET request
+ */
+export const makeAuthenticatedGETRequest = async <T extends object>(
+  endpoint: string,
+  options: Record<string, string> = {},
+): Promise<[T, number]> => {
+  return makeRequest(
+    endpoint,
+    {
+      ...options,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    'GET',
+  );
+};
+
+/*
  * Makes authenticated DELETE request to endpoint, returns the response body and status
  */
 export const makeAuthenticatedDELETERequest = async <T extends object>(
