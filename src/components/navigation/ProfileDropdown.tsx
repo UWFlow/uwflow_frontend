@@ -7,6 +7,7 @@ import { Dispatch } from 'redux';
 import {
   isOnLandingPageRoute,
   PROFILE_PAGE_ROUTE,
+  SHARED_CLASSES_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
 } from 'Routes';
 import { useTheme } from 'styled-components';
@@ -86,12 +87,19 @@ const ProfileDropdown = () => {
             width={150}
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
-            options={['View profile', 'Swap Class', 'Log out']}
+            options={[
+              'View profile',
+              'Swap Class',
+              'Shared Classes',
+              'Log out',
+            ]}
             onChange={(idx) => {
               if (idx === 0) {
                 handleProfileButtonClick();
               } else if (idx === 1) {
                 history.push(SWAP_PAGE_ROUTE);
+              } else if (idx === 2) {
+                history.push(SHARED_CLASSES_PAGE_ROUTE);
               } else {
                 logOut(dispatch, true);
               }

@@ -12,12 +12,18 @@ import CourseReviewBox, {
 import DeleteAccountModalContent, {
   DeleteAccountModalContentProps,
 } from 'components/delete/DeleteAccountModalContent';
+import DeleteGroupModalContent, {
+  DeleteGroupModalContentProps,
+} from 'components/delete/DeleteGroupModalContent';
 import EditEmailModalContent, {
   EditEmailModalContentProps,
 } from 'components/email/EditEmailModalContent';
 import NotificationEmailModalContent, {
   NotificationEmailModalContentProps,
 } from 'components/email/NotificationEmailModalContent';
+import SharedClassesTourModalContent, {
+  SharedClassesTourModalContentProps,
+} from 'components/tour/SharedClassesTourModalContent';
 import SwapTourModalContent, {
   SwapTourModalContentProps,
 } from 'components/tour/SwapTourModalContent';
@@ -31,11 +37,13 @@ import {
   AUTH_MODAL,
   COURSE_REVIEW_COURSE_MODAL,
   DELETE_ACCOUNT_MODAL,
+  DELETE_GROUP_MODAL,
   EDIT_EMAIL_MODAL,
   ModalName,
   NOTIFICATION_EMAIL_MODAL,
   RESET_PASSWORD_MODAL,
   SCHEDULE_UPLOAD_MODAL,
+  SHARED_CLASSES_TOUR_MODAL,
   SWAP_TOUR_MODAL,
   TRANSCRIPT_UPLOAD_MODAL,
 } from 'constants/Modal';
@@ -73,8 +81,16 @@ const DeleteAccountModal = (props: DeleteAccountModalContentProps) => (
   <DeleteAccountModalContent {...props} />
 );
 
+const DeleteGroupModal = (props: DeleteGroupModalContentProps) => (
+  <DeleteGroupModalContent {...props} />
+);
+
 const SwapTourModal = (props: SwapTourModalContentProps) => (
   <SwapTourModalContent {...props} />
+);
+
+const SharedClassesTourModal = (props: SharedClassesTourModalContentProps) => (
+  <SharedClassesTourModalContent {...props} />
 );
 
 type NameModalMap = {
@@ -90,5 +106,7 @@ export const modalNameToModal: NameModalMap = {
   [EDIT_EMAIL_MODAL]: EditEmailModal,
   [RESET_PASSWORD_MODAL]: ResetPasswordModal,
   [DELETE_ACCOUNT_MODAL]: DeleteAccountModal,
+  [DELETE_GROUP_MODAL]: DeleteGroupModal,
   [SWAP_TOUR_MODAL]: SwapTourModal,
+  [SHARED_CLASSES_TOUR_MODAL]: SharedClassesTourModal,
 };

@@ -4570,6 +4570,14 @@ export type Mutation_Root = {
   delete_section_exam?: Maybe<Section_Exam_Mutation_Response>;
   /** delete data from the table: "section_meeting" */
   delete_section_meeting?: Maybe<Section_Meeting_Mutation_Response>;
+  /** delete data from the table: "shared_group" */
+  delete_shared_group?: Maybe<Shared_Group_Mutation_Response>;
+  /** delete single row from the table: "shared_group" */
+  delete_shared_group_by_pk?: Maybe<Shared_Group>;
+  /** delete data from the table: "shared_group_member" */
+  delete_shared_group_member?: Maybe<Shared_Group_Member_Mutation_Response>;
+  /** delete single row from the table: "shared_group_member" */
+  delete_shared_group_member_by_pk?: Maybe<Shared_Group_Member>;
   /** delete data from the table: "user" */
   delete_user?: Maybe<User_Mutation_Response>;
   /** delete single row from the table: "user" */
@@ -4636,6 +4644,14 @@ export type Mutation_Root = {
   insert_section_meeting?: Maybe<Section_Meeting_Mutation_Response>;
   /** insert a single row into the table: "section_meeting" */
   insert_section_meeting_one?: Maybe<Section_Meeting>;
+  /** insert data into the table: "shared_group" */
+  insert_shared_group?: Maybe<Shared_Group_Mutation_Response>;
+  /** insert data into the table: "shared_group_member" */
+  insert_shared_group_member?: Maybe<Shared_Group_Member_Mutation_Response>;
+  /** insert a single row into the table: "shared_group_member" */
+  insert_shared_group_member_one?: Maybe<Shared_Group_Member>;
+  /** insert a single row into the table: "shared_group" */
+  insert_shared_group_one?: Maybe<Shared_Group>;
   /** insert data into the table: "user" */
   insert_user?: Maybe<User_Mutation_Response>;
   /** insert data into the table: "user_course_taken" */
@@ -4737,6 +4753,22 @@ export type Mutation_Root = {
   /** update multiples rows of table: "section_meeting" */
   update_section_meeting_many?: Maybe<
     Array<Maybe<Section_Meeting_Mutation_Response>>
+  >;
+  /** update data of the table: "shared_group" */
+  update_shared_group?: Maybe<Shared_Group_Mutation_Response>;
+  /** update single row of the table: "shared_group" */
+  update_shared_group_by_pk?: Maybe<Shared_Group>;
+  /** update multiples rows of table: "shared_group" */
+  update_shared_group_many?: Maybe<
+    Array<Maybe<Shared_Group_Mutation_Response>>
+  >;
+  /** update data of the table: "shared_group_member" */
+  update_shared_group_member?: Maybe<Shared_Group_Member_Mutation_Response>;
+  /** update single row of the table: "shared_group_member" */
+  update_shared_group_member_by_pk?: Maybe<Shared_Group_Member>;
+  /** update multiples rows of table: "shared_group_member" */
+  update_shared_group_member_many?: Maybe<
+    Array<Maybe<Shared_Group_Member_Mutation_Response>>
   >;
   /** update data of the table: "user" */
   update_user?: Maybe<User_Mutation_Response>;
@@ -4860,6 +4892,27 @@ export type Mutation_RootDelete_Section_ExamArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Section_MeetingArgs = {
   where: Section_Meeting_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Shared_GroupArgs = {
+  where: Shared_Group_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Shared_Group_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Shared_Group_MemberArgs = {
+  where: Shared_Group_Member_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Shared_Group_Member_By_PkArgs = {
+  group_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
 };
 
 /** mutation root */
@@ -5046,6 +5099,30 @@ export type Mutation_RootInsert_Section_MeetingArgs = {
 /** mutation root */
 export type Mutation_RootInsert_Section_Meeting_OneArgs = {
   object: Section_Meeting_Insert_Input;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Shared_GroupArgs = {
+  objects: Array<Shared_Group_Insert_Input>;
+  on_conflict?: InputMaybe<Shared_Group_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Shared_Group_MemberArgs = {
+  objects: Array<Shared_Group_Member_Insert_Input>;
+  on_conflict?: InputMaybe<Shared_Group_Member_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Shared_Group_Member_OneArgs = {
+  object: Shared_Group_Member_Insert_Input;
+  on_conflict?: InputMaybe<Shared_Group_Member_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Shared_Group_OneArgs = {
+  object: Shared_Group_Insert_Input;
+  on_conflict?: InputMaybe<Shared_Group_On_Conflict>;
 };
 
 /** mutation root */
@@ -5297,6 +5374,44 @@ export type Mutation_RootUpdate_Section_MeetingArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Section_Meeting_ManyArgs = {
   updates: Array<Section_Meeting_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Shared_GroupArgs = {
+  _inc?: InputMaybe<Shared_Group_Inc_Input>;
+  _set?: InputMaybe<Shared_Group_Set_Input>;
+  where: Shared_Group_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Shared_Group_By_PkArgs = {
+  _inc?: InputMaybe<Shared_Group_Inc_Input>;
+  _set?: InputMaybe<Shared_Group_Set_Input>;
+  pk_columns: Shared_Group_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Shared_Group_ManyArgs = {
+  updates: Array<Shared_Group_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Shared_Group_MemberArgs = {
+  _inc?: InputMaybe<Shared_Group_Member_Inc_Input>;
+  _set?: InputMaybe<Shared_Group_Member_Set_Input>;
+  where: Shared_Group_Member_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Shared_Group_Member_By_PkArgs = {
+  _inc?: InputMaybe<Shared_Group_Member_Inc_Input>;
+  _set?: InputMaybe<Shared_Group_Member_Set_Input>;
+  pk_columns: Shared_Group_Member_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Shared_Group_Member_ManyArgs = {
+  updates: Array<Shared_Group_Member_Updates>;
 };
 
 /** mutation root */
@@ -6632,6 +6747,18 @@ export type Query_Root = {
   section_meeting: Array<Section_Meeting>;
   /** fetch aggregated fields from the table: "section_meeting" */
   section_meeting_aggregate: Section_Meeting_Aggregate;
+  /** fetch data from the table: "shared_group" */
+  shared_group: Array<Shared_Group>;
+  /** fetch aggregated fields from the table: "shared_group" */
+  shared_group_aggregate: Shared_Group_Aggregate;
+  /** fetch data from the table: "shared_group" using primary key columns */
+  shared_group_by_pk?: Maybe<Shared_Group>;
+  /** fetch data from the table: "shared_group_member" */
+  shared_group_member: Array<Shared_Group_Member>;
+  /** fetch aggregated fields from the table: "shared_group_member" */
+  shared_group_member_aggregate: Shared_Group_Member_Aggregate;
+  /** fetch data from the table: "shared_group_member" using primary key columns */
+  shared_group_member_by_pk?: Maybe<Shared_Group_Member>;
   /** fetch data from the table: "user" */
   user: Array<User>;
   /** fetch aggregated fields from the table: "user" */
@@ -7120,6 +7247,47 @@ export type Query_RootSection_Meeting_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Section_Meeting_Order_By>>;
   where?: InputMaybe<Section_Meeting_Bool_Exp>;
+};
+
+export type Query_RootShared_GroupArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Order_By>>;
+  where?: InputMaybe<Shared_Group_Bool_Exp>;
+};
+
+export type Query_RootShared_Group_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Order_By>>;
+  where?: InputMaybe<Shared_Group_Bool_Exp>;
+};
+
+export type Query_RootShared_Group_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+export type Query_RootShared_Group_MemberArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Member_Order_By>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+export type Query_RootShared_Group_Member_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Member_Order_By>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+export type Query_RootShared_Group_Member_By_PkArgs = {
+  group_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
 };
 
 export type Query_RootUserArgs = {
@@ -9379,6 +9547,600 @@ export type Section_Meeting_Variance_Order_By = {
   start_seconds?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "shared_group" */
+export type Shared_Group = {
+  __typename?: 'shared_group';
+  created_at: Scalars['timestamptz']['output'];
+  created_by: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  /** An array relationship */
+  members: Array<Shared_Group_Member>;
+  /** An aggregate relationship */
+  members_aggregate: Shared_Group_Member_Aggregate;
+  name: Scalars['String']['output'];
+};
+
+/** columns and relationships of "shared_group" */
+export type Shared_GroupMembersArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Member_Order_By>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+/** columns and relationships of "shared_group" */
+export type Shared_GroupMembers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Member_Order_By>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+/** aggregated selection of "shared_group" */
+export type Shared_Group_Aggregate = {
+  __typename?: 'shared_group_aggregate';
+  aggregate?: Maybe<Shared_Group_Aggregate_Fields>;
+  nodes: Array<Shared_Group>;
+};
+
+/** aggregate fields of "shared_group" */
+export type Shared_Group_Aggregate_Fields = {
+  __typename?: 'shared_group_aggregate_fields';
+  avg?: Maybe<Shared_Group_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Shared_Group_Max_Fields>;
+  min?: Maybe<Shared_Group_Min_Fields>;
+  stddev?: Maybe<Shared_Group_Stddev_Fields>;
+  stddev_pop?: Maybe<Shared_Group_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Shared_Group_Stddev_Samp_Fields>;
+  sum?: Maybe<Shared_Group_Sum_Fields>;
+  var_pop?: Maybe<Shared_Group_Var_Pop_Fields>;
+  var_samp?: Maybe<Shared_Group_Var_Samp_Fields>;
+  variance?: Maybe<Shared_Group_Variance_Fields>;
+};
+
+/** aggregate fields of "shared_group" */
+export type Shared_Group_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Shared_Group_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Shared_Group_Avg_Fields = {
+  __typename?: 'shared_group_avg_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "shared_group". All fields are combined with a logical 'AND'. */
+export type Shared_Group_Bool_Exp = {
+  _and?: InputMaybe<Array<Shared_Group_Bool_Exp>>;
+  _not?: InputMaybe<Shared_Group_Bool_Exp>;
+  _or?: InputMaybe<Array<Shared_Group_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by?: InputMaybe<Int_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  members?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+  members_aggregate?: InputMaybe<Shared_Group_Member_Aggregate_Bool_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "shared_group" */
+export enum Shared_Group_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  SharedGroupPkey = 'shared_group_pkey',
+}
+
+/** input type for incrementing numeric columns in table "shared_group" */
+export type Shared_Group_Inc_Input = {
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "shared_group" */
+export type Shared_Group_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  members?: InputMaybe<Shared_Group_Member_Arr_Rel_Insert_Input>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type Shared_Group_Max_Fields = {
+  __typename?: 'shared_group_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+/** columns and relationships of "shared_group_member" */
+export type Shared_Group_Member = {
+  __typename?: 'shared_group_member';
+  /** An object relationship */
+  group: Shared_Group;
+  group_id: Scalars['Int']['output'];
+  joined_at: Scalars['timestamptz']['output'];
+  status: Scalars['String']['output'];
+  user_id: Scalars['Int']['output'];
+};
+
+/** aggregated selection of "shared_group_member" */
+export type Shared_Group_Member_Aggregate = {
+  __typename?: 'shared_group_member_aggregate';
+  aggregate?: Maybe<Shared_Group_Member_Aggregate_Fields>;
+  nodes: Array<Shared_Group_Member>;
+};
+
+export type Shared_Group_Member_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Shared_Group_Member_Aggregate_Bool_Exp_Count>;
+};
+
+export type Shared_Group_Member_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "shared_group_member" */
+export type Shared_Group_Member_Aggregate_Fields = {
+  __typename?: 'shared_group_member_aggregate_fields';
+  avg?: Maybe<Shared_Group_Member_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Shared_Group_Member_Max_Fields>;
+  min?: Maybe<Shared_Group_Member_Min_Fields>;
+  stddev?: Maybe<Shared_Group_Member_Stddev_Fields>;
+  stddev_pop?: Maybe<Shared_Group_Member_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Shared_Group_Member_Stddev_Samp_Fields>;
+  sum?: Maybe<Shared_Group_Member_Sum_Fields>;
+  var_pop?: Maybe<Shared_Group_Member_Var_Pop_Fields>;
+  var_samp?: Maybe<Shared_Group_Member_Var_Samp_Fields>;
+  variance?: Maybe<Shared_Group_Member_Variance_Fields>;
+};
+
+/** aggregate fields of "shared_group_member" */
+export type Shared_Group_Member_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "shared_group_member" */
+export type Shared_Group_Member_Aggregate_Order_By = {
+  avg?: InputMaybe<Shared_Group_Member_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Shared_Group_Member_Max_Order_By>;
+  min?: InputMaybe<Shared_Group_Member_Min_Order_By>;
+  stddev?: InputMaybe<Shared_Group_Member_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Shared_Group_Member_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Shared_Group_Member_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Shared_Group_Member_Sum_Order_By>;
+  var_pop?: InputMaybe<Shared_Group_Member_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Shared_Group_Member_Var_Samp_Order_By>;
+  variance?: InputMaybe<Shared_Group_Member_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "shared_group_member" */
+export type Shared_Group_Member_Arr_Rel_Insert_Input = {
+  data: Array<Shared_Group_Member_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Shared_Group_Member_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Shared_Group_Member_Avg_Fields = {
+  __typename?: 'shared_group_member_avg_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Avg_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "shared_group_member". All fields are combined with a logical 'AND'. */
+export type Shared_Group_Member_Bool_Exp = {
+  _and?: InputMaybe<Array<Shared_Group_Member_Bool_Exp>>;
+  _not?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+  _or?: InputMaybe<Array<Shared_Group_Member_Bool_Exp>>;
+  group?: InputMaybe<Shared_Group_Bool_Exp>;
+  group_id?: InputMaybe<Int_Comparison_Exp>;
+  joined_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  status?: InputMaybe<String_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "shared_group_member" */
+export enum Shared_Group_Member_Constraint {
+  /** unique or primary key constraint on columns "group_id", "user_id" */
+  SharedGroupMemberPkey = 'shared_group_member_pkey',
+}
+
+/** input type for incrementing numeric columns in table "shared_group_member" */
+export type Shared_Group_Member_Inc_Input = {
+  group_id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "shared_group_member" */
+export type Shared_Group_Member_Insert_Input = {
+  group?: InputMaybe<Shared_Group_Obj_Rel_Insert_Input>;
+  group_id?: InputMaybe<Scalars['Int']['input']>;
+  joined_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate max on columns */
+export type Shared_Group_Member_Max_Fields = {
+  __typename?: 'shared_group_member_max_fields';
+  group_id?: Maybe<Scalars['Int']['output']>;
+  joined_at?: Maybe<Scalars['timestamptz']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by max() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Max_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  joined_at?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Shared_Group_Member_Min_Fields = {
+  __typename?: 'shared_group_member_min_fields';
+  group_id?: Maybe<Scalars['Int']['output']>;
+  joined_at?: Maybe<Scalars['timestamptz']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by min() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Min_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  joined_at?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "shared_group_member" */
+export type Shared_Group_Member_Mutation_Response = {
+  __typename?: 'shared_group_member_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Shared_Group_Member>;
+};
+
+/** on_conflict condition type for table "shared_group_member" */
+export type Shared_Group_Member_On_Conflict = {
+  constraint: Shared_Group_Member_Constraint;
+  update_columns?: Array<Shared_Group_Member_Update_Column>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "shared_group_member". */
+export type Shared_Group_Member_Order_By = {
+  group?: InputMaybe<Shared_Group_Order_By>;
+  group_id?: InputMaybe<Order_By>;
+  joined_at?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: shared_group_member */
+export type Shared_Group_Member_Pk_Columns_Input = {
+  group_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+/** select columns of table "shared_group_member" */
+export enum Shared_Group_Member_Select_Column {
+  /** column name */
+  GroupId = 'group_id',
+  /** column name */
+  JoinedAt = 'joined_at',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UserId = 'user_id',
+}
+
+/** input type for updating data in table "shared_group_member" */
+export type Shared_Group_Member_Set_Input = {
+  group_id?: InputMaybe<Scalars['Int']['input']>;
+  joined_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Shared_Group_Member_Stddev_Fields = {
+  __typename?: 'shared_group_member_stddev_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Stddev_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Shared_Group_Member_Stddev_Pop_Fields = {
+  __typename?: 'shared_group_member_stddev_pop_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Stddev_Pop_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Shared_Group_Member_Stddev_Samp_Fields = {
+  __typename?: 'shared_group_member_stddev_samp_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Stddev_Samp_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "shared_group_member" */
+export type Shared_Group_Member_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Shared_Group_Member_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Shared_Group_Member_Stream_Cursor_Value_Input = {
+  group_id?: InputMaybe<Scalars['Int']['input']>;
+  joined_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Shared_Group_Member_Sum_Fields = {
+  __typename?: 'shared_group_member_sum_fields';
+  group_id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Sum_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "shared_group_member" */
+export enum Shared_Group_Member_Update_Column {
+  /** column name */
+  GroupId = 'group_id',
+  /** column name */
+  JoinedAt = 'joined_at',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UserId = 'user_id',
+}
+
+export type Shared_Group_Member_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Shared_Group_Member_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Shared_Group_Member_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Shared_Group_Member_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Shared_Group_Member_Var_Pop_Fields = {
+  __typename?: 'shared_group_member_var_pop_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Var_Pop_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Shared_Group_Member_Var_Samp_Fields = {
+  __typename?: 'shared_group_member_var_samp_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Var_Samp_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Shared_Group_Member_Variance_Fields = {
+  __typename?: 'shared_group_member_variance_fields';
+  group_id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "shared_group_member" */
+export type Shared_Group_Member_Variance_Order_By = {
+  group_id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Shared_Group_Min_Fields = {
+  __typename?: 'shared_group_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "shared_group" */
+export type Shared_Group_Mutation_Response = {
+  __typename?: 'shared_group_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Shared_Group>;
+};
+
+/** input type for inserting object relation for remote table "shared_group" */
+export type Shared_Group_Obj_Rel_Insert_Input = {
+  data: Shared_Group_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Shared_Group_On_Conflict>;
+};
+
+/** on_conflict condition type for table "shared_group" */
+export type Shared_Group_On_Conflict = {
+  constraint: Shared_Group_Constraint;
+  update_columns?: Array<Shared_Group_Update_Column>;
+  where?: InputMaybe<Shared_Group_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "shared_group". */
+export type Shared_Group_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  members_aggregate?: InputMaybe<Shared_Group_Member_Aggregate_Order_By>;
+  name?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: shared_group */
+export type Shared_Group_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** select columns of table "shared_group" */
+export enum Shared_Group_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+}
+
+/** input type for updating data in table "shared_group" */
+export type Shared_Group_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Shared_Group_Stddev_Fields = {
+  __typename?: 'shared_group_stddev_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Shared_Group_Stddev_Pop_Fields = {
+  __typename?: 'shared_group_stddev_pop_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Shared_Group_Stddev_Samp_Fields = {
+  __typename?: 'shared_group_stddev_samp_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "shared_group" */
+export type Shared_Group_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Shared_Group_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Shared_Group_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Shared_Group_Sum_Fields = {
+  __typename?: 'shared_group_sum_fields';
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** update columns of table "shared_group" */
+export enum Shared_Group_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+}
+
+export type Shared_Group_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Shared_Group_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Shared_Group_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Shared_Group_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Shared_Group_Var_Pop_Fields = {
+  __typename?: 'shared_group_var_pop_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Shared_Group_Var_Samp_Fields = {
+  __typename?: 'shared_group_var_samp_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Shared_Group_Variance_Fields = {
+  __typename?: 'shared_group_variance_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
 /** Boolean expression to compare columns of type "smallint". All fields are combined with logical 'AND'. */
 export type Smallint_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['smallint']['input']>;
@@ -9562,6 +10324,22 @@ export type Subscription_Root = {
   section_meeting_aggregate: Section_Meeting_Aggregate;
   /** fetch data from the table in a streaming manner: "section_meeting" */
   section_meeting_stream: Array<Section_Meeting>;
+  /** fetch data from the table: "shared_group" */
+  shared_group: Array<Shared_Group>;
+  /** fetch aggregated fields from the table: "shared_group" */
+  shared_group_aggregate: Shared_Group_Aggregate;
+  /** fetch data from the table: "shared_group" using primary key columns */
+  shared_group_by_pk?: Maybe<Shared_Group>;
+  /** fetch data from the table: "shared_group_member" */
+  shared_group_member: Array<Shared_Group_Member>;
+  /** fetch aggregated fields from the table: "shared_group_member" */
+  shared_group_member_aggregate: Shared_Group_Member_Aggregate;
+  /** fetch data from the table: "shared_group_member" using primary key columns */
+  shared_group_member_by_pk?: Maybe<Shared_Group_Member>;
+  /** fetch data from the table in a streaming manner: "shared_group_member" */
+  shared_group_member_stream: Array<Shared_Group_Member>;
+  /** fetch data from the table in a streaming manner: "shared_group" */
+  shared_group_stream: Array<Shared_Group>;
   /** fetch data from the table: "user" */
   user: Array<User>;
   /** fetch aggregated fields from the table: "user" */
@@ -10214,6 +10992,59 @@ export type Subscription_RootSection_Meeting_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Section_Meeting_Stream_Cursor_Input>>;
   where?: InputMaybe<Section_Meeting_Bool_Exp>;
+};
+
+export type Subscription_RootShared_GroupArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Order_By>>;
+  where?: InputMaybe<Shared_Group_Bool_Exp>;
+};
+
+export type Subscription_RootShared_Group_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Order_By>>;
+  where?: InputMaybe<Shared_Group_Bool_Exp>;
+};
+
+export type Subscription_RootShared_Group_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+export type Subscription_RootShared_Group_MemberArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Member_Order_By>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+export type Subscription_RootShared_Group_Member_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Shared_Group_Member_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Shared_Group_Member_Order_By>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+export type Subscription_RootShared_Group_Member_By_PkArgs = {
+  group_id: Scalars['Int']['input'];
+  user_id: Scalars['Int']['input'];
+};
+
+export type Subscription_RootShared_Group_Member_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Shared_Group_Member_Stream_Cursor_Input>>;
+  where?: InputMaybe<Shared_Group_Member_Bool_Exp>;
+};
+
+export type Subscription_RootShared_Group_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Shared_Group_Stream_Cursor_Input>>;
+  where?: InputMaybe<Shared_Group_Bool_Exp>;
 };
 
 export type Subscription_RootUserArgs = {
@@ -12166,6 +12997,13 @@ export type ProfSearchFragment = {
   ratings: any;
 };
 
+export type GroupSummaryFragment = {
+  id: number;
+  name: string;
+  members: Array<{ status: string }>;
+  members_aggregate: { aggregate: { count: number } | null };
+};
+
 export type UserInfoFragment = {
   id: number;
   full_name: string;
@@ -12340,6 +13178,51 @@ export type DeleteSectionSubscriptionMutationVariables = Exact<{
 
 export type DeleteSectionSubscriptionMutation = {
   delete_queue_section_subscribed: { affected_rows: number } | null;
+};
+
+export type CreateGroupMutationVariables = Exact<{
+  name: string;
+}>;
+
+export type CreateGroupMutation = {
+  insert_shared_group: {
+    returning: Array<{ id: number; name: string }>;
+  } | null;
+};
+
+export type AcceptInviteMutationVariables = Exact<{
+  groupId: number;
+  userId: number;
+}>;
+
+export type AcceptInviteMutation = {
+  update_shared_group_member: { affected_rows: number } | null;
+};
+
+export type DeclineInviteMutationVariables = Exact<{
+  groupId: number;
+  userId: number;
+}>;
+
+export type DeclineInviteMutation = {
+  delete_shared_group_member: { affected_rows: number } | null;
+};
+
+export type LeaveGroupMutationVariables = Exact<{
+  groupId: number;
+  userId: number;
+}>;
+
+export type LeaveGroupMutation = {
+  delete_shared_group_member: { affected_rows: number } | null;
+};
+
+export type DeleteGroupMutationVariables = Exact<{
+  groupId: number;
+}>;
+
+export type DeleteGroupMutation = {
+  delete_shared_group: { affected_rows: number } | null;
 };
 
 export type InsertUserShortlistMutationVariables = Exact<{
@@ -12615,6 +13498,12 @@ export type Refetch_Prof_Review_UpvoteQueryVariables = Exact<{
 export type Refetch_Prof_Review_UpvoteQuery = {
   review: Array<ReviewVoteCountsFragment>;
 };
+
+export type ListGroupsQueryVariables = Exact<{
+  userId: number;
+}>;
+
+export type ListGroupsQuery = { shared_group: Array<GroupSummaryFragment> };
 
 export type GetScheduleSwapsQueryVariables = Exact<{
   userId: number;
@@ -12933,6 +13822,20 @@ export const ProfSearchFragmentDoc = gql`
     engaging
     liked
     ratings
+  }
+`;
+export const GroupSummaryFragmentDoc = gql`
+  fragment GroupSummary on shared_group {
+    id
+    name
+    members(where: { user_id: { _eq: $userId } }) {
+      status
+    }
+    members_aggregate(where: { status: { _eq: "member" } }) {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 export const UserInfoFragmentDoc = gql`
@@ -13633,6 +14536,279 @@ export type DeleteSectionSubscriptionMutationOptions =
     DeleteSectionSubscriptionMutation,
     DeleteSectionSubscriptionMutationVariables
   >;
+export const CreateGroupDocument = gql`
+  mutation createGroup($name: String!) {
+    insert_shared_group(
+      objects: { name: $name, members: { data: [{ status: "member" }] } }
+    ) {
+      returning {
+        id
+        name
+      }
+    }
+  }
+`;
+export type CreateGroupMutationFn = Apollo.MutationFunction<
+  CreateGroupMutation,
+  CreateGroupMutationVariables
+>;
+
+/**
+ * __useCreateGroupMutation__
+ *
+ * To run a mutation, you first call `useCreateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGroupMutation, { data, loading, error }] = useCreateGroupMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateGroupMutation,
+    CreateGroupMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(
+    CreateGroupDocument,
+    options,
+  );
+}
+export type CreateGroupMutationHookResult = ReturnType<
+  typeof useCreateGroupMutation
+>;
+export type CreateGroupMutationResult =
+  Apollo.MutationResult<CreateGroupMutation>;
+export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<
+  CreateGroupMutation,
+  CreateGroupMutationVariables
+>;
+export const AcceptInviteDocument = gql`
+  mutation acceptInvite($groupId: Int!, $userId: Int!) {
+    update_shared_group_member(
+      where: {
+        group_id: { _eq: $groupId }
+        user_id: { _eq: $userId }
+        status: { _eq: "pending" }
+      }
+      _set: { status: "member" }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export type AcceptInviteMutationFn = Apollo.MutationFunction<
+  AcceptInviteMutation,
+  AcceptInviteMutationVariables
+>;
+
+/**
+ * __useAcceptInviteMutation__
+ *
+ * To run a mutation, you first call `useAcceptInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptInviteMutation, { data, loading, error }] = useAcceptInviteMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAcceptInviteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AcceptInviteMutation,
+    AcceptInviteMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AcceptInviteMutation,
+    AcceptInviteMutationVariables
+  >(AcceptInviteDocument, options);
+}
+export type AcceptInviteMutationHookResult = ReturnType<
+  typeof useAcceptInviteMutation
+>;
+export type AcceptInviteMutationResult =
+  Apollo.MutationResult<AcceptInviteMutation>;
+export type AcceptInviteMutationOptions = Apollo.BaseMutationOptions<
+  AcceptInviteMutation,
+  AcceptInviteMutationVariables
+>;
+export const DeclineInviteDocument = gql`
+  mutation declineInvite($groupId: Int!, $userId: Int!) {
+    delete_shared_group_member(
+      where: {
+        group_id: { _eq: $groupId }
+        user_id: { _eq: $userId }
+        status: { _eq: "pending" }
+      }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export type DeclineInviteMutationFn = Apollo.MutationFunction<
+  DeclineInviteMutation,
+  DeclineInviteMutationVariables
+>;
+
+/**
+ * __useDeclineInviteMutation__
+ *
+ * To run a mutation, you first call `useDeclineInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeclineInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [declineInviteMutation, { data, loading, error }] = useDeclineInviteMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeclineInviteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeclineInviteMutation,
+    DeclineInviteMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeclineInviteMutation,
+    DeclineInviteMutationVariables
+  >(DeclineInviteDocument, options);
+}
+export type DeclineInviteMutationHookResult = ReturnType<
+  typeof useDeclineInviteMutation
+>;
+export type DeclineInviteMutationResult =
+  Apollo.MutationResult<DeclineInviteMutation>;
+export type DeclineInviteMutationOptions = Apollo.BaseMutationOptions<
+  DeclineInviteMutation,
+  DeclineInviteMutationVariables
+>;
+export const LeaveGroupDocument = gql`
+  mutation leaveGroup($groupId: Int!, $userId: Int!) {
+    delete_shared_group_member(
+      where: { group_id: { _eq: $groupId }, user_id: { _eq: $userId } }
+    ) {
+      affected_rows
+    }
+  }
+`;
+export type LeaveGroupMutationFn = Apollo.MutationFunction<
+  LeaveGroupMutation,
+  LeaveGroupMutationVariables
+>;
+
+/**
+ * __useLeaveGroupMutation__
+ *
+ * To run a mutation, you first call `useLeaveGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLeaveGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [leaveGroupMutation, { data, loading, error }] = useLeaveGroupMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useLeaveGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LeaveGroupMutation,
+    LeaveGroupMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LeaveGroupMutation, LeaveGroupMutationVariables>(
+    LeaveGroupDocument,
+    options,
+  );
+}
+export type LeaveGroupMutationHookResult = ReturnType<
+  typeof useLeaveGroupMutation
+>;
+export type LeaveGroupMutationResult =
+  Apollo.MutationResult<LeaveGroupMutation>;
+export type LeaveGroupMutationOptions = Apollo.BaseMutationOptions<
+  LeaveGroupMutation,
+  LeaveGroupMutationVariables
+>;
+export const DeleteGroupDocument = gql`
+  mutation deleteGroup($groupId: Int!) {
+    delete_shared_group(where: { id: { _eq: $groupId } }) {
+      affected_rows
+    }
+  }
+`;
+export type DeleteGroupMutationFn = Apollo.MutationFunction<
+  DeleteGroupMutation,
+  DeleteGroupMutationVariables
+>;
+
+/**
+ * __useDeleteGroupMutation__
+ *
+ * To run a mutation, you first call `useDeleteGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGroupMutation, { data, loading, error }] = useDeleteGroupMutation({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useDeleteGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteGroupMutation,
+    DeleteGroupMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DeleteGroupMutation, DeleteGroupMutationVariables>(
+    DeleteGroupDocument,
+    options,
+  );
+}
+export type DeleteGroupMutationHookResult = ReturnType<
+  typeof useDeleteGroupMutation
+>;
+export type DeleteGroupMutationResult =
+  Apollo.MutationResult<DeleteGroupMutation>;
+export type DeleteGroupMutationOptions = Apollo.BaseMutationOptions<
+  DeleteGroupMutation,
+  DeleteGroupMutationVariables
+>;
 export const InsertUserShortlistDocument = gql`
   mutation insertUserShortlist($user_id: Int, $course_id: Int) {
     insert_user_shortlist(
@@ -15944,6 +17120,105 @@ export type Refetch_Prof_Review_UpvoteSuspenseQueryHookResult = ReturnType<
 export type Refetch_Prof_Review_UpvoteQueryResult = Apollo.QueryResult<
   Refetch_Prof_Review_UpvoteQuery,
   Refetch_Prof_Review_UpvoteQueryVariables
+>;
+export const ListGroupsDocument = gql`
+  query listGroups($userId: Int!) {
+    shared_group(order_by: { created_at: desc }) {
+      ...GroupSummary
+    }
+  }
+  ${GroupSummaryFragmentDoc}
+`;
+
+/**
+ * __useListGroupsQuery__
+ *
+ * To run a query within a React component, call `useListGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListGroupsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useListGroupsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ListGroupsQuery,
+    ListGroupsQueryVariables
+  > &
+    (
+      | { variables: ListGroupsQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ListGroupsQuery, ListGroupsQueryVariables>(
+    ListGroupsDocument,
+    options,
+  );
+}
+export function useListGroupsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ListGroupsQuery,
+    ListGroupsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ListGroupsQuery, ListGroupsQueryVariables>(
+    ListGroupsDocument,
+    options,
+  );
+}
+// @ts-ignore
+export function useListGroupsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ListGroupsQuery,
+    ListGroupsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<ListGroupsQuery, ListGroupsQueryVariables>;
+export function useListGroupsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ListGroupsQuery,
+        ListGroupsQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  ListGroupsQuery | undefined,
+  ListGroupsQueryVariables
+>;
+export function useListGroupsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ListGroupsQuery,
+        ListGroupsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ListGroupsQuery, ListGroupsQueryVariables>(
+    ListGroupsDocument,
+    options,
+  );
+}
+export type ListGroupsQueryHookResult = ReturnType<typeof useListGroupsQuery>;
+export type ListGroupsLazyQueryHookResult = ReturnType<
+  typeof useListGroupsLazyQuery
+>;
+export type ListGroupsSuspenseQueryHookResult = ReturnType<
+  typeof useListGroupsSuspenseQuery
+>;
+export type ListGroupsQueryResult = Apollo.QueryResult<
+  ListGroupsQuery,
+  ListGroupsQueryVariables
 >;
 export const GetScheduleSwapsDocument = gql`
   query getScheduleSwaps($userId: Int!, $termIds: [Int!]!) {
