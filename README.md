@@ -24,6 +24,7 @@ Clone the [backend repository](https://github.com/UWFlow/uwflow) and follow its 
 - [Creating new pages](docs/pages.md)
 - [Explanation of client-side search](docs/search.md)
 - [Analytics (PostHog)](docs/analytics.md)
+- [Website end-to-end tests and interactive walkthrough](e2e/README.md)
 
 #### Important External Docs
 

@@ -110,7 +110,18 @@
     "lint-nofix": "eslint src/ --ext .ts,.tsx,.js,.jsx -c .eslintrc.js --quiet",
     "generate": "graphql-codegen --config codegen.js",
     "generate:sitemap": "bun scripts/generate-sitemap.js",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org flow-fa --project uwflow-frontend ./build && sentry-cli sourcemaps upload --org flow-fa --project uwflow-frontend ./build"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org flow-fa --project uwflow-frontend ./build && sentry-cli sourcemaps upload --org flow-fa --project uwflow-frontend ./build",
+    "e2e:build": "REACT_APP_BACKEND_ENDPOINT=/api REACT_APP_GRAPHQL_ENDPOINT=/graphql bun run build:vercel",
+    "e2e:check": "node e2e/preflight.cjs",
+    "e2e:serve": "node e2e/serve.cjs",
+    "e2e": "playwright test",
+    "e2e:list": "playwright test --list",
+    "e2e:ui": "playwright test --ui",
+    "e2e:watch": "E2E_SLOW_MO=350 playwright test walkthrough --headed",
+    "e2e:walkthrough": "E2E_PAUSE=1 playwright test walkthrough --debug",
+    "e2e:report": "playwright show-report",
+    "e2e:install": "playwright install chromium",
+    "e2e:harness": "node --test e2e/harness.test.cjs"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -128,6 +139,7 @@
     "@graphql-codegen/typescript": "^6.0.2",
     "@graphql-codegen/typescript-operations": "^6.0.3",
     "@graphql-codegen/typescript-react-apollo": "^4.4.2",
+    "@playwright/test": "1.63.0",
     "@types/jest": "^25.2.1",
     "@types/loadable__component": "^5.10.0",
     "@types/lodash": "^4.14.150",
