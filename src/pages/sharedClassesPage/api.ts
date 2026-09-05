@@ -42,9 +42,7 @@ export interface GroupDetail {
 
 const url = (path: string) => `${BACKEND_ENDPOINT}${path}`;
 
-// The GET/POST helpers never throw on their own (see utils/Api.tsx); every
-// caller in this codebase checks the status itself, so we do the same here
-// rather than letting a failed request masquerade as a successful body.
+// GET/POST helpers never throw on their own; check status like other callers.
 const checkStatus = (status: number) => {
   if (status >= 400) {
     throw new Error(`shared classes request failed with status ${status}`);
@@ -59,9 +57,7 @@ export const fetchGroup = async (id: number): Promise<GroupDetail> => {
   return body;
 };
 
-// Returns the server's outcome: "sent" when the email matched a Flow account
-// and the invite went out, or "not_found" when no account uses that email.
-// Only real failures (unauthorized, bad group id, malformed email) throw.
+// "sent" or "not_found" from the server; only real failures throw.
 export const inviteToGroup = async (
   id: number,
   email: string,

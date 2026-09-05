@@ -45,10 +45,7 @@ interface Props {
   onChanged: () => Promise<unknown>;
 }
 
-// Matches the avatar shown elsewhere in the app (navbar, reviews, profile
-// header): a kitten placeholder keyed off the user's id. Group members only
-// carry an id and name here, not a picture_url, so unlike those call sites
-// this always renders the kitten rather than a real photo.
+// Same kitten-avatar pattern as navbar/reviews/profile; members have no picture_url.
 const Avatar = ({
   userId,
   name,
@@ -80,8 +77,7 @@ const MemberChip = ({ member }: { member: GroupMember }) => {
   );
 };
 
-// LEC / LAB / TUT drives a colored pill using the same section colors the
-// schedule calendar uses. Anything else falls back to a neutral chip.
+// LEC/LAB/TUT get the calendar's section colors; everything else is neutral.
 const componentTint = (sectionName: string) => {
   const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
   if (kind.startsWith('LEC')) return 'bg-lecture text-dark1';
@@ -98,12 +94,10 @@ const sectionVariant = (sectionName: string): CalendarEventVariant => {
   return 'other';
 };
 
-// Monday to Friday only; class meetings on weekends are vanishingly rare and
-// are dropped rather than adding two mostly-empty columns.
+// Mon-Fri only; weekend class meetings are vanishingly rare and get dropped.
 const CALENDAR_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
-// Flatten shared classes into calendar blocks: one per meeting per weekday it
-// runs on. days come as tokens matching weekDayLetters (M, T, W, Th, F).
+// One calendar block per meeting per weekday it runs on.
 const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
   const events: CalendarEvent[] = [];
   classes.forEach((c) => {

@@ -28,17 +28,12 @@ const STEPS = [
   },
 ];
 
-// Light tints for the sample avatars, matching the section colors used
-// elsewhere. One-off decorative sizes stay as fixed values.
+// Sample avatars use the same section-color tints as the calendar.
 const AVATAR =
   'flex h-7 w-7 items-center justify-center rounded-full text-xs ' +
   'font-semibold text-dark1';
 
-/**
- * First-visit tour for the Shared Classes page. The host page persists
- * dismissal (Skip, X, backdrop, or Done) via its onRequestClose override, so
- * the tour only ever shows once.
- */
+// First-visit tour for the Shared Classes page; the host page shows it once.
 const SharedClassesTourModalContent = ({
   onRequestClose,
 }: SharedClassesTourModalContentProps) => {
