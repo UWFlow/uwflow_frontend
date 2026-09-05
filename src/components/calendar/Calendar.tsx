@@ -118,7 +118,7 @@ const STATE_CLASS: Record<CalendarEventState, string> = {
 
 // Week-nav buttons, styled to match the app's `input/Button`: a light, bordered
 // face with the Anderson heading font and a brightness(85%) hover. Layered over
-// the shared Button's ghost variant (which already supplies the dark text and
+// the shared Button's subtle variant (which already supplies the dark text and
 // light hover background) via `cn`, so these win over its size defaults.
 const NAV_BUTTON_CLASS =
   'ml-1 h-12 rounded-lg border-2 border-solid border-light3 bg-light1 font-anderson text-lg font-semibold transition-all hover:brightness-[0.85]';
@@ -306,7 +306,7 @@ const Calendar = ({
             {onCurrentWeek && (
               <Button
                 type="button"
-                variant="ghost"
+                variant="subtle"
                 // "Current Week" is hidden on very small screens, matching the
                 // legacy hideSmall behaviour (max-width: 480px).
                 className={cn(NAV_BUTTON_CLASS, 'px-8 max-[480px]:hidden')}
@@ -319,7 +319,7 @@ const Calendar = ({
             {onPrevWeek && (
               <Button
                 type="button"
-                variant="ghost"
+                variant="subtle"
                 className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
                 onClick={onPrevWeek}
                 onMouseDown={(e) => e.preventDefault()}
@@ -330,7 +330,7 @@ const Calendar = ({
             {onNextWeek && (
               <Button
                 type="button"
-                variant="ghost"
+                variant="subtle"
                 className={cn(NAV_BUTTON_CLASS, 'w-12 px-0')}
                 onClick={onNextWeek}
                 onMouseDown={(e) => e.preventDefault()}

@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components';
 import DropdownList from 'components/input/DropdownList';
 import MultiSelectButton from 'components/input/MultiSelectButton';
 import RadioButton from 'components/input/RadioButton';
+import { Button } from 'components/ui/button';
 import { SearchFilterState, SearchFilterStateKey } from 'types/Common';
 import {
   formatCourseCode,
@@ -18,12 +19,10 @@ import {
   CourseFilterDropdown,
   HeaderButtonWrapper,
   RadioButtonWrapper,
-  ResetButton,
   SearchFilterHeader,
   SearchFilterSection,
   SearchFilterText,
   SearchFilterWrapper,
-  XWrapper,
 } from './styles/SearchFilter';
 import RatingsSlider from './RatingSlider';
 
@@ -203,15 +202,15 @@ const SearchFilter = ({
           </SearchFilterSection>
         </>
       )}
-      <ResetButton
+      <Button
+        className="mt-xl"
         onClick={resetFilters}
         onMouseDown={(e) => e.preventDefault()}
+        variant="filter"
       >
-        <XWrapper>
-          <X size={16} />
-        </XWrapper>
-        Clear filter
-      </ResetButton>
+        <X size={16} />
+        Clear Filter
+      </Button>
     </SearchFilterWrapper>
   );
 };

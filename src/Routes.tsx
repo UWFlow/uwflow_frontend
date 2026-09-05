@@ -12,6 +12,7 @@ export const EXPLORE_PAGE_ROUTE = '/explore';
 export const ABOUT_PAGE_ROUTE = '/about';
 export const PRIVACY_PAGE_ROUTE = '/privacy';
 export const WELCOME_PAGE_ROUTE = '/welcome';
+export const DESIGN_SYSTEM_PAGE_ROUTE = '/design-system';
 
 /* Route Testers */
 export const LANDING_PAGE_TESTER = pathToRegexp(LANDING_PAGE_ROUTE);
@@ -22,6 +23,7 @@ export const PROF_PAGE_TESTER = pathToRegexp(PROF_PAGE_ROUTE);
 export const ABOUT_PAGE_TESTER = pathToRegexp(ABOUT_PAGE_ROUTE);
 export const PRIVACY_PAGE_TESTER = pathToRegexp(PRIVACY_PAGE_ROUTE);
 export const WELCOME_PAGE_TESTER = pathToRegexp(WELCOME_PAGE_ROUTE);
+export const DESIGN_SYSTEM_PAGE_TESTER = pathToRegexp(DESIGN_SYSTEM_PAGE_ROUTE);
 
 /* Page Testers */
 export const isOnLandingPageRoute = (location: Location) =>

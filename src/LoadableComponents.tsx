@@ -39,3 +39,10 @@ export const LoadableWelcomePage = loadable(
 export const LoadableSwapPage = loadable(
   () => import(/* webpackPrefetch: true */ './pages/swapPage/SwapPage'),
 );
+
+export const LoadableDesignSystemPage = loadable(
+  () =>
+    import(
+      /* webpackPrefetch: true */ './pages/designSystemPage/DesignSystemPage'
+    ),
+);
