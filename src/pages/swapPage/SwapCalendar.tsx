@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { RotateCcw } from 'react-feather';
+import { Plus, RotateCcw } from 'react-feather';
 import { useQuery } from '@apollo/client';
 import * as Sentry from '@sentry/react';
 import {
@@ -40,8 +40,14 @@ import {
   toDayIndexes,
 } from './displayedTerms';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
+import {
+  AdditionsByTerm,
+  withoutScheduleAddition,
+  withScheduleAddition,
+} from './scheduleAdditions';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
+  SchedulePlanMode,
   SwapCandidateCourse,
   SwapPreview,
 } from './ScheduleSwapPanel';
@@ -132,7 +138,9 @@ const buildEnrolledEvents = (
   selection: SectionSelection | null,
   isPreviewing: boolean,
   // null disables clicking (demo mode renders a non-interactive schedule).
-  onToggleSection: ((code: string, sectionType: string) => void) | null,
+  onToggleSection:
+    | ((code: string, sectionType: string, sectionId: number) => void)
+    | null,
 ): CalendarEvent[] =>
   termSections.flatMap(({ section }) => {
     const courseCode = section.course.code;
@@ -165,7 +173,7 @@ const buildEnrolledEvents = (
           location: m.location,
           subtitle: `${section.section_name} · Class #${section.class_number}`,
           onClick: onToggleSection
-            ? () => onToggleSection(courseCode, sectionType)
+            ? () => onToggleSection(courseCode, sectionType, section.id)
             : undefined,
         }),
       );
@@ -254,6 +262,7 @@ const SwapCalendar = ({
     : DisplayedTerm.Current;
   const [selectedTerm, setSelectedTerm] =
     useState<DisplayedTerm>(defaultSelectedTerm);
+  const [mode, setMode] = useState<SchedulePlanMode>('add');
   const selectedTermCode =
     selectedTerm === DisplayedTerm.Next ? nextTermCode : thisTermCode;
   // The clicked calendar block's course + section type (e.g. CS 240 / LEC).
@@ -265,9 +274,10 @@ const SwapCalendar = ({
   // Ghost preview while the pointer is over a section row in the panel.
   const [hoveredSection, setHoveredSection] =
     useState<SwapCourseSectionFragment | null>(null);
-  const [selectedSwapCourseCode, setSelectedSwapCourseCode] = useState<
+  const [selectedTargetCourseCode, setSelectedTargetCourseCode] = useState<
     string | null
   >(null);
+  const [additionsByTerm, setAdditionsByTerm] = useState<AdditionsByTerm>({});
 
   const { plannedSwapsByTerm, planSwap, clearSwaps, isPlanSettled } =
     useScheduleSwaps({
@@ -276,11 +286,6 @@ const SwapCalendar = ({
       currentTermCode: thisTermCode,
       nextTermCode,
     });
-
-  useEffect(() => {
-    setSelectedSwapCourseCode(null);
-    setHoveredSection(null);
-  }, [selectedCourseCode, selectedSectionType]);
 
   // Effective schedule for the term: persisted swaps overlay the original
   // imported schedule without modifying it.
@@ -292,6 +297,15 @@ const SwapCalendar = ({
         plannedSwapsByTerm[selectedTerm] ?? [],
       ),
     [schedule, selectedTerm, selectedTermCode, plannedSwapsByTerm],
+  );
+
+  const addedSections = additionsByTerm[selectedTerm] ?? [];
+  const calendarSections = useMemo(
+    () => [
+      ...termSections,
+      ...addedSections.map((section) => toScheduleEntry(section, userId ?? 0)),
+    ],
+    [addedSections, termSections, userId],
   );
 
   // Distinct courses in the user's schedule for this term, for the left
@@ -313,7 +327,8 @@ const SwapCalendar = ({
 
   // Sections of the course shown in the panel: the chosen swap target, or the
   // course selected on the calendar while no target is chosen yet.
-  const displayCode = selectedSwapCourseCode ?? selectedCourseCode;
+  const displayCode =
+    selectedTargetCourseCode ?? (mode === 'swap' ? selectedCourseCode : null);
   const { loading: sectionsLoading, data: sectionsData } = useQuery<
     GetCourseForSwapQuery,
     GetCourseForSwapQueryVariables
@@ -338,18 +353,51 @@ const SwapCalendar = ({
     : [];
 
   const enrolledSectionIds = termSections.map((e) => e.section.id);
+  const addedSectionIds = addedSections.map((section) => section.id);
 
   // Nested meeting-overlap checks across every candidate × enrolled section.
   const conflictSectionIds = useMemo(
     () =>
       swapSections
-        .filter(
-          (section) =>
-            !enrolledSectionIds.includes(section.id) &&
-            sectionConflictsWithSchedule(section, termSections, selection),
-        )
+        .filter((section) => {
+          if (
+            enrolledSectionIds.includes(section.id) ||
+            addedSectionIds.includes(section.id)
+          ) {
+            return false;
+          }
+
+          const sectionType = getSectionType(section.section_name);
+          const replacesAddedSection =
+            mode === 'add' &&
+            addedSections.some(
+              (addedSection) =>
+                addedSection.course.code === section.course.code &&
+                getSectionType(addedSection.section_name) === sectionType,
+            );
+          const excluded =
+            mode === 'swap'
+              ? selection
+              : replacesAddedSection
+              ? { courseCode: section.course.code, sectionType }
+              : null;
+
+          return sectionConflictsWithSchedule(
+            section,
+            calendarSections,
+            excluded,
+          );
+        })
         .map((section) => section.id),
-    [swapSections, enrolledSectionIds, termSections, selection],
+    [
+      swapSections,
+      enrolledSectionIds,
+      addedSectionIds,
+      mode,
+      addedSections,
+      selection,
+      calendarSections,
+    ],
   );
 
   // Sections of the selected type shown in the panel (mirrors the panel's term
@@ -455,15 +503,16 @@ const SwapCalendar = ({
       setSelectedTerm(
         termId === nextTermCode ? DisplayedTerm.Next : DisplayedTerm.Current,
       );
+      setMode('add');
       setSelection(null);
-      setSelectedSwapCourseCode(null);
+      setSelectedTargetCourseCode(null);
       setHoveredSection(null);
     },
     [nextTermCode],
   );
 
   const handleCourseChange = useCallback((courseCode: string | null) => {
-    setSelectedSwapCourseCode(courseCode);
+    setSelectedTargetCourseCode(courseCode);
     setHoveredSection(null);
   }, []);
 
@@ -475,15 +524,29 @@ const SwapCalendar = ({
         .filter((e) => e.section.course.code === courseCode)
         .map((e) => getSectionType(e.section.section_name));
       const sectionType = types.includes('LEC') ? 'LEC' : types[0];
-      if (sectionType) setSelection({ courseCode, sectionType });
+      if (sectionType) {
+        setMode('swap');
+        setSelection({ courseCode, sectionType });
+        setSelectedTargetCourseCode(null);
+        setHoveredSection(null);
+      }
     },
     [termSections],
   );
 
-  const handleResetSwaps = () => {
-    clearSwaps();
+  const handleStartAdding = () => {
+    setMode('add');
     setSelection(null);
-    setSelectedSwapCourseCode(null);
+    setSelectedTargetCourseCode(null);
+    setHoveredSection(null);
+  };
+
+  const handleResetPlan = () => {
+    clearSwaps();
+    setAdditionsByTerm({});
+    setMode('add');
+    setSelection(null);
+    setSelectedTargetCourseCode(null);
     setHoveredSection(null);
   };
 
@@ -519,6 +582,7 @@ const SwapCalendar = ({
           courseCode: newSection.course.code,
           sectionType: selection.sectionType,
         });
+        setSelectedTargetCourseCode(null);
       }
     },
     [
@@ -531,35 +595,103 @@ const SwapCalendar = ({
     ],
   );
 
+  const handleAddSection = useCallback(
+    (sectionId: number) => {
+      const newSection = swapSections.find(
+        (section) => section.id === sectionId,
+      );
+      if (!newSection) return;
+
+      setAdditionsByTerm((previous) =>
+        withScheduleAddition(previous, selectedTerm, newSection),
+      );
+      setHoveredSection(null);
+    },
+    [selectedTerm, swapSections],
+  );
+
+  const handleRemoveAddedSection = useCallback(
+    (sectionId: number) => {
+      setAdditionsByTerm((previous) =>
+        withoutScheduleAddition(previous, selectedTerm, sectionId),
+      );
+      setHoveredSection(null);
+    },
+    [selectedTerm],
+  );
+
+  const handleChooseSection =
+    mode === 'add' ? handleAddSection : handleSwitchSection;
+
+  const handleCalendarSectionClick = useCallback(
+    (courseCode: string, sectionType: string, sectionId: number) => {
+      if (addedSectionIds.includes(sectionId)) {
+        setMode('add');
+        setSelection(null);
+        setSelectedTargetCourseCode(courseCode);
+        setHoveredSection(null);
+        return;
+      }
+
+      const isDeselecting =
+        mode === 'swap' &&
+        selection?.courseCode === courseCode &&
+        selection.sectionType === sectionType;
+      setMode(isDeselecting ? 'add' : 'swap');
+      setSelection(isDeselecting ? null : { courseCode, sectionType });
+      setSelectedTargetCourseCode(null);
+      setHoveredSection(null);
+    },
+    [addedSectionIds, mode, selection],
+  );
+
+  const previewedAdditionSelection =
+    mode === 'add' &&
+    previewSection &&
+    addedSections.some(
+      (section) =>
+        section.course.code === previewSection.course.code &&
+        getSectionType(section.section_name) ===
+          getSectionType(previewSection.section_name),
+    )
+      ? {
+          courseCode: previewSection.course.code,
+          sectionType: getSectionType(previewSection.section_name),
+        }
+      : null;
+
   const events = useMemo(
     () => [
       ...buildEnrolledEvents(
-        termSections,
-        selection,
+        calendarSections,
+        mode === 'swap' ? selection : previewedAdditionSelection,
         previewSection !== null,
         // Re-clicking the selected course+type deselects; clicking any other
         // block (even another type of the same course) re-selects.
-        demoMode
-          ? null
-          : (courseCode, sectionType) =>
-              setSelection((prev) =>
-                prev?.courseCode === courseCode &&
-                prev.sectionType === sectionType
-                  ? null
-                  : { courseCode, sectionType },
-              ),
+        demoMode ? null : handleCalendarSectionClick,
       ),
       ...buildPreviewEvents(previewSection),
     ],
-    [termSections, selection, previewSection, demoMode],
+    [
+      calendarSections,
+      mode,
+      selection,
+      previewedAdditionSelection,
+      previewSection,
+      demoMode,
+      handleCalendarSectionClick,
+    ],
   );
 
   const availableTerms = [
     { id: thisTermCode, label: thisTermLabel },
     { id: nextTermCode, label: nextTermLabel },
   ];
-  const swapTargetCode = selectedSwapCourseCode ?? selectedCourseCode;
-  const hasSwaps = Object.keys(plannedSwapsByTerm).length > 0;
+  const targetCourseCode =
+    selectedTargetCourseCode ?? (mode === 'swap' ? selectedCourseCode : null);
+  const hasPlan =
+    Object.keys(plannedSwapsByTerm).length > 0 ||
+    Object.keys(additionsByTerm).length > 0;
 
   return (
     <div className="relative z-0 w-screen animate-fade-in">
@@ -575,8 +707,8 @@ const SwapCalendar = ({
               </span>
             </div>
             <p className="mb-0 mt-1 font-inter text-md font-regular text-dark2">
-              Click any class to compare sections and check if a swap is
-              possible — you make the actual change in Quest.
+              Search for a class to preview adding it, or click an enrolled
+              class to compare sections — you make the actual change in Quest.
             </p>
           </div>
           <div className="inline-flex shrink-0 rounded border border-solid border-light3 bg-white p-1">
@@ -609,7 +741,7 @@ const SwapCalendar = ({
 
           <div className="flex w-[360px] shrink-0 flex-col gap-3">
             <div className="flex min-w-0 items-center gap-1.5 rounded bg-white px-3 py-2.5 shadow-box">
-              {selectedCourseCode ? (
+              {mode === 'swap' && selectedCourseCode ? (
                 <>
                   <span className="text-sm font-semibold text-dark1">Swap</span>
                   <EnrolledCourseDropdown
@@ -621,26 +753,47 @@ const SwapCalendar = ({
                   <span className="text-sm font-semibold text-dark1">with</span>
                   <CourseSearchDropdown
                     key={`${selectedCourseCode}|${selectedSectionType}|${selectedTermCode}`}
-                    displayCode={swapTargetCode ?? selectedCourseCode}
-                    selectedCode={swapTargetCode}
+                    ariaLabel="Choose a replacement course"
+                    displayCode={targetCourseCode ?? selectedCourseCode}
+                    selectedCode={targetCourseCode}
                     onSelect={handleCourseChange}
                     termId={selectedTermCode}
                   />
+                  <button
+                    aria-label="Add a class instead"
+                    className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-xs font-semibold text-primary outline-none transition-colors hover:text-primaryDark focus-visible:ring-2 focus-visible:ring-primary"
+                    onClick={handleStartAdding}
+                    title="Add a class instead"
+                    type="button"
+                  >
+                    <Plus aria-hidden="true" size={14} />
+                    Add
+                  </button>
                 </>
               ) : (
-                <span className="text-sm text-dark3">
-                  Select a class on your schedule
-                </span>
+                <>
+                  <span className="text-sm font-semibold text-dark1">Add</span>
+                  <CourseSearchDropdown
+                    ariaLabel="Add a class"
+                    displayCode={targetCourseCode}
+                    excludedCodes={enrolledCourses.map((course) => course.code)}
+                    key={`add|${selectedTermCode}`}
+                    onSelect={handleCourseChange}
+                    placeholder="Search for a class"
+                    selectedCode={targetCourseCode}
+                    termId={selectedTermCode}
+                  />
+                </>
               )}
-              {hasSwaps && (
+              {hasPlan && (
                 <button
-                  aria-label="Reset swapped sections"
+                  aria-label="Reset schedule plan"
                   className="ml-auto flex shrink-0 cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-inter text-xs font-semibold text-dark2 outline-none transition-colors hover:text-dark1 disabled:cursor-default disabled:text-dark3 disabled:hover:text-dark3"
                   disabled={!isPlanSettled}
-                  onClick={handleResetSwaps}
+                  onClick={handleResetPlan}
                   title={
                     isPlanSettled
-                      ? 'Reset swapped sections'
+                      ? 'Reset schedule plan'
                       : 'Applying your saved swaps…'
                   }
                   type="button"
@@ -663,14 +816,17 @@ const SwapCalendar = ({
               />
             )}
             <ScheduleSwapPanel
+              mode={mode}
               selectedTermId={selectedTermCode}
               selectedCourseId={displayedCourse?.id ?? null}
-              sectionType={selectedSectionType}
+              sectionType={mode === 'swap' ? selectedSectionType : null}
               candidateCourses={candidateCourses}
               enrolledSectionIds={enrolledSectionIds}
+              addedSectionIds={addedSectionIds}
               conflictSectionIds={conflictSectionIds}
               onPreviewChange={handlePreviewChange}
-              onSwitchSection={handleSwitchSection}
+              onRemoveAddedSection={handleRemoveAddedSection}
+              onSwitchSection={handleChooseSection}
               professorStatsById={professorStatsById}
               isLoading={sectionsLoading}
             />

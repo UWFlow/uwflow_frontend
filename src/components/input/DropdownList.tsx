@@ -19,6 +19,7 @@ import {
 import Textbox from './Textbox';
 
 type DropdownListProps = {
+  ariaLabel?: string;
   color: string;
   options: string[];
   selectedIndex: number;
@@ -29,11 +30,13 @@ type DropdownListProps = {
   onChange?: (index: number) => void;
   placeholder?: string;
   searchable?: boolean;
+  searchPlaceholder?: string;
   width?: number;
   zIndex?: number;
 };
 
 const DropdownList = ({
+  ariaLabel,
   color,
   options,
   selectedIndex,
@@ -45,6 +48,7 @@ const DropdownList = ({
   itemColor = undefined,
   menuOffset = 8,
   searchable = false,
+  searchPlaceholder = '',
   maxItems = 5,
 }: DropdownListProps) => {
   const theme = useTheme();
@@ -128,7 +132,7 @@ const DropdownList = ({
             icon={<Search color={theme.dark3} />}
             text={searchText}
             setText={setSearchText}
-            placeholder=""
+            placeholder={searchPlaceholder}
             maxLength={50}
             options={{
               width: '100%',
@@ -160,6 +164,7 @@ const DropdownList = ({
       margin={margin}
     >
       <DropdownControl
+        aria-label={ariaLabel}
         open={open}
         color={color}
         onClick={() => setOpen(!open)}

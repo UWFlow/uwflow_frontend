@@ -103,7 +103,7 @@ const SwapPage = () => {
         {hasDisplayedTermClasses && (
           <meta
             name="description"
-            content="Simulate UW course section swaps to check they're possible before making the change in Quest."
+            content="Preview adding UW courses or swapping sections before making the change in Quest."
           />
         )}
       </Helmet>
@@ -139,12 +139,12 @@ const SwapPage = () => {
                   <Lock size={24} />
                 </div>
                 <h2 className="mb-0 mt-1 text-xl font-bold text-dark1">
-                  Upload your schedule to plan swaps
+                  Upload your schedule to plan changes
                 </h2>
                 <p className="m-0 text-sm leading-normal text-dark2">
-                  Log in and paste your courses from Quest to simulate section
-                  swaps and see which ones are possible. You make the actual
-                  swap in Quest.
+                  Log in and paste your courses from Quest to preview classes,
+                  compare sections, and spot conflicts. You make the actual
+                  change in Quest.
                 </p>
                 <button
                   className="mt-2 cursor-pointer rounded border-none bg-accent px-7 py-3 text-[15px] font-semibold text-dark1 transition-[filter] duration-100 ease-in hover:brightness-95"

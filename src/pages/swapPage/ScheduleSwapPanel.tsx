@@ -8,6 +8,7 @@ import LoadingSpinner from 'components/display/LoadingSpinner';
 import { Button } from 'components/ui/button';
 import { cn } from 'lib/utils';
 import { formatCourseCode, processRating, weekDayLetters } from 'utils/Misc';
+import { mergeMeetingDateRanges } from 'utils/Schedule';
 
 // Local shorthand for the deeply nested generated meeting type.
 type SwapMeeting = SwapCourseSectionFragment['meetings'][number];
@@ -32,7 +33,10 @@ export type ProfessorSwapStats = {
   commentCount?: number | null;
 };
 
+export type SchedulePlanMode = 'add' | 'swap';
+
 export type ScheduleSwapPanelProps = {
+  mode: SchedulePlanMode;
   selectedTermId: number;
   selectedCourseId: number | null;
   // Section type ("LEC", "TUT", ...) the user selected on the calendar; only
@@ -40,14 +44,23 @@ export type ScheduleSwapPanelProps = {
   sectionType: string | null;
   candidateCourses: SwapCandidateCourse[];
   enrolledSectionIds: number[];
+  addedSectionIds: number[];
   conflictSectionIds: number[];
   onPreviewChange: (preview: SwapPreview | null) => void;
   onSwitchSection: (sectionId: number) => void;
+  onRemoveAddedSection: (sectionId: number) => void;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
   isLoading?: boolean;
 };
 
 const getSectionType = (sectionName: string) => sectionName.split(' ')[0];
+
+const SECTION_TYPE_ORDER = ['LEC', 'SEM', 'LAB', 'TUT'];
+
+const getSectionTypeRank = (sectionName: string) => {
+  const rank = SECTION_TYPE_ORDER.indexOf(getSectionType(sectionName));
+  return rank === -1 ? SECTION_TYPE_ORDER.length : rank;
+};
 
 const getOpenSeats = (section: SwapCourseSectionFragment) =>
   Math.max(section.enrollment_capacity - section.enrollment_total, 0);
@@ -212,15 +225,18 @@ const MeetingLine = ({
   </div>
 );
 
-const EmptyState = () => (
+const EmptyState = ({ mode }: { mode: SchedulePlanMode }) => (
   <div className="flex min-h-[178px] flex-col items-center justify-center rounded border border-solid border-light3 bg-white px-6 py-8 text-center">
     <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-light2 text-dark3">
       <MousePointer aria-hidden="true" size={18} />
     </div>
-    <div className="text-sm font-semibold text-dark1">Select a course</div>
+    <div className="text-sm font-semibold text-dark1">
+      {mode === 'add' ? 'Add a class' : 'Select a course'}
+    </div>
     <div className="mt-2 max-w-[260px] text-sm leading-5 text-dark3">
-      Click a class in your schedule to see other sections, prof ratings, and
-      swap options.
+      {mode === 'add'
+        ? 'Search for a course above, then preview its sections on your schedule.'
+        : 'Click a class in your schedule to see other sections, prof ratings, and swap options.'}
     </div>
   </div>
 );
@@ -229,18 +245,24 @@ const ScheduleSectionRow = ({
   course,
   section,
   isEnrolled,
+  isAdded,
+  mode,
   hasConflict,
   professorStatsById,
   onPreviewChange,
   onSwitchSection,
+  onRemoveAddedSection,
 }: {
   course: SwapCandidateCourse;
   section: SwapCourseSectionFragment;
   isEnrolled: boolean;
+  isAdded: boolean;
+  mode: SchedulePlanMode;
   hasConflict: boolean;
   professorStatsById?: Record<number, ProfessorSwapStats | undefined>;
   onPreviewChange: (preview: SwapPreview | null) => void;
   onSwitchSection: (sectionId: number) => void;
+  onRemoveAddedSection: (sectionId: number) => void;
 }) => {
   const showPreview = () =>
     onPreviewChange({
@@ -258,6 +280,7 @@ const ScheduleSectionRow = ({
   };
 
   const openSeats = getOpenSeats(section);
+  const meetings = mergeMeetingDateRanges(section.meetings);
 
   return (
     <div
@@ -265,6 +288,7 @@ const ScheduleSectionRow = ({
         'border-0 border-l-4 border-t border-solid border-l-transparent border-t-light3 bg-white px-4 py-3 outline-none transition-colors first:border-t-0',
         'focus-within:bg-light1 hover:bg-light1',
         isEnrolled && 'border-l-primary bg-primary/5',
+        isAdded && 'border-l-accentDark bg-accent/10',
         hasConflict && 'bg-light1/60 text-dark3',
       )}
       onBlur={handleBlur}
@@ -285,7 +309,13 @@ const ScheduleSectionRow = ({
             Enrolled
           </span>
         )}
-        {!isEnrolled && hasConflict && (
+        {isAdded && (
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-dark1">
+            <CheckCircle aria-hidden="true" size={14} />
+            Added
+          </span>
+        )}
+        {!isEnrolled && !isAdded && hasConflict && (
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-darkRed">
             <AlertTriangle aria-hidden="true" size={14} />
             Conflicts
@@ -293,10 +323,10 @@ const ScheduleSectionRow = ({
         )}
       </div>
       <div className="grid gap-2">
-        {section.meetings.length === 0 ? (
+        {meetings.length === 0 ? (
           <div className="text-xs text-dark3">No meeting times listed</div>
         ) : (
-          section.meetings.map((meeting, index) => (
+          meetings.map((meeting, index) => (
             <MeetingLine
               key={`${section.id}-${index}`}
               meeting={meeting}
@@ -317,7 +347,17 @@ const ScheduleSectionRow = ({
           </strong>{' '}
           of {section.enrollment_capacity} {openSeats === 0 ? 'seats' : 'open'}
         </div>
-        {!isEnrolled && !hasConflict && (
+        {isAdded ? (
+          <Button
+            className="h-8 font-bold"
+            onClick={() => onRemoveAddedSection(section.id)}
+            size="sm"
+            type="button"
+            variant="subtle"
+          >
+            Remove
+          </Button>
+        ) : !isEnrolled && !hasConflict ? (
           <Button
             className="h-8 font-bold"
             onClick={() => onSwitchSection(section.id)}
@@ -325,23 +365,26 @@ const ScheduleSectionRow = ({
             type="button"
             variant="accent"
           >
-            Choose section
+            {mode === 'add' ? 'Add section' : 'Choose section'}
           </Button>
-        )}
+        ) : null}
       </div>
     </div>
   );
 };
 
 const ScheduleSwapPanel = ({
+  mode,
   selectedTermId,
   selectedCourseId,
   sectionType,
   candidateCourses,
   enrolledSectionIds,
+  addedSectionIds,
   conflictSectionIds,
   onPreviewChange,
   onSwitchSection,
+  onRemoveAddedSection,
   professorStatsById,
   isLoading = false,
 }: ScheduleSwapPanelProps) => {
@@ -356,6 +399,11 @@ const ScheduleSwapPanel = ({
               getSectionType(section.section_name) === sectionType),
         )
         .sort((a, b) => {
+          const rankDifference =
+            getSectionTypeRank(a.section_name) -
+            getSectionTypeRank(b.section_name);
+          if (rankDifference !== 0) return rankDifference;
+
           const sectionTypeA = getSectionType(a.section_name);
           const sectionTypeB = getSectionType(b.section_name);
           if (sectionTypeA === sectionTypeB) {
@@ -378,7 +426,7 @@ const ScheduleSwapPanel = ({
         </div>
       ) : !selectedCourse ? (
         <div className="p-4">
-          <EmptyState />
+          <EmptyState mode={mode} />
         </div>
       ) : (
         <div>
@@ -400,6 +448,11 @@ const ScheduleSwapPanel = ({
               <p className="mb-0 mt-0.5 text-sm text-dark3">
                 {selectedCourse.name}
               </p>
+              {mode === 'add' && (
+                <p className="mb-0 mt-1 text-xs text-dark3">
+                  Choose one section for each component you want to preview.
+                </p>
+              )}
             </div>
           </div>
           {sections.length === 0 ? (
@@ -412,9 +465,12 @@ const ScheduleSwapPanel = ({
                 <ScheduleSectionRow
                   course={selectedCourse}
                   hasConflict={conflictSectionIds.includes(section.id)}
+                  isAdded={addedSectionIds.includes(section.id)}
                   isEnrolled={enrolledSectionIds.includes(section.id)}
                   key={section.id}
+                  mode={mode}
                   onPreviewChange={onPreviewChange}
+                  onRemoveAddedSection={onRemoveAddedSection}
                   onSwitchSection={onSwitchSection}
                   professorStatsById={professorStatsById}
                   section={section}
