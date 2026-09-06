@@ -56,9 +56,7 @@ const getDateRangeString = (start: Moment, end: Moment) => {
   return `${start.format('MMM Do')} - ${end.format('Do, YYYY')}`;
 };
 
-// Match the legacy colour rule: an exam keeps its underlying section's colour
-// because its name still contains LEC/LAB; everything else falls back to the
-// tutorial colour.
+// Not the shared sectionVariant: this falls back to tutorial, not other, to keep legacy colours.
 const getEventVariant = (section: string): CalendarEventVariant => {
   if (section.includes(LEC)) return 'lecture';
   if (section.includes(LAB)) return 'lab';
