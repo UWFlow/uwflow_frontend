@@ -17,6 +17,8 @@ import {
   Calendar,
   CalendarEvent,
   CalendarEventVariant,
+  sectionVariant,
+  WEEKDAY_LABELS,
 } from 'components/calendar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
@@ -77,25 +79,15 @@ const MemberChip = ({ member }: { member: GroupMember }) => {
   );
 };
 
-// LEC/LAB/TUT get the calendar's section colors; everything else is neutral.
-const componentTint = (sectionName: string) => {
-  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
-  if (kind.startsWith('LEC')) return 'bg-lecture text-dark1';
-  if (kind.startsWith('LAB')) return 'bg-lab text-dark1';
-  if (kind.startsWith('TUT')) return 'bg-tutorial text-dark1';
-  return 'bg-light2 text-dark2';
+// Pill colour for a section, keyed off the same variant the calendar uses.
+const TINT_BY_VARIANT: Record<CalendarEventVariant, string> = {
+  lecture: 'bg-lecture text-dark1',
+  lab: 'bg-lab text-dark1',
+  tutorial: 'bg-tutorial text-dark1',
+  other: 'bg-light2 text-dark2',
 };
-
-const sectionVariant = (sectionName: string): CalendarEventVariant => {
-  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
-  if (kind.startsWith('LEC')) return 'lecture';
-  if (kind.startsWith('LAB')) return 'lab';
-  if (kind.startsWith('TUT')) return 'tutorial';
-  return 'other';
-};
-
-// Mon-Fri only; weekend class meetings are vanishingly rare and get dropped.
-const CALENDAR_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+const componentTint = (sectionName: string) =>
+  TINT_BY_VARIANT[sectionVariant(sectionName)];
 
 // One calendar block per meeting per weekday it runs on.
 const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
@@ -391,7 +383,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             {events.length > 0 && (
               <div className="rounded-card border border-light3 bg-white p-md shadow-box">
                 <Calendar
-                  dayLabels={CALENDAR_DAYS}
+                  dayLabels={WEEKDAY_LABELS}
                   events={events}
                   minHour={minHour}
                   maxHour={maxHour}

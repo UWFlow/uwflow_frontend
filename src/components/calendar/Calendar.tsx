@@ -15,6 +15,18 @@ const TIME_WIDTH = 64;
 /** Section-type colour of an event block. */
 export type CalendarEventVariant = 'lecture' | 'lab' | 'tutorial' | 'other';
 
+/** Map a section_name (e.g. "LEC 001") to its calendar colour variant. */
+export const sectionVariant = (sectionName: string): CalendarEventVariant => {
+  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
+  if (kind.startsWith('LEC')) return 'lecture';
+  if (kind.startsWith('LAB')) return 'lab';
+  if (kind.startsWith('TUT')) return 'tutorial';
+  return 'other';
+};
+
+/** Weekday column labels for a Mon-Fri calendar. */
+export const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
 /**
  * Visual state of an event block:
  * - `default`  — a normal block.
