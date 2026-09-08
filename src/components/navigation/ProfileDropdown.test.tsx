@@ -38,7 +38,6 @@ describe('profile menu', () => {
 
   beforeEach(() => {
     Object.assign(global, { IS_REACT_ACT_ENVIRONMENT: true });
-    Element.prototype.scrollIntoView = jest.fn();
     jest.clearAllMocks();
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -102,16 +101,32 @@ describe('profile menu', () => {
     expect(document.querySelector('[role="menu"]')).toBeNull();
   });
 
+  it('moves keyboard focus between menu actions', async () => {
+    await openWithKeyboard();
+    const items = Array.from(
+      document.querySelectorAll<HTMLElement>('[role="menuitem"]'),
+    );
+    expect(document.activeElement).toBe(items[0]);
+    act(() => {
+      items[0].dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }),
+      );
+    });
+    expect(document.activeElement).toBe(items[3]);
+    act(() => {
+      items[3].dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+      );
+    });
+    expect(document.activeElement).toBe(items[0]);
+  });
+
   it('dismisses with Escape and restores focus to the trigger', async () => {
     const trigger = await openWithKeyboard();
     await act(async () => {
       document.activeElement?.dispatchEvent(
         new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }),
       );
-    });
-    // Radix restores focus in a timer after the portal unmounts.
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
     });
     expect(document.querySelector('[role="menu"]')).toBeNull();
     expect(document.activeElement).toBe(trigger);
