@@ -9,6 +9,7 @@ const LOCAL_BACKEND_ENDPOINT = 'http://localhost:8081';
 
 // Set /prod or /staging per Vercel preview branch. Explicit endpoint overrides
 // below take precedence; leave them unset when selecting a backend path.
+// Remove a trailing slash so /staging/ becomes /staging/api, not /staging//api.
 const CONFIGURED_BACKEND_PATH = (
   process.env.REACT_APP_BACKEND_PATH || ''
 ).replace(/\/$/, '');
