@@ -9,22 +9,22 @@ export type SwapTourModalContentProps = {
 
 const STEPS = [
   {
-    heading: 'Plan swaps in a sandbox',
+    heading: 'Plan changes in a sandbox',
     body:
-      'This tool simulates section swaps so you can check whether one is ' +
-      'possible before touching Quest — it never changes your enrollment.',
+      'This tool previews added classes and section swaps before you touch ' +
+      'Quest — it never changes your enrollment.',
   },
   {
-    heading: 'Compare sections',
+    heading: 'Add or compare sections',
     body:
-      'Click any class to see every other section — meeting times, rooms, ' +
-      'professor ratings, and open seats. Conflicts and full sections are ' +
-      'flagged so you know what would actually work.',
+      'Search for a class to add, or click an enrolled class to see its other ' +
+      'sections. Meeting times, rooms, professor ratings, open seats, and ' +
+      'conflicts help you choose.',
   },
   {
-    heading: 'Then make the swap in Quest',
+    heading: 'Then make the change in Quest',
     body:
-      "Found a section that fits? UW Flow can't swap it for you — go to " +
+      "Found a section that fits? UW Flow can't register it for you — go to " +
       'Quest and make the real change there yourself.',
   },
 ];
