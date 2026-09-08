@@ -16,32 +16,35 @@
 
 Clone the [backend repository](https://github.com/UWFlow/uwflow) and follow its [README](https://github.com/UWFlow/uwflow/blob/main/README.md)
 
-### Vercel preview backend
+### Two Vercel previews per PR
 
-The frontend accepts `REACT_APP_BACKEND_PATH` as a public build-time setting.
-In Vercel **Settings → Environment Variables**, add it for **Preview** and select
-which Git branch the value applies to:
+Connect two Vercel projects to `UWFlow/uwflow_frontend`, both using the repository
+root and the build settings in `vercel.json`:
 
-| Preview backend | `REACT_APP_BACKEND_PATH` |
+| Vercel project | `REACT_APP_BACKEND_PATH` (Preview environment) |
 | --- | --- |
-| Production | `/prod` |
-| Shared staging | `/staging` |
+| `uwflow-frontend` (existing) | `/prod` |
+| `uwflow-frontend-staging` (new) | `/staging` |
 
-You can set a default for all Preview branches and override it for individual
-branches. See [Vercel's environment variable documentation](https://vercel.com/docs/environment-variables).
-Leave `REACT_APP_BACKEND_ENDPOINT` and `REACT_APP_GRAPHQL_ENDPOINT` unset, since
-these existing explicit overrides take precedence over the path selection.
-Redeploy the branch after changing the value; existing deployments retain their
-build-time configuration.
+Import the same repository again in Vercel to create the staging project. Set
+each value for **all Preview branches**, and remove any branch-specific overrides
+that would select a different backend. Leave `REACT_APP_BACKEND_ENDPOINT` and
+`REACT_APP_GRAPHQL_ENDPOINT` unset in Preview, since they override this setting.
+If the new project's main-branch deployment should also use staging, set
+`REACT_APP_BACKEND_PATH=/staging` in its Production environment too.
 
-Both choices use same-origin requests on the preview domain. `vercel.json`
-proxies `/prod/api/...` and `/prod/graphql` to `https://uwflow.com`, and
-`/staging/api/...` and `/staging/graphql` to `https://jerryzhou.ca/staging`.
-Production-backed previews read and write live production data.
+Every PR branch push will build both projects. Vercel's GitHub integration lists
+both deployments and preview links on the PR; no GitHub Actions or labels are
+needed. See [Vercel's multiple-project Git integration](https://vercel.com/docs/monorepos).
+Redeploy existing previews after changing environment variables.
 
-Leave the variable unset for the production site served behind its existing
-`/api` and `/graphql` reverse proxy. Vercel previews default to production when
-unset. Local development continues to use localhost endpoints.
+Both previews make same-origin requests: `vercel.json` proxies `/prod/api/...`
+and `/prod/graphql` to `https://uwflow.com`, and `/staging/api/...` and
+`/staging/graphql` to `https://jerryzhou.ca/staging`. Production-backed previews
+read and write live production data.
+
+Leave the setting unset for the production site behind its existing reverse
+proxy. Local development continues to use localhost endpoints.
 
 ## 📚 Documentation 📚
 
