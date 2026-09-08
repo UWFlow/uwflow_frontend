@@ -32,6 +32,7 @@ import useModal from 'hooks/useModal';
 import { getUserId } from 'utils/Auth';
 
 import { acceptEmailedInvite } from './api';
+import { getCreateGroupErrorMessage } from './errors';
 import GroupDetail from './GroupDetail';
 
 const wrapperClasses =
@@ -157,8 +158,8 @@ const SharedClassesPage = () => {
       setNewName('');
       await refetch();
       setSelected(group.id);
-    } catch {
-      toast('Could not create the group.');
+    } catch (createError) {
+      toast(getCreateGroupErrorMessage(createError));
     } finally {
       setCreating(false);
     }
