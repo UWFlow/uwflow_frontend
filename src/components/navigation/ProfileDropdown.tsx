@@ -91,10 +91,10 @@ const ProfileDropdown = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 type="button"
-                variant="ghost"
+                variant="subtle"
                 size="inline"
                 aria-label="Profile menu"
-                className={`ml-xs flex ${
+                className={`ml-xs flex bg-transparent ${
                   isLanding ? 'text-white' : 'text-dark2'
                 }`}
               >

@@ -10,19 +10,18 @@ const buttonVariants = cva(
   // The browser's default outset <button> border is removed by the
   // Preflight-style `border-width: 0; border-style: solid` base rule in
   // src/index.css, so variants only flip border-width/-color to opt into one.
-  'cursor-pointer whitespace-nowrap rounded text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'box-border inline-flex cursor-pointer items-center justify-center gap-xs whitespace-nowrap rounded border-0 border-solid font-inter text-md font-medium leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0 [&_svg]:stroke-current',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-white hover:bg-primaryDark',
+        default: 'bg-accent text-dark1 hover:bg-accentDark',
         // Gold CTA matching the app's styled-components Button (theme.accent).
         accent: 'bg-accent text-dark1 hover:bg-accentDark',
         destructive: 'bg-red text-white hover:bg-darkRed',
-        // The base rule already sets border-style: solid, so `border`
-        // (border-width 1) on its own draws the outline.
-        outline: 'border border-light1 bg-white text-dark1 hover:bg-light1',
-        secondary: 'bg-light2 text-dark1 hover:bg-light3',
-        ghost: 'text-dark1 hover:bg-light1',
+        neutral:
+          'h-12 rounded-[8px] bg-dark3 px-xl font-inter text-md font-medium text-light1 shadow-box hover:brightness-hover',
+        filter: 'bg-primary text-white shadow-box hover:bg-primaryDark',
+        subtle: 'bg-light2 text-dark1 hover:bg-light3',
         // Mirrors the `Link` mixin in constants/Mixins.tsx rather than
         // shadcn's hover-only underline, so Tailwind and styled-components
         // links look the same. Pair with size="inline" for links in prose.

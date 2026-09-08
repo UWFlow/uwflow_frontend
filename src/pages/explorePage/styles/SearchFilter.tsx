@@ -1,14 +1,7 @@
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 
-import {
-  Body,
-  BoxShadow,
-  Card,
-  Heading3,
-  Heading4,
-  Hover,
-} from 'constants/Mixins';
+import { Body, BoxShadow, Card, Heading3, Heading4 } from 'constants/Mixins';
 
 export const SearchFilterWrapper = styled.div`
   ${Card('40px 32px')}
@@ -63,30 +56,8 @@ export const BoldText = styled.span`
   font-weight: 600;
 `;
 
-export const ResetButton = styled.button`
-  display: inline-block;
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  background-color: ${({ theme }) => theme.primary};
-  ${BoxShadow}
-  ${Body}
-  color: ${({ theme }) => theme.light1};
-  border-radius: 4px;
-  margin-top: 32px;
-
-  ${Hover()}
-`;
-
 export const HeaderButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-export const XWrapper = styled.span`
-  margin: auto;
-  display: inline-flex;
-  vertical-align: middle;
-  margin-right: 4px;
 `;

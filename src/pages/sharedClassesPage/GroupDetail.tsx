@@ -228,7 +228,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         <div className="flex gap-sm">
           {group.is_creator && (
             <Button
-              variant="outline"
+              variant="subtle"
               size="sm"
               className="font-semibold text-red"
               onClick={handleDelete}
@@ -237,7 +237,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             </Button>
           )}
           <Button
-            variant="outline"
+            variant="subtle"
             size="sm"
             className="font-semibold"
             onClick={handleLeave}
