@@ -371,9 +371,7 @@ const Calendar = ({
         <div
           style={{ left: TIME_WIDTH }}
           className={cn(
-            // overflow-auto lets the columns scroll horizontally on narrow
-            // viewports rather than being clipped.
-            'absolute inset-y-0 right-0 flex overflow-auto border-0 border-l border-solid',
+            'absolute inset-y-0 right-0 flex border-0 border-l border-solid',
             GRID_LINE,
           )}
         >
@@ -382,7 +380,7 @@ const Calendar = ({
               // eslint-disable-next-line react/no-array-index-key
               key={column}
               className={cn(
-                'relative min-w-[136px] flex-1 border-0 border-r border-solid last:border-r-0',
+                'relative min-w-0 flex-1 border-0 border-r border-solid last:border-r-0',
                 GRID_LINE,
               )}
             >

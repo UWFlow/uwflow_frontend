@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronDown } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -10,9 +11,14 @@ import {
   SHARED_CLASSES_PAGE_ROUTE,
   SWAP_PAGE_ROUTE,
 } from 'Routes';
-import { useTheme } from 'styled-components';
 
-import DropdownList from 'components/input/DropdownList';
+import { Button } from 'components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from 'components/ui/dropdown-menu';
 import { AUTH_MODAL } from 'constants/Modal';
 import { RootState } from 'data/reducers/RootReducer';
 import { GET_USER } from 'graphql/queries/user/User';
@@ -61,7 +67,6 @@ const ProfileDropdown = () => {
   const [openModal] = useModal();
   const location = useLocation();
   const history = useHistory();
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
@@ -82,32 +87,37 @@ const ProfileDropdown = () => {
           <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
             {renderProfilePicture(data, dispatch, isLanding, loading)}
           </ProfileText>
-          <DropdownList
-            selectedIndex={-1}
-            width={150}
-            color={isLanding ? theme.white : theme.dark2}
-            itemColor={theme.dark1}
-            options={[
-              'View profile',
-              'Swap Class',
-              'Shared Classes',
-              'Log out',
-            ]}
-            onChange={(idx) => {
-              if (idx === 0) {
-                handleProfileButtonClick();
-              } else if (idx === 1) {
-                history.push(SWAP_PAGE_ROUTE);
-              } else if (idx === 2) {
-                history.push(SHARED_CLASSES_PAGE_ROUTE);
-              } else {
-                logOut(dispatch, true);
-              }
-            }}
-            placeholder=""
-            zIndex={10}
-            menuOffset={24}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="inline"
+                aria-label="Profile menu"
+                className={`ml-xs flex ${
+                  isLanding ? 'text-white' : 'text-dark2'
+                }`}
+              >
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={24}>
+              <DropdownMenuItem onSelect={handleProfileButtonClick}>
+                View profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => history.push(SWAP_PAGE_ROUTE)}>
+                Swap Class
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => history.push(SHARED_CLASSES_PAGE_ROUTE)}
+              >
+                Shared Classes
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => logOut(dispatch, true)}>
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </>
       ) : (
         <ProfileText onClick={handleProfileButtonClick} isLanding={isLanding}>
