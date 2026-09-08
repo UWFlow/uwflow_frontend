@@ -20,7 +20,6 @@ import {
   Calendar,
   CalendarEvent,
   CalendarEventState,
-  sectionVariant,
   WEEKDAY_LABELS,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
@@ -32,9 +31,15 @@ import {
   getNextTermCode,
   termCodeToDate,
 } from 'utils/Misc';
+import { mergeMeetingDateRanges } from 'utils/Schedule';
 
 import CourseSearchDropdown from './CourseSearchDropdown';
-import { getDisplayedTermPresence } from './displayedTerms';
+import {
+  getDisplayedTermPresence,
+  GRID_END_HOUR,
+  GRID_START_HOUR,
+  toDayIndexes,
+} from './displayedTerms';
 import EnrolledCourseDropdown from './EnrolledCourseDropdown';
 import ScheduleSwapPanel, {
   ProfessorSwapStats,
@@ -45,11 +50,6 @@ import useScheduleSwaps, {
   DisplayedTerm,
   PlannedSwap,
 } from './useScheduleSwaps';
-
-const DAY_LETTERS = ['M', 'T', 'W', 'Th', 'F'];
-// Visible hour range of the grid: 8am to 10pm.
-const GRID_START_HOUR = 8;
-const GRID_END_HOUR = 22;
 
 // 24-hour "HH:MM" from seconds since midnight (`secsToTime` is 12-hour).
 const secsTo24hTime = (secs: number) =>
@@ -79,14 +79,6 @@ const serializeSchedule = (entries: UserScheduleFragment['schedule']) =>
 type SectionSelection = {
   courseCode: string;
   sectionType: string;
-};
-
-// Mon-Fri day columns for a meeting, keeping only meetings that start within
-// the visible hour range.
-const toDayIndexes = (days: string[], startSeconds: number): number[] => {
-  const startHour = startSeconds / 3600;
-  if (startHour < GRID_START_HOUR || startHour >= GRID_END_HOUR) return [];
-  return days.map((d) => DAY_LETTERS.indexOf(d)).filter((col) => col !== -1);
 };
 
 const timesOverlap = (s1: number, e1: number, s2: number, e2: number) =>
@@ -144,7 +136,6 @@ const buildEnrolledEvents = (
   termSections.flatMap(({ section }) => {
     const courseCode = section.course.code;
     const sectionType = getSectionType(section.section_name);
-    const variant = sectionVariant(section.section_name);
     const isSelected =
       selection !== null &&
       courseCode === selection.courseCode &&
@@ -152,7 +143,8 @@ const buildEnrolledEvents = (
     let state: CalendarEventState = 'default';
     if (isSelected) state = isPreviewing ? 'dimmed' : 'selected';
 
-    return section.meetings.flatMap((m, meetingIndex) => {
+    const meetings = mergeMeetingDateRanges(section.meetings);
+    return meetings.flatMap((m, meetingIndex) => {
       if (m.start_seconds == null || m.end_seconds == null) return [];
       const startMinutes = m.start_seconds / 60;
       const endMinutes = m.end_seconds / 60;
@@ -165,7 +157,7 @@ const buildEnrolledEvents = (
           dayIndex,
           startMinutes,
           endMinutes,
-          variant,
+          colorKey: courseCode,
           state,
           title: formatCourseCode(courseCode),
           timeLabel,
@@ -184,7 +176,7 @@ const buildPreviewEvents = (
   section: SwapCourseSectionFragment | null,
 ): CalendarEvent[] =>
   section
-    ? section.meetings.flatMap((m, meetingIndex) => {
+    ? mergeMeetingDateRanges(section.meetings).flatMap((m, meetingIndex) => {
         if (m.start_seconds == null || m.end_seconds == null) return [];
         const startMinutes = m.start_seconds / 60;
         const endMinutes = m.end_seconds / 60;
@@ -194,7 +186,7 @@ const buildPreviewEvents = (
             dayIndex,
             startMinutes,
             endMinutes,
-            variant: sectionVariant(section.section_name),
+            colorKey: section.course.code,
             state: 'preview' as const,
           }),
         );
@@ -252,9 +244,13 @@ const SwapCalendar = ({
   const thisTermLabel = termCodeToDate(thisTermCode);
   const nextTermLabel = termCodeToDate(nextTermCode);
 
-  const { thisHasData, nextHasData } = getDisplayedTermPresence(schedule);
-  const defaultSelectedTerm =
-    !nextHasData || thisHasData ? DisplayedTerm.Current : DisplayedTerm.Next;
+  // Swapping starts from a click on the grid, so only default to next term when
+  // it actually draws blocks — a term of purely online/async sections would
+  // open on an empty calendar.
+  const { nextHasVisibleBlocks } = getDisplayedTermPresence(schedule);
+  const defaultSelectedTerm = nextHasVisibleBlocks
+    ? DisplayedTerm.Next
+    : DisplayedTerm.Current;
   const [selectedTerm, setSelectedTerm] =
     useState<DisplayedTerm>(defaultSelectedTerm);
   const selectedTermCode =

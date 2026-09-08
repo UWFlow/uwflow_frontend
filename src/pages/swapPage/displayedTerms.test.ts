@@ -44,10 +44,12 @@ describe('getDisplayedTermPresence', () => {
     expect(getDisplayedTermPresence([entryInTerm(thisTermCode)])).toEqual({
       thisHasData: true,
       nextHasData: false,
+      nextHasVisibleBlocks: false,
     });
     expect(getDisplayedTermPresence([entryInTerm(nextTermCode)])).toEqual({
       thisHasData: false,
       nextHasData: true,
+      nextHasVisibleBlocks: true,
     });
   });
 
@@ -56,6 +58,7 @@ describe('getDisplayedTermPresence', () => {
     expect(getDisplayedTermPresence([entryInTerm(thisTermCode - 10)])).toEqual({
       thisHasData: false,
       nextHasData: false,
+      nextHasVisibleBlocks: false,
     });
   });
 
@@ -63,6 +66,16 @@ describe('getDisplayedTermPresence', () => {
     expect(getDisplayedTermPresence([entryInTerm(thisTermCode, [])])).toEqual({
       thisHasData: true,
       nextHasData: false,
+      nextHasVisibleBlocks: false,
+    });
+  });
+
+  it('does not count a next term that draws no calendar blocks', () => {
+    // Online/async next term: the user has classes, but nothing to click.
+    expect(getDisplayedTermPresence([entryInTerm(nextTermCode, [])])).toEqual({
+      thisHasData: false,
+      nextHasData: true,
+      nextHasVisibleBlocks: false,
     });
   });
 
@@ -70,6 +83,7 @@ describe('getDisplayedTermPresence', () => {
     expect(getDisplayedTermPresence([])).toEqual({
       thisHasData: false,
       nextHasData: false,
+      nextHasVisibleBlocks: false,
     });
   });
 });

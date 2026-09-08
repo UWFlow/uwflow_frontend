@@ -79,7 +79,7 @@ const MemberChip = ({ member }: { member: GroupMember }) => {
   );
 };
 
-// Pill colour for a section, keyed off the same variant the calendar uses.
+// Pill colour for a section, keyed off its section type.
 const TINT_BY_VARIANT: Record<CalendarEventVariant, string> = {
   lecture: 'bg-lecture text-dark1',
   lab: 'bg-lab text-dark1',
@@ -93,7 +93,6 @@ const componentTint = (sectionName: string) =>
 const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
   const events: CalendarEvent[] = [];
   classes.forEach((c) => {
-    const variant = sectionVariant(c.section_name);
     c.meetings.forEach((m, mi) => {
       const { start_seconds: startSeconds, end_seconds: endSeconds } = m;
       if (startSeconds === null || endSeconds === null) return;
@@ -105,7 +104,7 @@ const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
           dayIndex,
           startMinutes: Math.round(startSeconds / 60),
           endMinutes: Math.round(endSeconds / 60),
-          variant,
+          colorKey: c.course_code,
           title: c.course_code.toUpperCase(),
           subtitle: c.section_name,
           location: m.location ?? undefined,
@@ -284,7 +283,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         <div className="flex gap-sm">
           {group.is_creator && (
             <Button
-              variant="outline"
+              variant="subtle"
               size="sm"
               className="font-semibold text-red"
               onClick={handleDelete}
@@ -293,7 +292,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             </Button>
           )}
           <Button
-            variant="outline"
+            variant="subtle"
             size="sm"
             className="font-semibold"
             onClick={handleLeave}

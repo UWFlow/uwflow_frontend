@@ -191,7 +191,7 @@ const SharedClassesPage = () => {
                   </Button>
                   <Button
                     size="sm"
-                    variant="outline"
+                    variant="subtle"
                     className="font-semibold"
                     onClick={() => handleRespond(g.id, false)}
                   >
