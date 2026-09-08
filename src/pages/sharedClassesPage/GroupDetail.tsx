@@ -15,6 +15,8 @@ import {
   RemoveSharedGroupMembershipMutationVariables,
 } from 'generated/graphql';
 
+import { CalendarEventVariant, sectionVariant } from 'components/calendar';
+import Avatar from 'components/display/Avatar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
 import AccentButton from 'components/input/Button';
@@ -41,49 +43,27 @@ interface Props {
   onChanged: () => void;
 }
 
-// Matches the avatar shown elsewhere in the app (navbar, reviews, profile
-// header): a kitten placeholder keyed off the user's id. Group members only
-// carry an id and name here, not a picture_url, so unlike those call sites
-// this always renders the kitten rather than a real photo.
-const Avatar = ({
-  userId,
-  name,
-  faded,
-}: {
-  userId: number;
-  name: string;
-  faded?: boolean;
-}) => (
-  <Tooltip content={name}>
-    <img
-      src={getKittenFromID(userId)}
-      alt={name}
-      className={`h-7 w-7 shrink-0 rounded-full object-cover ${
-        faded ? 'opacity-50' : ''
-      }`}
-    />
-  </Tooltip>
-);
-
 const MemberChip = ({ member }: { member: GroupMember }) => {
   const pending = member.status === 'pending';
   return (
     <span className="flex items-center gap-xs rounded-card border border-light3 bg-white py-xs pl-xs pr-sm">
-      <Avatar userId={member.user_id} name={member.name} faded={pending} />
+      <Avatar
+        src={getKittenFromID(member.user_id)}
+        alt=""
+        size="sm"
+        className={pending ? 'opacity-50' : undefined}
+      />
       <span className="text-sm text-dark1">{member.name}</span>
       {pending && <span className="text-xs text-dark3">pending</span>}
     </span>
   );
 };
 
-// LEC / LAB / TUT drives a colored pill using the same section colors the
-// schedule calendar uses. Anything else falls back to a neutral chip.
-const componentTint = (sectionName: string) => {
-  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
-  if (kind.startsWith('LEC')) return 'bg-lecture text-dark1';
-  if (kind.startsWith('LAB')) return 'bg-lab text-dark1';
-  if (kind.startsWith('TUT')) return 'bg-tutorial text-dark1';
-  return 'bg-light2 text-dark2';
+const sectionChipClasses: Record<CalendarEventVariant, string> = {
+  lecture: 'bg-lecture text-dark1',
+  lab: 'bg-lab text-dark1',
+  tutorial: 'bg-tutorial text-dark1',
+  other: 'bg-light2 text-dark2',
 };
 
 const SharedClassCard = ({
@@ -96,9 +76,9 @@ const SharedClassCard = ({
   <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
     <div className="flex flex-wrap items-center gap-sm">
       <span
-        className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
-          shared.section_name,
-        )}`}
+        className={`rounded-card px-sm py-xs text-xs font-semibold ${
+          sectionChipClasses[sectionVariant(shared.section_name)]
+        }`}
       >
         {shared.section_name}
       </span>
@@ -130,7 +110,9 @@ const SharedClassCard = ({
 
     <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
       {members.map((m) => (
-        <Avatar key={m.user_id} userId={m.user_id} name={m.name} />
+        <Tooltip key={m.user_id} content={m.name}>
+          <Avatar src={getKittenFromID(m.user_id)} alt={m.name} size="sm" />
+        </Tooltip>
       ))}
       <span className="ml-xs text-sm text-dark2">
         {members.map((m) => m.name).join(', ')}
@@ -229,13 +211,15 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   return (
     <div className="flex flex-col gap-lg">
-      <button
+      <Button
         type="button"
+        variant="link"
+        size="inline"
         onClick={onBack}
-        className="flex w-fit items-center gap-xs font-inter text-sm text-dark2 transition-all duration-hover ease-hover hover:text-dark1"
+        className="flex w-fit items-center gap-xs"
       >
         <ArrowLeft size={16} /> All groups
-      </button>
+      </Button>
 
       <div className="flex items-center justify-between">
         <h1 className="font-anderson text-3xl font-extrabold text-dark1">

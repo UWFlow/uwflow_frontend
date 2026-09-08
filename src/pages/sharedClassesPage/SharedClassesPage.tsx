@@ -35,7 +35,7 @@ import { acceptEmailedInvite } from './api';
 import GroupDetail from './GroupDetail';
 
 const wrapperClasses =
-  'mx-auto flex min-h-[calc(100vh-102px)] w-full max-w-[720px] flex-col gap-lg bg-light1 px-md py-xl';
+  'mx-auto flex min-h-page w-full max-w-[720px] flex-col gap-lg bg-light1 px-md py-xl';
 
 interface GroupSummary {
   id: number;

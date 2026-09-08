@@ -20,7 +20,7 @@ import {
   Calendar,
   CalendarEvent,
   CalendarEventState,
-  CalendarEventVariant,
+  sectionVariant,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
 import { GET_COURSE_FOR_SWAP } from 'graphql/queries/course/SwapCourse';
@@ -73,14 +73,6 @@ const serializeSchedule = (entries: UserScheduleFragment['schedule']) =>
       location: m.location,
     })),
   }));
-
-const getSectionVariant = (sectionName: string): CalendarEventVariant => {
-  const type = getSectionType(sectionName);
-  if (type === 'LEC') return 'lecture';
-  if (type === 'LAB') return 'lab';
-  if (type === 'TUT') return 'tutorial';
-  return 'other';
-};
 
 // The selection a calendar click produces: one course's sections of one type
 // (e.g. CS 240's lectures). Swapping only ever replaces this one entry.
@@ -152,7 +144,7 @@ const buildEnrolledEvents = (
   termSections.flatMap(({ section }) => {
     const courseCode = section.course.code;
     const sectionType = getSectionType(section.section_name);
-    const variant = getSectionVariant(section.section_name);
+    const variant = sectionVariant(section.section_name);
     const isSelected =
       selection !== null &&
       courseCode === selection.courseCode &&
@@ -202,7 +194,7 @@ const buildPreviewEvents = (
             dayIndex,
             startMinutes,
             endMinutes,
-            variant: getSectionVariant(section.section_name),
+            variant: sectionVariant(section.section_name),
             state: 'preview' as const,
           }),
         );

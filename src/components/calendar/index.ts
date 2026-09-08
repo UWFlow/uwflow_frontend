@@ -1,4 +1,4 @@
-export { default as Calendar, HOUR_HEIGHT } from './Calendar';
+export { default as Calendar, HOUR_HEIGHT, sectionVariant } from './Calendar';
 export type {
   CalendarProps,
   CalendarEvent,
