@@ -1,6 +1,7 @@
 import {
   BACKEND_ENDPOINT,
   GROUP_BY_ID_ENDPOINT,
+  GROUP_EMAIL_INVITE_ACCEPT_ENDPOINT,
   GROUP_INVITE_ENDPOINT,
 } from 'constants/Api';
 import {
@@ -42,7 +43,9 @@ export interface GroupDetail {
 
 const url = (path: string) => `${BACKEND_ENDPOINT}${path}`;
 
-// GET/POST helpers never throw on their own; check status like other callers.
+// The GET/POST helpers never throw on their own (see utils/Api.tsx); every
+// caller in this codebase checks the status itself, so we do the same here
+// rather than letting a failed request masquerade as a successful body.
 const checkStatus = (status: number) => {
   if (status >= 400) {
     throw new Error(`shared classes request failed with status ${status}`);
@@ -57,17 +60,28 @@ export const fetchGroup = async (id: number): Promise<GroupDetail> => {
   return body;
 };
 
-// "sent" or "not_found" from the server; only real failures throw.
+// The server always returns "sent", whether this address belongs to an
+// existing account or needs an emailed sign-up invitation. That keeps this
+// endpoint from being used to discover which addresses have Flow accounts.
 export const inviteToGroup = async (
   id: number,
   email: string,
-): Promise<'sent' | 'not_found'> => {
+): Promise<'sent'> => {
   const [body, status] = await makeAuthenticatedPOSTRequest<
     { email: string },
-    { status: 'sent' | 'not_found' }
+    { status: 'sent' }
   >(url(GROUP_INVITE_ENDPOINT(id)), { email });
   checkStatus(status);
   return body.status;
+};
+
+export const acceptEmailedInvite = async (secret: string): Promise<number> => {
+  const [body, status] = await makeAuthenticatedPOSTRequest<
+    Record<string, never>,
+    { status: 'member'; group_id: number }
+  >(url(GROUP_EMAIL_INVITE_ACCEPT_ENDPOINT(secret)), {});
+  checkStatus(status);
+  return body.group_id;
 };
 
 // section_meeting stores times as seconds past midnight. Format as h:mm am/pm.

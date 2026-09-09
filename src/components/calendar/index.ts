@@ -7,6 +7,6 @@ export {
 export type {
   CalendarProps,
   CalendarEvent,
-  CalendarEventState,
   CalendarEventVariant,
+  CalendarEventState,
 } from './Calendar';

@@ -63,14 +63,10 @@ export const makeAuthenticatedGETRequest = async <T extends object>(
   endpoint: string,
   options: Record<string, string> = {},
 ): Promise<[T, number]> => {
-  return makeRequest(
-    endpoint,
-    {
-      ...options,
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    'GET',
-  );
+  return makeGETRequest(endpoint, {
+    ...options,
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  });
 };
 
 /*

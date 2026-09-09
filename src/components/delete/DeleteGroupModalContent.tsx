@@ -2,13 +2,13 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
 import {
-  DeleteGroupMutation,
-  DeleteGroupMutationVariables,
+  DeleteSharedGroupMutation,
+  DeleteSharedGroupMutationVariables,
 } from 'generated/graphql';
 import { useTheme } from 'styled-components';
 
 import Button from 'components/input/Button';
-import { DELETE_GROUP } from 'graphql/mutations/SharedGroup';
+import { DELETE_SHARED_GROUP } from 'graphql/mutations/SharedClasses';
 
 import {
   ButtonsWrapper,
@@ -32,13 +32,16 @@ const DeleteGroupModalContent = ({
 }: DeleteGroupModalContentProps) => {
   const theme = useTheme();
   const [deleteGroup, { loading: deleting }] = useMutation<
-    DeleteGroupMutation,
-    DeleteGroupMutationVariables
-  >(DELETE_GROUP);
+    DeleteSharedGroupMutation,
+    DeleteSharedGroupMutationVariables
+  >(DELETE_SHARED_GROUP);
 
   const handleDelete = async () => {
     try {
-      await deleteGroup({ variables: { groupId } });
+      const result = await deleteGroup({ variables: { groupId } });
+      if (result.data?.delete_shared_group?.affected_rows !== 1) {
+        throw new Error('group was not deleted');
+      }
       onRequestClose();
       await onDeleted();
     } catch {
