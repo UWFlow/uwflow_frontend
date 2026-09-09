@@ -327,7 +327,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             section, it shows up here.
           </div>
         ) : (
-          <ul className="flex flex-col gap-sm">
+          <ul className="m-0 flex list-none flex-col gap-sm p-0">
             {group.shared_classes.map((shared) => {
               const sharedMembers = shared.member_ids.flatMap((memberId) => {
                 const member = membersById.get(memberId);
