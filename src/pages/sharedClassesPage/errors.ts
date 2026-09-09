@@ -1,5 +1,7 @@
 import { ApolloError } from '@apollo/client';
 
+// TODO: Centralize GraphQL error translation in a shared frontend utility,
+// mapping server error codes/constraints to user-facing messages across pages.
 export const getCreateGroupErrorMessage = (error: unknown): string => {
   const duplicateName =
     error instanceof ApolloError &&
