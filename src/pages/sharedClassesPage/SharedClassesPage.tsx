@@ -265,7 +265,7 @@ const SharedClassesPage = () => {
         >
           <h2 className="text-xl font-bold text-dark1">Create a group</h2>
           <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <Textbox
                 text={newName}
                 setText={setNewName}
@@ -286,12 +286,12 @@ const SharedClassesPage = () => {
             {invites.map((g) => (
               <div
                 key={g.id}
-                className="flex items-center justify-between rounded-card border border-light3 bg-white p-md shadow-box"
+                className="flex min-w-0 flex-col items-start gap-sm rounded-card border border-light3 bg-white p-md shadow-box tablet:flex-row tablet:items-center tablet:justify-between"
               >
-                <span className="text-md font-semibold text-dark1">
+                <span className="min-w-0 max-w-full break-words text-md font-semibold text-dark1">
                   {g.name}
                 </span>
-                <div className="flex gap-sm">
+                <div className="flex shrink-0 flex-wrap gap-sm">
                   <Button
                     size="sm"
                     className="font-semibold"
