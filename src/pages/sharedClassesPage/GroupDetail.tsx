@@ -16,7 +16,11 @@ import {
 } from 'generated/graphql';
 
 import { Calendar, CalendarEvent, WEEKDAY_LABELS } from 'components/calendar';
-import { CourseColor, getCourseColors } from 'components/calendar/courseColors';
+import {
+  CourseColor,
+  DEFAULT_COURSE_COLOR,
+  getCourseColors,
+} from 'components/calendar/courseColors';
 import Avatar from 'components/display/Avatar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
@@ -399,7 +403,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
                   <SharedClassCard
                     key={shared.section_id}
                     shared={shared}
-                    color={courseColors.get(shared.course_code)!}
+                    color={
+                      courseColors.get(shared.course_code) ??
+                      DEFAULT_COURSE_COLOR
+                    }
                     members={sharedMembers}
                   />
                 );
