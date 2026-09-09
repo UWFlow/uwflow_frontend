@@ -81,12 +81,16 @@ const toCalendarEvents = (
 ): CalendarEvent[] => {
   const events: CalendarEvent[] = [];
   classes.forEach((c) => {
-    const memberNames = c.member_ids
-      .flatMap((id) => {
-        const member = membersById.get(id);
-        return member ? [member.name] : [];
-      })
-      .join(', ');
+    const sharedMembers = c.member_ids.flatMap((id) => {
+      const member = membersById.get(id);
+      if (!member) return [];
+      const parts = member.name.trim().split(/\s+/);
+      const shortName =
+        parts.length > 1
+          ? `${parts[0].charAt(0)}. ${parts[parts.length - 1].slice(0, 4)}`
+          : parts[0].slice(0, 4);
+      return [{ ...member, shortName }];
+    });
     c.meetings.forEach((m, mi) => {
       const { start_seconds: startSeconds, end_seconds: endSeconds } = m;
       if (startSeconds === null || endSeconds === null) return;
@@ -100,11 +104,16 @@ const toCalendarEvents = (
           endMinutes: Math.round(endSeconds / 60),
           colorKey: c.course_code,
           title: `${c.course_code.toUpperCase()} · ${c.section_name}`,
-          subtitle: memberNames ? (
-            <span className="text-xs text-dark2" title={memberNames}>
-              {memberNames}
+          wrapContent: true,
+          subtitle: sharedMembers.map((member) => (
+            <span
+              key={member.user_id}
+              className="block truncate font-anderson text-xs text-dark1"
+              title={member.name}
+            >
+              {member.shortName}
             </span>
-          ) : undefined,
+          )),
           location: m.location ?? undefined,
         });
       });
