@@ -1,5 +1,7 @@
 # Style Guide
 
+> This is a legacy reference for existing styled-components code. For new or modified UI, `AGENTS.md` and `../styleguide/design-system-styleguide.md` are authoritative: use Tailwind and shared primitives, and do not add new styled-components.
+
 ## Naming
 
 File names should reflect these rules as well.
@@ -9,7 +11,7 @@ File names should reflect these rules as well.
 
 ## Styling
 
-- Create new [Styled Component](https://styled-components.com/) classes for any component requiring styles
+- Preserve existing [Styled Components](https://styled-components.com/) when they are outside the change. Migrate touched UI to Tailwind when the conversion is focused and behavior-preserving.
 - Check `Mixins.tsx` for common styles that can be reused in your component
 - Common styles include heading and body text, box shadows, hover animations and cards
 - Only use colors found in the `GlobalTheme.tsx` file by accessing the `theme` prop in your Styled Components

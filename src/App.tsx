@@ -8,6 +8,7 @@ import { Bounce, ToastContainer } from 'react-toastify';
 import {
   LoadableAboutPage,
   LoadableCoursePage,
+  LoadableDesignSystemPage,
   LoadableExplorePage,
   LoadableLandingPage,
   LoadableNotFoundPage,
@@ -21,6 +22,7 @@ import {
 import {
   ABOUT_PAGE_ROUTE,
   COURSE_PAGE_ROUTE,
+  DESIGN_SYSTEM_PAGE_ROUTE,
   EXPLORE_PAGE_ROUTE,
   LANDING_PAGE_ROUTE,
   PRIVACY_PAGE_ROUTE,
@@ -60,6 +62,7 @@ initAnalytics();
 const App = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const location = useLocation();
+  const isDesignSystemPage = location.pathname === DESIGN_SYSTEM_PAGE_ROUTE;
 
   // Refresh auth token if logged in
   useEffect(() => {
@@ -104,14 +107,16 @@ const App = () => {
         pauseOnHover
         transition={Bounce}
       />
-      <Switch>
-        <SentryRoute
-          exact
-          path={LANDING_PAGE_ROUTE}
-          component={() => <div />}
-        />
-        <SentryRoute path="*" component={() => <Navbar />} />
-      </Switch>
+      {!isDesignSystemPage && (
+        <Switch>
+          <SentryRoute
+            exact
+            path={LANDING_PAGE_ROUTE}
+            component={() => <div />}
+          />
+          <SentryRoute path="*" component={() => <Navbar />} />
+        </Switch>
+      )}
       <Helmet>
         <title>UW Flow</title>
         <meta name="description" content={SEO_DESCRIPTIONS.default} />
@@ -127,7 +132,7 @@ const App = () => {
           content={`${window.location.origin}${LandingPageBg}`}
         />
       </Helmet>
-      <AnnouncementBanner />
+      {!isDesignSystemPage && <AnnouncementBanner />}
       <Switch>
         <SentryRoute
           exact
@@ -179,10 +184,15 @@ const App = () => {
           path={SHARED_CLASSES_PAGE_ROUTE}
           component={() => <LoadableSharedClassesPage />}
         />
+        <SentryRoute
+          exact
+          path={DESIGN_SYSTEM_PAGE_ROUTE}
+          component={() => <LoadableDesignSystemPage />}
+        />
         <SentryRoute path="*" component={() => <LoadableNotFoundPage />} />
       </Switch>
-      <Footer />
-      <ModalMount />
+      {!isDesignSystemPage && <Footer />}
+      {!isDesignSystemPage && <ModalMount />}
     </>
   );
 };

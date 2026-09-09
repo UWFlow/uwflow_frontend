@@ -46,3 +46,10 @@ export const LoadableSharedClassesPage = loadable(
       /* webpackPrefetch: true */ './pages/sharedClassesPage/SharedClassesPage'
     ),
 );
+
+export const LoadableDesignSystemPage = loadable(
+  () =>
+    import(
+      /* webpackPrefetch: true */ './pages/designSystemPage/DesignSystemPage'
+    ),
+);
