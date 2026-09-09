@@ -61,8 +61,8 @@ const ProfileDropdown = () => {
   const [openModal] = useModal();
   const location = useLocation();
   const history = useHistory();
-  const theme = useTheme();
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.loggedIn);
   const isLanding = isOnLandingPageRoute(location);
@@ -83,8 +83,9 @@ const ProfileDropdown = () => {
             {renderProfilePicture(data, dispatch, isLanding, loading)}
           </ProfileText>
           <DropdownList
+            ariaLabel="Profile menu"
             selectedIndex={-1}
-            width={150}
+            width={180}
             color={isLanding ? theme.white : theme.dark2}
             itemColor={theme.dark1}
             options={[
@@ -93,16 +94,11 @@ const ProfileDropdown = () => {
               'Shared Classes',
               'Log out',
             ]}
-            onChange={(idx) => {
-              if (idx === 0) {
-                handleProfileButtonClick();
-              } else if (idx === 1) {
-                history.push(SWAP_PAGE_ROUTE);
-              } else if (idx === 2) {
-                history.push(SHARED_CLASSES_PAGE_ROUTE);
-              } else {
-                logOut(dispatch, true);
-              }
+            onChange={(index) => {
+              if (index === 0) handleProfileButtonClick();
+              else if (index === 1) history.push(SWAP_PAGE_ROUTE);
+              else if (index === 2) history.push(SHARED_CLASSES_PAGE_ROUTE);
+              else logOut(dispatch, true);
             }}
             placeholder=""
             zIndex={10}

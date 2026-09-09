@@ -7,14 +7,32 @@ import {
   MapPin,
 } from 'react-feather';
 import { toast } from 'react-toastify';
+import { useMutation } from '@apollo/client';
+import {
+  DeleteSharedGroupMutation,
+  DeleteSharedGroupMutationVariables,
+  RemoveSharedGroupMembershipMutation,
+  RemoveSharedGroupMembershipMutationVariables,
+} from 'generated/graphql';
 
 import {
   Calendar,
   CalendarEvent,
   CalendarEventVariant,
+  sectionVariant,
+  WEEKDAY_LABELS,
 } from 'components/calendar';
+import Avatar from 'components/display/Avatar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
+import Tooltip from 'components/display/Tooltip';
+import AccentButton from 'components/input/Button';
+import Textbox from 'components/input/Textbox';
 import { Button } from 'components/ui/button';
+import {
+  DELETE_SHARED_GROUP,
+  REMOVE_SHARED_GROUP_MEMBERSHIP,
+} from 'graphql/mutations/SharedClasses';
+import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
 
 import {
@@ -23,7 +41,6 @@ import {
   GroupDetail as GroupDetailData,
   GroupMember,
   inviteToGroup,
-  leaveGroup,
   SharedClass,
 } from './api';
 
@@ -33,74 +50,34 @@ interface Props {
   onChanged: () => void;
 }
 
-// A light tint per person so members are easy to tell apart at a glance. All
-// backgrounds are light so dark1 text stays readable.
-const AVATAR_TINTS = ['bg-lecture', 'bg-tutorial', 'bg-lab', 'bg-accent'];
-
-const initials = (name: string) => {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return '?';
-  const first = parts[0][0];
-  const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
-  return (first + last).toUpperCase();
-};
-
-const tintFor = (name: string) => {
-  let sum = 0;
-  for (let i = 0; i < name.length; i += 1) sum += name.charCodeAt(i);
-  return AVATAR_TINTS[sum % AVATAR_TINTS.length];
-};
-
-const Avatar = ({ name, faded }: { name: string; faded?: boolean }) => (
-  <span
-    title={name}
-    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-dark1 ${tintFor(
-      name,
-    )} ${faded ? 'opacity-50' : ''}`}
-  >
-    {initials(name)}
-  </span>
-);
-
 const MemberChip = ({ member }: { member: GroupMember }) => {
   const pending = member.status === 'pending';
   return (
-    <span className="flex items-center gap-xs rounded-full border border-light3 bg-white py-xs pl-xs pr-sm">
-      <Avatar name={member.name} faded={pending} />
+    <span className="flex items-center gap-xs rounded-card border border-light3 bg-white py-xs pl-xs pr-sm">
+      <Avatar
+        src={getKittenFromID(member.user_id)}
+        alt=""
+        size="sm"
+        className={pending ? 'opacity-50' : undefined}
+      />
       <span className="text-sm text-dark1">{member.name}</span>
       {pending && <span className="text-xs text-dark3">pending</span>}
     </span>
   );
 };
 
-// LEC / LAB / TUT drives a colored pill using the same section colors the
-// schedule calendar uses. Anything else falls back to a neutral chip.
-const componentTint = (sectionName: string) => {
-  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
-  if (kind.startsWith('LEC')) return 'bg-lecture text-dark1';
-  if (kind.startsWith('LAB')) return 'bg-lab text-dark1';
-  if (kind.startsWith('TUT')) return 'bg-tutorial text-dark1';
-  return 'bg-light2 text-dark2';
+const sectionChipClasses: Record<CalendarEventVariant, string> = {
+  lecture: 'bg-lecture text-dark1',
+  lab: 'bg-lab text-dark1',
+  tutorial: 'bg-tutorial text-dark1',
+  other: 'bg-light2 text-dark2',
 };
-
-const sectionVariant = (sectionName: string): CalendarEventVariant => {
-  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
-  if (kind.startsWith('LEC')) return 'lecture';
-  if (kind.startsWith('LAB')) return 'lab';
-  if (kind.startsWith('TUT')) return 'tutorial';
-  return 'other';
-};
-
-// Monday to Friday only; class meetings on weekends are vanishingly rare and
-// are dropped rather than adding two mostly-empty columns.
-const CALENDAR_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
 // Flatten shared classes into calendar blocks: one per meeting per weekday it
 // runs on. days come as tokens matching weekDayLetters (M, T, W, Th, F).
 const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
   const events: CalendarEvent[] = [];
   classes.forEach((c) => {
-    const variant = sectionVariant(c.section_name);
     c.meetings.forEach((m, mi) => {
       const { start_seconds: startSeconds, end_seconds: endSeconds } = m;
       if (startSeconds === null || endSeconds === null) return;
@@ -112,7 +89,7 @@ const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
           dayIndex,
           startMinutes: Math.round(startSeconds / 60),
           endMinutes: Math.round(endSeconds / 60),
-          variant,
+          colorKey: c.course_code,
           title: c.course_code.toUpperCase(),
           subtitle: c.section_name,
           location: m.location ?? undefined,
@@ -123,13 +100,19 @@ const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
   return events;
 };
 
-const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
+const SharedClassCard = ({
+  shared,
+  members,
+}: {
+  shared: SharedClass;
+  members: GroupMember[];
+}) => (
   <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
     <div className="flex flex-wrap items-center gap-sm">
       <span
-        className={`rounded-card px-sm py-xs text-xs font-semibold ${componentTint(
-          shared.section_name,
-        )}`}
+        className={`rounded-card px-sm py-xs text-xs font-semibold ${
+          sectionChipClasses[sectionVariant(shared.section_name)]
+        }`}
       >
         {shared.section_name}
       </span>
@@ -160,11 +143,13 @@ const SharedClassCard = ({ shared }: { shared: SharedClass }) => (
     )}
 
     <div className="flex flex-wrap items-center gap-xs border-t border-light2 pt-sm">
-      {shared.members.map((m) => (
-        <Avatar key={m.user_id} name={m.name} />
+      {members.map((m) => (
+        <Tooltip key={m.user_id} content={m.name}>
+          <Avatar src={getKittenFromID(m.user_id)} alt={m.name} size="sm" />
+        </Tooltip>
       ))}
       <span className="ml-xs text-sm text-dark2">
-        {shared.members.map((m) => m.name).join(', ')}
+        {members.map((m) => m.name).join(', ')}
       </span>
     </div>
   </li>
@@ -179,6 +164,14 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     kind: 'success' | 'error';
     text: string;
   } | null>(null);
+  const [removeGroupMembership] = useMutation<
+    RemoveSharedGroupMembershipMutation,
+    RemoveSharedGroupMembershipMutationVariables
+  >(REMOVE_SHARED_GROUP_MEMBERSHIP);
+  const [deleteGroup] = useMutation<
+    DeleteSharedGroupMutation,
+    DeleteSharedGroupMutationVariables
+  >(DELETE_SHARED_GROUP);
 
   const load = async () => {
     try {
@@ -201,17 +194,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     setInviting(true);
     setNotice(null);
     try {
-      const result = await inviteToGroup(groupId, email.trim());
-      if (result === 'not_found') {
-        setNotice({
-          kind: 'error',
-          text: 'No UW Flow account uses that email.',
-        });
-      } else {
-        setNotice({ kind: 'success', text: `Invite sent to ${email.trim()}.` });
-        setEmail('');
-        await load();
-      }
+      await inviteToGroup(groupId, email.trim());
+      setNotice({ kind: 'success', text: `Invite sent to ${email.trim()}.` });
+      setEmail('');
+      await load();
     } catch {
       setNotice({ kind: 'error', text: 'Could not send the invite.' });
     } finally {
@@ -221,11 +207,32 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   const handleLeave = async () => {
     try {
-      await leaveGroup(groupId);
+      const result = await removeGroupMembership({
+        variables: { groupId },
+      });
+      if (result.data?.delete_shared_group_member?.affected_rows !== 1) {
+        throw new Error('membership was not removed');
+      }
       onChanged();
       onBack();
     } catch {
       toast('Could not leave the group.');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete "${group?.name}"? This cannot be undone.`)) {
+      return;
+    }
+    try {
+      const result = await deleteGroup({ variables: { groupId } });
+      if (result.data?.delete_shared_group?.affected_rows !== 1) {
+        throw new Error('group was not deleted');
+      }
+      onChanged();
+      onBack();
+    } catch {
+      toast('Could not delete the group.');
     }
   };
 
@@ -234,6 +241,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   const members = group.members.filter((m) => m.status === 'member');
   const pending = group.members.filter((m) => m.status === 'pending');
+  const membersById = new Map(group.members.map((m) => [m.user_id, m]));
 
   const events = toCalendarEvents(group.shared_classes);
   const eventHours = events.flatMap((e) => [
@@ -245,21 +253,40 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
 
   return (
     <div className="flex flex-col gap-lg">
-      <button
+      <Button
         type="button"
+        variant="link"
+        size="inline"
         onClick={onBack}
-        className="flex w-fit items-center gap-xs text-sm text-dark2 transition-all duration-hover ease-hover hover:text-dark1"
+        className="flex w-fit items-center gap-xs"
       >
         <ArrowLeft size={16} /> All groups
-      </button>
+      </Button>
 
       <div className="flex items-center justify-between">
         <h1 className="font-anderson text-3xl font-extrabold text-dark1">
           {group.name}
         </h1>
-        <Button variant="outline" size="sm" onClick={handleLeave}>
-          Leave group
-        </Button>
+        <div className="flex gap-sm">
+          {group.is_creator && (
+            <Button
+              variant="subtle"
+              size="sm"
+              className="font-semibold text-red"
+              onClick={handleDelete}
+            >
+              Delete group
+            </Button>
+          )}
+          <Button
+            variant="subtle"
+            size="sm"
+            className="font-semibold"
+            onClick={handleLeave}
+          >
+            Leave group
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-sm">
@@ -284,19 +311,22 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
           Invite a friend
         </span>
         <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (notice) setNotice(null);
-            }}
-            placeholder="Their UW Flow email"
-            className="flex-1 rounded-card border border-light3 px-sm py-xs text-md text-dark1 outline-none transition-all duration-hover ease-hover focus:border-primary"
-          />
-          <Button type="submit" disabled={inviting}>
+          <div className="flex-1">
+            <Textbox
+              text={email}
+              setText={(value) => {
+                setEmail(value);
+                if (notice) setNotice(null);
+              }}
+              placeholder="Email"
+              maxLength={256}
+              error={notice?.kind === 'error'}
+              options={{ width: '100%', type: 'email' }}
+            />
+          </div>
+          <AccentButton type="submit" disabled={inviting}>
             {inviting ? 'Sending...' : 'Send invite'}
-          </Button>
+          </AccentButton>
         </div>
         {notice && (
           <span
@@ -315,12 +345,12 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         {group.invited_emails.length > 0 && (
           <div className="flex flex-wrap items-center gap-xs pt-xs">
             <span className="text-xs text-dark3">Waiting to join:</span>
-            {group.invited_emails.map((e) => (
+            {group.invited_emails.map((invitedEmail) => (
               <span
-                key={e}
-                className="rounded-full bg-light2 px-sm py-xs text-xs text-dark2"
+                key={invitedEmail}
+                className="rounded-card bg-light2 px-sm py-xs text-xs text-dark2"
               >
-                {e}
+                {invitedEmail}
               </span>
             ))}
           </div>
@@ -339,7 +369,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             {events.length > 0 && (
               <div className="rounded-card border border-light3 bg-white p-md shadow-box">
                 <Calendar
-                  dayLabels={CALENDAR_DAYS}
+                  dayLabels={WEEKDAY_LABELS}
                   events={events}
                   minHour={minHour}
                   maxHour={maxHour}
@@ -349,9 +379,19 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
               </div>
             )}
             <ul className="flex flex-col gap-sm">
-              {group.shared_classes.map((c) => (
-                <SharedClassCard key={c.section_id} shared={c} />
-              ))}
+              {group.shared_classes.map((shared) => {
+                const sharedMembers = shared.member_ids.flatMap((memberId) => {
+                  const member = membersById.get(memberId);
+                  return member ? [member] : [];
+                });
+                return (
+                  <SharedClassCard
+                    key={shared.section_id}
+                    shared={shared}
+                    members={sharedMembers}
+                  />
+                );
+              })}
             </ul>
           </>
         )}
