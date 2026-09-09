@@ -14,10 +14,10 @@ const HEADER_HEIGHT = 32;
 // Width of the left gutter that holds the hour labels.
 const TIME_WIDTH = 64;
 
-/** Section-type colour of an event block. */
+/** Section-type colour used by section badges. */
 export type CalendarEventVariant = 'lecture' | 'lab' | 'tutorial' | 'other';
 
-/** Map a section_name (e.g. "LEC 001") to its calendar colour variant. */
+/** Map a section_name (e.g. "LEC 001") to its section colour variant. */
 export const sectionVariant = (sectionName: string): CalendarEventVariant => {
   const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
   if (kind.startsWith('LEC')) return 'lecture';
