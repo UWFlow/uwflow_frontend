@@ -28,3 +28,8 @@ package-lock.json
 
 # Sentry Config File
 .sentryclirc
+
+# E2E artifacts contain disposable credentials and local database snapshots
+/playwright-report/
+/test-results/
+/.env.e2e.local
