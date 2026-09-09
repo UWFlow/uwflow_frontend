@@ -54,14 +54,16 @@ interface Props {
 const MemberChip = ({ member }: { member: GroupMember }) => {
   const pending = member.status === 'pending';
   return (
-    <span className="flex items-center gap-xs rounded-card border border-light3 bg-white py-xs pl-xs pr-sm">
+    <span className="flex max-w-full items-center gap-xs rounded-card border border-light3 bg-white py-xs pl-xs pr-sm">
       <Avatar
         src={getKittenFromID(member.user_id)}
         alt=""
         size="sm"
         className={pending ? 'opacity-50' : undefined}
       />
-      <span className="text-sm text-dark1">{member.name}</span>
+      <span className="min-w-0 break-words text-sm text-dark1">
+        {member.name}
+      </span>
       {pending && <span className="text-xs text-dark3">pending</span>}
     </span>
   );
@@ -134,7 +136,9 @@ const SharedClassCard = ({
       <span className="text-md font-semibold text-primary">
         {shared.course_code.toUpperCase()}
       </span>
-      <span className="text-md text-dark1">{shared.course_name}</span>
+      <span className="min-w-0 break-words text-md text-dark1">
+        {shared.course_name}
+      </span>
     </div>
 
     {shared.meetings.length > 0 && (
@@ -163,7 +167,7 @@ const SharedClassCard = ({
           <Avatar src={getKittenFromID(m.user_id)} alt={m.name} size="sm" />
         </Tooltip>
       ))}
-      <span className="ml-xs text-sm text-dark2">
+      <span className="min-w-0 break-words text-sm text-dark2">
         {members.map((m) => m.name).join(', ')}
       </span>
     </div>
@@ -267,7 +271,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const maxHour = eventHours.length ? Math.ceil(Math.max(...eventHours)) : 18;
 
   return (
-    <div className="flex flex-col gap-lg">
+    <div className="flex min-w-0 flex-col gap-lg">
       <Button
         type="button"
         variant="link"
@@ -278,11 +282,11 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         <ArrowLeft size={16} /> All groups
       </Button>
 
-      <div className="flex items-center justify-between">
-        <h1 className="font-anderson text-3xl font-extrabold text-dark1">
+      <div className="flex min-w-0 flex-col items-start gap-md tablet:flex-row tablet:items-center tablet:justify-between">
+        <h1 className="min-w-0 w-full break-words font-anderson text-2xl font-extrabold text-dark1 tablet:flex-1 tablet:text-3xl">
           {group.name}
         </h1>
-        <div className="flex gap-sm">
+        <div className="flex shrink-0 flex-wrap gap-sm">
           {group.is_creator && (
             <Button
               variant="subtle"
@@ -326,7 +330,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
           Invite a friend
         </span>
         <div className="flex flex-col gap-sm tablet:flex-row tablet:items-center">
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <Textbox
               text={email}
               setText={(value) => {
@@ -363,7 +367,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
             {group.invited_emails.map((invitedEmail) => (
               <span
                 key={invitedEmail}
-                className="rounded-card bg-light2 px-sm py-xs text-xs text-dark2"
+                className="max-w-full break-all rounded-card bg-light2 px-sm py-xs text-xs text-dark2"
               >
                 {invitedEmail}
               </span>
@@ -382,7 +386,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
         ) : (
           <>
             {events.length > 0 && (
-              <div className="rounded-card border border-light3 bg-white p-md shadow-box">
+              <div className="hidden rounded-card border border-light3 bg-white p-md shadow-box tablet:block">
                 <Calendar
                   dayLabels={WEEKDAY_LABELS}
                   events={events}
