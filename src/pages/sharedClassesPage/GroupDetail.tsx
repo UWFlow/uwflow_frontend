@@ -75,9 +75,18 @@ const sectionChipClasses: Record<CalendarEventVariant, string> = {
 
 // Flatten shared classes into calendar blocks: one per meeting per weekday it
 // runs on. days come as tokens matching weekDayLetters (M, T, W, Th, F).
-const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
+const toCalendarEvents = (
+  classes: SharedClass[],
+  membersById: Map<number, GroupMember>,
+): CalendarEvent[] => {
   const events: CalendarEvent[] = [];
   classes.forEach((c) => {
+    const memberNames = c.member_ids
+      .flatMap((id) => {
+        const member = membersById.get(id);
+        return member ? [member.name] : [];
+      })
+      .join(', ');
     c.meetings.forEach((m, mi) => {
       const { start_seconds: startSeconds, end_seconds: endSeconds } = m;
       if (startSeconds === null || endSeconds === null) return;
@@ -90,8 +99,12 @@ const toCalendarEvents = (classes: SharedClass[]): CalendarEvent[] => {
           startMinutes: Math.round(startSeconds / 60),
           endMinutes: Math.round(endSeconds / 60),
           colorKey: c.course_code,
-          title: c.course_code.toUpperCase(),
-          subtitle: c.section_name,
+          title: `${c.course_code.toUpperCase()} · ${c.section_name}`,
+          subtitle: memberNames ? (
+            <span className="text-xs text-dark2" title={memberNames}>
+              {memberNames}
+            </span>
+          ) : undefined,
           location: m.location ?? undefined,
         });
       });
@@ -243,7 +256,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const pending = group.members.filter((m) => m.status === 'pending');
   const membersById = new Map(group.members.map((m) => [m.user_id, m]));
 
-  const events = toCalendarEvents(group.shared_classes);
+  const events = toCalendarEvents(group.shared_classes, membersById);
   const eventHours = events.flatMap((e) => [
     e.startMinutes / 60,
     e.endMinutes / 60,
