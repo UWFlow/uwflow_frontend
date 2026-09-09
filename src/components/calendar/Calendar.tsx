@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from 'react-feather';
 import { Button } from 'components/ui/button';
 import { cn } from 'lib/utils';
 
+import { layoutCalendarEvents } from './calendarLayout';
+
 // Vertical pixels per hour of the day; the single source of truth for the
 // time grid and for translating an event's start/end into a pixel offset.
 export const HOUR_HEIGHT = 64;
@@ -58,8 +60,6 @@ export type CalendarEvent = {
   truncate?: 'left' | 'right';
   title?: ReactNode;
   subtitle?: ReactNode;
-  /** Allow multiline labels within the fixed meeting height. */
-  wrapContent?: boolean;
   timeLabel?: ReactNode;
   location?: ReactNode;
   onClick?: () => void;
@@ -143,35 +143,6 @@ const NAV_BUTTON_CLASS =
 // 24-hour gutter labels: "09:00", "10:00", ...
 const formatHour = (hour: number) => `${`${hour}`.padStart(2, '0')}:00`;
 
-// Derive left/right placement for overlapping non-preview events within each
-// column. Preview ghosts are skipped so they layer cleanly on top, and any
-// caller-provided `truncate` is left untouched.
-const deriveTruncation = (events: CalendarEvent[]) => {
-  const sides: Record<string, 'left' | 'right'> = {};
-  const byColumn = new Map<number, CalendarEvent[]>();
-
-  events.forEach((event) => {
-    if (event.state === 'preview') return;
-    const column = byColumn.get(event.dayIndex) ?? [];
-    column.push(event);
-    byColumn.set(event.dayIndex, column);
-  });
-
-  byColumn.forEach((column) => {
-    const ordered = [...column].sort((a, b) => a.startMinutes - b.startMinutes);
-    for (let i = 1; i < ordered.length; i += 1) {
-      const prev = ordered[i - 1];
-      const curr = ordered[i];
-      if (prev.endMinutes > curr.startMinutes) {
-        const prevSide = sides[prev.id] ?? (sides[prev.id] = 'left');
-        sides[curr.id] = prevSide === 'left' ? 'right' : 'left';
-      }
-    }
-  });
-
-  return sides;
-};
-
 /**
  * A purely presentational week-grid calendar. It knows nothing about Moment,
  * Apollo or the schedule shape — callers map their domain onto `CalendarEvent`s
@@ -200,7 +171,7 @@ const Calendar = ({
   onNextWeek,
   className,
 }: CalendarProps) => {
-  const derivedSides = deriveTruncation(events);
+  const placements = layoutCalendarEvents(events);
   // Palette slot per course, by alphabetical order of the codes on screen, so
   // every course visible at once gets a different hue.
   const courseKeys = Array.from(
@@ -222,9 +193,9 @@ const Calendar = ({
     const isPreview = state === 'preview';
     const isSelected = state === 'selected';
     // Preview ghosts overlay full-width and ignore overlap truncation.
-    const truncate = isPreview
-      ? undefined
-      : event.truncate ?? derivedSides[event.id];
+    const truncate = isPreview ? undefined : event.truncate;
+    const placement =
+      !isPreview && !truncate ? placements.get(event.id) : undefined;
     const clickable = interactive && !isPreview && Boolean(event.onClick);
 
     // Map minutes-since-midnight to a pixel offset within the hour grid.
@@ -251,14 +222,20 @@ const Calendar = ({
               }
             : undefined
         }
-        style={{ top, height }}
+        style={{
+          top,
+          height,
+          ...(placement && {
+            left: `${(placement.column / placement.columns) * 100}%`,
+            width: `calc(${100 / placement.columns}% - 4px)`,
+          }),
+        }}
         className={cn(
           // Base block: rounded, solid course fill with a thick accent left
           // rail; the text stack is vertically centered but left-aligned, with
           // a little left padding to clear the rail, clipping rather than
           // wrapping when the block is short or narrow.
           'absolute z-10 flex flex-col justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid pl-1.5 pr-1 leading-tight text-dark1',
-          event.wrapContent && 'justify-start whitespace-normal py-xs',
           // Selected blocks swap the course fill/accent for the gold tokens
           // (gold border on all four sides plus the thick gold rail). The fill
           // is accent @20% composited on white, opaque like the course fills.
@@ -284,24 +261,19 @@ const Calendar = ({
         )}
       >
         {event.title && (
-          <div className="w-full shrink-0 truncate text-xs font-semibold">
+          <div className="w-full truncate text-xs font-semibold">
             {event.title}
           </div>
         )}
         {(event.timeLabel || event.location) && (
-          <div className="w-full shrink-0 truncate text-[11px] text-dark2">
+          <div className="w-full truncate text-[11px] text-dark2">
             {event.timeLabel}
             {event.timeLabel && event.location && ' · '}
             {event.location}
           </div>
         )}
         {event.subtitle && (
-          <div
-            className={cn(
-              'w-full shrink-0 text-[10px] text-dark3',
-              !event.wrapContent && 'truncate',
-            )}
-          >
+          <div className="w-full shrink-0 truncate text-[10px] text-dark3">
             {event.subtitle}
           </div>
         )}
