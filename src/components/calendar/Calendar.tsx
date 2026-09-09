@@ -58,6 +58,8 @@ export type CalendarEvent = {
   truncate?: 'left' | 'right';
   title?: ReactNode;
   subtitle?: ReactNode;
+  /** Allow multiline labels within the fixed meeting height. */
+  wrapContent?: boolean;
   timeLabel?: ReactNode;
   location?: ReactNode;
   onClick?: () => void;
@@ -256,6 +258,7 @@ const Calendar = ({
           // a little left padding to clear the rail, clipping rather than
           // wrapping when the block is short or narrow.
           'absolute z-10 flex flex-col justify-center overflow-hidden whitespace-nowrap rounded border border-l-4 border-solid pl-1.5 pr-1 leading-tight text-dark1',
+          event.wrapContent && 'justify-start whitespace-normal py-xs',
           // Selected blocks swap the course fill/accent for the gold tokens
           // (gold border on all four sides plus the thick gold rail). The fill
           // is accent @20% composited on white, opaque like the course fills.
@@ -281,19 +284,24 @@ const Calendar = ({
         )}
       >
         {event.title && (
-          <div className="w-full truncate text-xs font-semibold">
+          <div className="w-full shrink-0 truncate text-xs font-semibold">
             {event.title}
           </div>
         )}
         {(event.timeLabel || event.location) && (
-          <div className="w-full truncate text-[11px] text-dark2">
+          <div className="w-full shrink-0 truncate text-[11px] text-dark2">
             {event.timeLabel}
             {event.timeLabel && event.location && ' · '}
             {event.location}
           </div>
         )}
         {event.subtitle && (
-          <div className="w-full truncate text-[10px] text-dark3">
+          <div
+            className={cn(
+              'w-full shrink-0 text-[10px] text-dark3',
+              !event.wrapContent && 'truncate',
+            )}
+          >
             {event.subtitle}
           </div>
         )}
