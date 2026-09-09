@@ -15,7 +15,7 @@ import {
   RemoveSharedGroupMembershipMutationVariables,
 } from 'generated/graphql';
 
-import { CalendarEventVariant, sectionVariant } from 'components/calendar';
+import { CourseColor, getCourseColors } from 'components/calendar/courseColors';
 import Avatar from 'components/display/Avatar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
@@ -61,26 +61,19 @@ const MemberChip = ({ member }: { member: GroupMember }) => {
   );
 };
 
-const sectionChipClasses: Record<CalendarEventVariant, string> = {
-  lecture: 'bg-lecture text-dark1',
-  lab: 'bg-lab text-dark1',
-  tutorial: 'bg-tutorial text-dark1',
-  other: 'bg-light2 text-dark2',
-};
-
 const SharedClassCard = ({
   shared,
   members,
+  color,
 }: {
   shared: SharedClass;
+  color: CourseColor;
   members: GroupMember[];
 }) => (
   <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
     <div className="flex flex-wrap items-center gap-sm">
       <span
-        className={`rounded-card px-sm py-xs text-xs font-semibold ${
-          sectionChipClasses[sectionVariant(shared.section_name)]
-        }`}
+        className={`rounded-card border border-solid px-sm py-xs text-xs font-semibold text-dark1 ${color.fill} ${color.rail}`}
       >
         {shared.section_name}
       </span>
@@ -213,6 +206,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const pending = group.members.filter((m) => m.status === 'pending');
   const membersById = new Map(group.members.map((m) => [m.user_id, m]));
 
+  const courseColors = getCourseColors(
+    group.shared_classes.map((shared) => shared.course_code),
+  );
+
   return (
     <div className="flex min-w-0 flex-col gap-lg">
       <Button
@@ -337,6 +334,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
                 <SharedClassCard
                   key={shared.section_id}
                   shared={shared}
+                  color={courseColors.get(shared.course_code)!}
                   members={sharedMembers}
                 />
               );

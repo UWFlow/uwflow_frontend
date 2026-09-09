@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from 'react-feather';
 import { Button } from 'components/ui/button';
 import { cn } from 'lib/utils';
 
+import { DEFAULT_COURSE_COLOR, getCourseColors } from './courseColors';
+
 // Vertical pixels per hour of the day; the single source of truth for the
 // time grid and for translating an event's start/end into a pixel offset.
 export const HOUR_HEIGHT = 64;
@@ -11,18 +13,6 @@ export const HOUR_HEIGHT = 64;
 const HEADER_HEIGHT = 32;
 // Width of the left gutter that holds the hour labels.
 const TIME_WIDTH = 64;
-
-/** Section-type colour used by section badges. */
-export type CalendarEventVariant = 'lecture' | 'lab' | 'tutorial' | 'other';
-
-/** Map a section_name (e.g. "LEC 001") to its section colour variant. */
-export const sectionVariant = (sectionName: string): CalendarEventVariant => {
-  const kind = sectionName.trim().split(/\s+/)[0].toUpperCase();
-  if (kind.startsWith('LEC')) return 'lecture';
-  if (kind.startsWith('LAB')) return 'lab';
-  if (kind.startsWith('TUT')) return 'tutorial';
-  return 'other';
-};
 
 /**
  * Visual state of an event block:
@@ -64,6 +54,8 @@ export type CalendarProps = {
   /** One label per displayed day, left to right. */
   dayLabels: ReactNode[];
   events: CalendarEvent[];
+  /** Include courses without meetings to keep colors aligned with class cards. */
+  colorKeys?: string[];
   /** Inclusive hour bounds of the visible grid. */
   minHour: number;
   maxHour: number;
@@ -94,28 +86,6 @@ export type CalendarProps = {
 // Soft grid line. (The fainter half-hour line is written inline below so
 // Tailwind's JIT scanner can see the full class.)
 const GRID_LINE = 'border-light3';
-
-// One hue per course, keyed on `colorKey`: the section type is already spelled
-// out in each block's label ("LEC 001"), while the course had no visual
-// identifier at all. Full class strings so Tailwind's JIT scanner sees them.
-// Gold is left out on purpose (it marks the selected block on the swap page),
-// and so is grey — a grey block reads as disabled next to the coloured ones.
-const COURSE_COLORS = [
-  { rail: 'border-primary', fill: 'bg-[#f0f6ff]', ghost: 'bg-[#f0f6ff]/60' },
-  { rail: 'border-[#36b37e]', fill: 'bg-[#ebf9f3]', ghost: 'bg-[#ebf9f3]/60' },
-  { rail: 'border-[#6554c0]', fill: 'bg-[#f2f0fc]', ghost: 'bg-[#f2f0fc]/60' },
-  { rail: 'border-[#ff8b00]', fill: 'bg-[#fff4e6]', ghost: 'bg-[#fff4e6]/60' },
-  { rail: 'border-[#2b8fcd]', fill: 'bg-[#f0fdff]', ghost: 'bg-[#f0fdff]/60' },
-  { rail: 'border-[#d83ba0]', fill: 'bg-[#fdeff8]', ghost: 'bg-[#fdeff8]/60' },
-  { rail: 'border-[#de350b]', fill: 'bg-[#fdefeb]', ghost: 'bg-[#fdefeb]/60' },
-];
-
-// Blocks with no course key (rare — every caller passes a course code).
-const DEFAULT_COURSE_COLOR = {
-  rail: 'border-dark3',
-  fill: 'bg-[#eaecef]',
-  ghost: 'bg-[#eaecef]/60',
-};
 
 // State -> extra block classes, layered on top of the base block + colour.
 const STATE_CLASS: Record<CalendarEventState, string> = {
@@ -184,6 +154,7 @@ const deriveTruncation = (events: CalendarEvent[]) => {
 const Calendar = ({
   dayLabels,
   events,
+  colorKeys,
   minHour,
   maxHour,
   interactive = true,
@@ -196,23 +167,17 @@ const Calendar = ({
   className,
 }: CalendarProps) => {
   const derivedSides = deriveTruncation(events);
-  // Palette slot per course, by alphabetical order of the codes on screen, so
-  // every course visible at once gets a different hue.
-  const courseKeys = Array.from(
-    new Set(
+  const courseColors = getCourseColors(
+    colorKeys ??
       events.flatMap((event) => (event.colorKey ? [event.colorKey] : [])),
-    ),
-  ).sort();
+  );
 
   const hours: number[] = [];
   for (let hour = minHour; hour <= maxHour; hour += 1) hours.push(hour);
 
   const renderEvent = (event: CalendarEvent) => {
-    const slot = event.colorKey ? courseKeys.indexOf(event.colorKey) : -1;
     const color =
-      slot === -1
-        ? DEFAULT_COURSE_COLOR
-        : COURSE_COLORS[slot % COURSE_COLORS.length];
+      courseColors.get(event.colorKey ?? '') ?? DEFAULT_COURSE_COLOR;
     const state = event.state ?? 'default';
     const isPreview = state === 'preview';
     const isSelected = state === 'selected';
