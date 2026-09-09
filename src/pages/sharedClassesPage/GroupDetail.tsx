@@ -15,13 +15,12 @@ import {
   RemoveSharedGroupMembershipMutationVariables,
 } from 'generated/graphql';
 
+import { Calendar, CalendarEvent, WEEKDAY_LABELS } from 'components/calendar';
 import {
-  Calendar,
-  CalendarEvent,
-  CalendarEventVariant,
-  sectionVariant,
-  WEEKDAY_LABELS,
-} from 'components/calendar';
+  CourseColor,
+  DEFAULT_COURSE_COLOR,
+  getCourseColors,
+} from 'components/calendar/courseColors';
 import Avatar from 'components/display/Avatar';
 import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
@@ -69,13 +68,6 @@ const MemberChip = ({ member }: { member: GroupMember }) => {
   );
 };
 
-const sectionChipClasses: Record<CalendarEventVariant, string> = {
-  lecture: 'bg-lecture text-dark1',
-  lab: 'bg-lab text-dark1',
-  tutorial: 'bg-tutorial text-dark1',
-  other: 'bg-light2 text-dark2',
-};
-
 // Flatten shared classes into calendar blocks: one per meeting per weekday it
 // runs on. days come as tokens matching weekDayLetters (M, T, W, Th, F).
 const toCalendarEvents = (
@@ -120,16 +112,16 @@ const toCalendarEvents = (
 const SharedClassCard = ({
   shared,
   members,
+  color,
 }: {
   shared: SharedClass;
+  color: CourseColor;
   members: GroupMember[];
 }) => (
   <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
     <div className="flex flex-wrap items-center gap-sm">
       <span
-        className={`rounded-card px-sm py-xs text-xs font-semibold ${
-          sectionChipClasses[sectionVariant(shared.section_name)]
-        }`}
+        className={`rounded-card border border-solid px-sm py-xs text-xs font-semibold text-dark1 ${color.fill} ${color.rail}`}
       >
         {shared.section_name}
       </span>
@@ -269,6 +261,9 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   ]);
   const minHour = eventHours.length ? Math.floor(Math.min(...eventHours)) : 8;
   const maxHour = eventHours.length ? Math.ceil(Math.max(...eventHours)) : 18;
+  const courseColors = getCourseColors(
+    group.shared_classes.map((shared) => shared.course_code),
+  );
 
   return (
     <div className="flex min-w-0 flex-col gap-lg">
@@ -390,6 +385,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
                 <Calendar
                   dayLabels={WEEKDAY_LABELS}
                   events={events}
+                  colorKeys={Array.from(courseColors.keys())}
                   minHour={minHour}
                   maxHour={maxHour}
                   interactive={false}
@@ -407,6 +403,10 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
                   <SharedClassCard
                     key={shared.section_id}
                     shared={shared}
+                    color={
+                      courseColors.get(shared.course_code) ??
+                      DEFAULT_COURSE_COLOR
+                    }
                     members={sharedMembers}
                   />
                 );
