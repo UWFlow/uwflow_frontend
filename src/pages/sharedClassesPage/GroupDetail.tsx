@@ -43,6 +43,7 @@ import {
   inviteToGroup,
   SharedClass,
 } from './api';
+import MemberAvatar from './MemberAvatar';
 
 interface Props {
   groupId: number;
@@ -84,12 +85,7 @@ const toCalendarEvents = (
     const sharedMembers = c.member_ids.flatMap((id) => {
       const member = membersById.get(id);
       if (!member) return [];
-      const parts = member.name.trim().split(/\s+/);
-      const shortName =
-        parts.length > 1
-          ? `${parts[0].charAt(0)}. ${parts[parts.length - 1].slice(0, 4)}`
-          : parts[0].slice(0, 4);
-      return [{ ...member, shortName }];
+      return [member];
     });
     c.meetings.forEach((m, mi) => {
       const { start_seconds: startSeconds, end_seconds: endSeconds } = m;
@@ -104,16 +100,13 @@ const toCalendarEvents = (
           endMinutes: Math.round(endSeconds / 60),
           colorKey: c.course_code,
           title: `${c.course_code.toUpperCase()} · ${c.section_name}`,
-          wrapContent: true,
-          subtitle: sharedMembers.map((member) => (
-            <span
-              key={member.user_id}
-              className="block truncate font-anderson text-xs text-dark1"
-              title={member.name}
-            >
-              {member.shortName}
-            </span>
-          )),
+          subtitle: sharedMembers.length ? (
+            <div className="flex h-5 items-center gap-xs overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {sharedMembers.map((member) => (
+                <MemberAvatar key={member.user_id} member={member} />
+              ))}
+            </div>
+          ) : undefined,
           location: m.location ?? undefined,
         });
       });
