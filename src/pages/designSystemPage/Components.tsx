@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus } from 'react-feather';
 import { useTheme } from 'styled-components';
 
@@ -45,6 +45,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 import { Textarea } from 'components/ui/textarea';
 import { ThumbToggle } from 'components/ui/thumb-toggle';
 import { Tooltip } from 'components/ui/tooltip';
+import { TourContent } from 'components/ui/tour';
 import { Heading, Text } from 'components/ui/typography';
 
 import { Example, ExampleGroup, Section } from './Showcase';
@@ -567,3 +568,41 @@ export const Tables = () => (
     </ExampleGroup>
   </Section>
 );
+
+export const Tours = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Section title="Tour">
+      <ExampleGroup title="Multi-step introduction">
+        <Example label="Next, Skip, and Done">
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button>Open tour</Button>
+            </DialogTrigger>
+            <DialogContent ariaLabel="Example tour" className="max-w-sm p-0">
+              <DialogCloseButton />
+              <TourContent
+                label="Getting started"
+                onRequestClose={() => setOpen(false)}
+                steps={[
+                  {
+                    heading: 'Welcome',
+                    body: 'Introduce a feature with a short tour.',
+                  },
+                  {
+                    heading: 'Explore',
+                    body: 'Supply your own headings, copy, and optional illustration.',
+                  },
+                  {
+                    heading: 'Ready to begin',
+                    body: 'Done closes the tour. The host decides whether to show it again.',
+                  },
+                ]}
+              />
+            </DialogContent>
+          </Dialog>
+        </Example>
+      </ExampleGroup>
+    </Section>
+  );
+};
