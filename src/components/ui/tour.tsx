@@ -7,22 +7,19 @@ import { Button } from './button';
 export interface TourStep {
   heading: string;
   body: ReactNode;
+  illustration?: ReactNode;
 }
 
 export interface TourContentProps extends React.HTMLAttributes<HTMLDivElement> {
   label: ReactNode;
   steps: readonly TourStep[];
-  illustration?: ReactNode;
   onRequestClose: () => void;
 }
 
 // The modal host owns focus trapping, dismissal, and any persistence. Keeping
 // this content separate lets existing modals and design-system dialogs reuse it.
 export const TourContent = React.forwardRef<HTMLDivElement, TourContentProps>(
-  (
-    { label, steps, illustration, onRequestClose, className, ...props },
-    ref,
-  ) => {
+  ({ label, steps, onRequestClose, className, ...props }, ref) => {
     const [step, setStep] = useState(0);
     const current = Math.min(step, steps.length - 1);
     if (!steps.length) return null;
@@ -37,7 +34,7 @@ export const TourContent = React.forwardRef<HTMLDivElement, TourContentProps>(
           className,
         )}
       >
-        {illustration}
+        {steps[current].illustration}
         <div className="flex flex-col p-lg">
           <div className="mb-sm flex items-center gap-sm text-xs font-semibold uppercase tracking-wide text-primary">
             {label}
