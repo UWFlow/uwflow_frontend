@@ -9,8 +9,6 @@ import {
 import { toast } from 'react-toastify';
 import { useMutation } from '@apollo/client';
 import {
-  DeleteSharedGroupMutation,
-  DeleteSharedGroupMutationVariables,
   RemoveSharedGroupMembershipMutation,
   RemoveSharedGroupMembershipMutationVariables,
 } from 'generated/graphql';
@@ -28,10 +26,9 @@ import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
 import { Badge } from 'components/ui/badge';
 import { Button } from 'components/ui/button';
-import {
-  DELETE_SHARED_GROUP,
-  REMOVE_SHARED_GROUP_MEMBERSHIP,
-} from 'graphql/mutations/SharedClasses';
+import { DELETE_GROUP_MODAL } from 'constants/Modal';
+import { REMOVE_SHARED_GROUP_MEMBERSHIP } from 'graphql/mutations/SharedClasses';
+import useModal from 'hooks/useModal';
 import { getKittenFromID } from 'utils/Kitten';
 import { weekDayLetters } from 'utils/Misc';
 
@@ -48,7 +45,7 @@ import MemberAvatar from './MemberAvatar';
 interface Props {
   groupId: number;
   onBack: () => void;
-  onChanged: () => void;
+  onChanged: () => Promise<unknown>;
 }
 
 const MemberChip = ({ member }: { member: GroupMember }) => {
@@ -166,6 +163,7 @@ const SharedClassCard = ({
 );
 
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
+  const [openModal] = useModal();
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
@@ -178,10 +176,6 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
     RemoveSharedGroupMembershipMutation,
     RemoveSharedGroupMembershipMutationVariables
   >(REMOVE_SHARED_GROUP_MEMBERSHIP);
-  const [deleteGroup] = useMutation<
-    DeleteSharedGroupMutation,
-    DeleteSharedGroupMutationVariables
-  >(DELETE_SHARED_GROUP);
 
   const load = async () => {
     try {
@@ -223,27 +217,22 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       if (result.data?.delete_shared_group_member?.affected_rows !== 1) {
         throw new Error('membership was not removed');
       }
-      onChanged();
+      await onChanged();
       onBack();
     } catch {
       toast('Could not leave the group.');
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm(`Delete "${group?.name}"? This cannot be undone.`)) {
-      return;
-    }
-    try {
-      const result = await deleteGroup({ variables: { groupId } });
-      if (result.data?.delete_shared_group?.affected_rows !== 1) {
-        throw new Error('group was not deleted');
-      }
-      onChanged();
-      onBack();
-    } catch {
-      toast('Could not delete the group.');
-    }
+  const handleDelete = () => {
+    openModal(DELETE_GROUP_MODAL, {
+      groupId,
+      groupName: group?.name ?? '',
+      onDeleted: async () => {
+        await onChanged();
+        onBack();
+      },
+    });
   };
 
   if (loading) return <LoadingSpinner />;

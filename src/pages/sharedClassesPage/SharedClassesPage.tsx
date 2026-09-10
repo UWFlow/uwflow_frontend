@@ -239,9 +239,7 @@ const SharedClassesPage = () => {
         <GroupDetail
           groupId={selected}
           onBack={() => setSelected(null)}
-          onChanged={() => {
-            refetch();
-          }}
+          onChanged={refetch}
         />
       );
     }
