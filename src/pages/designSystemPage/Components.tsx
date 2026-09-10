@@ -30,6 +30,10 @@ import { Input } from 'components/ui/input';
 import { Link } from 'components/ui/link';
 import { Progress } from 'components/ui/progress';
 import { Radio, RadioGroup } from 'components/ui/radio-group';
+import {
+  SegmentedControl,
+  SegmentedControlOption,
+} from 'components/ui/segmented-control';
 import { Separator } from 'components/ui/separator';
 import { Slider } from 'components/ui/slider';
 import { Spinner } from 'components/ui/spinner';
@@ -284,6 +288,31 @@ export const FilterChips = () => {
               </FilterChip>
             ))}
           </div>
+        </Example>
+      </ExampleGroup>
+    </Section>
+  );
+};
+
+export const SegmentedControls = () => {
+  const terms = ['Fall 2026', 'Winter 2027'];
+  const [term, setTerm] = React.useState(terms[0]);
+
+  return (
+    <Section title="Segmented Control">
+      <ExampleGroup title="Term">
+        <Example label="Single choice">
+          <SegmentedControl
+            aria-label="Term"
+            value={term}
+            onValueChange={setTerm}
+          >
+            {terms.map((label) => (
+              <SegmentedControlOption key={label} value={label}>
+                {label}
+              </SegmentedControlOption>
+            ))}
+          </SegmentedControl>
         </Example>
       </ExampleGroup>
     </Section>
