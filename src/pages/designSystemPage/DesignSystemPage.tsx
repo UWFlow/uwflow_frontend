@@ -14,6 +14,7 @@ import {
   Links,
   Overlays,
   Radios,
+  SegmentedControls,
   Selects,
   Sliders,
   Tables,
@@ -53,6 +54,7 @@ const DesignSystemPage = () => (
         <Selects />
         <Sliders />
         <FilterChips />
+        <SegmentedControls />
         <ThumbToggles />
         <Badges />
         <CircularProgresses />

@@ -23,8 +23,11 @@ import {
   WEEKDAY_LABELS,
 } from 'components/calendar';
 import LastUpdatedSchedule from 'components/common/LastUpdatedSchedule';
+import {
+  SegmentedControl,
+  SegmentedControlOption,
+} from 'components/ui/segmented-control';
 import { GET_COURSE_FOR_SWAP } from 'graphql/queries/course/SwapCourse';
-import { cn } from 'lib/utils';
 import {
   formatCourseCode,
   getCurrentTermCode,
@@ -578,21 +581,17 @@ const SwapCalendar = ({
               possible — you make the actual change in Quest.
             </p>
           </div>
-          <div className="inline-flex shrink-0 rounded border border-solid border-light3 bg-white p-1">
+          <SegmentedControl
+            aria-label="Term"
+            value={String(selectedTermCode)}
+            onValueChange={(termId) => handleTermChange(Number(termId))}
+          >
             {availableTerms.map((term) => (
-              <button
-                className={cn(
-                  'h-8 cursor-pointer rounded border-none bg-transparent px-4 text-sm font-semibold text-dark3 transition-colors',
-                  selectedTermCode === term.id && 'bg-light2 text-dark1',
-                )}
-                key={term.id}
-                onClick={() => handleTermChange(term.id)}
-                type="button"
-              >
+              <SegmentedControlOption key={term.id} value={String(term.id)}>
                 {term.label}
-              </button>
+              </SegmentedControlOption>
             ))}
-          </div>
+          </SegmentedControl>
         </div>
 
         <div className="flex items-start gap-4">

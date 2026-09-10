@@ -29,6 +29,10 @@ import Textbox from 'components/input/Textbox';
 import { Badge } from 'components/ui/badge';
 import { Button } from 'components/ui/button';
 import {
+  SegmentedControl,
+  SegmentedControlOption,
+} from 'components/ui/segmented-control';
+import {
   DELETE_SHARED_GROUP,
   REMOVE_SHARED_GROUP_MEMBERSHIP,
 } from 'graphql/mutations/SharedClasses';
@@ -44,6 +48,7 @@ import {
   SharedClass,
 } from './api';
 import MemberAvatar from './MemberAvatar';
+import { getDefaultSharedTerm, getSharedTermOptions } from './sharedTerms';
 
 interface Props {
   groupId: number;
@@ -168,6 +173,9 @@ const SharedClassCard = ({
 const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const [group, setGroup] = useState<GroupDetailData | null>(null);
   const [loading, setLoading] = useState(true);
+  // null until the user picks one, so the default follows whichever term the
+  // freshly loaded group actually has classes in.
+  const [selectedTerm, setSelectedTerm] = useState<number | null>(null);
   const [email, setEmail] = useState('');
   const [inviting, setInviting] = useState(false);
   const [notice, setNotice] = useState<{
@@ -194,6 +202,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   };
 
   useEffect(() => {
+    setSelectedTerm(null);
     load();
     // load closes over groupId only; refetch when the selected group changes.
   }, [groupId]);
@@ -253,15 +262,31 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
   const pending = group.members.filter((m) => m.status === 'pending');
   const membersById = new Map(group.members.map((m) => [m.user_id, m]));
 
-  const events = toCalendarEvents(group.shared_classes, membersById);
+  const termOptions = getSharedTermOptions(group.shared_classes);
+  const activeTerm =
+    selectedTerm !== null &&
+    termOptions.some((option) => option.termId === selectedTerm)
+      ? selectedTerm
+      : getDefaultSharedTerm(termOptions);
+  const activeTermLabel =
+    termOptions.find((option) => option.termId === activeTerm)?.label ?? '';
+  // Sections are term-specific, so a term is a filter on the whole view: the
+  // calendar would otherwise draw two terms' classes onto one week.
+  const termClasses = group.shared_classes.filter(
+    (shared) => shared.term_id === activeTerm,
+  );
+
+  const events = toCalendarEvents(termClasses, membersById);
   const eventHours = events.flatMap((e) => [
     e.startMinutes / 60,
     e.endMinutes / 60,
   ]);
   const minHour = eventHours.length ? Math.floor(Math.min(...eventHours)) : 8;
   const maxHour = eventHours.length ? Math.ceil(Math.max(...eventHours)) : 18;
+  // Colours come from the term on screen, so each term starts at the top of
+  // the palette rather than inheriting gaps from the term next to it.
   const courseColors = getCourseColors(
-    group.shared_classes.map((shared) => shared.course_code),
+    termClasses.map((shared) => shared.course_code),
   );
 
   return (
@@ -371,11 +396,32 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
       </form>
 
       <div className="flex flex-col gap-sm">
-        <h2 className="text-xl font-bold text-dark1">Classes you share</h2>
-        {group.shared_classes.length === 0 ? (
+        <div className="flex flex-col items-start gap-sm tablet:flex-row tablet:items-center tablet:justify-between">
+          <h2 className="m-0 text-xl font-bold text-dark1">
+            Classes you share
+          </h2>
+          {group.shared_classes.length > 0 && (
+            <SegmentedControl
+              aria-label="Term"
+              value={String(activeTerm)}
+              onValueChange={(termId) => setSelectedTerm(Number(termId))}
+            >
+              {termOptions.map((option) => (
+                <SegmentedControlOption
+                  key={option.termId}
+                  value={String(option.termId)}
+                >
+                  {option.label}
+                </SegmentedControlOption>
+              ))}
+            </SegmentedControl>
+          )}
+        </div>
+        {termClasses.length === 0 ? (
           <div className="rounded-card border border-dashed border-light3 bg-white p-lg text-center text-sm text-dark2">
-            No shared classes yet. Once two or more members are in the same
-            section, it shows up here.
+            {group.shared_classes.length === 0
+              ? 'No shared classes yet. Once two or more members are in the same section, it shows up here.'
+              : `Nothing shared in ${activeTermLabel} yet. Once two or more members are in the same section that term, it shows up here.`}
           </div>
         ) : (
           <>
@@ -393,7 +439,7 @@ const GroupDetail = ({ groupId, onBack, onChanged }: Props) => {
               </div>
             )}
             <ul className="m-0 flex list-none flex-col gap-sm p-0">
-              {group.shared_classes.map((shared) => {
+              {termClasses.map((shared) => {
                 const sharedMembers = shared.member_ids.flatMap((memberId) => {
                   const member = membersById.get(memberId);
                   return member ? [member] : [];
