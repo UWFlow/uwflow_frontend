@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus } from 'react-feather';
+import { CheckCircle, Compass, Plus, Star } from 'react-feather';
 import { useTheme } from 'styled-components';
 
 import { getCourseColors } from 'components/calendar/courseColors';
@@ -587,14 +587,38 @@ export const Tours = () => {
                 steps={[
                   {
                     heading: 'Welcome',
+                    illustration: (
+                      <div
+                        className="flex h-32 items-center justify-center bg-light1 text-primary"
+                        aria-hidden
+                      >
+                        <Star size={48} />
+                      </div>
+                    ),
                     body: 'Introduce a feature with a short tour.',
                   },
                   {
                     heading: 'Explore',
-                    body: 'Supply your own headings, copy, and optional illustration.',
+                    illustration: (
+                      <div
+                        className="flex h-32 items-center justify-center bg-light1 text-primary"
+                        aria-hidden
+                      >
+                        <Compass size={48} />
+                      </div>
+                    ),
+                    body: 'Give each step its own heading, copy, and optional illustration.',
                   },
                   {
                     heading: 'Ready to begin',
+                    illustration: (
+                      <div
+                        className="flex h-32 items-center justify-center bg-light1 text-primary"
+                        aria-hidden
+                      >
+                        <CheckCircle size={48} />
+                      </div>
+                    ),
                     body: 'Done closes the tour. The host decides whether to show it again.',
                   },
                 ]}
