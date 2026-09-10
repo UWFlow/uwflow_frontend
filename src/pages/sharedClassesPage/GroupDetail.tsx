@@ -24,6 +24,7 @@ import LoadingSpinner from 'components/display/LoadingSpinner';
 import Tooltip from 'components/display/Tooltip';
 import AccentButton from 'components/input/Button';
 import Textbox from 'components/input/Textbox';
+import { Badge } from 'components/ui/badge';
 import { Button } from 'components/ui/button';
 import { DELETE_GROUP_MODAL } from 'constants/Modal';
 import { REMOVE_SHARED_GROUP_MEMBERSHIP } from 'graphql/mutations/SharedClasses';
@@ -117,11 +118,9 @@ const SharedClassCard = ({
 }) => (
   <li className="flex flex-col gap-sm rounded-card border border-light3 bg-white p-md shadow-box">
     <div className="flex flex-wrap items-center gap-sm">
-      <span
-        className={`rounded-card border border-solid px-sm py-xs text-xs font-semibold text-dark1 ${color.fill} ${color.rail}`}
-      >
+      <Badge variant="outline" className={`${color.fill} ${color.rail}`}>
         {shared.section_name}
-      </span>
+      </Badge>
       <span className="text-md font-semibold text-primary">
         {shared.course_code.toUpperCase()}
       </span>
